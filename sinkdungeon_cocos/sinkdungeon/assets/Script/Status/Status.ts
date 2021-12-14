@@ -69,15 +69,15 @@ export default class Status extends cc.Component {
     }
     private getInfo(data:StatusData){
         let info = ``;
-        info += data.physicalDamageOvertime == 0 ? `` : `每秒受到${data.physicalDamageOvertime}点物理伤害\n`;
-        info += data.realDamageOvertime == 0 ? `` : `每秒受到${data.realDamageOvertime}点流血伤害\n`;
-        info += data.magicDamageOvertime == 0 ? `` : `每秒受到${data.magicDamageOvertime}点魔法伤害\n`;
+        info += data.physicalDamageOvertime == 0 ? `` : `每秒受到${data.physicalDamageOvertime.toFixed(1).replace('.0', '')}点物理伤害\n`;
+        info += data.realDamageOvertime == 0 ? `` : `每秒受到${data.realDamageOvertime.toFixed(1).replace('.0', '')}点流血伤害\n`;
+        info += data.magicDamageOvertime == 0 ? `` : `每秒受到${data.magicDamageOvertime.toFixed(1).replace('.0', '')}点魔法伤害\n`;
         info += data.missRate == 0 ? `` : `攻击丢失几率${data.missRate.toFixed(1).replace('.0', '')}%\n`;
-        info += data.dizzDurationOvertime == 0 ? `` : `眩晕${data.dizzDurationOvertime}秒\n`;
-        info += data.invisibleDuratonDirect == 0 ? `` : `隐身${data.invisibleDuratonDirect}秒\n`;
-        info += data.variation == 0 ? `` : `变异${data.variation}秒\n`;
-        info += data.dreamOvertime == 0 ? `` : `持续${data.dreamOvertime}秒恢复梦境\n`;
-        info += data.exOilGold == 0 ? `` : `额外经验获取${data.exOilGold}点\n`;
+        info += data.dizzDurationOvertime == 0 ? `` : `眩晕${data.dizzDurationOvertime.toFixed(1).replace('.0', '')}秒\n`;
+        info += data.invisibleDuratonDirect == 0 ? `` : `隐身${data.invisibleDuratonDirect.toFixed(1).replace('.0', '')}秒\n`;
+        info += data.variation == 0 ? `` : `变异${data.variation.toFixed(1).replace('.0', '')}秒\n`;
+        info += data.dreamOvertime == 0 ? `` : `持续${data.dreamOvertime.toFixed(1).replace('.0', '')}秒恢复梦境\n`;
+        info += data.exOilGold == 0 ? `` : `额外经验获取${data.exOilGold.toFixed(1).replace('.0', '')}点\n`;
         info += data.clearHealth == 0 ? `` : `清理完房间回复生命\n`;
         info += data.avoidDeath == 0 ? `` : `抵挡致命伤`;
         return info;

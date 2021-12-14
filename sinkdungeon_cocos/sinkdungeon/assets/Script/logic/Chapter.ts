@@ -1,6 +1,7 @@
 import Logic from "./Logic";
 import RectDungeon from "../rect/RectDungeon";
 import AudioPlayer from "../utils/AudioPlayer";
+import StartBackground from "../ui/StartBackground";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -34,12 +35,14 @@ export default class Chapter extends cc.Component {
     start() {
     }
 
-    clickChapter(event, chapter:string) {
+    clickChapter(event, chapter: string) {
         if (chapter) {
             Logic.profileManager.clearData();
             Logic.jumpChapter = parseInt(chapter);
             AudioPlayer.play(AudioPlayer.SELECT);
-            cc.director.loadScene('pickavatar');
+            let bg = this.getComponentInChildren(StartBackground);
+            if (bg) { bg.startPressed(); }
+            this.scheduleOnce(() => { cc.director.loadScene('pickavatar'); }, 1);
         }
     }
     isTimeDelay(dt: number): boolean {
@@ -50,5 +53,5 @@ export default class Chapter extends cc.Component {
         }
         return false;
     }
-   
+
 }

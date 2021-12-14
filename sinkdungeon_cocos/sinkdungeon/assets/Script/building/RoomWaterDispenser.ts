@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { EventHelper } from "../logic/EventHelper";
 import Player from "../logic/Player";
 import AudioPlayer from "../utils/AudioPlayer";
 import Building from "./Building";
@@ -45,7 +46,6 @@ export default class RoomWaterDispenser extends Building {
         this.hasWater = true;
         this.isAniming = false;
     }
-
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
         this.checkTimeDelay += dt;

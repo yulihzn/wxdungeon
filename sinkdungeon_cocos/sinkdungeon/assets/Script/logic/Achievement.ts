@@ -10,6 +10,7 @@ import AchievementItem from "../ui/AchievementItem";
 import AchievementItemDialog from "../ui/dialog/AchievementItemDialog";
 import AudioPlayer from "../utils/AudioPlayer";
 import LocalStorage from "../utils/LocalStorage";
+import LoadingIcon from "../ui/LoadingIcon";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -219,6 +220,14 @@ export default class Achievement extends cc.Component {
         }
     }
     show() {
+        let loadingIcon = this.loadingBackground.getComponentInChildren(LoadingIcon);
+        if(loadingIcon&&loadingIcon.isFirst){
+            cc.tween(this.loadingBackground).to(0.5,{opacity:0}).call(()=>{
+                this.loadingBackground.active = false;
+            }).start();
+        }else{
+            this.loadingBackground.active = false;
+        }
         this.changeList(null, '0');
     }
     // show() {
@@ -405,7 +414,6 @@ export default class Achievement extends cc.Component {
             && this.loadingManager.isFurnituresLoaded
             && this.loadingManager.isSuitsLoaded) {
             this.isBossLoaded = true;
-            this.loadingBackground.active = false;
             this.loadingManager.reset();
             this.show();
         }

@@ -48,8 +48,8 @@ export default class CellphoneDialog extends BaseDialog {
     onLoad() {
         this.itemSelect.opacity = 0;
         this.equipmentAndItemDialog = this.initDialog();
-        this.dayLabel.string = this.getDay(Logic.realTime);
-        this.hourLabel.string = this.getHour(Logic.realTime);
+        this.dayLabel.string = Utils.getDay(Logic.realTime);
+        this.hourLabel.string = Utils.getHour(Logic.realTime);
         this.updateList(this.tabIndex);
     }
     private initDialog() {
@@ -167,8 +167,8 @@ export default class CellphoneDialog extends BaseDialog {
     }
     update(dt) {
         if (this.isCheckTimeChangeDelay(dt)) {
-            this.dayLabel.string = this.getDay(Logic.realTime);
-            this.hourLabel.string = this.getHour(Logic.realTime);
+            this.dayLabel.string = Utils.getDay(Logic.realTime);
+            this.hourLabel.string = Utils.getHour(Logic.realTime);
         }
     }
     checkTimeChangeDelay = 0;
@@ -187,38 +187,8 @@ export default class CellphoneDialog extends BaseDialog {
     }
     waitOneHour() {
         Logic.realTime += 60000 * 60;
-        this.dayLabel.string = this.getDay(Logic.realTime);
-        this.hourLabel.string = this.getHour(Logic.realTime);
+        this.dayLabel.string = Utils.getDay(Logic.realTime);
+        this.hourLabel.string = Utils.getHour(Logic.realTime);
     }
 
-    private getDay(time: number) {
-        let date = new Date(time);
-        let m = date.getMonth() + 1;
-        let d = date.getDate();
-        return `${m < 10 ? '0' : ''}${m}月${d < 10 ? '0' : ''}${d}日 ${this.getWeek(date)}`;
-    }
-    private getHour(time: number) {
-        let date = new Date(time);
-        let h = date.getHours() + 1;
-        if (h > 23) {
-            h = 0;
-        }
-        let m = date.getMinutes();
-        return `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}`;
-    }
-    private getFull(time: number) {
-        let date = new Date(time);
-        return date.getFullYear() + "." + (date.getMonth() + 1) + "." + date.getDate() + ". " + date.getHours() + "." + date.getMinutes() + "." + date.getSeconds() + ".";
-    }
-    private getWeek(date: Date) {
-        let week = '';
-        if (date.getDay() == 0) week = "星期日";
-        if (date.getDay() == 1) week = "星期一";
-        if (date.getDay() == 2) week = "星期二";
-        if (date.getDay() == 3) week = "星期三";
-        if (date.getDay() == 4) week = "星期四";
-        if (date.getDay() == 5) week = "星期五";
-        if (date.getDay() == 6) week = "星期六";
-        return week;
-    }
 }

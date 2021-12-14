@@ -16,6 +16,8 @@ import NextStep from "../utils/NextStep";
 import InventoryData from '../data/InventoryData';
 import RoomWaterDispenser from './RoomWaterDispenser';
 import Player from '../logic/Player';
+import RoomClock from './RoomClock';
+import RoomTrashCan from './RoomTrashCan';
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -53,6 +55,7 @@ export default class Furniture extends Building {
     static readonly FISHTANK = 'furniture017';
     static readonly BOOKSHELF = 'furniture018';
     static readonly WATERDISPENER = 'furniture019';
+    static readonly TRASHCAN = 'furniture020';
     sprite: cc.Sprite;
     boxcover: cc.Sprite;
     boxback: cc.Sprite;
@@ -136,6 +139,15 @@ export default class Furniture extends Building {
                 }
                 EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW, { id: this.furnitureData.id });
                 break;
+            case Furniture.LITTLE_TABLE_2:
+                Utils.toast(`现在是${Utils.getYear(Logic.realTime)}${Utils.getDay(Logic.realTime)}${Utils.getHour(Logic.realTime)}`, false, true);
+                break;
+                case Furniture.TRASHCAN:
+                    let trashCan = this.getComponent(RoomTrashCan);
+                    if(trashCan){
+                        trashCan.getTrash();
+                    }
+                break;
             default:
                 AudioPlayer.play(AudioPlayer.SELECT_FAIL);
                 Utils.toast('梦境开发中,无法使用');
@@ -150,6 +162,15 @@ export default class Furniture extends Building {
                     fishtank.zoomCamera(true);
                 }
                 break;
+            case Furniture.LITTLE_TABLE_2:
+                this.zoomCamera(true);
+                break;
+            case Furniture.WATERDISPENER:
+                this.zoomCamera(true);
+                break;
+                case Furniture.TRASHCAN:
+                this.zoomCamera(true);
+                break;
         }
     }
     onExit() {
@@ -159,6 +180,15 @@ export default class Furniture extends Building {
                 if (fishtank) {
                     fishtank.zoomCamera(false);
                 }
+                break;
+            case Furniture.LITTLE_TABLE_2:
+                this.zoomCamera(false);
+                break;
+            case Furniture.WATERDISPENER:
+                this.zoomCamera(false);
+                break;
+                case Furniture.TRASHCAN:
+                this.zoomCamera(false);
                 break;
         }
     }
@@ -178,7 +208,7 @@ export default class Furniture extends Building {
             }
         } else {
             this.sprite.node.color = cc.color(128, 128, 128, 255);
-            this.sprite.node.opacity =  128;
+            this.sprite.node.opacity = 128;
             this.boxcover.node.active = false;
             this.boxback.node.active = false;
             this.lock.node.active = true;
@@ -228,6 +258,9 @@ export default class Furniture extends Building {
             }
 
         }
+    }
+    zoomCamera(zoomIn: boolean) {
+        EventHelper.emit(zoomIn ? EventHelper.HUD_CAMERA_ZOOM_IN : EventHelper.HUD_CAMERA_ZOOM_OUT);
     }
     openBox() {
         if (this.furnitureData.isOpen) {

@@ -320,7 +320,7 @@ export default class PlayerAvatar extends cc.Component {
         this.isAniming = true;
         this.scheduleOnce(() => {
             this.isAniming = false;
-        }, 2)
+        }, 1.5)
 
     }
 

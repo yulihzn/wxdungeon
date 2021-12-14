@@ -19,6 +19,7 @@ export default class LoadingIcon extends cc.Component {
     icon: cc.Node = null;
     @property(cc.Label)
     label2: cc.Label = null;
+    isFirst = false;
     static WORDS = [`梦是大自然所作的聪明的安排,为了在基于意志的身体运动即肌肉运动暂时休息时,用不随意虚构出来的事物所产生的激情去刺激生命力。`
         , `一方面,梦是反映生活的;另一方面,梦又是远离生活的。它以夸张、歪曲、甚至变形的方式反映生活。`
         , `梦把人们从桎梏般的现实中,释放了出来,使他自由,使他在云中翱翔,使他在山峰上奔走。`
@@ -46,6 +47,7 @@ export default class LoadingIcon extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.isFirst = Logic.isFirstLoading;
         this.getComponent(cc.Animation).play(Logic.isFirstLoading ? 'LoadingIconWithLabel' : 'LoadingIcon');
         this.label2.string = `${LoadingIcon.WORDS[Random.getRandomNum(0, LoadingIcon.WORDS.length - 1)]}`;
     }

@@ -43,4 +43,35 @@ export default class Utils {
         let angle = cc.v2(1,0).signAngle(cc.v2(direction.normalize())) * 180 / Math.PI;
         return isFlip?-angle:angle;
     }
+
+    static getDay(time: number) {
+        let date = new Date(time);
+        let m = date.getMonth() + 1;
+        let d = date.getDate();
+        return `${m < 10 ? '0' : ''}${m}月${d < 10 ? '0' : ''}${d}日 ${this.getWeek(date)}`;
+    }
+    static getHour(time: number) {
+        let date = new Date(time);
+        let h = date.getHours() + 1;
+        if (h > 23) {
+            h = 0;
+        }
+        let m = date.getMinutes();
+        return `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}`;
+    }
+    static getYear(time: number) {
+        let date = new Date(time);
+        return date.getFullYear() + "年";
+    }
+    static getWeek(date: Date) {
+        let week = '';
+        if (date.getDay() == 0) week = "星期日";
+        if (date.getDay() == 1) week = "星期一";
+        if (date.getDay() == 2) week = "星期二";
+        if (date.getDay() == 3) week = "星期三";
+        if (date.getDay() == 4) week = "星期四";
+        if (date.getDay() == 5) week = "星期五";
+        if (date.getDay() == 6) week = "星期六";
+        return week;
+    }
 }

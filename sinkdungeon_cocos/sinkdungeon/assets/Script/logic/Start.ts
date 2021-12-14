@@ -8,6 +8,8 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Start extends cc.Component {
     @property(cc.Node)
+    title:cc.Node = null;
+    @property(cc.Node)
     startButton: cc.Node = null;
     @property(cc.Node)
     continueButton: cc.Node = null;
@@ -17,6 +19,10 @@ export default class Start extends cc.Component {
     debugButton: cc.Node = null;
     @property(cc.Node)
     tourButton: cc.Node = null;
+    @property(cc.Node)
+    achieveButton: cc.Node = null;
+    @property(cc.Node)
+    noticeButton: cc.Node = null;
     @property(NoticeDialog)
     noticeDialog:NoticeDialog = null;
     @property(StartBackground)
@@ -46,6 +52,14 @@ export default class Start extends cc.Component {
             }
         }
     }
+    private _startShow(){
+        this.startBg.startPressed();
+        cc.tween(this.title).to(0.5,{opacity:0}).start();
+        cc.tween(this.startButton).to(0.5,{opacity:0}).start();
+        cc.tween(this.continueButton).to(0.5,{opacity:0}).start();
+        cc.tween(this.achieveButton).to(0.5,{opacity:0}).start();
+        cc.tween(this.noticeButton).to(0.5,{opacity:0}).start();
+    }
     startGame() {
         // //清除存档
         // Logic.profileManager.clearData();
@@ -55,26 +69,25 @@ export default class Start extends cc.Component {
         AudioPlayer.play(AudioPlayer.SELECT);
         // cc.director.loadScene('loading');
         //进入选择页面
-        this.startBg.startPressed();
-        cc.director.loadScene('pickavatar');
+        this._startShow();
+        this.scheduleOnce(()=>{cc.director.loadScene('pickavatar');},1);
     }
     chooseChapter() {
         AudioPlayer.play(AudioPlayer.SELECT);
-        this.startBg.startPressed();
         cc.director.loadScene('chapter');
     }
     achievementScene() {
         AudioPlayer.play(AudioPlayer.SELECT);
-        this.startBg.startPressed();
-        cc.director.loadScene('achievement');
+        this._startShow();
+        this.scheduleOnce(()=>{cc.director.loadScene('achievement');},1);
     }
     continueGame() {
 
         Logic.resetData();
         Logic.isFirst = 1;
         AudioPlayer.play(AudioPlayer.SELECT);
-        this.startBg.startPressed();
-        cc.director.loadScene('loading');
+        this._startShow();
+        this.scheduleOnce(()=>{cc.director.loadScene('loading');},1);
     }
     cheatModeChange() {
         if (!this.cheatButton) {

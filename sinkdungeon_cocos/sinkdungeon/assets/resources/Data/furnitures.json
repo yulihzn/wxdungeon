@@ -145,13 +145,13 @@
     },
     "furniture014": {
         "id": "furniture014",
-        "nameCn": "小桌台（二）",
+        "nameCn": "时钟小桌台",
         "nameEn": "little table 2",
         "resName": "roomlittletable2",
         "info": "",
         "desc": "",
-        "scale": 4,
-        "collider": "0,-20,80,40",
+        "scale": 5,
+        "collider": "16,30,128,128",
         "price": 1000
     },
     "furniture015": {
@@ -208,5 +208,16 @@
         "scale": 5,
         "collider": "12,24,64,128",
         "price": 1000
+    },
+    "furniture020": {
+        "id": "furniture020",
+        "nameCn": "垃圾桶",
+        "nameEn": "trashcan",
+        "resName": "trashcan0",
+        "info": "",
+        "desc": "",
+        "scale": 5,
+        "collider": "16,8,80,128",
+        "price": 10
     }
 }

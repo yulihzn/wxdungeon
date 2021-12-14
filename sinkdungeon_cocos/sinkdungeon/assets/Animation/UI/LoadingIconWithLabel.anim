@@ -96,6 +96,14 @@
             {
               "frame": 0,
               "value": 255
+            },
+            {
+              "frame": 1,
+              "value": 200
+            },
+            {
+              "frame": 1.5,
+              "value": 255
             }
           ]
         }

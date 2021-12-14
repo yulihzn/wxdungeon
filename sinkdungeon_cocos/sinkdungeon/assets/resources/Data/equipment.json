@@ -1264,6 +1264,22 @@
         "test": 1,
         "desc": "练习用木质长锤"
     },
+    "weapon045": {
+        "nameCn": "碎玻璃",
+        "nameEn": "Broken Glass",
+        "equipmetType": "weapon",
+        "id": 10010000,
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
+        "img": "weapon045",
+        "price": 0,
+        "common": {},
+        "stab": 1,
+        "desc": "小心翼翼地拿布包起来"
+    },
     "remote001": {
         "nameCn": "十字弩",
         "nameEn": "Cross Bow",

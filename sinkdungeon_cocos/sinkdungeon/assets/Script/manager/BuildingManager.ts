@@ -44,6 +44,8 @@ import RoomFishtank from "../building/RoomFishtank";
 import CCollider from "../collider/CCollider";
 import WallPaint from "../building/WallPaint";
 import RoomWaterDispenser from "../building/RoomWaterDispenser";
+import RoomClock from "../building/RoomClock";
+import RoomTrashCan from "../building/RoomTrashCan";
 
 
 // Learn TypeScript:
@@ -93,6 +95,8 @@ export default class BuildingManager extends BaseManager {
     static readonly ROOMSOFA = 'RoomSofa';
     static readonly ROOMFISHTANK = 'RoomFishtank';
     static readonly ROOMWATERDISPENSER = 'RoomWaterDispenser';
+    static readonly ROOMCLOCK = 'RoomClock';
+    static readonly ROOMTRASHCAN = 'RoomTrashCan';
     static readonly SAVEPOINT = 'SavePoint';
     static readonly SAW = 'Saw';
     static readonly SHIPSTAIRS = 'Shipstairs';
@@ -867,6 +871,7 @@ export default class BuildingManager extends BaseManager {
             case 'Zi': data.valueCopy(Logic.furnitures[Furniture.FISHTANK]); break;
             case 'Zj': data.valueCopy(Logic.furnitures[Furniture.BOOKSHELF]); break;
             case 'Zk': data.valueCopy(Logic.furnitures[Furniture.WATERDISPENER]); break;
+            case 'Zl': data.valueCopy(Logic.furnitures[Furniture.TRASHCAN]); break;
             default: break;
         }
         let save = LocalStorage.getFurnitureData(data.id);
@@ -899,6 +904,13 @@ export default class BuildingManager extends BaseManager {
                 let script = building.getComponent(Furniture);
                 script.init(data);
             });
+        } else if (mapDataStr == 'Zh') {
+            Logic.getBuildings(BuildingManager.ROOMCLOCK, (prefab: cc.Prefab) => {
+                building = this.addBuilding(prefab, indexPos);
+                building.getComponent(RoomClock).init(indexPos);
+                let script = building.getComponent(Furniture);
+                script.init(data);
+            });
         } else if (mapDataStr == 'Zi') {
             Logic.getBuildings(BuildingManager.ROOMFISHTANK, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos);
@@ -910,6 +922,13 @@ export default class BuildingManager extends BaseManager {
             Logic.getBuildings(BuildingManager.ROOMWATERDISPENSER, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos);
                 building.getComponent(RoomWaterDispenser).init(indexPos);
+                let script = building.getComponent(Furniture);
+                script.init(data);
+            });
+        } else if (mapDataStr == 'Zl') {
+            Logic.getBuildings(BuildingManager.ROOMTRASHCAN, (prefab: cc.Prefab) => {
+                building = this.addBuilding(prefab, indexPos);
+                building.getComponent(RoomTrashCan).init(indexPos);
                 let script = building.getComponent(Furniture);
                 script.init(data);
             });

@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":344,
+ "tilecount":345,
  "tiledversion":"1.4.2",
  "tileheight":24,
  "tiles":[
@@ -3483,6 +3483,13 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"Zk"
+        }, 
+        {
+         "id":733,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/trashcan0.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Zl"
         }],
  "tilewidth":16,
  "type":"tileset",

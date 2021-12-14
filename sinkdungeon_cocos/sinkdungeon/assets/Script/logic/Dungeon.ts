@@ -104,7 +104,7 @@ export default class Dungeon extends cc.Component {
         //初始化监听
         EventHelper.on(EventHelper.PLAYER_MOVE, (detail) => { this.playerAction(detail.dir, detail.pos, detail.dt) });
         EventHelper.on(EventHelper.DUNGEON_SETEQUIPMENT, (detail) => {
-            if (this.node) this.addEquipment(detail.equipmentData.img, detail.pos, detail.equipmentData);
+            if (this.node) this.addEquipment(detail.res, detail.pos, detail.equipmentData);
         });
         EventHelper.on(EventHelper.DUNGEON_ADD_COIN, (detail) => {
             this.addCoin(detail.pos, detail.count);

@@ -10,7 +10,6 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import StatusData from "../../data/StatusData";
-import Logic from "../../logic/Logic";
 
 const { ccclass, property } = cc._decorator;
 

@@ -5,8 +5,6 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import StatusData from "../data/StatusData";
-import Status from "../status/Status";
 import StatusIconDialog from "./dialog/StatusIconDialog";
 import StatusIcon from "./StatusIcon";
 

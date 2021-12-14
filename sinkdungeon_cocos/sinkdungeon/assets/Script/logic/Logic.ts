@@ -61,6 +61,7 @@ export default class Logic extends cc.Component {
     static equipmentNameList: string[] = [];
     static itemNameList: string[] = [];
     static goodsNameList: string[] = [];
+    static trashNameList: string[] = [];
     //怪物json
     static monsters: { [key: string]: NonPlayerData } = null;
     //npc json
@@ -409,6 +410,10 @@ export default class Logic extends cc.Component {
     /**随机可拾取物品 */
     static getRandomItemType(rand4save: Random4Save): string {
         return Logic.itemNameList[rand4save.getRandomNum(1, Logic.itemNameList.length - 1)];
+    }
+    /**随机可拾取垃圾 */
+    static getRandomTrashType(rand4save: Random4Save): string {
+        return Logic.trashNameList[rand4save.getRandomNum(1, Logic.trashNameList.length - 1)];
     }
     static spriteFrameRes(spriteFrameName: string) {
         return Logic.spriteFrames[spriteFrameName] ? Logic.spriteFrames[spriteFrameName] : null;

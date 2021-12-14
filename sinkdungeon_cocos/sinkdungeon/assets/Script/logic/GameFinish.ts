@@ -2,6 +2,7 @@ import Logic from "./Logic";
 import WxHelper from "./WxHelper";
 import { EventHelper } from "./EventHelper";
 import AudioPlayer from "../utils/AudioPlayer";
+import StartBackground from "../ui/StartBackground";
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -12,21 +13,21 @@ import AudioPlayer from "../utils/AudioPlayer";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class NewClass extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
     @property(WxHelper)
-    wxhelper:WxHelper = null;
+    wxhelper: WxHelper = null;
     @property(cc.Label)
     level: cc.Label = null;
     @property(cc.Label)
     clock: cc.Label = null;
     // onLoad () {}
 
-    start () {
+    start() {
         if (this.clock) {
             this.clock.string = `${Logic.time}`;
         }
@@ -34,17 +35,21 @@ export default class NewClass extends cc.Component {
             this.level.string = `Level ${Logic.chapterIndex + 1}-${Logic.level}`;
         }
     }
-    retry(){
+    retry() {
         Logic.resetData();
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
-        cc.director.loadScene('loading');
+        let bg = this.getComponentInChildren(StartBackground);
+        if (bg) { bg.startPressed(); }
+        this.scheduleOnce(() => { cc.director.loadScene('loading'); }, 1);
     }
-    home(){
-        if(this.wxhelper){
+    home() {
+        if (this.wxhelper) {
             this.wxhelper.CloseDialog();
         }
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
-        cc.director.loadScene('start');
+        let bg = this.getComponentInChildren(StartBackground);
+        if (bg) { bg.startPressed(); }
+        this.scheduleOnce(() => { cc.director.loadScene('start'); }, 1);
     }
 
     // update (dt) {}

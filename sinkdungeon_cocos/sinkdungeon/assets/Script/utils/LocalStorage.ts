@@ -82,7 +82,18 @@ export default class LocalStorage {
         if(!map){
             map = {};
         }
-        map[data.id] = data;
+        let oldData = new FurnitureData();
+        oldData.valueCopy(map[data.id]);
+        let purchased = oldData.purchased;
+        let isOpen = oldData.isOpen;
+        oldData.valueCopy(data);
+        if(!purchased){
+            oldData.purchased = data.purchased;
+        }
+        if(!isOpen){
+            oldData.isOpen = data.isOpen;
+        }
+        map[data.id] = oldData;
         LocalStorage.saveData(LocalStorage.KEY_FURNITURES, map);
     }
     static isSwitchOpen(key: string) {

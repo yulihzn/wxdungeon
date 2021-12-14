@@ -19,6 +19,7 @@ import ProfessionData from "../data/ProfessionData";
 import EquipmentManager from "../manager/EquipmentManager";
 import InventoryManager from "../manager/InventoryManager";
 import LoadingManager from "../manager/LoadingManager";
+import LoadingIcon from "./LoadingIcon";
 
 
 const { ccclass, property } = cc._decorator;
@@ -159,7 +160,14 @@ export default class PickAvatar extends cc.Component {
 
     show() {
         this.isShow = true;
-        this.loadingBackground.active = false;
+        let loadingIcon = this.loadingBackground.getComponentInChildren(LoadingIcon);
+        if(loadingIcon&&loadingIcon.isFirst){
+            cc.tween(this.loadingBackground).to(0.5,{opacity:0}).call(()=>{
+                this.loadingBackground.active = false;
+            }).start();
+        }else{
+            this.loadingBackground.active = false;
+        }
         //组织
         let organList = new Array();
         for (let i = 0; i < AvatarData.ORGANIZATION.length; i++) {
@@ -308,7 +316,7 @@ export default class PickAvatar extends cc.Component {
         }
     }
     startGame() {
-        if (this.loadingBackground.active) {
+        if (!this.isShow) {
             return;
         }
         //清除存档
@@ -380,7 +388,7 @@ export default class PickAvatar extends cc.Component {
         return false;
     }
     ButtonSwitch() {
-        if (this.loadingBackground.active) {
+        if (!this.isShow) {
             return;
         }
         this.randomLayout.active = this.randomLayout.active ? false : true;
@@ -388,7 +396,7 @@ export default class PickAvatar extends cc.Component {
         AudioPlayer.play(AudioPlayer.SELECT);
     }
     ButtonRandom() {
-        if (this.loadingBackground.active) {
+        if (!this.isShow) {
             return;
         }
         this.organizationSelector.selectRandom();
@@ -404,7 +412,7 @@ export default class PickAvatar extends cc.Component {
         AudioPlayer.play(AudioPlayer.SELECT);
     }
     ButtonSelect(event: cc.Event, isLeft: number) {
-        if (this.loadingBackground.active) {
+        if (!this.isShow) {
             return;
         }
         this.professionSelector.selectNext(isLeft == 0);
