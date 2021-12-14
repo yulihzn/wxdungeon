@@ -18,6 +18,7 @@ export default class RoomTv extends Building {
     screen: cc.Sprite = null;
     anim: cc.Animation;
     isOpen = false;
+    channel = 0;
 
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
@@ -30,7 +31,7 @@ export default class RoomTv extends Building {
     }
     // update (dt) {}
 
-    private open() {
+    open() {
         this.isOpen = true;
         if (this.lights) {
             for (let light of this.lights) {
@@ -42,16 +43,46 @@ export default class RoomTv extends Building {
         this.anim.stop();
         this.anim.play('RoomTvOpen');
         this.scheduleOnce(() => {
-            if (Logic.getHalfChance()) {
-                this.anim.play('RoomTvNoSignalIdle');
-                AudioPlayer.play(AudioPlayer.TVWHITE,false,true);
-            } else {
-                this.anim.play('RoomTvOpenIdle');
-                AudioPlayer.play(AudioPlayer.TVCOLOR,false,true);
-            }
+            this.channel = Logic.getRandomNum(0, 5);
+            this.switchChannel();
         }, 0.5)
     }
-    private close() {
+    private switchChannel() {
+        this.unscheduleAllCallbacks();
+        this.anim.stop();
+        this.channel++;
+        if (this.channel > 5) {
+            this.channel = 0;
+        }
+        switch (this.channel) {
+            case 0:
+                this.anim.play('RoomTvOpenIdle');
+                AudioPlayer.play(AudioPlayer.TVCOLOR, false, true);
+                break;
+            case 1:
+                this.anim.play('RoomTvNoSignalIdle');
+                AudioPlayer.play(AudioPlayer.TVWHITE, false, true);
+                break;
+            case 2:
+                this.screen.spriteFrame = Logic.spriteFrameRes(`roomtvscreen4`);
+                break;
+            case 3:
+                this.screen.spriteFrame = Logic.spriteFrameRes(`roomtvscreen5`);
+                break;
+            case 4:
+                this.screen.spriteFrame = Logic.spriteFrameRes(`roomtvscreen6`);
+                break;
+            case 5:
+                this.screen.spriteFrame = Logic.spriteFrameRes(`roomtvscreen7`);
+                break;
+            default:
+                break;
+        }
+    }
+    close() {
+        if(!this.isOpen){
+            return;
+        }
         this.isOpen = false;
         if (this.lights) {
             for (let light of this.lights) {
@@ -66,10 +97,10 @@ export default class RoomTv extends Building {
             this.anim.play('RoomTvClosedIdle');
         }, 0.5)
     }
-    public interact(){
-        if(this.isOpen){
-            this.close();
-        }else{
+    public interact() {
+        if (this.isOpen) {
+            this.switchChannel();
+        } else {
             this.open();
         }
     }

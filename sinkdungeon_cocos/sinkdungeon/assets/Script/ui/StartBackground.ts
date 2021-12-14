@@ -76,7 +76,7 @@ export default class StartBackground extends cc.Component {
             for (let i = 0; i < this.bgArr.length; i++) {
                 let targetPos = this.defaultArr[i].clone();
                 let offset = this.touchPos.x / this.LENGTH * 60 * i;
-                targetPos.x -= offset;
+                targetPos.x += offset;
                 this.bgArr[i].position = Logic.lerpPos(this.bgArr[i].position, targetPos, dt * i * 2);
             }
         }

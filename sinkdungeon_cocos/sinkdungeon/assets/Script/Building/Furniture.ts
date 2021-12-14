@@ -181,6 +181,12 @@ export default class Furniture extends Building {
                     fishtank.zoomCamera(false);
                 }
                 break;
+                case Furniture.TV:
+                    let tv = this.getComponent(RoomTv);
+                    if (tv) {
+                        tv.close();
+                    }
+                break;
             case Furniture.LITTLE_TABLE_2:
                 this.zoomCamera(false);
                 break;
