@@ -108,7 +108,7 @@ export default class Player extends Actor {
     private shadowTexture: cc.RenderTexture;
     private shadowSpriteframe: cc.SpriteFrame;
     private isLevelWater = false;
-    statusIconList:StatusIconList;
+    statusIconList: StatusIconList;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -358,9 +358,9 @@ export default class Player extends Actor {
         }
     }
 
-    public changeEquipment(equipmetType: string, equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
-        let inventoryEquip = this.inventoryManager.equips[equipmetType];
-        switch (equipmetType) {
+    public changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
+        let inventoryEquip = this.inventoryManager.equips[equipData.equipmetType];
+        switch (equipData.equipmetType) {
             case InventoryManager.WEAPON:
                 this.weaponRight.meleeWeapon.changeEquipment(equipData, spriteFrame);
                 break;

@@ -109,7 +109,7 @@ export default class Logic extends cc.Component {
     static isGamePause = false;
     static dieFrom: FromData = new FromData();
     static isMapReset = false;
-    static lastBgmIndex = 0;
+    static lastBgmIndex = 1;
     static savePoinitData: SavePointData = new SavePointData();
     static groundOilGoldData: GroundOilGoldData = new GroundOilGoldData();
     static killPlayerCounts: { [key: number]: number } = {};//玩家怪物击杀表

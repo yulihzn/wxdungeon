@@ -64,13 +64,13 @@ export default class StatusIconDialog extends cc.Component {
         this.info3.node.active = this.info3.string.length > 0;
         this.extraInfo.node.active = this.extraInfo.string.length > 0;
         this.count.string = `${data.duration}`;
-        if(data.duration == -1){
+        if (data.duration == -1) {
             this.count.string = '∞';
         }
         this.count.string = `${data.duration > 0 ? data.duration : '∞'}`;
         this.labelTitle.node.color = this.labelTitle.node.color.fromHEX('#F4C021');
     }
-    
+
     public showDialog(position: cc.Vec3, statusData: StatusData) {
         this.refreshStatusInfo(statusData);
         this.node.active = true;

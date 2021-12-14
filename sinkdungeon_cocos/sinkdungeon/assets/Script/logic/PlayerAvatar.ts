@@ -139,7 +139,7 @@ export default class PlayerAvatar extends cc.Component {
         if (!this.anim) {
             this.init();
         }
-        if(this.isAniming){
+        if (this.isAniming) {
             return;
         }
         switch (status) {
@@ -282,7 +282,7 @@ export default class PlayerAvatar extends cc.Component {
         let offset = sprite.spriteFrame.getOffset();
         let rect = sprite.spriteFrame.getRect();
         let texture = sprite.spriteFrame.getTexture();
-        sprite.getMaterial(0).setProperty('rect', [rect.x / texture.width, rect.y / texture.height, rect.width / texture.width, rect.height/ texture.height]);
+        sprite.getMaterial(0).setProperty('rect', [rect.x / texture.width, rect.y / texture.height, rect.width / texture.width, rect.height / texture.height]);
         sprite.getMaterial(0).setProperty('hidebottom', inWater ? 1 : 0);
         sprite.getMaterial(0).setProperty('isRotated', sprite.spriteFrame.isRotated() ? 1.0 : 0.0);
     }
@@ -314,14 +314,14 @@ export default class PlayerAvatar extends cc.Component {
                 this.playAnim(PlayerAvatar.STATE_IDLE, dir);
             }).start();
     }
-    public drink(){
+    public drink() {
         this.anim.play('AvatarDrink');
         AudioPlayer.play(AudioPlayer.DRINK);
         this.isAniming = true;
-        this.scheduleOnce(()=>{
-            this.isAniming =false;
-        },2)
-        
+        this.scheduleOnce(() => {
+            this.isAniming = false;
+        }, 2)
+
     }
 
     start() {

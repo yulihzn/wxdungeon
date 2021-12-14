@@ -26,7 +26,7 @@ export default class LightManager extends BaseManager {
     shadow: cc.Sprite = null;
     @property(cc.Graphics)
     shadowRay: cc.Graphics = null;
-    mat:cc.MaterialVariant;
+    mat: cc.MaterialVariant;
     private shadowTexture: cc.RenderTexture;
     static readonly ALPHA_START = 10;
     static readonly ALPHA_END = 200;
@@ -51,7 +51,7 @@ export default class LightManager extends BaseManager {
         //将阴影镜头下的图片赋值到主镜头结点图片
         if (!this.shadowTexture && Logic.settings.showShadow) {
             this.shadowTexture = new cc.RenderTexture();
-            this.shadowTexture.initWithSize(cc.visibleRect.width / 8, cc.visibleRect.height / 8);
+            this.shadowTexture.initWithSize(cc.visibleRect.width / 16, cc.visibleRect.height / 16);
             this.shadowTexture.setFilters(cc.Texture2D.Filter.NEAREST, cc.Texture2D.Filter.NEAREST);
             this.shadowCamera.targetTexture = this.shadowTexture;
             this.shadow.spriteFrame = new cc.SpriteFrame(this.shadowTexture);
@@ -117,14 +117,14 @@ export default class LightManager extends BaseManager {
     //     this.mask._updateGraphics();
     // }
     /**把多个对应光源的绘制的形状用graphics再绘制一遍到一个处于阴影镜头下的结点上，然后创建对应贴图赋值当前主镜头上 */
-    renderRay(light: ShadowOfSight,isFirst: boolean,graphics:cc.Graphics) {
+    renderRay(light: ShadowOfSight, isFirst: boolean, graphics: cc.Graphics) {
         let potArr = light.lightVertsArray;
         let lightRects = light.lightRects;
         let circle = light.circle;
         if (isFirst) {
             graphics.clear(false);
         }
-        if(!Logic.settings.showShadow || !light.showShadow){
+        if (!Logic.settings.showShadow || !light.showShadow) {
             return;
         }
         graphics.lineWidth = 10;
@@ -153,14 +153,14 @@ export default class LightManager extends BaseManager {
 
     }
     fixShadowPos() {
-        if(this.camera){
+        if (this.camera) {
             let p1 = this.camera.node.convertToWorldSpaceAR(cc.v2(0, 0));
             if (this.shadow) {
                 let c1 = this.shadowRay.node.convertToNodeSpaceAR(p1);
                 this.shadow.node.position = cc.v3(c1);
             }
         }
-        
+
     }
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
@@ -183,37 +183,37 @@ export default class LightManager extends BaseManager {
     /**
      * 每个室内的房间都有一个固定的环境光
      */
-    private timeChange(){
+    private timeChange() {
         let time = this.getShadowAlphaByTime();
         // cc.log(time);
-        this.shadowAlpha = LightManager.ALPHA_START+time;
-        if(this.shadowAlpha>LightManager.ALPHA_END){
-            this.shadowAlpha =LightManager.ALPHA_END;
+        this.shadowAlpha = LightManager.ALPHA_START + time;
+        if (this.shadowAlpha > LightManager.ALPHA_END) {
+            this.shadowAlpha = LightManager.ALPHA_END;
         }
-        if(this.shadowAlpha<LightManager.ALPHA_START){
-            this.shadowAlpha =LightManager.ALPHA_START;
+        if (this.shadowAlpha < LightManager.ALPHA_START) {
+            this.shadowAlpha = LightManager.ALPHA_START;
         }
         this.mat.setProperty('lightColor', cc.color(0, 0, 50, this.shadowAlpha));
     }
-    private getShadowAlphaByTime(){
+    private getShadowAlphaByTime() {
         let date = new Date(Logic.realTime);
         let hour = date.getHours();
         let minute = date.getMinutes();
         //将240等分为12份，先算出分钟比例的值
-        let m = Math.floor(20*minute/60);
-        if(hour>12){
-            let h = (hour-12)*20;
-            return h+m;
-        }else{
-            let h = (12-hour)*20;
-            return h-m;
+        let m = Math.floor(20 * minute / 60);
+        if (hour > 12) {
+            let h = (hour - 12) * 20;
+            return h + m;
+        } else {
+            let h = (12 - hour) * 20;
+            return h - m;
         }
     }
     update(dt: number) {
         if (this.isCheckTimeDelay(dt)) {
             this.render();
         }
-        if(this.isCheckTimeChangeDelay(dt)){
+        if (this.isCheckTimeChangeDelay(dt)) {
             this.timeChange();
         }
         this.fixShadowPos();

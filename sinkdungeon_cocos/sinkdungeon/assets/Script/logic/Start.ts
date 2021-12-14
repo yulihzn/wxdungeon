@@ -28,6 +28,7 @@ export default class Start extends cc.Component {
         this.cheatButton.opacity = Logic.isCheatMode ? 255 : 0;
         this.debugButton.opacity = Logic.isDebug ? 255 : 0;
         this.noticeDialog.node.active = false;
+        AudioPlayer.play(AudioPlayer.PLAY_BG, true);
     }
 
     start() {

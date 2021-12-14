@@ -20,7 +20,7 @@ export default class StatusIconList extends cc.Component {
     @property(cc.Prefab)
     dialogPrefab: cc.Prefab = null;
 
-    dialog:StatusIconDialog;
+    dialog: StatusIconDialog;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -34,7 +34,7 @@ export default class StatusIconList extends cc.Component {
         dialog.hideDialog();
         return dialog;
     }
-    getIcon():StatusIcon{
+    getIcon(): StatusIcon {
         let statusNode: cc.Node = cc.instantiate(this.iconPrefab);
         statusNode.parent = this.node;
         statusNode.active = true;
@@ -42,14 +42,14 @@ export default class StatusIconList extends cc.Component {
         this.addIconTouchEvent(icon);
         return icon;
     }
-    private addIconTouchEvent(icon:StatusIcon) {
+    private addIconTouchEvent(icon: StatusIcon) {
         icon.node.parent.on(cc.Node.EventType.TOUCH_START, () => {
             let data = icon.data;
-            if(!data){
+            if (!data) {
                 return;
             }
             let pos = this.node.convertToNodeSpaceAR(icon.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO));
-            this.dialog.showDialog(pos.add(cc.v3(-32, 0)), data);
+            this.dialog.showDialog(pos.add(cc.v3(32, 0)), data);
         })
         icon.node.parent.on(cc.Node.EventType.TOUCH_END, () => {
             this.dialog.hideDialog();

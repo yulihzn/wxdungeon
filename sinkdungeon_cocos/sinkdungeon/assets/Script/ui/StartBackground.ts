@@ -47,7 +47,11 @@ export default class StartBackground extends cc.Component {
                 this.touchPos = this.node.convertToNodeSpaceAR(event.getLocation());
             }
         }, this)
-
+        this.node.on(cc.Node.EventType.TOUCH_MOVE, (event: cc.Event.EventTouch) => {
+            if (!this.isStarted) {
+                this.touchPos = this.node.convertToNodeSpaceAR(event.getLocation());
+            }
+        }, this)
         this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             this.touchPos = cc.v2(0, 0);
         }, this)
@@ -72,11 +76,7 @@ export default class StartBackground extends cc.Component {
             for (let i = 0; i < this.bgArr.length; i++) {
                 let targetPos = this.defaultArr[i].clone();
                 let offset = this.touchPos.x / this.LENGTH * 60 * i;
-                if (i == 2) {
-                    targetPos.x += offset;
-                } else {
-                    targetPos.x -= offset;
-                }
+                targetPos.x -= offset;
                 this.bgArr[i].position = Logic.lerpPos(this.bgArr[i].position, targetPos, dt * i * 2);
             }
         }

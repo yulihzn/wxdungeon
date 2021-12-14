@@ -16,7 +16,7 @@ export default class RoomWaterDispenser extends Building {
     @property(cc.Node)
     cup: cc.Node = null;
     hasWater = false;
-    anim:cc.Animation;
+    anim: cc.Animation;
     isAniming = false;
 
     onLoad() {
@@ -25,23 +25,23 @@ export default class RoomWaterDispenser extends Building {
     init(indexPos: cc.Vec3) {
         this.data.defaultPos = indexPos;
     }
-    getWater(player:Player){
-        if(this.isAniming){
+    getWater(player: Player) {
+        if (this.isAniming) {
             return;
         }
-        if(this.hasWater){
+        if (this.hasWater) {
             this.cup.opacity = 0;
             this.hasWater = false;
             player.drink();
-        }else{
+        } else {
             this.isAniming = true;
             this.anim.play('RoomWaterDispenser');
             AudioPlayer.play(AudioPlayer.WATERDISPENSER);
         }
-        
+
     }
     //动画结束
-    AnimFinish(){
+    AnimFinish() {
         this.hasWater = true;
         this.isAniming = false;
     }
@@ -55,8 +55,8 @@ export default class RoomWaterDispenser extends Building {
         }
         return false;
     }
-    update(dt:number){
-       
+    update(dt: number) {
+
     }
 
 }

@@ -97,11 +97,11 @@ export default class ShadowOfSight extends cc.Component {
                 this.ray.close();
                 this.ray.fill();
                 let sp = camera.getWorldToScreenPoint(pos);
-                this.updateMat(this.mat, cc.v2(sp.x, sp.y),camera.zoomRatio);
+                this.updateMat(this.mat, cc.v2(sp.x, sp.y), camera.zoomRatio);
             }
         }
         if (this.circleCollider && this.circleCollider.radius > 0) {
-            let p = this.node.convertToWorldSpaceAR(cc.v2(this.circleCollider.offsetX,this.circleCollider.offsetY));
+            let p = this.node.convertToWorldSpaceAR(cc.v2(this.circleCollider.offsetX, this.circleCollider.offsetY));
             this.circle = cc.v3(p.x, p.y, this.getRadius());
             if (renderLight) {
                 this.ray.lineWidth = 10;
@@ -110,7 +110,7 @@ export default class ShadowOfSight extends cc.Component {
                 this.ray.circle(center.x, center.y, this.getRadius());
                 this.ray.fill();
                 let sp = camera.getWorldToScreenPoint(pos);
-                this.updateMat(this.mat, cc.v2(sp.x, sp.y),camera.zoomRatio);
+                this.updateMat(this.mat, cc.v2(sp.x, sp.y), camera.zoomRatio);
             }
         }
 
@@ -168,7 +168,7 @@ export default class ShadowOfSight extends cc.Component {
 
             }
             let sp = camera.getWorldToScreenPoint(pos);
-            this.updateMat(this.mat, cc.v2(sp.x, sp.y),camera.zoomRatio);
+            this.updateMat(this.mat, cc.v2(sp.x, sp.y), camera.zoomRatio);
         }
     }
 
@@ -176,10 +176,10 @@ export default class ShadowOfSight extends cc.Component {
         return this.radius + this.offset;
     }
     get radius() {
-        if (this.circleCollider&&!this.polygonCollider) {
-            return this.circleCollider.radius*this.circleCollider.node.scale;
-        }else{
-            return this.node.width/2;
+        if (this.circleCollider && !this.polygonCollider) {
+            return this.circleCollider.radius * this.circleCollider.node.scale;
+        } else {
+            return this.node.width / 2;
         }
     }
     set radius(r: number) {
@@ -188,14 +188,14 @@ export default class ShadowOfSight extends cc.Component {
         }
     }
 
-    private updateMat(mat: cc.MaterialVariant, pos: cc.Vec2,zoomRatio:number) {
+    private updateMat(mat: cc.MaterialVariant, pos: cc.Vec2, zoomRatio: number) {
         let canvasSize = cc.view.getCanvasSize();
         let visibleSize = cc.view.getVisibleSize();
         let visibleRatio = visibleSize.width / visibleSize.height;
         let r = this.getRadius() / visibleSize.height;
         let scale = canvasSize.width / visibleSize.width;
         mat.setProperty("screen", cc.v2(canvasSize.width, canvasSize.height));
-        mat.setProperty("maxRadius", r*zoomRatio);
+        mat.setProperty("maxRadius", r * zoomRatio);
         mat.setProperty("whRatio", visibleRatio);
         let lightPos = cc.v2(pos.x / visibleSize.width, pos.y / visibleSize.height);
         let y = Math.abs(lightPos.y - 0.5) * visibleSize.height * scale / canvasSize.height;
