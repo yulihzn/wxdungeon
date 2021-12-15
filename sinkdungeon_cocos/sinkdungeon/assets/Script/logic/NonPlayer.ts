@@ -520,14 +520,14 @@ export default class NonPlayer extends Actor {
         //普通远程 准备 帧动画 延迟出击 回招且帧动画 结束
         const normalRemote = cc.tween().then(attackpreparetween).then(_attacktweenprepare)
             .parallel(attackingtween, _attacktweenstart)
-            .parallel(attackback, _attacktweenend).then(attackfinish).delay(0.2);
+            .parallel(attackback, _attacktweenend).then(attackfinish);
         //特殊近战 准备 退后 摇晃 出击 前进 回招 结束
         const specialMelee = cc.tween().then(attackpreparetween).then(_attacktweenprepare).then(backofftween).then(shaketween)
             .parallel(attackingtween, _attacktweenstart, forwardtween)
             .parallel(attackback, _attacktweenend).then(attackfinish);
         //特殊远程 准备 摇晃 出击 回招 结束
         const specialRemote = cc.tween().then(attackpreparetween).parallel(shaketween, _attacktweenprepare)
-            .parallel(attackingtween, _attacktweenstart).parallel(attackback, _attacktweenend).then(attackfinish).delay(0.2);
+            .parallel(attackingtween, _attacktweenstart).parallel(attackback, _attacktweenend).then(attackfinish);
 
         let allAction = cc.tween().then(beforetween).then(isMelee ? normalMelee : normalRemote).then(aftertween);
         if (isSpecial) {
@@ -906,7 +906,13 @@ export default class NonPlayer extends Actor {
                     this.remoteAttack(target, isSpecial);
                 }, () => {
                     this.specialStep.IsExcuting = false;
-                    this.sc.isAttacking = false;
+                    if(isLaser){
+                        this.scheduleOnce(()=>{
+                            this.sc.isAttacking = false;
+                        },1);
+                    }else{
+                        this.sc.isAttacking = false;
+                    }
                 }, target, this.specialStep.IsExcuting, false, false);
             }, this.data.remote, true);
         }
