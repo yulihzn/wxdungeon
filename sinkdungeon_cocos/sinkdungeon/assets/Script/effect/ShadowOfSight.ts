@@ -1,3 +1,4 @@
+import { EventHelper } from './../logic/EventHelper';
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
 // Learn Attribute:
@@ -6,6 +7,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import CCollider from "../collider/CCollider";
+import GameWorldSystem from "../ecs/system/GameWorldSystem";
 import Logic from "../logic/Logic";
 
 
@@ -42,6 +44,7 @@ export default class ShadowOfSight extends cc.Component {
     offsetPlus = false;
     private polygonCollider: cc.PolygonCollider;
     private circleCollider: CCollider;
+    private lightColliderTargetMap = new Map<number,boolean>();
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -49,6 +52,17 @@ export default class ShadowOfSight extends cc.Component {
         this.mat = this.ray.getMaterial(0);
         this.polygonCollider = this.getComponent(cc.PolygonCollider);
         this.circleCollider = this.getComponent(CCollider);
+        this.circleCollider.ignoreTagList
+        let aimArr = [CCollider.TAG.BOSS,CCollider.TAG.BUILDING,CCollider.TAG.GOODNONPLAYER
+        ,CCollider.TAG.NONPLAYER,CCollider.TAG.PLAYER,CCollider.TAG.WALL,CCollider.TAG.WALL_TOP];
+        for(let key of aimArr){
+            this.lightColliderTargetMap.set(key,true);
+        }
+        for(let key of this.circleCollider.ignoreTagList){
+            if(this.lightColliderTargetMap.has(key)){
+                this.lightColliderTargetMap.delete(key);
+            }
+        }
     }
     /** 绘制视野区域 */
     renderSightArea(camera: cc.Camera): void {
@@ -67,8 +81,8 @@ export default class ShadowOfSight extends cc.Component {
             this.lightVertsArray = [];
             this.circle = cc.v3(0, 0, 0);
             if (this.showRayCast) {
-                // this.drawRayByNum(pos, camera, this.showLight);
-                this.drawCustom(pos, camera, this.showLight);
+                this.drawRayByNum(pos, camera, this.showLight);
+                // this.drawCustom(pos, camera, this.showLight);
             } else {
                 this.drawCustom(pos, camera, this.showLight);
             }
@@ -128,13 +142,12 @@ export default class ShadowOfSight extends cc.Component {
         this.lightRects = {};
         for (let i = 0; i < this.rayNum; i++) {
             let p3 = cc.v2(Math.cos(i * unitRd) * this.getRadius() + pos.x, Math.sin(i * unitRd) * this.getRadius() + pos.y);
-            let physicsManager = cc.director.getPhysicsManager();
-            let result = physicsManager.rayCast(pos, p3, cc.RayCastType.Closest);
-            if (result.length > 0 && !result[0].collider.sensor && result[0].collider.node != this.node.parent && (result[0].collider.tag == CCollider.TAG.WALL
-                || result[0].collider.tag == CCollider.TAG.BUILDING || result[0].collider.tag == CCollider.TAG.PLAYER || result[0].collider.tag == CCollider.TAG.WALL_TOP
-                || result[0].collider.tag == CCollider.TAG.NONPLAYER)) {
-                p3 = result[0].point;
-                let node = result[0].collider.node;
+            // let physicsManager = cc.director.getPhysicsManager();
+            // let result = physicsManager.rayCast(pos, p3, cc.RayCastType.Closest);
+            let result = GameWorldSystem.colliderSystem.nearestRayCast(cc.v2(pos),cc.v2(p3),this.lightColliderTargetMap,true);
+            if(result){
+                p3 = result.point;
+                let node = result.collider.node;
                 let bottomPos = node.convertToNodeSpaceAR(p3);
                 if (bottomPos.y <= 0 && p3.y > pos.y) {
                     let np = node.convertToWorldSpaceAR(cc.v3(0, 0));
@@ -143,6 +156,19 @@ export default class ShadowOfSight extends cc.Component {
                     this.lightRects[node.uuid] = r;
                 }
             }
+            // if (result.length > 0 && !result[0].collider.sensor && result[0].collider.node != this.node.parent && (result[0].collider.tag == CCollider.TAG.WALL
+            //     || result[0].collider.tag == CCollider.TAG.BUILDING || result[0].collider.tag == CCollider.TAG.PLAYER || result[0].collider.tag == CCollider.TAG.WALL_TOP
+            //     || result[0].collider.tag == CCollider.TAG.NONPLAYER)) {
+            //     p3 = result[0].point;
+            //     let node = result[0].collider.node;
+            //     let bottomPos = node.convertToNodeSpaceAR(p3);
+            //     if (bottomPos.y <= 0 && p3.y > pos.y) {
+            //         let np = node.convertToWorldSpaceAR(cc.v3(0, 0));
+            //         let offset = 0;
+            //         let r = cc.rect(np.x - node.width * node.anchorX, np.y - node.height * node.anchorY - offset, node.width, node.height + offset);
+            //         this.lightRects[node.uuid] = r;
+            //     }
+            // }
             this.lightVertsArray.push(p3);
             this.ray.lineWidth = 3;
             this.ray.strokeColor = cc.color(0, 0, 0, 80);

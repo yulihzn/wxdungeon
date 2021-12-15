@@ -256,7 +256,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "1adbaf3c-85c4-4e21-a6ac-1de82ddca1a2"
+      "__id__": 0
     },
     "fileId": "567S1xzx5Mo6Ss208OV4y6",
     "sync": false
@@ -301,7 +301,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "1adbaf3c-85c4-4e21-a6ac-1de82ddca1a2"
+      "__id__": 0
     },
     "fileId": "daBRiuF/VMc6WDJfY2ZfAL",
     "sync": false
@@ -395,7 +395,7 @@
       "a": 120
     },
     "showLight": true,
-    "showRayCast": false,
+    "showRayCast": true,
     "fromSky": false,
     "_id": ""
   },
@@ -433,7 +433,7 @@
     "_id": ""
   },
   {
-    "__type__": "cc.PolygonCollider",
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -441,62 +441,20 @@
     },
     "_enabled": true,
     "tag": 20,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "points": [
-      {
-        "__type__": "cc.Vec2",
-        "x": -346,
-        "y": -384
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": -329,
-        "y": -444
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": -274,
-        "y": -470
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": -62,
-        "y": -489
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 130,
-        "y": -492
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 335,
-        "y": -468
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 374,
-        "y": -436
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 397,
-        "y": -385
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 219,
-        "y": 197
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": -199,
-        "y": 201
-      }
+    "offsetX": 0,
+    "offsetY": 0,
+    "type": 0,
+    "radius": 700,
+    "w": 128,
+    "h": 128,
+    "density": 0,
+    "sensor": true,
+    "isStatic": true,
+    "ignoreSameTag": true,
+    "targetTagList": [],
+    "ignoreTagList": [
+      1,
+      2
     ],
     "_id": ""
   },
@@ -508,7 +466,7 @@
     "asset": {
       "__uuid__": "aa0313f0-8db4-440e-a81f-e4122bb3a9bc"
     },
-    "fileId": "ad+dslKxRIDoHACgtkElid",
+    "fileId": "abJsGh//JM2bjVdfvfRVCx",
     "sync": false
   },
   {
@@ -549,9 +507,10 @@
     "radius": 64,
     "w": 512,
     "h": 384,
+    "density": 0,
     "sensor": true,
     "isStatic": true,
-    "isChild": false,
+    "ignoreSameTag": false,
     "targetTagList": [
       3
     ],
@@ -564,7 +523,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "1adbaf3c-85c4-4e21-a6ac-1de82ddca1a2"
+      "__id__": 0
     },
     "fileId": "",
     "sync": false

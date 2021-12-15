@@ -520,14 +520,14 @@ export default class NonPlayer extends Actor {
         //普通远程 准备 帧动画 延迟出击 回招且帧动画 结束
         const normalRemote = cc.tween().then(attackpreparetween).then(_attacktweenprepare)
             .parallel(attackingtween, _attacktweenstart)
-            .parallel(attackback, _attacktweenend).then(attackfinish);
+            .parallel(attackback, _attacktweenend).then(attackfinish).delay(0.2);
         //特殊近战 准备 退后 摇晃 出击 前进 回招 结束
         const specialMelee = cc.tween().then(attackpreparetween).then(_attacktweenprepare).then(backofftween).then(shaketween)
             .parallel(attackingtween, _attacktweenstart, forwardtween)
             .parallel(attackback, _attacktweenend).then(attackfinish);
         //特殊远程 准备 摇晃 出击 回招 结束
         const specialRemote = cc.tween().then(attackpreparetween).parallel(shaketween, _attacktweenprepare)
-            .parallel(attackingtween, _attacktweenstart).parallel(attackback, _attacktweenend).then(attackfinish);
+            .parallel(attackingtween, _attacktweenstart).parallel(attackback, _attacktweenend).then(attackfinish).delay(0.2);
 
         let allAction = cc.tween().then(beforetween).then(isMelee ? normalMelee : normalRemote).then(aftertween);
         if (isSpecial) {

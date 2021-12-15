@@ -322,7 +322,7 @@ export default class LoadingManager{
                 Logic.spriteFrames[frame.name] = frame;
             }
             this.spriteFrameNames[typeKey] = true;
-            cc.log(`${typeKey} loaded`);
+            cc.log(`${typeKey} sprite atlas loaded`);
         })
     }
     static loadNpcSpriteAtlas(name: string,callback?:Function) {
@@ -342,7 +342,7 @@ export default class LoadingManager{
                 for (let frame of atlas.getSpriteFrames()) {
                     Logic.spriteFrames[frame.name] = frame;
                 }
-                cc.log(`${name} loaded`);
+                cc.log(`${name} sprite atlas loaded`);
                 if(callback){
                     callback();
                 }
@@ -373,7 +373,7 @@ export default class LoadingManager{
             LoadingManager.resourceLoadMap.set(name,new Array());
             cc.resources.load(`Prefabs/buildings/${name}`, cc.Prefab, (err: Error, prefab: cc.Prefab) => {
                 Logic.buildings[name]=prefab;
-                cc.log(`${name} loaded`);
+                cc.log(`${name} prefab loaded`);
                 if(callback){
                     callback();
                 }

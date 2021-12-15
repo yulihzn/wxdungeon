@@ -50,6 +50,7 @@ export default class RoomTv extends Building {
     private switchChannel() {
         this.unscheduleAllCallbacks();
         this.anim.stop();
+        AudioPlayer.stopAllEffect();
         this.channel++;
         if (this.channel > 5) {
             this.channel = 0;

@@ -58,13 +58,13 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
             c.drawDebug(this.graphics);
         }
     }
-    private initCollider(entities: ActorEntity[]){
+    private initCollider(entities: ActorEntity[]) {
         this.list = [];
         for (let e of entities) {
             let colliders = e.Collider.colliders;
             for (let collider of colliders) {
                 collider.entity = e;
-                if(collider.enabled&&collider.node.active){
+                if (collider.enabled && collider.node.active) {
                     collider.fixCenterAndScale();
                     this.list.push(collider);
                     this.quadTree.insert(collider);
@@ -94,12 +94,12 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                     continue;
                 }
 
-                if (this.tempColliders.has(collider.id*100000000+other.id) || this.tempColliders.has(other.id*100000000+collider.id)) {
+                if (this.tempColliders.has(collider.id * 100000000 + other.id) || this.tempColliders.has(other.id * 100000000 + collider.id)) {
                     continue;
                 }
-                
-                if(collider.ignoreSameTag){
-                    if(collider.tag == other.tag ){
+
+                if (collider.ignoreSameTag) {
+                    if (collider.tag == other.tag) {
                         continue;
                     }
                 }
@@ -117,7 +117,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                 } else if (other.ignoreTags.has(collider.tag)) {
                     continue;
                 }
-                
+
                 let isCollision = false;
                 if (collider.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.RECT) {
                     //矩形检测
@@ -142,8 +142,8 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                 }
                 activeCount++;
                 if (isCollision) {
-                    collider.contact(other,this.dt);
-                    other.contact(collider,this.dt);
+                    collider.contact(other, this.dt);
+                    other.contact(collider, this.dt);
                     collider.disabledOnce = false;
                     other.disabledOnce = false;
                     collisionCount++;
@@ -152,7 +152,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                     other.exit(collider);
                 }
                 //标记当前循环已经碰撞过的物体对
-                this.tempColliders.set(collider.id*100000000+other.id,true);
+                this.tempColliders.set(collider.id * 100000000 + other.id, true);
             }
         }
         this.quadTree.clear();
@@ -192,21 +192,95 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         return cc.Intersection.circleCircle({ position: v1, radius: r1 }, { position: v2, radius: r2 });
     }
 
-    public rayCast(p1: cc.Vec2, p2: cc.Vec2): RayCastResult[] {
+    public rayCast(p1: cc.Vec2, p2: cc.Vec2, targetTags: Map<number, boolean>): RayCastResult[] {
         if (p1.equals(p2)) {
             return [];
         }
+        let results: RayCastResult[] = new Array();
         for (let collider of this.list) {
-            let isCollision = false;
-            if (collider.type == CCollider.TYPE.RECT) {
-                //矩形检测
-                if (collider.isRotate) {
-                } else {
-                }
-            } else if (collider.type == CCollider.TYPE.CIRCLE) {
-                //圆形检测
+            if (!targetTags.has(collider.tag)) {
+                continue;
+            }
+            let isCollision = this.rayCastCollision(collider, p1, p2);
+            if (isCollision) {
+                let result = new RayCastResult(collider, collider.w_center);
+                results.push(result);
             }
         }
+        return results;
+    }
+    private rayCastCollision(collider: CCollider, p1: cc.Vec2, p2: cc.Vec2): boolean {
+        let isCollision = false;
+        if (collider.type == CCollider.TYPE.RECT) {
+            //矩形检测
+            isCollision = cc.Intersection.linePolygon(p1, p2, collider.points);
+        } else if (collider.type == CCollider.TYPE.CIRCLE) {
+            //圆形检测
+            isCollision = cc.Intersection.lineRect(p1, p2, collider.Aabb);
+        }
+        return isCollision;
+    }
+    public nearestRayCast(p1: cc.Vec2, p2: cc.Vec2, targetTags: Map<number, boolean>,ignoreSensor:boolean): RayCastResult {
+        if (p1.equals(p2)) {
+            return null;
+        }
+        let result: RayCastResult;
+        let distance = -1;
+        for (let collider of this.list) {
+            if (!targetTags.has(collider.tag)) {
+                continue;
+            }
+            if(ignoreSensor&&collider.sensor){
+                continue;
+            }
+            let isCollision = this.rayCastCollision(collider, p1, p2);
+            if (isCollision) {
+                let d = collider.w_center.sub(p1).magSqr();
+                if (distance < 0 || distance > d) {
+                    distance = d;
+                    result = new RayCastResult(collider, collider.w_center);
+                }
+            }
+        }
+        if (result) {
+            let length = result.collider.points.length;
+                for (let i = 0; i < length; ++i) {
+                    let b1 = result.collider.points[i];
+                    var b2 = result.collider.points[(i + 1) % length];
+                    let ponit = this.getLineLinePoint(p1, result.point, b1,b2);
+                    if(ponit){
+                        result.point = ponit;
+                        break;
+                    }
+                }
+
+        }
+        return result;
+    }
+    private getLineLinePoint(a: cc.Vec2, b: cc.Vec2, c: cc.Vec2, d: cc.Vec2) {
+        // 三角形abc 面积的2倍  
+        let area_abc = (a.x - c.x) * (b.y - c.y) - (a.y - c.y) * (b.x - c.x);
+
+        // 三角形abd 面积的2倍  
+        let area_abd = (a.x - d.x) * (b.y - d.y) - (a.y - d.y) * (b.x - d.x);
+
+        // 面积符号相同则两点在线段同侧,不相交 (对点在线段上的情况,本例当作不相交处理);  
+        if (area_abc * area_abd >= 0) {
+            return null;
+        }
+        // 三角形cda 面积的2倍  
+        let area_cda = (c.x - a.x) * (d.y - a.y) - (c.y - a.y) * (d.x - a.x);
+        // 三角形cdb 面积的2倍  
+        // 注意: 这里有一个小优化.不需要再用公式计算面积,而是通过已知的三个面积加减得出.  
+        let area_cdb = area_cda + area_abc - area_abd;
+        if (area_cda * area_cdb >= 0) {
+            return null;
+        }
+        //计算交点坐标  
+        let t = area_cda / (area_abd - area_abc);
+        let dx = t * (b.x - a.x),
+            dy = t * (b.y - a.y);
+        return cc.v2(a.x + dx, a.y + dy);
     }
 
 }

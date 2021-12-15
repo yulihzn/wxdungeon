@@ -296,7 +296,6 @@ export default class CCollider extends cc.Component {
                     }
                 }
             }
-         
             this.entity.Move.linearVelocity = pos;
             // if (this.entity.NodeRender.node) {
             //     this.entity.NodeRender.node.setPosition(this.entity.Transform.position);

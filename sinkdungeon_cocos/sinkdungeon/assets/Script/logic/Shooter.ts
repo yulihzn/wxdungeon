@@ -5,6 +5,7 @@ import BulletData from "../data/BulletData";
 import DamageData from "../data/DamageData";
 import EquipmentData from "../data/EquipmentData";
 import FromData from "../data/FromData";
+import GameWorldSystem from "../ecs/system/GameWorldSystem";
 import Bullet from "../item/Bullet";
 import InventoryManager from "../manager/InventoryManager";
 import ActorUtils from "../utils/ActorUtils";
@@ -60,12 +61,20 @@ export default class Shooter extends cc.Component {
     isBuilding = false;
     anim: cc.Animation;
     private aoePools: { [key: string]: cc.NodePool } = {};
+    private aimTargetMap = new Map<number,boolean>();
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
         this.bulletPool = new cc.NodePool(Bullet);
         this.sprite = this.node.getChildByName('sprite');
         this.anim = this.getComponent(cc.Animation);
+        let aimArr = [CCollider.TAG.BOSS,CCollider.TAG.BUILDING
+            ,CCollider.TAG.ENERGY_SHIELD,CCollider.TAG.GOODNONPLAYER
+        ,CCollider.TAG.NONPLAYER,CCollider.TAG.PLAYER,CCollider.TAG.PLAYER_HIT
+        ,CCollider.TAG.WALL,CCollider.TAG.WALL_TOP,CCollider.TAG.BOSS_HIT];
+        for(let key of aimArr){
+            this.aimTargetMap.set(key,true);
+        }
 
     }
     playWalk(isPlay: boolean) {
@@ -357,6 +366,21 @@ export default class Shooter extends cc.Component {
         let p = cc.v3(r, 0);
         let p1 = this.node.convertToWorldSpaceAR(s);
         let p2 = this.node.convertToWorldSpaceAR(p);
+        if(this.isFromPlayer){
+            if(this.aimTargetMap.has(CCollider.TAG.PLAYER))this.aimTargetMap.delete(CCollider.TAG.PLAYER);
+            if(this.aimTargetMap.has(CCollider.TAG.GOODNONPLAYER))this.aimTargetMap.delete(CCollider.TAG.GOODNONPLAYER);
+            this.aimTargetMap.set(CCollider.TAG.NONPLAYER,true);
+            this.aimTargetMap.set(CCollider.TAG.BOSS,true);
+        }else{
+            if(this.aimTargetMap.has(CCollider.TAG.NONPLAYER))this.aimTargetMap.delete(CCollider.TAG.NONPLAYER);
+            if(this.aimTargetMap.has(CCollider.TAG.BOSS))this.aimTargetMap.delete(CCollider.TAG.BOSS);
+            this.aimTargetMap.set(CCollider.TAG.GOODNONPLAYER,true);
+            this.aimTargetMap.set(CCollider.TAG.PLAYER,true);
+        }
+        let result = GameWorldSystem.colliderSystem.nearestRayCast(cc.v2(p1),cc.v2(p2),this.aimTargetMap,true);
+        if(result){
+            p = this.node.convertToNodeSpaceAR(cc.v3(result.point));
+        }
         // let results = cc.director.getPhysicsManager().rayCast(cc.v2(p1), cc.v2(p2), cc.RayCastType.All);
         // let arr: cc.Vec3[] = new Array();
         // if (results.length > 0) {
@@ -400,7 +424,7 @@ export default class Shooter extends cc.Component {
             return;
         }
         let width = 0;
-        let p = this.getRayCastPoint();
+        let p = this.getRayCastPoint(3000,defaultPos);
         let isOver = false;
         let fun = () => {
             if (width < 1 && isOver) {

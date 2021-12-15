@@ -34,11 +34,11 @@ export default class Start extends cc.Component {
         this.cheatButton.opacity = Logic.isCheatMode ? 255 : 0;
         this.debugButton.opacity = Logic.isDebug ? 255 : 0;
         this.noticeDialog.node.active = false;
-        AudioPlayer.play(AudioPlayer.PLAY_BG, true);
     }
 
     start() {
         // init logic
+        AudioPlayer.play(AudioPlayer.PLAY_BG, true);
         if (this.continueButton) {
             this.continueButton.active = Logic.profileManager.hasSaveData;
             if (this.continueButton.active) {
@@ -70,7 +70,7 @@ export default class Start extends cc.Component {
         // cc.director.loadScene('loading');
         //进入选择页面
         this._startShow();
-        this.scheduleOnce(()=>{cc.director.loadScene('pickavatar');},1);
+        this.scheduleOnce(()=>{cc.director.loadScene('pickavatar');},0.5);
     }
     chooseChapter() {
         AudioPlayer.play(AudioPlayer.SELECT);
@@ -79,7 +79,7 @@ export default class Start extends cc.Component {
     achievementScene() {
         AudioPlayer.play(AudioPlayer.SELECT);
         this._startShow();
-        this.scheduleOnce(()=>{cc.director.loadScene('achievement');},1);
+        this.scheduleOnce(()=>{cc.director.loadScene('achievement');},0.5);
     }
     continueGame() {
 
@@ -87,7 +87,7 @@ export default class Start extends cc.Component {
         Logic.isFirst = 1;
         AudioPlayer.play(AudioPlayer.SELECT);
         this._startShow();
-        this.scheduleOnce(()=>{cc.director.loadScene('loading');},1);
+        this.scheduleOnce(()=>{cc.director.loadScene('loading');},0.5);
     }
     cheatModeChange() {
         if (!this.cheatButton) {

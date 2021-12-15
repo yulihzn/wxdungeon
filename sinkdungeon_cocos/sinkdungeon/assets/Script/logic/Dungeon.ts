@@ -487,7 +487,9 @@ export default class Dungeon extends cc.Component {
     start() {
         this.scheduleOnce(() => {
             cc.director.emit(EventHelper.CHANGE_MINIMAP, { detail: { x: this.currentPos.x, y: this.currentPos.y } });
-            this.checkRoomClear();
+            if(this.isInitFinish && !Logic.isGamePause&&!this.isDisappeared&&LoadingManager.allResourceDone()){
+                this.checkRoomClear();
+            }
         }, 0.1)
     }
     breakTile(pos: cc.Vec3) {
