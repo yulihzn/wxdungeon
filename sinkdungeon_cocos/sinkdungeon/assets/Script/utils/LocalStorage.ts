@@ -87,11 +87,12 @@ export default class LocalStorage {
         let purchased = oldData.purchased;
         let isOpen = oldData.isOpen;
         oldData.valueCopy(data);
-        if(!purchased){
-            oldData.purchased = data.purchased;
+       
+        if(purchased){
+            oldData.purchased = purchased;
         }
-        if(!isOpen){
-            oldData.isOpen = data.isOpen;
+        if(isOpen){
+            oldData.isOpen = isOpen;
         }
         map[data.id] = oldData;
         LocalStorage.saveData(LocalStorage.KEY_FURNITURES, map);
