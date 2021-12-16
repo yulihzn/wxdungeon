@@ -220,7 +220,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         }
         return isCollision;
     }
-    public nearestRayCast(p1: cc.Vec2, p2: cc.Vec2, targetTags: Map<number, boolean>,ignoreSensor:boolean): RayCastResult {
+    public nearestRayCast(p1: cc.Vec2, p2: cc.Vec2, targetTags: Map<number, boolean>,sensorTags: Map<number, boolean>): RayCastResult {
         if (p1.equals(p2)) {
             return null;
         }
@@ -230,7 +230,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
             if (!targetTags.has(collider.tag)) {
                 continue;
             }
-            if(ignoreSensor&&collider.sensor){
+            if(!sensorTags.has(collider.tag)&&collider.sensor){
                 continue;
             }
             let isCollision = this.rayCastCollision(collider, p1, p2);

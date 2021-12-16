@@ -948,41 +948,41 @@
     },
     "laser001": {
         "name": "红色激光",
-        "speed": 5000,
+        "laserRange": 5000,
         "isLaser": 1,
-        "lifeTime": 2,
+        "lifeTime": 0.6,
         "resNameLaser": "laser001",
         "damage": {
-            "physicalDamage": 1
+            "physicalDamage": 0.5
         }
     },
     "laser002": {
         "name": "灰色激光",
-        "speed": 5000,
+        "laserRange": 3000,
         "isLaser": 1,
-        "lifeTime": 2,
+        "lifeTime": 1,
         "size": 2,
         "resNameLaser": "laser002",
         "damage": {
-            "physicalDamage": 3,
+            "physicalDamage": 1,
             "fireRate": 100
         }
     },
     "laser003": {
         "name": "紫色激光",
-        "speed": 5000,
+        "laserRange": 3000,
         "isLaser": 1,
         "lifeTime": 2,
         "size": 2,
         "resNameLaser": "laser003",
         "damage": {
-            "physicalDamage": 8,
+            "physicalDamage": 1,
             "stoneRate": 100
         }
     },
     "laser101": {
         "name": "短暂红色激光",
-        "speed": 1000,
+        "laserRange": 3000,
         "isLaser": 1,
         "lifeTime": 0.3,
         "resNameLaser": "laser001",

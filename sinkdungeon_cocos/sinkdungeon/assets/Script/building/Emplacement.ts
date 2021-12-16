@@ -158,11 +158,12 @@ export default class Emplacement extends Building {
             shooter.dungeon = this.dungeon;
             shooter.data.bulletType = "bullet010";
             shooter.data.bulletLineExNum = 0;
+            shooter.data.bulletLineInterval = 0.5;
             shooter.data.img = 'emplacement';
             shooter.isBuilding = true;
 
             switch (Logic.chapterIndex) {
-                case Logic.CHAPTER00: shooter.data.bulletLineExNum = 3; shooter.data.bulletType = "laser001"; break;
+                case Logic.CHAPTER00: shooter.data.bulletLineExNum = 0; shooter.data.bulletType = "laser001"; break;
                 case Logic.CHAPTER01: shooter.data.bulletType = "bullet010"; break;
                 case Logic.CHAPTER02: shooter.data.bulletType = "bullet013"; break;
                 case Logic.CHAPTER03: shooter.data.bulletType = "bullet006"; shooter.data.bulletLineExNum = 1; break;

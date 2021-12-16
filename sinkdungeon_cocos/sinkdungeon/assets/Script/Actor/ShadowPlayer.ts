@@ -92,7 +92,7 @@ export default class ShadowPlayer extends cc.Component {
         shooter.data = data.clone();
         shooter.setHv(hv);
         shooter.remoteDamagePlayer = damage;
-        shooter.fireBullet(0, null, bulletArcExNum, bulletLineExNum);
+        shooter.fireBullet(0, cc.v3(30,0), bulletArcExNum, bulletLineExNum);
     }
     stop() {
         if (this.isValid) {

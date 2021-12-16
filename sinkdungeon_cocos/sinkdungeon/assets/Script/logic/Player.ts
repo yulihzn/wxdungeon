@@ -354,9 +354,8 @@ export default class Player extends Actor {
         }
     }
 
-    public changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
-        let inventoryEquip = this.inventoryManager.equips[equipData.equipmetType];
-        switch (equipData.equipmetType) {
+    public changeEquipment(equipmetType: string, equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
+        switch (equipmetType) {
             case InventoryManager.WEAPON:
                 this.weaponRight.meleeWeapon.changeEquipment(equipData, spriteFrame);
                 break;
@@ -365,45 +364,52 @@ export default class Player extends Actor {
                 this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
                 let c = cc.color(255, 255, 255).fromHEX(this.weaponLeft.shooter.data.color);
                 this.weaponLeft.shooter.changeResColor(c);
-                this.shield.data = new EquipmentData();
-                this.updateEquipment(this.shield.sprite, this.inventoryManager.equips[InventoryManager.SHIELD].color
-                    , Logic.spriteFrameRes(InventoryManager.EMPTY), this.shield.data.isHeavy == 1 ? 80 : 64);
-                EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: false });
+                if (equipData.equipmetType != InventoryManager.EMPTY) {
+                    this.shield.data = new EquipmentData();
+                    this.updateEquipment(this.shield.sprite, this.inventoryManager.equips[InventoryManager.SHIELD].color
+                        , Logic.spriteFrameRes(InventoryManager.EMPTY), this.shield.data.isHeavy == 1 ? 80 : 64);
+                    EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: false });
+                }else{
+                    EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: true });
+                }
                 break;
             case InventoryManager.SHIELD:
                 this.shield.data = equipData.clone();
-                this.shield.node.color = cc.Color.WHITE.fromHEX(inventoryEquip.color);
-                this.updateEquipment(this.shield.sprite, inventoryEquip.color
+                this.shield.node.color = cc.Color.WHITE.fromHEX(equipData.color);
+                this.updateEquipment(this.shield.sprite, equipData.color
                     , spriteFrame, this.shield.data.isHeavy == 1 ? 80 : 64);
-
-                this.weaponLeft.shooter.data = new EquipmentData();
-                this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
-                EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: true });
+                if (equipData.equipmetType != InventoryManager.EMPTY) {
+                    this.weaponLeft.shooter.data = new EquipmentData();
+                    this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
+                    EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: true });
+                }else{
+                    EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: false });
+                }
                 break;
             case InventoryManager.HELMET:
-                this.avatar.hairSprite.node.opacity = inventoryEquip.hideHair == 1 ? 0 : 255;
-                this.updateEquipment(this.avatar.helmetSprite, inventoryEquip.color, spriteFrame);
+                this.avatar.hairSprite.node.opacity = equipData.hideHair == 1 ? 0 : 255;
+                this.updateEquipment(this.avatar.helmetSprite, equipData.color, spriteFrame);
                 break;
             case InventoryManager.CLOTHES:
-                this.updateEquipment(this.avatar.clothesSprite, inventoryEquip.color, spriteFrame);
+                this.updateEquipment(this.avatar.clothesSprite, equipData.color, spriteFrame);
                 break;
             case InventoryManager.TROUSERS:
-                let isLong = inventoryEquip.trouserslong == 1;
-                this.avatar.changeLegColor(isLong, inventoryEquip.color);
-                this.updateEquipment(this.avatar.pantsSprite, inventoryEquip.color, spriteFrame);
+                let isLong = equipData.trouserslong == 1;
+                this.avatar.changeLegColor(isLong, equipData.color);
+                this.updateEquipment(this.avatar.pantsSprite, equipData.color, spriteFrame);
                 break;
             case InventoryManager.GLOVES:
-                this.updateEquipment(this.weaponRight.meleeWeapon.GlovesSprite, inventoryEquip.color, spriteFrame);
-                this.updateEquipment(this.weaponLeft.meleeWeapon.GlovesSprite, inventoryEquip.color, spriteFrame);
-                this.updateEquipment(this.avatar.glovesLeftSprite, inventoryEquip.color, spriteFrame);
-                this.updateEquipment(this.avatar.glovesRightSprite, inventoryEquip.color, spriteFrame);
+                this.updateEquipment(this.weaponRight.meleeWeapon.GlovesSprite, equipData.color, spriteFrame);
+                this.updateEquipment(this.weaponLeft.meleeWeapon.GlovesSprite, equipData.color, spriteFrame);
+                this.updateEquipment(this.avatar.glovesLeftSprite, equipData.color, spriteFrame);
+                this.updateEquipment(this.avatar.glovesRightSprite, equipData.color, spriteFrame);
                 break;
             case InventoryManager.SHOES:
-                this.updateEquipment(this.avatar.shoesLeftSprite, inventoryEquip.color, spriteFrame);
-                this.updateEquipment(this.avatar.shoesRightSprite, inventoryEquip.color, spriteFrame);
+                this.updateEquipment(this.avatar.shoesLeftSprite, equipData.color, spriteFrame);
+                this.updateEquipment(this.avatar.shoesRightSprite, equipData.color, spriteFrame);
                 break;
             case InventoryManager.CLOAK:
-                this.updateEquipment(this.avatar.cloakSprite, inventoryEquip.color, spriteFrame);
+                this.updateEquipment(this.avatar.cloakSprite, equipData.color, spriteFrame);
                 break;
         }
         this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, this.currentDir);
@@ -429,7 +435,7 @@ export default class Player extends Actor {
     }
     /**获取中心位置 */
     getCenterPosition(): cc.Vec3 {
-        return this.entity.Transform.position.clone().addSelf(cc.v3(0, 32 * this.node.scaleY));
+        return this.entity.Transform.position.clone();
     }
     updatePlayerPos() {
         this.entity.Transform.position = Dungeon.getPosInMap(this.pos);

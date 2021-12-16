@@ -44,7 +44,8 @@ export default class ShadowOfSight extends cc.Component {
     offsetPlus = false;
     private polygonCollider: cc.PolygonCollider;
     private circleCollider: CCollider;
-    private lightColliderTargetMap = new Map<number,boolean>();
+    private lightTargetMap = new Map<number, boolean>();
+    private sensorTargetMap = new Map<number, boolean>();
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -52,15 +53,16 @@ export default class ShadowOfSight extends cc.Component {
         this.mat = this.ray.getMaterial(0);
         this.polygonCollider = this.getComponent(cc.PolygonCollider);
         this.circleCollider = this.getComponent(CCollider);
-        this.circleCollider.ignoreTagList
-        let aimArr = [CCollider.TAG.BOSS,CCollider.TAG.BUILDING,CCollider.TAG.GOODNONPLAYER
-        ,CCollider.TAG.NONPLAYER,CCollider.TAG.PLAYER,CCollider.TAG.WALL,CCollider.TAG.WALL_TOP];
-        for(let key of aimArr){
-            this.lightColliderTargetMap.set(key,true);
+        let aimArr = [CCollider.TAG.BOSS, CCollider.TAG.BUILDING, CCollider.TAG.GOODNONPLAYER
+            , CCollider.TAG.NONPLAYER, CCollider.TAG.PLAYER, CCollider.TAG.WALL, CCollider.TAG.WALL_TOP];
+        for (let key of aimArr) {
+            this.lightTargetMap.set(key, true);
         }
-        for(let key of this.circleCollider.ignoreTagList){
-            if(this.lightColliderTargetMap.has(key)){
-                this.lightColliderTargetMap.delete(key);
+        if (this.circleCollider&&this.circleCollider.ignoreTagList) {
+            for (let key of this.circleCollider.ignoreTagList) {
+                if (this.lightTargetMap.has(key)) {
+                    this.lightTargetMap.delete(key);
+                }
             }
         }
     }
@@ -144,8 +146,8 @@ export default class ShadowOfSight extends cc.Component {
             let p3 = cc.v2(Math.cos(i * unitRd) * this.getRadius() + pos.x, Math.sin(i * unitRd) * this.getRadius() + pos.y);
             // let physicsManager = cc.director.getPhysicsManager();
             // let result = physicsManager.rayCast(pos, p3, cc.RayCastType.Closest);
-            let result = GameWorldSystem.colliderSystem.nearestRayCast(cc.v2(pos),cc.v2(p3),this.lightColliderTargetMap,true);
-            if(result){
+            let result = GameWorldSystem.colliderSystem.nearestRayCast(cc.v2(pos), cc.v2(p3), this.lightTargetMap, this.sensorTargetMap);
+            if (result) {
                 p3 = result.point;
                 let node = result.collider.node;
                 let bottomPos = node.convertToNodeSpaceAR(p3);

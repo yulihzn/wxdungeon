@@ -49,6 +49,8 @@
         "bulletType": "bullet017",
         "bulletArcExNum": 1,
         "specialAttack": 15,
+        "shooterOffsetX":0,
+        "shooterOffsetY":45,
         "common": {
             "moveSpeed": 100,
             "maxHealth": 200,
@@ -128,6 +130,8 @@
         "stageLevel": 0,
         "bulletType": "bullet031",
         "specialAttack": 15,
+        "shooterOffsetX":23,
+        "shooterOffsetY":42,
         "common": {
             "moveSpeed": 200,
             "maxHealth": 60,
@@ -148,6 +152,8 @@
         "stageLevel": 0,
         "specialAttack": 15,
         "specialBulletLineExNum": 1,
+        "shooterOffsetX":50,
+        "shooterOffsetY":45,
         "common": {
             "moveSpeed": 300,
             "maxHealth": 15,
@@ -277,6 +283,8 @@
         "bulletType": "bullet018",
         "chapter": 0,
         "specialAttack": 15,
+        "shooterOffsetX":32,
+        "shooterOffsetY":32,
         "stageLevel": 0,
         "common": {
             "moveSpeed": 200,
@@ -367,6 +375,8 @@
         "specialBulletArcExNum": 2,
         "specialAttack": 15,
         "remoteAudio": "SHOOT003",
+        "shooterOffsetX":50,
+        "shooterOffsetY":45,
         "common": {
             "moveSpeed": 300,
             "maxHealth": 15,
@@ -391,6 +401,8 @@
             "damageMin": 3
         },
         "bulletType": "bullet039",
+        "shooterOffsetX":56,
+        "shooterOffsetY":32,
         "isHeavy": 1,
         "specialAttack": 15,
         "specialBulletArcExNum": 2,
@@ -442,6 +454,8 @@
         "specialAttack": 15,
         "specialBulletArcExNum": 4,
         "currentHealth": 20,
+        "shooterOffsetX":16,
+        "shooterOffsetY":52,
         "bulletType": "bullet019",
         "invisible": 0,
         "remote": 4,
@@ -479,6 +493,8 @@
         "bulletType": "laser002",
         "specialAttack": 15,
         "specialBulletArcExNum": 2,
+        "shooterOffsetX":16,
+        "shooterOffsetY":66,
         "common": {
             "moveSpeed": 200,
             "maxHealth": 170,
@@ -549,6 +565,8 @@
         "isLineAim": 0,
         "specialAttack": 15,
         "bulletType": "bullet100",
+        "shooterOffsetX":0,
+        "shooterOffsetY":45,
         "common": {
             "moveSpeed": 200,
             "maxHealth": 200,
@@ -570,6 +588,8 @@
         "stageLevel": 0,
         "specialAttack": 15,
         "bulletType": "bullet024",
+        "shooterOffsetX":43,
+        "shooterOffsetY":43,
         "common": {
             "moveSpeed": 300,
             "maxHealth": 200,
@@ -595,6 +615,8 @@
         "bulletType": "bullet028",
         "specialAttack": 15,
         "specialBulletArcExNum": 2,
+        "shooterOffsetX":23,
+        "shooterOffsetY":30,
         "common": {
             "moveSpeed": 500,
             "maxHealth": 50,
@@ -817,8 +839,8 @@
         "bulletType": "laser101",
         "specialAttack": 15,
         "specialBulletArcExNum": 2,
-        "shooterOffsetX":-64,
-        "shooterOffsetY":16,
+        "shooterOffsetX":0,
+        "shooterOffsetY":45,
         "common": {
             "moveSpeed": 500,
             "maxHealth": 10,

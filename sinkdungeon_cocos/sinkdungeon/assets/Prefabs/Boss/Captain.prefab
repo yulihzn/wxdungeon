@@ -200,7 +200,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "9coi3vgulFRZctOleBRXF7",
     "sync": false
@@ -378,7 +378,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "40AQl8Zg1CR6hN8mno3XDO",
     "sync": false
@@ -413,6 +413,9 @@
     "bullet": {
       "__uuid__": "041f388a-c474-4799-8670-41cf0d67c2f5"
     },
+    "laser": {
+      "__uuid__": "1d50bb02-46b9-4f02-a5bb-221d5762c478"
+    },
     "isAI": true,
     "_id": ""
   },
@@ -422,7 +425,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "9abTkkHpFHwbnGUFxNpGoH",
     "sync": false
@@ -608,7 +611,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "f1ErTUoVJC9qjgBqwRPPnL",
     "sync": false
@@ -715,7 +718,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "11TggCm0NCZJieYaz/GnXW",
     "sync": false
@@ -822,7 +825,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "b6drsVQIpHTo3G4kFQdDo+",
     "sync": false
@@ -929,7 +932,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "b0ZUdTvdpJrKI4iLZH3k8Z",
     "sync": false
@@ -1036,7 +1039,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "86iKfNyNlGVrKdOoO5L8yI",
     "sync": false
@@ -1285,7 +1288,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "0aH94wPvxKkZXApHT+d9HG",
     "sync": false
@@ -1380,7 +1383,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "1ddwJIBhhGvYx1pYbBFhO0",
     "sync": false
@@ -1423,7 +1426,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "38yXDOITRHTaCKEt2rsbVp",
     "sync": false
@@ -1434,7 +1437,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "08b3UHXCNBMLU+VLgbQAGk",
     "sync": false
@@ -1557,7 +1560,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "6byUUqce9GZoOhHB+6TNmh",
     "sync": false
@@ -1733,7 +1736,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "248FHCqvtDuaOVXrhNr3FA",
     "sync": false
@@ -1768,6 +1771,7 @@
     "bullet": {
       "__uuid__": "041f388a-c474-4799-8670-41cf0d67c2f5"
     },
+    "laser": null,
     "isAI": true,
     "_id": ""
   },
@@ -1777,7 +1781,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "11/E8hvF1PK5l2Qs4vfsEa",
     "sync": false
@@ -1850,8 +1854,10 @@
     "radius": 64,
     "w": 80,
     "h": 40,
+    "density": 0,
     "sensor": false,
     "isStatic": false,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       9,
@@ -1874,8 +1880,10 @@
     "radius": 64,
     "w": 128,
     "h": 128,
+    "density": 0,
     "sensor": true,
     "isStatic": true,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       9,
@@ -1889,7 +1897,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
+      "__id__": 0
     },
     "fileId": "",
     "sync": false

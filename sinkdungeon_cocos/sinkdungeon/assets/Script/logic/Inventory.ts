@@ -368,7 +368,7 @@ export default class Inventory extends cc.Component {
         //更新玩家装备贴图和状态
         if (this.dungeon && this.dungeon.player) {
             this.dungeon.player.inventoryManager = this.inventoryManager;
-            this.dungeon.player.changeEquipment(equip, spriteFrame);
+            this.dungeon.player.changeEquipment(equipmetType,equip, spriteFrame);
             if (equip.statusInterval > 0 && equip.statusName.length > 0) {
                 this.dungeon.player.addStatus(equip.statusName, FromData.getClone(equip.nameCn, equip.img));
             }

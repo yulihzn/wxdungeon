@@ -19,6 +19,7 @@ export default class BulletData {
     isRotate = 0;//是否旋转
     rotateAngle = 0;//每0.3s旋转角度默认15
     isLaser = 0;//是否是激光
+    laserRange = 0;//激光长度
     isDecelerate = 0;//是否减速
     decelerateDelta = 0;//减速系数
     delayDecelerate = 0;//延迟减速
@@ -52,6 +53,7 @@ export default class BulletData {
         this.decelerateDelta = data.decelerateDelta?data.decelerateDelta:0;
         this.delayDecelerate = data.delayDecelerate?data.delayDecelerate:0;
         this.isLaser = data.isLaser?data.isLaser:0;
+        this.laserRange = data.laserRange?data.laserRange:0;
         this.isBoom = data.isBoom?data.isBoom:0;
         this.isTracking = data.isTracking?data.isTracking:0;
         this.isPhysical = data.isPhysical?data.isPhysical:0;
@@ -85,6 +87,7 @@ export default class BulletData {
         e.delayDecelerate = this.delayDecelerate;
         e.size = this.size;
         e.isLaser = this.isLaser;
+        e.laserRange = this.laserRange;
         e.isBoom = this.isBoom;
         e.isTracking = this.isTracking;
         e.resName = this.resName;

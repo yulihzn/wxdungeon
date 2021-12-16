@@ -117,7 +117,7 @@ export default class PlayerWeapon extends cc.Component {
         this.scheduleOnce(() => { this.isHeavyRemotoAttacking = false }, 0.2);
         if (this.shooter) {
             this.shooter.remoteDamagePlayer = data.getFinalRemoteDamage();
-            this.shooter.fireBullet(0,null,bulletArcExNum,bulletLineExNum);
+            this.shooter.fireBullet(0,cc.v3(30,0),bulletArcExNum,bulletLineExNum);
         }
         if(cooldownNode&&cooldown>500){
             cooldownNode.width = 80;

@@ -513,14 +513,16 @@ export default class InventoryDialog extends BaseDialog {
                 //交换当前装备
 
                 if (equipData.equipmetType == InventoryManager.REMOTE) {
-                    //替换盾牌到背包
+                    //替换当前远程或盾牌到背包
+                    InventoryDialog.addEquipOrItemToBag(InventoryManager.buildEquipInventoryData(Logic.inventoryManager.equips[InventoryManager.REMOTE]), dataList, inventoryItemList.length, false, inventoryItemList)
                     InventoryDialog.addEquipOrItemToBag(InventoryManager.buildEquipInventoryData(Logic.inventoryManager.equips[InventoryManager.SHIELD]), dataList, inventoryItemList.length, false, inventoryItemList)
                     //清空盾牌数据
                     Logic.inventoryManager.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData());
                     EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmetType: InventoryManager.SHIELD });
                 } else if (equipData.equipmetType == InventoryManager.SHIELD) {
-                    //替换远程到背包
+                    //替换当前远程或盾牌到背包
                     InventoryDialog.addEquipOrItemToBag(InventoryManager.buildEquipInventoryData(Logic.inventoryManager.equips[InventoryManager.REMOTE]), dataList, inventoryItemList.length, false, inventoryItemList)
+                    InventoryDialog.addEquipOrItemToBag(InventoryManager.buildEquipInventoryData(Logic.inventoryManager.equips[InventoryManager.SHIELD]), dataList, inventoryItemList.length, false, inventoryItemList)
                     //清空远程数据
                     Logic.inventoryManager.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData());
                     EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmetType: InventoryManager.REMOTE });

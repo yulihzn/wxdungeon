@@ -1646,6 +1646,9 @@
     "bullet": {
       "__uuid__": "041f388a-c474-4799-8670-41cf0d67c2f5"
     },
+    "laser": {
+      "__uuid__": "1d50bb02-46b9-4f02-a5bb-221d5762c478"
+    },
     "isAI": false,
     "_id": ""
   },
@@ -3192,6 +3195,9 @@
     "bullet": {
       "__uuid__": "041f388a-c474-4799-8670-41cf0d67c2f5"
     },
+    "laser": {
+      "__uuid__": "1d50bb02-46b9-4f02-a5bb-221d5762c478"
+    },
     "isAI": false,
     "_id": ""
   },
@@ -3471,6 +3477,9 @@
     "_enabled": true,
     "bullet": {
       "__uuid__": "041f388a-c474-4799-8670-41cf0d67c2f5"
+    },
+    "laser": {
+      "__uuid__": "1d50bb02-46b9-4f02-a5bb-221d5762c478"
     },
     "isAI": false,
     "_id": ""

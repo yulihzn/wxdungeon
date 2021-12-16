@@ -7,6 +7,7 @@ import EquipmentData from "../data/EquipmentData";
 import FromData from "../data/FromData";
 import GameWorldSystem from "../ecs/system/GameWorldSystem";
 import Bullet from "../item/Bullet";
+import Laser from "../item/Laser";
 import InventoryManager from "../manager/InventoryManager";
 import ActorUtils from "../utils/ActorUtils";
 import AudioPlayer from "../utils/AudioPlayer";
@@ -38,6 +39,8 @@ export default class Shooter extends cc.Component {
     static readonly ARC_EX_NUM_16 = 99;
     @property(cc.Prefab)
     bullet: cc.Prefab = null;
+    @property(cc.Prefab)
+    laser: cc.Prefab = null;
     @property
     isAI: boolean = false;
     isFromPlayer = false;
@@ -48,6 +51,7 @@ export default class Shooter extends cc.Component {
     private graphics: cc.Graphics;
 
     private bulletPool: cc.NodePool;
+    private laserPool:cc.NodePool;
     isAutoAim = true;
     bulletName: string = '';
     sprite: cc.Node;
@@ -62,16 +66,17 @@ export default class Shooter extends cc.Component {
     anim: cc.Animation;
     private aoePools: { [key: string]: cc.NodePool } = {};
     private aimTargetMap = new Map<number,boolean>();
+    private sensorTargetMap = new Map<number, boolean>();
+    public defaultPos = cc.v3(0,0);
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
         this.bulletPool = new cc.NodePool(Bullet);
+        this.laserPool = new cc.NodePool(Laser);
         this.sprite = this.node.getChildByName('sprite');
         this.anim = this.getComponent(cc.Animation);
-        let aimArr = [CCollider.TAG.BOSS,CCollider.TAG.BUILDING
-            ,CCollider.TAG.ENERGY_SHIELD,CCollider.TAG.GOODNONPLAYER
-        ,CCollider.TAG.NONPLAYER,CCollider.TAG.PLAYER,CCollider.TAG.PLAYER_HIT
-        ,CCollider.TAG.WALL,CCollider.TAG.WALL_TOP,CCollider.TAG.BOSS_HIT];
+        let aimArr = [CCollider.TAG.BOSS,CCollider.TAG.BUILDING,CCollider.TAG.ENERGY_SHIELD
+        ,CCollider.TAG.WALL,CCollider.TAG.WALL_TOP];
         for(let key of aimArr){
             this.aimTargetMap.set(key,true);
         }
@@ -171,7 +176,7 @@ export default class Shooter extends cc.Component {
         }
         let aoe = this.getAoeNode(prefab, usePool).getComponent(AreaOfEffect);
         if (aoe) {
-            let pos = this.node.convertToWorldSpaceAR(defaultPos ? defaultPos : cc.v3(30, 0));
+            let pos = this.node.convertToWorldSpaceAR(defaultPos ? defaultPos : cc.v3(0, 0));
             pos = this.dungeon.node.convertToNodeSpaceAR(pos);
             aoe.show(this.dungeon.node, pos, this.hv, angleOffset, aoeData, killCallBack, usePool, (node: cc.Node) => {
                 if (usePool) {
@@ -182,13 +187,36 @@ export default class Shooter extends cc.Component {
         }
         return aoe;
     }
+    /**
+     * 发射子弹
+     * @param angleOffset 偏转角度 
+     * @param defaultPos  发射点
+     * @param bulletArcExNum 同时发射数目
+     * @param bulletLineExNum 发射次数
+     * @param prefab 子弹销毁附带aoe
+     * @param aoeData aoe数据
+     */
     public fireBullet(angleOffset?: number, defaultPos?: cc.Vec3, bulletArcExNum?: number, bulletLineExNum?: number, prefab?: cc.Prefab, aoeData?: AreaOfEffectData) {
+        if(defaultPos){
+            this.defaultPos = defaultPos.clone();
+        }
+        
         if (this.data.isLineAim == 1 && this.graphics) {
             this.aimTargetLine(angleOffset, defaultPos, bulletArcExNum, bulletLineExNum, prefab, aoeData);
         } else {
             this.fireBulletDo(angleOffset, defaultPos, bulletArcExNum, bulletLineExNum, prefab, aoeData, '');
         }
     }
+    /**
+     * 分裂子弹，仅限子弹类调用
+     * @param splitBulletType 分裂子弹类型
+     * @param angleOffset 偏转角度
+     * @param defaultPos 发射位置
+     * @param bulletArcExNum 同时发射数目
+     * @param bulletLineExNum 发射次数
+     * @param prefab 子弹销毁附带aoe
+     * @param aoeData aoe数据
+     */
     public fireSplitBullet(splitBulletType: string,angleOffset: number, defaultPos: cc.Vec3, bulletArcExNum: number, bulletLineExNum: number, prefab?: cc.Prefab, aoeData?: AreaOfEffectData) {
         this.fireBulletDo(angleOffset, defaultPos, bulletArcExNum, bulletLineExNum, prefab, aoeData, splitBulletType);
     }
@@ -234,7 +262,7 @@ export default class Shooter extends cc.Component {
             }
             isCircle = true;
         }else{
-            this.fire(bulletType, this.bullet, this.bulletPool, angleOffset, this.hv.clone(), defaultPos,this.data.bulletArcOffset, prefab, aoeData);
+            this.fire(bulletType, angleOffset, this.hv.clone(), defaultPos,this.data.bulletArcOffset, prefab, aoeData);
         }
         this.fireArcBullet(bulletType, defaultPos, finalBulletArcExNum, prefab, aoeData,angles,this.data.bulletArcOffset);
         this.fireLineBullet(bulletType, angleOffset, defaultPos, finalBulletArcExNum, bulletLineExNum, prefab, aoeData,angles,isCircle,this.data.bulletArcOffset);
@@ -245,7 +273,7 @@ export default class Shooter extends cc.Component {
         }
         for (let i = 0; i < bulletArcExNum; i++) {
             if (i < angles.length) {
-                this.fire(bulletType, this.bullet, this.bulletPool, angles[i], this.hv.clone(), defaultPos,bulletArcOffset, prefab, aoeData);
+                this.fire(bulletType,angles[i], this.hv.clone(), defaultPos,bulletArcOffset, prefab, aoeData);
             }
         }
     }
@@ -256,7 +284,7 @@ export default class Shooter extends cc.Component {
         }
         this.schedule(() => {
             if(!isCircle){
-                this.fire(bulletType, this.bullet, this.bulletPool, angleOffset, this.hv.clone(), defaultPos,bulletArcOffset, prefab, aoeData);
+                this.fire(bulletType,  angleOffset, this.hv.clone(), defaultPos,bulletArcOffset, prefab, aoeData);
             }
             this.fireArcBullet(bulletType, defaultPos, bulletArcExNum, prefab, aoeData,angles,bulletArcOffset);
         }, this.data.bulletLineInterval > 0 ? this.data.bulletLineInterval : 0.2, exNum, 0);
@@ -282,9 +310,17 @@ export default class Shooter extends cc.Component {
      * @param pool 线程池
      * @param angleOffset 角度
      * @param hv 方向向量
-     * @param defaultPos 初始位置默认cc.v3(30, 0)
+     * @param defaultPos 初始位置默认cc.v3(0, 0)
      */
-    private fire(bulletType: string, prefab: cc.Prefab, pool: cc.NodePool, angleOffset: number, hv: cc.Vec3, defaultPos: cc.Vec3,bulletArcOffset:number, aoePrefab: cc.Prefab, aoeData: AreaOfEffectData) {
+    private fire(bulletType: string, angleOffset: number, hv: cc.Vec3, defaultPos: cc.Vec3,bulletArcOffset:number, aoePrefab: cc.Prefab, aoeData: AreaOfEffectData) {
+        let bulletData = Logic.bullets[bulletType];
+        let prefab = this.bullet;
+        let pool = this.bulletPool;
+        let isLaser = bulletData.isLaser>0;
+        if(isLaser){
+            prefab = this.laser;
+            pool = this.laserPool;
+        }
         let bulletPrefab: cc.Node = null;
         if (pool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
             bulletPrefab = pool.get();
@@ -294,7 +330,7 @@ export default class Shooter extends cc.Component {
             bulletPrefab = cc.instantiate(prefab);
         }
         bulletPrefab.parent = this.node;
-        let p = cc.v3(30,0);
+        let p = cc.v3(0,0);
         if(defaultPos){
             p = defaultPos.clone();
             if(bulletArcOffset != 0){
@@ -308,16 +344,23 @@ export default class Shooter extends cc.Component {
         bulletPrefab.scaleX = 1;
         bulletPrefab.scaleY = 1;
         bulletPrefab.active = true;
+        if(isLaser){
+            this.showLaser(angleOffset,hv,bulletPrefab,bulletData,pos);
+        }else{
+            this.showBullet(angleOffset,hv,bulletPrefab,bulletData,pos,aoePrefab,aoeData);
+        }
+    }
+    
+    private showBullet(angleOffset: number,hv: cc.Vec3,bulletPrefab:cc.Node,data:BulletData,startPos:cc.Vec3,aoePrefab: cc.Prefab, aoeData: AreaOfEffectData){
         let bullet = bulletPrefab.getComponent(Bullet);
-        bullet.entity.Transform.position = pos;
+        bullet.entity.Transform.position = startPos;
         bullet.shooter = this;
-        // bullet.node.rotation = this.node.scaleX < 0 ? -this.node.rotation-angleOffset : this.node.rotation-angleOffset;
         bullet.node.scaleY = this.node.scaleX > 0 ? 1 : -1;
         bullet.node.zIndex = IndexZ.OVERHEAD;
         bullet.isFromPlayer = !this.isAI || this.isFromPlayer;
         bullet.dungeon = this.dungeon;
         let bd = new BulletData();
-        bd.valueCopy(Logic.bullets[bulletType])
+        bd.valueCopy(data)
         if (bullet.isFromPlayer && this.player && !this.isEx) {
             bd.damage.physicalDamage = this.remoteDamagePlayer.physicalDamage;
             bd.damage.isCriticalStrike = this.remoteDamagePlayer.isCriticalStrike;
@@ -335,17 +378,46 @@ export default class Shooter extends cc.Component {
         bullet.aoePrefab = aoePrefab;
         bullet.showBullet(cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180)));
     }
-    public addDestroyBullet(bulletNode: cc.Node) {
-        // enemy 应该是一个 cc.Node
-        bulletNode.active = false;
-        this.destroyBullet(bulletNode)
+    private showLaser(angleOffset: number,hv: cc.Vec3,bulletPrefab:cc.Node,data:BulletData,startPos:cc.Vec3){
+        let laser = bulletPrefab.getComponent(Laser);
+        laser.entity.Transform.position = startPos;
+        laser.shooter = this;
+        laser.node.scaleY = this.node.scaleX > 0 ? 1 : -1;
+        laser.node.zIndex = IndexZ.OVERHEAD;
+        laser.isFromPlayer = !this.isAI || this.isFromPlayer;
+        laser.dungeon = this.dungeon;
+        let bd = new BulletData();
+        bd.valueCopy(data)
+        if (laser.isFromPlayer && this.player && !this.isEx) {
+            bd.damage.physicalDamage = this.remoteDamagePlayer.physicalDamage;
+            bd.damage.isCriticalStrike = this.remoteDamagePlayer.isCriticalStrike;
+        }
+        bd.size += this.data.bulletSize;
+        bd.speed += this.data.bulletExSpeed;
+        if (bd.speed + this.data.bulletExSpeed > 50) {
+            bd.speed += this.data.bulletExSpeed;
+        }
+        bd.from.valueCopy(this.from);
+        laser.changeBullet(bd);
+        this.bulletName = laser.name + bd.resName;
+        laser.enabled = true;
+        laser.fire(cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180)),angleOffset);
     }
-    private destroyBullet(bulletNode: cc.Node) {
-        if (this.bulletPool && bulletNode) {
-            this.bulletPool.put(bulletNode);
+    public addDestroyBullet(bulletNode: cc.Node,isLaser?:boolean) {
+        bulletNode.active = false;
+        this.destroyBullet(bulletNode,isLaser)
+    }
+    private destroyBullet(bulletNode: cc.Node,isLaser?:boolean) {
+        if(isLaser){
+            if (this.laserPool && bulletNode) {
+                this.laserPool.put(bulletNode);
+            }
+        }else{
+            if (this.bulletPool && bulletNode) {
+                this.bulletPool.put(bulletNode);
+            }
         }
     }
-
 
     start() {
     }
@@ -366,54 +438,18 @@ export default class Shooter extends cc.Component {
         let p = cc.v3(r, 0);
         let p1 = this.node.convertToWorldSpaceAR(s);
         let p2 = this.node.convertToWorldSpaceAR(p);
-        if(this.isFromPlayer){
-            if(this.aimTargetMap.has(CCollider.TAG.PLAYER))this.aimTargetMap.delete(CCollider.TAG.PLAYER);
-            if(this.aimTargetMap.has(CCollider.TAG.GOODNONPLAYER))this.aimTargetMap.delete(CCollider.TAG.GOODNONPLAYER);
-            this.aimTargetMap.set(CCollider.TAG.NONPLAYER,true);
-            this.aimTargetMap.set(CCollider.TAG.BOSS,true);
+        if(this.isFromPlayer && this.sensorTargetMap.has(CCollider.TAG.ENERGY_SHIELD)){
+            this.sensorTargetMap.delete(CCollider.TAG.ENERGY_SHIELD);
         }else{
-            if(this.aimTargetMap.has(CCollider.TAG.NONPLAYER))this.aimTargetMap.delete(CCollider.TAG.NONPLAYER);
-            if(this.aimTargetMap.has(CCollider.TAG.BOSS))this.aimTargetMap.delete(CCollider.TAG.BOSS);
-            this.aimTargetMap.set(CCollider.TAG.GOODNONPLAYER,true);
-            this.aimTargetMap.set(CCollider.TAG.PLAYER,true);
+            this.sensorTargetMap.set(CCollider.TAG.ENERGY_SHIELD,true);
         }
-        let result = GameWorldSystem.colliderSystem.nearestRayCast(cc.v2(p1),cc.v2(p2),this.aimTargetMap,true);
+        let result = GameWorldSystem.colliderSystem.nearestRayCast(cc.v2(p1),cc.v2(p2),this.aimTargetMap,this.sensorTargetMap);
         if(result){
             p = this.node.convertToNodeSpaceAR(cc.v3(result.point));
         }
-        // let results = cc.director.getPhysicsManager().rayCast(cc.v2(p1), cc.v2(p2), cc.RayCastType.All);
-        // let arr: cc.Vec3[] = new Array();
-        // if (results.length > 0) {
-        //     for (let result of results) {
-        //         if (this.isValidRayCastCollider(result.collider)) {
-        //             p = this.node.convertToNodeSpaceAR(cc.v3(result.point));
-        //             arr.push(p);
-        //         }
-        //     }
-        // }
-        // let distance = r;
-        // for (let point of arr) {
-        //     let dtemp = Logic.getDistanceNoSqrt(point, s);
-        //     if (distance >= dtemp) {
-        //         distance = dtemp;
-        //         p = point;
-        //     }
-        // }
         return p;
-
     }
-    //是否是有效碰撞体
-    private isValidRayCastCollider(collider: CCollider): boolean {
-        let isInvalid = false;
-        if (!this.isAI) {
-            if (collider.tag == CCollider.TAG.PLAYER) { isInvalid = true; }
-        } else {
-            if (collider.tag == CCollider.TAG.NONPLAYER || collider.tag == CCollider.TAG.BOSS) { isInvalid = true; }
-        }
-        if (collider.tag == CCollider.TAG.BULLET) { isInvalid = true; }
-        if (collider.sensor) { isInvalid = true; }
-        return !isInvalid;
-    }
+  
     //线性瞄准
     private aimTargetLine(angleOffset: number, defaultPos: cc.Vec3, bulletArcExNum: number, bulletLineExNum: number, prefab: cc.Prefab, aoeData: AreaOfEffectData) {
         if (this.isAiming) {
