@@ -1,0 +1,77 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "DialogueShow",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.5,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "topbg": {
+        "props": {
+          "y": [
+            {
+              "frame": 0,
+              "value": 660
+            },
+            {
+              "frame": 0.5,
+              "value": 560
+            }
+          ]
+        }
+      },
+      "bottombg": {
+        "props": {
+          "y": [
+            {
+              "frame": 0,
+              "value": -660
+            },
+            {
+              "frame": 0.5,
+              "value": -560
+            }
+          ]
+        }
+      },
+      "avatar": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": 255
+            }
+          ]
+        }
+      },
+      "buttonlayout": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": 255
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "frame": 0.5,
+      "func": "ShowFinish",
+      "params": []
+    }
+  ]
+}
