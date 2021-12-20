@@ -31,21 +31,9 @@ export default class KeyboardController extends cc.Component {
 
     isLongPress = false;
     touchStart = false;
-    @property(cc.Node)
-    mouseArea: cc.Node = null;
     onLoad() {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
-        // this.mouseArea.on(cc.Node.EventType.MOUSE_DOWN, (event: cc.Event.EventMouse) => {
-        //     if (event.getButton() == cc.Event.EventMouse.BUTTON_LEFT) {
-        //         this.isA = true;
-        //     }
-        // }, this);
-        // this.mouseArea.on(cc.Node.EventType.MOUSE_UP, (event: cc.Event.EventMouse) => {
-        //     if (event.getButton() == cc.Event.EventMouse.BUTTON_LEFT) {
-        //         this.isA = false;
-        //     }
-        // }, this);
     }
 
     start() {
@@ -77,7 +65,7 @@ export default class KeyboardController extends cc.Component {
             case 49: this.useItem(0); break;
             case 50: this.useItem(1); break;
             case 51: this.useItem(2); break;
-            case cc.macro.KEY.escape: EventHelper.emit(EventHelper.HUD_CANCEL_OR_PAUSE);; break;
+            case cc.macro.KEY.escape: EventHelper.emit(EventHelper.HUD_CANCEL_OR_PAUSE); break;
         }
     }
     private trigger(isLongPress?: boolean) {
@@ -100,7 +88,7 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.d: this.isRight = false; break;
 
             case cc.macro.KEY.j: this.isA = false; break;
-            case cc.macro.KEY.k: this.isB = false; EventHelper.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL); break;
+            case cc.macro.KEY.space: this.isB = false; EventHelper.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL); break;
             case cc.macro.KEY.e: this.isC = false;
                 if (!this.isLongPress) { this.trigger(); }
                 this.touchStart = false; this.isLongPress = false;

@@ -37,6 +37,10 @@ export default class Controller extends cc.Component {
     coolDown1: CoolDownView = null;
     skillActionTouched = false;
     skillActionTouched1 = false;
+    @property(cc.Node)
+    mouseArea: cc.Node = null;
+    @property(cc.Node)
+    cursor: cc.Node = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -134,6 +138,23 @@ export default class Controller extends cc.Component {
                 this.shootAction.active = detail.isShow;
             }
         })
+        this.mouseArea.on(cc.Node.EventType.MOUSE_MOVE, (event: cc.Event.EventMouse) => {
+            this.cursor.position = cc.v3(this.node.parent.parent.convertToNodeSpaceAR(event.getLocation()));
+        }, this);
+        this.mouseArea.on(cc.Node.EventType.MOUSE_DOWN, (event: cc.Event.EventMouse) => {
+            if(event.getButton() == cc.Event.EventMouse.BUTTON_LEFT){
+                this.attackActionTouched = true;
+            }else if(event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT){
+                this.shootActionTouched = true;
+            }
+        }, this);
+        this.mouseArea.on(cc.Node.EventType.MOUSE_UP, (event: cc.Event.EventMouse) => {
+            if(event.getButton() == cc.Event.EventMouse.BUTTON_LEFT){
+                this.attackActionTouched = false;
+            }else if(event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT){
+                this.shootActionTouched = false;
+            }
+        }, this);
         this.updateGamepad();
     }
     private updateGamepad() {
@@ -141,10 +162,12 @@ export default class Controller extends cc.Component {
             this.node.getChildByName('actions').active = false;
             this.coolDown.node.position = cc.v3(0, 180);
             this.coolDown1.node.position = cc.v3(-96, 180);
+            this.mouseArea.active = true;
         } else {
             this.node.getChildByName('actions').active = true;
             this.coolDown.node.position = this.skillAction.position.clone();
             this.coolDown1.node.position = this.skillAction1.position.clone();
+            this.mouseArea.active = false;
         }
     }
 
