@@ -132,5 +132,8 @@ export default class PlayerWeapon extends cc.Component {
         if(this.meleeWeapon){
             this.meleeWeapon.updateLogic(dt);
         }
+        if(this.shooter){
+            this.shooter.updateLogic(dt);
+        }
     }
 }

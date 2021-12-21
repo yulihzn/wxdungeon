@@ -49,6 +49,7 @@ import MeleeWeapon from './MeleeWeapon';
 import Shield from './Shield';
 import CCollider from '../collider/CCollider';
 import StatusIconList from '../ui/StatusIconList';
+import Controller from './Controller';
 @ccclass
 export default class Player extends Actor {
     @property(FloatinglabelManager)
@@ -198,7 +199,7 @@ export default class Player extends Actor {
         if (Logic.isCheatMode) {
             this.scheduleOnce(() => {
                 this.addStatus(StatusManager.PERFECTDEFENCE, new FromData());
-                this.data.Common.damageMin = 99;
+                this.data.Common.damageMin = 499;
                 this.data.Common.moveSpeed = 999;
             }, 0.2);
         }
@@ -713,7 +714,6 @@ export default class Player extends Actor {
         if (this.isLevelWater && !this.sc.isJumping) {
             pos = pos.mul(0.5);
         }
-
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
             this.data.pos = this.pos.clone();

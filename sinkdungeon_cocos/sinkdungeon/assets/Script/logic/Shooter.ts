@@ -1,4 +1,5 @@
 import AreaOfEffect from "../actor/AreaOfEffect";
+import Actor from "../base/Actor";
 import CCollider from "../collider/CCollider";
 import AreaOfEffectData from "../data/AreaOfEffectData";
 import BulletData from "../data/BulletData";
@@ -14,6 +15,7 @@ import AudioPlayer from "../utils/AudioPlayer";
 import IndexZ from "../utils/IndexZ";
 import NodeKey from "../utils/NodeKey";
 import Utils from "../utils/Utils";
+import Controller from "./Controller";
 import Dungeon from "./Dungeon";
 import Logic from "./Logic";
 import Player from "./Player";
@@ -51,7 +53,7 @@ export default class Shooter extends cc.Component {
     private graphics: cc.Graphics;
 
     private bulletPool: cc.NodePool;
-    private laserPool:cc.NodePool;
+    private laserPool: cc.NodePool;
     isAutoAim = true;
     bulletName: string = '';
     sprite: cc.Node;
@@ -65,9 +67,10 @@ export default class Shooter extends cc.Component {
     isBuilding = false;
     anim: cc.Animation;
     private aoePools: { [key: string]: cc.NodePool } = {};
-    private aimTargetMap = new Map<number,boolean>();
+    private aimTargetMap = new Map<number, boolean>();
     private sensorTargetMap = new Map<number, boolean>();
-    public defaultPos = cc.v3(0,0);
+    private ignoreMap = new Map<number, boolean>();
+    public defaultPos = cc.v3(0, 0);
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
@@ -75,12 +78,25 @@ export default class Shooter extends cc.Component {
         this.laserPool = new cc.NodePool(Laser);
         this.sprite = this.node.getChildByName('sprite');
         this.anim = this.getComponent(cc.Animation);
-        let aimArr = [CCollider.TAG.BOSS,CCollider.TAG.BUILDING,CCollider.TAG.ENERGY_SHIELD
-        ,CCollider.TAG.WALL,CCollider.TAG.WALL_TOP];
-        for(let key of aimArr){
-            this.aimTargetMap.set(key,true);
+        let aimArr = [CCollider.TAG.BOSS, CCollider.TAG.BUILDING, CCollider.TAG.ENERGY_SHIELD
+            , CCollider.TAG.WALL, CCollider.TAG.WALL_TOP];
+        for (let key of aimArr) {
+            this.aimTargetMap.set(key, true);
         }
 
+        this.initIgnoreMap(this.getParentNode().getComponent(Actor));
+    }
+    private initIgnoreMap(actor: Actor) {
+        if (!actor) {
+            return false;
+        }
+        let arr = actor.node.getComponentsInChildren(CCollider);
+        if (arr && arr.length > 0) {
+            for (let c of arr) {
+                this.ignoreMap.set(c.id, true);
+            }
+        }
+        return true;
     }
     playWalk(isPlay: boolean) {
         if (!this.anim) {
@@ -131,6 +147,9 @@ export default class Shooter extends cc.Component {
         return this.hv;
     }
     setHv(hv: cc.Vec3) {
+        if (!this.isAI && Controller.isMouseMode()) {
+            return;
+        }
         this.hv = hv;
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec3.ZERO)) {
@@ -197,10 +216,10 @@ export default class Shooter extends cc.Component {
      * @param aoeData aoe数据
      */
     public fireBullet(angleOffset?: number, defaultPos?: cc.Vec3, bulletArcExNum?: number, bulletLineExNum?: number, prefab?: cc.Prefab, aoeData?: AreaOfEffectData) {
-        if(defaultPos){
+        if (defaultPos) {
             this.defaultPos = defaultPos.clone();
         }
-        
+
         if (this.data.isLineAim == 1 && this.graphics) {
             this.aimTargetLine(angleOffset, defaultPos, bulletArcExNum, bulletLineExNum, prefab, aoeData);
         } else {
@@ -217,11 +236,11 @@ export default class Shooter extends cc.Component {
      * @param prefab 子弹销毁附带aoe
      * @param aoeData aoe数据
      */
-    public fireSplitBullet(splitBulletType: string,angleOffset: number, defaultPos: cc.Vec3, bulletArcExNum: number, bulletLineExNum: number, prefab?: cc.Prefab, aoeData?: AreaOfEffectData) {
+    public fireSplitBullet(splitBulletType: string, angleOffset: number, defaultPos: cc.Vec3, bulletArcExNum: number, bulletLineExNum: number, prefab?: cc.Prefab, aoeData?: AreaOfEffectData) {
         this.fireBulletDo(angleOffset, defaultPos, bulletArcExNum, bulletLineExNum, prefab, aoeData, splitBulletType);
     }
     private fireBulletDo(angleOffset: number, defaultPos: cc.Vec3, bulletArcExNum: number, bulletLineExNum: number, prefab: cc.Prefab, aoeData: AreaOfEffectData, splitBulletType: string) {
-        if (this.sprite && splitBulletType.length<1) {
+        if (this.sprite && splitBulletType.length < 1) {
             this.sprite.stopAllActions();
             this.sprite.position = cc.Vec3.ZERO;
             cc.tween(this.sprite).call(() => {
@@ -239,10 +258,10 @@ export default class Shooter extends cc.Component {
         if (!this.dungeon) {
             return;
         }
-        if (splitBulletType.length<1 && !this.isAI && !this.isEx && this.player.inventoryManager.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.REMOTE) {
+        if (splitBulletType.length < 1 && !this.isAI && !this.isEx && this.player.inventoryManager.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.REMOTE) {
             return;
         }
-        if (splitBulletType.length<1) {
+        if (splitBulletType.length < 1) {
             if (this.data.remoteAudio && this.data.remoteAudio.length > 0) {
                 AudioPlayer.play(this.data.remoteAudio);
             } else {
@@ -250,8 +269,8 @@ export default class Shooter extends cc.Component {
             }
         }
         let isCircle = false;
-        let bulletType = splitBulletType.length>0?splitBulletType:this.data.bulletType;
-        let finalBulletArcExNum = (bulletArcExNum?bulletArcExNum:0) + (splitBulletType.length>0?0:this.data.bulletArcExNum);
+        let bulletType = splitBulletType.length > 0 ? splitBulletType : this.data.bulletType;
+        let finalBulletArcExNum = (bulletArcExNum ? bulletArcExNum : 0) + (splitBulletType.length > 0 ? 0 : this.data.bulletArcExNum);
         let angles = [10, -10, 20, -20, 30, -30, 40, -40, 50, -50, 60, -60, -70, -70, 80, -80, 90, -90, 100, -100, 110, -110, 120, -120, 130, -130, 140, -140, 150, -150, 160, -160, 170, -170, 180, -180]
         if (finalBulletArcExNum > angles.length) {
             //大于默认度数数组为16方向
@@ -261,32 +280,32 @@ export default class Shooter extends cc.Component {
                 angles = [0, 45, 90, 135, 180, 225, 270, 315, 335];
             }
             isCircle = true;
-        }else{
-            this.fire(bulletType, angleOffset, this.hv.clone(), defaultPos,this.data.bulletArcOffset, prefab, aoeData);
+        } else {
+            this.fire(bulletType, angleOffset, this.hv.clone(), defaultPos, this.data.bulletArcOffset, prefab, aoeData);
         }
-        this.fireArcBullet(bulletType, defaultPos, finalBulletArcExNum, prefab, aoeData,angles,this.data.bulletArcOffset);
-        this.fireLineBullet(bulletType, angleOffset, defaultPos, finalBulletArcExNum, bulletLineExNum, prefab, aoeData,angles,isCircle,this.data.bulletArcOffset);
+        this.fireArcBullet(bulletType, defaultPos, finalBulletArcExNum, prefab, aoeData, angles, this.data.bulletArcOffset);
+        this.fireLineBullet(bulletType, angleOffset, defaultPos, finalBulletArcExNum, bulletLineExNum, prefab, aoeData, angles, isCircle, this.data.bulletArcOffset);
     }
-    private fireArcBullet(bulletType: string, defaultPos: cc.Vec3, bulletArcExNum: number, prefab: cc.Prefab, aoeData: AreaOfEffectData,angles:number[],bulletArcOffset:number): void {
+    private fireArcBullet(bulletType: string, defaultPos: cc.Vec3, bulletArcExNum: number, prefab: cc.Prefab, aoeData: AreaOfEffectData, angles: number[], bulletArcOffset: number): void {
         if (bulletArcExNum <= 0) {
             return;
         }
         for (let i = 0; i < bulletArcExNum; i++) {
             if (i < angles.length) {
-                this.fire(bulletType,angles[i], this.hv.clone(), defaultPos,bulletArcOffset, prefab, aoeData);
+                this.fire(bulletType, angles[i], this.hv.clone(), defaultPos, bulletArcOffset, prefab, aoeData);
             }
         }
     }
-    private fireLineBullet(bulletType: string, angleOffset: number, defaultPos: cc.Vec3, bulletArcExNum: number, bulletLineExNum: number, prefab: cc.Prefab, aoeData: AreaOfEffectData,angles:number[],isCircle:boolean,bulletArcOffset:number): void {
+    private fireLineBullet(bulletType: string, angleOffset: number, defaultPos: cc.Vec3, bulletArcExNum: number, bulletLineExNum: number, prefab: cc.Prefab, aoeData: AreaOfEffectData, angles: number[], isCircle: boolean, bulletArcOffset: number): void {
         let exNum = bulletLineExNum ? this.data.bulletLineExNum + bulletLineExNum : this.data.bulletLineExNum;
         if (exNum == 0) {
             return;
         }
         this.schedule(() => {
-            if(!isCircle){
-                this.fire(bulletType,  angleOffset, this.hv.clone(), defaultPos,bulletArcOffset, prefab, aoeData);
+            if (!isCircle) {
+                this.fire(bulletType, angleOffset, this.hv.clone(), defaultPos, bulletArcOffset, prefab, aoeData);
             }
-            this.fireArcBullet(bulletType, defaultPos, bulletArcExNum, prefab, aoeData,angles,bulletArcOffset);
+            this.fireArcBullet(bulletType, defaultPos, bulletArcExNum, prefab, aoeData, angles, bulletArcOffset);
         }, this.data.bulletLineInterval > 0 ? this.data.bulletLineInterval : 0.2, exNum, 0);
 
     }
@@ -312,12 +331,12 @@ export default class Shooter extends cc.Component {
      * @param hv 方向向量
      * @param defaultPos 初始位置默认cc.v3(0, 0)
      */
-    private fire(bulletType: string, angleOffset: number, hv: cc.Vec3, defaultPos: cc.Vec3,bulletArcOffset:number, aoePrefab: cc.Prefab, aoeData: AreaOfEffectData) {
+    private fire(bulletType: string, angleOffset: number, hv: cc.Vec3, defaultPos: cc.Vec3, bulletArcOffset: number, aoePrefab: cc.Prefab, aoeData: AreaOfEffectData) {
         let bulletData = Logic.bullets[bulletType];
         let prefab = this.bullet;
         let pool = this.bulletPool;
-        let isLaser = bulletData.isLaser>0;
-        if(isLaser){
+        let isLaser = bulletData.isLaser > 0;
+        if (isLaser) {
             prefab = this.laser;
             pool = this.laserPool;
         }
@@ -330,11 +349,11 @@ export default class Shooter extends cc.Component {
             bulletPrefab = cc.instantiate(prefab);
         }
         bulletPrefab.parent = this.node;
-        let p = cc.v3(0,0);
-        if(defaultPos){
+        let p = cc.v3(0, 0);
+        if (defaultPos) {
             p = defaultPos.clone();
-            if(bulletArcOffset != 0){
-                p.addSelf(cc.v3(cc.v2(bulletArcOffset,0).rotateSelf(angleOffset * Math.PI / 180)));
+            if (bulletArcOffset != 0) {
+                p.addSelf(cc.v3(cc.v2(bulletArcOffset, 0).rotateSelf(angleOffset * Math.PI / 180)));
             }
         }
         let pos = this.node.convertToWorldSpaceAR(p);
@@ -344,14 +363,14 @@ export default class Shooter extends cc.Component {
         bulletPrefab.scaleX = 1;
         bulletPrefab.scaleY = 1;
         bulletPrefab.active = true;
-        if(isLaser){
-            this.showLaser(angleOffset,hv,bulletPrefab,bulletData,pos);
-        }else{
-            this.showBullet(angleOffset,hv,bulletPrefab,bulletData,pos,aoePrefab,aoeData);
+        if (isLaser) {
+            this.showLaser(angleOffset, hv, bulletPrefab, bulletData, pos);
+        } else {
+            this.showBullet(angleOffset, hv, bulletPrefab, bulletData, pos, aoePrefab, aoeData);
         }
     }
-    
-    private showBullet(angleOffset: number,hv: cc.Vec3,bulletPrefab:cc.Node,data:BulletData,startPos:cc.Vec3,aoePrefab: cc.Prefab, aoeData: AreaOfEffectData){
+
+    private showBullet(angleOffset: number, hv: cc.Vec3, bulletPrefab: cc.Node, data: BulletData, startPos: cc.Vec3, aoePrefab: cc.Prefab, aoeData: AreaOfEffectData) {
         let bullet = bulletPrefab.getComponent(Bullet);
         bullet.entity.Transform.position = startPos;
         bullet.shooter = this;
@@ -378,7 +397,7 @@ export default class Shooter extends cc.Component {
         bullet.aoePrefab = aoePrefab;
         bullet.showBullet(cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180)));
     }
-    private showLaser(angleOffset: number,hv: cc.Vec3,bulletPrefab:cc.Node,data:BulletData,startPos:cc.Vec3){
+    private showLaser(angleOffset: number, hv: cc.Vec3, bulletPrefab: cc.Node, data: BulletData, startPos: cc.Vec3) {
         let laser = bulletPrefab.getComponent(Laser);
         laser.entity.Transform.position = startPos;
         laser.shooter = this;
@@ -401,18 +420,18 @@ export default class Shooter extends cc.Component {
         laser.changeBullet(bd);
         this.bulletName = laser.name + bd.resName;
         laser.enabled = true;
-        laser.fire(cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180)),angleOffset);
+        laser.fire(cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180)), angleOffset);
     }
-    public addDestroyBullet(bulletNode: cc.Node,isLaser?:boolean) {
+    public addDestroyBullet(bulletNode: cc.Node, isLaser?: boolean) {
         bulletNode.active = false;
-        this.destroyBullet(bulletNode,isLaser)
+        this.destroyBullet(bulletNode, isLaser)
     }
-    private destroyBullet(bulletNode: cc.Node,isLaser?:boolean) {
-        if(isLaser){
+    private destroyBullet(bulletNode: cc.Node, isLaser?: boolean) {
+        if (isLaser) {
             if (this.laserPool && bulletNode) {
                 this.laserPool.put(bulletNode);
             }
-        }else{
+        } else {
             if (this.bulletPool && bulletNode) {
                 this.bulletPool.put(bulletNode);
             }
@@ -438,18 +457,18 @@ export default class Shooter extends cc.Component {
         let p = cc.v3(r, 0);
         let p1 = this.node.convertToWorldSpaceAR(s);
         let p2 = this.node.convertToWorldSpaceAR(p);
-        if(this.isFromPlayer && this.sensorTargetMap.has(CCollider.TAG.ENERGY_SHIELD)){
+        if (this.isFromPlayer && this.sensorTargetMap.has(CCollider.TAG.ENERGY_SHIELD)) {
             this.sensorTargetMap.delete(CCollider.TAG.ENERGY_SHIELD);
-        }else{
-            this.sensorTargetMap.set(CCollider.TAG.ENERGY_SHIELD,true);
+        } else {
+            this.sensorTargetMap.set(CCollider.TAG.ENERGY_SHIELD, true);
         }
-        let result = GameWorldSystem.colliderSystem.nearestRayCast(cc.v2(p1),cc.v2(p2),this.aimTargetMap,this.sensorTargetMap);
-        if(result){
+        let result = GameWorldSystem.colliderSystem.nearestRayCast(cc.v2(p1), cc.v2(p2), this.aimTargetMap, this.sensorTargetMap, this.ignoreMap);
+        if (result) {
             p = this.node.convertToNodeSpaceAR(cc.v3(result.point));
         }
         return p;
     }
-  
+
     //线性瞄准
     private aimTargetLine(angleOffset: number, defaultPos: cc.Vec3, bulletArcExNum: number, bulletLineExNum: number, prefab: cc.Prefab, aoeData: AreaOfEffectData) {
         if (this.isAiming) {
@@ -460,7 +479,7 @@ export default class Shooter extends cc.Component {
             return;
         }
         let width = 0;
-        let p = this.getRayCastPoint(3000,defaultPos);
+        let p = this.getRayCastPoint(3000, defaultPos);
         let isOver = false;
         let fun = () => {
             if (width < 1 && isOver) {
@@ -504,10 +523,17 @@ export default class Shooter extends cc.Component {
         this.graphics.fill();
     }
 
-    update(dt: number) {
-
+    updateLogic(dt: number) {
+        if (!this.isAI && Controller.isMouseMode() && Controller.mousePos&&this.dungeon) {
+            let p = this.dungeon.node.convertToWorldSpaceAR(this.player.node.position);
+            let pos = Controller.mousePos.add(this.dungeon.mainCamera.node.position).sub(p).normalize();
+            if (!pos.equals(cc.Vec3.ZERO)) {
+                this.hv = pos;
+                this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
+            }
+        }
     }
-    private getParentNode(): cc.Node {
+    public getParentNode(): cc.Node {
         if (this.parentNode) {
             return this.parentNode;
         } else {

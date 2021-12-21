@@ -3124,7 +3124,7 @@
     "w": 410,
     "h": 210,
     "density": 0,
-    "sensor": false,
+    "sensor": true,
     "isStatic": true,
     "ignoreSameTag": false,
     "targetTagList": [],

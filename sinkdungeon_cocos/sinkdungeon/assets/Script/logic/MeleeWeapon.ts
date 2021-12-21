@@ -25,6 +25,7 @@ import InteractBuilding from "../building/InteractBuilding";
 import Utils from "../utils/Utils";
 import CCollider from "../collider/CCollider";
 import BaseColliderComponent from "../base/BaseColliderComponent";
+import Controller from "./Controller";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -146,6 +147,11 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
 
     set Hv(hv: cc.Vec3) {
+        if(Controller.isMouseMode()&&Controller.mousePos&&this.dungeon){
+            let p = this.dungeon.node.convertToWorldSpaceAR(this.player.node.position);
+            this.hv = Controller.mousePos.add(this.dungeon.mainCamera.node.position).sub(p).normalize();
+            return;
+        }
         let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 300);
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.hv = pos;
@@ -316,7 +322,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
         let timeScale = this.anim.getAnimationState(this.getAttackAnimName()).speed;
         let ps = [p];
         for (let node of this.weaponFirePoints) {
-            ps.push(p.add(node.position));
+            if(node){
+                ps.push(p.add(node.position));
+            }
         }
         for (let i = 0; i < ps.length; i++) {
             let psp = ps[i];
@@ -460,9 +468,14 @@ export default class MeleeWeapon extends BaseColliderComponent {
         }
     }
     updateLogic(dt: number) {
-        let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400);
-        if (!pos.equals(cc.Vec3.ZERO)) {
-            this.hv = pos;
+        if(Controller.isMouseMode()&&Controller.mousePos&&this.dungeon){
+            let p = this.dungeon.node.convertToWorldSpaceAR(this.player.node.position);
+            this.hv = Controller.mousePos.add(this.dungeon.mainCamera.node.position).sub(p).normalize();
+        }else {
+            let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400);
+            if (!pos.equals(cc.Vec3.ZERO)) {
+                this.hv = pos;
+            }
         }
         if (!this.isAttacking) {
             this.rotateCollider(cc.v2(this.hv.x, this.hv.y));

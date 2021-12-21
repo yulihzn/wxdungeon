@@ -1,4 +1,3 @@
-import { EventHelper } from './../logic/EventHelper';
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
 // Learn Attribute:
@@ -9,6 +8,7 @@ import { EventHelper } from './../logic/EventHelper';
 import CCollider from "../collider/CCollider";
 import GameWorldSystem from "../ecs/system/GameWorldSystem";
 import Logic from "../logic/Logic";
+import Actor from '../base/Actor';
 
 
 const { ccclass, property } = cc._decorator;
@@ -46,6 +46,7 @@ export default class ShadowOfSight extends cc.Component {
     private circleCollider: CCollider;
     private lightTargetMap = new Map<number, boolean>();
     private sensorTargetMap = new Map<number, boolean>();
+    private ignoreMap = new Map<number, boolean>();
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -58,13 +59,33 @@ export default class ShadowOfSight extends cc.Component {
         for (let key of aimArr) {
             this.lightTargetMap.set(key, true);
         }
-        if (this.circleCollider&&this.circleCollider.ignoreTagList) {
+        if (this.circleCollider && this.circleCollider.ignoreTagList) {
             for (let key of this.circleCollider.ignoreTagList) {
                 if (this.lightTargetMap.has(key)) {
                     this.lightTargetMap.delete(key);
                 }
             }
         }
+        //三层遍历
+        let success = this.initIgnoreMap(this.node.parent.getComponent(Actor));
+        if (!success && this.node.parent.parent) {
+            success = this.initIgnoreMap(this.node.parent.parent.getComponent(Actor));
+            if (!success && this.node.parent.parent.parent) {
+                success = this.initIgnoreMap(this.node.parent.parent.parent.getComponent(Actor));
+            }
+        }
+    }
+    private initIgnoreMap(actor: Actor) {
+        if (!actor) {
+            return false;
+        }
+        let arr = actor.node.getComponentsInChildren(CCollider);
+            if (arr && arr.length > 0) {
+                for (let c of arr) {
+                    this.ignoreMap.set(c.id, true);
+                }
+            }
+        return true;
     }
     /** 绘制视野区域 */
     renderSightArea(camera: cc.Camera): void {
@@ -146,7 +167,7 @@ export default class ShadowOfSight extends cc.Component {
             let p3 = cc.v2(Math.cos(i * unitRd) * this.getRadius() + pos.x, Math.sin(i * unitRd) * this.getRadius() + pos.y);
             // let physicsManager = cc.director.getPhysicsManager();
             // let result = physicsManager.rayCast(pos, p3, cc.RayCastType.Closest);
-            let result = GameWorldSystem.colliderSystem.nearestRayCast(cc.v2(pos), cc.v2(p3), this.lightTargetMap, this.sensorTargetMap);
+            let result = GameWorldSystem.colliderSystem.nearestRayCast(cc.v2(pos), cc.v2(p3), this.lightTargetMap, this.sensorTargetMap, this.ignoreMap);
             if (result) {
                 p3 = result.point;
                 let node = result.collider.node;

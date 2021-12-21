@@ -1,3 +1,4 @@
+import Controller from "./Controller";
 import { EventHelper } from "./EventHelper";
 import Logic from "./Logic";
 
@@ -55,6 +56,9 @@ export default class NewClass extends cc.Component {
  
  
         this.node.on(cc.Node.EventType.TOUCH_START, function (event:cc.Event.EventTouch) {
+            if(Controller.isMouseMode()){
+                return;
+            }
             if (this.touchID==-1){
                 //触摸位置
                 let touchStartPos = event.getLocation()
@@ -74,6 +78,9 @@ export default class NewClass extends cc.Component {
  
  
         this.node.on(cc.Node.EventType.TOUCH_MOVE, function (event:cc.Event.EventTouch) {
+            if(Controller.isMouseMode()){
+                return;
+            }
             if (this.touchID==event.getID()){
                 //触摸位置
                 let nowPos = event.getLocation()
@@ -90,11 +97,17 @@ export default class NewClass extends cc.Component {
  
  
         this.node.on(cc.Node.EventType.TOUCH_END, function (event) {
+            if(Controller.isMouseMode()){
+                return;
+            }
             this.init()
         }, this)
  
  
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, function (event) {
+            if(Controller.isMouseMode()){
+                return;
+            }
             this.init()
         }, this)
  

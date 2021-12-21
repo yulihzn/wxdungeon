@@ -100,10 +100,10 @@ export default abstract class Boss extends Actor {
             }
             let chance = Logic.getHalfChance() && isSteal || !isSteal;
             if (chance) {
-                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.node.position, res: Item.HEART });
-                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.node.position, res: Item.DREAM });
+                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, {  res: Item.HEART });
+                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, {  res: Item.DREAM });
             }
-            this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, isSteal ? 0 : 3);
+            this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save),null, null, isSteal ? 0 : 3);
         }
     }
     showBoss() {

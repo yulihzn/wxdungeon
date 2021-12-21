@@ -220,7 +220,16 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         }
         return isCollision;
     }
-    public nearestRayCast(p1: cc.Vec2, p2: cc.Vec2, targetTags: Map<number, boolean>,sensorTags: Map<number, boolean>): RayCastResult {
+    /**
+     * 射线检测
+     * @param p1 开始点
+     * @param p2 结束点
+     * @param targetTags 目标tag
+     * @param sensorTags sensortag
+     * @param ignoreEntity 忽略自身
+     * @returns 
+     */
+    public nearestRayCast(p1: cc.Vec2, p2: cc.Vec2, targetTags: Map<number, boolean>, sensorTags: Map<number, boolean>, ignoreMap: Map<number, boolean>): RayCastResult {
         if (p1.equals(p2)) {
             return null;
         }
@@ -230,7 +239,10 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
             if (!targetTags.has(collider.tag)) {
                 continue;
             }
-            if(!sensorTags.has(collider.tag)&&collider.sensor){
+            if (!sensorTags.has(collider.tag) && collider.sensor) {
+                continue;
+            }
+            if (ignoreMap.has(collider.id)) {
                 continue;
             }
             let isCollision = this.rayCastCollision(collider, p1, p2);
@@ -244,15 +256,15 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         }
         if (result) {
             let length = result.collider.points.length;
-                for (let i = 0; i < length; ++i) {
-                    let b1 = result.collider.points[i];
-                    var b2 = result.collider.points[(i + 1) % length];
-                    let ponit = this.getLineLinePoint(p1, result.point, b1,b2);
-                    if(ponit){
-                        result.point = ponit;
-                        break;
-                    }
+            for (let i = 0; i < length; ++i) {
+                let b1 = result.collider.points[i];
+                var b2 = result.collider.points[(i + 1) % length];
+                let ponit = this.getLineLinePoint(p1, result.point, b1, b2);
+                if (ponit) {
+                    result.point = ponit;
+                    break;
                 }
+            }
 
         }
         return result;

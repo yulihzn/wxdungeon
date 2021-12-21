@@ -41,6 +41,8 @@ export default class Controller extends cc.Component {
     mouseArea: cc.Node = null;
     @property(cc.Node)
     cursor: cc.Node = null;
+    private mouseIgnoreRects:cc.Rect[] = [];
+    static mousePos:cc.Vec3;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -138,10 +140,24 @@ export default class Controller extends cc.Component {
                 this.shootAction.active = detail.isShow;
             }
         })
+        for(let node of this.mouseArea.children){
+            if(node.uuid == this.cursor.uuid){
+                continue;
+            }
+            let pos = this.mouseArea.convertToWorldSpaceAR(node.position);
+            let rect = cc.rect(pos.x-node.width/2,pos.y-node.height,node.width,node.height);
+            this.mouseIgnoreRects.push(rect);
+        }
         this.mouseArea.on(cc.Node.EventType.MOUSE_MOVE, (event: cc.Event.EventMouse) => {
             this.cursor.position = cc.v3(this.node.parent.parent.convertToNodeSpaceAR(event.getLocation()));
+            Controller.mousePos = cc.v3(event.getLocation());
         }, this);
         this.mouseArea.on(cc.Node.EventType.MOUSE_DOWN, (event: cc.Event.EventMouse) => {
+            for(let rect of this.mouseIgnoreRects){
+                if(rect.contains(event.getLocation())){
+                    return;
+                }
+            }
             if(event.getButton() == cc.Event.EventMouse.BUTTON_LEFT){
                 this.attackActionTouched = true;
             }else if(event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT){
@@ -153,12 +169,24 @@ export default class Controller extends cc.Component {
                 this.attackActionTouched = false;
             }else if(event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT){
                 this.shootActionTouched = false;
+                cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL);
+            }
+        }, this);
+        this.mouseArea.on(cc.Node.EventType.MOUSE_LEAVE, (event: cc.Event.EventMouse) => {
+            if(event.getButton() == cc.Event.EventMouse.BUTTON_LEFT){
+                this.attackActionTouched = false;
+            }else if(event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT){
+                this.shootActionTouched = false;
+                cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL);
             }
         }, this);
         this.updateGamepad();
     }
+    static isMouseMode(){
+        return !cc.sys.isMobile && !Logic.settings.showGamepad;
+    }
     private updateGamepad() {
-        if (!cc.sys.isMobile && !Logic.settings.showGamepad) {
+        if (Controller.isMouseMode()) {
             this.node.getChildByName('actions').active = false;
             this.coolDown.node.position = cc.v3(0, 180);
             this.coolDown1.node.position = cc.v3(-96, 180);

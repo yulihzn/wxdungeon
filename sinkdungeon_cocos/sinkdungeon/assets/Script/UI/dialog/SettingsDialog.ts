@@ -63,14 +63,14 @@ export default class SettingsDialog extends BaseDialog {
         cc.director.emit(EventHelper.SETTINGS_LOW_POWER);
     }
     close(){
-        AudioPlayer.play(AudioPlayer.SELECT);
         cc.director.getScheduler().setTimeScale(1);
+        AudioPlayer.play(AudioPlayer.SELECT);
         this.dismiss();
     }
     home(){
         AudioPlayer.play(AudioPlayer.SELECT);
         Logic.saveData();
-        cc.director.loadScene('start');
         cc.director.getScheduler().setTimeScale(1);
+        cc.director.loadScene('start');
     }
 }

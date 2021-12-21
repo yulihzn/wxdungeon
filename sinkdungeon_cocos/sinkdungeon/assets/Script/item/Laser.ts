@@ -53,6 +53,7 @@ export default class Laser extends BaseColliderComponent {
     private isStop = false;
     private targetMap = new Map<number, boolean>();
     private sensorTargetMap = new Map<number, boolean>();
+    private ignoreMap = new Map<number, boolean>();
     private startPos = cc.v2(0,0);
     private angleOffset = 0;
 
@@ -71,6 +72,19 @@ export default class Laser extends BaseColliderComponent {
         for (let key of sensorArr) {
             this.sensorTargetMap.set(key, true);
         }
+    }
+    private initIgnoreMap(actor: Actor) {
+        if (!actor) {
+            return false;
+        }
+        this.ignoreMap.clear();
+        let arr = actor.node.getComponentsInChildren(CCollider);
+            if (arr && arr.length > 0) {
+                for (let c of arr) {
+                    this.ignoreMap.set(c.id, true);
+                }
+            }
+        return true;
     }
     private initSpriteNode() {
         if (this.sprite) {
@@ -114,7 +128,7 @@ export default class Laser extends BaseColliderComponent {
         this.initSpriteNode();
         this.lineNode.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser);
         this.headSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'head');
-
+        this.initIgnoreMap(this.shooter.getParentNode().getComponent(Actor));
     }
     fire(hv: cc.Vec3,angleOffset:number) {
         this.hv = hv;
@@ -162,17 +176,16 @@ export default class Laser extends BaseColliderComponent {
         pos = this.dungeon.node.convertToNodeSpaceAR(pos);
         this.entity.Transform.position = pos;
         this.node.position = pos;
+        this.hv = cc.v3(cc.v2(this.shooter.Hv).rotateSelf(this.angleOffset * Math.PI / 180));
+        this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
     }
     private updateLaser() {
         if (!this.shooter||this.isStop) {
             return;
         }
-        
-        this.hv = cc.v3(cc.v2(this.shooter.Hv).rotateSelf(this.angleOffset * Math.PI / 180));
-        this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
         //碰撞终点
         let endPos = this.node.convertToWorldSpaceAR(cc.v2(this.data.laserRange > 0 ? this.data.laserRange : 3000, 0));
-        let result = GameWorldSystem.colliderSystem.nearestRayCast(this.startPos, endPos, this.targetMap, this.sensorTargetMap);
+        let result = GameWorldSystem.colliderSystem.nearestRayCast(this.startPos, endPos, this.targetMap, this.sensorTargetMap,this.ignoreMap);
         if (result) {
             endPos = result.point;
         }
@@ -192,7 +205,7 @@ export default class Laser extends BaseColliderComponent {
 
     stopLaser() {
         this.isStop = true;
-        cc.tween(this.node).to(0.2, { scaleX: 0 }).to(0.1, { scaleY: 0 }).call(() => {
+        cc.tween(this.node).to(0.2, { scaleY: 0 }).to(0.1, { scaleX: 0 }).call(() => {
             this.shooter.addDestroyBullet(this.node,true);
         }).start();
     }

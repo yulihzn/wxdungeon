@@ -84,6 +84,7 @@ export default class Kraken extends Boss {
     }
     updatePlayerPos() {
         let pos = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE / 2, Dungeon.HEIGHT_SIZE + 2));
+        this.entity.Transform.position = pos;
         this.node.setPosition(pos);
     }
 

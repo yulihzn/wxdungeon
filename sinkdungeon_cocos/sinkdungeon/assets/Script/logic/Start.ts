@@ -128,6 +128,7 @@ export default class Start extends cc.Component {
         if (this.debugButton) this.debugButton.opacity = Logic.isDebug ? 255 : 0;
         if (this.cheatButton) this.cheatButton.opacity = Logic.isCheatMode ? 255 : 0;
         if (this.tourButton) this.tourButton.opacity = Logic.isTour ? 255 : 0;
+        cc.director.getScheduler().setTimeScale(1);
     }
 
     tourChange() {

@@ -44,6 +44,8 @@ export default class Dungeon extends cc.Component {
     fog: cc.Node = null;
     @property(StatusIconList)
     statusIconList:StatusIconList = null;
+    @property(cc.Camera)
+    mainCamera:cc.Camera = null;
     mapData: string[][] = [];//地图数据
     tilesmap: Tile[][] = new Array();//地面列表
     floorIndexMap: cc.Vec3[] = new Array();//地板下标列表
