@@ -96,6 +96,7 @@ export default class AudioPlayer extends cc.Component {
     public static readonly CAT = 'CAT';
     public static readonly WATERDISPENSER = 'WATERDISPENSER';
     public static readonly DRINK = 'DRINK';
+    public static readonly TRASH = 'TRASH';
     @property({ type: cc.AudioClip })
     monsterHit: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
@@ -249,6 +250,8 @@ export default class AudioPlayer extends cc.Component {
     @property(cc.AudioClip)
     drink:cc.AudioClip = null;
     @property(cc.AudioClip)
+    trash:cc.AudioClip = null;
+    @property(cc.AudioClip)
     bg01: cc.AudioClip = null;
     @property(cc.AudioClip)
     bg02: cc.AudioClip = null;
@@ -261,7 +264,7 @@ export default class AudioPlayer extends cc.Component {
     onLoad() {
         EventHelper.on(EventHelper.PLAY_AUDIO, (detail) => { this.playSound(detail.name, detail.bgm, detail.loop); });
         EventHelper.on(EventHelper.STOP_ALL_AUDIO_EFFECT, (detail) => { this.stopAllEffect(); });
-        cc.audioEngine.setMusicVolume(0.2);
+        cc.audioEngine.setMusicVolume(0.1);
         cc.audioEngine.setEffectsVolume(0.4);
         this.audioList[AudioPlayer.MONSTER_HIT] = this.monsterHit;
         this.audioList[AudioPlayer.MONSTER_HIT1] = this.monsterHit1;
@@ -339,6 +342,7 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.CAT] = this.cat;
         this.audioList[AudioPlayer.WATERDISPENSER] = this.waterdispenser;
         this.audioList[AudioPlayer.DRINK] = this.drink;
+        this.audioList[AudioPlayer.TRASH] = this.trash;
 
     }
     playbg() {

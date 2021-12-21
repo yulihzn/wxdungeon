@@ -168,6 +168,7 @@ export default class Laser extends BaseColliderComponent {
         }
         this.updatePos();
         this.updateLaser();
+        AudioPlayer.play(AudioPlayer.REMOTE_LASER);
     }
     private updatePos(){
         let p = this.shooter.defaultPos.clone();
@@ -197,7 +198,6 @@ export default class Laser extends BaseColliderComponent {
         let finalwidth = distance;
         this.lineNode.width = finalwidth / this.node.scaleY;
         this.lightSprite.node.setPosition(this.lineNode.width, 0);
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.REMOTE_LASER } });
         if(result){
             this.attacking(result.collider.node,result.collider.tag);
         }

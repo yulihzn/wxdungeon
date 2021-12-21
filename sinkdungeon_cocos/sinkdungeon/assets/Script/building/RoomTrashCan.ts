@@ -1,6 +1,7 @@
 import { EventHelper } from '../logic/EventHelper';
 import Logic from '../logic/Logic';
 import EquipmentManager from '../manager/EquipmentManager';
+import AudioPlayer from '../utils/AudioPlayer';
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
 // Learn Attribute:
@@ -34,12 +35,15 @@ export default class RoomTrashCan extends Building {
         this.next.next(() => {
             this.trash.active = true;
             this.anim.play('RoomTrashOut');
+            AudioPlayer.play(AudioPlayer.TRASH);
             this.scheduleOnce(() => {
                 if (this.rand.rand() > 0.8) {
                     cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { res: Logic.getRandomTrashType(this.rand) } });
                 }
                 if (this.rand.rand() > 0.95) {
                     EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: EquipmentManager.WEAPON_BROKEN_GLASS });
+                }else if (this.rand.rand() > 0.98) {
+                    EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: EquipmentManager.WEAPON_WINE_BOTTLE });
                 }
                 this.trash.active = false;
             }, 1);

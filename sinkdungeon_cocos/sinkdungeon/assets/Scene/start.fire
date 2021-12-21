@@ -7173,6 +7173,9 @@
     "drink": {
       "__uuid__": "07beea44-9c96-41f0-a380-9068c8f7c812"
     },
+    "trash": {
+      "__uuid__": "a93021db-3a11-4ddd-8183-f1783e7c51eb"
+    },
     "bg01": {
       "__uuid__": "a601a25d-abcb-42b9-9e58-2f8cfea4ebc9"
     },

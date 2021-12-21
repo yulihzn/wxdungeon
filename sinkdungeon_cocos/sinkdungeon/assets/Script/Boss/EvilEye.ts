@@ -215,7 +215,7 @@ export default class EvilEye extends Boss {
             let h = pos.x;
             let v = pos.y;
             let movement = cc.v2(h, v);
-            movement = movement.mul(2500);
+            movement = movement.mul(2000);
             this.entity.Move.linearVelocity = movement;
             this.scheduleOnce(() => {
                 this.dashSkill.IsExcuting = false;

@@ -52,6 +52,7 @@ export default class EquipmentManager extends BaseManager {
     public static readonly WEAPON_DEATH = "weapon018";
     public static readonly WEAPON_SHADOW = "weapon019";
     public static readonly WEAPON_BLOOD = "weapon020";
+    public static readonly WEAPON_WINE_BOTTLE = "weapon032";
     public static readonly WEAPON_WOOD_SWORD = "weapon039";
     public static readonly WEAPON_WOOD_HAMMER = "weapon040";
     public static readonly WEAPON_WOOD_DAGGER = "weapon041";

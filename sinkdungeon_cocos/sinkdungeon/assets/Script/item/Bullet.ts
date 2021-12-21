@@ -56,10 +56,6 @@ export default class Bullet extends BaseColliderComponent {
     light: cc.Node;
     collider: CCollider;
 
-    laserSpriteNode: cc.Node;
-    laserLightSprite: cc.Sprite;
-    laserHeadSprite: cc.Sprite;
-    laserNode: cc.Node;
     dungeon: Dungeon;
 
     startPos: cc.Vec3 = cc.v3(0, 0);//子弹起始位置
@@ -83,11 +79,6 @@ export default class Bullet extends BaseColliderComponent {
         this.sprite.angle = 0;
         this.light = this.node.getChildByName('light');
         this.light.opacity = 0;
-        this.laserNode = this.node.getChildByName("laser");
-        this.laserSpriteNode = this.laserNode.getChildByName("sprite");
-        this.laserLightSprite = this.laserNode.getChildByName("light").getComponent(cc.Sprite);
-        this.laserHeadSprite = this.laserNode.getChildByName("head").getComponent(cc.Sprite);
-
     }
     onEnable() {
         this.tagetPos = cc.v3(0, 0);
@@ -99,10 +90,6 @@ export default class Bullet extends BaseColliderComponent {
         this.sprite.angle = 0;
         this.light = this.node.getChildByName('light');
         this.light.opacity = 0;
-        this.laserNode = this.node.getChildByName("laser");
-        this.laserSpriteNode = this.laserNode.getChildByName("sprite");
-        this.laserLightSprite = this.laserNode.getChildByName("light").getComponent(cc.Sprite);
-        this.laserHeadSprite = this.laserNode.getChildByName("head").getComponent(cc.Sprite);
         this.isTrackDelay = false;
         this.isDecelerateDelay = false;
         this.isHit = false;
@@ -135,7 +122,7 @@ export default class Bullet extends BaseColliderComponent {
     }
 
     private checkTraking(): void {
-        if (this.data.isTracking == 1 && this.data.isLaser != 1 && this.isTrackDelay && !this.isHit) {
+        if (this.data.isTracking == 1 && this.isTrackDelay && !this.isHit) {
             let pos = this.hasNearEnemy();
             if (!pos.equals(cc.Vec3.ZERO)) {
                 this.rotateCollider(cc.v2(pos.x, pos.y));
@@ -154,59 +141,6 @@ export default class Bullet extends BaseColliderComponent {
         this.collider.w = 30;
         this.collider.h = 14;
         this.collider.sensor = data.isPhysical == 0;
-        this.initLaser();
-
-    }
-    private initLaser(): void {
-        this.laserNode.active = this.data.isLaser == 1;
-        if (this.data.isLaser != 1) {
-            return;
-        }
-        if (!this.laserNode) {
-            this.laserNode = this.node.getChildByName("laser");
-        }
-        this.sprite.opacity = 0;
-        this.sprite.getComponent(cc.Sprite).spriteFrame = null;
-        this.sprite.angle = 0;
-        this.laserNode.opacity = 0;
-        this.laserSpriteNode.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser);
-        this.laserHeadSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'head');
-        this.laserNode.stopAllActions();
-
-        cc.tween(this.laserLightSprite.node).repeatForever(
-            cc.tween()
-                .delay(0.05).call(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light001'); })
-                .delay(0.05).call(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light002'); })
-                .delay(0.05).call(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light003'); })
-        ).start();
-    }
-    private showLaser(): void {
-        if (this.data.isLaser != 1) {
-            return;
-        }
-        //碰撞终点
-        let endPos = this.node.convertToWorldSpaceAR(cc.v3(0, 0));
-        let distance = Logic.getDistance(this.startPos, endPos);
-        let offset = 32;
-        if (distance <= 0) {
-            distance = 0;
-            offset = 0;
-        }
-        //激光的宽度是两点之间的距离加贴图的宽度,激光的起始点是减去当前距离的点
-        let finalwidth = distance - offset;
-
-        this.laserSpriteNode.width = finalwidth / this.node.scaleY;
-        this.laserSpriteNode.setPosition(cc.v3(-finalwidth / this.node.scaleY, 0));
-        this.laserHeadSprite.node.setPosition(cc.v3(-finalwidth / this.node.scaleY, 0));
-        this.laserNode.opacity = 255;
-        this.sprite.opacity = 0;
-        this.laserNode.scaleX = 1;
-        this.laserNode.scaleY = 1;
-        this.laserLightSprite.node.setPosition(-16 * this.node.scaleY, 0);
-        cc.tween(this.laserNode).to(0.1, { scale: 1 }).to(0.1, { scaleY: 0 }).delay(0.1).call(() => {
-            this.shooter.addDestroyBullet(this.node);
-        }).start();
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.REMOTE_LASER } });
     }
 
     private changeRes(resName: string, lightName: string, lightColor: string, suffix?: string) {
@@ -288,7 +222,7 @@ export default class Bullet extends BaseColliderComponent {
             this.scheduleOnce(() => {
                 this.bulletHit();
                 let pos = this.node.convertToWorldSpaceAR(cc.Vec3.ZERO);
-                this.shooter.fireSplitBullet(this.data.splitBulletType,this.node.angle, this.shooter.node.convertToNodeSpaceAR(pos), this.data.splitArcExNum, this.data.splitLineExNum);
+                this.shooter.fireSplitBullet(this.data.splitBulletType, this.node.angle, this.shooter.node.convertToNodeSpaceAR(pos), this.data.splitArcExNum, this.data.splitLineExNum);
             }, this.data.splitTime);
         }
 
@@ -452,23 +386,20 @@ export default class Bullet extends BaseColliderComponent {
             this.isReserved = true;
             return false;
         }
-        if (this.data.isLaser != 1) {
-            // //法线
-            // let normal = this.node.convertToNodeSpaceAR(targetWorldPos).normalizeSelf().negSelf();
-            // //入射
-            // let pos = this.rigidBody.linearVelocity.clone().normalizeSelf();
-            // //反射
-            // let reflect = pos.clone().sub(normal.clone().mulSelf(pos.clone().dot(normal)).mulSelf(2));
-            // this.node.angle-=cc.Vec2.angle(pos,reflect)*180/Math.PI;
-            // this.rigidBody.linearVelocity = this.rigidBody.linearVelocity.rotate(cc.Vec2.angle(pos,reflect));
-            let angle = -180 + Logic.getRandomNum(0, 10) - 20;
-            this.node.angle += angle;
-            this.currentLinearVelocity = this.currentLinearVelocity.rotate(angle * Math.PI / 180);
-            this.isFromPlayer = true;
-            this.data.isTracking = 0;
-            return true;
-        }
-        return false;
+        // //法线
+        // let normal = this.node.convertToNodeSpaceAR(targetWorldPos).normalizeSelf().negSelf();
+        // //入射
+        // let pos = this.rigidBody.linearVelocity.clone().normalizeSelf();
+        // //反射
+        // let reflect = pos.clone().sub(normal.clone().mulSelf(pos.clone().dot(normal)).mulSelf(2));
+        // this.node.angle-=cc.Vec2.angle(pos,reflect)*180/Math.PI;
+        // this.rigidBody.linearVelocity = this.rigidBody.linearVelocity.rotate(cc.Vec2.angle(pos,reflect));
+        let angle = -180 + Logic.getRandomNum(0, 10) - 20;
+        this.node.angle += angle;
+        this.currentLinearVelocity = this.currentLinearVelocity.rotate(angle * Math.PI / 180);
+        this.isFromPlayer = true;
+        this.data.isTracking = 0;
+        return true;
     }
     private bulletHit(): void {
         if (this.isHit) {
@@ -478,7 +409,7 @@ export default class Bullet extends BaseColliderComponent {
         if (this.anim && !this.anim.getAnimationState('Bullet001Hit').isPlaying) {
             this.currentLinearVelocity = cc.v2(0, 0);
             this.entity.Move.linearVelocity = cc.v2(0, 0);
-            this.data.isLaser == 1 ? this.showLaser() : this.anim.play("Bullet001Hit");
+            this.anim.play("Bullet001Hit");
         }
         if (this.data.isBoom > 0) {
             let boom = cc.instantiate(this.boom).getComponent(AreaOfEffect);
@@ -498,7 +429,7 @@ export default class Bullet extends BaseColliderComponent {
         }
     }
     hasNearEnemy() {
-        if (this.data.isTracking != 1 || this.data.isLaser == 1 || !this.dungeon) {
+        if (this.data.isTracking != 1 || !this.dungeon) {
             return cc.Vec3.ZERO;
         }
         return ActorUtils.getDirectionFromNearestEnemy(this.node.position, !this.isFromPlayer, this.dungeon, false, 500);
