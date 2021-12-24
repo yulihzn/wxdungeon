@@ -429,8 +429,10 @@ export default class Player extends Actor {
     private updateInfoUi() {
         let health = this.data.getHealth();
         let dream = this.data.getDream();
+        let life = this.data.LifeData;
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_LIFE_BAR, { solid: life.solidSatiety, poo: life.poo,liquid:life.liquidSatiety,pee:life.pee });
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipData());
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
     }
@@ -1234,6 +1236,28 @@ export default class Player extends Actor {
     setLinearVelocity(movement: cc.Vec2) {
 
     }
+    updateLife(sanity:number,solid:number,liquid:number){
+        this.data.LifeData.sanity+=sanity;
+        this.data.LifeData.solidSatiety+=solid;
+        this.data.LifeData.liquidSatiety+=liquid;
+        if(this.data.LifeData.sanity>100){
+            this.data.LifeData.sanity = 100;
+        }else if(this.data.LifeData.sanity< 0){
+            this.data.LifeData.sanity = 0;
+        }
+        if(this.data.LifeData.solidSatiety>100){
+            this.data.LifeData.solidSatiety = 100;
+        }else if(this.data.LifeData.solidSatiety< 0){
+            this.data.LifeData.solidSatiety = 0;
+        }
+        if(this.data.LifeData.liquidSatiety>100){
+            this.data.LifeData.liquidSatiety = 100;
+        }else if(this.data.LifeData.liquidSatiety< 0){
+            this.data.LifeData.liquidSatiety = 0;
+        }
+        this.updateInfoUi();
+    }
+    
 
     drink() {
         this.avatar.drink();

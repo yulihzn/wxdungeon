@@ -59,6 +59,13 @@ export default class StatusData {
     exOilGold:number = 0;//额外经验获取
     clearHealth = 0;//清理完房间回复生命
     avoidDeath = 0;//抵挡一次致命伤
+    sanityDirect: number = 0;//瞬间san值增加
+    sanityOvertime: number = 0;//持续san值增加
+    solidDirect: number = 0;//瞬间饱腹增加
+    solidOvertime: number = 0;//持续饱腹增加
+    liquidDirect: number = 0;//瞬间解渴增加
+    liquidOvertime: number = 0;//持续解渴值增加
+    
     
     private from:FromData;//来源
 
@@ -98,6 +105,12 @@ export default class StatusData {
         this.invisibleDuratonDirect = data.invisibleDuratonDirect?data.invisibleDuratonDirect:0;
         this.dreamDirect = data.dreamDirect?data.dreamDirect:0;
         this.dreamOvertime = data.dreamOvertime?data.dreamOvertime:0;
+        this.sanityDirect = data.sanityDirect?data.sanityDirect:0;
+        this.sanityOvertime = data.sanityOvertime?data.sanityOvertime:0;
+        this.solidDirect = data.solidDirect?data.solidDirect:0;
+        this.solidOvertime = data.solidOvertime?data.solidOvertime:0;
+        this.liquidDirect = data.liquidDirect?data.liquidDirect:0;
+        this.liquidOvertime = data.liquidOvertime?data.liquidOvertime:0;
         this.variation = data.variation?data.variation:0;
         this.unique = data.unique?data.unique:0;
         this.exOilGold = data.exOilGold?data.exOilGold:0;
@@ -136,6 +149,12 @@ export default class StatusData {
         e.invisibleDuratonDirect = this.invisibleDuratonDirect;
         e.dreamDirect = this.dreamDirect;
         e.dreamOvertime = this.dreamOvertime;
+        e.sanityDirect = this.sanityDirect;
+        e.sanityOvertime = this.sanityOvertime;
+        e.liquidDirect = this.liquidDirect;
+        e.liquidOvertime = this.liquidOvertime;
+        e.solidDirect = this.solidDirect;
+        e.solidOvertime = this.solidOvertime;
         e.type = this.type;
         e.variation = this.variation;
         e.finishStatus = this.finishStatus;

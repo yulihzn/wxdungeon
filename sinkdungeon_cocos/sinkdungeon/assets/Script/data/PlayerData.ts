@@ -7,6 +7,7 @@ import AvatarData from "./AvatarData";
 import OilGoldData from "./OilGoldData";
 import TalentData from "./TalentData";
 import Shield from "../logic/Shield";
+import LifeData from "./LifeData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -40,6 +41,7 @@ export default class PlayerData {
     private professionTalentData: TalentData;
     private statusList: StatusData[];
     private shadowList: number[];
+    private lifeData:LifeData;
 
     constructor() {
         this.equipmentTotalData = new EquipmentData();
@@ -48,6 +50,7 @@ export default class PlayerData {
         this.oilGoldData = new OilGoldData();
         this.organizationTalentData = new TalentData();
         this.professionTalentData = new TalentData();
+        this.lifeData = new LifeData();
         this.statusList = new Array();
         this.common = new CommonData();
         this.common.maxHealth = PlayerData.DEFAULT_HEALTH;
@@ -73,6 +76,9 @@ export default class PlayerData {
             data.valueCopy(s);
             this.statusList.push(data);
         }
+    }
+    get LifeData(){
+        return this.lifeData;
     }
     get EquipmentTotalData() {
         return this.equipmentTotalData;
@@ -112,6 +118,7 @@ export default class PlayerData {
         this.statusTotalData.valueCopy(data.statusTotalData);
         this.avatarData.valueCopy(data.avatarData);
         this.oilGoldData.valueCopy(data.oilGoldData);
+        this.lifeData.valueCopy(data.lifeData);
         this.StatusList = data.statusList;
         this.currentHealth = data.currentHealth ? data.currentHealth : 0;
         this.currentDream = data.currentDream ? data.currentDream : 0;
@@ -133,6 +140,7 @@ export default class PlayerData {
         e.oilGoldData = this.oilGoldData.clone();
         e.organizationTalentData = this.organizationTalentData.clone();
         e.professionTalentData = this.professionTalentData.clone();
+        e.lifeData = this.lifeData.clone();
         e.StatusList = this.statusList;
         e.shadowList = this.shadowList;
         return e;

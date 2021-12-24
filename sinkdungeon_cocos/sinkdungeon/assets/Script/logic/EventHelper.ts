@@ -63,6 +63,7 @@ export class EventHelper extends cc.Component {
     public static readonly HUD_UPDATE_PLAYER_HEALTHBAR = 'HUD_UPDATE_PLAYER_HEALTHBAR';
     public static readonly HUD_UPDATE_PLAYER_DREAMBAR = 'HUD_UPDATE_PLAYER_DREAMBAR';
     public static readonly HUD_SHAKE_PLAYER_DREAMBAR = 'HUD_SHAKE_PLAYER_DREAMBAR';
+    public static readonly HUD_UPDATE_PLAYER_LIFE_BAR = 'HUD_UPDATE_PLAYER_LIFE_BAR';
     public static readonly HUD_INVENTORY_SHOW = 'HUD_INVENTORY_SHOW';
     public static readonly HUD_CELLPHONE_SHOW = 'HUD_CELLPHONE_SHOW';
     public static readonly HUD_INVENTORY_SELECT_UPDATE = 'HUD_INVENTORY_SELECT_UPDATE';

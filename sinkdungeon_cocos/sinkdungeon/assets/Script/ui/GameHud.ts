@@ -9,6 +9,7 @@ import InventoryDialog from "./dialog/InventoryDialog";
 import AudioPlayer from "../utils/AudioPlayer";
 import InventoryData from "../data/InventoryData";
 import FurnitureData from "../data/FurnitureData";
+import SatietyView from "./SatietyView";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -54,6 +55,8 @@ export default class GameHud extends cc.Component {
     inventoryDialog: InventoryDialog = null;
     @property(cc.Node)
     followArrows: cc.Node = null;
+    @property(SatietyView)
+    satietyView:SatietyView = null;
     private arrowList: cc.Node[] = [];
     private isCompleteShowed = false;
     private checkTimeDelay = 0;
@@ -79,6 +82,9 @@ export default class GameHud extends cc.Component {
             if (this.dreamBar) {
                 this.dreamBar.shake();
             }
+        })
+        EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_LIFE_BAR, (detail) => {
+            this.lifeBarUpdate(detail.solid, detail.poo,detail.liquid,detail.pee);
         })
         EventHelper.on(EventHelper.HUD_DAMAGE_CORNER_SHOW, (detail) => {
             this.showDamageCorner();
@@ -230,6 +236,11 @@ export default class GameHud extends cc.Component {
     private dreamBarUpdate(currentHealth, maxHealth): void {
         if (this.dreamBar) {
             this.dreamBar.refreshHealth(currentHealth, maxHealth);
+        }
+    }
+    private lifeBarUpdate(solid:number,poo:number,liquid:number,pee:number): void {
+        if (this.satietyView) {
+            this.satietyView.refreshPercent(solid, poo,liquid,pee);
         }
     }
     start() {

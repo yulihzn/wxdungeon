@@ -40,6 +40,9 @@ export default class PlayerInfoDialog extends cc.Component {
     remoteDamage: cc.Label = null;
     remoteCritRate: cc.Label = null;
     remoteCooldown: cc.Label = null;
+    sanity:cc.Label = null;
+    solidSatiety:cc.Label = null;
+    liquidSatiety:cc.Label = null;
     
     isShow = false;
     layout:cc.Node=null;
@@ -70,6 +73,9 @@ export default class PlayerInfoDialog extends cc.Component {
         this.remoteCooldown = this.node.getChildByName('layout').getChildByName('remoteCooldown').getChildByName('label').getComponent(cc.Label);
         this.remoteCritRate = this.node.getChildByName('layout').getChildByName('remoteCritRate').getChildByName('label').getComponent(cc.Label);
         this.remoteDamage = this.node.getChildByName('layout').getChildByName('remoteDamage').getChildByName('label').getComponent(cc.Label);
+        this.sanity = this.node.getChildByName('layout').getChildByName('sanity').getChildByName('label').getComponent(cc.Label);
+        this.solidSatiety = this.node.getChildByName('layout').getChildByName('solidSatiety').getChildByName('label').getComponent(cc.Label);
+        this.liquidSatiety = this.node.getChildByName('layout').getChildByName('liquidSatiety').getChildByName('label').getComponent(cc.Label);
         this.layout =  this.node.getChildByName('layout');
         this.addSpriteTouchEvent();
     }
@@ -103,6 +109,9 @@ export default class PlayerInfoDialog extends cc.Component {
         this.remoteCritRate.string = this.getInfo(baseCommonData.remoteCritRate,equipmentData.Common.remoteCritRate,statusData.Common.remoteCritRate,true);
         this.remoteDamage.string = this.getInfo(baseCommonData.remoteDamage,equipmentData.Common.remoteDamage,statusData.Common.remoteDamage);
         this.remoteCooldown.string = this.getInfo(baseCommonData.remoteCooldown,equipmentData.Common.remoteCooldown,statusData.Common.remoteCooldown);
+        this.sanity.string = this.getInfo(playerData.LifeData.sanity,0,0,true);
+        this.solidSatiety.string = this.getInfo(playerData.LifeData.solidSatiety,0,0,true);
+        this.liquidSatiety.string = this.getInfo(playerData.LifeData.liquidSatiety,0,0,true);
     }
     
     private getInfo(base:number,equip:number,status:number,isPercent?:boolean):string{
