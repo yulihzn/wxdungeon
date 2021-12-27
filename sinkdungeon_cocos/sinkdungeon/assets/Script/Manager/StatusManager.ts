@@ -68,14 +68,14 @@ export default class StatusManager extends cc.Component {
 
     @property(cc.Prefab)
     statusPrefab: cc.Prefab = null;
-    private statusList: Status[];
-    public statusIconList:StatusIconList;
+    private statusMap: Map<number, Status>;
+    public statusIconList: StatusIconList;
     private totalStatusData: StatusData = new StatusData();
     private actor: Actor;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.statusList = new Array();
+        this.statusMap = new Map<number, Status>();
         this.actor = this.node.parent.getComponent(Actor);
     }
 
@@ -89,7 +89,7 @@ export default class StatusManager extends cc.Component {
         let sd = new StatusData();
         sd.valueCopy(data)
         sd.From.valueCopy(from);
-        if(this.stopOtherUniqueStatus(sd.unique)){
+        if (this.stopOtherUniqueStatus(sd.unique)) {
             this.showStatus(sd, false);
         }
     }
@@ -100,7 +100,7 @@ export default class StatusManager extends cc.Component {
         let sd = new StatusData();
         sd.valueCopy(Logic.status[resName])
         sd.From.valueCopy(from);
-        if(this.stopOtherUniqueStatus(sd.unique)){
+        if (this.stopOtherUniqueStatus(sd.unique)) {
             this.showStatus(sd, isFromSave);
         }
     }
@@ -115,97 +115,85 @@ export default class StatusManager extends cc.Component {
         }
     }
     hasStatus(resName: string): boolean {
-        let hasStatus = false;
         let sd = new StatusData();
         sd.valueCopy(Logic.status[resName]);
-        for (let i = this.statusList.length - 1; i >= 0; i--) {
-            let s = this.statusList[i];
+        if (this.statusMap.has(sd.id)) {
+            let s = this.statusMap.get(sd.id);
             if (s && s.node && s.isValid && s.isStatusRunning() && s.data.id == sd.id) {
-                hasStatus = true;
-                break;
+                return true;
             }
         }
-        return hasStatus;
+
+        return false;
     }
     stopStatus(resName: string): void {
         let sd = new StatusData();
         sd.valueCopy(Logic.status[resName]);
-        for (let i = this.statusList.length - 1; i >= 0; i--) {
-            let s = this.statusList[i];
+        if (this.statusMap.has(sd.id)) {
+            let s = this.statusMap.get(sd.id);
             if (s && s.node && s.isValid && s.isStatusRunning() && s.data.id == sd.id) {
                 s.stopStatus();
             }
         }
-        return undefined;
     }
-    stopOtherUniqueStatus(unique:number):boolean{
-        if(unique<1){
+    stopOtherUniqueStatus(unique: number): boolean {
+        if (unique < 1) {
             return true;
         }
-        for (let i = this.statusList.length - 1; i >= 0; i--) {
-            let s = this.statusList[i];
+        this.statusMap.forEach((s) => {
             if (s && s.data && s.data.unique == unique) {
-                if(s.data.duration<0){
+                if (s.data.duration < 0) {
                     return false;
-                }else{
+                } else {
                     s.stopStatus();
                     return true;
                 }
             }
-        }
+        });
         return true;
     }
     stopAllStatus(): void {
-        for (let i = this.statusList.length - 1; i >= 0; i--) {
-            let s = this.statusList[i];
+        this.statusMap.forEach((s) => {
             s.stopStatus();
-        }
+        });
     }
     stopAllBuffs(): void {
-        for (let i = this.statusList.length - 1; i >= 0; i--) {
-            let s = this.statusList[i];
+        this.statusMap.forEach((s) => {
             if (s && s.data && s.data.type == Status.BUFF) {
                 s.stopStatus();
             }
-        }
+        });
     }
     stopAllDebuffs(): void {
-        for (let i = this.statusList.length - 1; i >= 0; i--) {
-            let s = this.statusList[i];
+        this.statusMap.forEach((s) => {
             if (s && s.data && s.data.type == Status.DEBUFF) {
                 s.stopStatus();
             }
-        }
+        });
     }
     private showStatus(data: StatusData, isFromSave: boolean) {
         //去除已经失效的状态
-        for (let i = this.statusList.length - 1; i >= 0; i--) {
-            let s = this.statusList[i];
+        this.statusMap.forEach((s,key) => {
             if (!s || !s.node || !s.isValid) {
-                this.statusList.splice(i, 1);
+                this.statusMap.delete(key);
             }
-        }
+        });
         //新的状态如果存在则刷新且重新触发
-        let hasStatus = false;
-        for (let i = this.statusList.length - 1; i >= 0; i--) {
-            let s = this.statusList[i];
+        if (this.statusMap.has(data.id)) {
+            let s = this.statusMap.get(data.id);
             if (s && s.node && s.isValid && s.isStatusRunning() && s.data.id == data.id) {
                 s.data.duration = data.duration;
                 s.showStatus(data, this.actor, isFromSave);
-                hasStatus = true;
-                break;
+                return;
             }
-        }
-        if (hasStatus) {
-            return;
         }
 
         let statusNode: cc.Node = cc.instantiate(this.statusPrefab);
         statusNode.parent = this.node;
         statusNode.active = true;
         let status = statusNode.getComponent(Status);
-        this.statusList.push(status);
-        if(this.statusIconList){
+        this.statusMap.set(data.id,status);
+        if (this.statusIconList) {
             let icon = this.statusIconList.getIcon();
             status.icon = icon;
         }
@@ -238,8 +226,8 @@ export default class StatusManager extends cc.Component {
     private updateStatus(): StatusData[] {
         this.totalStatusData = new StatusData();
         let dataList: StatusData[] = new Array();
-        for (let i = this.statusList.length - 1; i >= 0; i--) {
-            let s = this.statusList[i];
+        for (let i = this.statusMap.size - 1; i >= 0; i--) {
+            let s = this.statusMap[i];
             if (!s || !s.node || !s.isValid) {
                 continue;
             }
