@@ -46,7 +46,7 @@ export default class Status extends cc.Component {
 
         this.actor = actor;
         this.sprite.spriteFrame = Logic.spriteFrameRes(data.spriteFrameName);
-        this.anim.playAdditive('StatusShow');
+        this.anim.play('StatusShow');
         if (!isFromSave) {
             this.doStatusDamage(true);//非数据保存状态执行瞬时效果
         }
@@ -110,6 +110,11 @@ export default class Status extends cc.Component {
             if (dizzDuration > 0) this.actor.takeDizz(dizzDuration);
             if (dream && dream != 0) this.actor.updateDream(dream);
             if (this.data.invisibleDuratonDirect > 0) this.actor.hideSelf(this.data.invisibleDuratonDirect);
+            if(isDirect){
+                this.actor.updateLife(this.data.sanityDirect,this.data.solidDirect,this.data.liquidDirect);
+            }else{
+                this.actor.updateLife(this.data.sanityOvertime,this.data.solidOvertime,this.data.liquidOvertime);
+            }
         }
     }
 

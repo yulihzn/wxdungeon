@@ -321,9 +321,25 @@ export default class PlayerAvatar extends cc.Component {
         this.scheduleOnce(() => {
             this.isAniming = false;
         }, 1.5)
-
     }
-
+    public toilet() {
+        this.isAniming = true;
+        this.scheduleOnce(() => {
+            this.isAniming = false;
+        }, 5)
+    }
+    public sleep() {
+        this.isAniming = true;
+        this.scheduleOnce(() => {
+            this.isAniming = false;
+        }, 5)
+    }
+    public read() {
+        this.isAniming = true;
+        this.scheduleOnce(() => {
+            this.isAniming = false;
+        }, 5)
+    }
     start() {
 
     }

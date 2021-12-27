@@ -48,13 +48,9 @@ export default class HealthBar extends cc.Component {
         cc.tween(this.node).to(0.05,{scale:1.05}).to(0.05,{scale:0.95}).to(0.1,{scale:1.05}).to(0.05,{scale:1}).start();
     }
     update (dt) {
-        this.timeDelay += dt;
-        if (this.timeDelay > 0.016) {
-            this.timeDelay = 0;
-        }
         this.backbar.width = this.lerp(this.backbar.width,this.progressBar.barSprite.node.width,dt*5);
     }
-    lerp(a, b, r) {
+    lerp(a:number, b:number, r:number) {
         return a + (b - a) * r;
-    };
+    }
 }

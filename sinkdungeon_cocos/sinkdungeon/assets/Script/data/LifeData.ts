@@ -17,10 +17,10 @@ export default class LifeData extends BaseData{
     liquidSatiety:number = 50;//解渴值
     solidLoss:number = 1;//每小时消耗掉的饱腹值
     liquidLoss:number = 2;//每小时消耗掉的解渴值
-    poo:number = 0;//便便
-    pee:number = 0;//尿尿
-    pooRate:number = 10;//便便转化率%
-    peeRate:number = 10;//尿尿转化率%
+    poo:number = 0;//固体
+    pee:number = 0;//液体
+    pooRate:number = 10;//固体转化率%
+    peeRate:number = 10;//液体转化率%
 
     public valueCopy(data:LifeData):void{
         if(!data){
@@ -29,8 +29,8 @@ export default class LifeData extends BaseData{
         this.sanity = data.sanity?data.sanity:0;
         this.solidSatiety = data.solidSatiety?data.solidSatiety:0;
         this.liquidSatiety = data.liquidSatiety?data.liquidSatiety:0;
-        this.liquidLoss = data.liquidLoss?data.liquidLoss:0;
-        this.solidLoss = data.solidLoss?data.solidLoss:0;
+        this.solidLoss = data.solidLoss?data.solidLoss:1;
+        this.liquidLoss = data.liquidLoss?data.liquidLoss:2;
         this.poo = data.poo?data.poo:0;
         this.pee = data.pee?data.pee:0;
         this.pooRate = data.pooRate?data.pooRate:0;

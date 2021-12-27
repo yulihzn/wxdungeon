@@ -59,6 +59,11 @@ export default class StatusManager extends cc.Component {
     public static readonly AVOID_DEATH = "status065";
     public static readonly CAMP_FIRE = "status066";
     public static readonly HOLOGRAPHIC_DODGE = "status067";
+    public static readonly DRINK = "status068";
+    public static readonly SANITY_UP = "status069";
+    public static readonly SANITY_DOWN = "status070";
+    public static readonly EAT = "status071";
+    public static readonly INSANE = "status072";
 
 
     @property(cc.Prefab)
@@ -84,8 +89,9 @@ export default class StatusManager extends cc.Component {
         let sd = new StatusData();
         sd.valueCopy(data)
         sd.From.valueCopy(from);
-        this.stopOtherUniqueStatus(sd.unique);
-        this.showStatus(sd, false);
+        if(this.stopOtherUniqueStatus(sd.unique)){
+            this.showStatus(sd, false);
+        }
     }
     addStatus(resName: string, from: FromData, isFromSave?: boolean) {
         if (resName.length < 1) {
@@ -94,8 +100,9 @@ export default class StatusManager extends cc.Component {
         let sd = new StatusData();
         sd.valueCopy(Logic.status[resName])
         sd.From.valueCopy(from);
-        this.stopOtherUniqueStatus(sd.unique);
-        this.showStatus(sd, isFromSave);
+        if(this.stopOtherUniqueStatus(sd.unique)){
+            this.showStatus(sd, isFromSave);
+        }
     }
     addStatusListFromSave(statusList: StatusData[]) {
         if (statusList && statusList.length > 0) {
@@ -131,16 +138,22 @@ export default class StatusManager extends cc.Component {
         }
         return undefined;
     }
-    stopOtherUniqueStatus(unique:number){
+    stopOtherUniqueStatus(unique:number):boolean{
         if(unique<1){
-            return;
+            return true;
         }
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
             if (s && s.data && s.data.unique == unique) {
-                s.stopStatus();
+                if(s.data.duration<0){
+                    return false;
+                }else{
+                    s.stopStatus();
+                    return true;
+                }
             }
         }
+        return true;
     }
     stopAllStatus(): void {
         for (let i = this.statusList.length - 1; i >= 0; i--) {

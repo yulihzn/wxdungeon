@@ -47,7 +47,7 @@ export default class StatusIconList extends cc.Component {
                 return;
             }
             let pos = this.node.convertToNodeSpaceAR(icon.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO));
-            this.dialog.showDialog(pos.add(cc.v3(32, 0)), data);
+            this.dialog.showDialog(pos.add(cc.v3(64, 0)), data);
         })
         icon.node.parent.on(cc.Node.EventType.TOUCH_END, () => {
             this.dialog.hideDialog();

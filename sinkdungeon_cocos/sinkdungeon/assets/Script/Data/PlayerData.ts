@@ -160,9 +160,9 @@ export default class PlayerData {
             attack = 0;
         }
         dd.isCriticalStrike = isCritical;
-        dd.physicalDamage = attack;
         dd.realDamage = data.realDamage;
         dd.magicDamage = data.magicDamage;
+        dd.physicalDamage = attack;
         if (this.avatarData.organizationIndex == AvatarData.TECH) {
             dd.physicalDamage += this.currentDream * 0.5;
         }
@@ -245,6 +245,9 @@ export default class PlayerData {
         let data = this.FinalCommon;
         let rate = 1;
         let maxHealth = data.maxHealth;
+        if(this.lifeData.sanity<=0){
+            maxHealth = 1;
+        }
         if (maxHealth > 0) {
             rate = this.currentHealth / maxHealth;
         } else {
@@ -258,6 +261,9 @@ export default class PlayerData {
         let data = this.FinalCommon;
         let rate = 1;
         let maxDream = data.maxDream;
+        if(this.lifeData.sanity<=0){
+            maxDream = 1;
+        }
         if (maxDream > 0) {
             rate = this.currentDream / maxDream;
         } else {

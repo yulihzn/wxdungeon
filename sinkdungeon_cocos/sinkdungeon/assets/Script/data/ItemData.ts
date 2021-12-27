@@ -30,6 +30,9 @@ export default class ItemData extends BaseData {
     cooldown = 1;//冷却时间
     statusList: string = '';
     canSave = 0;
+    sanity:number = 0;//神志
+    solidSatiety:number = 0;//饱腹值
+    liquidSatiety:number = 0;//解渴值
     private common: CommonData;
     constructor() {
         super();
@@ -59,6 +62,9 @@ export default class ItemData extends BaseData {
         this.cooldown = data.cooldown ? data.cooldown : 1;
         this.price = data.price ? data.price : 0;
         this.statusList = data.statusList ? data.statusList : '';
+        this.sanity = data.sanity?data.sanity:0;
+        this.solidSatiety = data.solidSatiety?data.solidSatiety:0;
+        this.liquidSatiety = data.liquidSatiety?data.liquidSatiety:0;
 
 
     }
@@ -80,6 +86,9 @@ export default class ItemData extends BaseData {
         e.cooldown = this.cooldown;
         e.price = this.price;
         e.statusList = this.statusList;
+        e.sanity = this.sanity;
+        e.solidSatiety = this.solidSatiety;
+        e.liquidSatiety = this.liquidSatiety;
         return e;
     }
 

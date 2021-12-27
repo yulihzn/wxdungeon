@@ -1,14 +1,12 @@
+import { EventHelper } from './../logic/EventHelper';
 import PlayerInfoDialog from "./PlayerInfoDialog";
 import HealthBar from "../logic/HealthBar";
-import { EventHelper } from "../logic/EventHelper";
 import PlayerData from "../data/PlayerData";
 import Logic from "../logic/Logic";
 import SettingsDialog from "./dialog/SettingsDialog";
 import MartShelvesDialog from "./dialog/MartShelvesDialog";
 import InventoryDialog from "./dialog/InventoryDialog";
 import AudioPlayer from "../utils/AudioPlayer";
-import InventoryData from "../data/InventoryData";
-import FurnitureData from "../data/FurnitureData";
 import SatietyView from "./SatietyView";
 
 // Learn TypeScript:
@@ -84,8 +82,9 @@ export default class GameHud extends cc.Component {
             }
         })
         EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_LIFE_BAR, (detail) => {
-            this.lifeBarUpdate(detail.solid, detail.poo,detail.liquid,detail.pee);
+            this.lifeBarUpdate(detail.sanity,detail.solid, detail.poo,detail.liquid,detail.pee);
         })
+        
         EventHelper.on(EventHelper.HUD_DAMAGE_CORNER_SHOW, (detail) => {
             this.showDamageCorner();
             if (this.healthBar) {
@@ -238,9 +237,9 @@ export default class GameHud extends cc.Component {
             this.dreamBar.refreshHealth(currentHealth, maxHealth);
         }
     }
-    private lifeBarUpdate(solid:number,poo:number,liquid:number,pee:number): void {
+    private lifeBarUpdate(sanity:number,solid:number,poo:number,liquid:number,pee:number): void {
         if (this.satietyView) {
-            this.satietyView.refreshPercent(solid, poo,liquid,pee);
+            this.satietyView.refreshPercent(sanity,solid, poo,liquid,pee);
         }
     }
     start() {
@@ -296,6 +295,7 @@ export default class GameHud extends cc.Component {
         strSecond = strSecond.length > 1 ? strSecond : '0' + strSecond;
         Logic.time = strHour + ':' + strMinute + ':' + strSecond;
         Logic.realTime = Logic.realTime + 60000;
+        EventHelper.emit(EventHelper.HUD_TIME_TICK);
 
     }
 

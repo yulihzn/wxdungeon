@@ -64,7 +64,7 @@ export default class RoomBed extends Building {
             if(this.dungeon){
                 this.dungeon.CameraZoom = Dungeon.DEFAULT_ZOOM_MAX;
             }
-            player.addStatus(StatusManager.DIZZ,new FromData());
+            player.sleep();
             this.scheduleOnce(()=>{
                 Logic.playerData = player.data.clone();
                 if(Logic.playerData.pos.equals(this.data.defaultPos)){

@@ -5,8 +5,12 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import ItemData from "../data/ItemData";
+import StatusData from "../data/StatusData";
 import { EventHelper } from "../logic/EventHelper";
+import Logic from "../logic/Logic";
 import Player from "../logic/Player";
+import StatusManager from "../manager/StatusManager";
 import AudioPlayer from "../utils/AudioPlayer";
 import Building from "./Building";
 
@@ -33,7 +37,11 @@ export default class RoomWaterDispenser extends Building {
         if (this.hasWater) {
             this.cup.opacity = 0;
             this.hasWater = false;
-            player.drink();
+            let d = new ItemData();
+            d.liquidSatiety = 15;
+            if(player.canEatOrDrink(d)){
+                player.drink();
+            }
         } else {
             this.isAniming = true;
             this.anim.play('RoomWaterDispenser');

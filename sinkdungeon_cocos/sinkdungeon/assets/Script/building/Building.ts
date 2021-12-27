@@ -50,6 +50,9 @@ export default abstract class Building extends Actor{
     setLinearVelocity(movement: cc.Vec2) {
 
     }
+    updateLife(sanity: number, solid: number, liquid: number): void {
+        
+    }
     disappear(){
         cc.tween(this.node).to(0.5+Random.rand(),{scaleY:0}).start();
     }

@@ -225,7 +225,7 @@ export default class ItemManager extends BaseManager {
                         cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_SHOW,{detail:{worldPos:item.node.convertToWorldSpaceAR(cc.v3(0,32)),itemData:item.data}});
                     }
                     this.lastGroundItem = item;
-                }else{
+                }else if(player&&player.canEatOrDrink(item.data)){
                     item.taken(player,false);
                     this.lastGroundItem = null;
                 }

@@ -65,6 +65,7 @@ export default class Furniture extends Building {
     anim: cc.Animation;
     furnitureData: FurnitureData;
     unlockStep: NextStep = new NextStep();
+    bookStep:NextStep = new NextStep();
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -123,7 +124,7 @@ export default class Furniture extends Building {
             case Furniture.FISHTANK:
                 let fishtank = this.getComponent(RoomFishtank);
                 if (fishtank) {
-                    fishtank.feed();
+                    fishtank.feed(player);
                 } break;
             case Furniture.WATERDISPENER:
                 let waterdispenser = this.getComponent(RoomWaterDispenser);
@@ -142,11 +143,16 @@ export default class Furniture extends Building {
             case Furniture.LITTLE_TABLE_2:
                 Utils.toast(`现在是${Utils.getYear(Logic.realTime)}${Utils.getDay(Logic.realTime)}${Utils.getHour(Logic.realTime)}`, false, true);
                 break;
-                case Furniture.TRASHCAN:
-                    let trashCan = this.getComponent(RoomTrashCan);
-                    if(trashCan){
-                        trashCan.getTrash();
-                    }
+            case Furniture.TRASHCAN:
+                let trashCan = this.getComponent(RoomTrashCan);
+                if (trashCan) {
+                    trashCan.getTrash();
+                }
+                break;
+            case Furniture.BOOKSHELF:
+                this.bookStep.next(()=>{
+                    player.read();
+                },5)
                 break;
             default:
                 AudioPlayer.play(AudioPlayer.SELECT_FAIL);
@@ -168,7 +174,7 @@ export default class Furniture extends Building {
             case Furniture.WATERDISPENER:
                 this.zoomCamera(true);
                 break;
-                case Furniture.TRASHCAN:
+            case Furniture.TRASHCAN:
                 this.zoomCamera(true);
                 break;
         }
@@ -181,11 +187,11 @@ export default class Furniture extends Building {
                     fishtank.zoomCamera(false);
                 }
                 break;
-                case Furniture.TV:
-                    let tv = this.getComponent(RoomTv);
-                    if (tv) {
-                        tv.close();
-                    }
+            case Furniture.TV:
+                let tv = this.getComponent(RoomTv);
+                if (tv) {
+                    tv.close();
+                }
                 break;
             case Furniture.LITTLE_TABLE_2:
                 this.zoomCamera(false);
@@ -193,7 +199,7 @@ export default class Furniture extends Building {
             case Furniture.WATERDISPENER:
                 this.zoomCamera(false);
                 break;
-                case Furniture.TRASHCAN:
+            case Furniture.TRASHCAN:
                 this.zoomCamera(false);
                 break;
         }

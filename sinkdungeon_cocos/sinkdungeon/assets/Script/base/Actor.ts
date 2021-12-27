@@ -42,6 +42,7 @@ export default abstract class Actor extends cc.Component implements OnContactLis
     abstract updateStatus(statusList: StatusData[], totalStatusData: StatusData): void;
     abstract hideSelf(hideDuration: number): void;
     abstract updateDream(offset: number): number;
+    abstract updateLife(sanity:number,solid:number,liquid:number): void;
     invisible = false;//是否隐身
     isFaceRight = true;
     isFaceUp = true;

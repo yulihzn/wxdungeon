@@ -126,6 +126,9 @@ export default abstract class Boss extends Actor {
     updateDream(offset: number): number {
         return 0;
     }
+    updateLife(sanity: number, solid: number, liquid: number): void {
+        
+    }
     setLinearVelocity(movement: cc.Vec2){
 
     }

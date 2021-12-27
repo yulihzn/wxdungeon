@@ -7,6 +7,7 @@
 
 import { EventHelper } from "../logic/EventHelper";
 import Logic from "../logic/Logic";
+import Player from "../logic/Player";
 import LoadingManager from "../manager/LoadingManager";
 import NonPlayerManager from "../manager/NonPlayerManager";
 import AudioPlayer from "../utils/AudioPlayer";
@@ -50,13 +51,16 @@ export default class RoomFishtank extends Building {
         EventHelper.emit(zoomIn ? EventHelper.HUD_CAMERA_ZOOM_IN : EventHelper.HUD_CAMERA_ZOOM_OUT);
     }
 
-    feed() {
+    feed(player:Player) {
         if (this.isFeeding) {
             return;
         }
         if (this.foodList.length > 50) {
             Utils.toast('喂得太多了啊');
             return;
+        }
+        if(player){
+            player.sanityChange(1);
         }
         this.isFirst = false;
         this.zoomCamera(true);

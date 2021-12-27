@@ -6,6 +6,9 @@ import AudioPlayer from "../utils/AudioPlayer";
 import FromData from "../data/FromData";
 import ShopTable from "../building/ShopTable";
 import Achievement from "../logic/Achievement";
+import Status from "../status/Status";
+import StatusData from "../data/StatusData";
+import StatusManager from "../manager/StatusManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -39,23 +42,23 @@ export default class Item extends cc.Component {
     data: ItemData = new ItemData();
     shopTable: ShopTable;
 
-    sprite:cc.Sprite;
-    mat:cc.MaterialVariant;
-    taketips:cc.Node;
+    sprite: cc.Sprite;
+    mat: cc.MaterialVariant;
+    taketips: cc.Node;
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
-        this.taketips =  this.node.getChildByName('sprite').getChildByName('taketips');
+    onLoad() {
+        this.taketips = this.node.getChildByName('sprite').getChildByName('taketips');
     }
 
     start() {
         this.anim = this.getComponent(cc.Animation);
     }
-    init(resName: string, pos: cc.Vec3, count?:number,shopTable?: ShopTable) {
+    init(resName: string, pos: cc.Vec3, count?: number, shopTable?: ShopTable) {
         this.data.valueCopy(Logic.items[resName]);
         this.data.uuid = this.data.genNonDuplicateID();
         this.data.pos = pos;
-        this.data.count = count?count:this.data.count;
+        this.data.count = count ? count : this.data.count;
         if (shopTable) {
             this.shopTable = shopTable;
             shopTable.data.itemdata = new ItemData();
@@ -69,22 +72,22 @@ export default class Item extends cc.Component {
             this.sprite.node.width = spriteFrame.getOriginalSize().width;
             this.sprite.node.height = spriteFrame.getOriginalSize().height;
             this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
-            this.mat.setProperty('textureSizeWidth',spriteFrame.getTexture().width*this.sprite.node.scaleX);
-            this.mat.setProperty('textureSizeHeight',spriteFrame.getTexture().height*this.sprite.node.scaleY);
-            this.mat.setProperty('outlineColor',cc.color(200,200,200));
+            this.mat.setProperty('textureSizeWidth', spriteFrame.getTexture().width * this.sprite.node.scaleX);
+            this.mat.setProperty('textureSizeHeight', spriteFrame.getTexture().height * this.sprite.node.scaleY);
+            this.mat.setProperty('outlineColor', cc.color(200, 200, 200));
             this.highLight(false);
         }
     }
 
-    highLight(isHigh:boolean){
-        if(!this.mat){
+    highLight(isHigh: boolean) {
+        if (!this.mat) {
             this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
         }
-        this.mat.setProperty('openOutline',isHigh?1:0);
+        this.mat.setProperty('openOutline', isHigh ? 1 : 0);
     }
 
-    public taken(player: Player,isReplace:boolean): boolean {
-        if(this.data.isTaken){
+    public taken(player: Player, isReplace: boolean): boolean {
+        if (this.data.isTaken) {
             return false;
         }
         if (this.data.canSave) {
@@ -92,21 +95,21 @@ export default class Item extends cc.Component {
                 if (Logic.coins >= this.data.price) {
                     cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.data.price } });
                     cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } });
-                    this._taken(player,isReplace);
+                    this._taken(player, isReplace);
                     this.shopTable.sale(true);
                     return true;
                 }
             } else {
-                this._taken(player,isReplace);
+                this._taken(player, isReplace);
                 return true;
             }
-        }else{
-            this._taken(player,isReplace);
-                return true;
+        } else {
+            this._taken(player, isReplace);
+            return true;
         }
         return false;
     }
-    private _taken(player: Player,isReplace:boolean){
+    private _taken(player: Player, isReplace: boolean) {
         if (!this.data.isTaken && this.anim) {
             this.anim.play('ItemTaken');
             Achievement.addItemAchievement(this.data.resName);
@@ -115,7 +118,7 @@ export default class Item extends cc.Component {
             if (this.data.canSave < 1) {
                 Item.userIt(this.data, player);
             } else {
-                cc.director.emit(EventHelper.PLAYER_CHANGEITEM, { detail: { itemData: this.data,isReplace:isReplace } })
+                cc.director.emit(EventHelper.PLAYER_CHANGEITEM, { detail: { itemData: this.data, isReplace: isReplace } })
             }
             this.scheduleOnce(() => {
                 if (this.node) {
@@ -143,16 +146,32 @@ export default class Item extends cc.Component {
         switch (data.resName) {
             case Item.GOLDFINGER: player.stopAllDebuffs(); break;
         }
-        if(data.statusList.length>0){
+        if (data.statusList.length > 0) {
             let arr = data.statusList.split(',');
-            for(let status of arr){
+            for (let status of arr) {
                 player.addStatus(status, from);
-                if(player.dungeon.nonPlayerManager.isPetAlive()){
-                    player.dungeon.nonPlayerManager.pet.addStatus(status,from);
+                if (player.dungeon.nonPlayerManager.isPetAlive()) {
+                    player.dungeon.nonPlayerManager.pet.addStatus(status, from);
                 }
             }
         }
-        
+        player.sanityChange(data.sanity);
+        if (data.solidSatiety > 0 || data.liquidSatiety > 0) {
+            AudioPlayer.play(AudioPlayer.DRINK);
+            if (data.solidSatiety) {
+                let sd = new StatusData();
+                sd.valueCopy(Logic.status[StatusManager.EAT]);
+                sd.solidDirect = data.solidSatiety;
+                player.addCustomStatus(sd, from);
+            }
+            if (data.liquidSatiety) {
+                let sd = new StatusData();
+                sd.valueCopy(Logic.status[StatusManager.DRINK]);
+                sd.liquidDirect = data.liquidSatiety;
+                player.addCustomStatus(sd, from);
+            }
+        }
+
     }
     // update (dt) {}
 }

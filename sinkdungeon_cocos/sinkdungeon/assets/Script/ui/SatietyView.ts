@@ -30,6 +30,10 @@ export default class SatietyView extends cc.Component {
     solidlabel1:cc.Label = null;
     @property(cc.Label)
     liquidlabel1:cc.Label = null;
+    @property(cc.ProgressBar)
+    sanitybar: cc.ProgressBar = null;
+    @property(cc.Label)
+    sanityLabel:cc.Label = null;
     static readonly SOLIDTIPS= [`饥肠辘辘`,`略微小食`,`菜过五味`,`酒足饭饱`,`快撑爆了`];
     static readonly LIQUIDTIPS= [`喉咙冒烟`,`口干舌燥`,`酒过三巡`,`非常满足`,`快撑爆了`];
     static readonly PEETIPS= [`风平浪静`,`泛起微波`,`涓涓细流`,`波涛汹涌`,`狂涛怒吼`];
@@ -52,23 +56,25 @@ export default class SatietyView extends cc.Component {
     start () {
         
     }
-    refreshPercent(solid:number,solid1:number,liquid:number,liquid1:number): void {
+    refreshPercent(sanity:number,solid:number,poo:number,liquid:number,pee:number): void {
         if(!this.node){
             return;
         }
         this.node.stopAllActions();
         cc.tween(this.solid).to(0.5,{height:solid}).start();
-        cc.tween(this.solid1).to(0.5,{height:solid1}).start();
+        cc.tween(this.solid1).to(0.5,{height:poo}).start();
         cc.tween(this.liquid).to(0.5,{height:liquid}).start();
-        cc.tween(this.liquid1).to(0.5,{height:liquid1}).start();
+        cc.tween(this.liquid1).to(0.5,{height:pee}).start();
         this.solidlabel.string = this.getStr(solid,SatietyView.SOLIDTIPS);
-        this.solidlabel1.string = this.getStr(solid,SatietyView.POOTIPS);
-        this.liquidlabel.string = this.getStr(solid,SatietyView.LIQUIDTIPS);
-        this.liquidlabel1.string = this.getStr(solid,SatietyView.PEETIPS);
+        this.solidlabel1.string = this.getStr(poo,SatietyView.POOTIPS);
+        this.liquidlabel.string = this.getStr(liquid,SatietyView.LIQUIDTIPS);
+        this.liquidlabel1.string = this.getStr(pee,SatietyView.PEETIPS);
         this.solidlabel.node.color = this.getColor(solid,false);
-        this.solidlabel.node.color = this.getColor(solid,true);
+        this.solidlabel1.node.color = this.getColor(poo,true);
         this.liquidlabel.node.color = this.getColor(liquid,false);
-        this.liquidlabel1.node.color = this.getColor(liquid1,true);
+        this.liquidlabel1.node.color = this.getColor(pee,true);
+        this.sanitybar.progress = sanity/100;
+        this.sanityLabel.string = `${(sanity).toFixed(2)}%`;
 	}
     private getStr(percent:number,arr:string[]){
         let str = ``;
@@ -93,16 +99,14 @@ export default class SatietyView extends cc.Component {
         if(percent<20){
             return cc.color().fromHEX(colors[0]);
         }else if(percent<40){
-            return cc.color().fromHEX(colors[0]);
+            return cc.color().fromHEX(colors[1]);
         }else if(percent<60){
-            return cc.color().fromHEX(colors[0]);
+            return cc.color().fromHEX(colors[2]);
         }else if(percent<80){
-            return cc.color().fromHEX(colors[0]);
+            return cc.color().fromHEX(colors[3]);
         }else{
-            return cc.color().fromHEX(colors[0]);
-
+            return cc.color().fromHEX(colors[4]);
         }
     }
-    
     
 }

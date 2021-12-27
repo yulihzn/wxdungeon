@@ -42,7 +42,7 @@ export default class RoomStool extends Building {
         this.mosaic.opacity = 255;
         this.unscheduleAllCallbacks();
         if(this.dungeon){
-            this.dungeon.player.addStatus(StatusManager.DIZZ_LONG,new FromData());
+            this.dungeon.player.toilet();
         }
         this.scheduleOnce(() => {
             this.mosaic.opacity = 0;

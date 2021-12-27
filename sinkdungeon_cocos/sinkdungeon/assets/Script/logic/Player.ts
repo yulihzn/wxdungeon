@@ -49,7 +49,8 @@ import MeleeWeapon from './MeleeWeapon';
 import Shield from './Shield';
 import CCollider from '../collider/CCollider';
 import StatusIconList from '../ui/StatusIconList';
-import Controller from './Controller';
+import Utils from '../utils/Utils';
+import NextStep from '../utils/NextStep';
 @ccclass
 export default class Player extends Actor {
     @property(FloatinglabelManager)
@@ -110,6 +111,10 @@ export default class Player extends Actor {
     private shadowSpriteframe: cc.SpriteFrame;
     private isLevelWater = false;
     statusIconList: StatusIconList;
+    solidStep:NextStep = new NextStep();
+    liquidStep:NextStep = new NextStep();
+    pooStep:NextStep = new NextStep();
+    peeStep:NextStep = new NextStep();
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -136,39 +141,39 @@ export default class Player extends Actor {
         this.weaponRight.init(this, false, false);
         this.remoteCooldown.width = 0;
         this.remoteCooldown.opacity = 200;
-        cc.director.on(EventHelper.PLAYER_TRIGGER
-            , (event) => { if (this.node) this.triggerThings(event && event.detail && event.detail.isLongPress) });
-        cc.director.on(EventHelper.PLAYER_EXIT_FROM_SETTINGS
-            , (event) => {
+        EventHelper.on(EventHelper.PLAYER_TRIGGER
+            , (detail) => { if (this.node) this.triggerThings(event && detail && detail.isLongPress) });
+        EventHelper.on(EventHelper.PLAYER_EXIT_FROM_SETTINGS
+            , (detail) => {
                 cc.director.loadScene('start');
             });
-        cc.director.on(EventHelper.PLAYER_USEITEM
-            , (event) => { if (this.node) this.useItem(event.detail.itemData) });
-        cc.director.on(EventHelper.PLAYER_SKILL
-            , (event) => { if (this.node) this.useSkill() });
-        cc.director.on(EventHelper.PLAYER_SKILL1
-            , (event) => { if (this.node) this.useSkill1() });
-        cc.director.on(EventHelper.PLAYER_UPDATE_OILGOLD_DATA
-            , (event) => {
+        EventHelper.on(EventHelper.PLAYER_USEITEM
+            , (detail) => { if (this.node) this.useItem(detail.itemData) });
+        EventHelper.on(EventHelper.PLAYER_SKILL
+            , (detail) => { if (this.node) this.useSkill() });
+        EventHelper.on(EventHelper.PLAYER_SKILL1
+            , (detail) => { if (this.node) this.useSkill1() });
+        EventHelper.on(EventHelper.PLAYER_UPDATE_OILGOLD_DATA
+            , (detail) => {
                 if (this.node) {
                     this.data.OilGoldData.valueCopy(Logic.playerData.OilGoldData);
                 }
             });
-        cc.director.on(EventHelper.PLAYER_ATTACK
-            , (event) => {
+        EventHelper.on(EventHelper.PLAYER_ATTACK
+            , (detail) => {
                 if (this.useInteractBuilding(true)) {
                     return;
                 }
                 if (this.node) this.meleeAttack();
             });
-        cc.director.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL
-            , (event) => {
+        EventHelper.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL
+            , (detail) => {
                 if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
                     this.shield.cancel(this.isFaceRight);
                 }
             });
-        cc.director.on(EventHelper.PLAYER_REMOTEATTACK
-            , (event) => {
+        EventHelper.on(EventHelper.PLAYER_REMOTEATTACK
+            , (detail) => {
                 if (this.useInteractBuilding(false)) {
                     return;
                 }
@@ -178,8 +183,13 @@ export default class Player extends Actor {
                     if (this.node) this.remoteAttack();
                 }
             });
-        cc.director.on(EventHelper.PLAYER_USEDREAM
-            , (event) => { if (this.node && this.data.AvatarData.organizationIndex == AvatarData.HUNTER) this.updateDream(event.detail.value) });
+        EventHelper.on(EventHelper.PLAYER_USEDREAM
+            , (detail) => { if (this.node && this.data.AvatarData.organizationIndex == AvatarData.HUNTER) this.updateDream(detail.value) });
+        EventHelper.on(EventHelper.HUD_TIME_TICK, (detail) => {
+            if (this.node) {
+                this.timeConsumeLife();
+            }
+        })
         if (Logic.playerData.pos.y == Dungeon.HEIGHT_SIZE - 1) {
             Logic.playerData.pos.y = Dungeon.HEIGHT_SIZE - 2;
         }
@@ -192,8 +202,8 @@ export default class Player extends Actor {
         this.shooterEx.player = this;
         this.shooterEx.isEx = true;
         this.smokePool = new cc.NodePool();
-        cc.director.on(EventHelper.POOL_DESTORY_WALKSMOKE, (event) => {
-            this.destroySmoke(event.detail.coinNode);
+        EventHelper.on(EventHelper.POOL_DESTORY_WALKSMOKE, (detail) => {
+            this.destroySmoke(detail.coinNode);
         })
         this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir);
         if (Logic.isCheatMode) {
@@ -370,7 +380,7 @@ export default class Player extends Actor {
                     this.updateEquipment(this.shield.sprite, this.inventoryManager.equips[InventoryManager.SHIELD].color
                         , Logic.spriteFrameRes(InventoryManager.EMPTY), this.shield.data.isHeavy == 1 ? 80 : 64);
                     EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: false });
-                }else{
+                } else {
                     EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: true });
                 }
                 break;
@@ -383,7 +393,7 @@ export default class Player extends Actor {
                     this.weaponLeft.shooter.data = new EquipmentData();
                     this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
                     EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: true });
-                }else{
+                } else {
                     EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: false });
                 }
                 break;
@@ -432,7 +442,7 @@ export default class Player extends Actor {
         let life = this.data.LifeData;
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_LIFE_BAR, { solid: life.solidSatiety, poo: life.poo,liquid:life.liquidSatiety,pee:life.pee });
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_LIFE_BAR, { sanity: life.sanity, solid: life.solidSatiety, poo: life.poo, liquid: life.liquidSatiety, pee: life.pee });
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipData());
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
     }
@@ -1033,6 +1043,10 @@ export default class Player extends Actor {
         let isDashing = this.professionTalent.hashTalent(Talent.TALENT_015) && this.professionTalent.IsExcuting;
 
         if (this.professionTalent && !isDashing && !this.isWeaponDashing && !this.avatar.isAniming) {
+            if(this.data.LifeData.sanity<=0){
+                pos.x = -pos.x;
+                pos.y = -pos.y;
+            }
             this.move(dir, pos, dt);
         }
     }
@@ -1150,7 +1164,7 @@ export default class Player extends Actor {
         if (this.dungeon.equipmentManager.lastGroundEquip && this.dungeon.equipmentManager.lastGroundEquip.taken(isLongPress)) {
             this.dungeon.equipmentManager.lastGroundEquip = null;
         }
-        if (this.dungeon.itemManager.lastGroundItem && this.dungeon.itemManager.lastGroundItem.taken(this, isLongPress)) {
+        if (this.dungeon.itemManager.lastGroundItem && this.canEatOrDrink(this.dungeon.itemManager.lastGroundItem.data)&&this.dungeon.itemManager.lastGroundItem.taken(this, isLongPress)) {
             this.dungeon.itemManager.lastGroundItem = null;
         }
         if (this.interactBuilding && this.interactBuilding.isTaken) {
@@ -1236,33 +1250,153 @@ export default class Player extends Actor {
     setLinearVelocity(movement: cc.Vec2) {
 
     }
-    updateLife(sanity:number,solid:number,liquid:number){
-        this.data.LifeData.sanity+=sanity;
-        this.data.LifeData.solidSatiety+=solid;
-        this.data.LifeData.liquidSatiety+=liquid;
-        if(this.data.LifeData.sanity>100){
-            this.data.LifeData.sanity = 100;
-        }else if(this.data.LifeData.sanity< 0){
-            this.data.LifeData.sanity = 0;
+    timeConsumeLife() {
+        let life = this.data.LifeData;
+        let canAddPoo = life.solidSatiety > 0;
+        let canAddPee = life.liquidSatiety > 0;
+        if (canAddPoo) {
+            life.poo += life.solidLoss * life.pooRate/100;
+            if (life.poo > 100) {
+                life.poo = 100;
+                this.pooStep.next(()=>{
+                    this.sanityChange(-1);
+                    Utils.toast('你的肚子一阵翻腾',false,true);
+                },30);
+            }
         }
-        if(this.data.LifeData.solidSatiety>100){
+        if (canAddPee) {
+            life.pee += life.liquidLoss * life.peeRate/100;
+            if (life.pee > 100) {
+                life.pee = 100;
+                this.peeStep.next(()=>{
+                    this.sanityChange(-1);
+                    Utils.toast('你的膀胱快要炸了',false,true);
+                },30);
+                
+            }
+        }
+        if (this.data.LifeData.solidSatiety <= 0) {
+            this.solidStep.next(()=>{
+                this.sanityChange(-1);
+                Utils.toast('你快要饿死了',false,true);
+            },30);
+        }
+        if (this.data.LifeData.liquidSatiety <= 0) {
+            this.liquidStep.next(()=>{
+                this.sanityChange(-1);
+                Utils.toast('你快要渴死了',false,true);
+            },30);
+        }
+        this.updateLife(0, -life.solidLoss, -life.liquidLoss);
+    }
+    updateLife(sanity: number, solid: number, liquid: number) {
+        this.data.LifeData.sanity += sanity;
+        this.data.LifeData.solidSatiety += solid;
+        this.data.LifeData.liquidSatiety += liquid;
+        if (this.data.LifeData.sanity > 100) {
+            this.data.LifeData.sanity = 100;
+        } else if (this.data.LifeData.sanity <= 0) {
+            this.data.LifeData.sanity = 0;
+            if(sanity != 0){
+                Utils.toast('精神崩溃了',false,true);
+                let sd = new StatusData();
+                sd.valueCopy(Logic.status[StatusManager.INSANE]);
+                sd.Common.damageMin+=this.data.getFinalAttackPoint().physicalDamage;
+                this.addCustomStatus(sd,new FromData());
+            }
+        }else{
+            this.statusManager.stopStatus(StatusManager.INSANE);
+        }
+        if (this.data.LifeData.solidSatiety > 100) {
             this.data.LifeData.solidSatiety = 100;
-        }else if(this.data.LifeData.solidSatiety< 0){
+        } else if (this.data.LifeData.solidSatiety < 0) {
             this.data.LifeData.solidSatiety = 0;
         }
-        if(this.data.LifeData.liquidSatiety>100){
+        if (this.data.LifeData.liquidSatiety > 100) {
             this.data.LifeData.liquidSatiety = 100;
-        }else if(this.data.LifeData.liquidSatiety< 0){
+        } else if (this.data.LifeData.liquidSatiety < 0) {
             this.data.LifeData.liquidSatiety = 0;
         }
         this.updateInfoUi();
     }
-    
-
+    sanityChange(sanity: number) {
+        if(sanity == 0){
+            return;
+        }
+        let data = new StatusData();
+        if (sanity > 0) {
+            data.valueCopy(Logic.status[StatusManager.SANITY_UP]);
+        } else if (sanity < 0) {
+            data.valueCopy(Logic.status[StatusManager.SANITY_DOWN]);
+        }
+        data.sanityDirect = sanity;
+        this.addCustomStatus(data, new FromData());
+    }
+    sleep() {
+        this.avatar.sleep();
+    }
+    toilet() {
+        this.avatar.toilet();
+        cc.tween(this.data.LifeData).to(3, { poo: 0, pee: 0 }).call(()=>{
+            Utils.toast('你感觉一身轻松',false,true);
+        }).start();
+        let total = this.data.LifeData.pee + this.data.LifeData.poo;
+        if (total > 100) {
+            this.sanityChange(2);
+        } else {
+            this.sanityChange(1);
+        }
+    }
+    read() {
+        this.avatar.read();
+        if (Random.getRandomNum(0, 100) > 90) {
+            Utils.toast('你用量子波动速读看完了一本书,书里的内容让你不寒而栗', false, true);
+            this.sanityChange(-10);
+        } else {
+            Utils.toast('你用量子波动速读看完了一本书,奇怪的知识又增加了', false, true);
+            this.sanityChange(5);
+        }
+    }
     drink() {
         this.avatar.drink();
         this.addStatus(StatusManager.HEALING, new FromData());
+        this.addStatus(StatusManager.DRINK, new FromData());
         this.avatar.changeAvatarByDir(PlayerAvatar.DIR_RIGHT);
+    }
+    canEatOrDrink(data:ItemData):boolean{
+        let life = this.data.LifeData;
+        let str = '你觉得';
+        let can = true;
+        if(data.solidSatiety>0){
+            if(life.solidSatiety>90){
+                can = false;
+                str+='太饱了';
+                if(life.poo>90){
+                    str+='，而且要憋不住了';
+                }
+                str+='完全吃不下了'
+            }else if(life.poo>90){
+                can = false;
+                str+='要憋不住了,完全吃不下了';
+            }
+        }else if(data.liquidSatiety>0){
+            if(life.liquidSatiety>90){
+                can = false;
+                str+='太胀了';
+                if(life.pee>90){
+                    str+='，而且要憋不住了';
+                }
+                str+='完全喝不下了'
+            }else if(life.poo>90){
+                can = false;
+                str+='要憋不住了,完全喝不下了';
+            }
+        }
+        if(!can){
+            Utils.toast(str,false,true);
+            AudioPlayer.play(AudioPlayer.SELECT_FAIL);
+        }
+        return can;
     }
 
 }

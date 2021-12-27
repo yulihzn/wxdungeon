@@ -103,6 +103,9 @@ export default class SlimeVenom extends Actor {
     }
     hideSelf(hideDuration: number): void {
     }
+    updateLife(sanity: number, solid: number, liquid: number): void {
+        
+    }
     updateDream(offset: number): number {
         return 0;
     }

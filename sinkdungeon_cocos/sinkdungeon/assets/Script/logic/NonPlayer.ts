@@ -1260,7 +1260,9 @@ export default class NonPlayer extends Actor {
     updateDream(offset: number): number {
         return 0;
     }
-
+    updateLife(sanity: number, solid: number, liquid: number): void {
+        
+    }
     onColliderExit(other: CCollider, self: CCollider): void {
     }
 }

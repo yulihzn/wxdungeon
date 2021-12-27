@@ -394,6 +394,12 @@ export default class InteractBuilding extends Building {
         let common = new CommonData();
         if (this.player) {
             damage = this.player.data.getFinalAttackPoint();
+            if(this.player.data.LifeData.sanity<=0){
+                //疯狂状态伤害降到最低
+                damage.physicalDamage = damage.physicalDamage>1?1:damage.physicalDamage;
+                damage.magicDamage = damage.magicDamage>1?1:damage.magicDamage;
+                damage.realDamage = damage.realDamage>1?1:damage.realDamage;
+            }
             common = this.player.data.FinalCommon;
         }
         damage.isMelee = true;

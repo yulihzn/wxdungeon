@@ -797,5 +797,59 @@
         "common": {
             "dodge": 100
         }
+    },
+    "status068": {
+        "nameCn": "喝水",
+        "nameEn": "drink",
+        "spriteFrameName": "iconlidquidsatiety",
+        "id": 68,
+        "desc": "",
+        "duration": 0,
+        "liquidDirect": 15,
+        "common": {}
+    },
+    "status069": {
+        "nameCn": "精神恢复",
+        "nameEn": "sanity recovery",
+        "spriteFrameName": "iconsanityup",
+        "id": 69,
+        "desc": "",
+        "duration": 0,
+        "sanityDirect": 5,
+        "common": {}
+    },
+    "status070": {
+        "nameCn": "精神降低",
+        "nameEn": "sanity recovery",
+        "spriteFrameName": "iconsanitydown",
+        "id": 70,
+        "desc": "",
+        "duration": 0,
+        "sanityDirect": 1,
+        "common": {}
+    },
+    "status071": {
+        "nameCn": "增加饱食度",
+        "nameEn": "solid satiety recovery",
+        "spriteFrameName": "iconsolidsatiety",
+        "id": 71,
+        "desc": "",
+        "duration": 0,
+        "solidDirect": 1,
+        "common": {}
+    },
+    "status072": {
+        "nameCn": "失去理智",
+        "nameEn": "insane",
+        "spriteFrameName": "iconinsane",
+        "id": 72,
+        "desc": "血量和梦境上限降到1,移动错乱",
+        "duration": -1,
+        "unique":2,
+        "common": {
+            "moveSpeed":200,
+            "attackSpeed":100,
+            "defence":-100
+        }
     }
 }

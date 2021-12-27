@@ -86,6 +86,8 @@ export default class Inventory extends cc.Component {
     equipTimeDelays: { [key: string]: number } = {};
     equipSprites: { [key: string]: cc.Sprite } = {};
 
+    itemPositions:cc.Vec3[] = [];
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -152,7 +154,7 @@ export default class Inventory extends cc.Component {
                 }
             });
         EventHelper.on(EventHelper.USEITEM_KEYBOARD, (detail) => {
-            this.userItem(null, detail.index);
+            this.userItem(detail.index);
         });
         EventHelper.on(EventHelper.HUD_FADE_IN, (detail) => {
             this.fadeIn();
@@ -219,6 +221,7 @@ export default class Inventory extends cc.Component {
         let itemSpriteList = [this.itemsprite1, this.itemsprite2, this.itemsprite3, this.itemsprite4, this.itemsprite5];
         let itemLabelList = [this.itemlabel1, this.itemlabel2, this.itemlabel3, this.itemlabel4, this.itemlabel5];
         for (let i = 0; i < itemLabelList.length; i++) {
+            this.itemPositions[i]=itemSpriteList[i].node.convertToWorldSpaceAR(cc.Vec3.ZERO);
             this.addItemSpriteTouchEvent(itemSpriteList[i], itemLabelList[i].node.parent, i);
         }
         this.refreshSuits();
@@ -271,7 +274,7 @@ export default class Inventory extends cc.Component {
         node.on(cc.Node.EventType.TOUCH_END, () => {
             this.equipmentAndItemDialog.hideDialog();
             if (!isLongPress) {
-                this.userItem(sprite.node, itemIndex);
+                this.userItem(itemIndex);
             }
             touchStart = false;
             isLongPress = false;
@@ -477,7 +480,7 @@ export default class Inventory extends cc.Component {
 
     }
 
-    userItem(node: cc.Node, itemIndex: number) {
+    userItem(itemIndex: number) {
         if (!this.inventoryManager || !this.inventoryManager.itemList || itemIndex > this.inventoryManager.itemList.length - 1) {
             return;
         }
@@ -485,8 +488,11 @@ export default class Inventory extends cc.Component {
         if (item.resName == Item.EMPTY) {
             return;
         }
+        if(this.dungeon.player.canEatOrDrink(item)){
+            return;
+        }
         this.inventoryManager.itemCoolDownList[itemIndex].next(() => {
-            this.drawItemCoolDown(item.cooldown, node.convertToWorldSpaceAR(cc.Vec3.ZERO));
+            this.drawItemCoolDown(item.cooldown, this.itemPositions[itemIndex]);
             if (item.count != -1) {
                 item.count--;
             }
