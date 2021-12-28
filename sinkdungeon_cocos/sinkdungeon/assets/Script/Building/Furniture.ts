@@ -255,20 +255,20 @@ export default class Furniture extends Building {
     changeRes(resName: string) {
         let spriteFrame = Logic.spriteFrameRes(resName);
         if (spriteFrame) {
-            this.sprite.spriteFrame = spriteFrame;
-            this.sprite.node.width = spriteFrame.getOriginalSize().width;
-            this.sprite.node.height = spriteFrame.getOriginalSize().height;
-            this.boxback.node.width = spriteFrame.getOriginalSize().width;
-            this.boxback.node.height = spriteFrame.getOriginalSize().height;
-            this.boxcover.node.width = spriteFrame.getOriginalSize().width;
-            this.boxcover.node.height = spriteFrame.getOriginalSize().height;
-            this.sprite.node.scale = this.furnitureData.scale;
-            this.tips.node.scale = 2;
-            this.boxback.node.scale = this.furnitureData.scale;
-            this.boxcover.node.scale = this.furnitureData.scale;
-            let width = this.sprite.node.width * this.sprite.node.scale;
-            let height = this.sprite.node.height * this.sprite.node.scale;
             if (this.isNormal()) {
+                this.sprite.spriteFrame = spriteFrame;
+                this.sprite.node.width = spriteFrame.getOriginalSize().width;
+                this.sprite.node.height = spriteFrame.getOriginalSize().height;
+                this.boxback.node.width = spriteFrame.getOriginalSize().width;
+                this.boxback.node.height = spriteFrame.getOriginalSize().height;
+                this.boxcover.node.width = spriteFrame.getOriginalSize().width;
+                this.boxcover.node.height = spriteFrame.getOriginalSize().height;
+                this.sprite.node.scale = this.furnitureData.scale;
+                this.tips.node.scale = 2;
+                this.boxback.node.scale = this.furnitureData.scale;
+                this.boxcover.node.scale = this.furnitureData.scale;
+                let width = this.sprite.node.width * this.sprite.node.scale;
+                let height = this.sprite.node.height * this.sprite.node.scale;
                 this.tips.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height - Dungeon.TILE_SIZE / 2);
                 this.lock.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height / 2 - Dungeon.TILE_SIZE / 2);
                 let collider = this.tips.node.getComponent(CCollider);

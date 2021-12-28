@@ -69,7 +69,11 @@ export default class Status extends cc.Component {
     private getInfo(data:StatusData){
         let info = ``;
         info += data.physicalDamageOvertime == 0 ? `` : `每秒受到${data.physicalDamageOvertime.toFixed(1).replace('.0', '')}点物理伤害\n`;
-        info += data.realDamageOvertime == 0 ? `` : `每秒受到${data.realDamageOvertime.toFixed(1).replace('.0', '')}点流血伤害\n`;
+        if(data.realDamageOvertime>0){
+            info += data.realDamageOvertime == 0 ? `` : `每秒受到${data.realDamageOvertime.toFixed(1).replace('.0', '')}点流血伤害\n`;
+        }else{
+            info += data.realDamageOvertime == 0 ? `` : `每秒恢复${-data.realDamageOvertime.toFixed(1).replace('.0', '')}点生命\n`;
+        }
         info += data.magicDamageOvertime == 0 ? `` : `每秒受到${data.magicDamageOvertime.toFixed(1).replace('.0', '')}点魔法伤害\n`;
         info += data.missRate == 0 ? `` : `攻击丢失几率${data.missRate.toFixed(1).replace('.0', '')}%\n`;
         info += data.dizzDurationOvertime == 0 ? `` : `眩晕${data.dizzDurationOvertime.toFixed(1).replace('.0', '')}秒\n`;

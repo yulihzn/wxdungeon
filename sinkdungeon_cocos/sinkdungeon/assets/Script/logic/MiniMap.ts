@@ -68,7 +68,7 @@ export default class MiniMap extends cc.Component {
 		let tileSize = this.tileSize/levelData.roomWidth;
 		let width = levelData.map.length;
 		let height = levelData.map[0].length;
-		let alpha = 180;
+		let alpha = 200;
 		for (let j = 0; j < height; j++) {
 			for (let i = 0; i < width; i++) {
 				let mapDataStr = levelData.map[i][j];
@@ -128,7 +128,7 @@ export default class MiniMap extends cc.Component {
 				this.map[i][j].color = this.getColor(MiniMap.ColorLevel.HIDE);
 				if (isFound) {
 					this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL);
-					this.map[i][j].opacity = 255;
+					this.map[i][j].opacity = 128;
 					let isClear = state == RectRoom.STATE_CLEAR;
 
 					this.map[i][j].color = this.getColor(isClear ? MiniMap.ColorLevel.CLEAR : MiniMap.ColorLevel.NORMAL);
