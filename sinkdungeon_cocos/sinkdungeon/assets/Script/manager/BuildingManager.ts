@@ -46,6 +46,7 @@ import WallPaint from "../building/WallPaint";
 import RoomWaterDispenser from "../building/RoomWaterDispenser";
 import RoomClock from "../building/RoomClock";
 import RoomTrashCan from "../building/RoomTrashCan";
+import RoomKitchen from "../building/RoomKitchen";
 
 
 // Learn TypeScript:
@@ -97,6 +98,7 @@ export default class BuildingManager extends BaseManager {
     static readonly ROOMWATERDISPENSER = 'RoomWaterDispenser';
     static readonly ROOMCLOCK = 'RoomClock';
     static readonly ROOMTRASHCAN = 'RoomTrashCan';
+    static readonly ROOMKITCHEN = 'RoomKitchen';
     static readonly SAVEPOINT = 'SavePoint';
     static readonly SAW = 'Saw';
     static readonly SHIPSTAIRS = 'Shipstairs';
@@ -734,36 +736,40 @@ export default class BuildingManager extends BaseManager {
             }
         });
     }
+    static getDoorDir(mapDataStr: string){
+        let dir = parseInt(mapDataStr[1]);
+        if (isNaN(dir)) {
+            if (mapDataStr == 'Da') {
+                dir = 8;
+            } else if (mapDataStr == 'Db') {
+                dir = 9;
+            } else if (mapDataStr == 'Dc') {
+                dir = 10;
+            } else if (mapDataStr == 'Dd') {
+                dir = 11;
+            } else if (mapDataStr == 'De') {
+                dir = 12;
+            } else if (mapDataStr == 'Df') {
+                dir = 13;
+            } else if (mapDataStr == 'Dg') {
+                dir = 14;
+            } else if (mapDataStr == 'Dh') {
+                dir = 15;
+            } else if (mapDataStr == 'Di') {
+                dir = 16;
+            } else if (mapDataStr == 'Dj') {
+                dir = 17;
+            } else if (mapDataStr == 'Dk') {
+                dir = 18;
+            } else if (mapDataStr == 'Dl') {
+                dir = 19;
+            }
+        }
+        return dir;
+    }
     private addDoor(mapDataStr: string, indexPos: cc.Vec3, isDecorate: boolean) {
         Logic.getBuildings(BuildingManager.DOOR, (prefab: cc.Prefab) => {
-            let dir = parseInt(mapDataStr[1]);
-            if (isNaN(dir)) {
-                if (mapDataStr == 'Da') {
-                    dir = 8;
-                } else if (mapDataStr == 'Db') {
-                    dir = 9;
-                } else if (mapDataStr == 'Dc') {
-                    dir = 10;
-                } else if (mapDataStr == 'Dd') {
-                    dir = 11;
-                } else if (mapDataStr == 'De') {
-                    dir = 12;
-                } else if (mapDataStr == 'Df') {
-                    dir = 13;
-                } else if (mapDataStr == 'Dg') {
-                    dir = 14;
-                } else if (mapDataStr == 'Dh') {
-                    dir = 15;
-                } else if (mapDataStr == 'Di') {
-                    dir = 16;
-                } else if (mapDataStr == 'Dj') {
-                    dir = 17;
-                } else if (mapDataStr == 'Dk') {
-                    dir = 18;
-                } else if (mapDataStr == 'Dl') {
-                    dir = 19;
-                }
-            }
+            let dir = BuildingManager.getDoorDir(mapDataStr);
             let door = this.addBuilding(prefab, indexPos).getComponent(Door);
             door.isDoor = true;
             door.dir = dir % 4;
@@ -901,6 +907,13 @@ export default class BuildingManager extends BaseManager {
             Logic.getBuildings(BuildingManager.ROOMSTOOL, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos);
                 building.getComponent(RoomStool).init(indexPos, dungeon);
+                let script = building.getComponent(Furniture);
+                script.init(data);
+            });
+        } else if (mapDataStr == 'Za') {
+            Logic.getBuildings(BuildingManager.ROOMKITCHEN, (prefab: cc.Prefab) => {
+                building = this.addBuilding(prefab, indexPos);
+                building.getComponent(RoomKitchen).init(indexPos);
                 let script = building.getComponent(Furniture);
                 script.init(data);
             });

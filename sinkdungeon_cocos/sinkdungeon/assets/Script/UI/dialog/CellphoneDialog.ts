@@ -135,7 +135,7 @@ export default class CellphoneDialog extends BaseDialog {
                 this.list[i].updateData(dataList[i]);
             }
         } else {
-            Utils.toast('这里空空如也', true);
+            Utils.toast('这里空空如也。', true);
         }
 
     }

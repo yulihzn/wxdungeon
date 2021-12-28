@@ -51,6 +51,7 @@ import CCollider from '../collider/CCollider';
 import StatusIconList from '../ui/StatusIconList';
 import Utils from '../utils/Utils';
 import NextStep from '../utils/NextStep';
+import LifeData from '../data/LifeData';
 @ccclass
 export default class Player extends Actor {
     @property(FloatinglabelManager)
@@ -111,14 +112,16 @@ export default class Player extends Actor {
     private shadowSpriteframe: cc.SpriteFrame;
     private isLevelWater = false;
     statusIconList: StatusIconList;
-    solidStep:NextStep = new NextStep();
-    liquidStep:NextStep = new NextStep();
-    pooStep:NextStep = new NextStep();
-    peeStep:NextStep = new NextStep();
+    lastConsumeTime = 0;
+    solidStep: NextStep = new NextStep();
+    liquidStep: NextStep = new NextStep();
+    pooStep: NextStep = new NextStep();
+    peeStep: NextStep = new NextStep();
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.lastConsumeTime = Logic.realTime;
         this.entity.Move.linearDamping = 2;
         this.entity.Move.linearVelocity = cc.v2(0, 0);
         this.statusManager.statusIconList = this.statusIconList;
@@ -1043,10 +1046,6 @@ export default class Player extends Actor {
         let isDashing = this.professionTalent.hashTalent(Talent.TALENT_015) && this.professionTalent.IsExcuting;
 
         if (this.professionTalent && !isDashing && !this.isWeaponDashing && !this.avatar.isAniming) {
-            if(this.data.LifeData.sanity<=0){
-                pos.x = -pos.x;
-                pos.y = -pos.y;
-            }
             this.move(dir, pos, dt);
         }
     }
@@ -1164,7 +1163,7 @@ export default class Player extends Actor {
         if (this.dungeon.equipmentManager.lastGroundEquip && this.dungeon.equipmentManager.lastGroundEquip.taken(isLongPress)) {
             this.dungeon.equipmentManager.lastGroundEquip = null;
         }
-        if (this.dungeon.itemManager.lastGroundItem && this.canEatOrDrink(this.dungeon.itemManager.lastGroundItem.data)&&this.dungeon.itemManager.lastGroundItem.taken(this, isLongPress)) {
+        if (this.dungeon.itemManager.lastGroundItem && this.dungeon.itemManager.lastGroundItem.taken(this, isLongPress)) {
             this.dungeon.itemManager.lastGroundItem = null;
         }
         if (this.interactBuilding && this.interactBuilding.isTaken) {
@@ -1251,43 +1250,47 @@ export default class Player extends Actor {
 
     }
     timeConsumeLife() {
+        let time = Logic.realTime - this.lastConsumeTime;
+        this.lastConsumeTime = Logic.realTime;
         let life = this.data.LifeData;
+        let solidLoss = LifeData.SOLID_LOSS * life.timeScale * time / 10000;
+        let liquidLoss = LifeData.LIQUID_LOSS * life.timeScale * time / 10000;
         let canAddPoo = life.solidSatiety > 0;
         let canAddPee = life.liquidSatiety > 0;
         if (canAddPoo) {
-            life.poo += life.solidLoss * life.pooRate/100;
+            life.poo += solidLoss * LifeData.POO_RATE;
             if (life.poo > 100) {
                 life.poo = 100;
-                this.pooStep.next(()=>{
+                this.pooStep.next(() => {
                     this.sanityChange(-1);
-                    Utils.toast('你的肚子一阵翻腾',false,true);
-                },30);
+                    Utils.toast('你的肚子一阵翻腾。', false, true);
+                }, 30);
             }
         }
         if (canAddPee) {
-            life.pee += life.liquidLoss * life.peeRate/100;
+            life.pee += liquidLoss * LifeData.PEERATE;
             if (life.pee > 100) {
                 life.pee = 100;
-                this.peeStep.next(()=>{
+                this.peeStep.next(() => {
                     this.sanityChange(-1);
-                    Utils.toast('你的膀胱快要炸了',false,true);
-                },30);
-                
+                    Utils.toast('你的膀胱快要炸了。', false, true);
+                }, 30);
+
             }
         }
         if (this.data.LifeData.solidSatiety <= 0) {
-            this.solidStep.next(()=>{
+            this.solidStep.next(() => {
                 this.sanityChange(-1);
-                Utils.toast('你快要饿死了',false,true);
-            },30);
+                Utils.toast('你快要饿死了。', false, true);
+            }, 30);
         }
         if (this.data.LifeData.liquidSatiety <= 0) {
-            this.liquidStep.next(()=>{
+            this.liquidStep.next(() => {
                 this.sanityChange(-1);
-                Utils.toast('你快要渴死了',false,true);
-            },30);
+                Utils.toast('你快要渴死了。', false, true);
+            }, 30);
         }
-        this.updateLife(0, -life.solidLoss, -life.liquidLoss);
+        this.updateLife(0, -solidLoss, -liquidLoss);
     }
     updateLife(sanity: number, solid: number, liquid: number) {
         this.data.LifeData.sanity += sanity;
@@ -1297,14 +1300,14 @@ export default class Player extends Actor {
             this.data.LifeData.sanity = 100;
         } else if (this.data.LifeData.sanity <= 0) {
             this.data.LifeData.sanity = 0;
-            if(sanity != 0){
-                Utils.toast('精神崩溃了',false,true);
+            if (sanity != 0) {
+                Utils.toast('精神崩溃了。。。', false, true);
                 let sd = new StatusData();
                 sd.valueCopy(Logic.status[StatusManager.INSANE]);
-                sd.Common.damageMin+=this.data.getFinalAttackPoint().physicalDamage;
-                this.addCustomStatus(sd,new FromData());
+                sd.Common.damageMin += this.data.getFinalAttackPoint().physicalDamage;
+                this.addCustomStatus(sd, new FromData());
             }
-        }else{
+        } else {
             this.statusManager.stopStatus(StatusManager.INSANE);
         }
         if (this.data.LifeData.solidSatiety > 100) {
@@ -1320,7 +1323,7 @@ export default class Player extends Actor {
         this.updateInfoUi();
     }
     sanityChange(sanity: number) {
-        if(sanity == 0){
+        if (sanity == 0) {
             return;
         }
         let data = new StatusData();
@@ -1337,8 +1340,8 @@ export default class Player extends Actor {
     }
     toilet() {
         this.avatar.toilet();
-        cc.tween(this.data.LifeData).to(3, { poo: 0, pee: 0 }).call(()=>{
-            Utils.toast('你感觉一身轻松',false,true);
+        cc.tween(this.data.LifeData).to(3, { poo: 0, pee: 0 }).call(() => {
+            Utils.toast('你感觉一身轻松。', false, true);
         }).start();
         let total = this.data.LifeData.pee + this.data.LifeData.poo;
         if (total > 100) {
@@ -1350,12 +1353,17 @@ export default class Player extends Actor {
     read() {
         this.avatar.read();
         if (Random.getRandomNum(0, 100) > 90) {
-            Utils.toast('你用量子波动速读看完了一本书,书里的内容让你不寒而栗', false, true);
+            Utils.toast('你用量子波动速读看完了一本书,书里的内容让你不寒而栗。', false, true);
             this.sanityChange(-10);
         } else {
-            Utils.toast('你用量子波动速读看完了一本书,奇怪的知识又增加了', false, true);
+            Utils.toast('你用量子波动速读看完了一本书,奇怪的知识又增加了。', false, true);
             this.sanityChange(5);
         }
+    }
+    cooking() {
+        this.avatar.cooking();
+        Utils.toast(`你炒了两个鸡蛋又用昨晚剩下的米饭拌了拌。`, false, true);
+
     }
     drink() {
         this.avatar.drink();
@@ -1363,37 +1371,37 @@ export default class Player extends Actor {
         this.addStatus(StatusManager.DRINK, new FromData());
         this.avatar.changeAvatarByDir(PlayerAvatar.DIR_RIGHT);
     }
-    canEatOrDrink(data:ItemData):boolean{
+    canEatOrDrink(data: ItemData): boolean {
         let life = this.data.LifeData;
         let str = '你觉得';
         let can = true;
-        if(data.solidSatiety>0){
-            if(life.solidSatiety>90){
+        if (data.solidSatiety > 0) {
+            if (life.solidSatiety > 90) {
                 can = false;
-                str+='太饱了';
-                if(life.poo>90){
-                    str+='，而且要憋不住了';
+                str += '太饱了';
+                if (life.poo > 90) {
+                    str += '，而且要憋不住';
                 }
-                str+='完全吃不下了'
-            }else if(life.poo>90){
+                str += '，完全吃不下了。'
+            } else if (life.poo > 90) {
                 can = false;
-                str+='要憋不住了,完全吃不下了';
+                str += '要憋不住了,完全吃不下了。';
             }
-        }else if(data.liquidSatiety>0){
-            if(life.liquidSatiety>90){
+        } else if (data.liquidSatiety > 0) {
+            if (life.liquidSatiety > 90) {
                 can = false;
-                str+='太胀了';
-                if(life.pee>90){
-                    str+='，而且要憋不住了';
+                str += '太胀了';
+                if (life.pee > 90) {
+                    str += '，而且要憋不住';
                 }
-                str+='完全喝不下了'
-            }else if(life.poo>90){
+                str += '，完全喝不下了。'
+            } else if (life.poo > 90) {
                 can = false;
-                str+='要憋不住了,完全喝不下了';
+                str += '要憋不住了,完全喝不下了。';
             }
         }
-        if(!can){
-            Utils.toast(str,false,true);
+        if (!can) {
+            Utils.toast(str, false, true);
             AudioPlayer.play(AudioPlayer.SELECT_FAIL);
         }
         return can;

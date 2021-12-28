@@ -47,7 +47,7 @@
         "id": "furniture005",
         "nameCn": "灶台",
         "nameEn": "cooking bench",
-        "resName": "roomkitchentable",
+        "resName": "roomkitchentable1",
         "info": "",
         "desc": "",
         "scale": 4,
@@ -94,7 +94,7 @@
         "resName": "roomfridge",
         "info": "",
         "desc": "",
-        "scale": 8,
+        "scale": 6,
         "collider": "0,0,128,128",
         "price": 1000
     },

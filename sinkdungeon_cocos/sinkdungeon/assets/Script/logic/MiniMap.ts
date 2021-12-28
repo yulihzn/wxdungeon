@@ -1,8 +1,8 @@
 import Logic from "./Logic";
-import RectDungeon from "../rect/RectDungeon";
 import RectRoom from "../rect/RectRoom";
 import { EventHelper } from "./EventHelper";
 import RoomType from "../rect/RoomType";
+import BuildingManager from "../manager/BuildingManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -27,10 +27,13 @@ export default class MiniMap extends cc.Component {
 	width: number = 0;
 	height: number = 0;
 	map: cc.Node[][];
+	tileSize = 0;
+	graphics:cc.Graphics;
 
 	// LIFE-CYCLE CALLBACKS:
 
 	onLoad() {
+		this.graphics = this.getComponent(cc.Graphics);
 		cc.director.on(EventHelper.CHANGE_MINIMAP, (event) => {
 			this.changeMap(event.detail.x, event.detail.y);
 		});
@@ -48,12 +51,51 @@ export default class MiniMap extends cc.Component {
 				this.map[i][j].position = cc.v3(i * node.width, j * node.height);
 				this.map[i][j].color = cc.Color.BLACK;
 				this.map[i][j].opacity = 0;
+				this.tileSize = node.width;
 			}
 		}
 	}
 
 	start() {
 
+	}
+	private isFirstEqual(mapStr: string, typeStr: string) {
+        let isequal = mapStr[0] == typeStr;
+        return isequal;
+    }
+	private drawMap(){
+		let levelData = Logic.worldLoader.getCurrentLevelData();
+		let tileSize = this.tileSize/levelData.roomWidth;
+		let width = levelData.map.length;
+		let height = levelData.map[0].length;
+		let alpha = 180;
+		for (let j = 0; j < height; j++) {
+			for (let i = 0; i < width; i++) {
+				let mapDataStr = levelData.map[i][j];
+				if(this.isFirstEqual(mapDataStr, '#')){
+					this.graphics.fillColor = cc.color(119,136,153,alpha);//浅灰色
+				}else if(this.isFirstEqual(mapDataStr, '*')){
+					this.graphics.fillColor = cc.color(33,33,33,alpha);//灰色
+				}else if(this.isFirstEqual(mapDataStr, '~')){
+					this.graphics.fillColor = cc.color(0,128,128,alpha);//水鸭色
+				}else if(mapDataStr == '@S'){
+					this.graphics.fillColor = cc.color(0,255,0,alpha);//酸橙色
+				}else if(this.isFirstEqual(mapDataStr, 'D')){
+					let dir = BuildingManager.getDoorDir(mapDataStr);
+					let isLock = dir > 7 && dir < 12;
+					this.graphics.fillColor = cc.color(240,248,255,alpha);//爱丽丝蓝
+					if(isLock){
+						this.graphics.fillColor = cc.color(255,69,0,alpha);//橙红色
+					}
+				}else if(this.isFirstEqual(mapDataStr, 'E')){
+					this.graphics.fillColor = cc.color(60,179,113,alpha);//春天的绿色	
+				}else if(this.isFirstEqual(mapDataStr, 'P')){
+					this.graphics.fillColor = cc.color(32,178,170,alpha);//浅海洋绿
+				}
+				if(!this.isFirstEqual(mapDataStr, '-')){
+					this.graphics.fillRect(i*tileSize-this.tileSize/2,j*tileSize-this.tileSize/2,tileSize,tileSize);
+				}
+			}}
 	}
 	changeMap(x: number, y: number): void {
 		let levelData = Logic.worldLoader.getCurrentLevelData();
@@ -119,6 +161,7 @@ export default class MiniMap extends cc.Component {
 				}
 			}
 		}
+		this.drawMap();
 	}
 	getMapColor(i: number, j: number, roomType: RoomType, roomTypeType: RoomType, isClear: boolean, typeNormal: number, typeClear: number) {
 		if (roomType.isEqual(roomTypeType)) {

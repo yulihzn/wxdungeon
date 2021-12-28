@@ -173,16 +173,19 @@ export default class StatusManager extends cc.Component {
     }
     private showStatus(data: StatusData, isFromSave: boolean) {
         //去除已经失效的状态
-        this.statusMap.forEach((s,key) => {
+        this.statusMap.forEach((s, key) => {
             if (!s || !s.node || !s.isValid) {
                 this.statusMap.delete(key);
             }
         });
-        //新的状态如果存在则刷新且重新触发
+        //新的状态如果存在则叠加时效且重新触发
         if (this.statusMap.has(data.id)) {
             let s = this.statusMap.get(data.id);
             if (s && s.node && s.isValid && s.isStatusRunning() && s.data.id == data.id) {
                 s.data.duration = data.duration;
+                if(s.data.duration>0&&data.duration>0){
+                    data.duration+=s.data.duration;
+                }
                 s.showStatus(data, this.actor, isFromSave);
                 return;
             }
@@ -192,7 +195,11 @@ export default class StatusManager extends cc.Component {
         statusNode.parent = this.node;
         statusNode.active = true;
         let status = statusNode.getComponent(Status);
-        this.statusMap.set(data.id,status);
+        if(this.statusMap.has(data.id)){
+            let s = this.statusMap.get(data.id);
+            this.statusMap.set(9999+s.data.id,s);
+        }
+        this.statusMap.set(data.id, status);
         if (this.statusIconList) {
             let icon = this.statusIconList.getIcon();
             status.icon = icon;
@@ -226,24 +233,22 @@ export default class StatusManager extends cc.Component {
     private updateStatus(): StatusData[] {
         this.totalStatusData = new StatusData();
         let dataList: StatusData[] = new Array();
-        for (let i = this.statusMap.size - 1; i >= 0; i--) {
-            let s = this.statusMap[i];
-            if (!s || !s.node || !s.isValid) {
-                continue;
+        this.statusMap.forEach((s) => {
+            if (s && s.node && s.isValid) {
+                s.updateLogic();
+                if (s.data.duration == 0) {
+                    this.addStatus(s.data.finishStatus, s.data.From);
+                } else {
+                    this.totalStatusData.missRate += s.data.missRate ? s.data.missRate : 0;
+                    this.totalStatusData.variation += s.data.variation ? s.data.variation : 0;
+                    this.totalStatusData.exOilGold += s.data.exOilGold ? s.data.exOilGold : 0;
+                    this.totalStatusData.clearHealth += s.data.clearHealth ? s.data.clearHealth : 0;
+                    this.totalStatusData.avoidDeath += s.data.avoidDeath ? s.data.avoidDeath : 0;
+                    this.totalStatusData.Common.add(s.data.Common);
+                    dataList.push(s.data.clone());
+                }
             }
-            s.updateLogic();
-            if (s.data.duration == 0) {
-                this.addStatus(s.data.finishStatus, s.data.From);
-                continue;
-            }
-            this.totalStatusData.missRate += s.data.missRate ? s.data.missRate : 0;
-            this.totalStatusData.variation += s.data.variation ? s.data.variation : 0;
-            this.totalStatusData.exOilGold += s.data.exOilGold ? s.data.exOilGold : 0;
-            this.totalStatusData.clearHealth += s.data.clearHealth ? s.data.clearHealth : 0;
-            this.totalStatusData.avoidDeath += s.data.avoidDeath ? s.data.avoidDeath : 0;
-            this.totalStatusData.Common.add(s.data.Common);
-            dataList.push(s.data.clone());
-        }
+        });
         return dataList;
     }
 }

@@ -12,6 +12,7 @@ import AreaOfEffect from "../actor/AreaOfEffect";
 import CoolDownView from "../ui/CoolDownView";
 import Utils from "../utils/Utils";
 import CCollider from "../collider/CCollider";
+import AudioPlayer from "../utils/AudioPlayer";
 
 const { ccclass, property } = cc._decorator;
 
@@ -134,9 +135,12 @@ export default abstract class Talent extends cc.Component {
             }, cooldown, true, (secondCount: number) => {
                 this.updateCooldownAndHud(cooldown, secondCount);
             });
+        } else if(!this.skillCanUse()){
+            AudioPlayer.play(AudioPlayer.SELECT_FAIL);
         } else {
+            AudioPlayer.play(AudioPlayer.SELECT_FAIL);
             cc.director.emit(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR);
-            Utils.toast(`能量不足`);
+            Utils.toast(`能量不足。`);
         }
     }
     /**

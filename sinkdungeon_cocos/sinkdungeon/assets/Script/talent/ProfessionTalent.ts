@@ -124,7 +124,7 @@ export default class ProfessionTalent extends Talent {
     private excuteSkill(shadowPlayer: ShadowPlayer) {
         let shooterEx = shadowPlayer ? shadowPlayer.shooterEx : this.player.shooterEx;
         switch (this.data.resName) {
-            case Talent.TALENT_000: Utils.toast('梦境开发中,无法使用');break;
+            case Talent.TALENT_000: Utils.toast('梦境开发中,无法使用。');break;
             case Talent.TALENT_001:
                 AudioPlayer.play(AudioPlayer.MELEE_PARRY);
                 this.shoot(shooterEx, 0, 0, 'bullet040', null, null); break;
@@ -141,7 +141,7 @@ export default class ProfessionTalent extends Talent {
                 this.addDaggerLight(shooterEx,shadowPlayer);
                 break;
             case Talent.TALENT_009: this.steal(shadowPlayer); break;
-            case Talent.TALENT_010: Utils.toast('梦境开发中,无法使用');break;
+            case Talent.TALENT_010: Utils.toast('梦境开发中,无法使用。');break;
             case Talent.TALENT_011: if (!shadowPlayer) { this.aimedShoot(); } break;
             case Talent.TALENT_012: this.addBroom(shooterEx); break;
             case Talent.TALENT_013: this.showFireBall(shooterEx); break;
@@ -415,7 +415,7 @@ export default class ProfessionTalent extends Talent {
             .init(0, 2, 0, scale, IndexZ.OVERHEAD, false, false, false, false, false, d, new FromData(), []), cc.v3(0, 32), 0, (actor: Actor) => {
                 let monster = actor.node.getComponent(NonPlayer);
                 if (monster) {
-                    monster.dungeon.addItem(monster.node.position.clone(), `food${monster.data.resName.replace('monster', '')}`);
+                    monster.dungeon.addItem(monster.node.position.clone(), `foodmonster${monster.data.resName.replace('monster', '')}`);
                 }
                 let boss = actor.node.getComponent(Boss);
                 if (boss) {

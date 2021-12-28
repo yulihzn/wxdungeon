@@ -18,6 +18,7 @@ import RoomWaterDispenser from './RoomWaterDispenser';
 import Player from '../logic/Player';
 import RoomClock from './RoomClock';
 import RoomTrashCan from './RoomTrashCan';
+import RoomKitchen from './RoomKitchen';
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -65,7 +66,7 @@ export default class Furniture extends Building {
     anim: cc.Animation;
     furnitureData: FurnitureData;
     unlockStep: NextStep = new NextStep();
-    bookStep:NextStep = new NextStep();
+    bookStep: NextStep = new NextStep();
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -150,13 +151,18 @@ export default class Furniture extends Building {
                 }
                 break;
             case Furniture.BOOKSHELF:
-                this.bookStep.next(()=>{
+                this.bookStep.next(() => {
                     player.read();
-                },5)
+                }, 5)
                 break;
+            case Furniture.COOKING_BENCH:
+                let kitchen = this.getComponent(RoomKitchen);
+                if (kitchen) {
+                    kitchen.getFood(player);
+                } break;
             default:
                 AudioPlayer.play(AudioPlayer.SELECT_FAIL);
-                Utils.toast('梦境开发中,无法使用');
+                Utils.toast('梦境开发中,无法使用。');
                 break;
         }
     }
@@ -226,7 +232,7 @@ export default class Furniture extends Building {
             this.lock.node.active = true;
         }
         this.changeRes(this.furnitureData.resName);
-        if (this.furnitureData.collider.length > 0) {
+        if (this.isNormal() && this.furnitureData.collider.length > 0) {
             let arr = this.furnitureData.collider.split(',');
             let pcollider = this.getComponent(CCollider);
             pcollider.offset = cc.v2(parseInt(arr[0]), parseInt(arr[1]));
@@ -235,6 +241,16 @@ export default class Furniture extends Building {
         LocalStorage.saveFurnitureData(this.furnitureData);
         Achievement.addFurnituresAchievement(this.furnitureData.id);
 
+    }
+    private isNormal() {
+        if (this.furnitureData.id != Furniture.STOOL
+            && this.furnitureData.id != Furniture.TV
+            && this.furnitureData.id != Furniture.SOFA
+            && this.furnitureData.id != Furniture.COOKING_BENCH
+            && this.furnitureData.id != Furniture.FISHTANK) {
+            return true;
+        }
+        return false;
     }
     changeRes(resName: string) {
         let spriteFrame = Logic.spriteFrameRes(resName);
@@ -252,10 +268,7 @@ export default class Furniture extends Building {
             this.boxcover.node.scale = this.furnitureData.scale;
             let width = this.sprite.node.width * this.sprite.node.scale;
             let height = this.sprite.node.height * this.sprite.node.scale;
-            if (this.furnitureData.id != Furniture.STOOL
-                && this.furnitureData.id != Furniture.TV
-                && this.furnitureData.id != Furniture.SOFA
-                && this.furnitureData.id != Furniture.FISHTANK) {
+            if (this.isNormal()) {
                 this.tips.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height - Dungeon.TILE_SIZE / 2);
                 this.lock.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height / 2 - Dungeon.TILE_SIZE / 2);
                 let collider = this.tips.node.getComponent(CCollider);
@@ -284,6 +297,7 @@ export default class Furniture extends Building {
     }
 
     start() {
+        this.changeRes(this.furnitureData.resName);
     }
 
     // update (dt) {}

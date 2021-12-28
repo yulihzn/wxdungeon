@@ -314,6 +314,12 @@ export default class PlayerAvatar extends cc.Component {
                 this.playAnim(PlayerAvatar.STATE_IDLE, dir);
             }).start();
     }
+    public cooking() {
+        this.isAniming = true;
+        this.scheduleOnce(() => {
+            this.isAniming = false;
+        }, 5)
+    }
     public drink() {
         this.anim.play('AvatarDrink');
         AudioPlayer.play(AudioPlayer.DRINK);

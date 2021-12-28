@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "bleed",
+    "_name": "Status",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -253,7 +253,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a6bccf9f-3cd2-4979-9dd1-b1628190391c"
+      "__id__": 0
     },
     "fileId": "2aK1wSLKdGq7FTHqt47MLY",
     "sync": false
@@ -298,7 +298,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a6bccf9f-3cd2-4979-9dd1-b1628190391c"
+      "__id__": 0
     },
     "fileId": "80dMHoQ5lJl5roZGdJ/OCq",
     "sync": false
@@ -344,7 +344,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a6bccf9f-3cd2-4979-9dd1-b1628190391c"
+      "__id__": 0
     },
     "fileId": "",
     "sync": false

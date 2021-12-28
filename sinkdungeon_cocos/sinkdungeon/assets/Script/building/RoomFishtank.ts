@@ -56,7 +56,7 @@ export default class RoomFishtank extends Building {
             return;
         }
         if (this.foodList.length > 50) {
-            Utils.toast('喂得太多了啊');
+            Utils.toast('喂得太多了啊！');
             return;
         }
         if(player){

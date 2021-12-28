@@ -488,7 +488,7 @@ export default class Inventory extends cc.Component {
         if (item.resName == Item.EMPTY) {
             return;
         }
-        if(this.dungeon.player.canEatOrDrink(item)){
+        if(!this.dungeon.player.canEatOrDrink(item)){
             return;
         }
         this.inventoryManager.itemCoolDownList[itemIndex].next(() => {
@@ -578,7 +578,7 @@ export default class Inventory extends cc.Component {
         //添加到背包
         let isAdded = InventoryDialog.addEquipOrItemToBag(data, list, InventoryManager.MAX_BAG, false, null);
         if (!isAdded) {
-            Utils.toast('物品栏已满');
+            Utils.toast('物品栏已满！');
             EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: equipData.img, equipmentData: equipData });
         }
     }
@@ -588,7 +588,7 @@ export default class Inventory extends cc.Component {
         //添加到背包
         let isAdded = InventoryDialog.addEquipOrItemToBag(data, list, InventoryManager.MAX_BAG, true, null);
         if (!isAdded) {
-            Utils.toast('物品栏已满');
+            Utils.toast('物品栏已满！');
             EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: itemData.resName, count: itemData.count });
         }
     }

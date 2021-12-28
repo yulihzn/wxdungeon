@@ -43,7 +43,6 @@ export default class Status extends cc.Component {
     showStatus(data: StatusData, actor: Actor, isFromSave: boolean) {
         if (!this.anim) { return; }
         this.data = data;
-
         this.actor = actor;
         this.sprite.spriteFrame = Logic.spriteFrameRes(data.spriteFrameName);
         this.anim.play('StatusShow');

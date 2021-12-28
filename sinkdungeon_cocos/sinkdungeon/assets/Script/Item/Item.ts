@@ -38,6 +38,7 @@ export default class Item extends cc.Component {
     public static readonly SHIELD = 'shield';
     public static readonly GOLDAPPLE = 'goldapple';
     public static readonly GOLDFINGER = 'goldfinger';
+    public static readonly FRIEDRICE = 'food000';
     anim: cc.Animation;
     data: ItemData = new ItemData();
     shopTable: ShopTable;

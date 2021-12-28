@@ -107,566 +107,566 @@
         "count": -1,
         "info": "清除所有状态",
         "desc": "轻轻擦拭了一下好像什么都没有发生",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 200
     },
-    "food000": {
+    "foodmonster000": {
         "id": 20030000,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food000",
+        "resName": "foodmonster000",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food001": {
+    "foodmonster001": {
         "id": 20030001,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food001",
+        "resName": "foodmonster001",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food002": {
+    "foodmonster002": {
         "id": 20030002,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food002",
+        "resName": "foodmonster002",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food003": {
+    "foodmonster003": {
         "id": 20030003,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food003",
+        "resName": "foodmonster003",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food004": {
+    "foodmonster004": {
         "id": 20030004,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food004",
+        "resName": "foodmonster004",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food005": {
+    "foodmonster005": {
         "id": 20030005,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food005",
+        "resName": "foodmonster005",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food006": {
+    "foodmonster006": {
         "id": 20030006,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food006",
+        "resName": "foodmonster006",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food007": {
+    "foodmonster007": {
         "id": 20030007,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food007",
+        "resName": "foodmonster007",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food008": {
+    "foodmonster008": {
         "id": 20030008,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food008",
+        "resName": "foodmonster008",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food009": {
+    "foodmonster009": {
         "id": 20030009,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food009",
+        "resName": "foodmonster009",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food010": {
+    "foodmonster010": {
         "id": 20030010,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food010",
+        "resName": "foodmonster010",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food011": {
+    "foodmonster011": {
         "id": 20030011,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food011",
+        "resName": "foodmonster011",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food012": {
+    "foodmonster012": {
         "id": 20030012,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food012",
+        "resName": "foodmonster012",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food013": {
+    "foodmonster013": {
         "id": 20030013,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food013",
+        "resName": "foodmonster013",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food014": {
+    "foodmonster014": {
         "id": 20030014,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food014",
+        "resName": "foodmonster014",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food015": {
+    "foodmonster015": {
         "id": 20030015,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food015",
+        "resName": "foodmonster015",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food016": {
+    "foodmonster016": {
         "id": 20030016,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food016",
+        "resName": "foodmonster016",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food017": {
+    "foodmonster017": {
         "id": 20030017,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food017",
+        "resName": "foodmonster017",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food018": {
+    "foodmonster018": {
         "id": 20030018,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food018",
+        "resName": "foodmonster018",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food019": {
+    "foodmonster019": {
         "id": 20030019,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food019",
+        "resName": "foodmonster019",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food020": {
+    "foodmonster020": {
         "id": 20030020,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food020",
+        "resName": "foodmonster020",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food021": {
+    "foodmonster021": {
         "id": 20030021,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food021",
+        "resName": "foodmonster021",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food022": {
+    "foodmonster022": {
         "id": 20030022,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food022",
+        "resName": "foodmonster022",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food023": {
+    "foodmonster023": {
         "id": 20030023,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food023",
+        "resName": "foodmonster023",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food024": {
+    "foodmonster024": {
         "id": 20030024,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food024",
+        "resName": "foodmonster024",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food025": {
+    "foodmonster025": {
         "id": 20030025,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food025",
+        "resName": "foodmonster025",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food026": {
+    "foodmonster026": {
         "id": 20030026,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food026",
+        "resName": "foodmonster026",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food027": {
+    "foodmonster027": {
         "id": 20030027,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food037",
+        "resName": "foodmonster037",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food028": {
+    "foodmonster028": {
         "id": 20030028,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food028",
+        "resName": "foodmonster028",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food029": {
+    "foodmonster029": {
         "id": 20030029,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food029",
+        "resName": "foodmonster029",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food030": {
+    "foodmonster030": {
         "id": 20030030,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food030",
+        "resName": "foodmonster030",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food031": {
+    "foodmonster031": {
         "id": 20030031,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food031",
+        "resName": "foodmonster031",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food032": {
+    "foodmonster032": {
         "id": 20030032,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food032",
+        "resName": "foodmonster032",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food033": {
+    "foodmonster033": {
         "id": 20030033,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food033",
+        "resName": "foodmonster033",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food034": {
+    "foodmonster034": {
         "id": 20030034,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food034",
+        "resName": "foodmonster034",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food035": {
+    "foodmonster035": {
         "id": 20030035,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food035",
+        "resName": "foodmonster035",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food036": {
+    "foodmonster036": {
         "id": 20030036,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food036",
+        "resName": "foodmonster036",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food037": {
+    "foodmonster037": {
         "id": 20030037,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food037",
+        "resName": "foodmonster037",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food038": {
+    "foodmonster038": {
         "id": 20030038,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food038",
+        "resName": "foodmonster038",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
-    "food039": {
+    "foodmonster039": {
         "id": 20030039,
         "nameCn": "未知食物",
         "nameEn": "",
-        "resName": "food039",
+        "resName": "foodmonster039",
         "canSave": 1,
         "count": 1,
         "info": "",
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status011",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
     "foodboss000": {
@@ -680,7 +680,7 @@
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status017",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
     "foodboss001": {
@@ -694,7 +694,7 @@
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status017",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
     "foodboss002": {
@@ -708,7 +708,7 @@
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status017",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
     "foodboss003": {
@@ -722,7 +722,7 @@
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status017",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
     "foodboss004": {
@@ -736,7 +736,7 @@
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status017",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
     "foodboss005": {
@@ -750,7 +750,7 @@
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status017",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
     "foodboss006": {
@@ -764,7 +764,7 @@
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status017",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
     "foodboss007": {
@@ -778,7 +778,7 @@
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status017",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
     "foodboss008": {
@@ -792,7 +792,7 @@
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status017",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
     "foodboss009": {
@@ -806,7 +806,7 @@
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status017",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
     "foodboss010": {
@@ -820,7 +820,7 @@
         "desc": "？恢复生命？",
         "solidSatiety": 10,
         "statusList": "status017",
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 30
     },
     "goods001": {
@@ -834,7 +834,7 @@
         "desc": "最美妙的饮料，感觉更有劲了",
         "statusList": "status011,status040",
         "liquidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 420
     },
     "goods002": {
@@ -848,7 +848,7 @@
         "desc": "喝完反而更口渴了",
         "statusList": "status011,status043",
         "liquidSatiety": 5,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 220
     },
     "goods003": {
@@ -862,7 +862,7 @@
         "desc": "透心凉，感受飞一般的感觉",
         "statusList": "status011,status042",
         "liquidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 320
     },
     "goods004": {
@@ -876,7 +876,7 @@
         "desc": "你的受苦能力提高了",
         "statusList": "status011,status041",
         "liquidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 320
     },
     "goods005": {
@@ -890,7 +890,7 @@
         "desc": "",
         "statusList": "status011",
         "liquidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 20
     },
     "goods006": {
@@ -904,7 +904,7 @@
         "desc": "元气满满",
         "statusList": "status011,status050",
         "liquidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 420
     },
     "goods007": {
@@ -918,7 +918,7 @@
         "desc": "游戏一刻来口橙子味汽水",
         "statusList": "status011,status049",
         "liquidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 320
     },
     "goods008": {
@@ -932,7 +932,7 @@
         "desc": "失去灵魂的版本，但是能有心理安慰",
         "statusList": "status011,status044",
         "liquidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 420
     },
     "goods009": {
@@ -946,7 +946,7 @@
         "desc": "有一股中药味",
         "statusList": "status011,status045",
         "liquidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 420
     },
     "goods010": {
@@ -960,7 +960,7 @@
         "desc": "这茶喝完让你冷静下来了",
         "statusList": "status011,status056",
         "liquidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 420
     },
     "goods011": {
@@ -974,7 +974,7 @@
         "desc": "很清新但是也很甜",
         "statusList": "status011,status057",
         "liquidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 220
     },
     "goods012": {
@@ -988,7 +988,7 @@
         "desc": "",
         "statusList": "status011",
         "liquidSatiety": 20,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 20
     },
     "goods013": {
@@ -1002,7 +1002,7 @@
         "desc": "这是一瓶神奇的矿泉水，但是喝下去好像没什么感觉",
         "statusList": "status011,status063",
         "liquidSatiety": 20,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 1020
     },
     "goods014": {
@@ -1015,7 +1015,7 @@
         "info": "恢复生命+1，释放冰冻几率10%",
         "desc": "冰冰凉凉的椰汁很好喝",
         "statusList": "status011,status058",
-        "cooldown": 10,
+        "cooldown": 5,
         "liquidSatiety": 15,
         "price": 220
     },
@@ -1029,7 +1029,7 @@
         "info": "恢复生命+1,短暂眩晕,抵挡致命伤害",
         "desc": "昂贵的啤酒，不知道为什么这么贵，喝完感觉很晕，睡得更香了",
         "statusList": "status005,status011,status065",
-        "cooldown": 10,
+        "cooldown": 5,
         "liquidSatiety": 15,
         "price": 1020
     },
@@ -1043,7 +1043,7 @@
         "info": "恢复生命+3，释放眩晕10%",
         "desc": "吃完力气变大了",
         "statusList": "status017,status060",
-        "cooldown": 10,
+        "cooldown": 5,
         "solidSatiety": 15,
         "price": 260
     },
@@ -1058,7 +1058,7 @@
         "desc": "很辣感觉要着火了",
         "statusList": "status017,status059",
         "solidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 260
     },
     "goods102": {
@@ -1072,7 +1072,7 @@
         "desc": "平平无奇的一碗香菇味泡面",
         "statusList": "status017,status062",
         "solidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 260
     },
     "goods103": {
@@ -1086,7 +1086,7 @@
         "desc": "这是谁在放毒，好香啊",
         "statusList": "status017,status061",
         "solidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 260
     },
     "goods104": {
@@ -1100,7 +1100,7 @@
         "desc": "黄瓜口味有一股清香",
         "statusList": "status011,status052",
         "solidSatiety": 5,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 320
     },
     "goods105": {
@@ -1113,7 +1113,7 @@
         "info": "恢复生命+1，远程伤害+2",
         "desc": "最经典款的薯片",
         "statusList": "status011,status053",
-        "cooldown": 10,
+        "cooldown": 5,
         "solidSatiety": 5,
         "price": 320
     },
@@ -1127,7 +1127,7 @@
         "info": "恢复生命+1，远程暴击20%",
         "desc": "有股牛肉烧烤的感觉",
         "statusList": "status011,status054",
-        "cooldown": 10,
+        "cooldown": 5,
         "solidSatiety": 5,
         "price": 320
     },
@@ -1141,7 +1141,7 @@
         "info": "恢复生命+3，每次清理房间恢复生命+1",
         "desc": "",
         "statusList": "status017,status064",
-        "cooldown": 10,
+        "cooldown": 5,
         "solidSatiety": 15,
         "price": 600
     },
@@ -1156,7 +1156,7 @@
         "desc": "吃完三明治变得更有攻击倾向了",
         "statusList": "status017,status055",
         "solidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 60
     },
     "goods109": {
@@ -1170,7 +1170,7 @@
         "desc": "吃完日料一下想起了忍者，不自觉的猫着步子",
         "statusList": "status017,status048",
         "solidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 460
     },
     "goods110": {
@@ -1184,7 +1184,7 @@
         "desc": "吃得很饱睡得更香",
         "statusList": "status017,status047",
         "solidSatiety": 15,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 360
     },
     "goods111": {
@@ -1198,7 +1198,7 @@
         "desc": "灵活地扭一扭",
         "statusList": "status011,status051",
         "solidSatiety": 5,
-        "cooldown": 10,
+        "cooldown": 5,
         "price": 320
     },
     "goods112": {
@@ -1211,7 +1211,7 @@
         "info": "恢复生命+3，最大生命+5",
         "desc": "横扫饥饿",
         "statusList": "status017,status046",
-        "cooldown": 10,
+        "cooldown": 5,
         "solidSatiety": 15,
         "price": 460
     },
@@ -1255,6 +1255,20 @@
         "solidSatiety": 1,
         "statusList": "status011",
         "cooldown": 1,
+        "price": 0
+    },
+    "food000": {
+        "id": 20080000,
+        "nameCn": "蛋炒饭",
+        "nameEn": "",
+        "resName": "food000",
+        "canSave": 1,
+        "count": 1,
+        "info": "",
+        "desc": "这是一份普通的蛋炒饭",
+        "statusList": "status011",
+        "solidSatiety": 30,
+        "cooldown": 5,
         "price": 0
     }
 }

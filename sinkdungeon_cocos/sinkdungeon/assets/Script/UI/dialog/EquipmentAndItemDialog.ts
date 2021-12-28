@@ -154,7 +154,14 @@ export default class EquipmentAndItemDialog extends cc.Component {
         this.infoSuit2.node.active = false;
         this.infoSuit3.node.active = false;
         this.labelTitle.string = `${item.nameCn}`;
-        this.infoBase.string = `价格：${item.price}\n${item.info}`;
+        let str = `价格：${item.price}\n${item.info}`;
+        if(item.solidSatiety>0){
+            str+=`\n饱食度：${item.solidSatiety}`;
+        }
+        if(item.liquidSatiety>0){
+            str+=`\n解渴度：${item.liquidSatiety}`;
+        }
+        this.infoBase.string = str;
         this.infoDesc.string = item.desc;
         this.count.string = `${item.count > 0 ? '×' + item.count : '∞'}`
         this.labelTitle.node.color = this.labelTitle.node.color.fromHEX('#F4C021');
