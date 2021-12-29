@@ -39,7 +39,7 @@ export default class RoomKitchen extends Building {
             if (player.dungeon) {
                 player.dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos).add(cc.v3(0,-24)), Item.FRIEDRICE);
             }
-        }, 5)
+        }, 3)
 
     }
     //动画结束

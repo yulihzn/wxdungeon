@@ -114,7 +114,7 @@ export default class Furniture extends Building {
             case Furniture.TV:
                 let tv = this.getComponent(RoomTv);
                 if (tv) {
-                    tv.interact();
+                    tv.interact(player);
                 }
                 break;
             case Furniture.STOOL:

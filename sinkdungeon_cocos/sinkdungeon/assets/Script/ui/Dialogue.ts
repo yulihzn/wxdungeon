@@ -41,7 +41,7 @@ export default class Dialogue extends cc.Component {
     button3:cc.Button = null;
     anim:cc.Animation = null;
     onLoad() {
-        EventHelper.on(EventHelper.HUD_NARRATOR_SHOW
+        EventHelper.on(EventHelper.HUD_DIALOGUE_SHOW
             , (detail) => {
                 if (this.node) {
                     this.show(detail.data);

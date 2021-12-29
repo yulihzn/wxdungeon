@@ -1253,8 +1253,8 @@ export default class Player extends Actor {
         let time = Logic.realTime - this.lastConsumeTime;
         this.lastConsumeTime = Logic.realTime;
         let life = this.data.LifeData;
-        let solidLoss = LifeData.SOLID_LOSS * life.timeScale * time / 10000;
-        let liquidLoss = LifeData.LIQUID_LOSS * life.timeScale * time / 10000;
+        let solidLoss = LifeData.SOLID_LOSS * life.timeScale * time / 1000;
+        let liquidLoss = LifeData.LIQUID_LOSS * life.timeScale * time / 1000;
         let canAddPoo = life.solidSatiety > 0;
         let canAddPee = life.liquidSatiety > 0;
         if (canAddPoo) {

@@ -97,6 +97,8 @@ export default class AudioPlayer extends cc.Component {
     public static readonly WATERDISPENSER = 'WATERDISPENSER';
     public static readonly DRINK = 'DRINK';
     public static readonly TRASH = 'TRASH';
+    public static readonly WATERFALL = 'WATERFALL';
+    public static readonly VOICE = 'VOICE';
     @property({ type: cc.AudioClip })
     monsterHit: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
@@ -252,6 +254,10 @@ export default class AudioPlayer extends cc.Component {
     @property(cc.AudioClip)
     trash:cc.AudioClip = null;
     @property(cc.AudioClip)
+    waterfall:cc.AudioClip = null;
+    @property(cc.AudioClip)
+    voice:cc.AudioClip = null;
+    @property(cc.AudioClip)
     bg01: cc.AudioClip = null;
     @property(cc.AudioClip)
     bg02: cc.AudioClip = null;
@@ -343,6 +349,8 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.WATERDISPENSER] = this.waterdispenser;
         this.audioList[AudioPlayer.DRINK] = this.drink;
         this.audioList[AudioPlayer.TRASH] = this.trash;
+        this.audioList[AudioPlayer.WATERFALL] = this.waterfall;
+        this.audioList[AudioPlayer.VOICE] = this.voice;
 
     }
     playbg() {

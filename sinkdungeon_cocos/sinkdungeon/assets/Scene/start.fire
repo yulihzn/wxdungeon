@@ -7176,6 +7176,12 @@
     "trash": {
       "__uuid__": "a93021db-3a11-4ddd-8183-f1783e7c51eb"
     },
+    "waterfall": {
+      "__uuid__": "308210bc-e080-4487-a288-cad6f61e3bb5"
+    },
+    "voice": {
+      "__uuid__": "c8b513a0-2640-4912-9d8a-449b7df52e4c"
+    },
     "bg01": {
       "__uuid__": "a601a25d-abcb-42b9-9e58-2f8cfea4ebc9"
     },

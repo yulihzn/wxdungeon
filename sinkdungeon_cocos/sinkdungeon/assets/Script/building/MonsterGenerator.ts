@@ -8,7 +8,6 @@
 import CCollider from "../collider/CCollider";
 import Dungeon from "../logic/Dungeon";
 import Logic from "../logic/Logic";
-import NonPlayer from "../logic/NonPlayer";
 import IndexZ from "../utils/IndexZ";
 import Building from "./Building";
 

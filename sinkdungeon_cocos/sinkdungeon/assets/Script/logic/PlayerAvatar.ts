@@ -318,7 +318,7 @@ export default class PlayerAvatar extends cc.Component {
         this.isAniming = true;
         this.scheduleOnce(() => {
             this.isAniming = false;
-        }, 5)
+        },3)
     }
     public drink() {
         this.anim.play('AvatarDrink');

@@ -530,15 +530,18 @@ export default class Dungeon extends cc.Component {
             }
             this.isClear = count >= this.monsterManager.bossList.length;
         }
-        //检查踏板是否触发过
-        for (let footboard of this.buildingManager.footboards) {
-            if (!footboard.isOpen && !footboard.hasActive) {
-                this.isClear = false;
-            }
-        }
         //检查是否怪物生成建筑生成完毕
         for (let monsterGenerator of this.buildingManager.monsterGeneratorList) {
             if (!monsterGenerator.addFinish) {
+                if(this.isClear){
+                    monsterGenerator.open();
+                }
+                this.isClear = false;
+            }
+        }
+        //检查踏板是否触发过
+        for (let footboard of this.buildingManager.footboards) {
+            if (!footboard.isOpen && !footboard.hasActive) {
                 this.isClear = false;
             }
         }

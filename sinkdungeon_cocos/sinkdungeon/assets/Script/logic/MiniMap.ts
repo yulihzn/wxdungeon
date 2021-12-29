@@ -128,7 +128,7 @@ export default class MiniMap extends cc.Component {
 				this.map[i][j].color = this.getColor(MiniMap.ColorLevel.HIDE);
 				if (isFound) {
 					this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL);
-					this.map[i][j].opacity = 128;
+					this.map[i][j].opacity = 180;
 					let isClear = state == RectRoom.STATE_CLEAR;
 
 					this.map[i][j].color = this.getColor(isClear ? MiniMap.ColorLevel.CLEAR : MiniMap.ColorLevel.NORMAL);

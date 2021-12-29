@@ -72,7 +72,7 @@ export class EventHelper extends cc.Component {
     public static readonly HUD_INVENTORY_ALL_UPDATE = 'HUD_INVENTORY_ALL_UPDATE';
     public static readonly HUD_TOAST = 'HUD_TOAST';
     public static readonly HUD_TIME_TICK = 'HUD_TIME_TICK';
-    public static readonly HUD_NARRATOR_SHOW = 'HUD_NARRATOR_SHOW';
+    public static readonly HUD_DIALOGUE_SHOW = 'HUD_DIALOGUE_SHOW';
     public static readonly TALENT_TREE_UPDATE = 'TALENT_TREE_UPDATE';
     public static readonly TALENT_TREE_SELECT = 'TALENT_TREE_SELECT';
     public static readonly PLAY_AUDIO = 'PLAY_AUDIO';

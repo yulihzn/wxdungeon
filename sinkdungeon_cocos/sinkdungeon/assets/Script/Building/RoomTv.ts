@@ -7,7 +7,10 @@
 
 import ShadowOfSight from "../effect/ShadowOfSight";
 import Logic from "../logic/Logic";
+import Player from "../logic/Player";
 import AudioPlayer from "../utils/AudioPlayer";
+import Random from "../utils/Random";
+import Utils from "../utils/Utils";
 import Building from "./Building";
 
 const { ccclass, property } = cc._decorator;
@@ -31,7 +34,7 @@ export default class RoomTv extends Building {
     }
     // update (dt) {}
 
-    open() {
+    open(player: Player) {
         this.isOpen = true;
         if (this.lights) {
             for (let light of this.lights) {
@@ -44,10 +47,11 @@ export default class RoomTv extends Building {
         this.anim.play('RoomTvOpen');
         this.scheduleOnce(() => {
             this.channel = Logic.getRandomNum(0, 5);
-            this.switchChannel();
+            this.switchChannel(player);
         }, 0.5)
+        
     }
-    private switchChannel() {
+    private switchChannel(player: Player) {
         this.unscheduleAllCallbacks();
         this.anim.stop();
         AudioPlayer.stopAllEffect();
@@ -79,6 +83,22 @@ export default class RoomTv extends Building {
             default:
                 break;
         }
+        if(this.channel>1){
+            this.schedule(()=>{
+                AudioPlayer.play(AudioPlayer.VOICE, false, true);
+                this.scheduleOnce(()=>{
+                    AudioPlayer.stopAllEffect();
+                },0.2+Random.rand())
+            },2,cc.macro.REPEAT_FOREVER)
+        }
+        this.schedule(()=>{
+            if(this.isOpen&&this.channel > 1){
+                Utils.toast(`看了一会儿电视,感觉心情变好了`);
+                if(player){
+                    player.sanityChange(3);
+                }
+            }
+        },10,cc.macro.REPEAT_FOREVER,5);
     }
     close() {
         if(!this.isOpen){
@@ -98,11 +118,11 @@ export default class RoomTv extends Building {
             this.anim.play('RoomTvClosedIdle');
         }, 0.5)
     }
-    public interact() {
+    public interact(player: Player) {
         if (this.isOpen) {
-            this.switchChannel();
+            this.switchChannel(player);
         } else {
-            this.open();
+            this.open(player);
         }
     }
 }

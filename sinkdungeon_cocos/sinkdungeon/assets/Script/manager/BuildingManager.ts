@@ -47,6 +47,7 @@ import RoomWaterDispenser from "../building/RoomWaterDispenser";
 import RoomClock from "../building/RoomClock";
 import RoomTrashCan from "../building/RoomTrashCan";
 import RoomKitchen from "../building/RoomKitchen";
+import AudioPlayer from "../utils/AudioPlayer";
 
 
 // Learn TypeScript:
@@ -278,14 +279,6 @@ export default class BuildingManager extends BaseManager {
                 p.init(dungeon, 1, 6, [MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_BITE_ZOMBIE]);
                 this.monsterGeneratorList.push(p);
             });
-        } else if (mapDataStr == 'I0') {
-            //生成通风管
-            Logic.getBuildings(BuildingManager.WENTLINE, (prefab: cc.Prefab) => {
-                let p = this.addBuilding(prefab, indexPos).getComponent(MgWentLine);
-                p.init(dungeon, 1, 6, [MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_BITE_ZOMBIE]);
-                this.monsterGeneratorList.push(p);
-            });
-
         } else if (mapDataStr == 'I6') {
             //生成墙缝
             Logic.getBuildings(BuildingManager.CRACK, (prefab: cc.Prefab) => {
@@ -613,6 +606,7 @@ export default class BuildingManager extends BaseManager {
             });
         } else if (mapDataStr == '~f') {
             Logic.getBuildings(BuildingManager.WATERFALL, (prefab: cc.Prefab) => {
+                AudioPlayer.play(AudioPlayer.WATERFALL,false,true);
                 let dn = this.addBuilding(prefab, indexPos);
             });
         } else if (mapDataStr == '~#') {
