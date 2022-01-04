@@ -7240,7 +7240,7 @@
       "r": 255,
       "g": 255,
       "b": 255,
-      "a": 40
+      "a": 255
     },
     "showLight": false,
     "showRayCast": false,

@@ -23,9 +23,9 @@ export default class LightManager extends BaseManager {
     shadowCamera: cc.Camera = null;
     private static lightList: ShadowOfSight[] = [];
     @property(cc.Sprite)
-    shadow: cc.Sprite = null;
+    shadow: cc.Sprite = null;//最后绘制阴影
     @property(cc.Graphics)
-    shadowRay: cc.Graphics = null;
+    shadowRay: cc.Graphics = null;//阴影graphics绘制
     mat: cc.MaterialVariant;
     private shadowTexture: cc.RenderTexture;
     static readonly ALPHA_START = 10;
@@ -128,7 +128,7 @@ export default class LightManager extends BaseManager {
             return;
         }
         graphics.lineWidth = 10;
-        graphics.fillColor.fromHEX('ffffff');
+        graphics.fillColor = light.renderColor;
         if (potArr && potArr.length > 0) {
             let p0 = graphics.node.convertToNodeSpaceAR(potArr[0]);
             graphics.moveTo(p0.x, p0.y);

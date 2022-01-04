@@ -25,7 +25,7 @@ export default class ShadowOfSight extends cc.Component {
     /** 辐射线数量 */
     private rayNum = 180;
     @property(cc.Color)
-    renderColor = cc.color(255, 255, 255, 40);
+    renderColor = cc.color(255, 255, 255, 255);
     @property
     showLight = true;
     @property
@@ -104,10 +104,11 @@ export default class ShadowOfSight extends cc.Component {
             this.lightVertsArray = [];
             this.circle = cc.v3(0, 0, 0);
             if (this.showRayCast) {
-                this.drawRayByNum(pos, camera, this.showLight);
-                // this.drawCustom(pos, camera, this.showLight);
+                // this.drawRayByNum(pos, camera, this.showLight);
+                this.drawRayByNum(pos, camera, false);
             } else {
-                this.drawCustom(pos, camera, this.showLight);
+                // this.drawCustom(pos, camera, this.showLight);
+                this.drawCustom(pos, camera, false);
             }
         }
     }
