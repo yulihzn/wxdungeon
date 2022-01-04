@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import Dungeon from "../logic/Dungeon";
 import { EventHelper } from "../logic/EventHelper";
 import Logic from "../logic/Logic";
 import Player from "../logic/Player";
@@ -29,6 +30,7 @@ export default class RoomFishtank extends Building {
     fishSprite: cc.Sprite;
     isFirst = true;
     showAudio = false;
+    dungeon:Dungeon;
 
     onLoad() {
         this.fishSprite = this.fish.getChildByName('sprite').getComponent(cc.Sprite);
@@ -36,7 +38,8 @@ export default class RoomFishtank extends Building {
         this.fishMove();
         LoadingManager.loadNpcSpriteAtlas(NonPlayerManager.FISH);
     }
-    init(indexPos: cc.Vec3) {
+    init(indexPos: cc.Vec3,dungeon:Dungeon) {
+        this.dungeon = dungeon;
         this.data.defaultPos = indexPos;
     }
     zoomCamera(zoomIn: boolean) {
@@ -45,8 +48,14 @@ export default class RoomFishtank extends Building {
         }
         if(zoomIn){
             this.showAudio = true;
+            if(this.dungeon){
+                this.dungeon.cameraTargetNode = this.node;
+            }
         }else{
             this.showAudio = false;
+            if(this.dungeon){
+                this.dungeon.cameraTargetNode = this.dungeon.player.node;
+            }
         }
         EventHelper.emit(zoomIn ? EventHelper.HUD_CAMERA_ZOOM_IN : EventHelper.HUD_CAMERA_ZOOM_OUT);
     }

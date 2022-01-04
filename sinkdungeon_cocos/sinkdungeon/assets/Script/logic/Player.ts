@@ -201,7 +201,7 @@ export default class Player extends Actor {
         this.baseAttackPoint = Logic.playerData.FinalCommon.damageMin;
         this.updatePlayerPos();
         this.entity.NodeRender.node = this.node;
-        cc.director.emit(EventHelper.CAMERA_LOOK);
+        EventHelper.emit(EventHelper.CAMERA_LOOK,{pos:this.getCenterPosition(),isDirect:true});
         this.shooterEx.player = this;
         this.shooterEx.isEx = true;
         this.smokePool = new cc.NodePool();

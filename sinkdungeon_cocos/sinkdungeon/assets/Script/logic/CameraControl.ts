@@ -23,6 +23,7 @@ export default class CameraControl extends cc.Component {
     camera: cc.Camera;
     isShaking = false;
     isHeavyShaking = false;
+    addOffset: cc.Vec3 = cc.v3(0, 0);
     offsetIndex = 0;
     offsetArr = [cc.v3(0, 2), cc.v3(0, 2), cc.v3(0, -3), cc.v3(0, -3), cc.v3(1, 2), cc.v3(1, 2), cc.v3(-1, -1), cc.v3(-1, -1)];
     offsetArr1 = [cc.v3(0, 3), cc.v3(0, 3), cc.v3(0, -6), cc.v3(0, -6), cc.v3(3, 6), cc.v3(3, 6), cc.v3(-3, -3), cc.v3(-3, -3)];
@@ -31,20 +32,21 @@ export default class CameraControl extends cc.Component {
 
     onLoad() {
         this.camera = this.getComponent(cc.Camera);
-        cc.director.on(EventHelper.CAMERA_SHAKE, (event) => {
-            this.shakeCamera(event.detail.isHeavyShaking);
+        EventHelper.on(EventHelper.CAMERA_SHAKE, (detail) => {
+            this.shakeCamera(detail.isHeavyShaking);
         })
-        cc.director.on(EventHelper.CAMERA_LOOK, (event) => {
-            this.followPlayer(true);
+        EventHelper.on(EventHelper.CAMERA_LOOK, (detail) => {
+            this.addOffset = cc.v3(0, 0);
+            this.followTarget(true);
         })
-        cc.director.on(EventHelper.HUD_CAMERA_ZOOM_IN, (event) => {
-            if(this.dungeon){
+        EventHelper.on(EventHelper.HUD_CAMERA_ZOOM_IN, (detail) => {
+            if (this.dungeon) {
                 this.dungeon.CameraZoom = Dungeon.DEFAULT_ZOOM_MAX;
             }
         })
-        cc.director.on(EventHelper.HUD_CAMERA_ZOOM_OUT, (event) => {
-            if(this.dungeon){
-                this.dungeon.CameraZoom = this.dungeon.needZoomIn?Dungeon.DEFAULT_ZOOM_MIN:Dungeon.DEFAULT_ZOOM;
+        EventHelper.on(EventHelper.HUD_CAMERA_ZOOM_OUT, (detail) => {
+            if (this.dungeon) {
+                this.dungeon.CameraZoom = this.dungeon.needZoomIn ? Dungeon.DEFAULT_ZOOM_MIN : Dungeon.DEFAULT_ZOOM;
             }
         })
     }
@@ -59,17 +61,16 @@ export default class CameraControl extends cc.Component {
 
     }
     lateUpdate() {
-        if (!this.dungeon.player) {
-            return;
+        if (this.dungeon.cameraTargetNode) {
+            this.followTarget(false);
         }
-        this.followPlayer(false);
         this.camera.zoomRatio = this.lerpNumber(this.camera.zoomRatio, this.dungeon.CameraZoom, 0.05);
         // this.node.position = this.node.parent.convertToNodeSpaceAR(targetPos);
         // let ratio = targetPos.y / cc.winSize.height;
         // this.camera.zoomRatio = 1 + (0.5 - ratio) * 0.5;
     }
-    followPlayer(isDirect:boolean){
-        if (!this.dungeon||!this.dungeon.player) {
+    followTarget(isDirect: boolean) {
+        if (!this.dungeon || !this.dungeon.cameraTargetNode) {
             return;
         }
         let xmax = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE - 4, 0)).x;
@@ -77,23 +78,22 @@ export default class CameraControl extends cc.Component {
         let ymax = Dungeon.getPosInMap(cc.v3(0, Dungeon.HEIGHT_SIZE - 3)).y;
         let ymin = Dungeon.getPosInMap(cc.v3(0, 2)).y;
         let offset = cc.v3(0, 0);
-        if (this.dungeon.player.node.x < xmin) {
-            offset.x = xmin - this.dungeon.player.node.x;
+        if (this.dungeon.cameraTargetNode.x < xmin) {
+            offset.x = xmin - this.dungeon.cameraTargetNode.x;
         }
-        if (this.dungeon.player.node.x > xmax) {
-            offset.x = xmax - this.dungeon.player.node.x;
+        if (this.dungeon.cameraTargetNode.x > xmax) {
+            offset.x = xmax - this.dungeon.cameraTargetNode.x;
         }
-        if (this.dungeon.player.node.y < ymin) {
-            offset.y = ymin - this.dungeon.player.node.y;
+        if (this.dungeon.cameraTargetNode.y < ymin) {
+            offset.y = ymin - this.dungeon.cameraTargetNode.y;
         }
-        if (this.dungeon.player.node.y > ymax) {
-            offset.y = ymax - this.dungeon.player.node.y;
+        if (this.dungeon.cameraTargetNode.y > ymax) {
+            offset.y = ymax - this.dungeon.cameraTargetNode.y;
         }
-        let targetPos = this.dungeon.node.convertToWorldSpaceAR(this.dungeon.player.getCenterPosition().addSelf(offset));
-
-        if(isDirect){
+        let targetPos = this.dungeon.node.convertToWorldSpaceAR(this.dungeon.cameraTargetNode.position.clone().addSelf(offset));
+        if (isDirect) {
             this.node.position = this.node.parent.convertToNodeSpaceAR(targetPos);
-        }else{
+        } else {
             this.node.position = this.lerp(this.node.position, this.node.parent.convertToNodeSpaceAR(targetPos), 0.1);
         }
         if (this.isShaking) {

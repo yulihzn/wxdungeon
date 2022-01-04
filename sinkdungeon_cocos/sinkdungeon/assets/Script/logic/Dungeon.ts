@@ -43,9 +43,9 @@ export default class Dungeon extends cc.Component {
     @property(cc.Node)
     fog: cc.Node = null;
     @property(StatusIconList)
-    statusIconList:StatusIconList = null;
+    statusIconList: StatusIconList = null;
     @property(cc.Camera)
-    mainCamera:cc.Camera = null;
+    mainCamera: cc.Camera = null;
     mapData: string[][] = [];//地图数据
     tilesmap: Tile[][] = new Array();//地面列表
     floorIndexMap: cc.Vec3[] = new Array();//地板下标列表
@@ -76,6 +76,7 @@ export default class Dungeon extends cc.Component {
     isComplete = false;
     currentPos = cc.v3(0, 0);
     isDisappeared = false;
+    cameraTargetNode: cc.Node = null;
 
     rootSystem: GameWorldSystem = null;
 
@@ -135,21 +136,21 @@ export default class Dungeon extends cc.Component {
             this.logNodeCount();
         });
         EventHelper.on(EventHelper.DUNGEON_DISAPPEAR, (detail) => {
-            if(this.node){
+            if (this.node) {
                 this.isDisappeared = true;
-                for(let b of this.buildingManager.buildingList){
-                    if(b&&b.node){
+                for (let b of this.buildingManager.buildingList) {
+                    if (b && b.node) {
                         b.disappear();
                     }
                 }
-                for(let t of this.tilesmap){
-                    for(let tile of t){
-                        if(tile&&tile.node){
+                for (let t of this.tilesmap) {
+                    for (let tile of t) {
+                        if (tile && tile.node) {
                             tile.disappear();
                         }
                     }
                 }
-                cc.tween(this.dungeonStyleManager.floor).to(0.5+Random.rand(),{opacity:0}).start();
+                cc.tween(this.dungeonStyleManager.floor).to(0.5 + Random.rand(), { opacity: 0 }).start();
             }
 
         });
@@ -190,7 +191,7 @@ export default class Dungeon extends cc.Component {
         }
         let colliderdebug = this.node.getChildByName('colliderdebug');
         colliderdebug.zIndex = IndexZ.UI;
-        this.rootSystem = new GameWorldSystem(Dungeon.WIDTH_SIZE * Dungeon.TILE_SIZE, Dungeon.HEIGHT_SIZE * Dungeon.TILE_SIZE,colliderdebug.getComponent(cc.Graphics));
+        this.rootSystem = new GameWorldSystem(Dungeon.WIDTH_SIZE * Dungeon.TILE_SIZE, Dungeon.HEIGHT_SIZE * Dungeon.TILE_SIZE, colliderdebug.getComponent(cc.Graphics));
         this.rootSystem.init();
         this.tilesmap = new Array();
         this.floorIndexMap = new Array();
@@ -202,35 +203,38 @@ export default class Dungeon extends cc.Component {
                 Logic.getBuildings(BuildingManager.DOOR, (prefab: cc.Prefab) => {
                     this.buildingManager.addAirExit(mapData);
                     for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
-                this.tilesmap[i] = new Array(i);
-                for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
-                    //越往下层级越高，j是行，i是列
-                    this.addTiles(mapData[i][j], cc.v3(i, j), leveldata, false);
-                    //加载建筑
-                    this.buildingManager.addBuildingsFromMap(this, mapData,mapData[i][j], cc.v3(i, j), leveldata, exits);
-                    //房间未清理时加载物品
-                    if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
-                        this.itemManager.addItemFromMap(mapData[i][j], cc.v3(i, j));
+                        this.tilesmap[i] = new Array(i);
+                        for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
+                            //越往下层级越高，j是行，i是列
+                            this.addTiles(mapData[i][j], cc.v3(i, j), leveldata, false);
+                            //加载建筑
+                            this.buildingManager.addBuildingsFromMap(this, mapData, mapData[i][j], cc.v3(i, j), leveldata, exits);
+                            //房间未清理时加载物品
+                            if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
+                                this.itemManager.addItemFromMap(mapData[i][j], cc.v3(i, j));
+                            }
+                            //房间未清理时加载怪物
+                            if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)
+                                || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.START_ROOM)) {
+                                this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j));
+                            }
+                            //加载npc
+                            this.nonPlayerManager.addNonPlayerFromMap(this, mapData[i][j], cc.v3(i, j));
+                        }
                     }
-                    //房间未清理时加载怪物
-                    if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)
-                        || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.START_ROOM)) {
-                        this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j));
+                    let offsets = [cc.v3(-1, -1, 4), cc.v3(-1, 0, 2), cc.v3(-1, 1, 6), cc.v3(0, -1, 0), cc.v3(0, 1, 1), cc.v3(1, -1, 5), cc.v3(1, 0, 3), cc.v3(1, 1, 7)];
+                    for (let offset of offsets) {
+                        this.addBuildingsFromSideMap(offset);
                     }
-                    //加载npc
-                    this.nonPlayerManager.addNonPlayerFromMap(this, mapData[i][j], cc.v3(i, j));
-                }
-            }
-            let offsets = [cc.v3(-1, -1, 4), cc.v3(-1, 0, 2), cc.v3(-1, 1, 6), cc.v3(0, -1, 0), cc.v3(0, 1, 1), cc.v3(1, -1, 5), cc.v3(1, 0, 3), cc.v3(1, 1, 7)];
-            for (let offset of offsets) {
-                this.addBuildingsFromSideMap(offset);
-            }
-        })})});
+                })
+            })
+        });
 
         //初始化玩家
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
         this.player.statusIconList = this.statusIconList;
         this.player.node.parent = this.node;
+        this.cameraTargetNode = this.player.node;
         this.fog.setPosition(this.player.node.position.clone());
         //加载随机怪物
         if ((!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoom().isReborn)
@@ -276,7 +280,7 @@ export default class Dungeon extends cc.Component {
         }
         if (!onlyShow && Dungeon.isFirstEqual(mapDataStr, "*")) {
             let index = parseInt(mapDataStr[1]);
-            if(isNaN(index)||index<5){
+            if (isNaN(index) || index < 5) {
                 this.floorIndexMap.push(indexPos.clone());
             }
         }
@@ -322,7 +326,7 @@ export default class Dungeon extends cc.Component {
                 if (needAdd) {
                     let indexPos = cc.v3(i + Dungeon.WIDTH_SIZE * offset.x, j + Dungeon.HEIGHT_SIZE * offset.y);
                     this.addTiles(mapData[i][j], indexPos.clone(), leveldata, true);
-                    this.buildingManager.addBuildingsFromSideMap(mapData[i][j],mapData, indexPos.clone(), leveldata);
+                    this.buildingManager.addBuildingsFromSideMap(mapData[i][j], mapData, indexPos.clone(), leveldata);
                 }
             }
         }
@@ -489,7 +493,7 @@ export default class Dungeon extends cc.Component {
     start() {
         this.scheduleOnce(() => {
             cc.director.emit(EventHelper.CHANGE_MINIMAP, { detail: { x: this.currentPos.x, y: this.currentPos.y } });
-            if(this.isInitFinish && !Logic.isGamePause&&!this.isDisappeared&&LoadingManager.allResourceDone()){
+            if (this.isInitFinish && !Logic.isGamePause && !this.isDisappeared && LoadingManager.allResourceDone()) {
                 this.checkRoomClear();
             }
         }, 0.1)
@@ -511,7 +515,7 @@ export default class Dungeon extends cc.Component {
     getMonsterAliveNum(): number {
         let count = 0;
         for (let monster of this.monsterManager.monsterList) {
-            if (!monster||!monster.node||monster.sc.isDied || monster.data.isTest > 0) {
+            if (!monster || !monster.node || monster.sc.isDied || monster.data.isTest > 0) {
                 count++;
             }
         }
@@ -533,7 +537,7 @@ export default class Dungeon extends cc.Component {
         //检查是否怪物生成建筑生成完毕
         for (let monsterGenerator of this.buildingManager.monsterGeneratorList) {
             if (!monsterGenerator.addFinish) {
-                if(this.isClear){
+                if (this.isClear) {
                     monsterGenerator.open();
                 }
                 this.isClear = false;
@@ -553,7 +557,7 @@ export default class Dungeon extends cc.Component {
         this.setDoors(this.isClear);
         if (this.isClear) {
             if (this.monsterManager.isRoomInitWithEnemy && Logic.mapManager.getCurrentRoomType().isNotEqual(RoomType.TEST_ROOM)) {
-                EventHelper.emit(EventHelper.HUD_COMPLETE_SHOW,{map:this.buildingManager.getReachDir()});
+                EventHelper.emit(EventHelper.HUD_COMPLETE_SHOW, { map: this.buildingManager.getReachDir() });
                 if (!this.isComplete && this.player && this.player.data && this.player.data.StatusTotalData.clearHealth > 0) {
                     this.isComplete = true;
                     this.player.takeDamage(new DamageData(-this.player.data.StatusTotalData.clearHealth));
@@ -598,7 +602,7 @@ export default class Dungeon extends cc.Component {
     }
     checkMonstersPos() {
         for (let monster of this.monsterManager.monsterList) {
-            if (monster&&monster.node&&monster.node.active&&monster.sc.isDied) {
+            if (monster && monster.node && monster.node.active && monster.sc.isDied) {
                 return;
             }
         }
@@ -622,7 +626,7 @@ export default class Dungeon extends cc.Component {
     }
 
     update(dt) {
-        if (this.isInitFinish && !Logic.isGamePause&&!this.isDisappeared&&LoadingManager.allResourceDone()) {
+        if (this.isInitFinish && !Logic.isGamePause && !this.isDisappeared && LoadingManager.allResourceDone()) {
             if (this.isTimeDelay(dt)) {
                 this.checkPlayerPos(dt);
                 this.monsterManager.updateLogic(dt);

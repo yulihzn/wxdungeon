@@ -921,7 +921,7 @@ export default class BuildingManager extends BaseManager {
         } else if (mapDataStr == 'Zi') {
             Logic.getBuildings(BuildingManager.ROOMFISHTANK, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos);
-                building.getComponent(RoomFishtank).init(indexPos);
+                building.getComponent(RoomFishtank).init(indexPos,dungeon);
                 let script = building.getComponent(Furniture);
                 script.init(data);
             });
