@@ -861,7 +861,7 @@ export default class BuildingManager extends BaseManager {
             case 'Z8': data.valueCopy(Logic.furnitures[Furniture.CUPBOARD]); break;
             case 'Z9': data.valueCopy(Logic.furnitures[Furniture.STOOL]); break;
             case 'Za': data.valueCopy(Logic.furnitures[Furniture.COOKING_BENCH]); break;
-            case 'Zb': data.valueCopy(Logic.furnitures[Furniture.COOKING_BENCH_1]); break;
+            case 'Zb': data.valueCopy(Logic.furnitures[Furniture.DOLL_MACHINE]); break;
             case 'Zc': data.valueCopy(Logic.furnitures[Furniture.COOKING_BENCH_2]); break;
             case 'Zd': data.valueCopy(Logic.furnitures[Furniture.COOKING_BENCH_3]); break;
             case 'Ze': data.valueCopy(Logic.furnitures[Furniture.BATH]); break;

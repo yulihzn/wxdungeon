@@ -42,7 +42,7 @@ export default class Furniture extends Building {
     static readonly DINNER_TABLE = 'furniture003';
     static readonly WASHING_MACHINE = 'furniture004';
     static readonly COOKING_BENCH = 'furniture005';
-    static readonly COOKING_BENCH_1 = 'furniture006';
+    static readonly DOLL_MACHINE = 'furniture006';
     static readonly COOKING_BENCH_2 = 'furniture007';
     static readonly COOKING_BENCH_3 = 'furniture008';
     static readonly FRIDGE = 'furniture009';

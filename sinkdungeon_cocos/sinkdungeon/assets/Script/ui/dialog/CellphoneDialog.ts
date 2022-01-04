@@ -118,7 +118,10 @@ export default class CellphoneDialog extends BaseDialog {
                 let fd = new FurnitureData();
                 fd.valueCopy(Logic.furnitures[key]);
                 let save = LocalStorage.getFurnitureData(fd.id);
-                fd.valueCopy(save);
+                if (save) {
+                    fd.isOpen = save.isOpen;
+                    fd.purchased = save.purchased;
+                }
                 let data = new CellphoneData();
                 data.createTime = new Date().getTime();
                 data.type = CellphoneItem.TYPE_FURNITURE;

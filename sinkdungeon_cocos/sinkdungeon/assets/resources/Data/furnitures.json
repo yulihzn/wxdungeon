@@ -56,14 +56,14 @@
     },
     "furniture006": {
         "id": "furniture006",
-        "nameCn": "灶台（一）",
-        "nameEn": "cooking bench 1",
-        "resName": "roomkitchentable1",
+        "nameCn": "娃娃机",
+        "nameEn": "Doll Machine",
+        "resName": "roomdollmachine",
         "info": "",
-        "desc": "",
-        "scale": 4,
+        "desc": "一元一次，每次一元",
+        "scale": 6,
         "collider": "0,0,128,128",
-        "price": 1000
+        "price": 10
     },
     "furniture007": {
         "id": "furniture007",
@@ -214,8 +214,8 @@
         "nameCn": "垃圾桶",
         "nameEn": "trashcan",
         "resName": "trashcan0",
-        "info": "楼下的垃圾桶为什么也要花钱？",
-        "desc": "",
+        "info": "可以翻找一些没用的垃圾",
+        "desc": "楼下的垃圾桶为什么也要花钱？",
         "scale": 5,
         "collider": "16,8,80,128",
         "price": 10
