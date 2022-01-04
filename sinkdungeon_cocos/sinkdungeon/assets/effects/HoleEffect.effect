@@ -114,10 +114,10 @@ CCProgram fs %{
     // }else{
     //   a = 1.0;
     // }
-    //背景色为黑色直接返回阴影色，如果是白色返回透明， 否则返回当前颜色
-    if(color.r == 0.0&&color.g == 0.0&&color.b == 0.0){
+    //背景色为白色直接返回阴影色，如果是黑色返回透明， 否则返回当前颜色
+    if(color.a == 0.0){
       return lightColor;
-    }else if(color.r == 1.0&&color.g == 1.0&&color.b == 1.0){
+    }else if(color.r == 0.0&&color.g == 0.0&&color.b == 0.0){
       return vec4(0.0,0.0,0.0,0.0);
     }else {
       return color;

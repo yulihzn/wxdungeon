@@ -7177,7 +7177,7 @@
     "_prefab": {
       "__id__": 203
     },
-    "_opacity": 255,
+    "_opacity": 36,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
@@ -7240,7 +7240,7 @@
       "r": 255,
       "g": 255,
       "b": 255,
-      "a": 255
+      "a": 0
     },
     "showLight": false,
     "showRayCast": false,
