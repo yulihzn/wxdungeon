@@ -56,10 +56,10 @@ export default class DollMachineDialog extends BaseDialog {
         this.joyStick.updateUi(pos);
         this.joyStickSmall.updateUi(pos);
         let movePos = this.hook.position.add(pos.mul(5));
-        if(movePos.x>0){
+        if(movePos.x<0){
             movePos.x = 0;
         }
-        if(movePos.y>0){
+        if(movePos.y<0){
             movePos.y = 0;
         }
         if(movePos.x>this.topLayout.width-this.hook.width){

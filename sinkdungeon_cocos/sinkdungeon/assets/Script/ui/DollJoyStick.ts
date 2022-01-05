@@ -51,9 +51,11 @@ export default class DollJoyStick extends cc.Component {
         }, this)
         this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             this.isPressing = false;
+            this.movePos = cc.Vec2.ZERO;
         }, this)
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
             this.isPressing = false;
+            this.movePos = cc.Vec2.ZERO;
         }, this)
     }
     updateUi(pos: cc.Vec3) {
