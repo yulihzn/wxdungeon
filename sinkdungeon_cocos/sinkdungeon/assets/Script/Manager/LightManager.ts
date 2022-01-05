@@ -51,7 +51,7 @@ export default class LightManager extends BaseManager {
         //将阴影镜头下的图片赋值到主镜头结点图片
         if (!this.shadowTexture && Logic.settings.showShadow) {
             this.shadowTexture = new cc.RenderTexture();
-            this.shadowTexture.initWithSize(cc.visibleRect.width / 16, cc.visibleRect.height / 16);
+            this.shadowTexture.initWithSize(cc.visibleRect.width / 8, cc.visibleRect.height / 8);
             this.shadowTexture.setFilters(cc.Texture2D.Filter.NEAREST, cc.Texture2D.Filter.NEAREST);
             this.shadowCamera.targetTexture = this.shadowTexture;
             this.shadow.spriteFrame = new cc.SpriteFrame(this.shadowTexture);
@@ -146,11 +146,13 @@ export default class LightManager extends BaseManager {
             graphics.fill();
         }
         if (circle && circle.z > 0) {
-            const center = graphics.node.convertToNodeSpaceAR(cc.v3(circle.x, circle.y));
-            graphics.circle(center.x, center.y, circle.z);
-            graphics.fill();
+            this.drawCircle(graphics,circle.x,circle.y,circle.z);
         }
-
+    }
+    drawCircle(graphics: cc.Graphics,x: number, y: number, r: number) {
+        const center = graphics.node.convertToNodeSpaceAR(cc.v3(x, y));
+        graphics.circle(center.x, center.y, r);
+        graphics.fill();
     }
     fixShadowPos() {
         if (this.camera) {

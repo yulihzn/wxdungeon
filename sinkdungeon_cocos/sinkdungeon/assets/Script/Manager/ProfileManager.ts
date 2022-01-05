@@ -110,6 +110,9 @@ export default class ProfileManager{
          if(data.time){
              this.data.time = data.time;
          }
+         if(data.realTime){
+            this.data.realTime = data.realTime;
+        }
         console.log('data',this);
         return true;
     }
