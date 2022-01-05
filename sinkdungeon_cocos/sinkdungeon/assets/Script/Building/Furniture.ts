@@ -160,6 +160,9 @@ export default class Furniture extends Building {
                 if (kitchen) {
                     kitchen.getFood(player);
                 } break;
+            case Furniture.DOLL_MACHINE:
+                EventHelper.emit(EventHelper.HUD_DOLL_MACHINE_DIALOG);
+                break;
             default:
                 AudioPlayer.play(AudioPlayer.SELECT_FAIL);
                 Utils.toast('梦境开发中,无法使用。');

@@ -103,9 +103,6 @@ export default class KeyboardController extends cc.Component {
         }
     }
     sendMoveMessageToPlayer(dt: number) {
-        if (Logic.isGamePause) {
-            return;
-        }
         let pos = cc.v3(0, 0);
         if (this.isUp) { pos.addSelf(cc.v3(0, 0.9)); }
         if (this.isDown) { pos.addSelf(cc.v3(0, -0.9)); }
@@ -137,6 +134,15 @@ export default class KeyboardController extends cc.Component {
         } else {
             this.stopCount++;
         }
+        if (Logic.isGamePause) {
+            if (this.isA) {
+                cc.director.emit(EventHelper.KEYBOARD_INTERACT);
+            }
+            if (this.stopCount < 2) {
+                cc.director.emit(EventHelper.KEYBOARD_MOVE, { detail: { dir: dir, pos: pos, dt: dt } })
+            }
+            return;
+        }
         if (this.stopCount < 2) {
             cc.director.emit(EventHelper.PLAYER_MOVE, { detail: { dir: dir, pos: pos, dt: dt } })
         }
@@ -146,7 +152,6 @@ export default class KeyboardController extends cc.Component {
         if (this.isB) {
             cc.director.emit(EventHelper.PLAYER_REMOTEATTACK);
         }
-
         if (this.isD) {
             cc.director.emit(EventHelper.PLAYER_SKILL);
         }

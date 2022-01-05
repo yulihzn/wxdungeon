@@ -8,6 +8,7 @@ import MartShelvesDialog from "./dialog/MartShelvesDialog";
 import InventoryDialog from "./dialog/InventoryDialog";
 import AudioPlayer from "../utils/AudioPlayer";
 import SatietyView from "./SatietyView";
+import DollMachineDialog from './dialog/DollMachineDialog';
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -55,6 +56,8 @@ export default class GameHud extends cc.Component {
     followArrows: cc.Node = null;
     @property(SatietyView)
     satietyView:SatietyView = null;
+    @property(DollMachineDialog)
+    dollMachineDialog:DollMachineDialog = null;
     private arrowList: cc.Node[] = [];
     private isCompleteShowed = false;
     private checkTimeDelay = 0;
@@ -116,6 +119,9 @@ export default class GameHud extends cc.Component {
         })
         EventHelper.on(EventHelper.HUD_FADE_OUT, (detail) => {
             this.fadeOut();
+        })
+        EventHelper.on(EventHelper.HUD_DOLL_MACHINE_DIALOG, (detail) => {
+            this.showDollMachineDialog();
         })
         if (this.clock) {
             this.clock.string = `${Logic.time}`;
@@ -265,7 +271,7 @@ export default class GameHud extends cc.Component {
                 this.clock.string = `${Logic.time}`;
             }
         }
-        if (this.settingsDialog.node.active || this.martShelvesDialog.node.active) {
+        if (this.settingsDialog.node.active || this.martShelvesDialog.node.active || this.dollMachineDialog.node.active) {
             Logic.isGamePause = true;
         } else {
             Logic.isGamePause = false;
@@ -309,6 +315,10 @@ export default class GameHud extends cc.Component {
         }
         if (this.martShelvesDialog.isShow) {
             this.martShelvesDialog.dismiss();
+            return;
+        }
+        if (this.dollMachineDialog.isShow) {
+            this.dollMachineDialog.dismiss();
             return;
         }
         this.showSettingsDialog();
@@ -359,6 +369,16 @@ export default class GameHud extends cc.Component {
         } else {
             this.martShelvesDialog.updateUI(type, goodsList);
             this.martShelvesDialog.show();
+        }
+    }
+    showDollMachineDialog(){
+        if(!this.dollMachineDialog){
+            return;
+        }
+        if(this.dollMachineDialog.isShow){
+            this.dollMachineDialog.dismiss();
+        }else{
+            this.dollMachineDialog.show();
         }
     }
 }

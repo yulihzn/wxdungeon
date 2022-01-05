@@ -7,6 +7,8 @@ export class EventHelper extends cc.Component {
     public static readonly PLAYER_TRIGGER = 'PLAYER_TRIGGER';
     public static readonly PLAYER_USEITEM = 'PLAYER_USEITEM';
     public static readonly USEITEM_KEYBOARD = 'USEITEM_KEYBOARD';
+    public static readonly KEYBOARD_INTERACT = 'KEYBOARD_INTERACT';
+    public static readonly KEYBOARD_MOVE = 'KEYBOARD_MOVE';
     public static readonly PLAYER_SKILL = 'PLAYER_SKILL';
     public static readonly PLAYER_SKILL1 = 'PLAYER_SKILL1';
     public static readonly PLAYER_ATTACK = 'PLAYER_ATTACK';
@@ -43,6 +45,7 @@ export class EventHelper extends cc.Component {
     public static readonly HUD_FADE_IN = 'HUD_FADE_IN';
     public static readonly HUD_FADE_OUT = 'HUD_FADE_OUT';
     public static readonly HUD_COMPLETE_SHOW = 'HUD_COMPLETE_SHOW';
+    public static readonly HUD_DOLL_MACHINE_DIALOG = 'HUD_DOLL_MACHINE_DIALOG';
     public static readonly HUD_MART_SHELVES_DIALOG = 'HUD_MART_SHELVES_DIALOG';
     public static readonly HUD_MART_SHELVES_DIALOG_PAY = 'HUD_MART_SHELVES_DIALOG_BUY';
     public static readonly HUD_CAMERA_ZOOM_IN = 'HUD_CAMERA_ZOOM_IN';

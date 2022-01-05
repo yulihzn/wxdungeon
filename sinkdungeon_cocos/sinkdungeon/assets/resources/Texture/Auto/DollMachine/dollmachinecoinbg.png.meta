@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "9d502e94-6941-4cc4-9e1a-632e8ca9c36d",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 16,
+  "height": 16,
+  "platformSettings": {},
+  "subMetas": {
+    "dollmachinecoinbg": {
+      "ver": "1.0.6",
+      "uuid": "c7bc60e3-9712-42db-a4fb-c76668b98c9e",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "9d502e94-6941-4cc4-9e1a-632e8ca9c36d",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 16,
+      "height": 16,
+      "rawWidth": 16,
+      "rawHeight": 16,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
