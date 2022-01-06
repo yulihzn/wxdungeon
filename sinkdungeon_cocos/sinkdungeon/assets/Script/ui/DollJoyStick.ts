@@ -9,8 +9,6 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { EventHelper } from "../logic/EventHelper";
-import Logic from "../logic/Logic";
-import Tips from "./Tips";
 
 
 const { ccclass, property } = cc._decorator;
@@ -44,7 +42,7 @@ export default class DollJoyStick extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_MOVE, (event: cc.Event.EventTouch) => {
             let movePos = event.getLocation().sub(this.startPos);
             if (movePos.mag() > this.node.width / 10) {
-                this.movePos = movePos.sub(this.startPos).normalize();
+                this.movePos = movePos.normalize();
             }else{
                 this.movePos = cc.Vec2.ZERO;
             }
@@ -69,15 +67,16 @@ export default class DollJoyStick extends cc.Component {
             this.bar.scaleY = 1.5;
         }
     }
+    stopCount = 0;
     protected update(dt: number): void {
         if (this.isTimeDelay(dt)) {
-            if(!this.movePos.equals(cc.Vec2.ZERO)){
-                EventHelper.emit(EventHelper.KEYBOARD_MOVE, { pos: this.movePos });
+            if (!this.movePos.equals(cc.Vec2.ZERO)) {
+                this.stopCount = 0;
+            } else {
+                this.stopCount++;
             }
-            if(!this.isPressing){
-                this.sprite.angle = Logic.lerp(this.sprite.angle, 0, 3 * dt);
-                this.head.y = Logic.lerp(this.head.y, 16, 3 * dt);
-                this.bar.scaleY = Logic.lerp(this.bar.scaleY, 1, 3 * dt);
+            if(this.stopCount<2){
+                EventHelper.emit(EventHelper.KEYBOARD_MOVE, { pos: this.movePos });
             }
         }
     }

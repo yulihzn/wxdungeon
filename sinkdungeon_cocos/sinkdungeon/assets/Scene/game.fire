@@ -36904,6 +36904,9 @@
     "_children": [
       {
         "__id__": 820
+      },
+      {
+        "__id__": 832
       }
     ],
     "_active": true,
@@ -36969,9 +36972,6 @@
       },
       {
         "__id__": 823
-      },
-      {
-        "__id__": 832
       }
     ],
     "_active": true,
@@ -37570,7 +37570,7 @@
     "_name": "hookbase",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 820
+      "__id__": 819
     },
     "_children": [],
     "_active": true,
@@ -37602,16 +37602,16 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        0,
+        75,
+        37.5,
         0,
         0,
         0,
         0,
         1,
-        1,
-        1,
-        1
+        3,
+        3,
+        3
       ]
     },
     "_eulerAngles": {
@@ -38211,6 +38211,9 @@
     "_enabled": true,
     "hook": {
       "__id__": 819
+    },
+    "hookSprite": {
+      "__id__": 820
     },
     "claw": {
       "__id__": 823
