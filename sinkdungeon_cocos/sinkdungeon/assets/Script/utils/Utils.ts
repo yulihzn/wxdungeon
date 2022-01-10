@@ -84,4 +84,20 @@ export default class Utils {
         }
         return value;
     }
+    static clampPos(value: cc.Vec3, max: cc.Vec3, min: cc.Vec3):cc.Vec3 {
+        let pos = value.clone();
+        if (value.x > max.x) {
+            pos.x = max.x;
+        }
+        if(value.y>max.y){
+            pos.y = max.y;
+        }
+        if (value.x < min.x) {
+           pos.x = min.x;
+        }
+        if (value.y < min.y) {
+            pos.y = min.y;
+         }
+        return pos;
+    }
 }

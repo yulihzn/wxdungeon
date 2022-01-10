@@ -1,6 +1,6 @@
 {
   "ver": "2.3.7",
-  "uuid": "8687e327-d057-4b4d-869c-60151084a9e0",
+  "uuid": "dfd84f3a-be89-47e6-a2e7-6dd4ca01a36e",
   "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -12,12 +12,12 @@
   "height": 10,
   "platformSettings": {},
   "subMetas": {
-    "dollmachinebg": {
+    "dollmachinebg1": {
       "ver": "1.0.6",
-      "uuid": "af8a7fd1-8f8e-4da7-a743-9bdc9973994c",
+      "uuid": "fb52b1f2-281e-4473-b7e6-a4b3700db335",
       "importer": "sprite-frame",
-      "rawTextureUuid": "8687e327-d057-4b4d-869c-60151084a9e0",
-      "trimType": "auto",
+      "rawTextureUuid": "dfd84f3a-be89-47e6-a2e7-6dd4ca01a36e",
+      "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,
       "offsetX": 0,

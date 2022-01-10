@@ -1,5 +1,6 @@
 import Logic from '../../logic/Logic';
 import Utils from '../../utils/Utils';
+import Doll from '../Doll';
 import DollJoyStick from '../DollJoyStick';
 import { EventHelper } from './../../logic/EventHelper';
 // Learn TypeScript:
@@ -37,14 +38,19 @@ export default class DollMachineDialog extends BaseDialog {
     hookLine: cc.Node = null;
     @property(cc.Node)
     topLayout: cc.Node = null;
+    @property(cc.Node)
+    layout: cc.Node = null;
     @property(DollJoyStick)
     joyStick: DollJoyStick = null;
     @property(DollJoyStick)
     joyStickSmall: DollJoyStick = null;
+    @property(cc.Prefab)
+    dollPrefab: cc.Prefab = null;
     isHooking = false;
     lastMovePos = cc.Vec3.ZERO;
     hookSwingAngle = 0;
     clawSwingAngle = 0;
+    dollList: Doll[] = [];
     onLoad() {
         EventHelper.on(EventHelper.KEYBOARD_MOVE, (detail) => {
             if (this.node && this.node.active) {
@@ -57,29 +63,38 @@ export default class DollMachineDialog extends BaseDialog {
                     this.buttonClick();
                 }
             });
+        this.initDolls();
 
     }
+    private initDolls() {
+        this.dollList = [];
+        this.layout.removeAllChildren();
+        for (let data of Logic.dollNameList) {
+            let doll = cc.instantiate(this.dollPrefab).getComponent(Doll).init(Logic.items[data]);
+            doll.node.parent = this.layout;
+            this.dollList.push(doll);
+        }
+        for (let j = 0; j < 3; j++) {
+            for (let i = 0; i < 6; i++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+                if (i + j < this.dollList.length + 1) {
+                    this.dollList[i + j * 6 -1].node.position = cc.v3(i * Doll.RECT.width, j * Doll.RECT.width).add(cc.v3(Doll.RECT.width / 2, Doll.RECT.width / 2));
+                }
+            }
+        }
+    }
     private joystickMove(pos: cc.Vec3) {
-
-
         this.joyStick.updateUi(pos);
         this.joyStickSmall.updateUi(pos);
-        let movePos = this.hook.position.add(pos.mul(5));
-        if (movePos.x < 0) {
-            movePos.x = 0;
+        if (this.isHooking) {
+            return;
         }
-        if (movePos.y < 0) {
-            movePos.y = 0;
-        }
-        if (movePos.x > this.topLayout.width - this.hook.width) {
-            movePos.x = this.topLayout.width - this.hook.width;
-        }
-        if (movePos.y > this.topLayout.height - this.hook.height) {
-            movePos.y = this.topLayout.height - this.hook.height;
-        }
-        if(!this.isHooking){
-            this.hook.position = movePos;
-        }
+        let movePos = Utils.clampPos(this.hook.position.add(pos.mul(10))
+            , cc.v3(this.topLayout.width - this.hook.width/2, this.topLayout.height - this.hook.height/2)
+            , cc.v3(this.hook.width/2, this.hook.height/2));
+        this.hook.position = movePos;
         if (!pos.equals(cc.Vec3.ZERO)) {
             /**往右移动且上次是往左,当前目标角度在左边，则加左边的角度,如果在中间则加右边的角度
              * 往左移动且上次是往右,当前目标角度在右边，则加右边的角度,如果在中间则加左边的角度
@@ -88,50 +103,31 @@ export default class DollMachineDialog extends BaseDialog {
              * 如果在右边则不动
              */
             if (pos.x > 0) {
-                if(this.lastMovePos.x < 0){
+                if (this.lastMovePos.x < 0) {
                     if (this.hookSwingAngle < 0) {
                         this.hookSwingAngle -= 30;
                     } else if (this.hookSwingAngle == 0) {
                         this.hookSwingAngle += 30;
                     }
-                }else if(this.lastMovePos.x == 0 && this.hookSwingAngle == 0){
+                } else if (this.lastMovePos.x == 0 && this.hookSwingAngle == 0) {
                     this.hookSwingAngle += 30;
                 }
-                // if(this.lastMovePos.x < 0){
-                //     if (this.clawSwingAngle < 0) {
-                //         this.clawSwingAngle -= 15;
-                //     } else if (this.clawSwingAngle == 0) {
-                //         this.clawSwingAngle += 15;
-                //     }
-                // }else if(this.lastMovePos.x == 0 && this.clawSwingAngle == 0){
-                //     this.clawSwingAngle += 15;
-                // }
-                
+
+
             } else if (pos.x < 0) {
-                if(this.lastMovePos.x > 0){
+                if (this.lastMovePos.x > 0) {
                     if (this.hookSwingAngle > 0) {
                         this.hookSwingAngle += 30;
                     } else if (this.hookSwingAngle == 0) {
                         this.hookSwingAngle -= 30;
                     }
-                }else if(this.lastMovePos.x == 0 && this.hookSwingAngle == 0){
+                } else if (this.lastMovePos.x == 0 && this.hookSwingAngle == 0) {
                     this.hookSwingAngle -= 30;
                 }
-                // if(this.lastMovePos.x > 0){
-                //     if (this.clawSwingAngle > 0) {
-                //         this.clawSwingAngle += 15;
-                //     } else if (this.hookSwingAngle == 0) {
-                //         this.clawSwingAngle -= 15;
-                //     }
-                // }else if(this.lastMovePos.x == 0 && this.clawSwingAngle == 0){
-                //     this.clawSwingAngle -= 15;
-                // }
-                
 
             }
             let max = 75;
             this.hookSwingAngle = Utils.clamp(this.hookSwingAngle, max, -max);
-            // this.clawSwingAngle = Utils.clamp(this.hookSwingAngle, max, -max);
         }
         this.lastMovePos = pos.clone();
     }
@@ -145,35 +141,65 @@ export default class DollMachineDialog extends BaseDialog {
         this.clawCenter.scaleY = 0.5;
         this.claw.y = 0;
         this.claw.angle = 0;
+        let downRange = 80;
+        let leaveOffset = 30;
+        let grabedDoll: Doll = null;
+        let isFinish1 = false;
+        let isFinish2 = false;
         //钩爪放下
-        cc.tween(this.claw).to(1, { y: -80 }).call(() => {
+        cc.tween(this.claw).to(1, { y: -downRange }).call(() => {
             //钩爪松开
             cc.tween(this.clawLeft).to(0.5, { angle: 0 }).start();
             cc.tween(this.clawRight).to(0.5, { angle: 0 }).start();
             cc.tween(this.clawCenter).to(0.5, { scaleY: 1 }).call(() => {
                 //钩爪收缩 检查是否抓取成功
-                let angle = this.checkGrab() ? 45 : 60;
+                let cw = this.hook.convertToWorldSpaceAR(this.claw.position);
+                let hw = this.hook.convertToWorldSpaceAR(cc.v3(0,0));
+                let offsetX = cw.x-hw.x;
+                grabedDoll = this.getGrabDoll(cc.v3(this.hook.x+offsetX, this.hook.y));
+                let angle = grabedDoll ? 45 : 60;
                 cc.tween(this.clawLeft).to(0.5, { angle: angle }).start();
                 cc.tween(this.clawRight).to(0.5, { angle: -angle }).start();
             }).to(0.5, { scaleY: 0.5 }).call(() => {
                 //钩爪收起并在三分之一的过程中松开钩爪，根据角度抛下玩偶
-                cc.tween(this.claw).to(0.5, { y: -60 }).call(() => {
+                cc.tween(this.claw).call(() => {
+                    cc.tween(this.hook).to(this.hook.position.mag() / 120, { position: cc.v3(this.hook.width/2, this.hook.height/2) }).call(()=>{
+                        isFinish1 = true;
+                    if(isFinish2){
+                        this.isHooking = false;
+                    }
+                    }).start();
+                }).to(0.5, { y: -downRange + leaveOffset }).call(() => {
                     cc.tween(this.clawLeft).to(0.2, { angle: 0 }).to(0.1, { angle: 60 }).start();
                     cc.tween(this.clawRight).to(0.2, { angle: 0 }).to(0.1, { angle: -60 }).start();
                     cc.tween(this.clawCenter).to(0.2, { scaleY: 1 }).to(0.1, { scaleY: 0.5 }).start();
+                    if (grabedDoll) {
+                        grabedDoll.drop(this.hook.position.y);
+                    }
                 }).to(1, { y: 0 }).call(() => {
-                    this.isHooking = false;
+                    isFinish2 = true;
+                    if(isFinish1){
+                        this.isHooking = false;
+                    }
                 }).start();
                 cc.tween(this.hookLine).to(2, { height: 0 }).start();
             }).start();
         }).start();
-        cc.tween(this.hookLine).to(1, { height: 80 }).start();
+        cc.tween(this.hookLine).to(1, { height: downRange }).start();
     }
-    private checkGrab(): boolean {
-        return false;
+    private getGrabDoll(hookPos: cc.Vec3): Doll {
+        cc.log(`${hookPos.x},${hookPos.y}`);
+        for (let doll of this.dollList) {
+            let dis = Logic.getDistance(doll.node.position, hookPos);
+            if (dis < 30) {
+                doll.grabed(this.claw);
+                return doll;
+            }
+        }
+        return null;
     }
     protected update(dt: number): void {
-        let value = this.getSwingAngle(this.hookSprite.angle, this.hookSwingAngle, 0.4);
+        let value = this.getSwingAngle(this.hookSprite.angle, this.hookSwingAngle, 0.2);
         this.hookSprite.angle = value.x;
         this.hookSwingAngle = value.y;
         // let value1 = this.getSwingAngle(this.claw.angle, this.clawSwingAngle, 0.5);

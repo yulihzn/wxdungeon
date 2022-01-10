@@ -281,16 +281,20 @@ export default class LoadingManager{
                 Logic.itemNameList = new Array();
                 Logic.goodsNameList = new Array();
                 Logic.trashNameList = new Array();
+                Logic.dollNameList = new Array();
                 for (let key in resource.json) {
                     if (Logic.items[key].canSave 
                         && key.indexOf('food') == -1 
                         && key.indexOf('trash') == -1 
+                        && key.indexOf('doll') == -1 
                         && key.indexOf('goods') == -1) {
                         Logic.itemNameList.push(key);
                     } else if (key.indexOf('goods') != -1) {
                         Logic.goodsNameList.push(key);
                     } else if (key.indexOf('trash') != -1) {
                         Logic.trashNameList.push(key);
+                    }else if (key.indexOf('doll') != -1) {
+                        Logic.dollNameList.push(key);
                     }
                 }
                 this.isItemsLoaded = true;
