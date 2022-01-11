@@ -7182,6 +7182,12 @@
     "voice": {
       "__uuid__": "c8b513a0-2640-4912-9d8a-449b7df52e4c"
     },
+    "dollmachine": {
+      "__uuid__": "3d97af05-b04b-49e0-a16e-c48ec0979d8f"
+    },
+    "dolldown": {
+      "__uuid__": "db287e4e-1f0a-455f-b601-5e72ff104529"
+    },
     "bg01": {
       "__uuid__": "a601a25d-abcb-42b9-9e58-2f8cfea4ebc9"
     },

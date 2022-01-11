@@ -1,4 +1,5 @@
 import Logic from '../../logic/Logic';
+import AudioPlayer from '../../utils/AudioPlayer';
 import Utils from '../../utils/Utils';
 import Doll from '../Doll';
 import DollJoyStick from '../DollJoyStick';
@@ -44,6 +45,12 @@ export default class DollMachineDialog extends BaseDialog {
     joyStick: DollJoyStick = null;
     @property(DollJoyStick)
     joyStickSmall: DollJoyStick = null;
+    @property(cc.Node)
+    coinLayout: cc.Node = null;
+    @property(cc.Label)
+    countDown: cc.Label = null;
+    @property(cc.Label)
+    countDownSmall: cc.Label = null;
     @property(cc.Prefab)
     dollPrefab: cc.Prefab = null;
     isHooking = false;
@@ -51,6 +58,9 @@ export default class DollMachineDialog extends BaseDialog {
     hookSwingAngle = 0;
     clawSwingAngle = 0;
     dollList: Doll[] = [];
+    isCoinInserted = false;
+    isCoinAniming = false;
+    anim: cc.Animation;
     onLoad() {
         EventHelper.on(EventHelper.KEYBOARD_MOVE, (detail) => {
             if (this.node && this.node.active) {
@@ -63,8 +73,12 @@ export default class DollMachineDialog extends BaseDialog {
                     this.buttonClick();
                 }
             });
+        this.coinLayout.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
+            if (this.node) {
+                this.insertCoin();
+            }
+        }, this)
         this.initDolls();
-
     }
     private initDolls() {
         this.dollList = [];
@@ -80,20 +94,68 @@ export default class DollMachineDialog extends BaseDialog {
                     continue;
                 }
                 if (i + j < this.dollList.length + 1) {
-                    this.dollList[i + j * 6 -1].node.position = cc.v3(i * Doll.RECT.width, j * Doll.RECT.width).add(cc.v3(Doll.RECT.width / 2, Doll.RECT.width / 2));
+                    this.dollList[i + j * 6 - 1].node.position = cc.v3(i * Doll.RECT.width, j * Doll.RECT.width).add(cc.v3(Doll.RECT.width / 2, Doll.RECT.width / 2));
                 }
             }
         }
     }
+    private insertCoin() {
+        if (this.isCoinAniming) {
+            return;
+        }
+        if (!this.anim) {
+            this.anim = this.coinLayout.getComponent(cc.Animation);
+        }
+        this.isCoinAniming = true;
+        this.anim.play('DollMachineCoinIn');
+        AudioPlayer.play(AudioPlayer.COIN);
+        EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: -2 });
+        this.scheduleOnce(() => {
+            this.coinIn();
+        }, 1)
+    }
+    coinIn() {
+        if (this.isCoinInserted) {
+            AudioPlayer.play(AudioPlayer.SELECT_FAIL);
+            this.anim.play('DollMachineCoinOut');
+            Utils.toast('已投币，请稍后');
+            this.scheduleOnce(() => { this.isCoinAniming = false;AudioPlayer.play(AudioPlayer.COIN); }, 1)
+        } else {
+            this.isCoinAniming = false;
+            this.isCoinInserted = true;
+            AudioPlayer.play(AudioPlayer.CASHIERING);
+            this.unscheduleAllCallbacks();
+            let count = 30;
+            this.countDown.string = `${count}`;
+            this.countDownSmall.string = `${count}`;
+            let timer = () => {
+                count--;
+                if (count <= 0) {
+                    //倒计时为0自动下落
+                    count = 0;
+                    this.buttonClick();
+                } else if (count < 6) {
+                    AudioPlayer.play(AudioPlayer.SELECT_FAIL);
+                }
+                this.countDown.string = `${count > 9 ? '' : '0'}${count}`;
+                this.countDownSmall.string = `${count > 9 ? '' : '0'}${count}`;
+                if(this.isHooking){
+                    this.unschedule(timer);
+                }
+            }
+            this.schedule(timer, 1, count, 1)
+        }
+    }
+
     private joystickMove(pos: cc.Vec3) {
         this.joyStick.updateUi(pos);
         this.joyStickSmall.updateUi(pos);
-        if (this.isHooking) {
+        if (!this.isCoinInserted||this.isHooking) {
             return;
         }
         let movePos = Utils.clampPos(this.hook.position.add(pos.mul(10))
-            , cc.v3(this.topLayout.width - this.hook.width/2, this.topLayout.height - this.hook.height/2)
-            , cc.v3(this.hook.width/2, this.hook.height/2));
+            , cc.v3(this.topLayout.width - this.hook.width / 2, this.topLayout.height - this.hook.height / 2)
+            , cc.v3(this.hook.width / 2, this.hook.height / 2));
         this.hook.position = movePos;
         if (!pos.equals(cc.Vec3.ZERO)) {
             /**往右移动且上次是往左,当前目标角度在左边，则加左边的角度,如果在中间则加右边的角度
@@ -132,9 +194,16 @@ export default class DollMachineDialog extends BaseDialog {
         this.lastMovePos = pos.clone();
     }
     buttonClick() {
-        if (this.isHooking) {
+        if (!this.isCoinInserted) {
+            AudioPlayer.play(AudioPlayer.SELECT_FAIL);
+            Utils.toast('点击右下角投币');
             return;
         }
+        if (this.isHooking) {
+            AudioPlayer.play(AudioPlayer.SELECT_FAIL);
+            return;
+        }
+        AudioPlayer.play(AudioPlayer.SELECT);
         this.isHooking = true;
         this.clawLeft.angle = 60;
         this.clawRight.angle = -60;
@@ -154,20 +223,21 @@ export default class DollMachineDialog extends BaseDialog {
             cc.tween(this.clawCenter).to(0.5, { scaleY: 1 }).call(() => {
                 //钩爪收缩 检查是否抓取成功
                 let cw = this.hook.convertToWorldSpaceAR(this.claw.position);
-                let hw = this.hook.convertToWorldSpaceAR(cc.v3(0,0));
-                let offsetX = cw.x-hw.x;
-                grabedDoll = this.getGrabDoll(cc.v3(this.hook.x+offsetX, this.hook.y));
+                let hw = this.hook.convertToWorldSpaceAR(cc.v3(0, 0));
+                let offsetX = cw.x - hw.x;
+                grabedDoll = this.getGrabDoll(cc.v3(this.hook.x + offsetX, this.hook.y));
                 let angle = grabedDoll ? 45 : 60;
                 cc.tween(this.clawLeft).to(0.5, { angle: angle }).start();
                 cc.tween(this.clawRight).to(0.5, { angle: -angle }).start();
             }).to(0.5, { scaleY: 0.5 }).call(() => {
                 //钩爪收起并在三分之一的过程中松开钩爪，根据角度抛下玩偶
                 cc.tween(this.claw).call(() => {
-                    cc.tween(this.hook).to(this.hook.position.mag() / 120, { position: cc.v3(this.hook.width/2, this.hook.height/2) }).call(()=>{
+                    cc.tween(this.hook).to(this.hook.position.mag() / 120, { position: cc.v3(this.hook.width / 2, this.hook.height / 2) }).call(() => {
                         isFinish1 = true;
-                    if(isFinish2){
-                        this.isHooking = false;
-                    }
+                        if (isFinish2) {
+                            this.isHooking = false;
+                            this.isCoinInserted = false;
+                        }
                     }).start();
                 }).to(0.5, { y: -downRange + leaveOffset }).call(() => {
                     cc.tween(this.clawLeft).to(0.2, { angle: 0 }).to(0.1, { angle: 60 }).start();
@@ -178,8 +248,9 @@ export default class DollMachineDialog extends BaseDialog {
                     }
                 }).to(1, { y: 0 }).call(() => {
                     isFinish2 = true;
-                    if(isFinish1){
+                    if (isFinish1) {
                         this.isHooking = false;
+                        this.isCoinInserted = false;
                     }
                 }).start();
                 cc.tween(this.hookLine).to(2, { height: 0 }).start();
@@ -233,6 +304,16 @@ export default class DollMachineDialog extends BaseDialog {
             modifyTarget = Math.ceil(modifyTarget);
         }
         return cc.v2(angle, modifyTarget);
+    }
+
+    public show(): void {
+        super.show();
+        AudioPlayer.stopAllEffect();
+        AudioPlayer.play(AudioPlayer.DOLLMACHINE,false,true);
+    }
+    public dismiss(): void {
+        super.dismiss();
+        AudioPlayer.stopAllEffect();
     }
 }
 

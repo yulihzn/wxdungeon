@@ -1508,33 +1508,5 @@
         "solidSatiety": 0,
         "cooldown": 5,
         "price": 0
-    },
-    "doll017": {
-        "id": 20090017,
-        "nameCn": "玩具熊",
-        "nameEn": "",
-        "resName": "doll000",
-        "canSave": 1,
-        "count": -1,
-        "info": "",
-        "desc": "一只玩具熊",
-        "statusList": "",
-        "solidSatiety": 0,
-        "cooldown": 5,
-        "price": 0
-    },
-    "doll018": {
-        "id": 20090018,
-        "nameCn": "玩具熊",
-        "nameEn": "",
-        "resName": "doll000",
-        "canSave": 1,
-        "count": -1,
-        "info": "",
-        "desc": "一只玩具熊",
-        "statusList": "",
-        "solidSatiety": 0,
-        "cooldown": 5,
-        "price": 0
     }
 }

@@ -48,6 +48,7 @@ export default class Doll extends cc.Component {
         this.isGrabing = false;
         if(Doll.RECT.contains(cc.v2(cc.v3(this.node.position.x,hookPosY)))){
             cc.tween(this.node).to(0.5,{y:hookPosY}).to(0.5,{y:-100}).call(()=>{
+                AudioPlayer.play(AudioPlayer.DOLLDOWN);
                 this.addItem();
             }).start();
         }else{
