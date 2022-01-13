@@ -65,6 +65,7 @@ export default class MonsterManager extends BaseManager {
     public static readonly MONSTER_LASRERDRONE = 'monster036';
     public static readonly MONSTER_GHOST = 'monster037';
     public static readonly MONSTER_FISH = 'monster038';
+    public static readonly MONSTER_MICE = 'monster039';
     public static readonly MONSTERS_LAB = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER,
     MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE, MonsterManager.MONSTER_ICEDEMON, MonsterManager.MONSTER_BITE_ZOMBIE
         , MonsterManager.MONSTER_HOLO_DEVICE, MonsterManager.MONSTER_LASRERDRONE];
@@ -76,7 +77,7 @@ export default class MonsterManager extends BaseManager {
         , MonsterManager.MONSTER_SANDSTATUE];
     public static readonly MONSTERS_DUNGEON = [MonsterManager.MONSTER_GARGOYLE, MonsterManager.MONSTER_WARLOCK, MonsterManager.MONSTER_DEMON, MonsterManager.MONSTER_CYCLOPS
         , MonsterManager.MONSTER_SPIDER, MonsterManager.MONSTER_CYCLOPS];
-        public static readonly MONSTERS_SPECIAL = [MonsterManager.MONSTER_DUMMY, MonsterManager.MONSTER_CHEST,MonsterManager.MONSTER_FISH];
+        public static readonly MONSTERS_SPECIAL = [MonsterManager.MONSTER_DUMMY, MonsterManager.MONSTER_CHEST,MonsterManager.MONSTER_FISH,MonsterManager.MONSTER_MICE];
         // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}
@@ -159,6 +160,8 @@ export default class MonsterManager extends BaseManager {
                     this.addMonsterFromData(MonsterManager.MONSTER_DUMMY, indexPos, dungeon, false);
                 } else if (mapDataStr[1] == 'b') {
                     this.addMonsterFromData(MonsterManager.MONSTER_CHEST, indexPos, dungeon, false);
+                } else if (mapDataStr[1] == 'c') {
+                    this.addMonsterFromData(MonsterManager.MONSTER_MICE, indexPos, dungeon, false);
                 }
             } else {
                 let arr = new Array();

@@ -17,8 +17,8 @@ export default class DialogueData {
     id = 0;
     interval = 0.1;//频率
     delay = 0;
-    scale = 0;
-    zIndex = IndexZ.ACTOR;
+    count = 0;//展示次数 -1：每次都展示
+    type = 0;
     isRotate = false;//是否旋转
     isFromEnemy = false;//是否来自敌人
     canBreakBuilding = false;//是否破坏建筑
@@ -34,8 +34,8 @@ export default class DialogueData {
         }
         this.interval = data.interval?data.interval:0.1;
         this.delay = data.delay?data.delay:0;
-        this.scale = data.scale?data.scale:0;
-        this.zIndex = data.zIndex?data.zIndex:IndexZ.ACTOR;
+        this.count = data.count?data.count:0;
+        this.type = data.type?data.type:IndexZ.ACTOR;
         this.isFromEnemy = data.isFromEnemy?data.isFromEnemy:false;
         this.canBreakBuilding = data.canBreakBuilding?data.canBreakBuilding:false;
         this.canBreakBullet = data.canBreakBullet?data.canBreakBullet:false;
@@ -49,7 +49,7 @@ export default class DialogueData {
         let e = new DialogueData();
         e.interval = this.interval;
         e.delay = this.delay;
-        e.scale = this.scale;
+        e.count = this.count;
         e.isFromEnemy = this.isFromEnemy;
         e.canBreakBuilding = this.canBreakBuilding;
         e.canBreakBullet = this.canBreakBullet;
@@ -57,7 +57,7 @@ export default class DialogueData {
         e.damage = this.damage.clone();
         e.from = this.from.clone();
         e.statusList = this.statusList;
-        e.zIndex = this.zIndex;
+        e.type = this.type;
         e.isRotate = this.isRotate;
         return e;
     }
