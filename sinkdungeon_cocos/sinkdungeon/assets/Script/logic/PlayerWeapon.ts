@@ -1,3 +1,4 @@
+import { EventHelper } from './EventHelper';
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
 // Learn Attribute:
@@ -14,6 +15,7 @@ import PlayerData from "../data/PlayerData";
 import PlayerAvatar from "./PlayerAvatar";
 import MeleeShadowWeapon from "./MeleeShadowWeapon";
 import Logic from "./Logic";
+import Random from '../utils/Random';
 
 const { ccclass, property } = cc._decorator;
 /**
@@ -24,36 +26,40 @@ export default class PlayerWeapon extends cc.Component {
 
     player: Player = null;
     meleeWeapon: MeleeWeapon = null;
-    shadowWeapon:MeleeShadowWeapon = null;
+    shadowWeapon: MeleeShadowWeapon = null;
     shooter: Shooter = null;
-    isLeftHand:boolean = false;//是否左手
+    private isLeftHand: boolean = false;//是否左手
     isHeavyRemotoAttacking = false;//是否是重型远程武器,比如激光
-    isShadow = false;
-    selfDefaultPos = cc.v3(-15,40);
-    otherDefaultPos = cc.v3(20,40);
+    private isShadow = false;
+    private selfDefaultPos = cc.v3(-15, 40);
+    private otherDefaultPos = cc.v3(20, 40);
+    private remoteIntervalTime = 0;//子弹间隔时间
+    private remoteContinuousTime = 0;//
+    private isCooling = false;
+    private remoteAngleOffset = 0;
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
 
-    init(player: Player,isLeftHand:boolean,isShadow:boolean) {
+    init(player: Player, isLeftHand: boolean, isShadow: boolean) {
         this.isShadow = isShadow;
         this.isLeftHand = isLeftHand;
         this.player = player;
         this.initMelee();
         this.initShooter();
-        if(isLeftHand){
-            this.selfDefaultPos = cc.v3(-15,40);
-            this.otherDefaultPos = cc.v3(20,40);
-        }else{
-            this.otherDefaultPos = cc.v3(-15,40);
-            this.selfDefaultPos = cc.v3(20,40);
+        if (isLeftHand) {
+            this.selfDefaultPos = cc.v3(-15, 40);
+            this.otherDefaultPos = cc.v3(20, 40);
+        } else {
+            this.otherDefaultPos = cc.v3(-15, 40);
+            this.selfDefaultPos = cc.v3(20, 40);
         }
     }
     private initMelee() {
-        if(this.isShadow){
+        if (this.isShadow) {
             this.shadowWeapon = this.getComponentInChildren(MeleeShadowWeapon);
-            this.shadowWeapon.init(this.player,this.isLeftHand?this.player.weaponLeft.meleeWeapon:this.player.weaponRight.meleeWeapon);
-        }else{
+            this.shadowWeapon.init(this.player, this.isLeftHand ? this.player.weaponLeft.meleeWeapon : this.player.weaponRight.meleeWeapon);
+        } else {
             this.meleeWeapon = this.getComponentInChildren(MeleeWeapon);
             this.meleeWeapon.IsSecond = this.isLeftHand;
         }
@@ -63,25 +69,25 @@ export default class PlayerWeapon extends cc.Component {
         this.shooter.player = this.player;
         this.shooter.parentNode = this.player.node;
     }
-    
-    changeZIndexByDir(avatarZindex:number,dir: number) {
-        switch(dir){
+
+    changeZIndexByDir(avatarZindex: number, dir: number) {
+        switch (dir) {
             case PlayerAvatar.DIR_UP:
-                this.node.zIndex = avatarZindex-1;
+                this.node.zIndex = avatarZindex - 1;
                 break;
             case PlayerAvatar.DIR_DOWN:
-                this.node.zIndex = avatarZindex+1;
+                this.node.zIndex = avatarZindex + 1;
                 break;
             case PlayerAvatar.DIR_LEFT:
             case PlayerAvatar.DIR_RIGHT:
-                this.node.zIndex = this.isLeftHand?avatarZindex-1:avatarZindex+1;
+                this.node.zIndex = this.isLeftHand ? avatarZindex - 1 : avatarZindex + 1;
                 break;
         }
     }
     changeWeapon(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
         switch (equipData.equipmetType) {
             case InventoryManager.WEAPON:
-                this.meleeWeapon.changeEquipment(equipData,spriteFrame);
+                this.meleeWeapon.changeEquipment(equipData, spriteFrame);
                 break;
             case InventoryManager.REMOTE: this.shooter.data = equipData.clone();
                 this.shooter.changeRes(this.shooter.data.img);
@@ -91,48 +97,71 @@ export default class PlayerWeapon extends cc.Component {
         }
     }
 
-    meleeAttack(data: PlayerData,fistCombo:number) {
+    meleeAttack(data: PlayerData, fistCombo: number) {
         if (!this.meleeWeapon || this.meleeWeapon.IsAttacking) {
             return;
         }
-        this.meleeWeapon.attack(data,fistCombo);
-        
+        this.meleeWeapon.attack(data, fistCombo);
+
     }
-    remoteIntervalTime = 0;
-    remoteAttack(data: PlayerData,cooldownNode:cc.Node,bulletArcExNum:number,bulletLineExNum:number):boolean {
+    remoteAttack(data: PlayerData, cooldownNode: cc.Node, bulletArcExNum: number, bulletLineExNum: number): boolean {
+        if (this.isCooling) {
+            return false;
+        }
         let canFire = false;
-        let cooldown = data.FinalCommon.remoteCooldown;
-        if(cooldown<100){
+        let finalData = data.FinalCommon;
+        let cooldown = finalData.remoteCooldown;
+        let remoteInterval = finalData.remoteInterval;
+        if (cooldown < 100) {
             cooldown = 100;
         }
+        if (remoteInterval < 0) {
+            remoteInterval = 0;
+        }
         let currentTime = Date.now();
-        if (currentTime - this.remoteIntervalTime > cooldown) {
+        let offsetTime = currentTime - this.remoteIntervalTime;
+        if (offsetTime > remoteInterval) {
+            if (offsetTime < remoteInterval * 2) {
+                this.remoteAngleOffset+=finalData.remoteAngle/5;
+                if (this.remoteAngleOffset > finalData.remoteAngle) {
+                    this.remoteAngleOffset = finalData.remoteAngle;
+                }
+            }else{
+                this.remoteAngleOffset = 0;
+            }
             this.remoteIntervalTime = currentTime;
             canFire = true;
         }
+
         if (!canFire) {
             return false;
         }
+        data.currentAmmo--;
         this.isHeavyRemotoAttacking = this.shooter.data.isHeavy == 1;
         this.scheduleOnce(() => { this.isHeavyRemotoAttacking = false }, 0.2);
         if (this.shooter) {
             this.shooter.remoteDamagePlayer = data.getFinalRemoteDamage();
-            this.shooter.fireBullet(0,cc.v3(30,0),bulletArcExNum,bulletLineExNum);
+            this.shooter.fireBullet(Random.getRandomNum(-this.remoteAngleOffset, this.remoteAngleOffset), cc.v3(30, 0), bulletArcExNum, bulletLineExNum);
         }
-        if(cooldownNode&&cooldown>500){
+        if (data.currentAmmo <= 0 && cooldownNode) {
+            this.isCooling = true;
             cooldownNode.width = 80;
             cooldownNode.stopAllActions();
-            cc.tween(cooldownNode).to(cooldown/1000,{width:0}).start();
+            cc.tween(cooldownNode).to(cooldown / 1000, { width: 0 }).call(() => {
+                data.currentAmmo = finalData.maxAmmo;
+                this.isCooling = false;
+            }).start();
         }
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: data.currentAmmo, y: finalData.maxAmmo });
         return true;
     }
 
-    updateLogic(dt:number){
-        this.node.position = Logic.lerpPos(this.node.position, this.player.isFaceRight?this.selfDefaultPos:this.otherDefaultPos, dt * 5);
-        if(this.meleeWeapon){
+    updateLogic(dt: number) {
+        this.node.position = Logic.lerpPos(this.node.position, this.player.isFaceRight ? this.selfDefaultPos : this.otherDefaultPos, dt * 5);
+        if (this.meleeWeapon) {
             this.meleeWeapon.updateLogic(dt);
         }
-        if(this.shooter){
+        if (this.shooter) {
             this.shooter.updateLogic(dt);
         }
     }

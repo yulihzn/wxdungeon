@@ -58,6 +58,8 @@ export default class GameHud extends cc.Component {
     satietyView:SatietyView = null;
     @property(DollMachineDialog)
     dollMachineDialog:DollMachineDialog = null;
+    @property(cc.Label)
+    AmmoLabel: cc.Label = null;
     private arrowList: cc.Node[] = [];
     private isCompleteShowed = false;
     private checkTimeDelay = 0;
@@ -123,6 +125,9 @@ export default class GameHud extends cc.Component {
         EventHelper.on(EventHelper.HUD_DOLL_MACHINE_DIALOG, (detail) => {
             this.showDollMachineDialog();
         })
+        EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_AMMO, (detail) => {
+            this.ammoUpdate(detail.x, detail.y);
+        })
         if (this.clock) {
             this.clock.string = `${Logic.time}`;
         }
@@ -145,8 +150,10 @@ export default class GameHud extends cc.Component {
             EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_OUT, {});
             EventHelper.emit(EventHelper.TEST_SHOW_NODE_COUNT);
         });
-        this.healthBarUpdate(Logic.playerData.currentHealth, Logic.playerData.getHealth().y);
-        this.dreamBarUpdate(Logic.playerData.currentDream, Logic.playerData.getDream().y);
+        let finalData = Logic.playerData.FinalCommon;
+        this.healthBarUpdate(Logic.playerData.currentHealth, Logic.playerData.getHealth(finalData).y);
+        this.dreamBarUpdate(Logic.playerData.currentDream, Logic.playerData.getDream(finalData).y);
+        this.ammoUpdate(Logic.playerData.currentAmmo,finalData.maxAmmo);
         this.fadeIn();
         this.initFollowArrows();
     }
@@ -232,6 +239,12 @@ export default class GameHud extends cc.Component {
         this.damageCorner.opacity = 255;
         this.damageCorner.scale = 1;
         cc.tween(this.damageCorner).parallel(cc.tween(this.damageCorner).to(0.5, { scale: 1.05 }), cc.tween(this.damageCorner).to(1, { opacity: 0 })).start();
+    }
+    private ammoUpdate(current:number, max:number): void {
+        if (this.AmmoLabel) {
+            this.AmmoLabel.string = `${current<=0?'-':current}/${max<=0?'-':max}`
+            cc.tween(this.AmmoLabel.node).to(0.05,{scale:1.05}).to(0.05,{scale:0.95}).to(0.1,{scale:1.05}).to(0.05,{scale:1}).start();
+        }
     }
     private healthBarUpdate(currentHealth, maxHealth): void {
         if (this.healthBar) {

@@ -117,6 +117,9 @@ export default class CellphoneDialog extends BaseDialog {
             for (let key in Logic.furnitures) {
                 let fd = new FurnitureData();
                 fd.valueCopy(Logic.furnitures[key]);
+                if(fd.price<=0){
+                    continue;
+                }
                 let save = LocalStorage.getFurnitureData(fd.id);
                 if (save) {
                     fd.isOpen = save.isOpen;
@@ -160,8 +163,9 @@ export default class CellphoneDialog extends BaseDialog {
                 Achievement.addFurnituresAchievement(fd.id);
                 LocalStorage.saveFurnitureData(fd);
                 this.clearSelect();
-                Utils.toast('购买成功,快递将在下次进入房间送达', true, true);
+                Utils.toast('购买成功,快递在眨眼之间就到了', true, true);
                 AudioPlayer.play(AudioPlayer.CASHIERING);
+                EventHelper.emit(EventHelper.HUD_FURNITURE_REFRESH,{id:fd.id});
             } else {
                 Utils.toast('购买失败，余额不足', true, true);
                 AudioPlayer.play(AudioPlayer.SELECT_FAIL);

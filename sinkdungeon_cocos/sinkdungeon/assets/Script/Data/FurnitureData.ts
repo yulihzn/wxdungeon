@@ -14,7 +14,7 @@ import InventoryData from "./InventoryData";
 
 export default class FurnitureData {
     id = '';
-    price = 60;//价格
+    price = 0;//价格
     nameCn: string = '';
     nameEn: string = '';
     resName: string = '';

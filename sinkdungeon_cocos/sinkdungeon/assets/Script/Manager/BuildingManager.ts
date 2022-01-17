@@ -874,15 +874,7 @@ export default class BuildingManager extends BaseManager {
             case 'Zl': data.valueCopy(Logic.furnitures[Furniture.TRASHCAN]); break;
             default: break;
         }
-        let save = LocalStorage.getFurnitureData(data.id);
-        if (save) {
-            data.isOpen = save.isOpen;
-            data.purchased = save.purchased;
-            data.storage = save.storage?save.storage:data.storage;
-            if(save.storageList&&save.storageList.length>0){
-                data.storageList = save.storageList;
-            }
-        }
+        
         let building: cc.Node;
         if (mapDataStr == 'Z3') {
             Logic.getBuildings(BuildingManager.ROOMTV, (prefab: cc.Prefab) => {

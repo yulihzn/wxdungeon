@@ -51,7 +51,7 @@ export default class LightManager extends BaseManager {
         //将阴影镜头下的图片赋值到主镜头结点图片
         if (!this.shadowTexture && Logic.settings.showShadow) {
             this.shadowTexture = new cc.RenderTexture();
-            this.shadowTexture.initWithSize(cc.visibleRect.width / 8, cc.visibleRect.height / 8);
+            this.shadowTexture.initWithSize(cc.visibleRect.width / 4, cc.visibleRect.height / 4);
             this.shadowTexture.setFilters(cc.Texture2D.Filter.NEAREST, cc.Texture2D.Filter.NEAREST);
             this.shadowCamera.targetTexture = this.shadowTexture;
             this.shadow.spriteFrame = new cc.SpriteFrame(this.shadowTexture);
@@ -167,7 +167,7 @@ export default class LightManager extends BaseManager {
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
         this.checkTimeDelay += dt;
-        if (this.checkTimeDelay > 0.05) {
+        if (this.checkTimeDelay > 0.03) {
             this.checkTimeDelay = 0;
             return true;
         }

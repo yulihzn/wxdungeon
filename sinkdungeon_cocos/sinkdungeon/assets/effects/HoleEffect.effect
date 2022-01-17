@@ -13,7 +13,7 @@ CCEffect %{
       properties:
         texture: { value: white }
         alphaThreshold: { value: 0.7 }
-        size: { value: [320.0, 180.0], editor: { tooltip: '节点尺寸' } }
+        size: { value: [160.0, 90.0], editor: { tooltip: '节点尺寸' } }
         lightColor: { value: [0.0, 0.0, 0.1, 0.1], inspector: { type: color } }
 }%
 
@@ -69,6 +69,7 @@ CCProgram fs %{
     vec4 lightColor;
     vec2 size;
   };
+
   // 模糊半径
   // for 循环的次数必须为常量
   const float RADIUS = 20.0;
@@ -82,7 +83,7 @@ CCProgram fs %{
         float weight = (RADIUS - abs(r)) * (RADIUS - abs(c)); // 计算权重
         vec4 color = texture2D(texture, target);
         float a = color.a;
-        if(color.r == 1.0&&color.g == 1.0&&color.b == 1.0){
+        if(color.a == 0.0){
           a = 0.0;
         }else{
           a = 1.0;
@@ -161,6 +162,7 @@ CCProgram fs %{
     alpha += getA(pos - (off6 / size)) * 0.00519068120057402;
     return alpha;
   }
+
   void main () {
     vec4 o = blur13color(v_uv0);
     ALPHA_TEST(o);

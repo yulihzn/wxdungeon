@@ -41,7 +41,7 @@
         "desc": "",
         "scale": 4,
         "collider": "0,0,128,128",
-        "price": 1000
+        "price": 800
     },
     "furniture005": {
         "id": "furniture005",
@@ -63,7 +63,7 @@
         "desc": "一元一次，每次一元",
         "scale": 6,
         "collider": "0,0,128,128",
-        "price": 10
+        "price": 0
     },
     "furniture007": {
         "id": "furniture007",
@@ -130,7 +130,7 @@
         "desc": "",
         "scale": 4,
         "collider": "0,-20,80,40",
-        "price": 1000
+        "price": 200
     },
     "furniture013": {
         "id": "furniture013",
@@ -141,7 +141,7 @@
         "desc": "",
         "scale": 4,
         "collider": "0,-20,80,40",
-        "price": 1000
+        "price": 200
     },
     "furniture014": {
         "id": "furniture014",
@@ -152,7 +152,7 @@
         "desc": "",
         "scale": 5,
         "collider": "16,30,128,128",
-        "price": 1000
+        "price": 300
     },
     "furniture015": {
         "id": "furniture015",
@@ -163,7 +163,7 @@
         "desc": "",
         "scale": 4,
         "collider": "0,32,128,64",
-        "price": 600
+        "price": 200
     },
     "furniture016": {
         "id": "furniture016",
@@ -174,7 +174,7 @@
         "desc": "",
         "scale": 8,
         "collider": "64,36,256,128",
-        "price": 1000
+        "price": 799
     },
     "furniture017": {
         "id": "furniture017",
@@ -196,7 +196,7 @@
         "desc": "",
         "scale": 8,
         "collider": "64,0,256,128",
-        "price": 1000
+        "price": 700
     },
     "furniture019": {
         "id": "furniture019",
@@ -207,7 +207,7 @@
         "desc": "",
         "scale": 5,
         "collider": "12,24,64,128",
-        "price": 1000
+        "price": 249
     },
     "furniture020": {
         "id": "furniture020",
@@ -218,6 +218,6 @@
         "desc": "楼下的垃圾桶为什么也要花钱？",
         "scale": 5,
         "collider": "16,8,80,128",
-        "price": 10
+        "price": 0
     }
 }

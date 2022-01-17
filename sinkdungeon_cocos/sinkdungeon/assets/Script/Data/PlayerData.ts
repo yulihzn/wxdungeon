@@ -31,6 +31,7 @@ export default class PlayerData {
 
     currentHealth: number = PlayerData.DEFAULT_HEALTH;
     currentDream: number = PlayerData.DEFAULT_DREAM;
+    currentAmmo: number = 0;
 
     private common: CommonData;
     private equipmentTotalData: EquipmentData;
@@ -41,7 +42,7 @@ export default class PlayerData {
     private professionTalentData: TalentData;
     private statusList: StatusData[];
     private shadowList: number[];
-    private lifeData:LifeData;
+    private lifeData: LifeData;
 
     constructor() {
         this.equipmentTotalData = new EquipmentData();
@@ -77,7 +78,7 @@ export default class PlayerData {
             this.statusList.push(data);
         }
     }
-    get LifeData(){
+    get LifeData() {
         return this.lifeData;
     }
     get EquipmentTotalData() {
@@ -122,6 +123,7 @@ export default class PlayerData {
         this.StatusList = data.statusList;
         this.currentHealth = data.currentHealth ? data.currentHealth : 0;
         this.currentDream = data.currentDream ? data.currentDream : 0;
+        this.currentAmmo = data.currentAmmo ? data.currentAmmo : 0;
         this.common.maxHealth = data.common.maxHealth ? data.common.maxHealth : 0;
         this.common.moveSpeed = data.common.moveSpeed ? data.common.moveSpeed : 0;
         this.shadowList = data.shadowList;
@@ -134,6 +136,7 @@ export default class PlayerData {
         e.name = this.name;
         e.currentHealth = this.currentHealth;
         e.currentDream = this.currentDream;
+        e.currentAmmo = this.currentAmmo;
         e.equipmentTotalData = this.equipmentTotalData.clone();
         e.statusTotalData = this.statusTotalData.clone();
         e.avatarData = this.avatarData.clone();
@@ -241,11 +244,10 @@ export default class PlayerData {
     }
 
     //生命值
-    public getHealth(): cc.Vec3 {
-        let data = this.FinalCommon;
+    public getHealth(data:CommonData): cc.Vec3 {
         let rate = 1;
         let maxHealth = data.maxHealth;
-        if(this.lifeData.sanity<=0){
+        if (this.lifeData.sanity <= 0) {
             maxHealth = 1;
         }
         if (maxHealth > 0) {
@@ -257,11 +259,10 @@ export default class PlayerData {
     }
 
     //梦境值
-    public getDream(): cc.Vec3 {
-        let data = this.FinalCommon;
+    public getDream(data:CommonData): cc.Vec3 {
         let rate = 1;
         let maxDream = data.maxDream;
-        if(this.lifeData.sanity<=0){
+        if (this.lifeData.sanity <= 0) {
             maxDream = 1;
         }
         if (maxDream > 0) {
@@ -271,5 +272,5 @@ export default class PlayerData {
         }
         return cc.v3(maxDream * rate, maxDream);
     }
-
+    
 }

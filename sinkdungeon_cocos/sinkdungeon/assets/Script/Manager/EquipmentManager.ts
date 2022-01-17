@@ -566,9 +566,12 @@ export default class EquipmentManager extends BaseManager {
     }
     static getInfoBase(common: CommonData): string {
         let info = ``;
-        info += common.remoteDamage == 0 ? `` : `远程伤害${common.remoteDamage}\n`;
-        info += common.remoteCritRate == 0 ? `` : `远程暴击率${common.remoteCritRate.toFixed(1).replace('.0', '')}\n`;
-        info += common.remoteCooldown == 0 ? `` : `远程冷却${(common.remoteCooldown) / 1000}s\n`;
+        info += common.remoteDamage == 0 ? `` : `子弹伤害${common.remoteDamage}\n`;
+        info += common.remoteCritRate == 0 ? `` : `子弹暴击率${common.remoteCritRate.toFixed(1).replace('.0', '')}\n`;
+        info += common.remoteCooldown == 0 ? `` : `装填时间${(common.remoteCooldown) / 1000}s\n`;
+        info += common.remoteInterval == 0 ? `` : `射击间隔${(common.remoteInterval) / 1000}s\n`;
+        info += common.remoteAngle == 0 ? `` : `误差角度${common.remoteAngle}\n`;
+        info += common.maxAmmo == 0 ? `` : `弹夹容量${common.maxAmmo > 0 ? common.maxAmmo : '∞'}\n`;
         info += common.damageMin == 0 ? `` : `攻击${common.damageMin} 最大攻击力${common.damageMax}\n`;
         info += common.damageMin == 0 && common.damageMax != 0 ? `最大攻击力${common.damageMax}\n` : ``
         info += common.defence == 0 ? `` : `防御${common.defence}\n`;
@@ -679,10 +682,16 @@ export default class EquipmentManager extends BaseManager {
         }
         price += data.Common.dodge * 2;//闪避%
         if (data.Common.remoteCooldown > 0) {
-            price += Math.floor(1000 / data.Common.remoteCooldown * 20);//远程冷却
+            price += Math.floor(1000 / data.Common.remoteCooldown * 20);//远程间隔
         } else {
             price += Math.floor(data.Common.remoteCooldown / 20);
         }
+        if (data.Common.remoteInterval > 0) {
+            price += Math.floor(1000 / data.Common.remoteInterval * 20);//远程冷却
+        } else {
+            price += Math.floor(data.Common.remoteInterval / 20);
+        }
+        price += data.Common.maxAmmo * 2;//弹夹容量
         price += data.Common.remoteDamage * 30;//远程攻击
         price += data.Common.remoteCritRate;//远程暴击
         price += data.Common.realDamage * 20;//真实伤害

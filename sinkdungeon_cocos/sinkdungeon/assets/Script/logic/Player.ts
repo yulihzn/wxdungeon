@@ -375,6 +375,11 @@ export default class Player extends Actor {
                 break;
             case InventoryManager.REMOTE:
                 this.weaponLeft.shooter.data = equipData.clone();
+                let finalData = this.data.FinalCommon;
+                if(this.data.currentAmmo>finalData.maxAmmo||this.data.currentAmmo<=0){
+                    this.data.currentAmmo = finalData.maxAmmo;
+                    EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.data.currentAmmo, y: finalData.maxAmmo });
+                }
                 this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
                 let c = cc.color(255, 255, 255).fromHEX(this.weaponLeft.shooter.data.color);
                 this.weaponLeft.shooter.changeResColor(c);
@@ -440,8 +445,9 @@ export default class Player extends Actor {
         sprite.node.color = c;
     }
     private updateInfoUi() {
-        let health = this.data.getHealth();
-        let dream = this.data.getDream();
+        let finalData = this.data.FinalCommon;
+        let health = this.data.getHealth(finalData);
+        let dream = this.data.getDream(finalData);
         let life = this.data.LifeData;
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
@@ -891,10 +897,11 @@ export default class Player extends Actor {
         if (!this.data || this.sc.isJumping || this.sc.isDied || this.sc.isVanishing) {
             return false;
         }
+        let finalData = this.data.FinalCommon;
         //盾牌
         let blockLevel = this.shield.blockDamage(this, damageData, actor);
         let dd = this.data.getDamage(damageData, blockLevel);
-        let dodge = this.data.FinalCommon.dodge / 100;
+        let dodge = finalData.dodge / 100;
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
         //无敌冲刺
         if (this.professionTalent.hashTalent(Talent.TALENT_015) && this.professionTalent.IsExcuting && dd.getTotalDamage() > 0) {
@@ -914,7 +921,7 @@ export default class Player extends Actor {
         //     isDodge = true;
         // }
         dd = isDodge ? new DamageData() : dd;
-        let health = this.data.getHealth();
+        let health = this.data.getHealth(finalData);
         let totalD = dd.getTotalDamage();
         if (totalD > 0 && this.data.AvatarData.organizationIndex == AvatarData.GURAD) {
             totalD = this.updateDream(totalD);
@@ -949,7 +956,7 @@ export default class Player extends Actor {
         return valid;
     }
     public updateDream(offset: number): number {
-        let dream = this.data.getDream();
+        let dream = this.data.getDream(this.data.FinalCommon);
         dream.x -= offset;
         let overflow = -dream.x;
         if (dream.x > dream.y) {

@@ -16,7 +16,6 @@ import NextStep from "../utils/NextStep";
 import InventoryData from '../data/InventoryData';
 import RoomWaterDispenser from './RoomWaterDispenser';
 import Player from '../logic/Player';
-import RoomClock from './RoomClock';
 import RoomTrashCan from './RoomTrashCan';
 import RoomKitchen from './RoomKitchen';
 
@@ -89,7 +88,8 @@ export default class Furniture extends Building {
                     this.unlockStep.next(() => {
                         this.getComponent(cc.Animation).play('FurnitureUnlock');
                         AudioPlayer.play(AudioPlayer.SELECT_FAIL);
-                        Utils.toast(`暂未解锁，请打开右上角手机下单购买，请下次回来查收:-D`, true, true);
+                        Utils.toast(`暂未解锁，请下单购买:-D`, true, true);
+                        EventHelper.emit(EventHelper.HUD_CELLPHONE_SHOW);
                     }, 3, true);
                 }
             }
@@ -108,6 +108,11 @@ export default class Furniture extends Building {
                 }
             }
         });
+        EventHelper.on(EventHelper.HUD_FURNITURE_REFRESH, (detail) => {
+            if(this.node&&detail.id == this.furnitureData.id){
+                this.init(this.furnitureData);
+            }
+        })
     }
     interact(player: Player) {
         switch (this.furnitureData.id) {
@@ -214,6 +219,19 @@ export default class Furniture extends Building {
         }
     }
     init(furnitureData: FurnitureData) {
+        let save = LocalStorage.getFurnitureData(furnitureData.id);
+        if (save) {
+            furnitureData.isOpen = save.isOpen;
+            furnitureData.purchased = save.purchased;
+            furnitureData.storage = save.storage?save.storage:furnitureData.storage;
+            if(save.storageList&&save.storageList.length>0){
+                furnitureData.storageList = save.storageList;
+            }
+        }
+        if(furnitureData.price<=0){
+            furnitureData.isOpen = true;
+            furnitureData.purchased = true;
+        }
         this.furnitureData = new FurnitureData();
         this.furnitureData.valueCopy(furnitureData);
         Logic.inventoryManager.furnitureMap.set(furnitureData.id, this.furnitureData);

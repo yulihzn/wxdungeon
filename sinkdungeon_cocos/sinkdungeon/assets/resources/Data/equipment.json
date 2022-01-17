@@ -1303,6 +1303,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 500,
+            "remoteInterval":0,
+            "remoteAngle":5,
+            "maxAmmo":1,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1322,7 +1325,7 @@
         "bulletType": "bullet103",
         "price": 30,
         "common": {
-            "remoteDamage": 1,
+            "remoteDamage": 5,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1332,7 +1335,9 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown": 800,
+            "remoteCooldown": 2000,
+            "remoteInterval":0,
+            "maxAmmo":1,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1362,7 +1367,10 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown": 500,
+            "remoteCooldown": 3000,
+            "remoteInterval":50,
+            "maxAmmo":10,
+            "remoteAngle":30,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1395,6 +1403,8 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 1000,
+            "remoteInterval":0,
+            "maxAmmo":1,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1427,6 +1437,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 1200,
+            "remoteInterval":0,
+            "remoteAngle":5,
+            "maxAmmo":1,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1448,7 +1461,7 @@
         "isHeavy": 1,
         "price": 60,
         "common": {
-            "remoteDamage": 1,
+            "remoteDamage": 3,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1457,7 +1470,10 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown": 2000,
+            "remoteCooldown": 3000,
+            "remoteInterval":0,
+            "remoteAngle":5,
+            "maxAmmo":1,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1476,7 +1492,7 @@
         "titlecolor": "#ffffff",
         "img": "remote007",
         "bulletType": "bullet027",
-        "bulletLineExNum": 1,
+        "bulletLineExNum": 0,
         "isHeavy": 0,
         "price": 60,
         "common": {
@@ -1490,6 +1506,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 3000,
+            "remoteInterval":200,
+            "remoteAngle":30,
+            "maxAmmo":3,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1520,6 +1539,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 1000,
+            "remoteInterval":0,
+            "maxAmmo":1,
+            "remoteAngle":5,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1551,7 +1573,10 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown": 600,
+            "remoteCooldown": 2000,
+            "remoteInterval":200,
+            "maxAmmo":6,
+            "remoteAngle":5,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1582,7 +1607,10 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown": 500,
+            "remoteCooldown": 3000,
+            "remoteInterval":100,
+            "maxAmmo":15,
+            "remoteAngle":15,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1615,6 +1643,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 1000,
+            "remoteInterval":0,
+            "maxAmmo":1,
+            "remoteAngle":5,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -3814,7 +3845,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown": -100,
+            "remoteCooldown": -200,
             "dodge": 0,
             "maxHealth": 0
         },

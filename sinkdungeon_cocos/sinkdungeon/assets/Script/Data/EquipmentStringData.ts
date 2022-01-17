@@ -29,7 +29,11 @@ export default class EquipmentStringData {
     moveSpeed: number = 0;//移速
     attackSpeed: number = 0;//攻速
     dodge: number = 0;//闪避
-    remoteCooldown:number = 0;//远程攻速
+    remoteCooldown: number = 0;//远程冷却或者充能时间
+    remoteDamage: number = 0;//远程攻击
+    remoteCritRate: number = 0;//远程暴击
+    remoteInterval: number = 0;//远程子弹间隔
+    
 
     realDamage = 0;//真实伤害
     realRate = 0//真实伤害几率
@@ -70,6 +74,9 @@ export default class EquipmentStringData {
         this.moveSpeed = data.Common.moveSpeed ? data.Common.moveSpeed : 0;
         this.attackSpeed = data.Common.attackSpeed ? data.Common.attackSpeed : 0;
         this.remoteCooldown = data.Common.remoteCooldown?data.Common.remoteCooldown:0;
+        this.remoteDamage = data.Common.remoteDamage?data.Common.remoteDamage:0;
+        this.remoteCritRate = data.Common.remoteCritRate?data.Common.remoteCritRate:0;
+        this.remoteInterval = data.Common.remoteInterval?data.Common.remoteInterval:0;
         this.dodge = data.Common.dodge ? data.Common.dodge : 0;
         this.realDamage = data.Common.realDamage ? data.Common.realDamage : 0;
         this.realRate = data.Common.realRate ? data.Common.realRate : 0;
@@ -132,6 +139,9 @@ export default class EquipmentStringData {
         e.moveSpeed = this.moveSpeed;
         e.attackSpeed = this.attackSpeed;
         e.remoteCooldown = this.remoteCooldown;
+        e.remoteCritRate = this.remoteCritRate;
+        e.remoteDamage = this.realDamage;
+        e.remoteInterval = this.remoteInterval;
         e.dodge = this.dodge;
         e.realDamage = this.realDamage;
         e.realRate = this.realRate;

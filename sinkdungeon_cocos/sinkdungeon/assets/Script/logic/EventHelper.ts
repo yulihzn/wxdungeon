@@ -67,6 +67,7 @@ export class EventHelper extends cc.Component {
     public static readonly HUD_UPDATE_PLAYER_DREAMBAR = 'HUD_UPDATE_PLAYER_DREAMBAR';
     public static readonly HUD_SHAKE_PLAYER_DREAMBAR = 'HUD_SHAKE_PLAYER_DREAMBAR';
     public static readonly HUD_UPDATE_PLAYER_LIFE_BAR = 'HUD_UPDATE_PLAYER_LIFE_BAR';
+    public static readonly HUD_UPDATE_PLAYER_AMMO = 'HUD_UPDATE_PLAYER_AMMO';
     public static readonly HUD_INVENTORY_SHOW = 'HUD_INVENTORY_SHOW';
     public static readonly HUD_CELLPHONE_SHOW = 'HUD_CELLPHONE_SHOW';
     public static readonly HUD_INVENTORY_SELECT_UPDATE = 'HUD_INVENTORY_SELECT_UPDATE';
@@ -76,6 +77,7 @@ export class EventHelper extends cc.Component {
     public static readonly HUD_TOAST = 'HUD_TOAST';
     public static readonly HUD_TIME_TICK = 'HUD_TIME_TICK';
     public static readonly HUD_DIALOGUE_SHOW = 'HUD_DIALOGUE_SHOW';
+    public static readonly HUD_FURNITURE_REFRESH = 'HUD_FURNITURE_REFRESH';
     public static readonly TALENT_TREE_UPDATE = 'TALENT_TREE_UPDATE';
     public static readonly TALENT_TREE_SELECT = 'TALENT_TREE_SELECT';
     public static readonly PLAY_AUDIO = 'PLAY_AUDIO';

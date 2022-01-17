@@ -12,6 +12,7 @@
 export default class CommonData {
     maxHealth: number = 0;//最大生命
     maxDream: number = 0;//最大梦境值
+    maxAmmo: number = 0;//子弹容量
     damageMin: number = 0;//最小攻击
     damageMax: number = 0;//最大攻击
     damageBack: number = 0;//背面额外攻击伤害
@@ -24,9 +25,11 @@ export default class CommonData {
     moveSpeed: number = 0;//移速
     attackSpeed: number = 0;//攻速
     dodge: number = 0;//闪避%
-    remoteCooldown: number = 0;//远程冷却
+    remoteCooldown: number = 0;//远程冷却或者充能时间
     remoteDamage: number = 0;//远程攻击
     remoteCritRate: number = 0;//远程暴击
+    remoteInterval: number = 0;//远程子弹间隔
+    remoteAngle:number = 0;//子弹准度偏离范围
 
     realDamage = 0;//真实伤害
     realRate = 0//真实伤害几率%
@@ -44,17 +47,20 @@ export default class CommonData {
         }
         this.maxHealth = data.maxHealth ? data.maxHealth : 0;
         this.maxDream = data.maxDream ? data.maxDream : 0;
+        this.maxAmmo = data.maxAmmo? data.maxAmmo : 0;
         this.damageMin = data.damageMin ? data.damageMin : 0;
         this.damageMax = data.damageMax ? data.damageMax : 0;
         this.remoteDamage = data.remoteDamage ? data.remoteDamage : 0;
         this.criticalStrikeRate = data.criticalStrikeRate ? data.criticalStrikeRate : 0;
         this.remoteCritRate = data.remoteCritRate ? data.remoteCritRate : 0;
+        this.remoteAngle = data.remoteAngle? data.remoteAngle: 0;
+        this.remoteCooldown = data.remoteCooldown ? data.remoteCooldown : 0;
+        this.remoteInterval = data.remoteInterval?data.remoteInterval:0;
         this.defence = data.defence ? data.defence : 0;
         this.lifeDrain = data.lifeDrain ? data.lifeDrain : 0;
         this.damageBack = data.damageBack ? data.damageBack : 0;
         this.moveSpeed = data.moveSpeed ? data.moveSpeed : 0;
         this.attackSpeed = data.attackSpeed ? data.attackSpeed : 0;
-        this.remoteCooldown = data.remoteCooldown ? data.remoteCooldown : 0;
         this.dodge = data.dodge ? data.dodge : 0;
         this.realDamage = data.realDamage ? data.realDamage : 0;
         this.realRate = data.realRate ? data.realRate : 0;
@@ -73,6 +79,7 @@ export default class CommonData {
         let e = new CommonData();
         e.maxHealth = this.maxHealth;
         e.maxDream = this.maxDream;
+        e.maxAmmo = this.maxAmmo;
         e.damageMin = this.damageMin;
         e.damageMax = this.damageMax;
         e.criticalStrikeRate = this.criticalStrikeRate;
@@ -82,6 +89,8 @@ export default class CommonData {
         e.moveSpeed = this.moveSpeed;
         e.attackSpeed = this.attackSpeed;
         e.remoteCooldown = this.remoteCooldown;
+        e.remoteInterval = this.remoteInterval;
+        e.remoteAngle = this.remoteAngle;
         e.dodge = this.dodge;
         e.realDamage = this.realDamage;
         e.realRate = this.realRate;
@@ -105,6 +114,7 @@ export default class CommonData {
         this.maxDream += data.maxDream ? data.maxDream : 0;
         this.damageMin += data.damageMin ? data.damageMin : 0;
         this.damageMax += data.damageMax ? data.damageMax : 0;
+        this.maxAmmo += data.maxAmmo?data.maxAmmo:0;
         this.remoteDamage += data.remoteDamage ? data.remoteDamage : 0;
         this.criticalStrikeRate = data.criticalStrikeRate ? CommonData.addPercent(this.criticalStrikeRate, data.criticalStrikeRate) : this.criticalStrikeRate;
         this.remoteCritRate = data.remoteCritRate ? CommonData.addPercent(this.remoteCritRate, data.remoteCritRate) : this.remoteCritRate;
@@ -115,6 +125,8 @@ export default class CommonData {
         this.moveSpeed += data.moveSpeed ? data.moveSpeed : 0;
         this.attackSpeed += data.attackSpeed ? data.attackSpeed : 0;
         this.remoteCooldown += data.remoteCooldown ? data.remoteCooldown : 0;
+        this.remoteInterval += data.remoteInterval ? data.remoteInterval : 0;
+        this.remoteAngle += data.remoteAngle? data.remoteAngle:0;
         this.realDamage += data.realDamage ? data.realDamage : 0;
         this.realRate += data.realRate ? data.realRate : 0;
         this.magicDefence += data.magicDefence ? data.magicDefence : 0;

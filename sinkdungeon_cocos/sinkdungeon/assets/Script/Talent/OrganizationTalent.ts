@@ -141,10 +141,11 @@ export default class OrganizationTalent extends Talent {
             let data = new StatusData();
             data.valueCopy(Logic.status[StatusManager.REAGENT]);
             data.duration += Logic.playerData.OilGoldData.level * 3;
-            data.Common.maxHealth = this.player.data.FinalCommon.maxHealth * (0.5 + Logic.playerData.OilGoldData.level * 0.1);
-            data.Common.damageMin = this.player.data.FinalCommon.damageMin * (0.5 + Logic.playerData.OilGoldData.level * 0.1);
-            data.Common.defence = this.player.data.FinalCommon.defence * (0.5 + Logic.playerData.OilGoldData.level * 0.1);
-            data.Common.remoteDamage = this.player.data.FinalCommon.remoteDamage * (0.5 + Logic.playerData.OilGoldData.level * 0.05);
+            let finalData = this.player.data.FinalCommon;
+            data.Common.maxHealth = finalData.maxHealth * (0.5 + Logic.playerData.OilGoldData.level * 0.1);
+            data.Common.damageMin = finalData.damageMin * (0.5 + Logic.playerData.OilGoldData.level * 0.1);
+            data.Common.defence = finalData.defence * (0.5 + Logic.playerData.OilGoldData.level * 0.1);
+            data.Common.remoteDamage = finalData.remoteDamage * (0.5 + Logic.playerData.OilGoldData.level * 0.05);
             data.realDamageDirect -= data.Common.maxHealth;
             this.player.addCustomStatus(data, new FromData());
         } else if (this.player.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
