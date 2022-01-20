@@ -52,7 +52,7 @@ export default class LightManager extends BaseManager {
         if (!this.shadowTexture && Logic.settings.showShadow) {
             this.shadowTexture = new cc.RenderTexture();
             this.shadowTexture.initWithSize(cc.visibleRect.width / 4, cc.visibleRect.height / 4);
-            this.shadowTexture.setFilters(cc.Texture2D.Filter.NEAREST, cc.Texture2D.Filter.NEAREST);
+            this.shadowTexture.setFilters(cc.Texture2D.Filter.LINEAR, cc.Texture2D.Filter.LINEAR);
             this.shadowCamera.targetTexture = this.shadowTexture;
             this.shadow.spriteFrame = new cc.SpriteFrame(this.shadowTexture);
         }

@@ -165,7 +165,7 @@
         "nameEn": "",
         "resName": "talent100",
         "passive": 0,
-        "cooldown": 30,
+        "cooldown": 3,
         "cost": 2,
         "desc": "影子分身，分身可以同步攻击"
     },

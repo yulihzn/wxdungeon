@@ -142,8 +142,12 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                 }
                 activeCount++;
                 if (isCollision) {
+                    collider.preSolve(other,this.dt);
+                    other.preSolve(collider,this.dt);
                     collider.contact(other, this.dt);
                     other.contact(collider, this.dt);
+                    collider.physicTest(other,this.dt);
+                    other.physicTest(collider,this.dt);
                     collider.disabledOnce = false;
                     other.disabledOnce = false;
                     collisionCount++;

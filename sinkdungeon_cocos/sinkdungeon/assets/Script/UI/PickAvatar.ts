@@ -241,7 +241,7 @@ export default class PickAvatar extends cc.Component {
         //眼睛颜色
         this.eyesColorSelector = this.addPaletteSelector(PaletteSelector.TYPE_EYES)
         this.eyesColorSelector.setSelectorCallback((color: cc.Color) => {
-            this.eyesSprite.node.color = color;
+            this.eyesSprite.getMaterial(0).setProperty('eyeColor',color);
             this.data.eyesColor = color.toHEX('#rrggbb');
         })
         //面颊

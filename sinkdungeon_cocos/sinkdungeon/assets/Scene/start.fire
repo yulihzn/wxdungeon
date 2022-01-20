@@ -7188,6 +7188,12 @@
     "dolldown": {
       "__uuid__": "db287e4e-1f0a-455f-b601-5e72ff104529"
     },
+    "mouse": {
+      "__uuid__": "334c8bd4-9f14-4eb5-9d48-8382b727a843"
+    },
+    "jump": {
+      "__uuid__": "1abc19cc-6317-4b60-ab22-a9eb71f7161a"
+    },
     "bg01": {
       "__uuid__": "a601a25d-abcb-42b9-9e58-2f8cfea4ebc9"
     },

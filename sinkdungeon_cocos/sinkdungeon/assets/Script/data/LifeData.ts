@@ -20,8 +20,8 @@ export default class LifeData extends BaseData{
     timeScale:number = 1;//消耗的速率默认1
     static readonly SOLID_LOSS:number = 0.0035;//每秒消耗掉的饱腹值
     static readonly LIQUID_LOSS:number = 0.005;//每秒消耗掉的解渴值
-    static readonly POO_RATE:number = 0.1;//固体转化率
-    static readonly PEERATE:number = 0.1;//液体转化率
+    static readonly POO_RATE:number = 0.2;//固体转化率
+    static readonly PEERATE:number = 0.2;//液体转化率
 
     public valueCopy(data:LifeData):void{
         if(!data){

@@ -84,7 +84,8 @@ export default class PlayerAvatar extends cc.Component {
         this.clothesSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body', 'clothes']);
         this.headSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
         this.faceSprite.node.color = cc.Color.WHITE.fromHEX(this.data.faceColor);
-        this.eyesSprite.node.color = cc.Color.WHITE.fromHEX(this.data.eyesColor);
+        let eyeColor = cc.Color.WHITE.fromHEX(this.data.eyesColor);
+        this.eyesSprite.getMaterial(0).setProperty('eyeColor',eyeColor);
         this.hairSprite.node.color = cc.Color.WHITE.fromHEX(this.data.hairColor);
         this.bodySprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
         this.legLeftSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
@@ -261,6 +262,8 @@ export default class PlayerAvatar extends cc.Component {
                 this.faceSprite.spriteFrame = Logic.spriteFrameRes('side' + faceprefix);
                 break;
         }
+        let eyeColor = cc.Color.WHITE.fromHEX(this.data.eyesColor);
+        this.eyesSprite.getMaterial(0).setProperty('eyeColor',eyeColor);
         this.hairSprite.spriteFrame = Logic.spriteFrameRes(this.data.hairResName + this.idlehair[0]);
         if (dir != 4) {
             this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;

@@ -315,10 +315,12 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
     private getWaveLight(dungeonNode: cc.Node, p: cc.Vec3, elementType: number, isStab: boolean, isFar: boolean) {
         let lights = [this.iceLight, this.fireLight, this.lighteningLight, this.toxicLight, this.curseLight];
+        let audios = [AudioPlayer.ELECTRIC_ATTACK,AudioPlayer.FIREBALL,AudioPlayer.ELECTRIC_ATTACK,AudioPlayer.ELECTRIC_ATTACK,AudioPlayer.ELECTRIC_ATTACK]
         if (elementType < 1 || elementType > lights.length || !this.dungeon) {
             return;
         }
         let firePrefab: cc.Node = cc.instantiate(lights[elementType - 1]);
+        AudioPlayer.play(audios[elementType-1]);
         let timeScale = this.anim.getAnimationState(this.getAttackAnimName()).speed;
         let ps = [p];
         for (let node of this.weaponFirePoints) {

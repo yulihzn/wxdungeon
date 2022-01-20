@@ -12,6 +12,8 @@ export default class Test extends cc.Component {
 
     @property(cc.Graphics)
     graphics: cc.Graphics = null;
+    @property(cc.Graphics)
+    graphicsTest:cc.Graphics = null;
     @property(cc.Camera)
     camera: cc.Camera = null;
     @property(cc.Graphics)
@@ -68,6 +70,21 @@ export default class Test extends cc.Component {
             this.mat2.setProperty("center", cc.v2(center.x, center.y > 0.5 ? 0.5 + y : 0.5 - y));
             this.waveOffset = 0.0;
         }, this);
+        this.graphicsTest.fillColor = cc.Color.WHITE;
+        this.graphicsTest.strokeColor = cc.Color.WHITE;
+        this.graphicsTest.lineWidth = 200;
+        this.graphicsTest.circle(0,0,200);
+        this.graphicsTest.fill();
+        this.graphicsTest.stroke();
+        // this.graphicsTest.lineWidth = 100;
+        // this.graphicsTest.moveTo(0,0);
+        // this.graphicsTest.lineTo(100,100);
+        // this.graphicsTest.lineTo(200,50);
+        // this.graphicsTest.lineTo(300,0);
+        // this.graphicsTest.lineTo(200,-50);
+        // this.graphicsTest.lineTo(100,-100);
+        // this.graphicsTest.close();
+        // this.graphicsTest.stroke();
     }
     changeZoom() {
         if (this.camera) {
@@ -77,7 +94,18 @@ export default class Test extends cc.Component {
             }
         }
     }
+    rad = 200;
     changeRayCast() {
+        this.graphicsTest.clear();
+        this.graphicsTest.fillColor = cc.color(255,255,255,30);
+        this.graphicsTest.strokeColor = cc.color(255,255,255,30);
+        this.rad-=10;
+        this.graphicsTest.lineWidth = this.rad;
+        // this.graphicsTest.circle(0,0,this.rad);
+        this.graphicsTest.moveTo(0,0);
+        this.graphicsTest.lineTo(1,0);
+        // this.graphicsTest.fill();
+        this.graphicsTest.stroke();
     }
 
     start() {

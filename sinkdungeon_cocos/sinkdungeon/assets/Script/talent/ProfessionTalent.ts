@@ -268,7 +268,7 @@ export default class ProfessionTalent extends Talent {
         }, 0.5)
     }
     private jump(shooterEx:Shooter) {
-        AudioPlayer.play(AudioPlayer.DASH);
+        AudioPlayer.play(AudioPlayer.JUMP);
         this.player.jump();
         this.scheduleOnce(() => {
             AudioPlayer.play(AudioPlayer.BOOM);

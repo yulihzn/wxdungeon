@@ -54,6 +54,13 @@ export default class Goods extends cc.Component {
         this.sprite1.spriteFrame = Logic.spriteFrameRes(this.data.item.resName);
         this.sprite2.spriteFrame = Logic.spriteFrameRes(this.data.item.resName);
         this.sprite3.spriteFrame = Logic.spriteFrameRes(this.data.item.resName);
+        this.sprite1.node.width = this.sprite1.spriteFrame.getRect().width;
+        this.sprite2.node.width = this.sprite2.spriteFrame.getRect().width;
+        this.sprite2.node.width = this.sprite2.spriteFrame.getRect().width;
+        this.sprite1.node.height = this.sprite1.spriteFrame.getRect().height;
+        this.sprite2.node.height = this.sprite2.spriteFrame.getRect().height;
+        this.sprite2.node.height = this.sprite2.spriteFrame.getRect().height;
+
         this.label.string = `${this.data.item.nameCn}\n$:${this.data.item.price}`;
         if (this.data.count == 2) {
             this.sprite1.node.opacity = 0;

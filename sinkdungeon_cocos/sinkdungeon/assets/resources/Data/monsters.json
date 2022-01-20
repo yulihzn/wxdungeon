@@ -927,6 +927,7 @@
         "remote": 0,
         "melee": 3,
         "boxType": 1,
+        "specialAudio": "MOUSE",
         "dash": 0
     }
 }

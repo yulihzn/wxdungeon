@@ -222,11 +222,12 @@ export default class CCollider extends cc.Component {
         }
     }
 
-
-    contact(other: CCollider, dt: number) {
+    preSolve(other: CCollider, dt: number){
         if (this.onContactListener) {
             this.onContactListener.onColliderPreSolve(other, this);
         }
+    }
+    contact(other: CCollider, dt: number) {
         if (this._disableOnce || other.disabledOnce) {
             return;
         }
@@ -241,8 +242,15 @@ export default class CCollider extends cc.Component {
                 this.onContactListener.onColliderEnter(other, this);
             }
         }
-        if (this.entity && other.entity && !this.sensor && !other.sensor && !this.isStatic) {
-            //目前只考虑不旋转矩形和矩形之间的碰撞，碰撞时根据双方的位置和碰撞体的宽高抵消当前碰撞面的向量
+        
+
+    }
+    physicTest(other: CCollider, dt: number){
+        if (this._disableOnce || other.disabledOnce || !this.entity || !other.entity
+            ||this.sensor||other.sensor||this.isStatic) {
+            return;
+        }
+        //目前只考虑不旋转矩形和矩形之间的碰撞，碰撞时根据双方的位置和碰撞体的宽高抵消当前碰撞面的向量
             //比较双方同一侧的坐标位置情况来决定方向，然后给对应方向增加斥力
             //四个点是以左下角开始顺时针的最小包围盒
             let tps = this._points;
@@ -300,9 +308,6 @@ export default class CCollider extends cc.Component {
             // if (this.entity.NodeRender.node) {
             //     this.entity.NodeRender.node.setPosition(this.entity.Transform.position);
             // }
-
-        }
-
     }
     exit(other: CCollider) {
         if (this.inColliders.has(other.id)) {

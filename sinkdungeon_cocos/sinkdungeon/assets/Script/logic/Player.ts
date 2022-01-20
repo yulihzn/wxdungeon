@@ -233,7 +233,7 @@ export default class Player extends Actor {
             this.shadowSpriteframe = new cc.SpriteFrame(this.shadowTexture);
         }
         for (let s of this.shadowList) {
-            if (!s.isValid || !s.enabled || !s.node.active) {
+            if (s.isValid || s.enabled || s.node.active) {
                 s.stop();
             }
         }

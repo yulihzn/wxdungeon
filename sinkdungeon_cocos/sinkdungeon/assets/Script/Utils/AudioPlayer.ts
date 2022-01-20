@@ -101,6 +101,8 @@ export default class AudioPlayer extends cc.Component {
     public static readonly VOICE = 'VOICE';
     public static readonly DOLLMACHINE = 'DOLLMACHINE';
     public static readonly DOLLDOWN = 'DOLLDOWN';
+    public static readonly MOUSE = 'MOUSE';
+    public static readonly JUMP = 'JUMP';
     @property({ type: cc.AudioClip })
     monsterHit: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
@@ -264,6 +266,10 @@ export default class AudioPlayer extends cc.Component {
     @property(cc.AudioClip)
     dolldown:cc.AudioClip = null;
     @property(cc.AudioClip)
+    mouse:cc.AudioClip = null;
+    @property(cc.AudioClip)
+    jump:cc.AudioClip = null;
+    @property(cc.AudioClip)
     bg01: cc.AudioClip = null;
     @property(cc.AudioClip)
     bg02: cc.AudioClip = null;
@@ -359,6 +365,8 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.VOICE] = this.voice;
         this.audioList[AudioPlayer.DOLLMACHINE] = this.dollmachine;
         this.audioList[AudioPlayer.DOLLDOWN] = this.dolldown;
+        this.audioList[AudioPlayer.MOUSE] = this.mouse;
+        this.audioList[AudioPlayer.JUMP] = this.jump;
 
     }
     playbg() {
