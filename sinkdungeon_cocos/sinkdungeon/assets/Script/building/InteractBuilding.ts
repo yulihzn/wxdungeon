@@ -136,6 +136,7 @@ export default class InteractBuilding extends Building {
             return true;
         }
         this.isTaken = false;
+        this.isAttacking = false;
         cc.tween(this.sprite.node)
             .call(() => {
                 this.changeRes(this.resName, 'anim001');
