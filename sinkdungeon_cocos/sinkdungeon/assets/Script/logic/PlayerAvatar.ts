@@ -84,8 +84,9 @@ export default class PlayerAvatar extends cc.Component {
         this.clothesSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body', 'clothes']);
         this.headSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
         this.faceSprite.node.color = cc.Color.WHITE.fromHEX(this.data.faceColor);
+        this.faceSprite.node.opacity = 128;
         let eyeColor = cc.Color.WHITE.fromHEX(this.data.eyesColor);
-        this.eyesSprite.getMaterial(0).setProperty('eyeColor',eyeColor);
+        this.eyesSprite.getMaterial(0).setProperty('eyeColor', eyeColor);
         this.hairSprite.node.color = cc.Color.WHITE.fromHEX(this.data.hairColor);
         this.bodySprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
         this.legLeftSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
@@ -263,7 +264,7 @@ export default class PlayerAvatar extends cc.Component {
                 break;
         }
         let eyeColor = cc.Color.WHITE.fromHEX(this.data.eyesColor);
-        this.eyesSprite.getMaterial(0).setProperty('eyeColor',eyeColor);
+        this.eyesSprite.getMaterial(0).setProperty('eyeColor', eyeColor);
         this.hairSprite.spriteFrame = Logic.spriteFrameRes(this.data.hairResName + this.idlehair[0]);
         if (dir != 4) {
             this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
@@ -321,7 +322,7 @@ export default class PlayerAvatar extends cc.Component {
         this.isAniming = true;
         this.scheduleOnce(() => {
             this.isAniming = false;
-        },3)
+        }, 3)
     }
     public drink() {
         this.anim.play('AvatarDrink');

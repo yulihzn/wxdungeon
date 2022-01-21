@@ -161,11 +161,11 @@ export default class PickAvatar extends cc.Component {
     show() {
         this.isShow = true;
         let loadingIcon = this.loadingBackground.getComponentInChildren(LoadingIcon);
-        if(loadingIcon&&loadingIcon.isFirst){
-            cc.tween(this.loadingBackground).to(0.5,{opacity:0}).call(()=>{
+        if (loadingIcon && loadingIcon.isFirst) {
+            cc.tween(this.loadingBackground).to(0.5, { opacity: 0 }).call(() => {
                 this.loadingBackground.active = false;
             }).start();
-        }else{
+        } else {
             this.loadingBackground.active = false;
         }
         //组织
@@ -241,7 +241,7 @@ export default class PickAvatar extends cc.Component {
         //眼睛颜色
         this.eyesColorSelector = this.addPaletteSelector(PaletteSelector.TYPE_EYES)
         this.eyesColorSelector.setSelectorCallback((color: cc.Color) => {
-            this.eyesSprite.getMaterial(0).setProperty('eyeColor',color);
+            this.eyesSprite.getMaterial(0).setProperty('eyeColor', color);
             this.data.eyesColor = color.toHEX('#rrggbb');
         })
         //面颊
@@ -258,19 +258,20 @@ export default class PickAvatar extends cc.Component {
         this.faceColorSelector = this.addPaletteSelector(PaletteSelector.TYPE_FACE)
         this.faceColorSelector.setSelectorCallback((color: cc.Color) => {
             this.faceSprite.node.color = color;
+            this.faceSprite.node.opacity = 128;
             this.data.faceColor = color.toHEX('#rrggbb');
         })
         //宠物
         // let petNames = ['柯基', '鹦鹉', '橘子鱼', '天竺鼠', '巴西龟', '变色龙', '刺猬', '火玫瑰蜘蛛', '安哥拉兔', '科尔鸭', '巴马香猪'];
-        let petNames = ['柯基','家猫','橙子鱼'];
+        let petNames = ['柯基', '家猫', '橙子鱼'];
         let petList = [];
         for (let i = 0; i < petNames.length; i++) {
             petList.push(new AttributeData(i, `${petNames[i]}`, `nonplayer1${i > 9 ? '' : '0'}${i}`, '', '', ''));
         }
         this.petSelector = this.addAttributeSelector('宠物：', petList);
         this.petSelector.selectorCallback = (data: AttributeData) => {
-            LoadingManager.loadNpcSpriteAtlas(data.resName,()=>{
-                this.petSprite.spriteFrame = Logic.spriteFrameRes(data.resName+'anim000');
+            LoadingManager.loadNpcSpriteAtlas(data.resName, () => {
+                this.petSprite.spriteFrame = Logic.spriteFrameRes(data.resName + 'anim000');
             })
             this.data.petName = `nonplayer1${data.id > 9 ? '' : '0'}${data.id}`;
         };
@@ -373,7 +374,7 @@ export default class PickAvatar extends cc.Component {
         if (this.isShow) {
             if (this.isTimeDelay(dt) && this.randomTouched) {
                 this.randomButton.angle = 0;
-                cc.tween(this.randomButton).to(0.2,{angle:360}).start();
+                cc.tween(this.randomButton).to(0.2, { angle: 360 }).start();
                 this.ButtonRandom();
             }
         }
