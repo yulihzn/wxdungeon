@@ -7,6 +7,7 @@
         "stageLevel": 0,
         "specialAttack": 15,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 400,
             "maxHealth": 100,
             "damageMin": 9
@@ -28,6 +29,7 @@
         "stageLevel": 0,
         "specialAttack": 15,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 500,
             "maxHealth": 100,
             "damageMin": 9
@@ -49,9 +51,10 @@
         "bulletType": "bullet017",
         "bulletArcExNum": 1,
         "specialAttack": 15,
-        "shooterOffsetX":0,
-        "shooterOffsetY":45,
+        "shooterOffsetX": 0,
+        "shooterOffsetY": 45,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 100,
             "maxHealth": 200,
             "curseRate": 100,
@@ -73,6 +76,7 @@
         "specialAttack": 15,
         "stageLevel": 0,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 200,
             "maxHealth": 150,
             "damageMin": 12
@@ -92,6 +96,7 @@
         "specialAttack": 15,
         "stageLevel": 0,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 200,
             "maxHealth": 50,
             "damageMin": 6
@@ -111,6 +116,7 @@
         "stageLevel": 0,
         "specialAttack": 15,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 400,
             "maxHealth": 50,
             "damageMin": 6
@@ -130,9 +136,10 @@
         "stageLevel": 0,
         "bulletType": "bullet031",
         "specialAttack": 15,
-        "shooterOffsetX":23,
-        "shooterOffsetY":42,
+        "shooterOffsetX": 23,
+        "shooterOffsetY": 42,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 200,
             "maxHealth": 60,
             "damageMin": 6
@@ -152,9 +159,10 @@
         "stageLevel": 0,
         "specialAttack": 15,
         "specialBulletLineExNum": 1,
-        "shooterOffsetX":50,
-        "shooterOffsetY":45,
+        "shooterOffsetX": 50,
+        "shooterOffsetY": 45,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 300,
             "maxHealth": 15,
             "damageMin": 3
@@ -176,6 +184,7 @@
         "specialType": "special008",
         "specialDistance": 64,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 400,
             "maxHealth": 60,
             "damageMin": 7
@@ -196,6 +205,7 @@
         "scale": 0.7,
         "specialAttack": 15,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 300,
             "maxHealth": 50,
             "damageMin": 10
@@ -217,6 +227,7 @@
         "stageLevel": 0,
         "specialAttack": 15,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 450,
             "maxHealth": 200,
             "damageMin": 15
@@ -242,6 +253,7 @@
         "bulletType": "bullet020",
         "specialAudio": "CHICKEN",
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 50,
             "maxHealth": 100,
             "damageMin": 9
@@ -263,6 +275,7 @@
         "specialAttack": 15,
         "scale": 0.5,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 400,
             "maxHealth": 100,
             "damageMin": 3,
@@ -283,10 +296,11 @@
         "bulletType": "bullet018",
         "chapter": 0,
         "specialAttack": 15,
-        "shooterOffsetX":32,
-        "shooterOffsetY":32,
+        "shooterOffsetX": 32,
+        "shooterOffsetY": 32,
         "stageLevel": 0,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 200,
             "maxHealth": 100,
             "damageMin": 9
@@ -306,6 +320,7 @@
         "stageLevel": 0,
         "specialAttack": 15,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 700,
             "maxHealth": 20,
             "damageMin": 3
@@ -327,6 +342,7 @@
         "specialAttack": 15,
         "specialType": "special015",
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 300,
             "maxHealth": 120,
             "realRate": 50,
@@ -352,6 +368,7 @@
         "isStatic": 0,
         "isTest": 1,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 0,
             "maxHealth": 99999,
             "defence": 0,
@@ -359,7 +376,7 @@
         },
         "currentHealth": 99999,
         "invisible": 0,
-        "noLoot":1,
+        "noLoot": 1,
         "remote": 0,
         "melee": 0,
         "boxType": 1,
@@ -375,9 +392,10 @@
         "specialBulletArcExNum": 2,
         "specialAttack": 15,
         "remoteAudio": "SHOOT003",
-        "shooterOffsetX":50,
-        "shooterOffsetY":45,
+        "shooterOffsetX": 50,
+        "shooterOffsetY": 45,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 300,
             "maxHealth": 15,
             "damageMin": 3
@@ -396,13 +414,14 @@
         "chapter": 0,
         "stageLevel": 0,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 300,
             "maxHealth": 20,
             "damageMin": 3
         },
         "bulletType": "bullet039",
-        "shooterOffsetX":56,
-        "shooterOffsetY":32,
+        "shooterOffsetX": 56,
+        "shooterOffsetY": 32,
         "isHeavy": 1,
         "specialAttack": 15,
         "specialBulletArcExNum": 2,
@@ -424,6 +443,7 @@
         "specialDistance": 64,
         "specialAudio": "ZOMBIE_SPITTING",
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 200,
             "maxHealth": 15,
             "toxicRate": 5,
@@ -443,6 +463,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 200,
             "maxHealth": 20,
             "lighteningRate": 100,
@@ -454,8 +475,8 @@
         "specialAttack": 15,
         "specialBulletArcExNum": 4,
         "currentHealth": 20,
-        "shooterOffsetX":16,
-        "shooterOffsetY":52,
+        "shooterOffsetX": 16,
+        "shooterOffsetY": 52,
         "bulletType": "bullet019",
         "invisible": 0,
         "remote": 4,
@@ -472,6 +493,7 @@
         "specialAttack": 15,
         "stageLevel": 0,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 400,
             "maxHealth": 50,
             "damageMin": 6
@@ -493,9 +515,10 @@
         "bulletType": "laser002",
         "specialAttack": 15,
         "specialBulletArcExNum": 2,
-        "shooterOffsetX":16,
-        "shooterOffsetY":66,
+        "shooterOffsetX": 16,
+        "shooterOffsetY": 66,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 200,
             "maxHealth": 170,
             "damageMin": 13
@@ -518,6 +541,7 @@
         "isLineAim": 0,
         "specialAttack": 15,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 200,
             "maxHealth": 120,
             "toxicRate": 100,
@@ -543,6 +567,7 @@
         "specialDistance": 64,
         "specialType": "special024",
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 100,
             "maxHealth": 200,
             "damageMin": 15
@@ -565,9 +590,10 @@
         "isLineAim": 0,
         "specialAttack": 15,
         "bulletType": "bullet100",
-        "shooterOffsetX":0,
-        "shooterOffsetY":45,
+        "shooterOffsetX": 0,
+        "shooterOffsetY": 45,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 200,
             "maxHealth": 200,
             "damageMin": 15
@@ -588,9 +614,10 @@
         "stageLevel": 0,
         "specialAttack": 15,
         "bulletType": "bullet024",
-        "shooterOffsetX":43,
-        "shooterOffsetY":43,
+        "shooterOffsetX": 43,
+        "shooterOffsetY": 43,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 300,
             "maxHealth": 200,
             "toxicRate": 100,
@@ -615,9 +642,10 @@
         "bulletType": "bullet028",
         "specialAttack": 15,
         "specialBulletArcExNum": 2,
-        "shooterOffsetX":23,
-        "shooterOffsetY":30,
+        "shooterOffsetX": 23,
+        "shooterOffsetY": 30,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 500,
             "maxHealth": 50,
             "damageMin": 6
@@ -639,6 +667,7 @@
         "stageLevel": 0,
         "specialAttack": 15,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 300,
             "maxHealth": 160,
             "damageMin": 6,
@@ -661,6 +690,7 @@
         "stageLevel": 0,
         "specialAttack": 15,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 300,
             "maxHealth": 130,
             "damageMin": 11
@@ -685,6 +715,7 @@
         "specialType": "special030",
         "specialAttack": 15,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 200,
             "maxHealth": 250,
             "damageMin": 18
@@ -709,6 +740,7 @@
         "specialAttack": 15,
         "specialType": "special031",
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 400,
             "maxHealth": 20,
             "iceRate": 100,
@@ -734,9 +766,10 @@
         "specialAttack": 10,
         "specialType": "special032",
         "specialDelay": 0.7,
-        "specialDash":300,
+        "specialDash": 300,
         "specialAudio": "ZOMBIE_ATTACK",
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 300,
             "maxHealth": 20,
             "toxicRate": 5,
@@ -764,6 +797,7 @@
         "specialType": "special033",
         "specialAttack": 15,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 200,
             "maxHealth": 100,
             "damageMin": 12
@@ -787,6 +821,7 @@
         "stageLevel": 0,
         "isLineAim": 0,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 600,
             "maxHealth": 30,
             "defence": 5,
@@ -813,6 +848,7 @@
         "isLineAim": 0,
         "specialAttack": 20,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 400,
             "maxHealth": 30,
             "dodge": 100,
@@ -824,7 +860,7 @@
         "remote": 0,
         "melee": 2,
         "flee": 0,
-        "noLoot":1,
+        "noLoot": 1,
         "blink": 3,
         "scale": 1,
         "boxType": 2,
@@ -839,9 +875,10 @@
         "bulletType": "laser101",
         "specialAttack": 15,
         "specialBulletArcExNum": 2,
-        "shooterOffsetX":0,
-        "shooterOffsetY":45,
+        "shooterOffsetX": 0,
+        "shooterOffsetY": 45,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 500,
             "maxHealth": 10,
             "damageMin": 3
@@ -862,25 +899,26 @@
         "stageLevel": 0,
         "isLineAim": 0,
         "specialAttack": 20,
-        "specialDash":300,
+        "specialDash": 300,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 400,
             "maxHealth": 50,
             "dodge": 60,
-            "curseRate":100,
+            "curseRate": 100,
             "damageMin": 6
         },
         "attackFrames": 3,
         "specialFrames": 8,
-        "specialFrameKeyStart":4,
-        "specialFrameKeyEnd":5,
+        "specialFrameKeyStart": 4,
+        "specialFrameKeyEnd": 5,
         "currentHealth": 50,
         "isHeavy": 1,
         "invisible": 0,
         "remote": 0,
         "melee": 2,
         "flee": 0,
-        "noLoot":1,
+        "noLoot": 1,
         "blink": 3,
         "scale": 1,
         "boxType": 2,
@@ -894,10 +932,11 @@
         "stageLevel": 0,
         "specialAttack": 15,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 400,
             "maxHealth": 60,
-            "realRate":30,
-            "realDamage":1,
+            "realRate": 30,
+            "realDamage": 1,
             "damageMin": 6
         },
         "currentHealth": 60,
@@ -917,6 +956,7 @@
         "stageLevel": 0,
         "specialAttack": 15,
         "common": {
+            "remoteAngle": 5,
             "moveSpeed": 600,
             "maxHealth": 10,
             "damageMin": 1

@@ -31,6 +31,9 @@ export default class NonPlayerData {
     bulletLineExNum = 0;//额外线性喷射子弹数量，为0的时候不计入
     bulletLineInterval = 0;//线性喷射间隔时间（毫秒）
     bulletExSpeed = 0;//子弹额外速度
+    specialBulletArcExNum = 0;//特殊额外扇形喷射子弹数量,为0的时候不计入,最大18
+    specialBulletLineExNum = 0;//特殊额外线性喷射子弹数量，为0的时候不计入
+    specialRemoteAngle:number = 0;//特殊额外子弹准度偏离范围
     isArcAim = 0;//是否是扇形瞄准
     isLineAim = 0;//是否是线性瞄准
     blink = 0;//是否闪烁大于0 数字代表cd
@@ -43,8 +46,6 @@ export default class NonPlayerData {
     specialAttack = 0;//是否特殊攻击大于0
     specialType = '';//特殊类型
     specialDistance = 0;//特殊类型位置x
-    specialBulletArcExNum = 0;//特殊额外扇形喷射子弹数量,为0的时候不计入,最大18
-    specialBulletLineExNum = 0;//特殊额外线性喷射子弹数量，为0的时候不计入
     specialDelay = 0;//特殊攻击延迟放置时间
     specialDash = 0;//特殊攻击是否冲刺
     bodyColor = '#ffffff';
@@ -74,7 +75,7 @@ export default class NonPlayerData {
     childCount = 0;//子类个数
     flee = 0;//是否逃跑类型 逃跑类型优先远离玩家
     noLoot = 0;//是否没有掉落
-    water = 0;
+    water = 0;//是否水生生物
     private statusTotalData: StatusData;
     private common: CommonData;
     private statusList: StatusData[];
@@ -176,6 +177,7 @@ export default class NonPlayerData {
         this.flee = data.flee ? data.flee : 0;
         this.noLoot = data.noLoot?data.noLoot:0;
         this.water = data.water?data.water:0;
+        this.specialRemoteAngle = data.specialRemoteAngle?data.specialRemoteAngle:0;
     }
     public clone(): NonPlayerData {
         let e = new NonPlayerData();
@@ -238,6 +240,7 @@ export default class NonPlayerData {
         e.attackFrameKeyEnd = this.attackFrameKeyEnd;
         e.attackFrames = this.attackFrames;
         e.specialFrames = this.specialFrames;
+        e.specialRemoteAngle = this.specialRemoteAngle;
         return e;
     }
 

@@ -390,7 +390,7 @@ export default class NonPlayer extends Actor {
             this.shooter.data.bulletType = this.data.bulletType ? this.data.bulletType : "bullet001";
             this.shooter.data.bulletExSpeed = this.data.bulletExSpeed;
             this.shooter.node.position =  cc.v3(this.data.shooterOffsetX, this.data.shooterOffsetY);
-            this.shooter.fireBullet(Logic.getRandomNum(0, 5) - 5);
+            this.shooter.fireBullet(this.data.Common.remoteAngle);
         }
     }
     private showAttackAnim(before: Function, attacking: Function, finish: Function, target: Actor, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {

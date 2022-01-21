@@ -34,7 +34,6 @@ export default class PlayerWeapon extends cc.Component {
     private selfDefaultPos = cc.v3(-15, 40);
     private otherDefaultPos = cc.v3(20, 40);
     private remoteIntervalTime = 0;//子弹间隔时间
-    private remoteContinuousTime = 0;//
     private isCooling = false;
     private remoteAngleOffset = 0;
     // LIFE-CYCLE CALLBACKS:
