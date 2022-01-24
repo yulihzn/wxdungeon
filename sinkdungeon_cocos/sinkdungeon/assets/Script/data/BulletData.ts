@@ -31,7 +31,6 @@ export default class BulletData {
     size = 1;//子弹大小
     resName = '';//子弹贴图
     lightName = '';//子弹消失的光芒
-    resNameLaser = "";//激光贴图
     lightColor:string = '#ffffff';//子弹颜色
     fixedRotation = 0;//是否固定方向
     statusType:string = "";//附加状态
@@ -62,7 +61,6 @@ export default class BulletData {
         this.size = data.size?data.size:1;
         this.lifeTime = data.lifeTime?data.lifeTime:0;
         this.resName = data.resName?data.resName:'';
-        this.resNameLaser = data.resNameLaser?data.resNameLaser:"";
         this.lightName = data.lightName?data.lightName:'';
         this.statusType = data.statusType?data.statusType:'';
         this.statusRate = data.statusRate?data.statusRate:0;
@@ -91,7 +89,6 @@ export default class BulletData {
         e.isBoom = this.isBoom;
         e.isTracking = this.isTracking;
         e.resName = this.resName;
-        e.resNameLaser = this.resNameLaser;
         e.lightName = this.lightName;
         e.lightColor = this.lightColor;
         e.lifeTime = this.lifeTime;

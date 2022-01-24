@@ -45,6 +45,7 @@ export default class Laser extends BaseColliderComponent {
     collider: CCollider;
     private lineNode: cc.Node;
     private lightSprite: cc.Sprite;
+    private lightCenterSprite: cc.Sprite;
     private headSprite: cc.Sprite;
     private sprite: cc.Node;
     dungeon: Dungeon;
@@ -56,6 +57,7 @@ export default class Laser extends BaseColliderComponent {
     private ignoreMap = new Map<number, boolean>();
     private startPos = cc.v2(0,0);
     private angleOffset = 0;
+    private graphics:cc.Graphics;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -93,7 +95,9 @@ export default class Laser extends BaseColliderComponent {
         this.sprite = this.node.getChildByName('sprite');
         this.lineNode = this.sprite.getChildByName("line");
         this.lightSprite = this.sprite.getChildByName("light").getComponent(cc.Sprite);
+        this.lightCenterSprite = this.sprite.getChildByName("light").getChildByName("center").getComponent(cc.Sprite);
         this.headSprite = this.sprite.getChildByName("head").getComponent(cc.Sprite);
+        this.graphics = this.node.getComponent(cc.Graphics);
     }
     onEnable() {
         this.tagetPos = cc.v3(0, 0);
@@ -126,8 +130,8 @@ export default class Laser extends BaseColliderComponent {
         this.collider.sensor = data.isPhysical == 0;
         this.node.stopAllActions();
         this.initSpriteNode();
-        this.lineNode.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser);
-        this.headSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'head');
+        // this.lineNode.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser);
+        // this.headSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'head');
         this.initIgnoreMap(this.shooter.getParentNode().getComponent(Actor));
     }
     fire(hv: cc.Vec3,angleOffset:number) {
@@ -142,11 +146,15 @@ export default class Laser extends BaseColliderComponent {
         } else {
             this.scheduleOnce(() => { this.stopLaser(); }, 5);
         }
+        this.lightSprite.node.color = cc.color(255, 255, 255).fromHEX(this.data.lightColor);
         cc.tween(this.lightSprite.node).repeatForever(
             cc.tween()
-                .delay(0.05).call(() => { this.lightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light001'); })
-                .delay(0.05).call(() => { this.lightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light002'); })
-                .delay(0.05).call(() => { this.lightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light003'); })
+                .delay(0.05).call(() => { this.lightSprite.spriteFrame = this.getSpriteFrameByName('laser000light001');
+                this.lightCenterSprite.spriteFrame = this.getSpriteFrameByName('laser000light001'); })
+                .delay(0.05).call(() => { this.lightSprite.spriteFrame = this.getSpriteFrameByName('laser000light002');
+                this.lightCenterSprite.spriteFrame = this.getSpriteFrameByName('laser000light002'); })
+                .delay(0.05).call(() => { this.lightSprite.spriteFrame = this.getSpriteFrameByName('laser000light003'); 
+                this.lightCenterSprite.spriteFrame = this.getSpriteFrameByName('laser000light003');})
         ).start();
         cc.tween(this.sprite).repeatForever(
             cc.tween(this.sprite).to(0.1, { scaleY: 0.9 }).to(0.1, { scaleY: 1.1 })
@@ -198,6 +206,21 @@ export default class Laser extends BaseColliderComponent {
         let finalwidth = distance;
         this.lineNode.width = finalwidth / this.node.scaleY;
         this.lightSprite.node.setPosition(this.lineNode.width, 0);
+        this.graphics.clear();
+        let color = cc.color(255, 255, 255).fromHEX(this.data.lightColor);
+        let lineWidth = 32;
+        this.graphics.strokeColor = color;
+        this.graphics.lineWidth = lineWidth;
+        this.graphics.moveTo(0,0);
+        this.graphics.lineTo(this.lightSprite.node.position.x+lineWidth,0);
+        this.graphics.stroke();
+        this.graphics.lineWidth = lineWidth*2;
+        this.graphics.moveTo(0,0);
+        this.graphics.lineTo(1,0);
+        this.graphics.stroke();
+        this.graphics.moveTo(this.lightSprite.node.position.x+lineWidth,0);
+        this.graphics.lineTo(this.lightSprite.node.position.x+lineWidth+1,0);
+        this.graphics.stroke();
         if(result){
             this.attacking(result.collider.node,result.collider.tag);
         }

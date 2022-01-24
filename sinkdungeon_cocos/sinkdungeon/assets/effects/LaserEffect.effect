@@ -1,0 +1,96 @@
+/*
+ * Date: 2021-08-11 14:39:15
+ * LastEditors: GT<caogtaa@gmail.com>
+ * LastEditTime: 2021-08-11 14:40:09
+*/ 
+// Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.  
+
+CCEffect %{
+  techniques:
+  - passes:
+    - vert: vs
+      frag: fs
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: one
+          blendDst: one_minus_src_alpha
+          blendSrcAlpha: one
+          blendDstAlpha: one_minus_src_alpha
+      rasterizerState:
+        cullMode: none
+      properties:
+        alphaThreshold: { value: 0.5 }
+}%
+
+
+CCProgram vs %{
+  precision highp float;
+
+  #include <cc-global>
+  #include <cc-local>
+
+  in vec3 a_position;
+  
+  in vec4 a_color;
+  out vec4 v_color;
+
+  in float a_dist;
+  out float v_dist;
+
+  void main () {
+    vec4 pos = vec4(a_position, 1);
+    pos = cc_matViewProj * cc_matWorld * pos;
+
+    v_color = a_color;
+    v_dist = a_dist;
+
+    gl_Position = pos;
+  }
+}%
+
+
+CCProgram fs %{
+  #if CC_SUPPORT_standard_derivatives
+    #extension GL_OES_standard_derivatives : enable
+  #endif
+
+  precision highp float;
+  
+  #include <cc-global>
+  #include <alpha-test>
+
+  in vec4 v_color;
+  in float v_dist;
+  float Remap01(float a, float b, float t) {
+    return (t-a) / (b-a);
+  }
+
+  float Remap(float a, float b, float c, float d, float t) {
+    return Remap01(a, b, t) * (d-c) + c;
+  }
+
+  // 脉冲函数
+  // X,Y区间都是[0,1]，X=0.5位置Y=1
+  // https://www.iquilezles.org/www/articles/functions/functions.htm
+  float Pulse(float x) {
+    x *= 0.4;
+    x = x + 0.5;
+    
+    float k = 16.;
+    return pow(4.0 * x * (1.0 - x), k);
+  }
+  void main () {
+    vec4 o = v_color;
+    float alpha = abs(v_dist);
+    float fade = o.a;
+      o.a = smoothstep(1.0, 0.0, abs(v_dist));
+    o.a *= fade;
+    // 底色基础上叠加一个亮度，叠加后中心位置变白
+    // 对亮度做一个动画
+    float brightness = Remap(0., 1., 0.6, 1.0, abs(sin(cc_time.x * 2.5)));
+    o.rgb += Pulse(alpha) * brightness;
+    o.rgb *= o.a;
+    gl_FragColor = o;
+  }
+}%

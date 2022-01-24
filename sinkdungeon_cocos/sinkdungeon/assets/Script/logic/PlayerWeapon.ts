@@ -47,11 +47,11 @@ export default class PlayerWeapon extends cc.Component {
         this.initMelee();
         this.initShooter();
         if (isLeftHand) {
+            this.selfDefaultPos = cc.v3(20, 40);
+            this.otherDefaultPos = cc.v3(-15, 40);
+        } else {
             this.selfDefaultPos = cc.v3(-15, 40);
             this.otherDefaultPos = cc.v3(20, 40);
-        } else {
-            this.otherDefaultPos = cc.v3(-15, 40);
-            this.selfDefaultPos = cc.v3(20, 40);
         }
     }
     private initMelee() {
@@ -78,6 +78,8 @@ export default class PlayerWeapon extends cc.Component {
                 this.node.zIndex = avatarZindex + 1;
                 break;
             case PlayerAvatar.DIR_LEFT:
+                this.node.zIndex = this.isLeftHand ? avatarZindex + 1 : avatarZindex - 1;
+                break;
             case PlayerAvatar.DIR_RIGHT:
                 this.node.zIndex = this.isLeftHand ? avatarZindex - 1 : avatarZindex + 1;
                 break;

@@ -951,7 +951,7 @@
         "laserRange": 5000,
         "isLaser": 1,
         "lifeTime": 0.6,
-        "resNameLaser": "laser001",
+        "lightColor": "#ff0000",
         "damage": {
             "physicalDamage": 0.5
         }
@@ -962,7 +962,7 @@
         "isLaser": 1,
         "lifeTime": 1,
         "size": 2,
-        "resNameLaser": "laser002",
+        "lightColor": "#bdbdbd",
         "damage": {
             "physicalDamage": 1,
             "fireRate": 100
@@ -974,7 +974,7 @@
         "isLaser": 1,
         "lifeTime": 2,
         "size": 2,
-        "resNameLaser": "laser003",
+        "lightColor": "#cc00ff",
         "damage": {
             "physicalDamage": 1,
             "stoneRate": 100
@@ -985,7 +985,7 @@
         "laserRange": 3000,
         "isLaser": 1,
         "lifeTime": 0.3,
-        "resNameLaser": "laser001",
+        "lightColor": "#ff0000",
         "damage": {
             "physicalDamage": 1
         }
