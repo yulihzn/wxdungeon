@@ -177,7 +177,7 @@ export default class NonPlayer extends Actor {
         }
         this.addSaveStatusList();
         // this.node.position = this.entity.Transform.position.clone();
-        this.entity.Move.linearDamping = 2;
+        this.entity.Move.linearDamping = 5;
         this.entity.Move.linearVelocity = cc.v2(0, 0);
     }
     /**挨打光效 */

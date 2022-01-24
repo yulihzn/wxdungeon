@@ -155,7 +155,7 @@ export default class Kraken extends Boss {
     }
     showBoss() {
         this.entity.NodeRender.node = this.node;
-        this.entity.Move.linearDamping = 5;
+        this.entity.Move.linearDamping = 10;
         if (this.healthBar) {
             this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
             this.healthBar.node.active = !this.sc.isDied;

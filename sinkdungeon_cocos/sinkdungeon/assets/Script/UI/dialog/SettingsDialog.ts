@@ -69,7 +69,7 @@ export default class SettingsDialog extends BaseDialog {
     }
     home(){
         AudioPlayer.play(AudioPlayer.SELECT);
-        Logic.saveData();
+        // Logic.saveData();
         cc.director.getScheduler().setTimeScale(1);
         cc.director.loadScene('start');
     }

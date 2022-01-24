@@ -115,7 +115,7 @@ export default class Laser extends BaseColliderComponent {
         }
         this.updatePos();
         this.checkTimeDelay += dt;
-        if (this.checkTimeDelay > 0.1) {
+        if (this.checkTimeDelay > 0.15) {
             this.updateLaser();
             this.checkTimeDelay = 0;
         }

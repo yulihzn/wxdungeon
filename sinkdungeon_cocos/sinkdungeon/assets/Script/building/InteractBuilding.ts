@@ -76,15 +76,15 @@ export default class InteractBuilding extends Building {
         let spriteFrame = Logic.spriteFrameRes(this.resName);
         let width = spriteFrame.getOriginalSize().width * this.sprite.node.scale;
         let height = spriteFrame.getOriginalSize().height * this.sprite.node.scale / 3;
-        let offset = 5;
         let physicCollider = this.getComponent(CCollider);
         if (this.sprite.node.angle == 0) {
             physicCollider.setSize(cc.size(width, height));
         } else {
             physicCollider.setSize(cc.size(height, width));
         }
-        this.entity.Move.linearDamping = this.isThrowing ? 2 : 5;
+        this.entity.Move.linearDamping = this.isThrowing ? 5 : 10;
         physicCollider.sensor = this.data.currentHealth <= 0 ? true : false;
+        physicCollider.bounce = 100;
     }
     changeRes(resName: string, suffix?: string) {
         if (!this.sprite) {
@@ -334,7 +334,7 @@ export default class InteractBuilding extends Building {
             if (!this.isAniming) {
                 if (this.isLift) {
                     this.sprite.node.position = Logic.lerpPos(this.sprite.node.position, cc.v3(0, 96), 0.1);
-                    this.entity.Transform.position = Logic.lerpPos(this.entity.Transform.position, this.player.node.position.clone(), 0.1);
+                    this.entity.Transform.position = this.player.node.position.clone();
                 } else {
                     let p = this.player.Hv.clone().mul(64);
                     let pos = this.player.node.position.add(p);

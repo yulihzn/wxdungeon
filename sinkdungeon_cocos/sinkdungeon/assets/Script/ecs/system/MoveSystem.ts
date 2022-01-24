@@ -20,8 +20,10 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity>{
             let temp = move.linearVelocity.mul(this.dt);
             transform.position.x += temp.x;
             transform.position.y += temp.y;
-            let damp = move.linearDamping * this.dt;
-            move.linearVelocity = this.lerpPos(move.linearVelocity,cc.v2(0,0),damp>1?1:damp);
+            // let damp = move.linearDamping * this.dt;
+            move.linearVelocity.x+= move.linearVelocity.x>0?-move.linearDamping:move.linearDamping;
+            move.linearVelocity.y+= move.linearVelocity.y>0?-move.linearDamping:move.linearDamping;
+            // move.linearVelocity = this.lerpPos(move.linearVelocity,cc.v2(0,0),damp>1?1:damp);
             if (e.NodeRender.node) {
                 e.NodeRender.node.setPosition(transform.position);
             }

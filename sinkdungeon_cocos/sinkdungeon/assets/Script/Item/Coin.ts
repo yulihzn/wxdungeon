@@ -36,12 +36,12 @@ export default class Coin extends BaseColliderComponent {
     }
     onEnable() {
         this.anim = this.getComponent(cc.Animation);
-        let speed = 1200;
+        let speed = 300;
         let x = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed;
         let y = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed;
 
         this.entity.Move.linearVelocity = cc.v2(x, y);
-        this.entity.Move.linearDamping = 5;
+        this.entity.Move.linearDamping = 30;
         this.isReady = false;
         this.scheduleOnce(() => {
             this.isReady = true;

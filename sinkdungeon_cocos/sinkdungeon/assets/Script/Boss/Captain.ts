@@ -54,7 +54,7 @@ export default class Captain extends Boss {
         this.exshooter.from.valueCopy(FromData.getClone(this.actorName(), 'captain_head'));
         this.updatePlayerPos();
         this.entity.NodeRender.node = this.node;
-        this.entity.Move.linearDamping = 5;
+        this.entity.Move.linearDamping = 10;
     }
 
     start() {

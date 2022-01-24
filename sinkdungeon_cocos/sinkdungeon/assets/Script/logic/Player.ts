@@ -122,7 +122,7 @@ export default class Player extends Actor {
 
     onLoad() {
         this.lastConsumeTime = Logic.realTime;
-        this.entity.Move.linearDamping = 2;
+        this.entity.Move.linearDamping = 5;
         this.entity.Move.linearVelocity = cc.v2(0, 0);
         this.statusManager.statusIconList = this.statusIconList;
         this.inventoryManager = Logic.inventoryManager;
