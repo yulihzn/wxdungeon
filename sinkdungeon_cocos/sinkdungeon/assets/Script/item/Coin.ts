@@ -41,7 +41,7 @@ export default class Coin extends BaseColliderComponent {
         let y = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed;
 
         this.entity.Move.linearVelocity = cc.v2(x, y);
-        this.entity.Move.linearDamping = 30;
+        this.entity.Move.linearDamping = 3;
         this.isReady = false;
         this.scheduleOnce(() => {
             this.isReady = true;
