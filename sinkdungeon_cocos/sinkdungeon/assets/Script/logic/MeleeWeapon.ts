@@ -85,6 +85,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     private isMiss = false;
     private drainSkill = new NextStep();
     private isReflect = false;//子弹偏转
+    private spriteNode:cc.Node = null;
     private weaponSprite: cc.Sprite = null;
     private weaponLightSprite: cc.Sprite = null;
     private handSprite: cc.Sprite = null;
@@ -133,6 +134,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         this.anim = this.getComponent(cc.Animation);
         this.player = this.playerNode.getComponent(Player);
         this.weaponFirePoint = this.node.getChildByName('firepoint');
+        this.spriteNode = this.node.getChildByName('sprite');
         this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos));
         this.meleeLightRightPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightRightPos));
         this.weaponSprite = this.getSpriteChildSprite(['sprite', InventoryManager.WEAPON]);
@@ -460,13 +462,11 @@ export default class MeleeWeapon extends BaseColliderComponent {
         }, 0);
     }
 
-    setHandAndWeaponInVisible(flag: boolean) {
+    setWeaponInVisible(flag: boolean) {
         if (flag) {
             this.weaponSprite.node.opacity = 0;
-            this.handSprite.node.opacity = 0;
         } else {
             this.weaponSprite.node.opacity = 255;
-            this.handSprite.node.opacity = 255;
         }
     }
     updateLogic(dt: number) {

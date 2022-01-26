@@ -145,7 +145,7 @@ export default class Player extends Actor {
         this.remoteCooldown.width = 0;
         this.remoteCooldown.opacity = 200;
         EventHelper.on(EventHelper.PLAYER_TRIGGER
-            , (detail) => { if (this.node) this.triggerThings(event && detail && detail.isLongPress) });
+            , (detail) => { if (this.node) this.triggerThings(detail && detail.isLongPress) });
         EventHelper.on(EventHelper.PLAYER_EXIT_FROM_SETTINGS
             , (detail) => {
                 cc.director.loadScene('start');
@@ -233,7 +233,7 @@ export default class Player extends Actor {
             this.shadowSpriteframe = new cc.SpriteFrame(this.shadowTexture);
         }
         for (let s of this.shadowList) {
-            if (s.isValid || s.enabled || s.node.active) {
+            if (s.isValid || s.enabled) {
                 s.stop();
             }
         }
@@ -1131,14 +1131,14 @@ export default class Player extends Actor {
         let isLift = this.interactBuilding && this.interactBuilding.isTaken && this.interactBuilding.isLift;
         if (this.weaponLeft) {
             this.weaponLeft.updateLogic(dt);
-            this.weaponLeft.meleeWeapon.setHandAndWeaponInVisible(showHands);
+            this.weaponLeft.handsUp(showHands,isLift,this.interactBuilding&&this.interactBuilding.isAttacking);
         }
         if (this.weaponRight) {
             this.weaponRight.updateLogic(dt);
-            this.weaponRight.meleeWeapon.setHandAndWeaponInVisible(showHands);
+            this.weaponRight.handsUp(showHands,isLift,this.interactBuilding&&this.interactBuilding.isAttacking);
         }
         if (this.avatar) {
-            this.avatar.showHandsWithInteract(showHands, isLift && !this.interactBuilding.isAttacking);
+            // this.avatar.showHandsWithInteract(showHands, isLift && !this.interactBuilding.isAttacking);
             this.avatar.showLegsWithWater(this.isLevelWater && !this.sc.isJumping);
         }
         this.showUiButton();

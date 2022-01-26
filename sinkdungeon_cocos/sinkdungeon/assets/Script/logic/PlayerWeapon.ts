@@ -33,9 +33,15 @@ export default class PlayerWeapon extends cc.Component {
     private isShadow = false;
     private selfDefaultPos = cc.v3(-15, 40);
     private otherDefaultPos = cc.v3(20, 40);
+    private readonly handsUpPosX = 32;
+    private readonly handsUpPosY = 32;
+    private handsUpPos = cc.v3(0, 0);
     private remoteIntervalTime = 0;//子弹间隔时间
     private isCooling = false;
     private remoteAngleOffset = 0;
+    isHandsUp = false;
+    interactBuildingAttacking = false;
+    interactBuildingLift = false;
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -68,7 +74,32 @@ export default class PlayerWeapon extends cc.Component {
         this.shooter.player = this.player;
         this.shooter.parentNode = this.player.node;
     }
+    handsUp(isUp: boolean,isLift:boolean,isAttacking:boolean) {
+        if(this.isHandsUp&&isUp){
+            this.interactBuildingAttacking = isAttacking;
+            this.interactBuildingLift = isLift;
+        }else{
+            this.interactBuildingAttacking = false;
+        }
+        this.meleeWeapon.setWeaponInVisible(isUp);
+        if (isUp && !this.isHandsUp) {
+            this.isHandsUp = true;
+            this.handsUpPos = cc.v3(this.handsUpPosX, 0);
+            if(isLift){
+                this.scheduleOnce(() => {
+                    this.handsUpPos = cc.v3(0, this.handsUpPosY);
+                }, 0.1)
+            }
+        }
+        if (!isUp && this.isHandsUp) {
+            this.isHandsUp = false;
+            this.handsUpPos = cc.v3(this.handsUpPosX, 0);
+            this.scheduleOnce(() => {
+                this.handsUpPos = cc.v3(0, 0);
+            }, 0.1)
+        }
 
+    }
     changeZIndexByDir(avatarZindex: number, dir: number) {
         switch (dir) {
             case PlayerAvatar.DIR_UP:
@@ -103,7 +134,6 @@ export default class PlayerWeapon extends cc.Component {
             return;
         }
         this.meleeWeapon.attack(data, fistCombo);
-
     }
     remoteAttack(data: PlayerData, cooldownNode: cc.Node, bulletArcExNum: number, bulletLineExNum: number): boolean {
         if (this.isCooling) {
@@ -123,11 +153,11 @@ export default class PlayerWeapon extends cc.Component {
         let offsetTime = currentTime - this.remoteIntervalTime;
         if (offsetTime > remoteInterval) {
             if (offsetTime < remoteInterval * 2) {
-                this.remoteAngleOffset+=finalData.remoteAngle/5;
+                this.remoteAngleOffset += finalData.remoteAngle / 5;
                 if (this.remoteAngleOffset > finalData.remoteAngle) {
                     this.remoteAngleOffset = finalData.remoteAngle;
                 }
-            }else{
+            } else {
                 this.remoteAngleOffset = 0;
             }
             this.remoteIntervalTime = currentTime;
@@ -158,7 +188,12 @@ export default class PlayerWeapon extends cc.Component {
     }
 
     updateLogic(dt: number) {
-        this.node.position = Logic.lerpPos(this.node.position, this.player.isFaceRight ? this.selfDefaultPos : this.otherDefaultPos, dt * 5);
+        let x = this.player.isFaceRight?this.handsUpPos.x:-this.handsUpPos.x;
+        if(this.interactBuildingAttacking){
+            x = 0;
+        }
+        let y = this.interactBuildingAttacking||!this.interactBuildingLift?0:this.handsUpPos.y;
+        this.node.position = Logic.lerpPos(this.node.position, this.player.isFaceRight ? this.selfDefaultPos.add(cc.v3(x,y)) : this.otherDefaultPos.add(cc.v3(x,y)), dt * 5);
         if (this.meleeWeapon) {
             this.meleeWeapon.updateLogic(dt);
         }
