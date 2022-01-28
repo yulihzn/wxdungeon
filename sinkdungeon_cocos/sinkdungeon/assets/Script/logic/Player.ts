@@ -610,24 +610,24 @@ export default class Player extends Actor {
             this.stopHiding();
         }
     }
-    //特效攻击
-    remoteExAttack(comboType: number): void {
+    //物品和装备效果触发
+    exTrigger(comboType: number): void {
         for (let key in this.inventoryManager.equips) {
             let data = this.inventoryManager.equips[key];
-            this.remoteExAttackDo(data, comboType);
+            this.exTriggerDo(data, comboType);
         }
         for (let key in this.inventoryManager.suitMap) {
             let suit = this.inventoryManager.suitMap[key];
             if (suit) {
                 for (let i = 0; i < suit.count - 1; i++) {
                     if (i < suit.EquipList.length) {
-                        this.remoteExAttackDo(suit.EquipList[i], comboType);
+                        this.exTriggerDo(suit.EquipList[i], comboType);
                     }
                 }
             }
         }
     }
-    private remoteExAttackDo(data: EquipmentData, comboType: number) {
+    private exTriggerDo(data: EquipmentData, comboType: number) {
         let canShoot = false;
         if (comboType == MeleeWeapon.COMBO1 && data.exBulletCombo1 > 0) {
             canShoot = true;

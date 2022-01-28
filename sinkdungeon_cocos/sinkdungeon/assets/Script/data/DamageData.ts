@@ -25,8 +25,8 @@ export default class DamageData {
     curseRate = 0;//诅咒元素释放几率
     stoneRate = 0;//石化释放几率(目前仅限于boss眼魔激光使用)
     isCriticalStrike = false;
-    isBackAttack = false;
-    isRemote = false;
+    isBackAttack = false;//背刺
+    isRemote = false;//远程
     isStab = false;//刺
     isFar = false;//近程
     isFist = false;//空手 

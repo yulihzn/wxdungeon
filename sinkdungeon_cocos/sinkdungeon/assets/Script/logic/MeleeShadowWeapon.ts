@@ -89,7 +89,7 @@ export default class MeleeShadowWeapon extends BaseColliderComponent {
     }
     //Anim
     ExAttackTime() {
-        this.player.remoteExAttack(this.comboType);
+        this.player.exTrigger(this.comboType);
     }
     //Anim
     AudioTime() {

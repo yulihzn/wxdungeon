@@ -46,26 +46,37 @@ export default class EquipmentData extends BaseData{
     isLineAim = 0;//是否是线性瞄准
     hideHair = 0;//是否隐藏头发
     bulletExSpeed = 0;//子弹额外速度
-    statusName = '';//自身状态类别 获得装备时添加每次间隔时间到添加
-    statusInterval = 0;//添加常规状态的间隔
-    statusNameParrySelf = '';//完美盾反对自己添加的状态
-    statusNameParryOther = '';//完美盾反对敌人添加的状态
-    statusRateParry = 0;//完美盾反添加状态的几率
-    statusNameBlockSelf = '';//普通盾防对自己添加的状态
-    statusNameBlockOther = '';//普通盾防对敌人添加的状态
-    statusRateBlock = 0;//普通盾防添加状态的几率
-    statusNameHurtSelf = '';//受伤对自己添加的状态
-    statusNameHurtOther = '';//受伤对敌人添加的状态
-    statusRateHurt = 0;//受伤添加状态的几率
-    exBulletTypeAttack = '';//攻击额外子弹类别
-    exBulletTypeHurt = '';//受伤害额外子弹类别
-    exBulletTypeParry = '';//盾反额外子弹类别
-    exBulletTypeBlock = '';//普通格挡额外子弹类别
-    exBulletRate = 0;//额外子弹几率
-    exBulletCombo1 = 0;//攻击额外子弹连段，为1代表在这一次攻击释放
-    exBulletCombo2 = 0;
-    exBulletCombo3 = 0;
+    statusInterval = 0;//添加常规状态的间隔@deprecated
+    statusName = '';//自身状态类别 获得装备时添加每次间隔时间到添加@deprecated
+    statusNameParrySelf = '';//完美盾反对自己添加的状态@deprecated
+    statusNameParryOther = '';//完美盾反对敌人添加的状态@deprecated
+    statusRateParry = 0;//完美盾反添加状态的几率@deprecated
+    statusNameBlockSelf = '';//普通盾防对自己添加的状态@deprecated
+    statusNameBlockOther = '';//普通盾防对敌人添加的状态@deprecated
+    statusRateBlock = 0;//普通盾防添加状态的几率@deprecated
+    statusNameHurtSelf = '';//受伤对自己添加的状态@deprecated
+    statusNameHurtOther = '';//受伤对敌人添加的状态@deprecated
+    statusRateHurt = 0;//受伤添加状态的几率@deprecated
+    exBulletTypeAttack = '';//攻击额外子弹类别@deprecated
+    exBulletTypeHurt = '';//受伤害额外子弹类别@deprecated
+    exBulletTypeParry = '';//盾反额外子弹类别@deprecated
+    exBulletTypeBlock = '';//普通格挡额外子弹类别@deprecated
+    exBulletRate = 0;//额外子弹几率@deprecated
+    exBulletCombo1 = 0;//攻击额外子弹连段，为1代表在这一次攻击释放@deprecated
+    exBulletCombo2 = 0;//@deprecated
+    exBulletCombo3 = 0;//@deprecated
     exBulletOffsetX = 0;//额外子弹偏移x
+    /**额外效果 分号分隔，
+     * 第一个参数是对应类型的细分
+     * 第二个参数是id可以是子弹，状态或者技能，bullet000 status000 talent 000 id可以重复如果是技能会多次释放
+     * 第三个参数是触发几率0-100
+     * 第四个参数是选填 子弹的偏移x 状态的对象 0：自身 1：对方 
+     * 例："0=bullet001,100,0;status001,100,0;talent001,100,0" */
+    exAttack = '';//额外被动 参数：0：攻击一 1：攻击二 2：攻击三 3:远程
+    exHit = '';//额外被动 攻击命中 参数： 0:普通近战 1:暴击近战 2:背刺近战 3:普通远程 4:暴击远程
+    exHurt = '';//额外被动 受伤 参数：0：受伤 1：格挡 2：弹反 3：闪避 4：能量盾
+    exUse = '';//额外主动 使用装备 参数：0：使用装备 1：组织技能
+    exInterval = '';//额外被动 穿上或者时间间隔 参数：间隔时间
     ignoreTrap = 0;//无视尖刺伤害
     remoteAudio = '';//远程音效
     exBeatBack = 0;//额外击退
@@ -178,6 +189,11 @@ export default class EquipmentData extends BaseData{
         this.test = data.test?data.test:0;
         this.requireLevel = data.requireLevel?data.requireLevel:0;
         this.bulletArcOffset = data.bulletArcOffset?data.bulletArcOffset:0;
+        this.exAttack = data.exAttack?data.exAttack:'';
+        this.exHit = data.exHit?data.exHit:'';
+        this.exHurt =  data.exHurt?data.exHurt:'';
+        this.exUse =  data.exUse?data.exUse:'';
+        this.exInterval =  data.exInterval?data.exInterval:'';
     }
     public clone():EquipmentData{
         let e = new EquipmentData();
@@ -257,6 +273,11 @@ export default class EquipmentData extends BaseData{
         e.test = this.test;
         e.requireLevel = this.requireLevel;
         e.bulletArcOffset = this.bulletArcOffset;
+        e.exAttack = this.exAttack;
+        e.exHit = this.exHit;
+        e.exHurt =  this.exHurt;
+        e.exUse =  this.exUse;
+        e.exInterval =  this.exInterval;
         return e;
     }
     public add(data: EquipmentData): EquipmentData {
