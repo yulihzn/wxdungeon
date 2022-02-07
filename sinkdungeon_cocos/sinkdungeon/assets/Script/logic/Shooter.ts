@@ -206,6 +206,7 @@ export default class Shooter extends cc.Component {
         }
         return aoe;
     }
+    
     /**
      * 发射子弹
      * @param angleOffset 偏转角度 

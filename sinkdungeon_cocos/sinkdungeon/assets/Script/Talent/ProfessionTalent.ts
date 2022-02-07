@@ -216,7 +216,7 @@ export default class ProfessionTalent extends Talent {
             this.sprite.node.height = 2000;
             this.sprite.node.opacity = 255;
         }).to(0.1, { opacity: 0 }).call(() => {
-            this.addStatus2NearEnemy(shadowPlayer ? shadowPlayer.node : this.player.node, StatusManager.TALENT_FLASH_DIZZ, this.player.IsVariation ? 500 : 400);
+            Talent.addStatus2NearEnemy(this.player,shadowPlayer ? shadowPlayer.node : this.player.node, StatusManager.TALENT_FLASH_DIZZ, this.player.IsVariation ? 500 : 400);
             this.sprite.spriteFrame = null;
         }).start();
 

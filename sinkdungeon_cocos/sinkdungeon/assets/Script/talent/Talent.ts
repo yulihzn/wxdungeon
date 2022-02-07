@@ -192,20 +192,31 @@ export default abstract class Talent extends cc.Component {
         shooter.fireBullet(0, null, 0, 0, prefab, data);
     }
 
-    addStatus2NearEnemy(targetNode:cc.Node,statusName: string, range: number) {
-        if (!this.player) {
+    static addStatus2NearEnemy(player:Player,targetNode:cc.Node,statusName: string, range: number) {
+        if (!player) {
             return cc.Vec3.ZERO;
         }
-        for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
+        for (let monster of player.dungeon.monsterManager.monsterList) {
             let dis = Logic.getDistanceNoSqrt(targetNode.position, monster.node.position);
             if (monster&&monster.node&&monster.node.active&&dis < range && !monster.sc.isDied && !monster.sc.isDisguising) {
                 monster.addStatus(statusName, new FromData());
             }
         }
-        for (let boss of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.bossList) {
+        for (let boss of player.dungeon.monsterManager.bossList) {
             let dis = Logic.getDistanceNoSqrt(targetNode.position, boss.node.position);
             if (dis < range && !boss.sc.isDied) {
                 boss.addStatus(statusName, new FromData());
+            }
+        }
+    }
+    static addStatus2NearAlly(player:Player,targetNode:cc.Node,statusName: string, range: number) {
+        if (!player) {
+            return cc.Vec3.ZERO;
+        }
+        for (let ally of player.dungeon.nonPlayerManager.nonPlayerList) {
+            let dis = Logic.getDistanceNoSqrt(targetNode.position, ally.node.position);
+            if (ally&&ally.node&&ally.node.active&&dis < range && !ally.sc.isDied && !ally.sc.isDisguising) {
+                ally.addStatus(statusName, new FromData());
             }
         }
     }

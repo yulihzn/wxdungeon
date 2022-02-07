@@ -26,6 +26,7 @@ import Utils from "../utils/Utils";
 import CCollider from "../collider/CCollider";
 import BaseColliderComponent from "../base/BaseColliderComponent";
 import Controller from "./Controller";
+import TriggerData from "../data/TriggerData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -374,7 +375,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
     //Anim
     ExAttackTime() {
-        this.player.exTrigger(this.comboType);
+        this.player.exTrigger(TriggerData.GROUP_ATTACK,this.comboType,null,null);
     }
     //Anim
     AudioTime() {

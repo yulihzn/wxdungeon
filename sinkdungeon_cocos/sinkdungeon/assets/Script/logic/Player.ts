@@ -52,6 +52,7 @@ import StatusIconList from '../ui/StatusIconList';
 import Utils from '../utils/Utils';
 import NextStep from '../utils/NextStep';
 import LifeData from '../data/LifeData';
+import TriggerData from '../data/TriggerData';
 @ccclass
 export default class Player extends Actor {
     @property(FloatinglabelManager)
@@ -201,7 +202,7 @@ export default class Player extends Actor {
         this.baseAttackPoint = Logic.playerData.FinalCommon.damageMin;
         this.updatePlayerPos();
         this.entity.NodeRender.node = this.node;
-        EventHelper.emit(EventHelper.CAMERA_LOOK,{pos:this.getCenterPosition(),isDirect:true});
+        EventHelper.emit(EventHelper.CAMERA_LOOK, { pos: this.getCenterPosition(), isDirect: true });
         this.shooterEx.player = this;
         this.shooterEx.isEx = true;
         this.smokePool = new cc.NodePool();
@@ -376,7 +377,7 @@ export default class Player extends Actor {
             case InventoryManager.REMOTE:
                 this.weaponLeft.shooter.data = equipData.clone();
                 let finalData = this.data.FinalCommon;
-                if(this.data.currentAmmo>finalData.maxAmmo||this.data.currentAmmo<=0){
+                if (this.data.currentAmmo > finalData.maxAmmo || this.data.currentAmmo <= 0) {
                     this.data.currentAmmo = finalData.maxAmmo;
                     EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.data.currentAmmo, y: finalData.maxAmmo });
                 }
@@ -610,48 +611,100 @@ export default class Player extends Actor {
             this.stopHiding();
         }
     }
-    //物品和装备效果触发
-    exTrigger(comboType: number): void {
+    /**
+     * 额外物品装备效果触发
+     * @param group 触发类别
+     * @param type 触发类型
+     * @param from 来源
+     * @param actor 目标
+     */
+    exTrigger(group: number, type: number,from: FromData, actor: Actor): void {
         for (let key in this.inventoryManager.equips) {
             let data = this.inventoryManager.equips[key];
-            this.exTriggerDo(data, comboType);
+            for (let d of data.exTriggers) {
+                this.exTriggerDo(d, group, type,from,actor);
+            }
         }
         for (let key in this.inventoryManager.suitMap) {
             let suit = this.inventoryManager.suitMap[key];
             if (suit) {
                 for (let i = 0; i < suit.count - 1; i++) {
                     if (i < suit.EquipList.length) {
-                        this.exTriggerDo(suit.EquipList[i], comboType);
+                        for (let d of suit.EquipList[i].exTriggers) {
+                            this.exTriggerDo(d, group, type,from,actor);
+                        }
                     }
                 }
             }
         }
     }
-    private exTriggerDo(data: EquipmentData, comboType: number) {
-        let canShoot = false;
-        if (comboType == MeleeWeapon.COMBO1 && data.exBulletCombo1 > 0) {
-            canShoot = true;
+    private exTriggerDo(data: TriggerData, group: number, type: number,from: FromData, actor: Actor) {
+        if (data.group != group || data.type != type) {
+            return;
         }
-        if (comboType == MeleeWeapon.COMBO2 && data.exBulletCombo2 > 0) {
-            canShoot = true;
+        switch (data.id) {
+            case TriggerData.ID_STATUS:
+                break;
+            case TriggerData.ID_BULLET:
+                this.exTriggerBullet(data);
+                break;
+            case TriggerData.ID_TALENT:
+                break;
         }
-        if (comboType == MeleeWeapon.COMBO3 && data.exBulletCombo3 > 0) {
-            canShoot = true;
+
+    }
+    private exTriggerBullet(data: TriggerData) {
+        let count = data.count;
+        let canShoot = true;
+        if (count < 1) {
+            canShoot = Random.rand() < count;
+            count = 1;
+        } else {
+            count = Math.floor(count);
         }
-        if (canShoot && data.exBulletTypeAttack.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
-            this.shooterEx.data.bulletType = data.exBulletTypeAttack;
-            this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
-            this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
-            this.shooterEx.data.bulletSize = data.bulletSize;
-            this.shooterEx.data.bulletSize += this.IsVariation ? 0.5 : 0;
-            this.shooterEx.fireBullet(0, cc.v3(data.exBulletOffsetX, 24));
-            for (let s of this.shadowList) {
-                if (s.node) {
-                    s.shooterEx.setHv(this.shooterEx.Hv);
-                    s.shooterEx.data = this.shooterEx.data.clone();
-                    s.shooterEx.fireBullet(0, cc.v3(data.exBulletOffsetX, 24));
-                }
+        if (canShoot) {
+            for (let i = 0; i < count; i++) {
+                let remoteAngleOffset = data.bulletAngle;
+                this.schedule(() => {
+                    this.shooterEx.data.bulletType = data.res;
+                    this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
+                    this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
+                    this.shooterEx.data.bulletSize = data.bulletSize;
+                    this.shooterEx.data.bulletSize += this.IsVariation ? 0.5 : 0;
+                    this.shooterEx.data.bulletExSpeed = data.bulletSpeed;
+                    let angle = Random.getRandomNum(-remoteAngleOffset, remoteAngleOffset);
+                    this.shooterEx.fireBullet(angle, cc.v3(data.bulletOffsetX, 24));
+                    for (let s of this.shadowList) {
+                        if (s.node) {
+                            s.shooterEx.setHv(this.shooterEx.Hv);
+                            s.shooterEx.data = this.shooterEx.data.clone();
+                            s.shooterEx.fireBullet(angle, cc.v3(data.bulletOffsetX, 24));
+                        }
+                    }
+                }, data.bulletInterval, data.maxAmmo)
             }
+        }
+    }
+    private exTriggerStatus(data:TriggerData,from: FromData, actor: Actor){
+        let count = data.count;
+        let canAdd = true;
+        if (count < 1) {
+            canAdd = Random.rand() < count;
+            count = 1;
+        } else {
+            count = Math.floor(count);
+        }
+        if(canAdd&&actor){
+
+        }
+        if (TriggerData.TARGET_OTHER==data.type) {
+            actor.addStatus(data.res, new FromData());
+        }
+        if (TriggerData.TARGET_OTHER==data.type) {
+            this.addStatus(data.res, new FromData());
+        }
+        if(this.dungeon){
+            
         }
     }
     //特效受击
@@ -1131,11 +1184,11 @@ export default class Player extends Actor {
         let isLift = this.interactBuilding && this.interactBuilding.isTaken && this.interactBuilding.isLift;
         if (this.weaponLeft) {
             this.weaponLeft.updateLogic(dt);
-            this.weaponLeft.handsUp(showHands,isLift,this.interactBuilding&&this.interactBuilding.isAttacking);
+            this.weaponLeft.handsUp(showHands, isLift, this.interactBuilding && this.interactBuilding.isAttacking);
         }
         if (this.weaponRight) {
             this.weaponRight.updateLogic(dt);
-            this.weaponRight.handsUp(showHands,isLift,this.interactBuilding&&this.interactBuilding.isAttacking);
+            this.weaponRight.handsUp(showHands, isLift, this.interactBuilding && this.interactBuilding.isAttacking);
         }
         if (this.avatar) {
             // this.avatar.showHandsWithInteract(showHands, isLift && !this.interactBuilding.isAttacking);
