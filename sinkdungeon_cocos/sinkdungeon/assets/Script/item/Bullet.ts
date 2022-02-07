@@ -52,8 +52,8 @@ export default class Bullet extends BaseColliderComponent {
     hv = cc.v3(0, 0);
     isFromPlayer = false;
 
-    sprite: cc.Node;
-    light: cc.Node;
+    sprite: cc.Sprite;
+    light: cc.Sprite;
     collider: CCollider;
 
     dungeon: Dungeon;
@@ -74,22 +74,26 @@ export default class Bullet extends BaseColliderComponent {
         super.onLoad();
         this.anim = this.getComponent(cc.Animation);
         this.collider = this.getComponent(CCollider);
-        this.sprite = this.node.getChildByName('sprite');
-        this.sprite.opacity = 255;
-        this.sprite.angle = 0;
-        this.light = this.node.getChildByName('light');
-        this.light.opacity = 0;
+        this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
+        this.sprite.node.opacity = 255;
+        this.sprite.node.angle = 0;
+        this.light = this.node.getChildByName('light').getComponent(cc.Sprite);
+        this.light.node.opacity = 0;
     }
     onEnable() {
         this.tagetPos = cc.v3(0, 0);
         this.entity.NodeRender.node = this.node;
         this.entity.Move.linearVelocity = cc.v2(0, 0);
         this.currentLinearVelocity = cc.v2(0, 0);
-        this.sprite = this.node.getChildByName('sprite');
-        this.sprite.opacity = 255;
-        this.sprite.angle = 0;
-        this.light = this.node.getChildByName('light');
-        this.light.opacity = 0;
+        if(!this.sprite){
+            this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
+        }
+        this.sprite.node.opacity = 255;
+        this.sprite.node.angle = 0;
+        if(!this.light){
+            this.light = this.node.getChildByName('light').getComponent(cc.Sprite);
+        }
+        this.light.node.opacity = 0;
         this.isTrackDelay = false;
         this.isDecelerateDelay = false;
         this.isHit = false;
@@ -135,7 +139,7 @@ export default class Bullet extends BaseColliderComponent {
         this.data = data;
         this.changeRes(data.resName, data.lightName, data.lightColor);
         this.collider.type = data.isRect != 1 ? CCollider.TYPE.CIRCLE : CCollider.TYPE.RECT;
-        this.light.position = data.isRect == 1 ? cc.v3(8, 0) : cc.v3(0, 0);
+        this.light.node.position = data.isRect == 1 ? cc.v3(8, 0) : cc.v3(0, 0);
         this.node.scale = data.size > 0 ? data.size : 1;
         this.collider.radius = 16;
         this.collider.w = 30;
@@ -145,7 +149,7 @@ export default class Bullet extends BaseColliderComponent {
 
     private changeRes(resName: string, lightName: string, lightColor: string, suffix?: string) {
         if (!this.sprite) {
-            this.sprite = this.node.getChildByName('sprite');
+            this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         }
         if (!this.sprite || resName.length < 1) {
             return;
@@ -154,12 +158,12 @@ export default class Bullet extends BaseColliderComponent {
         let s2 = this.getSpriteFrameByName(lightName, suffix);
 
         if (s1) {
-            this.sprite.getComponent(cc.Sprite).spriteFrame = s1;
+            this.sprite.spriteFrame = s1;
         }
         if (s2) {
-            this.light.getComponent(cc.Sprite).spriteFrame = s2;
+            this.light.spriteFrame = s2;
             let color = cc.color(255, 255, 255).fromHEX(lightColor);
-            this.light.color = color;
+            this.light.node.color = color;
         }
 
     }
@@ -183,6 +187,9 @@ export default class Bullet extends BaseColliderComponent {
     }
     //animation
     BulletDestory() {
+        if(this.sprite){
+            this.sprite.spriteFrame = null;
+        }
         this.shooter.addDestroyBullet(this.node);
     }
     fire(hv: cc.Vec3) {
@@ -190,9 +197,9 @@ export default class Bullet extends BaseColliderComponent {
         this.entity.Move.linearVelocity = this.currentLinearVelocity;
         //记录发射点
         this.startPos = this.node.convertToWorldSpaceAR(cc.v3(0, 0));
-        this.sprite.stopAllActions();
+        this.sprite.node.stopAllActions();
         this.node.stopAllActions();
-        let ss = this.sprite.getComponent(cc.Sprite);
+        let ss = this.sprite;
         let idletween = cc.tween()
             .delay(0.1).call(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim000', true); })
             .delay(0.1).call(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim001', true); })
@@ -200,9 +207,9 @@ export default class Bullet extends BaseColliderComponent {
         let spawntween = cc.tween(this.sprite).parallel(idletween, cc.tween().by(0.3, { angle: this.data.rotateAngle > 0 ? this.data.rotateAngle : 15 }))
 
         if (this.data.isRotate > 0) {
-            cc.tween(this.sprite).repeatForever(spawntween).start();
+            cc.tween(this.sprite.node).repeatForever(spawntween).start();
         } else {
-            cc.tween(this.sprite).repeatForever(idletween).start();
+            cc.tween(this.sprite.node).repeatForever(idletween).start();
         }
         this.unscheduleAllCallbacks();
         if (this.data.lifeTime > 0) {
