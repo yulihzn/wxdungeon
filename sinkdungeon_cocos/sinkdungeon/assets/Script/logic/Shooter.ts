@@ -281,31 +281,31 @@ export default class Shooter extends cc.Component {
             }
             isCircle = true;
         } else {
-            this.fire(bulletType, angleOffset, this.hv.clone(), defaultPos, this.data.bulletArcOffset, prefab, aoeData);
+            this.fire(bulletType, angleOffset, this.hv.clone(), defaultPos, this.data.bulletArcOffsetX, prefab, aoeData);
         }
-        this.fireArcBullet(bulletType, defaultPos, finalBulletArcExNum, prefab, aoeData, angles, this.data.bulletArcOffset);
-        this.fireLineBullet(bulletType, angleOffset, defaultPos, finalBulletArcExNum, bulletLineExNum, prefab, aoeData, angles, isCircle, this.data.bulletArcOffset);
+        this.fireArcBullet(bulletType, defaultPos, finalBulletArcExNum, prefab, aoeData, angles, this.data.bulletArcOffsetX);
+        this.fireLineBullet(bulletType, angleOffset, defaultPos, finalBulletArcExNum, bulletLineExNum, prefab, aoeData, angles, isCircle, this.data.bulletArcOffsetX);
     }
-    private fireArcBullet(bulletType: string, defaultPos: cc.Vec3, bulletArcExNum: number, prefab: cc.Prefab, aoeData: AreaOfEffectData, angles: number[], bulletArcOffset: number): void {
+    private fireArcBullet(bulletType: string, defaultPos: cc.Vec3, bulletArcExNum: number, prefab: cc.Prefab, aoeData: AreaOfEffectData, angles: number[], bulletArcOffsetX: number): void {
         if (bulletArcExNum <= 0) {
             return;
         }
         for (let i = 0; i < bulletArcExNum; i++) {
             if (i < angles.length) {
-                this.fire(bulletType, angles[i], this.hv.clone(), defaultPos, bulletArcOffset, prefab, aoeData);
+                this.fire(bulletType, angles[i], this.hv.clone(), defaultPos, bulletArcOffsetX, prefab, aoeData);
             }
         }
     }
-    private fireLineBullet(bulletType: string, angleOffset: number, defaultPos: cc.Vec3, bulletArcExNum: number, bulletLineExNum: number, prefab: cc.Prefab, aoeData: AreaOfEffectData, angles: number[], isCircle: boolean, bulletArcOffset: number): void {
+    private fireLineBullet(bulletType: string, angleOffset: number, defaultPos: cc.Vec3, bulletArcExNum: number, bulletLineExNum: number, prefab: cc.Prefab, aoeData: AreaOfEffectData, angles: number[], isCircle: boolean, bulletArcOffsetX: number): void {
         let exNum = bulletLineExNum ? this.data.bulletLineExNum + bulletLineExNum : this.data.bulletLineExNum;
         if (exNum == 0) {
             return;
         }
         this.schedule(() => {
             if (!isCircle) {
-                this.fire(bulletType, angleOffset, this.hv.clone(), defaultPos, bulletArcOffset, prefab, aoeData);
+                this.fire(bulletType, angleOffset, this.hv.clone(), defaultPos, bulletArcOffsetX, prefab, aoeData);
             }
-            this.fireArcBullet(bulletType, defaultPos, bulletArcExNum, prefab, aoeData, angles, bulletArcOffset);
+            this.fireArcBullet(bulletType, defaultPos, bulletArcExNum, prefab, aoeData, angles, bulletArcOffsetX);
         }, this.data.bulletLineInterval > 0 ? this.data.bulletLineInterval : 0.2, exNum, 0);
 
     }
@@ -331,7 +331,7 @@ export default class Shooter extends cc.Component {
      * @param hv 方向向量
      * @param defaultPos 初始位置默认cc.v3(0, 0)
      */
-    private fire(bulletType: string, angleOffset: number, hv: cc.Vec3, defaultPos: cc.Vec3, bulletArcOffset: number, aoePrefab: cc.Prefab, aoeData: AreaOfEffectData) {
+    private fire(bulletType: string, angleOffset: number, hv: cc.Vec3, defaultPos: cc.Vec3, bulletArcOffsetX: number, aoePrefab: cc.Prefab, aoeData: AreaOfEffectData) {
         let bulletData = Logic.bullets[bulletType];
         let prefab = this.bullet;
         let pool = this.bulletPool;
@@ -352,8 +352,8 @@ export default class Shooter extends cc.Component {
         let p = cc.v3(0, 0);
         if (defaultPos) {
             p = defaultPos.clone();
-            if (bulletArcOffset != 0) {
-                p.addSelf(cc.v3(cc.v2(bulletArcOffset, 0).rotateSelf(angleOffset * Math.PI / 180)));
+            if (bulletArcOffsetX != 0) {
+                p.addSelf(cc.v3(cc.v2(bulletArcOffsetX, 0).rotateSelf(angleOffset * Math.PI / 180)));
             }
         }
         let pos = this.node.convertToWorldSpaceAR(p);

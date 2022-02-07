@@ -153,7 +153,6 @@ export default class CommonData {
         this.dodge = CommonData.fixRateRange(this.dodge);
         this.remoteCritRate = CommonData.fixRateRange(this.remoteCritRate);
         this.criticalStrikeRate = CommonData.fixRateRange(this.criticalStrikeRate);
-        this.iceRate = CommonData.fixRateRange(this.iceRate);
         return this;
     }
     public static addPercent(rate1: number, rate2: number): number {

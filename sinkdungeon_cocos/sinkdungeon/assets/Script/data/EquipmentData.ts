@@ -1,5 +1,6 @@
 import CommonData from "./CommonData";
 import BaseData from "./BaseData";
+import TriggerData from "./TriggerData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -37,15 +38,16 @@ export default class EquipmentData extends BaseData{
     bulletType = "";//子弹类别
     bulletSize = 0;//子弹增加大小 为0代表不改变 1代表加一倍
     bulletArcExNum = 0;//额外扇形喷射子弹数量,为0的时候不计入,最大18,超过的话是一个固定圆，为80的时候是个八方向
-    bulletArcOffset = 0;//扇形发射距离
+    bulletArcOffsetX = 0;//扇形发射距离
     bulletLineExNum = 0;//额外线性喷射子弹数量，为0的时候不计入
     bulletLineInterval = 0;//线性喷射间隔时间（秒）
+    exBulletOffsetX = 0;//额外子弹偏移x
+    bulletExSpeed = 0;//子弹额外速度
     bulletNets = 0;//是否排状子弹11发并排数量为发射次数 为0的时候不触发 
     showShooter = 0;//是否显示发射器
     isHeavy = 0;//是否是重型武器比如 激光,具体影响是开枪时候移动减速 大盾牌 影响举盾速度
     isLineAim = 0;//是否是线性瞄准
     hideHair = 0;//是否隐藏头发
-    bulletExSpeed = 0;//子弹额外速度
     statusInterval = 0;//添加常规状态的间隔@deprecated
     statusName = '';//自身状态类别 获得装备时添加每次间隔时间到添加@deprecated
     statusNameParrySelf = '';//完美盾反对自己添加的状态@deprecated
@@ -65,18 +67,8 @@ export default class EquipmentData extends BaseData{
     exBulletCombo1 = 0;//攻击额外子弹连段，为1代表在这一次攻击释放@deprecated
     exBulletCombo2 = 0;//@deprecated
     exBulletCombo3 = 0;//@deprecated
-    exBulletOffsetX = 0;//额外子弹偏移x
-    /**额外效果 分号分隔，
-     * 第一个参数是对应类型的细分
-     * 第二个参数是id可以是子弹，状态或者技能，bullet000 status000 talent 000 id可以重复如果是技能会多次释放
-     * 第三个参数是触发几率0-100
-     * 第四个参数是选填 子弹的偏移x 状态的对象 0：自身 1：对方 
-     * 例："0=bullet001,100,0;status001,100,0;talent001,100,0" */
-    exAttack = '';//额外被动 参数：0：攻击一 1：攻击二 2：攻击三 3:远程
-    exHit = '';//额外被动 攻击命中 参数： 0:普通近战 1:暴击近战 2:背刺近战 3:普通远程 4:暴击远程
-    exHurt = '';//额外被动 受伤 参数：0：受伤 1：格挡 2：弹反 3：闪避 4：能量盾
-    exUse = '';//额外主动 使用装备 参数：0：使用装备 1：组织技能
-    exInterval = '';//额外被动 穿上或者时间间隔 参数：间隔时间
+    /**额外效果列表 */
+    exTriggers:TriggerData[] = [];
     ignoreTrap = 0;//无视尖刺伤害
     remoteAudio = '';//远程音效
     exBeatBack = 0;//额外击退
@@ -135,6 +127,9 @@ export default class EquipmentData extends BaseData{
         this.bulletArcExNum = data.bulletArcExNum?data.bulletArcExNum:0;
         this.bulletLineExNum = data.bulletLineExNum?data.bulletLineExNum:0;
         this.bulletLineInterval = data.bulletLineInterval?data.bulletLineInterval:0;
+        this.bulletSize = data.bulletSize?data.bulletSize:0;
+        this.bulletExSpeed = data.bulletExSpeed?data.bulletExSpeed:0;
+        this.bulletArcOffsetX = data.bulletArcOffsetX?data.bulletArcOffsetX:0;
         this.bulletNets = data.bulletNets?data.bulletNets:0;
         this.level = data.level?data.level:0;
         this.trouserslong = data.trouserslong?data.trouserslong:0;
@@ -147,8 +142,6 @@ export default class EquipmentData extends BaseData{
         this.exBulletTypeBlock = data.exBulletTypeBlock?data.exBulletTypeBlock:'';
         this.isLineAim = data.isLineAim?data.isLineAim:0;
         this.hideHair = data.hideHair?data.hideHair:0;
-        this.bulletSize = data.bulletSize?data.bulletSize:0;
-        this.bulletExSpeed = data.bulletExSpeed?data.bulletExSpeed:0;
         this.statusName = data.statusName?data.statusName:'';
         this.statusNameParryOther = data.statusNameParryOther?data.statusNameParryOther:'';
         this.statusNameParrySelf = data.statusNameParrySelf?data.statusNameParrySelf:'';
@@ -188,12 +181,7 @@ export default class EquipmentData extends BaseData{
         this.exBeatBack = data.exBeatBack?data.exBeatBack:0;
         this.test = data.test?data.test:0;
         this.requireLevel = data.requireLevel?data.requireLevel:0;
-        this.bulletArcOffset = data.bulletArcOffset?data.bulletArcOffset:0;
-        this.exAttack = data.exAttack?data.exAttack:'';
-        this.exHit = data.exHit?data.exHit:'';
-        this.exHurt =  data.exHurt?data.exHurt:'';
-        this.exUse =  data.exUse?data.exUse:'';
-        this.exInterval =  data.exInterval?data.exInterval:'';
+        this.exTriggers = data.exTriggers?data.exTriggers:[];
     }
     public clone():EquipmentData{
         let e = new EquipmentData();
@@ -233,6 +221,7 @@ export default class EquipmentData extends BaseData{
         e.hideHair = this.hideHair;
         e.bulletSize = this.bulletSize;
         e.bulletExSpeed = this.bulletExSpeed;
+        e.bulletArcOffsetX = this.bulletArcOffsetX;
         e.isReflect = this.isReflect;
         e.statusName = this.statusName;
         e.statusInterval = this.statusInterval;
@@ -272,12 +261,7 @@ export default class EquipmentData extends BaseData{
         e.exBeatBack = this.exBeatBack;
         e.test = this.test;
         e.requireLevel = this.requireLevel;
-        e.bulletArcOffset = this.bulletArcOffset;
-        e.exAttack = this.exAttack;
-        e.exHit = this.exHit;
-        e.exHurt =  this.exHurt;
-        e.exUse =  this.exUse;
-        e.exInterval =  this.exInterval;
+        e.exTriggers = this.exTriggers;
         return e;
     }
     public add(data: EquipmentData): EquipmentData {

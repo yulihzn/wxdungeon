@@ -20,7 +20,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Equipment extends cc.Component {
-
+    
     data: EquipmentData = new EquipmentData();
     anim: cc.Animation;
     private sprite: cc.Node;

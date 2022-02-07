@@ -104,9 +104,9 @@ export default class Captain extends Boss {
             this.exshooter.setHv(hv);
             this.exshooter.dungeon = this.dungeon;
             this.exshooter.data.bulletType = "bullet033";
-            this.exshooter.data.bulletArcOffset = 64;
+            this.exshooter.data.bulletArcOffsetX = 64;
             this.exshooter.data.bulletArcExNum = 99;
-            this.exshooter.data.bulletArcOffset = 32;
+            this.exshooter.data.bulletArcOffsetX = 32;
             this.exshooter.data.bulletLineInterval = 1;
             if (this.data.currentHealth < this.data.Common.maxHealth / 2) {
                 this.exshooter.data.bulletLineExNum = 1;
