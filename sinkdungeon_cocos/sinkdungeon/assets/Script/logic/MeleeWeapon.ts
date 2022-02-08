@@ -577,6 +577,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 if (damageSuccess) {
                     this.beatBack(monster);
                     this.addTargetAllStatus(common, monster);
+                    this.addHitExTrigger(damage,monster);
                 }
             }
         } else if (attackTarget.tag == CCollider.TAG.BOSS) {
@@ -585,6 +586,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 damageSuccess = boss.takeDamage(damage);
                 if (damageSuccess) {
                     this.addTargetAllStatus(common, boss);
+                    this.addHitExTrigger(damage,boss);
                 }
             }
         } else if (attackTarget.tag == CCollider.TAG.BUILDING || attackTarget.tag == CCollider.TAG.WALL) {
@@ -632,6 +634,20 @@ export default class MeleeWeapon extends BaseColliderComponent {
             this.player.updateDream(-1);
         }
         return damageSuccess || attackSuccess;
+    }
+    private addHitExTrigger(damage:DamageData,actor:Actor){
+        let isAdded = false;
+        if(damage.isBackAttack){
+            this.player.exTrigger(TriggerData.GROUP_HIT,TriggerData.TYPE_HIT_BACK,new FromData(),actor);
+            isAdded = true;
+        }
+        if(damage.isCriticalStrike){
+            this.player.exTrigger(TriggerData.GROUP_HIT,TriggerData.TYPE_HIT_CRIT,new FromData(),actor);
+            isAdded = true;
+        }
+        if(!isAdded){
+            this.player.exTrigger(TriggerData.GROUP_HIT,TriggerData.TYPE_HIT,new FromData(),actor);
+        }
     }
     private addTargetAllStatus(data: CommonData, target: Actor) {
         this.addTargetStatus(data.iceRate, target, StatusManager.FROZEN);

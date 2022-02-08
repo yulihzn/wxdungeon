@@ -54,6 +54,7 @@ export default class InventoryManager {
     suitEquipMap: { [key: string]: EquipmentData } = {};
     furnitureMap: Map<String, FurnitureData> = new Map();
     emptyEquipData = new EquipmentData();
+    private totalEquipData = new EquipmentData();
     clear(): void {
     }
     constructor() {
@@ -76,21 +77,33 @@ export default class InventoryManager {
         }
         return this.emptyEquipData;
     }
-    getTotalEquipData(): EquipmentData {
+    get TotalEquipData(): EquipmentData {
+        return this.totalEquipData;
+    }
+    /**更新总数据 */
+    updateTotalEquipData(): void {
         let e = new EquipmentData();
+        let exTriggers = [];
         for (let key in this.equips) {
-            e.Common.add(this.equips[key].Common);
+            let equip = this.equips[key];
+            e.Common.add(equip.Common);
+            for(let ex of equip.exTriggers){
+                exTriggers.push(ex);
+            }
         }
         e.Common.add(this.buffer.Common);
         for (let key in this.suitEquipMap) {
             let equip = this.suitEquipMap[key];
             if (equip) {
                 e.Common.add(equip.Common);
+                for(let ex of equip.exTriggers){
+                    exTriggers.push(ex);
+                }
             }
         }
-        return e;
+        e.exTriggers = exTriggers;
+        this.totalEquipData = e;
     }
-
 
 
     static buildItemInventoryData(itemData: ItemData) {

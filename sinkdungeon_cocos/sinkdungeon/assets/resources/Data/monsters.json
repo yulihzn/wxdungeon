@@ -372,13 +372,13 @@
             "moveSpeed": 0,
             "maxHealth": 99999,
             "defence": 0,
-            "damageMin": 1
+            "damageMin": 0.1
         },
         "currentHealth": 99999,
         "invisible": 0,
         "noLoot": 1,
         "remote": 0,
-        "melee": 0,
+        "melee": 5,
         "boxType": 1,
         "dash": 0
     },

@@ -5,6 +5,8 @@ import Status from "../status/Status";
 import Actor from "../base/Actor";
 import StatusIcon from "../ui/StatusIcon";
 import StatusIconList from "../ui/StatusIconList";
+import Player from "../logic/Player";
+import ActorUtils from "../utils/ActorUtils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -250,5 +252,44 @@ export default class StatusManager extends cc.Component {
             }
         });
         return dataList;
+    }
+    static addStatus2NearEnemy(player:Player,statusName: string,from:FromData) {
+        if (!player) {
+            return ;
+        }
+        let target = ActorUtils.getNearestEnemyActor(player.node.position, false, player.dungeon);
+        if (target&&target.node&&target.node.active && !target.sc.isDied && !target.sc.isDisguising) {
+            target.addStatus(statusName, from);
+        }
+        
+    }
+   
+    static addStatus2NearEnemies(player:Player,targetNode:cc.Node,statusName: string, range: number,from:FromData) {
+        if (!player) {
+            return ;
+        }
+        for (let monster of player.dungeon.monsterManager.monsterList) {
+            let dis = Logic.getDistanceNoSqrt(targetNode.position, monster.node.position);
+            if (monster&&monster.node&&monster.node.active&&dis < range && !monster.sc.isDied && !monster.sc.isDisguising) {
+                monster.addStatus(statusName, from);
+            }
+        }
+        for (let boss of player.dungeon.monsterManager.bossList) {
+            let dis = Logic.getDistanceNoSqrt(targetNode.position, boss.node.position);
+            if (dis < range && !boss.sc.isDied) {
+                boss.addStatus(statusName, from);
+            }
+        }
+    }
+    static addStatus2NearAllies(player:Player,targetNode:cc.Node,statusName: string, range: number,from:FromData) {
+        if (!player) {
+            return ;
+        }
+        for (let ally of player.dungeon.nonPlayerManager.nonPlayerList) {
+            let dis = Logic.getDistanceNoSqrt(targetNode.position, ally.node.position);
+            if (ally&&ally.node&&ally.node.active&&dis < range && !ally.sc.isDied && !ally.sc.isDisguising) {
+                ally.addStatus(statusName, from);
+            }
+        }
     }
 }

@@ -478,6 +478,9 @@ export default class EquipmentManager extends BaseManager {
             data.id = data.id + parseInt(tempid);
         }
         data.uuid = data.genNonDuplicateID();
+        for(let ex of data.exTriggers){
+            ex.uuid = data.genNonDuplicateID();
+        }
         let desc = EquipmentManager.getRandomDesc(data, chestQuality);
         let common = data.Common.clone().add(desc.common);
         data.infobase = EquipmentManager.getInfoBase(common);
@@ -516,11 +519,14 @@ export default class EquipmentManager extends BaseManager {
         }
         let data = new EquipmentData();
         data.valueCopy(Logic.equipments[equipType]);
-        let tempid = data.img.substr(data.equipmetType.length);
+        let tempid = data.img.substring(data.equipmetType.length);
         if (tempid.length > 0) {
             data.id = data.id + parseInt(tempid);
         }
         data.uuid = data.genNonDuplicateID();
+        for(let ex of data.exTriggers){
+            ex.uuid = data.genNonDuplicateID();
+        }
         let common = data.Common.clone();
         data.infobase = EquipmentManager.getInfoBase(common);
         data.info1 = EquipmentManager.getInfo1(common);

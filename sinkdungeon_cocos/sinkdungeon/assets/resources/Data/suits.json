@@ -54,25 +54,52 @@
         "suitNames": "clothes010,trousers004,gloves005,shoes005",
         "equipList": [
             {
-                "statusName": "status036",
-                "statusInterval": 8,
                 "extraInfo": "生命回复",
+                "exTriggers": [
+                    {
+                        "id": 0,
+                        "type": 0,
+                        "group": 4,
+                        "target": 0,
+                        "count": 1,
+                        "autoInterval": 8,
+                        "res": "status036"
+                    }
+                ],
                 "common": {
                     "maxHealth": 2
                 }
             },
             {
-                "statusName": "status036",
-                "statusInterval": 8,
                 "extraInfo": "生命回复",
+                "exTriggers": [
+                    {
+                        "id": 0,
+                        "type": 0,
+                        "group": 4,
+                        "target": 0,
+                        "count": 1,
+                        "autoInterval": 8,
+                        "res": "status036"
+                    }
+                ],
                 "common": {
                     "maxHealth": 2
                 }
             },
             {
-                "statusName": "status036",
-                "statusInterval": 8,
                 "extraInfo": "生命回复",
+                "exTriggers": [
+                    {
+                        "id": 0,
+                        "type": 0,
+                        "group": 4,
+                        "target": 0,
+                        "count": 1,
+                        "autoInterval": 8,
+                        "res": "status036"
+                    }
+                ],
                 "common": {
                     "maxHealth": 2
                 }
@@ -87,8 +114,16 @@
         "suitNames": "helmet006,clothes011,trousers005,gloves006,shoes006",
         "equipList": [
             {
-                "exBulletTypeHurt": "bullet014",
-                "exBulletRate": 50,
+                "exTriggers": [
+                    {
+                        "id": 1,
+                        "type": 0,
+                        "group": 2,
+                        "target": 1,
+                        "count": 0.5,
+                        "res": "bullet014"
+                    }
+                ],
                 "extraInfo": "反击毒蛇",
                 "common": {
                     "damageMin": 0,
@@ -106,8 +141,16 @@
                 }
             },
             {
-                "exBulletTypeHurt": "bullet014",
-                "exBulletRate": 50,
+                "exTriggers": [
+                    {
+                        "id": 1,
+                        "type": 0,
+                        "group": 2,
+                        "target": 1,
+                        "count": 1,
+                        "res": "bullet014"
+                    }
+                ],
                 "extraInfo": "反击毒蛇",
                 "common": {
                     "damageMin": 0,
@@ -125,9 +168,17 @@
                 }
             },
             {
-                "exBulletTypeHurt": "bullet014",
-                "exBulletRate": 50,
-                "extraInfo": "反击毒蛇",
+                "exTriggers": [
+                    {
+                        "id": 1,
+                        "type": 0,
+                        "group": 2,
+                        "target": 4,
+                        "count": 0.5,
+                        "res": "bullet014"
+                    }
+                ],
+                "extraInfo": "群体毒蛇",
                 "common": {
                     "damageMin": 0,
                     "damageMax": 0,
@@ -211,11 +262,13 @@
                 "common": {
                     "damageMax": 5
                 }
-            },{
+            },
+            {
                 "common": {
                     "damageMax": 5
                 }
-            },{
+            },
+            {
                 "common": {
                     "damageMax": 5
                 }
@@ -245,7 +298,8 @@
                     "dodge": 0,
                     "maxHealth": 0
                 }
-            },{
+            },
+            {
                 "common": {
                     "damageMin": 0,
                     "damageMax": 0,
@@ -261,7 +315,8 @@
                     "dodge": 0,
                     "maxHealth": 0
                 }
-            },{
+            },
+            {
                 "common": {
                     "damageMin": 0,
                     "damageMax": 0,

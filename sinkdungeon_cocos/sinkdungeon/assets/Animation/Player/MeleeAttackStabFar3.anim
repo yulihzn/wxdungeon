@@ -506,11 +506,6 @@
     },
     {
       "frame": 0.6666666666666666,
-      "func": "ExAttackTime",
-      "params": []
-    },
-    {
-      "frame": 0.6666666666666666,
       "func": "RefreshTime",
       "params": []
     },

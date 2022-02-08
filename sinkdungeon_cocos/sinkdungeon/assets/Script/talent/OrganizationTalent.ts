@@ -6,6 +6,7 @@ import FromData from "../data/FromData";
 import NonPlayerData from "../data/NonPlayerData";
 import StatusData from "../data/StatusData";
 import TalentData from "../data/TalentData";
+import TriggerData from "../data/TriggerData";
 import Logic from "../logic/Logic";
 import StatusManager from "../manager/StatusManager";
 import CoolDownView from "../ui/CoolDownView";
@@ -88,6 +89,7 @@ export default class OrganizationTalent extends Talent {
         return true;
     }
     protected doSkill() {
+        this.player.exTrigger(TriggerData.GROUP_USE,TriggerData.TYPE_USE_TALENT,null,null);
         if (this.player.data.AvatarData.organizationIndex == AvatarData.GURAD) {
             if (this.energyShieldList.length > this.talentSkill.StorePointMax) {
                 let s = this.energyShieldList.pop();

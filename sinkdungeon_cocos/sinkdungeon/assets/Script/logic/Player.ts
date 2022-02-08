@@ -154,7 +154,9 @@ export default class Player extends Actor {
         EventHelper.on(EventHelper.PLAYER_USEITEM
             , (detail) => { if (this.node) this.useItem(detail.itemData) });
         EventHelper.on(EventHelper.PLAYER_SKILL
-            , (detail) => { if (this.node) this.useSkill() });
+            , (detail) => {
+                if (this.node) this.useSkill();
+            });
         EventHelper.on(EventHelper.PLAYER_SKILL1
             , (detail) => { if (this.node) this.useSkill1() });
         EventHelper.on(EventHelper.PLAYER_UPDATE_OILGOLD_DATA
@@ -453,7 +455,8 @@ export default class Player extends Actor {
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_LIFE_BAR, { sanity: life.sanity, solid: life.solidSatiety, poo: life.poo, liquid: life.liquidSatiety, pee: life.pee });
-        this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipData());
+        this.inventoryManager.updateTotalEquipData();
+        this.data.EquipmentTotalData.valueCopy(this.inventoryManager.TotalEquipData);
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
     }
     /**获取中心位置 */
@@ -609,6 +612,7 @@ export default class Player extends Actor {
                 s.remoteAttack(true, this.weaponLeft.shooter.data, this.weaponLeft.shooter.Hv, this.data.getFinalRemoteDamage(), arcEx, lineEx);
             }
             this.stopHiding();
+            this.exTrigger(TriggerData.GROUP_ATTACK, TriggerData.TYPE_ATTTACK_REMOTE, null, null);
         }
     }
     /**
@@ -617,33 +621,29 @@ export default class Player extends Actor {
      * @param type 触发类型
      * @param from 来源
      * @param actor 目标
+     * @param onlyItem 仅物品
      */
-    exTrigger(group: number, type: number,from: FromData, actor: Actor): void {
-        for (let key in this.inventoryManager.equips) {
-            let data = this.inventoryManager.equips[key];
+    exTrigger(group: number, type: number, from?: FromData, actor?: Actor, onlyItem?: boolean): void {
+        if (!onlyItem) {
+            let data = this.inventoryManager.TotalEquipData;
             for (let d of data.exTriggers) {
-                this.exTriggerDo(d, group, type,from,actor);
+                this.exTriggerDo(d, group, type, from, actor);
             }
+
         }
-        for (let key in this.inventoryManager.suitMap) {
-            let suit = this.inventoryManager.suitMap[key];
-            if (suit) {
-                for (let i = 0; i < suit.count - 1; i++) {
-                    if (i < suit.EquipList.length) {
-                        for (let d of suit.EquipList[i].exTriggers) {
-                            this.exTriggerDo(d, group, type,from,actor);
-                        }
-                    }
-                }
+        for (let data of this.inventoryManager.itemList) {
+            for (let d of data.exTriggers) {
+                this.exTriggerDo(d, group, type, from, actor);
             }
         }
     }
-    private exTriggerDo(data: TriggerData, group: number, type: number,from: FromData, actor: Actor) {
+    exTriggerDo(data: TriggerData, group: number, type: number, from: FromData, actor: Actor) {
         if (data.group != group || data.type != type) {
             return;
         }
         switch (data.id) {
             case TriggerData.ID_STATUS:
+                this.exTriggerStatus(data, from, actor)
                 break;
             case TriggerData.ID_BULLET:
                 this.exTriggerBullet(data);
@@ -663,29 +663,46 @@ export default class Player extends Actor {
             count = Math.floor(count);
         }
         if (canShoot) {
-            for (let i = 0; i < count; i++) {
-                let remoteAngleOffset = data.bulletAngle;
-                this.schedule(() => {
-                    this.shooterEx.data.bulletType = data.res;
-                    this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
-                    this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
-                    this.shooterEx.data.bulletSize = data.bulletSize;
-                    this.shooterEx.data.bulletSize += this.IsVariation ? 0.5 : 0;
-                    this.shooterEx.data.bulletExSpeed = data.bulletSpeed;
-                    let angle = Random.getRandomNum(-remoteAngleOffset, remoteAngleOffset);
-                    this.shooterEx.fireBullet(angle, cc.v3(data.bulletOffsetX, 24));
-                    for (let s of this.shadowList) {
-                        if (s.node) {
-                            s.shooterEx.setHv(this.shooterEx.Hv);
-                            s.shooterEx.data = this.shooterEx.data.clone();
-                            s.shooterEx.fireBullet(angle, cc.v3(data.bulletOffsetX, 24));
-                        }
-                    }
-                }, data.bulletInterval, data.maxAmmo)
+            if (count > 1) {
+                for (let i = 0; i < count; i++) {
+                    this.exTriggerBulletDo(data);
+                }
+            } else {
+                this.exTriggerBulletDo(data);
+            }
+
+        }
+    }
+    private exTriggerBulletDo(data: TriggerData) {
+        let bulletInterval = data.bulletInterval ? data.bulletInterval : 100;
+        let maxAmmo = data.maxAmmo ? data.maxAmmo : 0;
+        if (maxAmmo > 1) {
+            this.schedule(() => {
+                this.exTriggerBulletFire(data);
+            }, bulletInterval, maxAmmo-1);
+        } else {
+            this.exTriggerBulletFire(data);
+        }
+    }
+    private exTriggerBulletFire(data: TriggerData) {
+        let remoteAngleOffset = data.bulletAngle ? data.bulletAngle : 0;
+        this.shooterEx.data.bulletType = data.res;
+        this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
+        this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
+        this.shooterEx.data.bulletSize = data.bulletSize;
+        this.shooterEx.data.bulletSize += this.IsVariation ? 0.5 : 0;
+        this.shooterEx.data.bulletExSpeed = data.bulletSpeed;
+        let angle = Random.getRandomNum(-remoteAngleOffset, remoteAngleOffset);
+        this.shooterEx.fireBullet(angle, cc.v3(data.bulletOffsetX, 24));
+        for (let s of this.shadowList) {
+            if (s.node) {
+                s.shooterEx.setHv(this.shooterEx.Hv);
+                s.shooterEx.data = this.shooterEx.data.clone();
+                s.shooterEx.fireBullet(angle, cc.v3(data.bulletOffsetX, 24));
             }
         }
     }
-    private exTriggerStatus(data:TriggerData,from: FromData, actor: Actor){
+    private exTriggerStatus(data: TriggerData, from: FromData, actor: Actor) {
         let count = data.count;
         let canAdd = true;
         if (count < 1) {
@@ -694,72 +711,81 @@ export default class Player extends Actor {
         } else {
             count = Math.floor(count);
         }
-        if(canAdd&&actor){
-
-        }
-        if (TriggerData.TARGET_OTHER==data.type) {
-            actor.addStatus(data.res, new FromData());
-        }
-        if (TriggerData.TARGET_OTHER==data.type) {
-            this.addStatus(data.res, new FromData());
-        }
-        if(this.dungeon){
-            
+        if (canAdd) {
+            for (let i = 0; i < count; i++) {
+                if (TriggerData.TARGET_OTHER == data.target && actor) {
+                    actor.addStatus(data.res, new FromData());
+                } if (TriggerData.TARGET_OTHER_NEAREST == data.target) {
+                    StatusManager.addStatus2NearEnemy(this, data.res, from);
+                } else if (TriggerData.TARGET_SELF == data.target) {
+                    this.addStatus(data.res, new FromData());
+                } else if (TriggerData.TARGET_ALL_ALLY == data.target) {
+                    StatusManager.addStatus2NearAllies(this, this.node, data.res, data.range, from);
+                } else if (TriggerData.TARGET_ALL_ENEMY == data.target) {
+                    StatusManager.addStatus2NearEnemies(this, this.node, data.res, data.range, from);
+                } else if (TriggerData.TARGET_ALL == data.target) {
+                    this.addStatus(data.res, new FromData());
+                    StatusManager.addStatus2NearEnemies(this, this.node, data.res, data.range, from);
+                    StatusManager.addStatus2NearAllies(this, this.node, data.res, data.range, from);
+                }
+            }
         }
     }
     //特效受击
-    private remoteOrStatusExHurt(blockLevel: number, from: FromData, actor: Actor): void {
-        for (let key in this.inventoryManager.equips) {
-            let data = this.inventoryManager.equips[key];
-            this.remoteOrStatusExHurtDo(data, blockLevel, from, actor);
-        }
-        for (let key in this.inventoryManager.suitMap) {
-            let suit = this.inventoryManager.suitMap[key];
-            if (suit) {
-                for (let i = 0; i < suit.count - 1; i++) {
-                    if (i < suit.EquipList.length) {
-                        this.remoteOrStatusExHurtDo(suit.EquipList[i], blockLevel, from, actor);
-                    }
-                }
-            }
-        }
-    }
-    private remoteOrStatusExHurtDo(data: EquipmentData, blockLevel: number, from: FromData, actor: Actor) {
-        let needFire = false;
-        if (data.exBulletTypeHurt.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
-            needFire = true;
-            this.shooterEx.data.bulletType = data.exBulletTypeHurt;
-        }
-        if (blockLevel == Shield.BLOCK_PARRY && data.exBulletTypeParry.length > 0
-            && Random.getRandomNum(0, 100) < data.exBulletRate) {
-            needFire = true;
-            this.shooterEx.data.bulletType = data.exBulletTypeParry;
-        }
-        if (blockLevel == Shield.BLOCK_NORMAL && data.exBulletTypeBlock.length > 0
-            && Random.getRandomNum(0, 100) < data.exBulletRate) {
-            needFire = true;
-            this.shooterEx.data.bulletType = data.exBulletTypeBlock;
-        }
-        if (needFire) {
-            this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
-            this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
-            this.shooterEx.data.bulletSize = data.bulletSize;
-            this.shooterEx.fireBullet(0);
-            for (let s of this.shadowList) {
-                if (s.node) {
-                    s.shooterEx.setHv(this.shooterEx.Hv);
-                    s.shooterEx.data = this.shooterEx.data.clone();
-                    s.shooterEx.fireBullet(0);
-                }
-            }
-        }
-        if (actor && data.statusNameHurtOther.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
-            actor.addStatus(data.statusNameHurtOther, new FromData());
-        }
-        if (data.statusNameHurtSelf.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
-            this.addStatus(data.statusNameHurtSelf, new FromData());
-        }
-    }
+    //@deprecated
+    // private remoteOrStatusExHurt(blockLevel: number, from: FromData, actor: Actor): void {
+    //     for (let key in this.inventoryManager.equips) {
+    //         let data = this.inventoryManager.equips[key];
+    //         this.remoteOrStatusExHurtDo(data, blockLevel, from, actor);
+    //     }
+    //     for (let key in this.inventoryManager.suitMap) {
+    //         let suit = this.inventoryManager.suitMap[key];
+    //         if (suit) {
+    //             for (let i = 0; i < suit.count - 1; i++) {
+    //                 if (i < suit.EquipList.length) {
+    //                     this.remoteOrStatusExHurtDo(suit.EquipList[i], blockLevel, from, actor);
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    //@deprecated
+    // private remoteOrStatusExHurtDo(data: EquipmentData, blockLevel: number, from: FromData, actor: Actor) {
+    //     let needFire = false;
+    //     if (data.exBulletTypeHurt.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
+    //         needFire = true;
+    //         this.shooterEx.data.bulletType = data.exBulletTypeHurt;
+    //     }
+    //     if (blockLevel == Shield.BLOCK_PARRY && data.exBulletTypeParry.length > 0
+    //         && Random.getRandomNum(0, 100) < data.exBulletRate) {
+    //         needFire = true;
+    //         this.shooterEx.data.bulletType = data.exBulletTypeParry;
+    //     }
+    //     if (blockLevel == Shield.BLOCK_NORMAL && data.exBulletTypeBlock.length > 0
+    //         && Random.getRandomNum(0, 100) < data.exBulletRate) {
+    //         needFire = true;
+    //         this.shooterEx.data.bulletType = data.exBulletTypeBlock;
+    //     }
+    //     if (needFire) {
+    //         this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
+    //         this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
+    //         this.shooterEx.data.bulletSize = data.bulletSize;
+    //         this.shooterEx.fireBullet(0);
+    //         for (let s of this.shadowList) {
+    //             if (s.node) {
+    //                 s.shooterEx.setHv(this.shooterEx.Hv);
+    //                 s.shooterEx.data = this.shooterEx.data.clone();
+    //                 s.shooterEx.fireBullet(0);
+    //             }
+    //         }
+    //     }
+    //     if (actor && data.statusNameHurtOther.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
+    //         actor.addStatus(data.statusNameHurtOther, new FromData());
+    //     }
+    //     if (data.statusNameHurtSelf.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
+    //         this.addStatus(data.statusNameHurtSelf, new FromData());
+    //     }
+    // }
 
 
     move(dir: number, pos: cc.Vec3, dt: number) {
@@ -952,7 +978,7 @@ export default class Player extends Actor {
         }
         let finalData = this.data.FinalCommon;
         //盾牌
-        let blockLevel = this.shield.blockDamage(this, damageData, actor);
+        let blockLevel = this.shield.blockDamage(this, damageData, from, actor);
         let dd = this.data.getDamage(damageData, blockLevel);
         let dodge = finalData.dodge / 100;
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
@@ -977,14 +1003,13 @@ export default class Player extends Actor {
         let health = this.data.getHealth(finalData);
         let totalD = dd.getTotalDamage();
         if (totalD > 0 && this.data.AvatarData.organizationIndex == AvatarData.GURAD) {
-            totalD = this.updateDream(totalD);
+            let t = this.updateDream(totalD);
+            if (t < totalD) {
+                this.exTrigger(TriggerData.GROUP_HURT, TriggerData.TYPE_HURT_DREAM, from, actor);
+            }
+            totalD = t;
         }
-        // if (totalD > 0 &&
-        //     (this.data.AvatarData.organizationIndex == AvatarData.HUNTER
-        //         || this.data.AvatarData.organizationIndex == AvatarData.TECH)
-        //     || this.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
-        //     this.updateDream(1);
-        // }
+
         health.x -= totalD;
         if (health.x > health.y) {
             health.x = health.y;
@@ -1002,7 +1027,13 @@ export default class Player extends Actor {
         }
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
         this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false, false, isBlock, isAvoidDeath);
-        let valid = !isDodge && dd.getTotalDamage() > 0 && blockLevel != Shield.BLOCK_PARRY;
+        if (isDodge) {
+            this.exTrigger(TriggerData.GROUP_HURT, TriggerData.TYPE_HURT_DODGE, from, actor);
+        }
+        let valid = !isDodge && dd.getTotalDamage() > 0;
+        if (valid) {
+            this.exTrigger(TriggerData.GROUP_HURT, TriggerData.TYPE_HURT, from, actor);
+        }
         if (valid || blockLevel == Shield.BLOCK_PARRY) {
             this.showDamageEffect(blockLevel, from, actor);
         }
@@ -1023,7 +1054,6 @@ export default class Player extends Actor {
         return overflow < 0 ? 0 : overflow;
     }
     private showDamageEffect(blockLevel: number, from: FromData, actor: Actor) {
-        this.remoteOrStatusExHurt(blockLevel, from, actor);
         cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
         if (blockLevel == Shield.BLOCK_NORMAL) {
             AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_HIT);
@@ -1304,6 +1334,7 @@ export default class Player extends Actor {
     }
     useItem(data: ItemData) {
         Item.userIt(data, this);
+        this.exTrigger(TriggerData.GROUP_USE, TriggerData.TYPE_USE_ITEM, null, null, true);
     }
 
     setLinearVelocity(movement: cc.Vec2) {

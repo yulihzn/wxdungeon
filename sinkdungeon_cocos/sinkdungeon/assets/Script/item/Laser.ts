@@ -1,4 +1,3 @@
-import { EventHelper } from "../logic/EventHelper";
 import NonPlayer from "../logic/NonPlayer";
 import Player from "../logic/Player";
 import DamageData from "../data/DamageData";

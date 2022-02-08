@@ -2,6 +2,7 @@ import Actor from "../base/Actor";
 import DamageData from "../data/DamageData";
 import EquipmentData from "../data/EquipmentData";
 import FromData from "../data/FromData";
+import TriggerData from "../data/TriggerData";
 import BlockLight from "../effect/BlockLight";
 import InventoryManager from "../manager/InventoryManager";
 import StatusManager from "../manager/StatusManager";
@@ -72,7 +73,7 @@ export default class Shield extends cc.Component {
         prefab.active = true;
         prefab.getComponent(BlockLight).show();
     }
-    public blockDamage(player:Player,damage:DamageData, actor:Actor):number{
+    public blockDamage(player:Player,damage:DamageData,from:FromData, actor:Actor):number{
         if(this.status<0||this.status == Shield.STATUS_IDLE||this.status == Shield.STATUS_PUTDOWN){
             return 0;
         }
@@ -85,22 +86,10 @@ export default class Shield extends cc.Component {
             if(this.status == Shield.STATUS_PARRY){
                 actor.addStatus(StatusManager.SHIELD_PARRY,new FromData());
                 actor.takeDamage(new DamageData(this.data.Common.blockDamage));
-
-                if(this.data.statusNameParryOther.length>0&&this.data.statusRateParry>Logic.getRandomNum(0,100)){
-                    actor.addStatus(this.data.statusNameParryOther,new FromData());
-                }
-                if(this.data.statusNameParrySelf.length>0&&this.data.statusRateParry>Logic.getRandomNum(0,100)){
-                    player.addStatus(this.data.statusNameParrySelf,new FromData());
-                }
-                
+                player.exTrigger(TriggerData.GROUP_HURT,TriggerData.TYPE_HURT_PARRAY,from,actor);
             }
             if(this.status == Shield.STATUS_DEFEND){
-                if(this.data.statusNameBlockOther.length>0&&this.data.statusRateBlock>Logic.getRandomNum(0,100)){
-                    actor.addStatus(this.data.statusNameBlockOther,new FromData());
-                }
-                if(this.data.statusNameBlockSelf.length>0&&this.data.statusRateBlock>Logic.getRandomNum(0,100)){
-                    player.addStatus(this.data.statusNameBlockSelf,new FromData());
-                }
+                player.exTrigger(TriggerData.GROUP_HURT,TriggerData.TYPE_HURT_BLOCK,from,actor);
             }
         }
         

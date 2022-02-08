@@ -1,5 +1,6 @@
 import BaseData from "./BaseData";
 import CommonData from "./CommonData";
+import TriggerData from "./TriggerData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -33,6 +34,8 @@ export default class ItemData extends BaseData {
     sanity:number = 0;//神志
     solidSatiety:number = 0;//饱腹值
     liquidSatiety:number = 0;//解渴值
+    /**额外效果列表 */
+    exTriggers:TriggerData[] = [];
     private common: CommonData;
     constructor() {
         super();
@@ -65,7 +68,7 @@ export default class ItemData extends BaseData {
         this.sanity = data.sanity?data.sanity:0;
         this.solidSatiety = data.solidSatiety?data.solidSatiety:0;
         this.liquidSatiety = data.liquidSatiety?data.liquidSatiety:0;
-
+        this.exTriggers = data.exTriggers?data.exTriggers:[];
 
     }
     public clone(): ItemData {
@@ -89,6 +92,7 @@ export default class ItemData extends BaseData {
         e.sanity = this.sanity;
         e.solidSatiety = this.solidSatiety;
         e.liquidSatiety = this.liquidSatiety;
+        e.exTriggers = this.exTriggers;
         return e;
     }
 

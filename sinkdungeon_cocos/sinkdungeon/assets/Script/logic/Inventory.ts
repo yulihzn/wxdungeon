@@ -22,6 +22,7 @@ import EquipmentAndItemDialog from '../ui/dialog/EquipmentAndItemDialog';
 import LocalStorage from '../utils/LocalStorage';
 import Utils from '../utils/Utils';
 import InventoryDialog from '../ui/dialog/InventoryDialog';
+import TriggerData from '../data/TriggerData';
 @ccclass
 export default class Inventory extends cc.Component {
 
@@ -81,12 +82,10 @@ export default class Inventory extends cc.Component {
     inventoryManager: InventoryManager;
     graphics: cc.Graphics = null;
 
-    suitTimeDelay = 0;
-
-    equipTimeDelays: { [key: string]: number } = {};
+    equipAndItemTimeDelays: Map<string, number> = new Map();
     equipSprites: { [key: string]: cc.Sprite } = {};
 
-    itemPositions:cc.Vec3[] = [];
+    itemPositions: cc.Vec3[] = [];
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -102,6 +101,7 @@ export default class Inventory extends cc.Component {
                 if (this.node) {
                     this.refreshEquipment(detail.equipmetType, detail.equipData, false, detail.isReplace);
                     this.refreshSuits();
+                    Logic.inventoryManager.updateTotalEquipData();
                 }
             });
         EventHelper.on(EventHelper.PLAYER_EQUIPMENT_REFRESH
@@ -109,6 +109,7 @@ export default class Inventory extends cc.Component {
                 if (this.node) {
                     this.refreshEquipmentRes(detail.equipmetType);
                     this.refreshSuits();
+                    Logic.inventoryManager.updateTotalEquipData();
                 }
             });
         EventHelper.on(EventHelper.PLAYER_ITEM_REFRESH
@@ -165,7 +166,7 @@ export default class Inventory extends cc.Component {
         this.remote.node.parent.active = true;
         this.shield.node.parent.active = false;
         for (let name of InventoryManager.EQUIP_TAGS) {
-            this.equipTimeDelays[name] = 0;
+            this.equipAndItemTimeDelays.set(name, 0);
         }
         this.equipSprites[InventoryManager.WEAPON] = this.weapon;
         this.equipSprites[InventoryManager.REMOTE] = this.remote;
@@ -215,16 +216,17 @@ export default class Inventory extends cc.Component {
             this.addEquipSpriteTouchEvent(this.equipSprites[key], key);
         }
         for (let key in this.inventoryManager.equips) {
-            this.refreshEquipment(key, this.inventoryManager.equips[key], true, false);
+            this.refreshEquipment(key, this.inventoryManager.equips[key].clone(), true, false);
         }
         this.refreshItemRes();
         let itemSpriteList = [this.itemsprite1, this.itemsprite2, this.itemsprite3, this.itemsprite4, this.itemsprite5];
         let itemLabelList = [this.itemlabel1, this.itemlabel2, this.itemlabel3, this.itemlabel4, this.itemlabel5];
         for (let i = 0; i < itemLabelList.length; i++) {
-            this.itemPositions[i]=itemSpriteList[i].node.convertToWorldSpaceAR(cc.Vec3.ZERO);
+            this.itemPositions[i] = itemSpriteList[i].node.convertToWorldSpaceAR(cc.Vec3.ZERO);
             this.addItemSpriteTouchEvent(itemSpriteList[i], itemLabelList[i].node.parent, i);
         }
         this.refreshSuits();
+        Logic.inventoryManager.updateTotalEquipData();
     }
 
     private addEquipSpriteTouchEvent(sprite: cc.Sprite, equipmetType: string) {
@@ -313,9 +315,9 @@ export default class Inventory extends cc.Component {
                 for (let i = 0; i < suit.count - 1; i++) {
                     if (i < suit.EquipList.length) {
                         e.add(suit.EquipList[i]);//叠加套装各种几率
-                        if (this.dungeon && this.dungeon.player) {
-                            this.dungeon.player.addStatus(suit.EquipList[i].statusName, new FromData());
-                        }
+                        // if (this.dungeon && this.dungeon.player) {
+                        //     this.dungeon.player.addStatus(suit.EquipList[i].statusName, new FromData());
+                        // }
                     }
                 }
                 this.inventoryManager.suitEquipMap[key] = e;
@@ -370,11 +372,10 @@ export default class Inventory extends cc.Component {
         }
         //更新玩家装备贴图和状态
         if (this.dungeon && this.dungeon.player) {
-            this.dungeon.player.inventoryManager = this.inventoryManager;
-            this.dungeon.player.changeEquipment(equipmetType,equip, spriteFrame);
-            if (equip.statusInterval > 0 && equip.statusName.length > 0) {
-                this.dungeon.player.addStatus(equip.statusName, FromData.getClone(equip.nameCn, equip.img));
-            }
+            this.dungeon.player.changeEquipment(equipmetType, equip, spriteFrame);
+            // if (equip.statusInterval > 0 && equip.statusName.length > 0) {
+            //     this.dungeon.player.addStatus(equip.statusName, FromData.getClone(equip.nameCn, equip.img));
+            // }
         }
     }
 
@@ -433,15 +434,18 @@ export default class Inventory extends cc.Component {
         this.refreshEquipmentRes(equipmetType);
     }
 
-    addPlayerStatus(equipmentData: EquipmentData) {
-        if (!this.dungeon || !this.dungeon.player) {
-            return;
-        }
-        if (equipmentData.statusInterval > 0 && equipmentData.statusName.length > 0) {
-            this.dungeon.player.addStatus(equipmentData.statusName, FromData.getClone(equipmentData.nameCn, equipmentData.img));
-        }
-    }
+    // addPlayerStatus(equipmentData: EquipmentData) {
+    //     if (!this.dungeon || !this.dungeon.player) {
+    //         return;
+    //     }
+    //     if (equipmentData.statusInterval > 0 && equipmentData.statusName.length > 0) {
+    //         this.dungeon.player.addStatus(equipmentData.statusName, FromData.getClone(equipmentData.nameCn, equipmentData.img));
+    //     }
+    // }
     getTimeDelay(timeDelay: number, interval: number, dt: number): number {
+        if(!timeDelay){
+            timeDelay = 0;
+        }
         timeDelay += dt;
         if (timeDelay > interval) {
             timeDelay = 0;
@@ -449,33 +453,35 @@ export default class Inventory extends cc.Component {
         }
         return timeDelay;
     }
-    isTimeDelay(dt: number, equipmentData: EquipmentData) {
+    isTimeDelay(dt: number, key: string, interval: number): boolean {
+        if (interval <= 0) {
+            return false;
+        }
         let timeDelay = -1;
-        this.equipTimeDelays[equipmentData.equipmetType] = this.getTimeDelay(this.equipTimeDelays[equipmentData.equipmetType], equipmentData.statusInterval, dt);;
-        timeDelay = this.equipTimeDelays[equipmentData.equipmetType];
+        this.equipAndItemTimeDelays.set(key, this.getTimeDelay(this.equipAndItemTimeDelays.get(key), interval, dt));
+        timeDelay = this.equipAndItemTimeDelays.get(key);
         return timeDelay == 0;
     }
     update(dt) {
         if (!Logic.isGamePause) {
-            for (let key in this.inventoryManager.equips) {
-                if (this.isTimeDelay(dt, this.inventoryManager.equips[key])) {
-                    this.addPlayerStatus(this.inventoryManager.equips[key]);
+            let data = this.inventoryManager.TotalEquipData;
+            for (let d of data.exTriggers) {
+                if (this.isTimeDelay(dt, d.uuid, d.autoInterval)) {
+                    if (this.dungeon && this.dungeon.player) {
+                        this.dungeon.player.exTriggerDo(d, TriggerData.GROUP_AUTO, TriggerData.TYPE_AUTO, FromData.getClone(data.nameCn, data.img), null);
+                    }
                 }
             }
-            for (let key in this.inventoryManager.suitMap) {
-                let suit = this.inventoryManager.suitMap[key];
-                if (suit) {
-                    for (let i = 0; i < suit.count - 1; i++) {
-                        if (i < suit.EquipList.length) {
-                            suit.EquipList[i].equipmetType = suit.suitType;
-                            if (this.isTimeDelay(dt, suit.EquipList[i])) {
-                                this.addPlayerStatus(suit.EquipList[i]);
-                            }
+            for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
+                let data = this.inventoryManager.itemList[i];
+                for (let d of data.exTriggers) {
+                    if (this.isTimeDelay(dt, `itemIndex${i}`, d.autoInterval)) {
+                        if (this.dungeon && this.dungeon.player) {
+                            this.dungeon.player.exTriggerDo(d, TriggerData.GROUP_AUTO, TriggerData.TYPE_AUTO, FromData.getClone(data.nameCn, data.resName), null);
                         }
                     }
                 }
             }
-
         }
 
     }
@@ -488,7 +494,7 @@ export default class Inventory extends cc.Component {
         if (item.resName == Item.EMPTY) {
             return;
         }
-        if(!this.dungeon.player.canEatOrDrink(item)){
+        if (!this.dungeon.player.canEatOrDrink(item)) {
             return;
         }
         this.inventoryManager.itemCoolDownList[itemIndex].next(() => {

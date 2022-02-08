@@ -9,6 +9,7 @@
         "titlecolor": "#ffffff",
         "img": "emptyequipment",
         "price": 0,
+        "exTriggers":[],
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -477,13 +478,17 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffad6f",
         "img": "weapon016",
-        "bulletArcExNum": 2,
-        "exBulletTypeAttack": "bullet029",
-        "exBulletRate": 100,
-        "exBulletCombo1": 0,
-        "exBulletCombo2": 0,
-        "exBulletCombo3": 1,
-        "exBulletOffsetX": 32,
+        "exTriggers": [
+            {
+                "id": 1,
+                "type": 3,
+                "group": 0,
+                "count": 1,
+                "res": "bullet029",
+                "bulletArcExNum": 2,
+                "bulletOffsetX": 32
+            }
+        ],
         "price": 60,
         "common": {
             "damageMin": 1,
@@ -513,11 +518,18 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon017",
-        "exBulletCombo3": 1,
-        "exBulletTypeAttack": "bullet030",
-        "exBulletRate": 100,
-        "bulletArcExNum": 80,
         "price": 60,
+        "exTriggers": [
+            {
+                "id": 1,
+                "type": 3,
+                "group": 0,
+                "count": 1,
+                "res": "bullet030",
+                "bulletArcExNum": 80,
+                "bulletOffsetX": 0
+            }
+        ],
         "common": {
             "damageMin": 1,
             "damageMax": 1,
@@ -546,11 +558,18 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon018",
-        "exBulletCombo2": 1,
-        "exBulletTypeAttack": "bullet032",
-        "exBulletOffsetX": 48,
-        "exBulletRate": 100,
         "price": 60,
+        "exTriggers": [
+            {
+                "id": 1,
+                "type": 2,
+                "group": 0,
+                "count": 1,
+                "res": "bullet032",
+                "bulletArcExNum": 0,
+                "bulletOffsetX": 48
+            }
+        ],
         "common": {
             "damageMin": 3,
             "damageMax": 3,
@@ -579,11 +598,18 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#adadad",
         "img": "weapon019",
-        "exBulletCombo1": 1,
-        "exBulletTypeAttack": "bullet034",
-        "exBulletOffsetX": 16,
-        "exBulletRate": 100,
         "price": 60,
+        "exTriggers": [
+            {
+                "id": 1,
+                "type": 1,
+                "group": 0,
+                "count": 1,
+                "res": "bullet034",
+                "bulletArcExNum": 0,
+                "bulletOffsetX": 16
+            }
+        ],
         "common": {
             "damageMin": 1,
             "damageMax": 0,
@@ -640,9 +666,6 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#cad1c8",
         "img": "weapon021",
-        "exBulletCombo2": 0,
-        "exBulletOffsetX": 0,
-        "exBulletRate": 0,
         "price": 30,
         "common": {
             "damageMin": 3,
@@ -672,9 +695,6 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffba6f",
         "img": "weapon022",
-        "exBulletCombo2": 0,
-        "exBulletOffsetX": 0,
-        "exBulletRate": 0,
         "price": 30,
         "common": {
             "damageMin": 5,
@@ -704,9 +724,6 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#f0ff58",
         "img": "weapon023",
-        "exBulletCombo2": 0,
-        "exBulletOffsetX": 0,
-        "exBulletRate": 0,
         "price": 30,
         "common": {
             "damageMin": 2,
@@ -738,9 +755,6 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#cbdbfc",
         "img": "weapon024",
-        "exBulletCombo2": 0,
-        "exBulletOffsetX": 0,
-        "exBulletRate": 0,
         "price": 30,
         "common": {
             "damageMin": 2,
@@ -771,9 +785,6 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#dce66d",
         "img": "weapon025",
-        "exBulletCombo2": 0,
-        "exBulletOffsetX": 0,
-        "exBulletRate": 0,
         "price": 30,
         "common": {
             "damageMin": 2,
@@ -804,9 +815,6 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#c8ce92",
         "img": "weapon026",
-        "exBulletCombo2": 0,
-        "exBulletOffsetX": 0,
-        "exBulletRate": 0,
         "price": 30,
         "common": {
             "damageMin": 2,
@@ -835,9 +843,6 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffc89e",
         "img": "weapon027",
-        "exBulletCombo2": 0,
-        "exBulletOffsetX": 0,
-        "exBulletRate": 0,
         "price": 30,
         "common": {
             "damageMin": 3,
@@ -1003,10 +1008,18 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon033",
-        "exBulletCombo2": 1,
-        "exBulletTypeAttack": "bullet030",
-        "exBulletRate": 100,
         "price": 60,
+        "exTriggers": [
+            {
+                "id": 1,
+                "type": 2,
+                "group": 0,
+                "count": 1,
+                "res": "bullet030",
+                "bulletArcExNum": 0,
+                "bulletOffsetX": 0
+            }
+        ],
         "common": {
             "damageMin": 1,
             "damageMax": 1,
@@ -1035,9 +1048,6 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffe674",
         "img": "weapon034",
-        "exBulletCombo2": 0,
-        "exBulletOffsetX": 0,
-        "exBulletRate": 0,
         "price": 30,
         "common": {
             "damageMin": 3,
@@ -1303,9 +1313,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 500,
-            "remoteInterval":0,
-            "remoteAngle":5,
-            "maxAmmo":1,
+            "remoteInterval": 0,
+            "remoteAngle": 5,
+            "maxAmmo": 1,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1336,8 +1346,8 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 2000,
-            "remoteInterval":0,
-            "maxAmmo":1,
+            "remoteInterval": 0,
+            "maxAmmo": 1,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1368,9 +1378,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 3000,
-            "remoteInterval":100,
-            "maxAmmo":10,
-            "remoteAngle":30,
+            "remoteInterval": 100,
+            "maxAmmo": 10,
+            "remoteAngle": 30,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1403,8 +1413,8 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 1000,
-            "remoteInterval":0,
-            "maxAmmo":1,
+            "remoteInterval": 0,
+            "maxAmmo": 1,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1437,9 +1447,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 1200,
-            "remoteInterval":0,
-            "remoteAngle":5,
-            "maxAmmo":1,
+            "remoteInterval": 0,
+            "remoteAngle": 5,
+            "maxAmmo": 1,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1471,9 +1481,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 3000,
-            "remoteInterval":0,
-            "remoteAngle":5,
-            "maxAmmo":1,
+            "remoteInterval": 0,
+            "remoteAngle": 5,
+            "maxAmmo": 1,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1506,9 +1516,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 3000,
-            "remoteInterval":200,
-            "remoteAngle":30,
-            "maxAmmo":3,
+            "remoteInterval": 200,
+            "remoteAngle": 30,
+            "maxAmmo": 3,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1539,9 +1549,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 1000,
-            "remoteInterval":0,
-            "maxAmmo":1,
-            "remoteAngle":5,
+            "remoteInterval": 0,
+            "maxAmmo": 1,
+            "remoteAngle": 5,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1574,9 +1584,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 2000,
-            "remoteInterval":200,
-            "maxAmmo":6,
-            "remoteAngle":5,
+            "remoteInterval": 200,
+            "maxAmmo": 6,
+            "remoteAngle": 5,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1608,9 +1618,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 3000,
-            "remoteInterval":200,
-            "maxAmmo":15,
-            "remoteAngle":15,
+            "remoteInterval": 200,
+            "maxAmmo": 15,
+            "remoteAngle": 15,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1643,9 +1653,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "remoteCooldown": 1000,
-            "remoteInterval":0,
-            "maxAmmo":1,
-            "remoteAngle":5,
+            "remoteInterval": 0,
+            "maxAmmo": 1,
+            "remoteAngle": 5,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1773,10 +1783,24 @@
         "titlecolor": "#ffffff",
         "img": "shield004",
         "isHeavy": 0,
-        "statusNameBlockOther": "status001",
-        "statusNameParryOther": "status001",
-        "statusRateBlock": 100,
-        "statusRateParry": 100,
+        "exTriggers": [
+            {
+                "id": 0,
+                "type": 1,
+                "group": 2,
+                "target": 1,
+                "count": 1,
+                "res": "status001"
+            },
+            {
+                "id": 0,
+                "type": 2,
+                "group": 2,
+                "target": 1,
+                "count": 1,
+                "res": "status001"
+            }
+        ],
         "price": 30,
         "common": {
             "damageMin": 0,
@@ -1860,10 +1884,18 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shield007",
-        "isHeavy": 90,
-        "statusNameParrySelf": "status011",
-        "statusRateParry": 100,
-        "price": 0,
+        "isHeavy": 0,
+        "price": 90,
+        "exTriggers": [
+            {
+                "id": 0,
+                "type": 2,
+                "group": 2,
+                "target": 0,
+                "count": 1,
+                "res": "status011"
+            }
+        ],
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2045,10 +2077,18 @@
         "titlecolor": "#ffffff",
         "img": "helmet006",
         "hideHair": 60,
-        "exBulletTypeHurt": "bullet014",
-        "exBulletRate": 50,
         "price": 0,
         "suitType": "suit004",
+        "exTriggers": [
+            {
+                "id": 1,
+                "type": 0,
+                "group": 2,
+                "target": 1,
+                "count": 0.5,
+                "res": "bullet014"
+            }
+        ],
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2873,8 +2913,6 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes010",
-        "statusName": "status020",
-        "statusInterval": 8,
         "price": 90,
         "suitType": "suit003",
         "common": {
@@ -2889,6 +2927,17 @@
             "dodge": 0,
             "maxHealth": 2
         },
+        "exTriggers": [
+            {
+                "id": 0,
+                "type": 0,
+                "group": 4,
+                "target": 0,
+                "count": 1,
+                "autoInterval": 8,
+                "res": "status020"
+            }
+        ],
         "extraInfo": "生命缓慢的回复",
         "desc": "绿色的丛林衣服"
     },
@@ -3246,9 +3295,17 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes025",
-        "statusRateHurt": 30,
-        "statusNameHurtOther": "status003",
         "price": 60,
+        "exTriggers": [
+            {
+                "id": 0,
+                "type": 0,
+                "group": 2,
+                "target": 1,
+                "count": 0.3,
+                "res": "status003"
+            }
+        ],
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3933,8 +3990,6 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shoes003",
-        "statusInterval": 5,
-        "statusName": "status019",
         "price": 90,
         "common": {
             "damageMin": 0,
@@ -3948,6 +4003,17 @@
             "dodge": 0,
             "maxHealth": 0
         },
+        "exTriggers": [
+            {
+                "id": 0,
+                "type": 0,
+                "group": 4,
+                "target": 0,
+                "count": 1,
+                "autoInterval": 5,
+                "res": "status019"
+            }
+        ],
         "extraInfo": "短暂加速",
         "desc": "恶魔靴子..."
     },

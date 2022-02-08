@@ -58,6 +58,9 @@ export default class Item extends cc.Component {
     init(resName: string, pos: cc.Vec3, count?: number, shopTable?: ShopTable) {
         this.data.valueCopy(Logic.items[resName]);
         this.data.uuid = this.data.genNonDuplicateID();
+        for(let ex of this.data.exTriggers){
+            ex.uuid = this.data.genNonDuplicateID();
+        }
         this.data.pos = pos;
         this.data.count = count ? count : this.data.count;
         if (shopTable) {

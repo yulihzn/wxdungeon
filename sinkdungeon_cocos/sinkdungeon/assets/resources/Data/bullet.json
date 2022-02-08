@@ -673,13 +673,13 @@
         "name": "刀气",
         "resName": "bullet032",
         "lightName": "bulletlight003",
-        "lightColor": "#333333",
+        "lightColor": "#ff0000",
         "speed": 700,
         "isRect": 1,
         "isRotate": 0,
         "lifeTime": 0.5,
         "canBreakBuilding": 1,
-        "size": 7,
+        "size": 8,
         "damage": {
             "physicalDamage": 2
         }

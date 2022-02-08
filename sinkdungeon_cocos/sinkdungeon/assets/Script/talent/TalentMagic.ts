@@ -169,7 +169,7 @@ export default class TalentMagic extends Talent {
     }
     takeIce(): boolean {
         if (this.hashTalent(Talent.MAGIC_13) && this.magicice.isShow) {
-            Talent.addStatus2NearEnemy(this.player,this.player.node,StatusManager.FROZEN, 300);
+            StatusManager.addStatus2NearEnemies(this.player,this.player.node,StatusManager.FROZEN, 300,new FromData());
             this.magicice.breakIce();
             return true;
         }
@@ -211,7 +211,7 @@ export default class TalentMagic extends Talent {
         this.magicLighteningCircle.opacity = 128;
         this.magicLighteningCircle.scale = 1;
         cc.tween(this.magicLighteningCircle).to(1,{scale:10}).call(()=>{
-            Talent.addStatus2NearEnemy(this.player,this.player.node,StatusManager.DIZZ, 300);
+            StatusManager.addStatus2NearEnemies(this.player,this.player.node,StatusManager.DIZZ, 300,new FromData());
             this.magicLighteningCircle.opacity = 0;
             this.magicLighteningCircle.scale = 1;
         }).start();

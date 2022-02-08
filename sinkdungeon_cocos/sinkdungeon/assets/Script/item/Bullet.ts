@@ -26,6 +26,7 @@ import MeleeWeapon from "../logic/MeleeWeapon";
 import Shield from "../logic/Shield";
 import CCollider from "../collider/CCollider";
 import BaseColliderComponent from "../base/BaseColliderComponent";
+import TriggerData from "../data/TriggerData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -85,12 +86,12 @@ export default class Bullet extends BaseColliderComponent {
         this.entity.NodeRender.node = this.node;
         this.entity.Move.linearVelocity = cc.v2(0, 0);
         this.currentLinearVelocity = cc.v2(0, 0);
-        if(!this.sprite){
+        if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         }
         this.sprite.node.opacity = 255;
         this.sprite.node.angle = 0;
-        if(!this.light){
+        if (!this.light) {
             this.light = this.node.getChildByName('light').getComponent(cc.Sprite);
         }
         this.light.node.opacity = 0;
@@ -187,7 +188,7 @@ export default class Bullet extends BaseColliderComponent {
     }
     //animation
     BulletDestory() {
-        if(this.sprite){
+        if (this.sprite) {
             this.sprite.spriteFrame = null;
         }
         this.shooter.addDestroyBullet(this.node);
@@ -297,7 +298,13 @@ export default class Bullet extends BaseColliderComponent {
             let monster = attackTarget.getComponent(NonPlayer);
             if (monster && !monster.sc.isDied) {
                 damageSuccess = monster.takeDamage(damage);
-                if (damageSuccess) { this.addTargetAllStatus(monster, new FromData()) }
+                if (damageSuccess) {
+                     this.addTargetAllStatus(monster, new FromData());
+                     if (this.shooter.player) {
+                        this.shooter.player.exTrigger(TriggerData.GROUP_HIT,
+                            damage.isCriticalStrike ? TriggerData.TYPE_HIT_CRIT_REMOTE : TriggerData.TYPE_HIT_REMOTE, new FromData(), monster);
+                    }
+                }
                 isDestory = true;
             }
         } else if (tag == CCollider.TAG.PLAYER) {
@@ -323,7 +330,13 @@ export default class Bullet extends BaseColliderComponent {
             let boss = attackTarget.getComponent(Boss);
             if (boss && !boss.sc.isDied) {
                 damageSuccess = boss.takeDamage(damage);
-                if (damageSuccess) { this.addTargetAllStatus(boss, new FromData()) }
+                if (damageSuccess) {
+                    this.addTargetAllStatus(boss, new FromData());
+                    if (this.shooter.player) {
+                        this.shooter.player.exTrigger(TriggerData.GROUP_HIT,
+                            damage.isCriticalStrike ? TriggerData.TYPE_HIT_CRIT_REMOTE : TriggerData.TYPE_HIT_REMOTE, new FromData(), boss);
+                    }
+                }
                 isDestory = true;
             }
         } else if (tag == CCollider.TAG.PLAYER_HIT) {
