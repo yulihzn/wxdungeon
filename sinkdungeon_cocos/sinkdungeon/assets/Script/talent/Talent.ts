@@ -112,8 +112,8 @@ export default abstract class Talent extends cc.Component {
         this.data = data;
     }
     initCoolDown(data: TalentData,storePointMax:number){
-        this.talentSkill.init(false, storePointMax, data.storePoint,data.cooldown, data.secondCount,(secondCount:number)=>{
-            this.updateCooldownAndHud(data.cooldown,secondCount);
+        this.talentSkill.init(false, storePointMax, data.storePoint,data.cooldown, data.lastTime,(lastTime:number)=>{
+            this.updateCooldownAndHud(data.cooldown,lastTime);
         });
     }
 
@@ -127,13 +127,14 @@ export default abstract class Talent extends cc.Component {
         if (this.player.data.currentDream >= this.data.cost&&this.skillCanUse()) {
             let cooldown = this.data.cooldown;
             this.talentSkill.next(() => {
+                this.data.lastTime = Date.now();
                 this.talentSkill.IsExcuting = true;
                 this.player.updateDream(this.data.cost);
                 this.data.useCount++;
                 this.doSkill();
-                this.updateCooldownAndHud(cooldown, cooldown);
-            }, cooldown, true, (secondCount: number) => {
-                this.updateCooldownAndHud(cooldown, secondCount);
+                this.updateCooldownAndHud(cooldown,this.data.lastTime);
+            }, cooldown, true, (lastTime: number) => {
+                this.updateCooldownAndHud(cooldown,lastTime);
             });
         } else if(!this.skillCanUse()){
             AudioPlayer.play(AudioPlayer.SELECT_FAIL);
@@ -147,23 +148,22 @@ export default abstract class Talent extends cc.Component {
      * 立即刷新冷却
      */
     protected refreshCooldown() {
-        this.talentSkill.refreshCoolDown();
-        this.updateCooldownAndHud(this.data.cooldown, 0);
+        this.data.lastTime = this.talentSkill.refreshCoolDown(this.data.cooldown);
+        this.updateCooldownAndHud(this.data.cooldown,this.data.lastTime);
     }
     /**
      * 缩短冷却
      */
     protected cutCooldown(cutSecond: number) {
-        let second = this.talentSkill.cutCoolDown(cutSecond);
-        this.updateCooldownAndHud(this.data.cooldown, this.talentSkill.cutCoolDown(second));
+        this.data.lastTime = this.talentSkill.cutCoolDown(cutSecond);
+        this.updateCooldownAndHud(this.data.cooldown,this.data.lastTime);
     }
-    protected updateCooldownAndHud(duration: number, secondCount: number) {
+    protected updateCooldownAndHud(duration: number,lastTime:number) {
         if(!this.node){
             return;
         }
-        this.data.secondCount = secondCount;
         this.data.storePoint = this.talentSkill.StorePoint;
-        EventHelper.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { id: this.coolDownId, duration: duration, secondCount: secondCount
+        EventHelper.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { id: this.coolDownId, duration: duration, lastTime: lastTime
             , storePoint: this.talentSkill.StorePoint,storePointMax:this.talentSkill.StorePointMax});
     }
     protected abstract doSkill(): void;

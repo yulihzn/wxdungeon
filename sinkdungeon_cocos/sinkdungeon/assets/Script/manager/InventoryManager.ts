@@ -1,15 +1,11 @@
-import { EventHelper } from './../logic/EventHelper';
 import EquipmentData from "../data/EquipmentData";
 import FurnitureData from "../data/FurnitureData";
 import InventoryData from "../data/InventoryData";
 import ItemData from "../data/ItemData";
 import SuitData from "../data/SuitData";
-import Logic from "../logic/Logic";
 import InventoryItem from "../ui/InventoryItem";
 import NextStep from "../utils/NextStep";
-import Utils from '../utils/Utils';
 import Item from '../item/Item';
-import InventoryDialog from '../ui/dialog/InventoryDialog';
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

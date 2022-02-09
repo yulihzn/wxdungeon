@@ -41,9 +41,10 @@ export default class ShadowPlayer extends cc.Component {
     isVanishing = false;
 
     init(player: Player, spriteframe: cc.SpriteFrame, index: number, lifeTime: number) {
+        let duration = lifeTime ? lifeTime : 30;
         this.player = player;
         this.index = index;
-        this.player.data.ShadowList[this.index] = lifeTime ? lifeTime : 30;
+        this.player.data.ShadowList[this.index] = Date.now();
         this.node.parent = this.player.node.parent;
         this.weaponLeft.init(this.player, true, true);
         this.weaponRight.init(this.player, false, true);
@@ -64,11 +65,12 @@ export default class ShadowPlayer extends cc.Component {
         this.isStop = false;
         this.isVanishing = false;
         this.lifeNext.next(() => {
-        }, lifeTime ? lifeTime : 30, true, (secondCount: number) => {
-            if (secondCount >= 0 && this.node && this.isValid && !this.isStop) {
-                this.player.data.ShadowList[this.index] = secondCount;
+        }, duration, true, (lastTime: number) => {
+            let currentTime = Date.now();
+            if (currentTime-lastTime < duration*1000 && this.node && this.isValid && !this.isStop) {
+                this.player.data.ShadowList[this.index] = lastTime;
             }
-            if (secondCount <= 0) {
+            if (currentTime-lastTime > duration*1000) {
                 this.stop();
             }
         })

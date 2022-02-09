@@ -315,9 +315,6 @@ export default class Inventory extends cc.Component {
                 for (let i = 0; i < suit.count - 1; i++) {
                     if (i < suit.EquipList.length) {
                         e.add(suit.EquipList[i]);//叠加套装各种几率
-                        // if (this.dungeon && this.dungeon.player) {
-                        //     this.dungeon.player.addStatus(suit.EquipList[i].statusName, new FromData());
-                        // }
                     }
                 }
                 this.inventoryManager.suitEquipMap[key] = e;

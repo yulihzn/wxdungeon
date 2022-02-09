@@ -34,6 +34,7 @@ export default class ItemData extends BaseData {
     sanity:number = 0;//神志
     solidSatiety:number = 0;//饱腹值
     liquidSatiety:number = 0;//解渴值
+    lastTime = 0;//上次使用时间
     /**额外效果列表 */
     exTriggers:TriggerData[] = [];
     private common: CommonData;
@@ -69,6 +70,7 @@ export default class ItemData extends BaseData {
         this.solidSatiety = data.solidSatiety?data.solidSatiety:0;
         this.liquidSatiety = data.liquidSatiety?data.liquidSatiety:0;
         this.exTriggers = data.exTriggers?data.exTriggers:[];
+        this.lastTime = data.lastTime?data.lastTime:0;
 
     }
     public clone(): ItemData {
@@ -93,6 +95,7 @@ export default class ItemData extends BaseData {
         e.solidSatiety = this.solidSatiety;
         e.liquidSatiety = this.liquidSatiety;
         e.exTriggers = this.exTriggers;
+        e.lastTime = this.lastTime;
         return e;
     }
 

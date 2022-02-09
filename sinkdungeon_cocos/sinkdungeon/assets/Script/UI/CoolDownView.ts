@@ -19,8 +19,8 @@ export default class CoolDownView extends cc.Component {
     graphics: cc.Graphics = null;
     coolDownFuc: Function = null;
     label: cc.Label = null;
-    private secondCount = 0;
-    private secondCountLerp = 0;
+    labelBg:cc.Node = null;
+    private lastTime = 0;
     private duration = 0;
     private storePoint = 1;
     private storePointMax = 1;
@@ -29,10 +29,12 @@ export default class CoolDownView extends cc.Component {
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
         this.label = this.getComponentInChildren(cc.Label);
+        this.labelBg = this.node.getChildByName('labelbg');
+        this.labelBg.active = false;
         this.skillIcon = this.node.getChildByName('mask').getChildByName('sprite').getComponent(cc.Sprite);
         this.skillIcon.node.opacity = 255;
         EventHelper.on(EventHelper.HUD_CONTROLLER_COOLDOWN, (detail) => {
-            if (this.node && detail.id == this.id) { this.setData(detail.duration, detail.secondCount, detail.storePoint, detail.storePointMax) };
+            if (this.node && detail.id == this.id) { this.setData(detail.duration, detail.lastTime, detail.storePoint, detail.storePointMax) };
         })
     }
     init(id: number) {
@@ -50,20 +52,17 @@ export default class CoolDownView extends cc.Component {
         this.skillIcon.spriteFrame = Logic.spriteFrameRes(resName);
     }
 
-    private setData(duration: number, secondCount: number, storePoint: number, storePointMax: number) {
+    private setData(duration: number, lastTime: number, storePoint: number, storePointMax: number) {
         if (!this.node) {
             return;
         }
-        if (secondCount > duration) {
-            secondCount = duration;
-        }
+
         if (duration <= 0) {
             duration = 0;
         }
         this.storePointMax = storePointMax;
         this.duration = duration;
-        this.secondCountLerp = secondCount;
-        this.secondCount = secondCount;
+        this.lastTime = lastTime;
         this.storePoint = storePoint;
         this.drawSkillCoolDown();
     }
@@ -72,16 +71,18 @@ export default class CoolDownView extends cc.Component {
             return;
         }
         this.label.string = this.storePoint > 0 && this.storePointMax > 1 ? `${this.storePoint}` : ``;
+        this.labelBg.active = this.label.string.length>0;
         if (this.graphics) {
             this.graphics.clear();
         }
-        if (this.secondCountLerp > 1) {
-            this.secondCount = Logic.lerp(this.secondCount, this.secondCountLerp - 1, 0.1);
+        let p = cc.Vec3.ZERO;
+        let currentTime = Date.now();
+        let percent = (currentTime - this.lastTime) / (this.duration * 1000);//当前百分比
+        if (percent > 1) {
+            percent = 1;
         }
-        if (this.secondCount > 0) {
-            let p = cc.Vec3.ZERO;
-            let percent = this.secondCount / this.duration;//当前百分比
-            this.drawArc(360 * percent, p, this.graphics);
+        if (percent < 1) {
+            this.drawArc(360 * (1 - percent), p, this.graphics);
         }
     }
     private drawArc(angle: number, center: cc.Vec3, graphics: cc.Graphics) {

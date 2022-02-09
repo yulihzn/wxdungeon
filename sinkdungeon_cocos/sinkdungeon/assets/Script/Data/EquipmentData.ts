@@ -47,32 +47,15 @@ export default class EquipmentData extends BaseData {
     isHeavy = 0;//是否是重型武器比如 激光,具体影响是开枪时候移动减速 大盾牌 影响举盾速度
     isLineAim = 0;//是否是线性瞄准
     hideHair = 0;//是否隐藏头发
-    // bulletNets = 0;//是否排状子弹11发并排数量为发射次数 为0的时候不触发 
-    // statusInterval = 0;//添加常规状态的间隔@deprecated
-    // statusName = '';//自身状态类别 获得装备时添加每次间隔时间到添加@deprecated
-    // statusNameParrySelf = '';//完美盾反对自己添加的状态@deprecated
-    // statusNameParryOther = '';//完美盾反对敌人添加的状态@deprecated
-    // statusRateParry = 0;//完美盾反添加状态的几率@deprecated
-    // statusNameBlockSelf = '';//普通盾防对自己添加的状态@deprecated
-    // statusNameBlockOther = '';//普通盾防对敌人添加的状态@deprecated
-    // statusRateBlock = 0;//普通盾防添加状态的几率@deprecated
-    // statusNameHurtSelf = '';//受伤对自己添加的状态@deprecated
-    // statusNameHurtOther = '';//受伤对敌人添加的状态@deprecated
-    // statusRateHurt = 0;//受伤添加状态的几率@deprecated
-    // exBulletTypeAttack = '';//攻击额外子弹类别@deprecated
-    // exBulletTypeHurt = '';//受伤害额外子弹类别@deprecated
-    // exBulletTypeParry = '';//盾反额外子弹类别@deprecated
-    // exBulletTypeBlock = '';//普通格挡额外子弹类别@deprecated
-    // exBulletRate = 0;//额外子弹几率@deprecated
-    // exBulletCombo1 = 0;//攻击额外子弹连段，为1代表在这一次攻击释放@deprecated
-    // exBulletCombo2 = 0;//@deprecated
-    // exBulletCombo3 = 0;//@deprecated
     /**额外效果列表 */
     exTriggers: TriggerData[] = [];
     ignoreTrap = 0;//无视尖刺伤害
     remoteAudio = '';//远程音效
     exBeatBack = 0;//额外击退
     test = 0;//测试用武器，测试用武器在有刷新点的情况下不保存
+    canUse: number = 0;//是否能使用
+    lastTime = 0;//上次使用时间
+    cooldown: number = 0;//冷却
 
     price: number = 0;
 
@@ -169,6 +152,8 @@ export default class EquipmentData extends BaseData {
                 this.exTriggers.push(d);
             }
         }
+        this.lastTime = data.lastTime?data.lastTime:0;
+        this.canUse = data.canUse?data.canUse:0;
     }
     public clone(): EquipmentData {
         let e = new EquipmentData();
@@ -229,12 +214,17 @@ export default class EquipmentData extends BaseData {
         e.test = this.test;
         e.requireLevel = this.requireLevel;
         e.exTriggers = this.exTriggers;
+        e.lastTime = this.lastTime;
+        e.canUse = this.lastTime;
         return e;
     }
     public add(data: EquipmentData): EquipmentData {
         this.common = this.common.clone().add(data.Common);
         this.ignoreTrap = this.ignoreTrap + data.ignoreTrap;
         this.exBeatBack = this.exBeatBack + data.exBeatBack;
+        for( let ex of data.exTriggers){
+            this.exTriggers.push(ex);
+        }
         return this;
     }
 

@@ -242,10 +242,11 @@ export default class Player extends Actor {
         }
         this.shadowList = [];
         if (isFromSave) {
+            let currentTime = Date.now();
             for (let i = 0; i < count; i++) {
-                if (this.data.ShadowList[i] && this.data.ShadowList[i] > 0) {
+                if (this.data.ShadowList[i] && currentTime-this.data.ShadowList[i] < lifeTime*1000) {
                     let shadow = cc.instantiate(this.shadowPrefab).getComponent(ShadowPlayer);
-                    shadow.init(this, this.shadowSpriteframe, i, this.data.ShadowList[i]);
+                    shadow.init(this, this.shadowSpriteframe, i, lifeTime);
                     this.shadowList.push(shadow);
                 }
             }
