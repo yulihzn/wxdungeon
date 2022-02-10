@@ -215,17 +215,16 @@
     },
     "_enabled": true,
     "tag": 20,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
+    "offsetX": 0,
+    "offsetY": 0,
     "type": 0,
     "radius": 200,
     "w": 128,
     "h": 128,
+    "bounce": 0,
     "sensor": true,
     "isStatic": true,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [],
     "_id": ""
@@ -432,7 +431,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f90a48b8-65c7-4557-867b-5289336f464a"
+      "__id__": 0
     },
     "fileId": "",
     "sync": false

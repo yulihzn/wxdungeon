@@ -43,7 +43,8 @@ export default class ShadowOfSight extends cc.Component {
     offset = 0;
     offsetPlus = false;
     private polygonCollider: cc.PolygonCollider;
-    private circleCollider: CCollider;
+    private customCollider: CCollider;
+    private 
     private lightTargetMap = new Map<number, boolean>();
     private sensorTargetMap = new Map<number, boolean>();
     private ignoreMap = new Map<number, boolean>();
@@ -53,14 +54,14 @@ export default class ShadowOfSight extends cc.Component {
     onLoad() {
         this.mat = this.ray.getMaterial(0);
         this.polygonCollider = this.getComponent(cc.PolygonCollider);
-        this.circleCollider = this.getComponent(CCollider);
+        this.customCollider = this.getComponent(CCollider);
         let aimArr = [CCollider.TAG.BOSS, CCollider.TAG.BUILDING, CCollider.TAG.GOODNONPLAYER
             , CCollider.TAG.NONPLAYER, CCollider.TAG.PLAYER, CCollider.TAG.WALL, CCollider.TAG.WALL_TOP];
         for (let key of aimArr) {
             this.lightTargetMap.set(key, true);
         }
-        if (this.circleCollider && this.circleCollider.ignoreTagList) {
-            for (let key of this.circleCollider.ignoreTagList) {
+        if (this.customCollider && this.customCollider.ignoreTagList) {
+            for (let key of this.customCollider.ignoreTagList) {
                 if (this.lightTargetMap.has(key)) {
                     this.lightTargetMap.delete(key);
                 }
@@ -115,6 +116,16 @@ export default class ShadowOfSight extends cc.Component {
     updateRender(showShadow: boolean) {
         this.showShadow = showShadow;
     }
+    setCustomColliderStyle(isRect:boolean,w:number,h:number,r:number){
+        if(!this.customCollider){
+            return;
+        }
+        this.customCollider.w = w;
+        this.customCollider.h = h;
+        this.customCollider.radius = r;
+        this.customCollider.type = isRect?CCollider.TYPE.RECT:CCollider.TYPE.CIRCLE;
+        this.customCollider.fixCenterAndScale();
+    }
     /**自定义形状 读取collider来绘制，主要用于环境光线不具备交互 */
     drawCustom(pos: cc.Vec2, camera: cc.Camera, renderLight: boolean) {
         this.ray.lineWidth = 10;
@@ -138,13 +149,32 @@ export default class ShadowOfSight extends cc.Component {
                 this.updateMat(this.mat, cc.v2(sp.x, sp.y), camera.zoomRatio);
             }
         }
-        if (this.circleCollider && this.circleCollider.radius > 0) {
-            let p = this.node.convertToWorldSpaceAR(cc.v2(this.circleCollider.offsetX, this.circleCollider.offsetY));
+        if (this.customCollider && this.customCollider.type == CCollider.TYPE.RECT && this.customCollider.w > 0&& this.customCollider.h > 0) {
+            for (let i = 0; i < this.customCollider.points.length; i++) {
+                let p = this.node.convertToNodeSpaceAR(this.customCollider.points[i]);
+                this.lightVertsArray.push(this.customCollider.points[i]);
+                if (renderLight) {
+                    if (i == 0) {
+                        this.ray.moveTo(p.x, p.y);
+                    } else {
+                        this.ray.lineTo(p.x, p.y);
+                    }
+                }
+            }
+            if (renderLight) {
+                this.ray.close();
+                this.ray.fill();
+                let sp = camera.getWorldToScreenPoint(pos);
+                this.updateMat(this.mat, cc.v2(sp.x, sp.y), camera.zoomRatio);
+            }
+        }
+        if (this.customCollider && this.customCollider.type == CCollider.TYPE.CIRCLE && this.customCollider.radius > 0) {
+            let p = this.node.convertToWorldSpaceAR(cc.v2(this.customCollider.offsetX, this.customCollider.offsetY));
             this.circle = cc.v3(p.x, p.y, this.getRadius());
             if (renderLight) {
                 this.ray.lineWidth = 10;
                 this.ray.fillColor = this.renderColor;
-                let center = this.circleCollider.offset;
+                let center = this.customCollider.offset;
                 this.ray.circle(center.x, center.y, this.getRadius());
                 this.ray.fill();
                 let sp = camera.getWorldToScreenPoint(pos);
@@ -156,7 +186,7 @@ export default class ShadowOfSight extends cc.Component {
     }
     /** 圆形辐射线 主要用于篝火 通过射线数量绘制辐射线 */
     drawRayByNum(pos: cc.Vec2, camera: cc.Camera, renderLight: boolean): void {
-        if (!this.circleCollider || this.circleCollider.radius <= 0) {
+        if (!this.customCollider || this.customCollider.radius <= 0) {
             return;
         }
         this.ray.lineWidth = 10;
@@ -226,15 +256,15 @@ export default class ShadowOfSight extends cc.Component {
         return this.radius + this.offset;
     }
     get radius() {
-        if (this.circleCollider && !this.polygonCollider) {
-            return this.circleCollider.radius * this.circleCollider.node.scale;
+        if (this.customCollider && !this.polygonCollider) {
+            return this.customCollider.radius * this.customCollider.node.scale;
         } else {
             return this.node.width / 2;
         }
     }
     set radius(r: number) {
-        if (this.circleCollider) {
-            this.circleCollider.radius = r;
+        if (this.customCollider) {
+            this.customCollider.radius = r;
         }
     }
 

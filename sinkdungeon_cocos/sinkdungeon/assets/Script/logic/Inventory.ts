@@ -83,9 +83,11 @@ export default class Inventory extends cc.Component {
     graphics: cc.Graphics = null;
 
     equipAndItemTimeDelays: Map<string, number> = new Map();
-    equipSprites: { [key: string]: cc.Sprite } = {};
+    equipSprites: Map<string, cc.Sprite> = new Map();
+    equipCovers: Map<string, cc.Node> = new Map();
 
     itemPositions: cc.Vec3[] = [];
+    itemCovers: cc.Node[] = [];
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -168,15 +170,15 @@ export default class Inventory extends cc.Component {
         for (let name of InventoryManager.EQUIP_TAGS) {
             this.equipAndItemTimeDelays.set(name, 0);
         }
-        this.equipSprites[InventoryManager.WEAPON] = this.weapon;
-        this.equipSprites[InventoryManager.REMOTE] = this.remote;
-        this.equipSprites[InventoryManager.SHIELD] = this.shield;
-        this.equipSprites[InventoryManager.HELMET] = this.helmet;
-        this.equipSprites[InventoryManager.CLOTHES] = this.clothes;
-        this.equipSprites[InventoryManager.TROUSERS] = this.trousers;
-        this.equipSprites[InventoryManager.GLOVES] = this.gloves;
-        this.equipSprites[InventoryManager.SHOES] = this.shoes;
-        this.equipSprites[InventoryManager.CLOAK] = this.cloak;
+        this.equipSprites.set(InventoryManager.WEAPON, this.weapon);
+        this.equipSprites.set(InventoryManager.REMOTE, this.remote);
+        this.equipSprites.set(InventoryManager.SHIELD, this.shield);
+        this.equipSprites.set(InventoryManager.HELMET, this.helmet);
+        this.equipSprites.set(InventoryManager.CLOTHES, this.clothes);
+        this.equipSprites.set(InventoryManager.TROUSERS, this.trousers);
+        this.equipSprites.set(InventoryManager.GLOVES, this.gloves);
+        this.equipSprites.set(InventoryManager.SHOES, this.shoes);
+        this.equipSprites.set(InventoryManager.CLOAK, this.cloak);
     }
     private initDialog(isGround: boolean) {
         let node = cc.instantiate(this.equipmentAndItemDialogPrefab);
@@ -211,10 +213,12 @@ export default class Inventory extends cc.Component {
         cc.tween(this.equipmentNode).to(3, { opacity: 255 }).start();
     }
     start() {
-        for (let key in this.equipSprites) {
-            this.equipSprites[key].spriteFrame = null;
-            this.addEquipSpriteTouchEvent(this.equipSprites[key], key);
-        }
+        this.equipSprites.forEach((sprite,key)=>{
+            sprite.spriteFrame = null;
+            this.addEquipSpriteTouchEvent(sprite, key);
+            this.equipCovers.set(key, sprite.node.parent.getChildByName('cover'));
+        })
+        
         for (let key in this.inventoryManager.equips) {
             this.refreshEquipment(key, this.inventoryManager.equips[key].clone(), true, false);
         }
@@ -224,6 +228,7 @@ export default class Inventory extends cc.Component {
         for (let i = 0; i < itemLabelList.length; i++) {
             this.itemPositions[i] = itemSpriteList[i].node.convertToWorldSpaceAR(cc.Vec3.ZERO);
             this.addItemSpriteTouchEvent(itemSpriteList[i], itemLabelList[i].node.parent, i);
+            this.itemCovers.push(itemLabelList[i].node.parent.getChildByName('cover'));
         }
         this.refreshSuits();
         Logic.inventoryManager.updateTotalEquipData();
@@ -337,7 +342,7 @@ export default class Inventory extends cc.Component {
             spriteFrame = Logic.spriteFrameRes(equip.img + 'anim0');
         }
         //更新贴图和颜色
-        let sprite = this.equipSprites[equipmetType];
+        let sprite = this.equipSprites.get(equipmetType);
         if (sprite) {
             sprite.node.color = color;
             sprite.spriteFrame = equip.trouserslong == 1 ? Logic.spriteFrameRes('trousers000') : spriteFrame;
@@ -440,7 +445,7 @@ export default class Inventory extends cc.Component {
     //     }
     // }
     getTimeDelay(timeDelay: number, interval: number, dt: number): number {
-        if(!timeDelay){
+        if (!timeDelay) {
             timeDelay = 0;
         }
         timeDelay += dt;
@@ -461,12 +466,33 @@ export default class Inventory extends cc.Component {
     }
     update(dt) {
         if (!Logic.isGamePause) {
-            let data = this.inventoryManager.TotalEquipData;
-            for (let d of data.exTriggers) {
+            let totalData = this.inventoryManager.TotalEquipData;
+            for (let d of totalData.exTriggers) {
                 if (this.isTimeDelay(dt, d.uuid, d.autoInterval)) {
                     if (this.dungeon && this.dungeon.player) {
-                        this.dungeon.player.exTriggerDo(d, TriggerData.GROUP_AUTO, TriggerData.TYPE_AUTO, FromData.getClone(data.nameCn, data.img), null);
+                        this.dungeon.player.exTriggerDo(d, TriggerData.GROUP_AUTO, TriggerData.TYPE_AUTO, FromData.getClone(totalData.nameCn, totalData.img), null);
                     }
+                }
+            }
+            let currentTime = Date.now();
+            this.equipCovers.forEach((node,key)=>{
+                let data = this.inventoryManager.equips[key];
+                if (data) {
+                    let percent = (currentTime - data.lastTime) / (data.cooldown * 1000);//当前百分比
+                    if (percent > 1) {
+                        percent = 1;
+                    }
+                    node.height = node.width * (1 - percent);
+                }
+            })
+            for (let key in this.equipCovers) {
+                let data = this.inventoryManager.equips[key];
+                if (data) {
+                    let percent = (currentTime - data.lastTime) / (data.cooldown * 1000);//当前百分比
+                    if (percent > 1) {
+                        percent = 1;
+                    }
+                    this.equipCovers.get(key).height = this.equipCovers.get(key).width * (1 - percent);
                 }
             }
             for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
@@ -478,6 +504,11 @@ export default class Inventory extends cc.Component {
                         }
                     }
                 }
+                let percent = (currentTime - data.lastTime) / (data.cooldown * 1000);//当前百分比
+                if (percent > 1) {
+                    percent = 1;
+                }
+                this.itemCovers[i].height = this.itemCovers[i].width * (1 - percent);
             }
         }
 
@@ -494,8 +525,9 @@ export default class Inventory extends cc.Component {
         if (!this.dungeon.player.canEatOrDrink(item)) {
             return;
         }
-        this.inventoryManager.itemCoolDownList[itemIndex].next(() => {
-            this.drawItemCoolDown(item.cooldown, this.itemPositions[itemIndex]);
+        let currentTime = Date.now();
+        if (currentTime - item.lastTime > item.cooldown * 1000) {
+            item.lastTime = currentTime;
             if (item.count != -1) {
                 item.count--;
             }
@@ -508,8 +540,7 @@ export default class Inventory extends cc.Component {
             if (item.resName != Item.EMPTY) {
                 cc.director.emit(EventHelper.PLAYER_USEITEM, { detail: { itemData: item } });
             }
-        }, item.cooldown, true)
-
+        }
     }
 
     refreshItem(itemDataNew: ItemData, isReplace: boolean) {
@@ -596,32 +627,4 @@ export default class Inventory extends cc.Component {
         }
     }
 
-    private drawItemCoolDown(coolDown: number, position: cc.Vec3) {
-        if (coolDown <= 0) {
-            return;
-        }
-        let height = 80;
-        let delta = 0.1;
-        let p = this.node.convertToNodeSpaceAR(position);
-        let offset = height / coolDown * delta;
-        let func = () => {
-            height -= offset;
-            if (this.graphics) {
-                this.graphics.clear();
-            }
-            this.drawRect(height, p);
-            if (height < 0) {
-                if (this.graphics) {
-                    this.graphics.clear();
-                }
-                this.unschedule(func);
-            }
-        }
-        this.schedule(func, delta, cc.macro.REPEAT_FOREVER);
-    }
-    private drawRect(height, center: cc.Vec3) {
-        this.graphics.fillColor = cc.color(255, 255, 255, 150);
-        this.graphics.rect(center.x - 32, center.y - 32, 64, height);
-        this.graphics.fill();
-    }
 }

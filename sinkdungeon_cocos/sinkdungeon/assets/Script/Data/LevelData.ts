@@ -1,4 +1,5 @@
 import ExitData from "./ExitData";
+import MapLightData from "./MapLightData";
 
 export default class LevelData {
     name: string = '';//名称
@@ -31,6 +32,7 @@ export default class LevelData {
     minimap:string[][] = [];
     minimaplock:string[][] = [];
     exits:string='';//16,4,0,1,27,1;27,1,0,0,16,4;分号隔开，出口坐标，章节，入口坐标（y轴向下）
+    lights:MapLightData[];
 
     constructor() {
     }
@@ -103,6 +105,7 @@ export default class LevelData {
         this.exits = data.exits;
         this.needRadomDecorate = data.needRadomDecorate;
         this.isWater = data.isWater;
+        this.lights = data.lights;
     }
     getRoomMap(x: number, y: number): string[][] {
         let temp: string[][] = new Array();

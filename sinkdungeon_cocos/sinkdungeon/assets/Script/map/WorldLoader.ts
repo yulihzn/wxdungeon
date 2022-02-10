@@ -150,6 +150,9 @@ export default class WorldLoader {
                 temp.roomTypes = flagMap;
                 temp.minimap = miniMap;
                 temp.minimaplock = miniLockMap;
+                if(tiledmap.json.layers[2]&&tiledmap.json.layers[2].objects){
+                    temp.lights = tiledmap.json.layers[2].objects;
+                }
                 let level = new LevelData();
                 level.valueCopy(temp);
                 data.list.push(level);

@@ -606,7 +606,7 @@ export default class BuildingManager extends BaseManager {
             });
         } else if (mapDataStr == '~f') {
             Logic.getBuildings(BuildingManager.WATERFALL, (prefab: cc.Prefab) => {
-                AudioPlayer.play(AudioPlayer.WATERFALL,false,true);
+                AudioPlayer.play(AudioPlayer.WATERFALL, false, true);
                 let dn = this.addBuilding(prefab, indexPos);
             });
         } else if (mapDataStr == '~#') {
@@ -624,6 +624,8 @@ export default class BuildingManager extends BaseManager {
     private addLamp(mapDataStr: string, indexPos: cc.Vec3) {
         let prefabName = BuildingManager.LAMPLIGHT;
         let isOverHead = false;
+        let isRect = false;
+        let isCustom = false;
         switch (mapDataStr) {
             case 'L0': prefabName = BuildingManager.LAMPLIGHT; break;
             case 'L1': prefabName = BuildingManager.LAMPSUN; isOverHead = true; break;
@@ -638,11 +640,29 @@ export default class BuildingManager extends BaseManager {
             case 'La': prefabName = BuildingManager.LAMPROAD; break;
             case 'Lb': prefabName = BuildingManager.LAMPFIREFLY; break;
             case 'Lc': prefabName = BuildingManager.LAMPDIRECT; break;
+            case 'L001': prefabName = BuildingManager.LAMPLIGHT; isCustom = true; break;
+            case 'L003': prefabName = BuildingManager.LAMPLIGHT; isCustom = true; break;
+            case 'L005': prefabName = BuildingManager.LAMPLIGHT; isCustom = true; break;
+            case 'L007': prefabName = BuildingManager.LAMPLIGHT; isCustom = true; break;
+            case 'L009': prefabName = BuildingManager.LAMPLIGHT; isCustom = true; break;
+            case 'L011': prefabName = BuildingManager.LAMPLIGHT; isCustom = true; isRect = true; break;
+            case 'L013': prefabName = BuildingManager.LAMPLIGHT; isCustom = true; isRect = true; break;
+            case 'L015': prefabName = BuildingManager.LAMPLIGHT; isCustom = true; isRect = true; break;
+            case 'L017': prefabName = BuildingManager.LAMPLIGHT; isCustom = true; isRect = true; break;
+            case 'L019': prefabName = BuildingManager.LAMPLIGHT; isCustom = true; isRect = true; break;
         }
         Logic.getBuildings(prefabName, (prefab: cc.Prefab) => {
             let node = this.addBuilding(prefab, indexPos);
             if (isOverHead) {
                 node.zIndex = IndexZ.OVERHEAD + 100;
+            }
+            if(isCustom){
+                let b = node.getComponent(Building);
+                if(b.lights.length>0){
+                    let index = parseInt(mapDataStr[3]);
+                    let range = Dungeon.TILE_SIZE*index;
+                    b.lights[0].setCustomColliderStyle(isRect,range,range,range/2);
+                }
             }
         });
     }
@@ -730,7 +750,7 @@ export default class BuildingManager extends BaseManager {
             }
         });
     }
-    static getDoorDir(mapDataStr: string){
+    static getDoorDir(mapDataStr: string) {
         let dir = parseInt(mapDataStr[1]);
         if (isNaN(dir)) {
             if (mapDataStr == 'Da') {
@@ -874,7 +894,7 @@ export default class BuildingManager extends BaseManager {
             case 'Zl': data.valueCopy(Logic.furnitures[Furniture.TRASHCAN]); break;
             default: break;
         }
-        
+
         let building: cc.Node;
         if (mapDataStr == 'Z3') {
             Logic.getBuildings(BuildingManager.ROOMTV, (prefab: cc.Prefab) => {
@@ -913,7 +933,7 @@ export default class BuildingManager extends BaseManager {
         } else if (mapDataStr == 'Zi') {
             Logic.getBuildings(BuildingManager.ROOMFISHTANK, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos);
-                building.getComponent(RoomFishtank).init(indexPos,dungeon);
+                building.getComponent(RoomFishtank).init(indexPos, dungeon);
                 let script = building.getComponent(Furniture);
                 script.init(data);
             });
@@ -943,28 +963,28 @@ export default class BuildingManager extends BaseManager {
     private addHitBuilding(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
         Logic.getBuildings(BuildingManager.HITBUILDING, (prefab: cc.Prefab) => {
             let isCustom = false;
-        let hitBuilding = this.addBuilding(prefab, indexPos);
-        let h = hitBuilding.getComponent(HitBuilding);
-        h.setDefaultPos(indexPos);
-        let resName = 'car';
-        let equipmentNames = [];
-        let itemNames = [];
-        let maxhealth = 9999;
-        let scale = 4;
-        let colliderExtrude = 0;
-        switch (mapDataStr) {
-            case 'H0': resName = 'car'; equipmentNames = ['shield001']; itemNames = []; maxhealth = 5; scale = 8; colliderExtrude = 3; break;
-            default: break;
-        }
-        h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, maxhealth, scale, isCustom, colliderExtrude);
-        let saveHit = Logic.mapManager.getCurrentMapBuilding(h.data.defaultPos);
-        if (saveHit) {
-            h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, saveHit.currentHealth, scale, isCustom, colliderExtrude);
-        } else {
-            Logic.mapManager.setCurrentBuildingData(h.data.clone());
-        }
+            let hitBuilding = this.addBuilding(prefab, indexPos);
+            let h = hitBuilding.getComponent(HitBuilding);
+            h.setDefaultPos(indexPos);
+            let resName = 'car';
+            let equipmentNames = [];
+            let itemNames = [];
+            let maxhealth = 9999;
+            let scale = 4;
+            let colliderExtrude = 0;
+            switch (mapDataStr) {
+                case 'H0': resName = 'car'; equipmentNames = ['shield001']; itemNames = []; maxhealth = 5; scale = 8; colliderExtrude = 3; break;
+                default: break;
+            }
+            h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, maxhealth, scale, isCustom, colliderExtrude);
+            let saveHit = Logic.mapManager.getCurrentMapBuilding(h.data.defaultPos);
+            if (saveHit) {
+                h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, saveHit.currentHealth, scale, isCustom, colliderExtrude);
+            } else {
+                Logic.mapManager.setCurrentBuildingData(h.data.clone());
+            }
         });
-        
+
     }
 
     /**掉落石头 */
@@ -974,14 +994,14 @@ export default class BuildingManager extends BaseManager {
         }
         Logic.getBuildings(BuildingManager.FALLSTONE, (prefab: cc.Prefab) => {
             let stone = this.addBuilding(prefab, pos);
-        let stoneScript = stone.getComponent(FallStone);
-        stoneScript.isAuto = isAuto;
-        stone.zIndex = IndexZ.FLOOR;
-        if (stoneScript.isAuto) {
-            stoneScript.fall(withFire);
-        }
+            let stoneScript = stone.getComponent(FallStone);
+            stoneScript.isAuto = isAuto;
+            stone.zIndex = IndexZ.FLOOR;
+            if (stoneScript.isAuto) {
+                stoneScript.fall(withFire);
+            }
         });
-        
+
 
     }
     /**落雷 */
@@ -998,7 +1018,7 @@ export default class BuildingManager extends BaseManager {
                 fallScript.fall(needPrepare, showArea, damagePoint);
             }
         });
-        
+
     }
     /**树根缠绕 */
     public addTwineGrass(pos: cc.Vec3, isAuto: boolean) {
@@ -1014,7 +1034,7 @@ export default class BuildingManager extends BaseManager {
                 dryadGrassScript.fall();
             }
         });
-        
+
     }
     /**幽光护盾 */
     public addEnergyShield(player: Player): EnergyShield {
@@ -1029,7 +1049,7 @@ export default class BuildingManager extends BaseManager {
             script.init(player, 20 + Logic.playerData.OilGoldData.level * 5, scale);
             return script;
         });
-        
+
     }
     private addPracticeEquipItem(dungeon: Dungeon, indexPos: cc.Vec3) {
         if (dungeon) {
