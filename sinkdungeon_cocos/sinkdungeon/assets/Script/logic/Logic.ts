@@ -182,6 +182,7 @@ export default class Logic extends cc.Component {
         })
     }
     static resetData(chapter?: number) {
+        Logic.profileManager = new ProfileManager();
         //重置时间
         Logic.time = Logic.profileManager.data.time;
         Logic.realTime = Logic.profileManager.data.realTime;

@@ -96,7 +96,7 @@ CCProgram fs %{
   }
   // 模糊半径
   // for 循环的次数必须为常量
-  const float RADIUS = 4.0;
+  const float RADIUS = 3.0;
   vec4 getBlurColor (vec2 pos) {
     vec4 color = vec4(0);
     float sum = 0.0; // 总权重
