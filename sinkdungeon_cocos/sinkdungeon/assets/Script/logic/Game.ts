@@ -20,7 +20,7 @@ export default class Game extends cc.Component {
     private dungeonBase:Dungeon
     private hudBase:GameHud
     onLoad(){
-        Logic.settings.showShadow = LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_SHADOW);
+        Logic.settings.showSoftShadow = LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_SOFT_SHADOW);
         Logic.settings.showGamepad = LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD);
         Logic.settings.showEquipDialog = LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_EQUIPDIALOG);
         cc.director.getScheduler().setTimeScale(1);

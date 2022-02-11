@@ -49,7 +49,7 @@ export default class LightManager extends BaseManager {
             }
         }
         //将阴影镜头下的图片赋值到主镜头结点图片
-        if (!this.shadowTexture && Logic.settings.showShadow) {
+        if (!this.shadowTexture) {
             this.shadowTexture = new cc.RenderTexture();
             this.shadowTexture.initWithSize(cc.visibleRect.width / 4, cc.visibleRect.height / 4);
             this.shadowTexture.setFilters(cc.Texture2D.Filter.LINEAR, cc.Texture2D.Filter.LINEAR);
@@ -124,7 +124,7 @@ export default class LightManager extends BaseManager {
         if (isFirst) {
             graphics.clear(false);
         }
-        if (!Logic.settings.showShadow || !light.showShadow) {
+        if (!light.showShadow) {
             return;
         }
         graphics.lineWidth = 10;
@@ -196,6 +196,8 @@ export default class LightManager extends BaseManager {
             this.shadowAlpha = LightManager.ALPHA_START;
         }
         this.mat.setProperty('lightColor', cc.color(0, 0, 50, this.shadowAlpha));
+        this.mat.setProperty('soft', Logic.settings.showSoftShadow?1:0);
+        this.mat.setProperty('size', Logic.settings.showSoftShadow?cc.v2(80,45):cc.v2(160,90));
     }
     private getShadowAlphaByTime() {
         let date = new Date(Logic.realTime);

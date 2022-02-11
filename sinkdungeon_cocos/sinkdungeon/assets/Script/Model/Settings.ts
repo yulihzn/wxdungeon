@@ -1,5 +1,5 @@
 export default class Settings{
-    showShadow = true;
+    showSoftShadow = false;
     showGamepad = true;
     showEquipDialog = false;
     lowPower = false;

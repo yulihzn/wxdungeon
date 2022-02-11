@@ -13,8 +13,9 @@ CCEffect %{
       properties:
         texture: { value: white }
         alphaThreshold: { value: 0.7 }
-        size: { value: [160.0, 90.0], editor: { tooltip: '节点尺寸' } }
+        size: { value: [320.0, 180.0], editor: { tooltip: '节点尺寸' } }
         lightColor: { value: [0.0, 0.0, 0.1, 0.1], inspector: { type: color } }
+        soft: {value: 0}
 }%
 
 
@@ -68,6 +69,7 @@ CCProgram fs %{
   uniform Properties {
     vec4 lightColor;
     vec2 size;
+    int soft;
   };
 
   
@@ -94,7 +96,7 @@ CCProgram fs %{
   }
   // 模糊半径
   // for 循环的次数必须为常量
-  const float RADIUS = 20.0;
+  const float RADIUS = 4.0;
   vec4 getBlurColor (vec2 pos) {
     vec4 color = vec4(0);
     float sum = 0.0; // 总权重
@@ -158,7 +160,12 @@ CCProgram fs %{
   }
 
   void main () {
-    vec4 o = blur13color(v_uv0);
+    vec4 o;
+    if(soft == 1){
+      o = getBlurColor(v_uv0);
+    }else{
+      o = blur13color(v_uv0);
+    }
     ALPHA_TEST(o);
     gl_FragColor = o;
   }

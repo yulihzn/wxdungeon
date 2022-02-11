@@ -30,7 +30,7 @@ export default class SettingsDialog extends BaseDialog {
     }
     show(){
         super.show();
-        this.initToggle(this.tgShadow,LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_SHADOW));
+        this.initToggle(this.tgShadow,LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_SOFT_SHADOW));
         this.initToggle(this.tgGamepad,LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD));
         this.initToggle(this.tgFps,LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_LOW_POWER));
         
@@ -47,8 +47,8 @@ export default class SettingsDialog extends BaseDialog {
 
     toggleShadow(toggle:cc.Toggle, customEventData:string){
         AudioPlayer.play(AudioPlayer.SELECT);
-        Logic.settings.showShadow = toggle.isChecked;
-        LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_SHOW_SHADOW,Logic.settings.showShadow);
+        Logic.settings.showSoftShadow = toggle.isChecked;
+        LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_SHOW_SOFT_SHADOW,Logic.settings.showSoftShadow);
     }
     toggleGamepad(toggle:cc.Toggle, customEventData:string){
         AudioPlayer.play(AudioPlayer.SELECT);

@@ -100,7 +100,7 @@ export default class ShadowOfSight extends cc.Component {
         }
         this.offset = this.offsetPlus ? this.offset + delta : this.offset - delta;
         this.ray.clear();
-        if (Logic.settings.showShadow && this.showShadow) {
+        if (this.showShadow) {
             this.lightRects = {};
             this.lightVertsArray = [];
             this.circle = cc.v3(0, 0, 0);
