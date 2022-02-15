@@ -80,8 +80,8 @@ export default class Player extends Actor {
     shadowCamera: cc.Camera = null;
     @property(cc.Prefab)
     shadowPrefab: cc.Prefab = null;
-    professionTalent: ProfessionTalent;
-    organizationTalent: OrganizationTalent;
+    professionTalent: ProfessionTalent = null;
+    organizationTalent: OrganizationTalent = null;
 
 
     isStone = false;//是否石化
@@ -91,7 +91,7 @@ export default class Player extends Actor {
     //触碰到的提示
     touchedTips: Tips;
     private touchDelay = false;
-    inventoryManager: InventoryManager;
+    inventoryManager: InventoryManager = null;
     data: PlayerData;
 
 

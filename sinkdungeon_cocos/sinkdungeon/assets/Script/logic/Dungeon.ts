@@ -382,7 +382,7 @@ export default class Dungeon extends cc.Component {
         let currequipments = Logic.mapManager.getCurrentMapEquipments();
         if (currequipments) {
             for (let tempequip of currequipments) {
-                if (tempequip.test > 0 && Logic.chapterIndex == Logic.CHAPTER099) {
+                if (tempequip.test > 0 && (Logic.chapterIndex == Logic.CHAPTER099||Logic.chapterIndex==Logic.CHAPTER00&&Logic.level==0)) {
                     continue;
                 }
                 if (this.equipmentManager) {

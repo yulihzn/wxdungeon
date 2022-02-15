@@ -42,7 +42,7 @@ export default class ProfileManager{
         console.log('save data');
     }
     clearData(){
-        cc.sys.localStorage.setItem('data','');
+        cc.sys.localStorage.setItem(LocalStorage.SAVE_DUNGEON,'');
         this.hasSaveData = false;
         this.data = new ProfileData();
         console.log('clear data');

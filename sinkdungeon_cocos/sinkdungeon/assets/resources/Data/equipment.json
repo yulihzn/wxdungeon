@@ -1127,7 +1127,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#fff0c7",
         "img": "weapon037",
-        "exBeatBack": 100,
+        "exBeatBack": 300,
         "isReflect": 1,
         "price": 30,
         "common": {

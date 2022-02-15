@@ -275,13 +275,13 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
     getMeleeSlowRatio(): number {
         if (!this.isFar && this.isStab) {
-            return 0.05;
+            return 0.5;
         } else if (this.isFar && this.isStab) {
-            return 0.02;
+            return 0.3;
         } else if (!this.isFar && !this.isStab) {
-            return 0.02;
+            return 0.3;
         } else {
-            return 0.01;
+            return 0.2;
         }
     }
 
@@ -525,18 +525,18 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (pos.equals(cc.Vec3.ZERO)) {
             pos = cc.v3(1, 0);
         }
-        let power = 50 + this.exBeatBack;
+        let power = 100 + this.exBeatBack;
         if (!this.isFar && this.isStab) {
-            power = 50;
+            power = 100;
         } else if (this.isFar && this.isStab) {
-            power = 200;
+            power = 400;
         } else if (!this.isFar && !this.isStab) {
-            power = 120;
+            power = 240;
         } else {
-            power = 50;
+            power = 100;
         }
         if (this.comboType == MeleeWeapon.COMBO3) {
-            power += 50;
+            power += 100;
         }
 
         pos = pos.normalizeSelf().mul(power);
