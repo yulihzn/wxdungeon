@@ -422,11 +422,16 @@
       "params": []
     },
     {
-      "frame": 0.85,
+      "frame": 0.8333333333333334,
       "func": "MeleeAttackFinish",
       "params": [
         false
       ]
+    },
+    {
+      "frame": 0.8333333333333334,
+      "func": "MoveAction",
+      "params": []
     }
   ]
 }

@@ -427,6 +427,11 @@
       "params": [
         false
       ]
+    },
+    {
+      "frame": 0.9166666666666666,
+      "func": "MoveAction",
+      "params": []
     }
   ]
 }

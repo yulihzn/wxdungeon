@@ -7,7 +7,7 @@ import Utils from "../utils/Utils";
 export class IDLE extends BaseNonPlayerActorState {
     enter(entity: NonPlayer): void {
         super.enter(entity);
-        Utils.log(`${entity.actorName()}(IDLE):enter`);
+        Utils.log(`${entity.actorName()}${entity.node.uuid}(IDLE):enter`);
         entity.enterIdle();
     }
     update(entity: NonPlayer): void {
@@ -20,14 +20,14 @@ export class IDLE extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.BLINK);
         }
     }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(IDLE):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(IDLE):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(IDLE):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(IDLE):event`); return true; }
 };
 /**移动：待机，攻击，特殊攻击，冲刺，对话，格挡，闪避 */
 export class WALK extends BaseNonPlayerActorState {
     enter(entity: NonPlayer): void {
         super.enter(entity);
-        entity.enterWalk(); Utils.log(`${entity.actorName()}(WALK):enter`);
+        entity.enterWalk(); Utils.log(`${entity.actorName()}${entity.node.uuid}(WALK):enter`);
     }
     update(entity: NonPlayer): void {
         super.update(entity);
@@ -41,27 +41,27 @@ export class WALK extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.BLINK);
         }
     }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(WALK):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(WALK):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(WALK):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(WALK):event`); return true; }
 };
 /**攻击：待机*/
 export class ATTACK extends BaseNonPlayerActorState {
-    enter(entity: NonPlayer): void { super.enter(entity); Utils.log(`${entity.actorName()}(ATTACK):enter`); }
+    enter(entity: NonPlayer): void { super.enter(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(ATTACK):enter`); }
     update(entity: NonPlayer): void {
         super.update(entity);
         if (!entity.sc.isAttacking) {
             entity.stateMachine.changeState(NonPlayerActorState.IDLE);
         }
     }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(ATTACK):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(ATTACK):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(ATTACK):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(ATTACK):event`); return true; }
 };
 
 /**准备： 待机，伪装, 展现*/
 export class PRPARE extends BaseNonPlayerActorState {
     enter(entity: NonPlayer): void {
         super.enter(entity);
-        Utils.log(`${entity.actorName()}(PRPARE):enter`);
+        Utils.log(`${entity.actorName()}${entity.node.uuid}(PRPARE):enter`);
     }
     update(entity: NonPlayer): void {
         super.update(entity);
@@ -71,13 +71,13 @@ export class PRPARE extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.SHOW);
         }
     }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(PRPARE):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(PRPARE):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(PRPARE):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(PRPARE):event`); return true; }
 };
 /**展现： 待机*/
 export class SHOW extends BaseNonPlayerActorState {
     enter(entity: NonPlayer): void {
-        super.enter(entity); Utils.log(`${entity.actorName()}(SHOW):enter`);
+        super.enter(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(SHOW):enter`);
         entity.enterShow();
     }
     update(entity: NonPlayer): void {
@@ -86,24 +86,24 @@ export class SHOW extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.IDLE);
         }
     }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(SHOW):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(SHOW):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(SHOW):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(SHOW):event`); return true; }
 };
 /** 死亡： */
 export class DIED extends BaseNonPlayerActorState {
     enter(entity: NonPlayer): void {
         super.enter(entity);
-        Utils.log(`${entity.actorName()}(DIE):enter`);
+        Utils.log(`${entity.actorName()}${entity.node.uuid}(DIE):enter`);
         entity.killed();
     }
     update(entity: NonPlayer): void { super.update(entity); }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(DIE):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(DIE):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(DIE):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(DIE):event`); return true; }
 };
 /**受伤：待机，格挡 */
 export class HURT extends BaseNonPlayerActorState {
     enter(entity: NonPlayer): void {
-        super.enter(entity); Utils.log(`${entity.actorName()}(HURT):enter`);
+        super.enter(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(HURT):enter`);
     }
     update(entity: NonPlayer): void {
         super.update(entity);
@@ -115,28 +115,28 @@ export class HURT extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.BLINK);
         }
     }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(TAKEDAMAGE):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(TAKEDAMAGE):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(TAKEDAMAGE):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(TAKEDAMAGE):event`); return true; }
 };
 /**对话（暂无）： */
 export class TALK extends BaseNonPlayerActorState {
-    enter(entity: NonPlayer): void { super.enter(entity); Utils.log(`${entity.actorName()}(TALK):enter`); }
+    enter(entity: NonPlayer): void { super.enter(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(TALK):enter`); }
     update(entity: NonPlayer): void { super.update(entity); }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(TALK):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(TALK):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(TALK):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(TALK):event`); return true; }
 };
 /**格挡：待机，攻击 */
 export class BLOCK extends BaseNonPlayerActorState {
-    enter(entity: NonPlayer): void { super.enter(entity); Utils.log(`${entity.actorName()}(BLOCK):enter`); }
+    enter(entity: NonPlayer): void { super.enter(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(BLOCK):enter`); }
     update(entity: NonPlayer): void { super.update(entity); }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(BLOCK):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(BLOCK):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(BLOCK):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(BLOCK):event`); return true; }
 };
 /** 伪装：待机*/
 export class DISGUISE extends BaseNonPlayerActorState {
     enter(entity: NonPlayer): void {
         super.enter(entity);
-        Utils.log(`${entity.actorName()}(DISGUISE):enter`);
+        Utils.log(`${entity.actorName()}${entity.node.uuid}(DISGUISE):enter`);
         entity.enterDisguise();
     }
     update(entity: NonPlayer): void {
@@ -145,38 +145,38 @@ export class DISGUISE extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.IDLE);
         }
     }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(DISGUISE):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(DISGUISE):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(DISGUISE):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(DISGUISE):event`); return true; }
 };
 /** 冲刺：待机*/
 export class DASH extends BaseNonPlayerActorState {
-    enter(entity: NonPlayer): void { super.enter(entity); Utils.log(`${entity.actorName()}(DASH):enter`); }
+    enter(entity: NonPlayer): void { super.enter(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(DASH):enter`); }
     update(entity: NonPlayer): void {
         super.update(entity);
         if (!entity.sc.isDashing) {
             entity.stateMachine.changeState(NonPlayerActorState.IDLE);
         }
     }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(DASH):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(DASH):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(DASH):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(DASH):event`); return true; }
 };
 /**闪避：待机 */
 export class DODGE extends BaseNonPlayerActorState {
-    enter(entity: NonPlayer): void { super.enter(entity); Utils.log(`${entity.actorName()}(DODGE):enter`); }
+    enter(entity: NonPlayer): void { super.enter(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(DODGE):enter`); }
     update(entity: NonPlayer): void {
         super.update(entity);
         if (!entity.sc.isDodging) {
             entity.stateMachine.changeState(NonPlayerActorState.IDLE);
         }
     }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(DODGE):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(DODGE):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(DODGE):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(DODGE):event`); return true; }
 };
 /**眩晕：待机 */
 export class DIZZ extends BaseNonPlayerActorState {
     enter(entity: NonPlayer): void {
         super.enter(entity);
-        Utils.log(`${entity.actorName()}(DIZZ):enter`);
+        Utils.log(`${entity.actorName()}${entity.node.uuid}(DIZZ):enter`);
         entity.enterDizz();
     }
     update(entity: NonPlayer): void {
@@ -185,14 +185,14 @@ export class DIZZ extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.IDLE);
         }
     }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(DIZZ):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(DIZZ):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(DIZZ):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(DIZZ):event`); return true; }
 };
 /**闪烁：待机 */
 export class BLINK extends BaseNonPlayerActorState {
     enter(entity: NonPlayer): void {
         super.enter(entity);
-        Utils.log(`${entity.actorName()}(BLINK):enter`);
+        Utils.log(`${entity.actorName()}${entity.node.uuid}(BLINK):enter`);
         entity.enterBlink();
     }
     update(entity: NonPlayer): void {
@@ -201,14 +201,14 @@ export class BLINK extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.IDLE);
         }
     }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(BLINK):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(BLINK):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(BLINK):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(BLINK):event`); return true; }
 };
 /**摔倒：待机 */
 export class FALL extends BaseNonPlayerActorState {
     enter(entity: NonPlayer): void {
         super.enter(entity);
-        Utils.log(`${entity.actorName()}(FALL):enter`);
+        Utils.log(`${entity.actorName()}${entity.node.uuid}(FALL):enter`);
         entity.enterFall();
     }
     update(entity: NonPlayer): void {
@@ -217,12 +217,12 @@ export class FALL extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.IDLE);
         }
     }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(FALL):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(FALL):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(FALL):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(FALL):event`); return true; }
 };
 /** 全局：死亡 受伤*/
 export class GLOBAL extends BaseNonPlayerActorState {
-    enter(entity: NonPlayer): void { super.enter(entity); Utils.log(`${entity.actorName()}(GLOBAL):enter`); }
+    enter(entity: NonPlayer): void { super.enter(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(GLOBAL):enter`); }
     update(entity: NonPlayer): void {
         super.update(entity);
         if(entity.sc.isDied){
@@ -234,8 +234,8 @@ export class GLOBAL extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.HURT);
         }
     }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}(GLOBAL):exit`); }
-    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(GLOBAL):event`); return true; }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(GLOBAL):exit`); }
+    event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(GLOBAL):event`); return true; }
 };
 export default class NonPlayerActorState {
     static GLOBAL = new GLOBAL();

@@ -86,7 +86,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     private isMiss = false;
     private drainSkill = new NextStep();
     private isReflect = false;//子弹偏转
-    private spriteNode:cc.Node = null;
+    private spriteNode: cc.Node = null;
     private weaponSprite: cc.Sprite = null;
     private weaponLightSprite: cc.Sprite = null;
     private handSprite: cc.Sprite = null;
@@ -100,6 +100,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     private exBeatBack: number = 0;
     private isAttackPressed = false;
     private comboMiss = false;
+    private canMove = false;
     private playerData: PlayerData;
 
     get IsSword() {
@@ -150,7 +151,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
 
     set Hv(hv: cc.Vec3) {
-        if(Controller.isMouseMode()&&Controller.mousePos&&this.dungeon){
+        if (Controller.isMouseMode() && Controller.mousePos && this.dungeon) {
             let p = this.dungeon.node.convertToWorldSpaceAR(this.player.node.position);
             this.hv = Controller.mousePos.add(this.dungeon.mainCamera.node.position).sub(p).normalize();
             return;
@@ -229,6 +230,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         this.fistCombo = fistCombo;
         this.isMiss = isMiss;
         this.isAttacking = true;
+        this.canMove = false;
         this.updateCombo();
         let animname = this.getAttackAnimName();
         this.anim.play(animname);
@@ -273,15 +275,22 @@ export default class MeleeWeapon extends BaseColliderComponent {
             this.anim.play(isReverse ? 'MeleeAttackIdleReverse' : 'MeleeAttackIdle');
         }
     }
+    //Anim
+    MoveAction() {
+        this.canMove = true;
+    }
     getMeleeSlowRatio(): number {
+        if (this.canMove || !this.isAttacking) {
+            return 1;
+        }
         if (!this.isFar && this.isStab) {
-            return 0.5;
+            return 0.1;
         } else if (this.isFar && this.isStab) {
-            return 0.3;
+            return 0.04;
         } else if (!this.isFar && !this.isStab) {
-            return 0.3;
+            return 0.04;
         } else {
-            return 0.2;
+            return 0.02;
         }
     }
 
@@ -318,16 +327,16 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
     private getWaveLight(dungeonNode: cc.Node, p: cc.Vec3, elementType: number, isStab: boolean, isFar: boolean) {
         let lights = [this.iceLight, this.fireLight, this.lighteningLight, this.toxicLight, this.curseLight];
-        let audios = [AudioPlayer.ELECTRIC_ATTACK,AudioPlayer.FIREBALL,AudioPlayer.ELECTRIC_ATTACK,AudioPlayer.ELECTRIC_ATTACK,AudioPlayer.ELECTRIC_ATTACK]
+        let audios = [AudioPlayer.ELECTRIC_ATTACK, AudioPlayer.FIREBALL, AudioPlayer.ELECTRIC_ATTACK, AudioPlayer.ELECTRIC_ATTACK, AudioPlayer.ELECTRIC_ATTACK]
         if (elementType < 1 || elementType > lights.length || !this.dungeon) {
             return;
         }
         let firePrefab: cc.Node = cc.instantiate(lights[elementType - 1]);
-        AudioPlayer.play(audios[elementType-1]);
+        AudioPlayer.play(audios[elementType - 1]);
         let timeScale = this.anim.getAnimationState(this.getAttackAnimName()).speed;
         let ps = [p];
         for (let node of this.weaponFirePoints) {
-            if(node){
+            if (node) {
                 ps.push(p.add(node.position));
             }
         }
@@ -375,7 +384,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
     //Anim
     ExAttackTime() {
-        this.player.exTrigger(TriggerData.GROUP_ATTACK,this.comboType,null,null);
+        this.player.exTrigger(TriggerData.GROUP_ATTACK, this.comboType, null, null);
     }
     //Anim
     AudioTime() {
@@ -471,10 +480,10 @@ export default class MeleeWeapon extends BaseColliderComponent {
         }
     }
     updateLogic(dt: number) {
-        if(Controller.isMouseMode()&&Controller.mousePos&&this.dungeon){
+        if (Controller.isMouseMode() && Controller.mousePos && this.dungeon) {
             let p = this.dungeon.node.convertToWorldSpaceAR(this.player.node.position);
             this.hv = Controller.mousePos.add(this.dungeon.mainCamera.node.position).sub(p).normalize();
-        }else {
+        } else {
             let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400);
             if (!pos.equals(cc.Vec3.ZERO)) {
                 this.hv = pos;
@@ -577,7 +586,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 if (damageSuccess) {
                     this.beatBack(monster);
                     this.addTargetAllStatus(common, monster);
-                    this.addHitExTrigger(damage,monster);
+                    this.addHitExTrigger(damage, monster);
                 }
             }
         } else if (attackTarget.tag == CCollider.TAG.BOSS) {
@@ -586,7 +595,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 damageSuccess = boss.takeDamage(damage);
                 if (damageSuccess) {
                     this.addTargetAllStatus(common, boss);
-                    this.addHitExTrigger(damage,boss);
+                    this.addHitExTrigger(damage, boss);
                 }
             }
         } else if (attackTarget.tag == CCollider.TAG.BUILDING || attackTarget.tag == CCollider.TAG.WALL) {
@@ -635,18 +644,18 @@ export default class MeleeWeapon extends BaseColliderComponent {
         }
         return damageSuccess || attackSuccess;
     }
-    private addHitExTrigger(damage:DamageData,actor:Actor){
+    private addHitExTrigger(damage: DamageData, actor: Actor) {
         let isAdded = false;
-        if(damage.isBackAttack){
-            this.player.exTrigger(TriggerData.GROUP_HIT,TriggerData.TYPE_HIT_BACK,new FromData(),actor);
+        if (damage.isBackAttack) {
+            this.player.exTrigger(TriggerData.GROUP_HIT, TriggerData.TYPE_HIT_BACK, new FromData(), actor);
             isAdded = true;
         }
-        if(damage.isCriticalStrike){
-            this.player.exTrigger(TriggerData.GROUP_HIT,TriggerData.TYPE_HIT_CRIT,new FromData(),actor);
+        if (damage.isCriticalStrike) {
+            this.player.exTrigger(TriggerData.GROUP_HIT, TriggerData.TYPE_HIT_CRIT, new FromData(), actor);
             isAdded = true;
         }
-        if(!isAdded){
-            this.player.exTrigger(TriggerData.GROUP_HIT,TriggerData.TYPE_HIT,new FromData(),actor);
+        if (!isAdded) {
+            this.player.exTrigger(TriggerData.GROUP_HIT, TriggerData.TYPE_HIT, new FromData(), actor);
         }
     }
     private addTargetAllStatus(data: CommonData, target: Actor) {

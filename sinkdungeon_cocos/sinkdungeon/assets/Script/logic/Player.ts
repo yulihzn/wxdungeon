@@ -794,10 +794,10 @@ export default class Player extends Actor {
             return;
         }
 
-        if (this.weaponRight.meleeWeapon.IsAttacking && !pos.equals(cc.Vec3.ZERO)) {
+        if (!pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(this.weaponRight.meleeWeapon.getMeleeSlowRatio());
         }
-        if (this.weaponLeft.meleeWeapon.IsAttacking && !pos.equals(cc.Vec3.ZERO)) {
+        if (!pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(this.weaponLeft.meleeWeapon.getMeleeSlowRatio());
         }
         if (this.weaponLeft.isHeavyRemotoAttacking && !pos.equals(cc.Vec3.ZERO)) {

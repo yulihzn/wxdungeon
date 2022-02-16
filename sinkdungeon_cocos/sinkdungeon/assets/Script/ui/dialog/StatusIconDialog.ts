@@ -33,6 +33,8 @@ export default class StatusIconDialog extends cc.Component {
     infoDesc: cc.Label = null;//描述
     @property(cc.Label)
     count: cc.Label = null;//时间
+
+    iconNode:cc.Node = null;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -70,13 +72,19 @@ export default class StatusIconDialog extends cc.Component {
         this.labelTitle.node.color = this.labelTitle.node.color.fromHEX('#F4C021');
     }
 
-    public showDialog(position: cc.Vec3, statusData: StatusData) {
+    public showDialog(iconNode:cc.Node,position: cc.Vec3, statusData: StatusData) {
+        this.iconNode = iconNode;
         this.refreshStatusInfo(statusData);
         this.node.active = true;
         this.node.position = position.clone();
     }
     hideDialog() {
         this.node.active = false;
+    }
+    protected update(dt: number): void {
+        if(!this.iconNode||cc.isValid(this.iconNode)){
+            this.hideDialog();
+        }
     }
 
 }

@@ -414,6 +414,11 @@
       "params": []
     },
     {
+      "frame": 0.5,
+      "func": "MoveAction",
+      "params": []
+    },
+    {
       "frame": 0.6666666666666666,
       "func": "ComboTime",
       "params": []

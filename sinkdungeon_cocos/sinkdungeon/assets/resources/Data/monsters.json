@@ -957,7 +957,7 @@
         "specialAttack": 15,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 600,
+            "moveSpeed": 400,
             "maxHealth": 10,
             "damageMin": 1
         },
