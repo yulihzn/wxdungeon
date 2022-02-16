@@ -70,7 +70,7 @@ export default class MiniMap extends cc.Component {
 				node.group = 'ui'
 				this.tileSize = node.width;
 				this.mapBig[i][j] = node.getComponent(MiniTile);
-				this.layerBig.addChild(this.map[i][j].node);
+				this.layerBig.addChild(this.mapBig[i][j].node);
 				this.mapBig[i][j].init(i,j,true);
 			}
 		}
