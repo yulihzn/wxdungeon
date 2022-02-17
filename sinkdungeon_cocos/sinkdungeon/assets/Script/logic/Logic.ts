@@ -158,18 +158,16 @@ export default class Logic extends cc.Component {
     start() {
 
     }
-    static saveData(lite?:boolean) {
-        if(!lite){
-            Logic.profileManager.data.playerData = Logic.playerData.clone();
-            Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon;
-            Logic.profileManager.data.level = Logic.level;
-            Logic.profileManager.data.chapterIndex = Logic.chapterIndex;
-            Logic.profileManager.data.chapterMaxIndex = Logic.chapterMaxIndex;
-        }
+    static saveData() {
+        Logic.profileManager.data.playerData = Logic.playerData.clone();
         Logic.profileManager.data.playerEquips = Logic.inventoryManager.equips;
         Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList;
         Logic.profileManager.data.nonPlayerList = Logic.nonPlayerList;
         Logic.profileManager.data.playerInventoryList = Logic.inventoryManager.inventoryList;
+        Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon;
+        Logic.profileManager.data.level = Logic.level;
+        Logic.profileManager.data.chapterIndex = Logic.chapterIndex;
+        Logic.profileManager.data.chapterMaxIndex = Logic.chapterMaxIndex;
         Logic.profileManager.data.time = Logic.time;
         Logic.profileManager.data.realTime = Logic.realTime;
         Logic.profileManager.data.savePointData = Logic.savePoinitData.clone();
