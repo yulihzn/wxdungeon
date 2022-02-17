@@ -66,6 +66,7 @@ export default class KeyboardController extends cc.Component {
             case 50: this.useItem(1); break;
             case 51: this.useItem(2); break;
             case cc.macro.KEY.escape: EventHelper.emit(EventHelper.HUD_CANCEL_OR_PAUSE); break;
+            case cc.macro.KEY.m: EventHelper.emit(EventHelper.OPEN_MINIMAP); break;
         }
     }
     private trigger(isLongPress?: boolean) {

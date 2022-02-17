@@ -12,62 +12,62 @@ import Logic from "./Logic";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class NewClass extends cc.Component {
 
     @property(cc.Integer)
-    anglePreDirQuadrant:number = 23;//每个象限的大小
- 
- 
+    anglePreDirQuadrant: number = 23;//每个象限的大小
+
+
     @property(cc.Node)
-    fixedPoint:cc.Node = null;
- 
- 
+    fixedPoint: cc.Node = null;
+
+
     @property(cc.Node)
-    movePoint:cc.Node = null;
- 
+    movePoint: cc.Node = null;
+
     @property
-    movePointMoveRadius:number=100;
- 
+    movePointMoveRadius: number = 100;
+
     private stopCount = 0;//当不操作的时候是否需要停止发送移动事件
- 
-    private touchID:number;//触摸事件ID（多点触控）
-    private touchArea:cc.Vec3;//触摸区域大小
- 
- 
-    private fixedPointMoveCenterPos:cc.Vec3;//固定点移动中心
-    private fixedPointMoveRadius:number;//固定点移动半径
-    private movePointMoveCenterPos:cc.Vec3;//移动点移动中心
- 
- 
-    private joystickInputDir:cc.Vec3;
- 
- 
+
+    private touchID: number;//触摸事件ID（多点触控）
+    private touchArea: cc.Vec3;//触摸区域大小
+
+
+    private fixedPointMoveCenterPos: cc.Vec3;//固定点移动中心
+    private fixedPointMoveRadius: number;//固定点移动半径
+    private movePointMoveCenterPos: cc.Vec3;//移动点移动中心
+
+
+    private joystickInputDir: cc.Vec3;
+
+
     onLoad() {
         let nodeSize = this.node.getContentSize()
-        this.touchArea = new cc.Vec3(nodeSize.width,nodeSize.height)
- 
- 
+        this.touchArea = new cc.Vec3(nodeSize.width, nodeSize.height)
+
+
         //固定点位置范围
-        this.fixedPointMoveCenterPos = this.touchArea.div(0,this.touchArea);
-        this.fixedPointMoveRadius = this.touchArea.x/2 - this.movePointMoveRadius;
- 
- 
-        this.node.on(cc.Node.EventType.TOUCH_START, function (event:cc.Event.EventTouch) {
-            if(Controller.isMouseMode()){
+        this.fixedPointMoveCenterPos = this.touchArea.div(0, this.touchArea);
+        this.fixedPointMoveRadius = this.touchArea.x / 2 - this.movePointMoveRadius;
+
+
+        this.node.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
+            if (Controller.isMouseMode()) {
                 return;
             }
-            if (this.touchID==-1){
+            if (this.touchID == -1) {
                 //触摸位置
                 let touchStartPos = event.getLocation()
-                let _pos = new cc.Vec3(touchStartPos.x,touchStartPos.y)
-                _pos.subSelf(this.node.position)
- 
- 
+                let _pos = new cc.Vec3(touchStartPos.x, touchStartPos.y)
+                // _pos.subSelf(this.node.position)
+
+
                 //控制位置
-                let pos = this.clampPos(_pos,this.fixedPointMoveCenterPos,this.fixedPointMoveRadius)
+                let pos = this.clampPos(_pos, this.fixedPointMoveCenterPos, this.fixedPointMoveRadius)
                 this.movePointMoveCenterPos = pos;
                 //设置固定点位置
                 this.setFixedPointPos(pos)
@@ -75,223 +75,222 @@ export default class NewClass extends cc.Component {
                 this.touchID = event.getID()
             }
         }, this)
- 
- 
-        this.node.on(cc.Node.EventType.TOUCH_MOVE, function (event:cc.Event.EventTouch) {
-            if(Controller.isMouseMode()){
+
+
+        this.node.on(cc.Node.EventType.TOUCH_MOVE, (event: cc.Event.EventTouch) => {
+            if (Controller.isMouseMode()) {
                 return;
             }
-            if (this.touchID==event.getID()){
+            if (this.touchID == event.getID()) {
                 //触摸位置
                 let nowPos = event.getLocation()
-                let _pos = new cc.Vec3(nowPos.x,nowPos.y)
-                _pos.subSelf(this.node.position)
- 
- 
+                let _pos = new cc.Vec3(nowPos.x, nowPos.y)
+                // _pos.subSelf(this.node.position)
+
+
                 //控制位置
-                let pos = this.clampPos(_pos,this.movePointMoveCenterPos,this.movePointMoveRadius)
+                let pos = this.clampPos(_pos, this.movePointMoveCenterPos, this.movePointMoveRadius)
                 //设置固定点位置
                 this.setMovePointPos(pos)
             }
         }, this)
- 
- 
-        this.node.on(cc.Node.EventType.TOUCH_END, function (event) {
-            if(Controller.isMouseMode()){
+
+
+        this.node.on(cc.Node.EventType.TOUCH_END, (event) => {
+            if (Controller.isMouseMode()) {
                 return;
             }
             this.init()
         }, this)
- 
- 
-        this.node.on(cc.Node.EventType.TOUCH_CANCEL, function (event) {
-            if(Controller.isMouseMode()){
+
+
+        this.node.on(cc.Node.EventType.TOUCH_CANCEL, (event) => {
+            if (Controller.isMouseMode()) {
                 return;
             }
             this.init()
         }, this)
- 
- 
+
+
         this.init()
     }
- 
- 
+
+
     /**
      * 初始化
      */
-    init(){
+    init() {
         this.touchID = -1;
         this.joystickInputDir = new cc.Vec3()
-        
+
         this.setFixedPointPos(this.fixedPointMoveCenterPos)
         this.setMovePointPos(this.fixedPointMoveCenterPos)
     }
- 
- 
+
+
     /**
      * 设置固定点位置
      */
-    public setFixedPointPos(pos:cc.Vec3){
-        this.fixedPoint.setPosition(pos)
+    public setFixedPointPos(pos: cc.Vec3) {
+        this.fixedPoint.setPosition(this.node.convertToNodeSpaceAR(pos))
     }
- 
- 
+
+
     /**
      * 获取固定点位置
      */
-    public getFixedPointPos(){
+    public getFixedPointPos() {
         return this.fixedPoint.getPosition()
     }
- 
- 
+
+
     /**
      * 设置移动点位置
      */
-    public setMovePointPos(pos:cc.Vec3){
-        this.movePoint.setPosition(pos)
+    public setMovePointPos(pos: cc.Vec3) {
+        this.movePoint.setPosition(this.node.convertToNodeSpaceAR(pos))
     }
- 
- 
+
+
     /**
      * 获取移动点位置
      */
-    public getMovePointPos(){
+    public getMovePointPos() {
         return this.movePoint.getPosition()
     }
- 
- 
+
+
     /**
      * 圆形限制，防止溢出
      * @param pos 需要固定位置
      * @param centerPos 限制中心位置
      * @param radius 限制半径
      */
-    public clampPos(pos:cc.Vec3,centerPos:cc.Vec3,radius:number):cc.Vec3{
+    public clampPos(pos: cc.Vec3, centerPos: cc.Vec3, radius: number): cc.Vec3 {
         let dpos = pos.sub(centerPos)
-        if (dpos.mag()>radius){
+        if (dpos.mag() > radius) {
             return dpos.normalize().mul(radius).add(centerPos)
-        }else{
+        } else {
             return pos;
         }
     }
- 
- 
+
+
     /**
      * 获取摇杆输入方向
      */
-    public getInputDir():cc.Vec2{
+    public getInputDir(): cc.Vec2 {
         let dir = this.movePoint.getPosition().sub(this.fixedPoint.getPosition());
-        if(isNaN(dir.x)||isNaN(dir.y)){
-            dir = cc.v2(0,0);
+        if (isNaN(dir.x) || isNaN(dir.y)) {
+            dir = cc.v2(0, 0);
         }
-        if (dir.mag()>0){
+        if (dir.mag() > 0) {
             dir.normalizeSelf()
         }
         return dir;
     }
- 
- 
+
+
     /**
      * 获取摇杆象限输入方向（轴）
      */
-    public getInputQuadrantDir():cc.Vec2{
+    public getInputQuadrantDir(): cc.Vec2 {
         return this.getVec2ByQuadrant(this.getDirQuadrant(this.getInputDir()))
     }
- 
- 
+
+
     /**
      * 获取方向所在象限
      * @param vec 方向
      */
-    public getDirQuadrant(vec:cc.Vec2):number{
-        let dirQuadrant:number = null;
- 
- 
-        if (vec.mag()>0){
+    public getDirQuadrant(vec: cc.Vec2): number {
+        let dirQuadrant: number = null;
+
+
+        if (vec.mag() > 0) {
             //非零向量
-            dirQuadrant = Math.floor(this.getAngleByVec2(vec)/this.anglePreDirQuadrant)
+            dirQuadrant = Math.floor(this.getAngleByVec2(vec) / this.anglePreDirQuadrant)
         }
- 
- 
+
+
         //console.log(this.getAngleByVec2(vec),dirQuadrant)
         return dirQuadrant;
     }
- 
- 
+
+
     /**
      * 二维方向获取角度
      * @param vec 方向
      */
-    public getAngleByVec2(vec:cc.Vec2):number{
-        return -Math.atan2(vec.y,vec.x)*180/Math.PI + this.anglePreDirQuadrant/2;//this.anglePreDirQuadrant/2 用于旋转坐标系
+    public getAngleByVec2(vec: cc.Vec2): number {
+        return -Math.atan2(vec.y, vec.x) * 180 / Math.PI + this.anglePreDirQuadrant / 2;//this.anglePreDirQuadrant/2 用于旋转坐标系
     }
- 
- 
+
+
     /**
      * 角度获取二位方向
      * @param angle 
      */
-    public getVec2ByAngle(angle:number):cc.Vec2
-	{
-		let dir:cc.Vec2=new cc.Vec2()
-		let rad:number = (this.anglePreDirQuadrant/2-angle)*(Math.PI/180)//this.anglePreDirQuadrant/2 用于旋转坐标系
-		dir.x=Math.cos(rad)
-		dir.y=Math.sin(rad)
-		return dir.normalizeSelf()
-	}
- 
- 
+    public getVec2ByAngle(angle: number): cc.Vec2 {
+        let dir: cc.Vec2 = new cc.Vec2()
+        let rad: number = (this.anglePreDirQuadrant / 2 - angle) * (Math.PI / 180)//this.anglePreDirQuadrant/2 用于旋转坐标系
+        dir.x = Math.cos(rad)
+        dir.y = Math.sin(rad)
+        return dir.normalizeSelf()
+    }
+
+
     /**
      * 根据方向象限获取角度
      * @param dirQuadrant 
      */
-    public getVec2ByQuadrant(dirQuadrant:number):cc.Vec2{
-        if (dirQuadrant!=null){
-            let angle:number = dirQuadrant*this.anglePreDirQuadrant;
+    public getVec2ByQuadrant(dirQuadrant: number): cc.Vec2 {
+        if (dirQuadrant != null) {
+            let angle: number = dirQuadrant * this.anglePreDirQuadrant;
             //获取象限的中心轴向
-            angle+=this.anglePreDirQuadrant/2;
- 
- 
+            angle += this.anglePreDirQuadrant / 2;
+
+
             return this.getVec2ByAngle(angle)
-        }else{
+        } else {
             return cc.Vec2.ZERO;
         }
     }
 
-    sendMoveMessageToPlayer(dt:number){
-        if(Logic.isGamePause){
+    sendMoveMessageToPlayer(dt: number) {
+        if (Logic.isGamePause) {
             return;
         }
         let v = this.getInputQuadrantDir();
-        
+
         let dir = 4;
-        if(Math.abs(v.x)<Math.abs(v.y)){
-            if(v.y>0.3){
+        if (Math.abs(v.x) < Math.abs(v.y)) {
+            if (v.y > 0.3) {
                 dir = 0;
             }
-            if(v.y<-0.3){
+            if (v.y < -0.3) {
                 dir = 1;
             }
-            
+
         }
-        if(Math.abs(v.x)>Math.abs(v.y)){
-            if(v.x<-0.3){
+        if (Math.abs(v.x) > Math.abs(v.y)) {
+            if (v.x < -0.3) {
                 dir = 2;
             }
-            if(v.x>0.3){
+            if (v.x > 0.3) {
                 dir = 3;
             }
         }
         let pos = this.getInputDir();
-        if(!pos.equals(cc.Vec2.ZERO)){
+        if (!pos.equals(cc.Vec2.ZERO)) {
             this.stopCount = 0;
-        }else{
+        } else {
             this.stopCount++;
         }
-        if(this.stopCount<2){
-            cc.director.emit(EventHelper.PLAYER_MOVE,{detail:{dir:dir,pos:pos,dt:dt}})
+        if (this.stopCount < 2) {
+            cc.director.emit(EventHelper.PLAYER_MOVE, { detail: { dir: dir, pos: pos, dt: dt } })
         }
-        
+
     }
     timeDelay = 0;
     isTimeDelay(dt: number): boolean {
@@ -302,8 +301,8 @@ export default class NewClass extends cc.Component {
         }
         return false;
     }
-    update(dt){
-        if(this.isTimeDelay(dt)){
+    update(dt) {
+        if (this.isTimeDelay(dt)) {
             this.sendMoveMessageToPlayer(dt);
         }
     }

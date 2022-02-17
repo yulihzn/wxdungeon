@@ -23,13 +23,16 @@ export default class MiniTile extends cc.Component {
     @property(cc.Sprite)
     sign: cc.Sprite = null;
     @property(cc.Sprite)
-    lock:cc.Sprite = null;
+    lock: cc.Sprite = null;
     @property(cc.Node)
     bg: cc.Node = null;
     graphics: cc.Graphics;
     x: number;
     y: number;
     needDetails = false;
+    isCurrentRoom = false;
+    map: string[][];
+    minimap: string[][];
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -39,21 +42,26 @@ export default class MiniTile extends cc.Component {
     start() {
 
     }
-    init(x: number, y: number, needDetails: boolean) {
+    init(x: number, y: number, needDetails: boolean, isCurrentRoom: boolean) {
+        this.isCurrentRoom = isCurrentRoom;
         this.x = x;
         this.y = y;
         this.needDetails = needDetails;
+        this.graphics = this.getComponent(cc.Graphics);
         this.initMap();
     }
     private isFirstEqual(mapStr: string, typeStr: string) {
         let isequal = mapStr[0] == typeStr;
         return isequal;
     }
+    private isThe(mapStr: string, typeStr: string): boolean {
+        let isequal = mapStr.indexOf(typeStr) != -1;
+        return isequal;
+    }
     private initMap(): void {
         let levelData = Logic.worldLoader.getCurrentLevelData();
         let groundOilGoldData = Logic.groundOilGoldData.clone();
-        let currentPos = cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y);
-        let isFound = true;
+        this.map = levelData.getRoomMap(this.x, this.y);
         if (this.x < 0 || this.y < 0 || this.x > Logic.mapManager.rectDungeon.map.length - 1 || this.y > Logic.mapManager.rectDungeon.map[0].length - 1) {
             this.node.opacity = 0;
             return;
@@ -67,76 +75,81 @@ export default class MiniTile extends cc.Component {
         let state = rectroom.state;
         let roomType = rectroom.roomType;
         if (levelData.minimap[this.x][this.y]) {
-            this.lock.spriteFrame = Logic.spriteFrameRes(`minimaplock${levelData.minimaplock[this.x][this.y]}`)
+            // this.lock.spriteFrame = Logic.spriteFrameRes(`minimaplock${levelData.minimaplock[this.x][this.y]}`)
         } else {
-            this.lock.spriteFrame = null;
+            // this.lock.spriteFrame = null;
         }
         if (groundOilGoldData.chapter == Logic.chapterIndex && groundOilGoldData.level == Logic.level
             && groundOilGoldData.x == rectroom.x
-            && groundOilGoldData.y == rectroom.y && groundOilGoldData.value > 0) {
+            && groundOilGoldData.y == rectroom.y && groundOilGoldData.value > 0 && !this.isCurrentRoom) {
             this.deathSign.node.active = true;
         } else {
             this.deathSign.node.active = false;
         }
         this.bg.color = this.getColor(MiniMap.ColorLevel.HIDE);
-        if (isFound) {
-            this.bg.color = this.getColor(MiniMap.ColorLevel.NORMAL);
-            this.bg.opacity = 180;
-            let isClear = state == RectRoom.STATE_CLEAR;
-            this.bg.color = this.getColor(isClear ? MiniMap.ColorLevel.CLEAR : MiniMap.ColorLevel.NORMAL);
-            this.getMapColor(roomType, RoomType.EMPTY_ROOM, isClear
-                , MiniMap.ColorLevel.EMPTY, MiniMap.ColorLevel.EMPTY);
-            this.getMapColor(roomType, RoomType.BOSS_ROOM, isClear
-                , MiniMap.ColorLevel.NORMAL_BOSS, MiniMap.ColorLevel.CLEAR_BOSS);
-            this.getMapColor(roomType, RoomType.LOOT_ROOM, isClear
-                , MiniMap.ColorLevel.NORMAL_LOOT, MiniMap.ColorLevel.CLEAR_LOOT);
-            this.getMapColor(roomType, RoomType.MERCHANT_ROOM, isClear
-                , MiniMap.ColorLevel.NORMAL_MERCHANT, MiniMap.ColorLevel.CLEAR_MERCHANT);
-            this.getMapColor(roomType, RoomType.START_ROOM, isClear
-                , MiniMap.ColorLevel.NORMAL_START, MiniMap.ColorLevel.NORMAL_START);
-            this.getMapColor(roomType, RoomType.END_ROOM, isClear
-                , MiniMap.ColorLevel.NORMAL_END, MiniMap.ColorLevel.CLEAR_END);
-            this.getMapColor(roomType, RoomType.ELITE_ROOM, isClear
-                , MiniMap.ColorLevel.NORMAL_PUZZLE, MiniMap.ColorLevel.CLEAR_PUZZLE);
-            this.getMapColor(roomType, RoomType.REST_ROOM, isClear
-                , MiniMap.ColorLevel.NORMAL_REST, MiniMap.ColorLevel.NORMAL_REST);
-            this.getMapColor(roomType, RoomType.PREPARE_ROOM, isClear
-                , MiniMap.ColorLevel.NORMAL_PREPARE, MiniMap.ColorLevel.NORMAL_PREPARE);
-            this.getMapColor(roomType, RoomType.TEST_ROOM, isClear
-                , MiniMap.ColorLevel.NORMAL_TEST, MiniMap.ColorLevel.NORMAL_TEST);
-            if (roomType == RoomType.START_ROOM) {
-                this.bg.color = this.getColor(MiniMap.ColorLevel.NORMAL_START);
-            }
-            if (this.x == currentPos.x && this.y == currentPos.y) {
-                this.bg.color = this.getColor(MiniMap.ColorLevel.PLAYER);
-            }
+        this.bg.color = this.getColor(MiniMap.ColorLevel.NORMAL);
+        this.bg.opacity = 255;
+        let isClear = state == RectRoom.STATE_CLEAR;
+        this.bg.color = this.getColor(isClear ? MiniMap.ColorLevel.CLEAR : MiniMap.ColorLevel.NORMAL);
+        this.getMapColor(roomType, RoomType.EMPTY_ROOM, isClear
+            , MiniMap.ColorLevel.EMPTY, MiniMap.ColorLevel.EMPTY);
+        this.getMapColor(roomType, RoomType.BOSS_ROOM, isClear
+            , MiniMap.ColorLevel.NORMAL_BOSS, MiniMap.ColorLevel.CLEAR_BOSS);
+        this.getMapColor(roomType, RoomType.LOOT_ROOM, isClear
+            , MiniMap.ColorLevel.NORMAL_LOOT, MiniMap.ColorLevel.CLEAR_LOOT);
+        this.getMapColor(roomType, RoomType.MERCHANT_ROOM, isClear
+            , MiniMap.ColorLevel.NORMAL_MERCHANT, MiniMap.ColorLevel.CLEAR_MERCHANT);
+        this.getMapColor(roomType, RoomType.START_ROOM, isClear
+            , MiniMap.ColorLevel.NORMAL_START, MiniMap.ColorLevel.NORMAL_START);
+        this.getMapColor(roomType, RoomType.END_ROOM, isClear
+            , MiniMap.ColorLevel.NORMAL_END, MiniMap.ColorLevel.CLEAR_END);
+        this.getMapColor(roomType, RoomType.ELITE_ROOM, isClear
+            , MiniMap.ColorLevel.NORMAL_PUZZLE, MiniMap.ColorLevel.CLEAR_PUZZLE);
+        this.getMapColor(roomType, RoomType.REST_ROOM, isClear
+            , MiniMap.ColorLevel.NORMAL_REST, MiniMap.ColorLevel.NORMAL_REST);
+        this.getMapColor(roomType, RoomType.PREPARE_ROOM, isClear
+            , MiniMap.ColorLevel.NORMAL_PREPARE, MiniMap.ColorLevel.NORMAL_PREPARE);
+        this.getMapColor(roomType, RoomType.TEST_ROOM, isClear
+            , MiniMap.ColorLevel.NORMAL_TEST, MiniMap.ColorLevel.NORMAL_TEST);
+        if (roomType == RoomType.START_ROOM) {
+            this.bg.color = this.getColor(MiniMap.ColorLevel.NORMAL_START);
         }
-        this.drawMap();
+        if (this.isCurrentRoom) {
+            this.bg.color = this.getColor(MiniMap.ColorLevel.PLAYER);
+        }
+        if (rectroom.isFound) {
+            this.drawMap(-1, -1);
+        }
     }
-    private drawMap() {
+    private drawMap(playerX: number, playerY: number) {
         if (!this.needDetails) {
             return;
         }
         let levelData = Logic.worldLoader.getCurrentLevelData();
-        let map = levelData.getRoomMap(this.x, this.y);
-        if (map.length < 1) {
+        if (this.map.length < 1) {
             return;
         }
         let tileSize = this.node.width / levelData.roomWidth;
-        let width = map.length;
-        let height = map[0].length;
+        let width = this.map.length;
+        let height = this.map[0].length;
         let alpha = 200;
         for (let j = 0; j < height; j++) {
             for (let i = 0; i < width; i++) {
-                let mapDataStr = map[i][j];
+                let mapDataStr = this.map[i][j];
+                let isTriangle = false;
+                this.graphics.fillColor = cc.color(33, 33, 33, alpha);//灰色
                 if (this.isFirstEqual(mapDataStr, '#')) {
                     this.graphics.fillColor = cc.color(119, 136, 153, alpha);//浅灰色
+                    if(this.isThe(mapDataStr,'#00')||this.isThe(mapDataStr,'#00')
+                    ||this.isThe(mapDataStr,'#00')||this.isThe(mapDataStr,'#00')){
+                        isTriangle = true;
+                    }
                 } else if (this.isFirstEqual(mapDataStr, '*')) {
                     this.graphics.fillColor = cc.color(33, 33, 33, alpha);//灰色
                 } else if (this.isFirstEqual(mapDataStr, '~')) {
                     this.graphics.fillColor = cc.color(0, 128, 128, alpha);//水鸭色
                 } else if (mapDataStr == '@S') {
-                    this.graphics.fillColor = cc.color(0, 255, 0, alpha);//酸橙色
+                    this.graphics.fillColor = cc.color(60, 179, 113, alpha);//春天的绿色	
                 } else if (this.isFirstEqual(mapDataStr, 'D')) {
                     let dir = BuildingManager.getDoorDir(mapDataStr);
                     let isLock = dir > 7 && dir < 12;
@@ -144,16 +157,39 @@ export default class MiniTile extends cc.Component {
                     if (isLock) {
                         this.graphics.fillColor = cc.color(255, 69, 0, alpha);//橙红色
                     }
+                    if(dir>15){
+                        this.graphics.fillColor = cc.color(33, 33, 33, alpha);//灰色
+                    }
                 } else if (this.isFirstEqual(mapDataStr, 'E')) {
-                    this.graphics.fillColor = cc.color(60, 179, 113, alpha);//春天的绿色	
+                    this.graphics.fillColor = cc.color(0, 255, 0, alpha);//酸橙色
                 } else if (this.isFirstEqual(mapDataStr, 'P')) {
                     this.graphics.fillColor = cc.color(32, 178, 170, alpha);//浅海洋绿
+                } else if (this.isFirstEqual(mapDataStr, 'z')) {
+                    this.sign.spriteFrame = Logic.spriteFrameRes('minimapboss');
                 }
                 if (!this.isFirstEqual(mapDataStr, '-')) {
-                    this.graphics.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
+                    if(isTriangle){
+                        this.graphics.moveTo(i * tileSize - this.node.width / 2, j * tileSize - this.node.width / 2);
+                        this.graphics.lineTo(i * tileSize - this.node.width / 2+tileSize, j * tileSize - this.node.width / 2)
+                        this.graphics.lineTo(i * tileSize - this.node.width / 2+tileSize/2, j * tileSize - this.node.width / 2+tileSize);
+                        this.graphics.close();
+                        this.graphics.fill();
+                    }else{
+                        this.graphics.fillRect(i * tileSize - this.node.width / 2, j * tileSize - this.node.width / 2, tileSize, tileSize);
+                    }
+                }
+                if (this.isCurrentRoom) {
+                    this.graphics.strokeColor = cc.color(0, 255, 0, alpha);//绿色
+                    this.graphics.lineWidth = 2;
+                    this.graphics.rect(playerX * tileSize - this.node.width / 2, playerY * tileSize - this.node.width / 2, tileSize, tileSize);
+                    this.graphics.stroke();
                 }
             }
         }
+    }
+    public updateMap(playerX: number, playerY: number) {
+        this.graphics.clear();
+        this.drawMap(playerX, playerY);
     }
     getMapColor(roomType: RoomType, roomTypeType: RoomType, isClear: boolean, typeNormal: number, typeClear: number) {
         if (roomType.isEqual(roomTypeType)) {
@@ -237,5 +273,5 @@ export default class MiniTile extends cc.Component {
         c3.setB(b > 255 ? 255 : b);
         return c3;
     }
-    // update (dt) {}
+
 }

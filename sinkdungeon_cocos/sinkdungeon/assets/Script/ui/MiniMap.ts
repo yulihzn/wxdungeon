@@ -1,6 +1,3 @@
-import RectRoom from "../rect/RectRoom";
-import RoomType from "../rect/RoomType";
-import BuildingManager from "../manager/BuildingManager";
 import { EventHelper } from "../logic/EventHelper";
 import Logic from "../logic/Logic";
 import MiniTile from "./MiniTile";
@@ -22,210 +19,114 @@ export default class MiniMap extends cc.Component {
 	@property(cc.Prefab)
 	miniTile: cc.Prefab = null;
 	@property(cc.Node)
-	layer:cc.Node = null;
+	cover: cc.Node = null;
 	@property(cc.Node)
-	layerBig:cc.Node = null;
-	static ColorLevel = {
+	layer: cc.Node = null;
+	@property(cc.Node)
+	dialog: cc.Node = null;
+	@property(cc.Node)
+	closeButton: cc.Node = null;
+	static readonly ColorLevel = {
 		EMPTY: -1, HIDE: 0, NORMAL: 1, PLAYER: 2, CLEAR: 3, NORMAL_BOSS: 4, CLEAR_PUZZLE: 5, CLEAR_END: 6, CLEAR_BOSS: 7, NORMAL_LOOT: 8, CLEAR_LOOT: 9,
 		NORMAL_START: 10, NORMAL_END: 11, NORMAL_REST: 12, NORMAL_PREPARE: 13, NORMAL_TEST: 14, NORMAL_PUZZLE: 15, NORMAL_MERCHANT: 16, CLEAR_MERCHANT: 17
 	}
 	width: number = 0;
 	height: number = 0;
 	map: MiniTile[][];
-	mapBig:MiniTile[][];
 	tileSize = 0;
-	
+	startPos = cc.v3(0, 0);
+	touchPos = cc.v2(0, 0);
+	isAniming = false;
+	currentBoTile: MiniTile;
+	isDrag = false;
+
 
 	// LIFE-CYCLE CALLBACKS:
 
 	onLoad() {
-		
+
 		cc.director.on(EventHelper.CHANGE_MINIMAP, (event) => {
-			// this.changeMap(event.detail.x, event.detail.y);
+			if (this.node) {
+				this.changeMap(event.detail.x, event.detail.y);
+			}
 		});
+		EventHelper.on(EventHelper.OPEN_MINIMAP, (detail) => {
+			if (this.node) {
+				this.openMap();
+			}
+		})
+		
+		this.cover.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
+			this.openMap();
+		})
+
+		this.layer.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
+			this.touchPos = event.getLocation();
+			this.startPos = this.layer.position.clone();
+			this.isDrag = true;
+		})
+		this.layer.on(cc.Node.EventType.TOUCH_MOVE, (event: cc.Event.EventTouch) => {
+			let offset = event.getLocation().sub(this.touchPos).mul(0.5);
+			this.layer.setPosition(this.startPos.x + offset.x, this.startPos.y + offset.y);
+		})
+		this.layer.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
+			this.isDrag = false;
+
+		})
+		this.layer.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
+			this.isDrag = false;
+
+		})
 		this.width = Logic.mapManager.rectDungeon.map.length;
 		this.height = Logic.mapManager.rectDungeon.map[0].length;
 		let currentPos = cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y);
-		// this.changeMap(currentPos.x,currentPos.y);
-
 		this.map = new Array();
 		this.layer.removeAllChildren();
-		for (let i = currentPos.x-1; i < 3; i++) {
+		this.layer.width = this.width * 100;
+		this.layer.height = this.height * 100;
+		for (let i = 0; i < this.width; i++) {
 			this.map[i] = new Array();
-			for (let j = currentPos.y-1; j < 3; j++) {
+			for (let j = 0; j < this.height; j++) {
 				let node = cc.instantiate(this.miniTile);
 				node.group = 'ui'
 				this.tileSize = node.width;
 				this.map[i][j] = node.getComponent(MiniTile);
 				this.layer.addChild(this.map[i][j].node);
-				this.map[i][j].init(i,j,true);
-			}
-		}
-		this.mapBig = new Array();
-		this.layerBig.removeAllChildren();
-		for (let i = 0; i < this.width; i++) {
-			this.mapBig[i] = new Array();
-			for (let j = 0; j < this.height; j++) {
-				let node = cc.instantiate(this.miniTile);
-				node.group = 'ui'
-				this.tileSize = node.width;
-				this.mapBig[i][j] = node.getComponent(MiniTile);
-				this.layerBig.addChild(this.mapBig[i][j].node);
-				this.mapBig[i][j].init(i,j,true);
+				this.map[i][j].init(i, j, true, i == currentPos.x && j == currentPos.y);
+				if (this.map[i][j].isCurrentRoom) {
+					this.currentBoTile = this.map[i][j];
+				}
 			}
 		}
 	}
-
-	start() {
-
+	changeMap(x: number, y: number) {
+		if (this.currentBoTile) {
+			this.currentBoTile.updateMap(x, y);
+		}
 	}
-	
-	// changeMap(x: number, y: number): void {
-	// 	let levelData = Logic.worldLoader.getCurrentLevelData();
-	// 	if (!this.map) {
-	// 		return;
-	// 	}
-	// 	let groundOilGoldData = Logic.groundOilGoldData.clone();
-	// 	for (let j = 0; j < this.height; j++) {
-	// 		for (let i = 0; i < this.width; i++) {
-	// 			let isFound = true;
-	// 			let rectroom = Logic.mapManager.rectDungeon.map[i][j];
-	// 			if(!rectroom){
-	// 				continue;
-	// 			}
-	// 			let state = rectroom.state;
-	// 			let roomType = rectroom.roomType;
-	// 			if(levelData.minimap[i][j]){
-	// 				this.map[i][j].getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`minimap${levelData.minimap[i][j]}`)
-	// 			}
-	// 			if(levelData.minimaplock[i][j]){
-	// 				this.map[i][j].getChildByName('lock').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`minimaplock${levelData.minimaplock[i][j]}`)
-	// 			}else{
-	// 				this.map[i][j].getChildByName('lock').getComponent(cc.Sprite).spriteFrame = null;
-	// 			}
-    //         if (groundOilGoldData.chapter == Logic.chapterIndex && groundOilGoldData.level == Logic.level
-    //             && groundOilGoldData.x == rectroom.x
-    //             && groundOilGoldData.y == rectroom.y && groundOilGoldData.value > 0) {
-	// 				this.map[i][j].getChildByName('label').active = true;
-	// 			}
-	// 			this.map[i][j].color = this.getColor(MiniMap.ColorLevel.HIDE);
-	// 			if (isFound) {
-	// 				this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL);
-	// 				this.map[i][j].opacity = 180;
-	// 				let isClear = state == RectRoom.STATE_CLEAR;
+	openMap() {
+		if (this.isAniming) {
+			return;
+		}
+		this.isAniming = true;
+		if (this.dialog.position.equals(cc.Vec3.ZERO)) {
+			this.closeButton.active = true;
+			cc.tween(this.dialog).to(0.3, { position: cc.v3(550,-40),width:600,height:300,scale:2 }).call(() => {
+				this.cover.active = false;
+				this.isAniming = false;
+			}).start();
+		} else {
+			this.closeButton.active = false;
+			this.cover.active = true;
+			cc.tween(this.dialog).to(0.3, { position: cc.v3(0,0),width:300,height:300,scale:0.5 }).call(() => {
+				this.isAniming = false;
+			}).start();
+		}
+	}
 
-	// 				this.map[i][j].color = this.getColor(isClear ? MiniMap.ColorLevel.CLEAR : MiniMap.ColorLevel.NORMAL);
-	// 				this.getMapColor(i, j, roomType, RoomType.EMPTY_ROOM, isClear
-	// 					, MiniMap.ColorLevel.EMPTY, MiniMap.ColorLevel.EMPTY);
-	// 				this.getMapColor(i, j, roomType, RoomType.BOSS_ROOM, isClear
-	// 					, MiniMap.ColorLevel.NORMAL_BOSS, MiniMap.ColorLevel.CLEAR_BOSS);
-	// 				this.getMapColor(i, j, roomType, RoomType.LOOT_ROOM, isClear
-	// 					, MiniMap.ColorLevel.NORMAL_LOOT, MiniMap.ColorLevel.CLEAR_LOOT);
-	// 				this.getMapColor(i, j, roomType, RoomType.MERCHANT_ROOM, isClear
-	// 					, MiniMap.ColorLevel.NORMAL_MERCHANT, MiniMap.ColorLevel.CLEAR_MERCHANT);
-	// 				this.getMapColor(i, j, roomType, RoomType.START_ROOM, isClear
-	// 					, MiniMap.ColorLevel.NORMAL_START, MiniMap.ColorLevel.NORMAL_START);
-	// 				this.getMapColor(i, j, roomType, RoomType.END_ROOM, isClear
-	// 					, MiniMap.ColorLevel.NORMAL_END, MiniMap.ColorLevel.CLEAR_END);
-	// 				this.getMapColor(i, j, roomType, RoomType.ELITE_ROOM, isClear
-	// 					, MiniMap.ColorLevel.NORMAL_PUZZLE, MiniMap.ColorLevel.CLEAR_PUZZLE);
-	// 				this.getMapColor(i, j, roomType, RoomType.REST_ROOM, isClear
-	// 					, MiniMap.ColorLevel.NORMAL_REST, MiniMap.ColorLevel.NORMAL_REST);
-	// 				this.getMapColor(i, j, roomType, RoomType.PREPARE_ROOM, isClear
-	// 					, MiniMap.ColorLevel.NORMAL_PREPARE, MiniMap.ColorLevel.NORMAL_PREPARE);
-	// 				this.getMapColor(i, j, roomType, RoomType.TEST_ROOM, isClear
-	// 					, MiniMap.ColorLevel.NORMAL_TEST, MiniMap.ColorLevel.NORMAL_TEST);
-	// 				if (roomType == RoomType.START_ROOM) {
-	// 					this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL_START);
-	// 				}
-	// 				if (i == x && j == y) {
-	// 					this.map[x][y].color = this.getColor(MiniMap.ColorLevel.PLAYER);
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
-	// getMapColor(i: number, j: number, roomType: RoomType, roomTypeType: RoomType, isClear: boolean, typeNormal: number, typeClear: number) {
-	// 	if (roomType.isEqual(roomTypeType)) {
-	// 		this.map[i][j].color = this.getColor(isClear ? typeClear : typeNormal);
-	// 	}
-	// }
-	// getColor(t: number): cc.Color {
-	// 	let color = new cc.Color(0, 0, 0);
-	// 	switch (t) {
-	// 		case MiniMap.ColorLevel.EMPTY:
-	// 			color = new cc.Color(0, 0, 0);//透明
-	// 			break;
-	// 		case MiniMap.ColorLevel.HIDE:
-	// 			color = new cc.Color(0, 0, 0);//黑色
-	// 			break;
-	// 		case MiniMap.ColorLevel.NORMAL:
-	// 			color = new cc.Color(128, 128, 128);//灰色
-	// 			break;
-	// 		case MiniMap.ColorLevel.CLEAR:
-	// 			color = new cc.Color(255, 255, 255);//白色
-	// 			break;
-	// 		case MiniMap.ColorLevel.PLAYER:
-	// 			color = new cc.Color(0, 255, 0);//绿色
-	// 			break;
-	// 		case MiniMap.ColorLevel.NORMAL_START:
-	// 			color = new cc.Color(144, 238, 144);//浅绿
-	// 			break;
-	// 		case MiniMap.ColorLevel.NORMAL_END:
-	// 			color = new cc.Color(100, 149, 237);//矢车菊的蓝色
-	// 			break;
-	// 		case MiniMap.ColorLevel.NORMAL_BOSS:
-	// 			color = new cc.Color(128, 0, 128);//紫色
-	// 			break;
-	// 		case MiniMap.ColorLevel.NORMAL_LOOT:
-	// 			color = new cc.Color(255, 215, 0);//黄金
-	// 			break;
-	// 		case MiniMap.ColorLevel.NORMAL_MERCHANT:
-	// 			color = new cc.Color(255, 215, 0);//黄金
-	// 			break;
-	// 		case MiniMap.ColorLevel.NORMAL_REST:
-	// 			color = new cc.Color(139, 69, 19);//马鞍棕色
-	// 			break;
-	// 		case MiniMap.ColorLevel.NORMAL_PREPARE:
-	// 			color = new cc.Color(255, 165, 0);//橙色
-	// 			break;
-	// 		case MiniMap.ColorLevel.NORMAL_TEST:
-	// 			color = new cc.Color(238, 130, 238);//紫罗兰
-	// 			break;
-	// 		case MiniMap.ColorLevel.NORMAL_PUZZLE:
-	// 			color = new cc.Color(128, 0, 128);//紫色
-	// 			break;
-	// 		case MiniMap.ColorLevel.CLEAR_LOOT:
-	// 			color = new cc.Color(240, 230, 140);//浅黄
-	// 			break;
-	// 		case MiniMap.ColorLevel.CLEAR_MERCHANT:
-	// 			color = new cc.Color(240, 230, 140);//浅黄
-	// 			break;
-	// 		case MiniMap.ColorLevel.CLEAR_BOSS:
-	// 			color = new cc.Color(75, 0, 130);//靛青
-	// 			break;
-	// 		case MiniMap.ColorLevel.CLEAR_END:
-	// 			color = new cc.Color(176, 196, 222);//淡钢蓝
-	// 			break;
-	// 		case MiniMap.ColorLevel.CLEAR_PUZZLE:
-	// 			color = new cc.Color(75, 0, 130);//靛青
-	// 			break;
-	// 	}
-
-	// 	return color;
-	// }
-	// getMixColor(color1: cc.Color, color2: cc.Color): cc.Color {
-	// 	let c1 = color1.clone();
-	// 	let c2 = color2.clone();
-	// 	let c3 = cc.color();
-	// 	let r = c1.getR() + c2.getR();
-	// 	let g = c1.getG() + c2.getG();
-	// 	let b = c1.getB() + c2.getB();
-
-	// 	c3.setR(r > 255 ? 255 : r);
-	// 	c3.setG(g > 255 ? 255 : g);
-	// 	c3.setB(b > 255 ? 255 : b);
-	// 	return c3;
-	// }
-	// update (dt) {}
+	update(dt) {
+		if (!this.isDrag && this.currentBoTile) {
+			this.layer.position = Logic.lerpPos(this.layer.position, cc.v3(-this.currentBoTile.node.position.x, -this.currentBoTile.node.position.y), dt * 5);
+		}
+	}
 }

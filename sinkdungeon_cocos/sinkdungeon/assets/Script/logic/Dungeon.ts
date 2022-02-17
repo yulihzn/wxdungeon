@@ -581,6 +581,7 @@ export default class Dungeon extends cc.Component {
         }
         this.fog.setPosition(this.lerp(this.fog.position, this.player.node.position, dt * 3));
         let pos = Dungeon.getIndexInMap(this.player.node.position);
+        EventHelper.emit(EventHelper.CHANGE_MINIMAP, { x: pos.x, y: pos.y });
         if (!this.tilesmap[pos.x] || !this.tilesmap[pos.x][pos.y]) {
             return;
         }
