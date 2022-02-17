@@ -1103,9 +1103,10 @@ export default class Player extends Actor {
         Achievement.addPlayerDiedLifesAchievement();
         this.weaponLeft.node.opacity = 0;
         this.weaponRight.node.opacity = 0;
+        Logic.resetData();
         Logic.dieFrom.valueCopy(from);
         Logic.setKillPlayerCounts(from, true);
-        Logic.saveData();
+        Logic.saveData(true);
         this.scheduleOnce(() => {
             cc.audioEngine.stopMusic();
             cc.director.loadScene('gameover');
