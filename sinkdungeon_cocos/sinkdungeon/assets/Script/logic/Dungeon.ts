@@ -165,6 +165,7 @@ export default class Dungeon extends cc.Component {
     }
     reset() {
         Logic.lastBgmIndex = Logic.chapterIndex == Logic.CHAPTER099 ? 1 : 0;
+        AudioPlayer.stopAllEffect();
         AudioPlayer.play(AudioPlayer.PLAY_BG, true);
         this.monsterManager.clear();
         this.nonPlayerManager.clear();
@@ -226,37 +227,39 @@ export default class Dungeon extends cc.Component {
                     for (let offset of offsets) {
                         this.addBuildingsFromSideMap(offset);
                     }
+                    //初始化玩家
+                    this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
+                    this.player.statusIconList = this.statusIconList;
+                    this.player.node.parent = this.node;
+                    this.cameraTargetNode = this.player.node;
+                    this.fog.setPosition(this.player.node.position.clone());
+                    //加载随机怪物
+                    if ((!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoom().isReborn)
+                        && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType()) && !Logic.isTour) {
+                        this.monsterManager.addRandomMonsters(this, Logic.mapManager.getCurrentRoom().reborn);
+                    }
+                    //加载跟随npc
+                    let list = new Array().concat(Logic.nonPlayerList);
+                    this.scheduleOnce(() => {
+                        this.nonPlayerManager.addNonPlayerListFromSave(this, list, this.player.node.position);
+                    }, 1)
+                    //设置门开关
+                    this.setDoors(true, true);
+                    cc.log('load finished');
+                    this.scheduleOnce(() => {
+                        this.isInitFinish = true;
+                        cc.tween(this.fog).to(3, { scale: 5 }).start();
+                        let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter');
+                        cc.tween(blackcenter).delay(0.1).to(0.5, { opacity: 0 }).start();
+                        this.logNodeCount();
+                        this.addOilGoldOnGround();
+                    }, 0.3)
+
                 })
             })
         });
 
-        //初始化玩家
-        this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
-        this.player.statusIconList = this.statusIconList;
-        this.player.node.parent = this.node;
-        this.cameraTargetNode = this.player.node;
-        this.fog.setPosition(this.player.node.position.clone());
-        //加载随机怪物
-        if ((!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoom().isReborn)
-            && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType()) && !Logic.isTour) {
-            this.monsterManager.addRandomMonsters(this, Logic.mapManager.getCurrentRoom().reborn);
-        }
-        //加载跟随npc
-        let list = new Array().concat(Logic.nonPlayerList);
-        this.scheduleOnce(() => {
-            this.nonPlayerManager.addNonPlayerListFromSave(this, list, this.player.node.position);
-        }, 1)
-        //设置门开关
-        this.setDoors(true, true);
-        cc.log('load finished');
-        this.scheduleOnce(() => {
-            this.isInitFinish = true;
-            cc.tween(this.fog).to(3, { scale: 5 }).start();
-            let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter');
-            cc.tween(blackcenter).delay(0.1).to(0.5, { opacity: 0 }).start();
-            this.logNodeCount();
-            this.addOilGoldOnGround();
-        }, 0.3)
+
     }
     private addTiles(mapDataStr: string, indexPos: cc.Vec3, leveldata: LevelData, onlyShow: boolean) {
         if (Dungeon.isFirstEqual(mapDataStr, "*") && mapDataStr != '**') {
@@ -382,7 +385,7 @@ export default class Dungeon extends cc.Component {
         let currequipments = Logic.mapManager.getCurrentMapEquipments();
         if (currequipments) {
             for (let tempequip of currequipments) {
-                if (tempequip.test > 0 && (Logic.chapterIndex == Logic.CHAPTER099||Logic.chapterIndex==Logic.CHAPTER00&&Logic.level==0)) {
+                if (tempequip.test > 0 && (Logic.chapterIndex == Logic.CHAPTER099 || Logic.chapterIndex == Logic.CHAPTER00 && Logic.level == 0)) {
                     continue;
                 }
                 if (this.equipmentManager) {

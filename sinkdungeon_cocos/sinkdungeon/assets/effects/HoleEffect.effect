@@ -13,9 +13,8 @@ CCEffect %{
       properties:
         texture: { value: white }
         alphaThreshold: { value: 0.7 }
-        size: { value: [320.0, 180.0], editor: { tooltip: '节点尺寸' } }
+        size: { value: [160.0, 90.0], editor: { tooltip: '节点尺寸' } }
         lightColor: { value: [0.0, 0.0, 0.1, 0.1], inspector: { type: color } }
-        soft: {value: 0}
 }%
 
 
@@ -69,7 +68,6 @@ CCProgram fs %{
   uniform Properties {
     vec4 lightColor;
     vec2 size;
-    int soft;
   };
 
   
@@ -160,12 +158,7 @@ CCProgram fs %{
   }
 
   void main () {
-    vec4 o;
-    if(soft == 1){
-      o = getBlurColor(v_uv0);
-    }else{
-      o = blur13color(v_uv0);
-    }
+    vec4 o = blur13color(v_uv0);
     ALPHA_TEST(o);
     gl_FragColor = o;
   }

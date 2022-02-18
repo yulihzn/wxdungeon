@@ -16,14 +16,10 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class MiniTile extends cc.Component {
 
-    @property(cc.Node)
-    layer: cc.Node = null;
     @property(cc.Sprite)
     deathSign: cc.Sprite = null;
     @property(cc.Sprite)
     sign: cc.Sprite = null;
-    @property(cc.Sprite)
-    lock: cc.Sprite = null;
     @property(cc.Node)
     bg: cc.Node = null;
     graphics: cc.Graphics;

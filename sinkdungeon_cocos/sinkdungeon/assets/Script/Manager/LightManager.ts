@@ -196,8 +196,6 @@ export default class LightManager extends BaseManager {
             this.shadowAlpha = LightManager.ALPHA_START;
         }
         this.mat.setProperty('lightColor', cc.color(0, 0, 50, this.shadowAlpha));
-        this.mat.setProperty('soft', Logic.settings.showSoftShadow?1:0);
-        this.mat.setProperty('size', Logic.settings.showSoftShadow?cc.v2(80,45):cc.v2(160,90));
     }
     private getShadowAlphaByTime() {
         let date = new Date(Logic.realTime);

@@ -45,6 +45,7 @@ export default class MiniMap extends cc.Component {
 
 	onLoad() {
 
+		this.closeButton.active = false;
 		cc.director.on(EventHelper.CHANGE_MINIMAP, (event) => {
 			if (this.node) {
 				this.changeMap(event.detail.x, event.detail.y);
@@ -126,7 +127,7 @@ export default class MiniMap extends cc.Component {
 
 	update(dt) {
 		if (!this.isDrag && this.currentBoTile) {
-			this.layer.position = Logic.lerpPos(this.layer.position, cc.v3(-this.currentBoTile.node.position.x, -this.currentBoTile.node.position.y), dt * 5);
+			this.layer.position = Logic.lerpPos(this.layer.position, cc.v3(-this.currentBoTile.node.position.x, -this.currentBoTile.node.position.y), dt * 1);
 		}
 	}
 }
