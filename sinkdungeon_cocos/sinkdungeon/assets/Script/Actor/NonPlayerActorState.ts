@@ -12,12 +12,18 @@ export class IDLE extends BaseNonPlayerActorState {
     }
     update(entity: NonPlayer): void {
         super.update(entity);
-        if (entity.sc.isMoving) {
-            entity.stateMachine.changeState(NonPlayerActorState.WALK);
-        } else if (entity.sc.isAttacking) {
-            entity.stateMachine.changeState(NonPlayerActorState.ATTACK);
+        if (entity.sc.isDashing) {
+            entity.stateMachine.changeState(NonPlayerActorState.DASH);
         }else if (entity.sc.isBlinking) {
             entity.stateMachine.changeState(NonPlayerActorState.BLINK);
+        } else if (entity.sc.isDodging) {
+            entity.stateMachine.changeState(NonPlayerActorState.DODGE);
+        } else if (entity.sc.isAttacking) {
+            entity.stateMachine.changeState(NonPlayerActorState.ATTACK);
+        }  else if (entity.sc.isTalking) {
+            entity.stateMachine.changeState(NonPlayerActorState.TALK);
+        }else if (entity.sc.isMoving) {
+            entity.stateMachine.changeState(NonPlayerActorState.WALK);
         }
     }
     exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(IDLE):exit`); }
@@ -37,7 +43,7 @@ export class WALK extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.ATTACK);
         } else if (entity.sc.isDodging) {
             entity.stateMachine.changeState(NonPlayerActorState.DODGE);
-        }else if (entity.sc.isBlinking) {
+        } else if (entity.sc.isBlinking) {
             entity.stateMachine.changeState(NonPlayerActorState.BLINK);
         }
     }
@@ -111,7 +117,7 @@ export class HURT extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.IDLE);
         } else if (entity.sc.isFalling) {
             entity.stateMachine.changeState(NonPlayerActorState.FALL);
-        }else if (entity.sc.isBlinking) {
+        } else if (entity.sc.isBlinking) {
             entity.stateMachine.changeState(NonPlayerActorState.BLINK);
         }
     }
@@ -121,7 +127,12 @@ export class HURT extends BaseNonPlayerActorState {
 /**对话（暂无）： */
 export class TALK extends BaseNonPlayerActorState {
     enter(entity: NonPlayer): void { super.enter(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(TALK):enter`); }
-    update(entity: NonPlayer): void { super.update(entity); }
+    update(entity: NonPlayer): void {
+        super.update(entity);
+        if (!entity.sc.isTalking) {
+            entity.stateMachine.changeState(NonPlayerActorState.IDLE);
+        }
+    }
     exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(TALK):exit`); }
     event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(TALK):event`); return true; }
 };
@@ -209,7 +220,6 @@ export class FALL extends BaseNonPlayerActorState {
     enter(entity: NonPlayer): void {
         super.enter(entity);
         Utils.log(`${entity.actorName()}${entity.node.uuid}(FALL):enter`);
-        entity.enterFall();
     }
     update(entity: NonPlayer): void {
         super.update(entity);
@@ -225,12 +235,12 @@ export class GLOBAL extends BaseNonPlayerActorState {
     enter(entity: NonPlayer): void { super.enter(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(GLOBAL):enter`); }
     update(entity: NonPlayer): void {
         super.update(entity);
-        if(entity.sc.isDied){
+        if (entity.sc.isDied) {
             return;
         }
         if (entity.data.currentHealth <= 0) {
             entity.stateMachine.changeState(NonPlayerActorState.DIED);
-        } else if (!NonPlayerActorState.HURT.isRunnig&&entity.sc.isHurting) {
+        } else if (!NonPlayerActorState.HURT.isRunnig && entity.sc.isHurting) {
             entity.stateMachine.changeState(NonPlayerActorState.HURT);
         }
     }
@@ -250,6 +260,8 @@ export default class NonPlayerActorState {
     static SHOW = new SHOW();
     static BLINK = new BLINK();
     static FALL = new FALL();
+    static TALK = new TALK();
+    static DASH = new DASH();
 }
 
 

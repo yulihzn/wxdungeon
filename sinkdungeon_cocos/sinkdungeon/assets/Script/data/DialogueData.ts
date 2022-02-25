@@ -24,7 +24,6 @@ export default class DialogueData {
     canBreakBuilding = false;//是否破坏建筑
     canBreakBullet = false;//是否破坏子弹
     canBeatBack = false;//是否击退或者反弹
-    damage:DamageData = new DamageData();//伤害
     from:FromData = new FromData();//来源
     statusList:string[] = [];
     
@@ -42,7 +41,6 @@ export default class DialogueData {
         this.isRotate = data.isRotate?data.isRotate:false;
         this.canBeatBack = data.canBeatBack?data.canBeatBack:false;
         this.statusList = data.statusList?data.statusList:[];
-        this.damage.valueCopy(data.damage);
         this.from.valueCopy(data.from);
     }
     clone():DialogueData{
@@ -54,7 +52,6 @@ export default class DialogueData {
         e.canBreakBuilding = this.canBreakBuilding;
         e.canBreakBullet = this.canBreakBullet;
         e.canBeatBack = this.canBeatBack;
-        e.damage = this.damage.clone();
         e.from = this.from.clone();
         e.statusList = this.statusList;
         e.type = this.type;
