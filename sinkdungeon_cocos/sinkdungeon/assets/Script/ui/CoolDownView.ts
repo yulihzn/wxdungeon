@@ -28,7 +28,7 @@ export default class CoolDownView extends cc.Component {
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
-        this.label = this.getComponentInChildren(cc.Label);
+        this.label = this.node.getChildByName('label').getComponent(cc.Label);
         this.labelBg = this.node.getChildByName('labelbg');
         this.labelBg.active = false;
         this.skillIcon = this.node.getChildByName('mask').getChildByName('sprite').getComponent(cc.Sprite);
@@ -106,6 +106,9 @@ export default class CoolDownView extends cc.Component {
             return true;
         }
         return false;
+    }
+    changeKeyShow(show:boolean){
+        this.node.getChildByName('btn').active = show;
     }
     start() {
 

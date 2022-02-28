@@ -305,10 +305,6 @@ export default class Slime extends Boss {
         if (pos.equals(cc.Vec3.ZERO)) {
             return;
         }
-        pos = pos.normalizeSelf();
-        if (this.meleeSkill.IsExcuting && !pos.equals(cc.Vec3.ZERO)) {
-            pos = pos.mul(0.5);
-        }
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
         }
@@ -317,7 +313,7 @@ export default class Slime extends Boss {
         let absh = Math.abs(h);
         let absv = Math.abs(v);
         let movement = cc.v2(h, v);
-        movement = movement.mul(speed);
+        movement = movement.normalize().mul(speed);
         this.entity.Move.linearVelocity = movement.clone();
         this.currentlinearVelocitySpeed = movement.clone();
         this.isMoving = h != 0 || v != 0;

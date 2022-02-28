@@ -227,12 +227,6 @@ export default class Dungeon extends cc.Component {
                     for (let offset of offsets) {
                         this.addBuildingsFromSideMap(offset);
                     }
-                    //初始化玩家
-                    this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
-                    this.player.statusIconList = this.statusIconList;
-                    this.player.node.parent = this.node;
-                    this.cameraTargetNode = this.player.node;
-                    this.fog.setPosition(this.player.node.position.clone());
                     //加载随机怪物
                     if ((!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoom().isReborn)
                         && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType()) && !Logic.isTour) {
@@ -258,7 +252,12 @@ export default class Dungeon extends cc.Component {
                 })
             })
         });
-
+        //初始化玩家
+        this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
+        this.player.statusIconList = this.statusIconList;
+        this.player.node.parent = this.node;
+        this.cameraTargetNode = this.player.node;
+        this.fog.setPosition(this.player.node.position.clone());
 
     }
     private addTiles(mapDataStr: string, indexPos: cc.Vec3, leveldata: LevelData, onlyShow: boolean) {

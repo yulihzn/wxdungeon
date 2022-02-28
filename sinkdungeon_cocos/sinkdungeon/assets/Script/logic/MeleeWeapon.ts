@@ -75,7 +75,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
 
     private anim: cc.Animation;
     private isAttacking: boolean = false;
-    private hv: cc.Vec3 = cc.v3(1, 0);
+    private hv: cc.Vec2 = cc.v2(1, 0);
     private isStab = true;//刺
     private isFar = false;//近程
     private isFist = true;//空手 
@@ -150,20 +150,20 @@ export default class MeleeWeapon extends BaseColliderComponent {
 
     }
 
-    set Hv(hv: cc.Vec3) {
+    set Hv(hv: cc.Vec2) {
         if (Controller.isMouseMode() && Controller.mousePos && this.dungeon) {
-            let p = this.dungeon.node.convertToWorldSpaceAR(this.player.node.position);
-            this.hv = Controller.mousePos.add(this.dungeon.mainCamera.node.position).sub(p).normalize();
+            let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.player.node.position));
+            this.hv = Controller.mousePos.add(cc.v2(this.dungeon.mainCamera.node.position)).sub(p).normalize();
             return;
         }
         let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 300);
         if (!pos.equals(cc.Vec3.ZERO)) {
-            this.hv = pos;
+            this.hv = cc.v2(pos).normalize();
         } else {
-            this.hv = hv.normalizeSelf();
+            this.hv = hv.normalize();
         }
     }
-    get Hv(): cc.Vec3 {
+    get Hv(): cc.Vec2 {
         return this.hv;
     }
     private getSpriteChildSprite(childNames: string[]): cc.Sprite {
@@ -444,8 +444,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
         } else {
             pos = pos.normalizeSelf();
         }
-        let posv3 = cc.v3(pos.x, pos.y);
-        this.hv = posv3.clone();
+        let posv2 = cc.v2(pos.x, pos.y);
+        this.hv = posv2.clone();
         pos = pos.mul(speed);
         this.player.entity.Move.linearVelocity = pos;
         this.scheduleOnce(() => {
@@ -467,7 +467,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
         // let delay = (!this.isStab && this.isFar) ? 0.5 : 0;
         this.scheduleOnce(() => {
             for (let w of waves) {
-                this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar);
+                if(this.dungeon){
+                    this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar);
+                }
             }
         }, 0);
     }
@@ -481,16 +483,16 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
     updateLogic(dt: number) {
         if (Controller.isMouseMode() && Controller.mousePos && this.dungeon) {
-            let p = this.dungeon.node.convertToWorldSpaceAR(this.player.node.position);
-            this.hv = Controller.mousePos.add(this.dungeon.mainCamera.node.position).sub(p).normalize();
+            let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.player.node.position));
+            this.hv = Controller.mousePos.add(cc.v2(this.dungeon.mainCamera.node.position)).sub(p).normalize();
         } else {
             let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400);
             if (!pos.equals(cc.Vec3.ZERO)) {
-                this.hv = pos;
+                this.hv = cc.v2(pos);
             }
         }
         if (!this.isAttacking) {
-            this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
+            this.rotateCollider(this.hv);
         }
         this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 5);
 
@@ -531,8 +533,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
 
     private beatBack(actor: Actor) {
         let pos = this.Hv.clone();
-        if (pos.equals(cc.Vec3.ZERO)) {
-            pos = cc.v3(1, 0);
+        if (pos.equals(cc.Vec2.ZERO)) {
+            pos = cc.v2(1, 0);
         }
         let power = 100 + this.exBeatBack;
         if (!this.isFar && this.isStab) {
@@ -548,7 +550,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
             power += 100;
         }
 
-        pos = pos.normalizeSelf().mul(power);
+        pos = pos.normalize().mul(power);
         this.scheduleOnce(() => {
             // cc.log(`beat x=${pos.x},y=${pos.y}`);
             actor.entity.Move.linearVelocity = cc.v2(pos.x, pos.y);

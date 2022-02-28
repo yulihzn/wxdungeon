@@ -130,12 +130,11 @@ export default class WarMachine extends Boss {
                 this.move(pos, 600);
             }
         }
-        this.shooter01.setHv(cc.v3(0, -1));
+        this.shooter01.setHv(cc.v2(0, -1));
         let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position);
         let hv = this.dungeon.player.getCenterPosition().sub(pos);
         if (!hv.equals(cc.Vec3.ZERO)) {
-            hv = hv.normalizeSelf();
-            this.shooter01.setHv(hv);
+            this.shooter01.setHv(cc.v2(hv).normalize());
         }
 
     }
@@ -143,16 +142,15 @@ export default class WarMachine extends Boss {
         this.isMainGunCoolDown = false;
         this.isGatlingCoolDown = false;
         this.isMissileCoolDown = false;
-        this.shooter01.setHv(cc.v3(0, -1));
-        this.shooter02.setHv(cc.v3(0, -1));
-        this.shooter03.setHv(cc.v3(0, -1));
-        this.shooter04.setHv(cc.v3(0, -1));
-        this.shooter05.setHv(cc.v3(0, -1));
+        this.shooter01.setHv(cc.v2(0, -1));
+        this.shooter02.setHv(cc.v2(0, -1));
+        this.shooter03.setHv(cc.v2(0, -1));
+        this.shooter04.setHv(cc.v2(0, -1));
+        this.shooter05.setHv(cc.v2(0, -1));
         let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position);
         let hv = this.dungeon.player.getCenterPosition().sub(pos);
         if (!hv.equals(cc.Vec3.ZERO)) {
-            hv = hv.normalizeSelf();
-            this.shooter01.setHv(hv);
+            this.shooter01.setHv(cc.v2(hv).normalize());
         }
     }
     fireMainGun() {
@@ -165,12 +163,11 @@ export default class WarMachine extends Boss {
     }
     //Anim
     MainGunShootFinish() {
-        this.shooter01.setHv(cc.v3(0, -1));
+        this.shooter01.setHv(cc.v2(0, -1));
         let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position);
         let hv = this.dungeon.player.getCenterPosition().sub(pos);
         if (!hv.equals(cc.Vec3.ZERO)) {
-            hv = hv.normalizeSelf();
-            this.shooter01.setHv(hv);
+            this.shooter01.setHv(cc.v2(hv).normalize());
             this.fireShooter(this.shooter01, "bullet016", 0, 0, 0, cc.v3(48, 0));
         }
         this.anim.play('WarMachineIdle');
@@ -180,8 +177,8 @@ export default class WarMachine extends Boss {
             return;
         }
         this.isGatlingCoolDown = true;
-        this.shooter02.setHv(cc.v3(0, -1));
-        this.shooter03.setHv(cc.v3(0, -1));
+        this.shooter02.setHv(cc.v2(0, -1));
+        this.shooter03.setHv(cc.v2(0, -1));
         this.shooter02.data.bulletLineInterval = 0.5;
         this.shooter03.data.bulletLineInterval = 0.5;
         let cooldown = 6;
@@ -202,8 +199,8 @@ export default class WarMachine extends Boss {
             return;
         }
         this.isMissileCoolDown = true;
-        this.shooter04.setHv(cc.v3(0, -1));
-        this.shooter05.setHv(cc.v3(0, -1));
+        this.shooter04.setHv(cc.v2(0, -1));
+        this.shooter05.setHv(cc.v2(0, -1));
         this.shooter04.data.bulletLineInterval = 0.5;
         this.shooter05.data.bulletLineInterval = 0.5;
         this.fireShooter(this.shooter04, "bullet015", 2, isHalf ? 1 : 0);
@@ -264,7 +261,7 @@ export default class WarMachine extends Boss {
         let absv = Math.abs(v);
 
         let movement = cc.v2(h, v);
-        movement = movement.mul(speed);
+        movement = movement.normalize().mul(speed);
         this.entity.Move.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
         this.changeZIndex();

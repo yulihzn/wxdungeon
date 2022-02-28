@@ -31,7 +31,7 @@ export default class ActorAttackBox extends cc.Component {
     isAttacking = false;
     nonPlayer: NonPlayer;
     dungeon: Dungeon;
-    hv: cc.Vec3 = cc.v3(1, 0);
+    hv: cc.Vec2 = cc.v2(1, 0);
     isSpecial = false;
     isLarge = false;//是否放大
     // LIFE-CYCLE CALLBACKS:
@@ -58,7 +58,7 @@ export default class ActorAttackBox extends cc.Component {
 
     }
     //展示
-    show(attackType: number,isSpecial:boolean,isLarge:boolean,hv:cc.Vec3) {
+    show(attackType: number,isSpecial:boolean,isLarge:boolean,hv:cc.Vec2) {
         if (!this.nonPlayer) {
             return;
         }
@@ -154,9 +154,9 @@ export default class ActorAttackBox extends cc.Component {
             
         }
     }
-    setHv(hv: cc.Vec3) {
+    setHv(hv: cc.Vec2) {
         this.hv = hv;
-        this.rotateCollider(cc.v2(this.hv));
+        this.rotateCollider(this.hv);
     }
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {

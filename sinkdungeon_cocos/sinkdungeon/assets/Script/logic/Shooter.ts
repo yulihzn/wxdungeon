@@ -59,7 +59,7 @@ export default class Shooter extends cc.Component {
     sprite: cc.Node;
     data: EquipmentData = new EquipmentData();
     parentNode: cc.Node;//该node为dungeon下发射器的载体
-    private hv: cc.Vec3 = cc.v3(1, 0);
+    private hv: cc.Vec2 = cc.v2(1, 0);
     isAiming = false;//是否在瞄准
     //玩家远程伤害
     remoteDamagePlayer = new DamageData();
@@ -146,14 +146,14 @@ export default class Shooter extends cc.Component {
     get Hv() {
         return this.hv;
     }
-    setHv(hv: cc.Vec3) {
+    setHv(hv: cc.Vec2) {
         if (!this.isAI && Controller.isMouseMode()) {
             return;
         }
         this.hv = hv;
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec3.ZERO)) {
-            this.hv = pos;
+            this.hv = cc.v2(pos);
         }
         this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
     }
@@ -332,7 +332,7 @@ export default class Shooter extends cc.Component {
      * @param hv 方向向量
      * @param defaultPos 初始位置默认cc.v3(0, 0)
      */
-    private fire(bulletType: string, angleOffset: number, hv: cc.Vec3, defaultPos: cc.Vec3, bulletArcOffsetX: number, aoePrefab: cc.Prefab, aoeData: AreaOfEffectData) {
+    private fire(bulletType: string, angleOffset: number, hv: cc.Vec2, defaultPos: cc.Vec3, bulletArcOffsetX: number, aoePrefab: cc.Prefab, aoeData: AreaOfEffectData) {
         let bulletData = Logic.bullets[bulletType];
         let prefab = this.bullet;
         let pool = this.bulletPool;
@@ -371,7 +371,7 @@ export default class Shooter extends cc.Component {
         }
     }
 
-    private showBullet(angleOffset: number, hv: cc.Vec3, bulletPrefab: cc.Node, data: BulletData, startPos: cc.Vec3, aoePrefab: cc.Prefab, aoeData: AreaOfEffectData) {
+    private showBullet(angleOffset: number, hv: cc.Vec2, bulletPrefab: cc.Node, data: BulletData, startPos: cc.Vec3, aoePrefab: cc.Prefab, aoeData: AreaOfEffectData) {
         let bullet = bulletPrefab.getComponent(Bullet);
         bullet.entity.Transform.position = startPos;
         bullet.shooter = this;
@@ -396,9 +396,9 @@ export default class Shooter extends cc.Component {
         bullet.enabled = true;
         bullet.aoeData.valueCopy(aoeData);
         bullet.aoePrefab = aoePrefab;
-        bullet.showBullet(cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180)));
+        bullet.showBullet(cc.v2(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180)).normalize());
     }
-    private showLaser(angleOffset: number, hv: cc.Vec3, bulletPrefab: cc.Node, data: BulletData, startPos: cc.Vec3) {
+    private showLaser(angleOffset: number, hv: cc.Vec2, bulletPrefab: cc.Node, data: BulletData, startPos: cc.Vec3) {
         let laser = bulletPrefab.getComponent(Laser);
         laser.entity.Transform.position = startPos;
         laser.shooter = this;
@@ -421,7 +421,7 @@ export default class Shooter extends cc.Component {
         laser.changeBullet(bd);
         this.bulletName = laser.name + bd.resName;
         laser.enabled = true;
-        laser.fire(cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180)), angleOffset);
+        laser.fire(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180), angleOffset);
     }
     public addDestroyBullet(bulletNode: cc.Node, isLaser?: boolean) {
         bulletNode.active = false;
@@ -526,9 +526,9 @@ export default class Shooter extends cc.Component {
 
     updateLogic(dt: number) {
         if (!this.isAI && Controller.isMouseMode() && Controller.mousePos&&this.dungeon) {
-            let p = this.dungeon.node.convertToWorldSpaceAR(this.player.node.position);
-            let pos = Controller.mousePos.add(this.dungeon.mainCamera.node.position).sub(p).normalize();
-            if (!pos.equals(cc.Vec3.ZERO)) {
+            let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.player.node.position));
+            let pos = Controller.mousePos.add(cc.v2(this.dungeon.mainCamera.node.position)).sub(p).normalize();
+            if (!pos.equals(cc.Vec2.ZERO)) {
                 this.hv = pos;
                 this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
             }

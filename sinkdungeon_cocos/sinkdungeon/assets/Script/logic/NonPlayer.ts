@@ -171,7 +171,7 @@ export default class NonPlayer extends Actor {
                 if (this.leftLifeTime <= 0 && this.data) {
                     this.data.currentHealth = 0;
                 }
-            })
+            },1)
         }
         this.addSaveStatusList();
         this.entity.Move.linearDamping = 5;
@@ -367,8 +367,7 @@ export default class NonPlayer extends Actor {
         p.x = this.shooter.node.scaleX > 0 ? p.x + 30 : -p.x - 30;
         let hv = target.getCenterPosition().sub(this.node.position.add(p));
         if (!hv.equals(cc.Vec3.ZERO)) {
-            hv = hv.normalizeSelf();
-            this.shooter.setHv(hv);
+            this.shooter.setHv(cc.v2(hv).normalize());
             this.shooter.from.valueCopy(FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed));
             if (this.IsVariation) {
                 this.shooter.data.bulletSize = 0.5;
@@ -398,16 +397,12 @@ export default class NonPlayer extends Actor {
         if (speedScale > 2) {
             speedScale = 2;
         }
-        let pos = target.node.position.clone().sub(this.node.position);
-
-        if (!pos.equals(cc.Vec3.ZERO)) {
-            pos = pos.normalizeSelf();
-        }
+        let pos = cc.v2(target.node.position.clone().sub(this.node.position));
         this.anim.pause();
-        if (pos.equals(cc.Vec3.ZERO)) {
-            pos = cc.v3(1, 0);
+        if (pos.equals(cc.Vec2.ZERO)) {
+            pos = cc.v2(1, 0);
         }
-        pos = pos.normalizeSelf().mul(this.node.scaleX > 0 ? 48 : -48);
+        pos = pos.normalize().mul(this.node.scaleX > 0 ? 48 : -48);
         if (this.node.scaleX < 0) {
             pos.y = -pos.y;
         }
@@ -761,7 +756,7 @@ export default class NonPlayer extends Actor {
                 if (this.data.isBoom > 0) {
                     let boom = cc.instantiate(this.boom).getComponent(AreaOfEffect);
                     if (boom) {
-                        boom.show(this.node.parent, this.node.position, cc.v3(1, 0), 0, new AreaOfEffectData().init(1, 0.2, 0, 0, IndexZ.OVERHEAD, this.data.isEnemy > 0
+                        boom.show(this.node.parent, this.node.position, cc.v2(1, 0), 0, new AreaOfEffectData().init(1, 0.2, 0, 0, IndexZ.OVERHEAD, this.data.isEnemy > 0
                             , true, true, false, false, new DamageData(2), FromData.getClone('爆炸', 'boom000anim004'), []));
                         AudioPlayer.play(AudioPlayer.BOOM);
                         cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: true } });
@@ -860,7 +855,7 @@ export default class NonPlayer extends Actor {
             }, this.data.specialAttack, true);
         }
         let range = 100;
-        if (this.specialStep.IsExcuting&&this.data.specialType.length > 0) {
+        if (this.specialStep.IsExcuting && this.data.specialType.length > 0) {
             range = 200;
         }
         if (this.data.attackType == ActorAttackBox.ATTACK_STAB) {
@@ -958,7 +953,7 @@ export default class NonPlayer extends Actor {
         if (this.data.dash > 0 && !this.isPassive && ActorUtils.isTargetAlive(target) && targetDis < 600 && targetDis > 100) {
             this.dashStep.next(() => {
                 this.sc.isDashing = true;
-                this.dangerBox.show(ActorAttackBox.ATTACK_DASH, false, this.data.boxType == 5, cc.v3(1, 0));
+                this.dangerBox.show(ActorAttackBox.ATTACK_DASH, false, this.data.boxType == 5, cc.v2(1, 0));
                 this.dangerBox.hide(false);
                 this.enterWalk();
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
@@ -1003,15 +998,20 @@ export default class NonPlayer extends Actor {
                     this.move(pos, speed * 0.5);
                 }, 0.2, true)
             } else {
-                //非追踪状态每3秒设置一个随机目标移动并在1s后停下来
+                //非追踪状态每8秒设置一个随机目标移动并在2s后或者速度为0时停下来
                 this.moveStep.next(() => {
                     this.move(this.getMovePosFromTarget(), speed);
                     this.sc.isMoving = true;
                     this.unschedule(this.stopMove);
-                    this.scheduleOnce(this.stopMove,1);
-                }, 3, true)
+                    this.scheduleOnce(this.stopMove, 2);
+                }, 8, true)
+                if (this.entity.Move.linearVelocity.equals(cc.Vec2.ZERO)) {
+                    this.sc.isMoving = false;
+                    this.unschedule(this.stopMove);
+                }
             }
         }
+
 
         //隐匿
         if (this.data.invisible > 0 && this.sprite.opacity > 20) {

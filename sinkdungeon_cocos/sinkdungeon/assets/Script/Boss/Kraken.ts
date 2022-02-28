@@ -203,8 +203,7 @@ export default class Kraken extends Boss {
                 let pos = this.entity.Transform.position.clone().add(this.shooter.node.position);
                 let hv = this.dungeon.player.getCenterPosition().sub(pos);
                 if (!hv.equals(cc.Vec3.ZERO)) {
-                    hv = hv.normalizeSelf();
-                    this.shooter.setHv(hv);
+                    this.shooter.setHv(cc.v2(hv).normalize());
                     this.shooter.dungeon = this.dungeon;
                     this.shooter.data.bulletType = "bullet004";
                     this.shooter.fireBullet();

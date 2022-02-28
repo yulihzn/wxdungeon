@@ -39,7 +39,7 @@ export default class Laser extends BaseColliderComponent {
     data: BulletData = new BulletData();
     dir = 0;
     tagetPos = cc.v3(0, 0);
-    hv = cc.v3(0, 0);
+    hv = cc.v2(0, 0);
     isFromPlayer = false;
     collider: CCollider;
     private lineNode: cc.Node;
@@ -133,7 +133,7 @@ export default class Laser extends BaseColliderComponent {
         // this.headSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'head');
         this.initIgnoreMap(this.shooter.getParentNode().getComponent(Actor));
     }
-    fire(hv: cc.Vec3,angleOffset:number) {
+    fire(hv: cc.Vec2,angleOffset:number) {
         this.hv = hv;
         this.angleOffset = angleOffset;
         this.node.stopAllActions();
@@ -184,7 +184,7 @@ export default class Laser extends BaseColliderComponent {
         pos = this.dungeon.node.convertToNodeSpaceAR(pos);
         this.entity.Transform.position = pos;
         this.node.position = pos;
-        this.hv = cc.v3(cc.v2(this.shooter.Hv).rotateSelf(this.angleOffset * Math.PI / 180));
+        this.hv = cc.v2(this.shooter.Hv).rotateSelf(this.angleOffset * Math.PI / 180);
         this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
     }
     private updateLaser() {

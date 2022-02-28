@@ -50,7 +50,7 @@ export default class Bullet extends BaseColliderComponent {
     anim: cc.Animation;
     dir = 0;
     tagetPos = cc.v3(0, 0);
-    hv = cc.v3(0, 0);
+    hv = cc.v2(0, 0);
     isFromPlayer = false;
 
     sprite: cc.Sprite;
@@ -131,7 +131,7 @@ export default class Bullet extends BaseColliderComponent {
             let pos = this.hasNearEnemy();
             if (!pos.equals(cc.Vec3.ZERO)) {
                 this.rotateCollider(cc.v2(pos.x, pos.y));
-                this.hv = pos;
+                this.hv = cc.v2(pos.x, pos.y).normalize();
                 this.currentLinearVelocity = cc.v2(this.data.speed * this.hv.x, this.data.speed * this.hv.y);
             }
         }
@@ -181,7 +181,7 @@ export default class Bullet extends BaseColliderComponent {
         this.shooter.addDestroyBullet(this.node);
     }
     //animation
-    showBullet(hv: cc.Vec3) {
+    showBullet(hv: cc.Vec2) {
         this.hv = hv;
         this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
         this.fire(this.hv.clone());
@@ -193,8 +193,8 @@ export default class Bullet extends BaseColliderComponent {
         }
         this.shooter.addDestroyBullet(this.node);
     }
-    fire(hv: cc.Vec3) {
-        this.currentLinearVelocity = cc.v2(this.data.speed * hv.x, this.data.speed * hv.y);
+    fire(hv: cc.Vec2) {
+        this.currentLinearVelocity = cc.v2(hv.x,hv.y).mul(this.data.speed);
         this.entity.Move.linearVelocity = this.currentLinearVelocity;
         //记录发射点
         this.startPos = this.node.convertToWorldSpaceAR(cc.v3(0, 0));

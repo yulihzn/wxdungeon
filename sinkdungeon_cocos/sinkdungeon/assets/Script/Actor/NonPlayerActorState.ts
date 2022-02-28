@@ -121,7 +121,7 @@ export class HURT extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.BLINK);
         }
     }
-    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(TAKEDAMAGE):exit`); }
+    exit(entity: NonPlayer): void { super.exit(entity); Utils.log(`${entity.actorName()}${entity.node.uuid}(HURT):exit`); }
     event(entity: NonPlayer, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}${entity.node.uuid}(TAKEDAMAGE):event`); return true; }
 };
 /**对话（暂无）： */

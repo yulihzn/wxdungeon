@@ -337,7 +337,7 @@ export default class InteractBuilding extends Building {
                     this.entity.Transform.position = this.player.node.position.clone();
                 } else {
                     let p = this.player.Hv.clone().mul(64);
-                    let pos = this.player.node.position.add(p);
+                    let pos = this.player.node.position.add(cc.v3(p));
                     this.sprite.node.position = Logic.lerpPos(this.sprite.node.position, cc.v3(0, 0), 0.1);
                     this.entity.Transform.position = Logic.lerpPos(this.entity.Transform.position, pos, 0.1);
                 }
@@ -377,12 +377,12 @@ export default class InteractBuilding extends Building {
         }
     }
 
-    private beatBack(node: Actor, hv: cc.Vec3, power: number) {
+    private beatBack(node: Actor, hv: cc.Vec2, power: number) {
         let pos = hv;
-        if (pos.equals(cc.Vec3.ZERO)) {
-            pos = cc.v3(1, 0);
+        if (pos.equals(cc.Vec2.ZERO)) {
+            pos = cc.v2(1, 0);
         }
-        pos = pos.normalizeSelf().mul(power);
+        pos = pos.normalize().mul(power);
         this.scheduleOnce(() => {
             node.entity.Move.linearVelocity = cc.v2(pos.x, pos.y);
         }, 0.1);

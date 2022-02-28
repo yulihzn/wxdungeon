@@ -105,8 +105,7 @@ export default class Sphinx extends Boss {
                 let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position);
                 let hv = this.dungeon.player.getCenterPosition().sub(pos);
                 if (!hv.equals(cc.Vec3.ZERO)) {
-                    hv = hv.normalizeSelf();
-                    this.shooter01.setHv(hv);
+                    this.shooter01.setHv(cc.v2(hv).normalize());
                     this.fireShooter(this.shooter01, "bullet023", 0, -20);
                     this.fireShooter(this.shooter01, "bullet123", 0, 0, 0);
                     this.fireShooter(this.shooter01, "bullet223", 0, 0, 20);

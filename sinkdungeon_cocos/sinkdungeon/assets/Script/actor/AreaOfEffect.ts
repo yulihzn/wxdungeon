@@ -65,7 +65,7 @@ export default class AreaOfEffect extends BaseColliderComponent {
         this.isAttacking = false;
     }
 
-    show(parentNode: cc.Node, postion: cc.Vec3, hv: cc.Vec3, angleOffset: number, data: AreaOfEffectData, killCallBack?: Function, usePool?: boolean, destoryCallBack?: Function) {
+    show(parentNode: cc.Node, postion: cc.Vec3, hv: cc.Vec2, angleOffset: number, data: AreaOfEffectData, killCallBack?: Function, usePool?: boolean, destoryCallBack?: Function) {
         this.data.valueCopy(data);
         this.node.active = true;
         this.node.parent = parentNode;
@@ -94,8 +94,8 @@ export default class AreaOfEffect extends BaseColliderComponent {
             anim.play();
         }
     }
-    private getHv(hv: cc.Vec3, angleOffset: number): cc.Vec3 {
-        let pos = cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180));
+    private getHv(hv: cc.Vec2, angleOffset: number): cc.Vec2 {
+        let pos = cc.v2(hv.clone().rotateSelf(angleOffset * Math.PI / 180));
         return pos.normalizeSelf();
     }
 
@@ -126,7 +126,7 @@ export default class AreaOfEffect extends BaseColliderComponent {
         damage.valueCopy(this.data.damage);
         damage.isRemote = true;
         if (tag == CCollider.TAG.PLAYER || tag == CCollider.TAG.NONPLAYER || tag == CCollider.TAG.GOODNONPLAYER || tag == CCollider.TAG.BOSS) {
-            let normal = attackTarget.convertToWorldSpaceAR(cc.Vec3.ZERO).subSelf(this.node.convertToWorldSpaceAR(cc.Vec3.ZERO)).normalizeSelf();
+            let normal = attackTarget.convertToWorldSpaceAR(cc.Vec2.ZERO).subSelf(this.node.convertToWorldSpaceAR(cc.Vec2.ZERO)).normalizeSelf();
             let target = ActorUtils.getEnemyActorByNode(attackTarget, !this.data.isFromEnemy);
             if (target && !target.sc.isDied) {
                 let damageSuccess = target.takeDamage(damage, this.data.from);
@@ -154,10 +154,10 @@ export default class AreaOfEffect extends BaseColliderComponent {
             }
         }
     }
-    private beatBack(actor: Actor, hv: cc.Vec3) {
+    private beatBack(actor: Actor, hv: cc.Vec2) {
         let pos = hv.clone();
-        if (pos.equals(cc.Vec3.ZERO)) {
-            pos = cc.v3(1, 0);
+        if (pos.equals(cc.Vec2.ZERO)) {
+            pos = cc.v2(1, 0);
         }
         let power = 100;
         pos = pos.normalizeSelf().mul(power);

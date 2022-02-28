@@ -229,7 +229,7 @@ export default abstract class Talent extends cc.Component {
             }).start();
         }
         let areaScript = aoe.getComponent(AreaOfEffect);
-        areaScript.show(this.player.dungeon.node, pos, cc.v3(1, 0), 0, aoeData);
+        areaScript.show(this.player.dungeon.node, pos, cc.v2(1, 0), 0, aoeData);
     }
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {

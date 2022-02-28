@@ -140,8 +140,8 @@ export default class Dryad extends Boss {
     twoFlowers() {
         this.twoFlowerSkill.next(() => {
             this.twoFlowerSkill.IsExcuting = true;
-            this.shooter02.setHv(cc.v3(0, -1));
-            this.shooter03.setHv(cc.v3(0, -1));
+            this.shooter02.setHv(cc.v2(0, -1));
+            this.shooter03.setHv(cc.v2(0, -1));
             //动画总共4秒
             this.anim.play('DryadOpen');
             //动画总共3秒，2秒的时候开始发射
@@ -165,8 +165,7 @@ export default class Dryad extends Boss {
                 let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position);
                 let hv = this.dungeon.player.getCenterPosition().sub(pos);
                 if (!hv.equals(cc.Vec3.ZERO)) {
-                    hv = hv.normalizeSelf();
-                    this.shooter01.setHv(hv);
+                    this.shooter01.setHv(cc.v2(hv).normalize());
                     this.fireShooter(this.shooter01, "bullet022", 0, 0);
                 }
             }, 0.55);

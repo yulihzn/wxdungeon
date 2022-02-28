@@ -81,7 +81,7 @@ export default class Dragon extends Boss {
             this.fireSkill.IsExcuting = true;
             this.anim.play('DragonFire');
             this.scheduleOnce(() => {
-                this.shooter01.setHv(cc.v3(0, -1));
+                this.shooter01.setHv(cc.v2(0, -1));
                 this.shooter01.data.bulletLineInterval = 0.5;
                 this.fireShooter(this.shooter01, "bullet200", 2, 5);
             }, 1.1);
@@ -155,7 +155,7 @@ export default class Dragon extends Boss {
         let h = pos.x;
         let v = pos.y;
         let movement = cc.v2(h, v);
-        movement = movement.mul(speed);
+        movement = movement.normalize().mul(speed);
         this.entity.Move.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
 
@@ -166,7 +166,7 @@ export default class Dragon extends Boss {
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
-        shooter.setHv(cc.v3(0, -1));
+        shooter.setHv(cc.v2(0, -1));
         shooter.fireBullet(angle, cc.Vec3.ZERO);
     }
     showBoss() {

@@ -75,7 +75,7 @@ export default class ShadowPlayer extends cc.Component {
             }
         })
     }
-    attack(data: PlayerData, comboType: number, hv: cc.Vec3, isLeft: boolean): boolean {
+    attack(data: PlayerData, comboType: number, hv: cc.Vec2, isLeft: boolean): boolean {
         if (!this.node) {
             return false;
         }
@@ -86,7 +86,7 @@ export default class ShadowPlayer extends cc.Component {
         }
 
     }
-    remoteAttack(isLeft: boolean, data: EquipmentData, hv: cc.Vec3, damage: DamageData, bulletArcExNum: number, bulletLineExNum: number): boolean {
+    remoteAttack(isLeft: boolean, data: EquipmentData, hv: cc.Vec2, damage: DamageData, bulletArcExNum: number, bulletLineExNum: number): boolean {
         if (!this.node) {
             return false;
         }

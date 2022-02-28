@@ -66,7 +66,7 @@ const { ccclass, property } = cc._decorator;
 export default class OrganizationTalent extends Talent {
     @property(cc.Sprite)
     sprite: cc.Sprite = null;
-    hv: cc.Vec3;
+    hv: cc.Vec2;
     energyShieldList: EnergyShield[] = [];
 
     onLoad() {

@@ -27,7 +27,7 @@ export default class MeleeShadowWeapon extends BaseColliderComponent {
     meleeWeapon:MeleeWeapon;
     private anim: cc.Animation;
     private isAttacking: boolean = false;
-    private hv: cc.Vec3 = cc.v3(1, 0);
+    private hv: cc.Vec2 = cc.v2(1, 0);
     dungeon: Dungeon;
     private comboType = 0;
     private hasTargetMap: Map<number, number> = new Map();
@@ -52,14 +52,14 @@ export default class MeleeShadowWeapon extends BaseColliderComponent {
         this.meleeWeapon = meleeWeapon;
     }
 
-    set Hv(hv: cc.Vec3) {
+    set Hv(hv: cc.Vec2) {
         this.hv = hv.normalizeSelf();
     }
-    get Hv(): cc.Vec3 {
+    get Hv(): cc.Vec2 {
         return this.hv;
     }
    
-    attack(data: PlayerData,comboType: number,hv:cc.Vec3): boolean {
+    attack(data: PlayerData,comboType: number,hv:cc.Vec2): boolean {
         this.updateHv(hv);
         this.comboType = comboType;
         this.hasTargetMap.clear();
@@ -110,9 +110,9 @@ export default class MeleeShadowWeapon extends BaseColliderComponent {
     EffectTime() {
     }
 
-    updateHv(hv:cc.Vec3) {
+    updateHv(hv:cc.Vec2) {
         this.hv = hv;
-        this.rotateCollider(cc.v2(this.hv.x,this.hv.y));
+        this.rotateCollider(this.hv);
     }
 
     private rotateCollider(direction: cc.Vec2) {

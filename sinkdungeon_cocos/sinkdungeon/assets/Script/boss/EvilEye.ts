@@ -174,8 +174,7 @@ export default class EvilEye extends Boss {
             let pos = this.entity.Transform.position.clone().add(p);
             let hv = this.dungeon.player.getCenterPosition().sub(pos);
             if (!hv.equals(cc.Vec3.ZERO)) {
-                hv = hv.normalizeSelf();
-                this.viceShooters[i].setHv(hv);
+                this.viceShooters[i].setHv(cc.v2(hv).normalize());
                 this.fireShooter(this.viceShooters[i], 'bullet101', 0, 0, 0, cc.v3(0, 0));
 
             }
@@ -191,8 +190,7 @@ export default class EvilEye extends Boss {
             let pos = this.entity.Transform.position.clone().add(p);
             let hv = this.dungeon.player.getCenterPosition().sub(pos);
             if (!hv.equals(cc.Vec3.ZERO)) {
-                hv = hv.normalizeSelf();
-                this.shooter.setHv(hv);
+                this.shooter.setHv(cc.v2(hv).normalize());
                 this.shooter.data.isLineAim = 1;
                 this.fireShooter(this.shooter, 'laser003', 0, 3, 0, cc.v3(0, 0));
                 this.anim.playAdditive("EvilEyeStone");
@@ -209,13 +207,10 @@ export default class EvilEye extends Boss {
             }
             this.anim.play('EvilEyeBite');
             let pos = this.getMovePos();
-            if (!pos.equals(cc.Vec3.ZERO)) {
-                pos = pos.normalizeSelf();
-            }
             let h = pos.x;
             let v = pos.y;
             let movement = cc.v2(h, v);
-            movement = movement.mul(2000);
+            movement = movement.normalize().mul(2000);
             this.entity.Move.linearVelocity = movement;
             this.scheduleOnce(() => {
                 this.dashSkill.IsExcuting = false;

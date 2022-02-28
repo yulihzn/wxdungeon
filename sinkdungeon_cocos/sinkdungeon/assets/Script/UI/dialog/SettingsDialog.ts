@@ -22,6 +22,8 @@ export default class SettingsDialog extends BaseDialog {
     tgGamepad:cc.Toggle = null;
     @property(cc.Toggle)
     tgFps:cc.Toggle = null;
+    @property(cc.Node)
+    pcInfo:cc.Node = null;
     onLoad () {
     }
 
@@ -30,6 +32,7 @@ export default class SettingsDialog extends BaseDialog {
     }
     show(){
         super.show();
+        this.pcInfo.active = !LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD);
         this.initToggle(this.tgShadow,LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_SOFT_SHADOW));
         this.initToggle(this.tgGamepad,LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD));
         this.initToggle(this.tgFps,LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_LOW_POWER));
@@ -54,6 +57,7 @@ export default class SettingsDialog extends BaseDialog {
         AudioPlayer.play(AudioPlayer.SELECT);
         Logic.settings.showGamepad = toggle.isChecked;
         LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD,Logic.settings.showGamepad);
+        this.pcInfo.active = !Logic.settings.showGamepad;
         cc.director.emit(EventHelper.HUD_CONTROLLER_UPDATE_GAMEPAD);
     }
     toggleFps(toggle:cc.Toggle, customEventData:string){

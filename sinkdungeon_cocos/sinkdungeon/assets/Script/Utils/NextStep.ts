@@ -19,10 +19,11 @@ export default class NextStep extends cc.Component {
      * @param lastTime 最近触发时间
      * @param secondCallback 读秒回调
      */
-    init(needCooling?: boolean, storePointMax?: number, storePoint?: number, duration?: number, lastTime?: number, secondCallback?: Function) {
+    init(needCooling?: boolean, storePointMax?: number, storePoint?: number, duration?: number, lastTime?: number, secondCallback?: Function, intervalTime?: number) {
         this.secondCallback = secondCallback;
         this.storePointMax = storePointMax ? storePointMax : 1;
         this.duration = duration && duration > 0 ? duration : 0;
+        this.intervalTime = intervalTime && intervalTime > 0 ? intervalTime : this.intervalTime;
         //默认存储点为1
         if (this.storePointMax < 1) {
             this.storePointMax = 1;
@@ -83,10 +84,11 @@ export default class NextStep extends cc.Component {
      * @param secondCallback 每秒的回调
      * @returns void
      */
-    next(callback: Function, duration?: number, excuteReset?: boolean, secondCallback?: Function) {
+    next(callback: Function, duration?: number, excuteReset?: boolean, secondCallback?: Function, intervalTime?: number) {
         this.secondCallback = secondCallback;
         this.excuteRest = excuteReset;
         this.duration = duration;
+        this.intervalTime = intervalTime && intervalTime > 0 ? intervalTime : this.intervalTime;
         //存储点为0不执行，如果未处于循环状态，开启循环
         if (this.storePoint == 0) {
             this.startLoop();
@@ -131,7 +133,7 @@ export default class NextStep extends cc.Component {
             this.storePoint = this.storePointMax;
             this.isLooping = false;
             this.unscheduleAllCallbacks();
-        }else{
+        } else {
             //未达到最大存储上次触发时间改为当前时间
             this.lastTime = Date.now();
         }

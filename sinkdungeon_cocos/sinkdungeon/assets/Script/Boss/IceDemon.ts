@@ -223,13 +223,10 @@ export default class IceDemon extends Boss {
             this.scheduleOnce(() => {
                 AudioPlayer.play(AudioPlayer.BOOS_ICEDEMON_ATTACK);
                 let pos = this.getMovePos();
-                if (!pos.equals(cc.Vec3.ZERO)) {
-                    pos = pos.normalizeSelf();
-                }
                 let h = pos.x;
                 let v = pos.y;
                 let movement = cc.v2(h, v);
-                movement = movement.mul(1500);
+                movement = movement.normalize().mul(1500);
                 this.entity.Move.linearVelocity = movement;
             }, 1);
             this.scheduleOnce(() => { this.meleeSkill.IsExcuting = false; }, 2);
@@ -246,13 +243,10 @@ export default class IceDemon extends Boss {
             this.anim.play('IceDemonDash');
             this.scheduleOnce(() => {
                 let pos = this.getMovePos();
-                if (!pos.equals(cc.Vec3.ZERO)) {
-                    pos = pos.normalizeSelf();
-                }
                 let h = pos.x;
                 let v = pos.y;
                 let movement = cc.v2(h, v);
-                movement = movement.mul(2500);
+                movement = movement.normalize().mul(2500);
                 this.entity.Move.linearVelocity = movement;
             }, 2.4);
             this.scheduleOnce(() => { this.dashSkill.IsExcuting = false; }, 3);
@@ -286,7 +280,6 @@ export default class IceDemon extends Boss {
 
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number): void {
         shooter.dungeon = this.dungeon;
-        // shooter.setHv(cc.v3(0, -1))
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
@@ -341,7 +334,7 @@ export default class IceDemon extends Boss {
         let absv = Math.abs(v);
 
         let movement = cc.v2(h, v);
-        movement = movement.mul(speed);
+        movement = movement.normalize().mul(speed);
         this.entity.Move.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
         if (this.isMoving) {

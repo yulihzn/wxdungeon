@@ -15,7 +15,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Utils {
-    static showLog = false;
+    static showLog = true;
     static log(msg: String): void {
         if (this.showLog) {
             cc.log(msg);

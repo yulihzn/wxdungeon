@@ -165,12 +165,11 @@ export default class Rah extends Boss {
     }
     fireSnake() {
         this.snakeSkill.next(() => {
-            this.shooter.setHv(cc.v3(0, -1));
+            this.shooter.setHv(cc.v2(0, -1));
             let pos = this.entity.Transform.position.clone().add(this.shooter.node.position);
             let hv = this.dungeon.player.getCenterPosition().sub(pos);
             if (!hv.equals(cc.Vec3.ZERO)) {
-                hv = hv.normalizeSelf();
-                this.shooter.setHv(hv);
+                this.shooter.setHv(cc.v2(hv).normalize());
                 this.fireShooter(this.shooter, "bullet014", 1, 0);
             }
             if (!this.anim) {
@@ -186,8 +185,7 @@ export default class Rah extends Boss {
             let pos = this.entity.Transform.position.clone().add(this.shooter.node.position);
             let hv = this.dungeon.player.getCenterPosition().sub(pos);
             if (!hv.equals(cc.Vec3.ZERO)) {
-                hv = hv.normalizeSelf();
-                this.shooter.setHv(hv);
+                this.shooter.setHv(cc.v2(hv).normalize());
             }
             this.fireShooter(this.shooter, "bullet017", 99, 0);
             if (!this.anim) {
@@ -256,7 +254,7 @@ export default class Rah extends Boss {
         let absv = Math.abs(v);
 
         let movement = cc.v2(h, v);
-        movement = movement.mul(speed);
+        movement = movement.normalize().mul(speed);
         this.entity.Move.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
         // if (this.isMoving) {

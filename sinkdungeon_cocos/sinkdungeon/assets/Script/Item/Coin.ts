@@ -89,9 +89,7 @@ export default class Coin extends BaseColliderComponent {
                 p.y += 10;
                 let pos = p.sub(this.node.position);
                 if (!pos.equals(cc.Vec3.ZERO)) {
-                    pos = pos.normalizeSelf();
-                    pos = pos.mul(800);
-                    this.entity.Move.linearVelocity = cc.v2(pos);
+                    this.entity.Move.linearVelocity = cc.v2(pos.x,pos.y).normalize().mul(800);
                     this.entity.Move.linearDamping = 1;
                 }
             }

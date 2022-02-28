@@ -84,7 +84,7 @@ export default class Captain extends Boss {
     }
     //Animation
     FireSwordLight() {
-        this.shooter.setHv(cc.v3(this.isFaceRight ? 1 : -1, 0));
+        this.shooter.setHv(cc.v2(this.isFaceRight ? 1 : -1, 0));
         this.shooter.dungeon = this.dungeon;
         this.shooter.data.bulletType = "bullet043";
         this.shooter.fireBullet(0, cc.v3(16, 0));
@@ -101,7 +101,7 @@ export default class Captain extends Boss {
         let hv = this.dungeon.player.getCenterPosition().sub(this.node.position);
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
-            this.exshooter.setHv(hv);
+            this.exshooter.setHv(cc.v2(hv));
             this.exshooter.dungeon = this.dungeon;
             this.exshooter.data.bulletType = "bullet033";
             this.exshooter.data.bulletArcOffsetX = 64;
@@ -121,8 +121,7 @@ export default class Captain extends Boss {
         }
         let hv = this.dungeon.player.getCenterPosition().sub(this.entity.Transform.position);
         if (!hv.equals(cc.Vec3.ZERO)) {
-            hv = hv.normalizeSelf();
-            this.shooter.setHv(hv);
+            this.shooter.setHv(cc.v2(hv).normalize());
             this.shooter.dungeon = this.dungeon;
             this.shooter.data.bulletType = "bullet102";
             this.shooter.fireBullet(0, cc.v3(16, 0));
@@ -270,8 +269,6 @@ export default class Captain extends Boss {
         let pos = Dungeon.getPosInMap(newPos).sub(this.entity.Transform.position);
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
-            pos = pos.normalizeSelf();
-
         }
         let h = pos.x;
         let v = pos.y;
@@ -283,7 +280,7 @@ export default class Captain extends Boss {
         if (this.data.currentHealth < this.data.Common.maxHealth / 2) {
             speed = 240;
         }
-        movement = movement.mul(speed);
+        movement = movement.normalize().mul(speed);
         this.entity.Move.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
     }
@@ -304,7 +301,7 @@ export default class Captain extends Boss {
         let absv = Math.abs(v);
 
         let movement = cc.v2(h, v);
-        movement = movement.mul(speed);
+        movement = movement.normalize().mul(speed);
         this.entity.Move.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
         if (this.isMoving) {

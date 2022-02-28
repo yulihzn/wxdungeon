@@ -820,9 +820,9 @@ export default class Player extends Actor {
             this.data.pos = this.pos.clone();
         }
         if (!pos.equals(cc.Vec3.ZERO)) {
-            this.shooterEx.setHv(cc.v3(pos.x, pos.y));
-            this.weaponLeft.shooter.setHv(cc.v3(pos.x, pos.y));
-            this.weaponRight.shooter.setHv(cc.v3(pos.x, pos.y));
+            this.shooterEx.setHv(cc.v2(pos.x, pos.y));
+            this.weaponLeft.shooter.setHv(cc.v2(pos.x, pos.y));
+            this.weaponRight.shooter.setHv(cc.v2(pos.x, pos.y));
         }
         let h = pos.x;
         let v = pos.y;
@@ -841,10 +841,10 @@ export default class Player extends Actor {
         this.sc.isMoving = h != 0 || v != 0;
         //调整武器方向
         if (this.weaponRight.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponRight.meleeWeapon.IsAttacking) {
-            this.weaponRight.meleeWeapon.Hv = cc.v3(pos.x, pos.y);
+            this.weaponRight.meleeWeapon.Hv = cc.v2(pos.x, pos.y);
         }
         if (this.weaponLeft.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponLeft.meleeWeapon.IsAttacking) {
-            this.weaponLeft.meleeWeapon.Hv = cc.v3(pos.x, pos.y);
+            this.weaponLeft.meleeWeapon.Hv = cc.v2(pos.x, pos.y);
         }
         if (this.sc.isMoving && !this.weaponLeft.meleeWeapon.IsAttacking && !this.weaponRight.meleeWeapon.IsAttacking) {
             if (!this.shield.isAniming && !this.shield.isDefendOrParrying) {
@@ -1330,7 +1330,7 @@ export default class Player extends Actor {
         }
     }
 
-    get Hv(): cc.Vec3 {
+    get Hv(): cc.Vec2 {
         return this.weaponRight.meleeWeapon.Hv;
     }
     useItem(data: ItemData) {

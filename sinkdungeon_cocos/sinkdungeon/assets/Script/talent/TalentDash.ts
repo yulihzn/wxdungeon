@@ -19,7 +19,7 @@ export default class TalentDash extends Talent {
     @property(DashShadow)
     dashShadow: DashShadow = null;
     
-    hv: cc.Vec3;
+    hv: cc.Vec2;
 
     onLoad() {
     }
@@ -63,12 +63,12 @@ export default class TalentDash extends Talent {
             } else {
                 pos = pos.normalizeSelf();
             }
-            let posv3 = cc.v3(pos.x,pos.y);
+            let posv2 = cc.v2(pos.x,pos.y);
             if (this.hashTalent(Talent.DASH_08)) {
                 speed = 100;
-                this.showShadow(posv3);
+                this.showShadow(posv2);
             }
-            this.hv = posv3.clone();
+            this.hv = posv2.clone();
             pos = pos.mul(speed);
             this.player.entity.Move.linearVelocity = pos;
             this.scheduleOnce(() => {
@@ -80,7 +80,7 @@ export default class TalentDash extends Talent {
         }, cooldown, true);
     }
 
-    showShadow(pos: cc.Vec3) {
+    showShadow(pos: cc.Vec2) {
         if (this.dashShadow) {
             this.dashShadow.setHv(pos.clone());
             this.dashShadow.show();

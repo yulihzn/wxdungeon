@@ -23,7 +23,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class DashShadow extends BaseColliderComponent {
     
-    hv: cc.Vec3 = cc.v3(1, 0);
+    hv: cc.Vec2 = cc.v2(1, 0);
     private motionStreak: cc.MotionStreak;
     private sprite: cc.Node;
     talentDash: TalentDash;
@@ -111,9 +111,9 @@ export default class DashShadow extends BaseColliderComponent {
 
         }
     }
-    setHv(hv: cc.Vec3) {
-        if (hv.equals(cc.Vec3.ZERO)) {
-            this.hv = cc.v3(1, 0);
+    setHv(hv: cc.Vec2) {
+        if (hv.equals(cc.Vec2.ZERO)) {
+            this.hv = cc.v2(1, 0);
         } else {
             this.hv = hv;
         }

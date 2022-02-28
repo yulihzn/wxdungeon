@@ -78,7 +78,7 @@ export default class ProfessionTalent extends Talent {
     daggerLightPrefab:cc.Prefab = null;
     fireGhostNum = 0;
     ghostPool: cc.NodePool;
-    hv: cc.Vec3;
+    hv: cc.Vec2;
     onLoad() {
         this.ghostPool = new cc.NodePool(FireGhost);
         cc.director.on('destoryfireghost', (event) => {
@@ -257,8 +257,8 @@ export default class ProfessionTalent extends Talent {
         } else {
             pos = pos.normalizeSelf();
         }
-        let posv3 = cc.v3(pos.x, pos.y);
-        this.hv = posv3.clone();
+        let posv2 = cc.v2(pos.x, pos.y);
+        this.hv = posv2.clone();
         pos = pos.mul(speed);
         this.player.entity.Move.linearVelocity = pos;
         this.scheduleOnce(() => {

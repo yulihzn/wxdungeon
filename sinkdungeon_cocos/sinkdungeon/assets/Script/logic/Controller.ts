@@ -26,7 +26,9 @@ export default class Controller extends cc.Component {
     interactAction: cc.Node = null;
     interactActionTouched = false;
     @property(cc.Node)
-    interactEmpty:cc.Node = null;
+    interactEmpty: cc.Node = null;
+    @property(cc.Node)
+    interactKey: cc.Node = null;
     @property(cc.Node)
     skillAction: cc.Node = null;
     @property(cc.Node)
@@ -40,9 +42,11 @@ export default class Controller extends cc.Component {
     @property(cc.Node)
     mouseArea: cc.Node = null;
     @property(cc.Node)
+    curseArea: cc.Node = null;
+    @property(cc.Node)
     cursor: cc.Node = null;
-    private mouseIgnoreRects:cc.Rect[] = [];
-    static mousePos:cc.Vec3;
+    static mousePos: cc.Vec2;
+    mouseInArea = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -127,75 +131,71 @@ export default class Controller extends cc.Component {
 
         EventHelper.on(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD
             , (detail) => { if (this.node) this.changeRes(detail.isShield) });
-            EventHelper.on(EventHelper.HUD_CONTROLLER_UPDATE_GAMEPAD
+        EventHelper.on(EventHelper.HUD_CONTROLLER_UPDATE_GAMEPAD
             , (detail) => { if (this.node) this.updateGamepad(); });
-        EventHelper.on(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,(detail)=>{
-            if(this.node){
+        EventHelper.on(EventHelper.HUD_CONTROLLER_INTERACT_SHOW, (detail) => {
+            if (this.node) {
                 this.interactAction.active = detail.isShow;
                 this.interactEmpty.active = !detail.iiShow;
+                this.interactKey.active = detail.isShow&&Controller.isMouseMode();
             }
         })
-        EventHelper.on(EventHelper.HUD_CONTROLLER_REMOTE_SHOW,(detail)=>{
-            if(this.node){
-                this.shootAction.active = detail.isShow;
+        EventHelper.on(EventHelper.HUD_CONTROLLER_REMOTE_SHOW, (detail) => {
+            if (this.node) {
+                this.shootAction.active = detail.isShow&&!Controller.isMouseMode();
             }
         })
-        for(let node of this.mouseArea.children){
-            if(node.uuid == this.cursor.uuid){
-                continue;
-            }
-            let pos = this.mouseArea.convertToWorldSpaceAR(node.position);
-            let rect = cc.rect(pos.x-node.width/2,pos.y-node.height,node.width,node.height);
-            this.mouseIgnoreRects.push(rect);
-        }
-        this.mouseArea.on(cc.Node.EventType.MOUSE_MOVE, (event: cc.Event.EventMouse) => {
-            this.cursor.position = cc.v3(this.node.parent.parent.convertToNodeSpaceAR(event.getLocation()));
-            Controller.mousePos = cc.v3(event.getLocation());
-        }, this);
         this.mouseArea.on(cc.Node.EventType.MOUSE_DOWN, (event: cc.Event.EventMouse) => {
-            for(let rect of this.mouseIgnoreRects){
-                if(rect.contains(event.getLocation())){
-                    return;
-                }
-            }
-            if(event.getButton() == cc.Event.EventMouse.BUTTON_LEFT){
+            if (event.getButton() == cc.Event.EventMouse.BUTTON_LEFT) {
                 this.attackActionTouched = true;
-            }else if(event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT){
+            } else if (event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT) {
                 this.shootActionTouched = true;
             }
         }, this);
-        this.mouseArea.on(cc.Node.EventType.MOUSE_UP, (event: cc.Event.EventMouse) => {
-            if(event.getButton() == cc.Event.EventMouse.BUTTON_LEFT){
+        this.curseArea.on(cc.Node.EventType.MOUSE_UP, (event: cc.Event.EventMouse) => {
+            if (event.getButton() == cc.Event.EventMouse.BUTTON_LEFT) {
                 this.attackActionTouched = false;
-            }else if(event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT){
+            } else if (event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT) {
                 this.shootActionTouched = false;
                 cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL);
             }
         }, this);
-        this.mouseArea.on(cc.Node.EventType.MOUSE_LEAVE, (event: cc.Event.EventMouse) => {
-            if(event.getButton() == cc.Event.EventMouse.BUTTON_LEFT){
-                this.attackActionTouched = false;
-            }else if(event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT){
-                this.shootActionTouched = false;
-                cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL);
-            }
+        this.curseArea.on(cc.Node.EventType.MOUSE_LEAVE, (event: cc.Event.EventMouse) => {
+            this.attackActionTouched = false;
+            this.shootActionTouched = false;
+        }, this);
+        this.curseArea.on(cc.Node.EventType.MOUSE_MOVE, (event: cc.Event.EventMouse) => {
+            this.cursor.position = cc.v3(this.curseArea.convertToNodeSpaceAR(event.getLocation()));
+            Controller.mousePos = event.getLocation();
         }, this);
         this.updateGamepad();
     }
-    static isMouseMode(){
+    static isMouseMode() {
         return !cc.sys.isMobile && !Logic.settings.showGamepad;
     }
     private updateGamepad() {
         if (Controller.isMouseMode()) {
-            this.node.getChildByName('actions').active = false;
-            this.coolDown.node.position = cc.v3(0, 180);
-            this.coolDown1.node.position = cc.v3(-96, 180);
+            this.attackAction.active = false;
+            this.shootAction.active = false;
+            this.skillAction.active = false;
+            this.skillAction1.active = false;
+            this.coolDown.node.position = cc.v3(-100, -80);
+            this.coolDown1.node.position = cc.v3(60, -80);
+            this.coolDown.changeKeyShow(true);
+            this.coolDown1.changeKeyShow(true);
             this.mouseArea.active = true;
+            this.curseArea.active = true;
         } else {
-            this.node.getChildByName('actions').active = true;
+            this.attackAction.active = true;
+            this.shootAction.active = true;
+            this.skillAction.active = true;
+            this.skillAction1.active = true;
             this.coolDown.node.position = this.skillAction.position.clone();
             this.coolDown1.node.position = this.skillAction1.position.clone();
+            this.coolDown.changeKeyShow(false);
+            this.coolDown1.changeKeyShow(false);
             this.mouseArea.active = false;
+            this.curseArea.active = false;
         }
     }
 
@@ -251,9 +251,9 @@ export default class Controller extends cc.Component {
     //     }
     //     this.schedule(this.coolDownFuc, delta, cc.macro.REPEAT_FOREVER);
     // }
-    private drawSkillCoolDown(coolDown: number, count:number, graphics: cc.Graphics, coolDownFuc: Function, coolDownNode: cc.Node, skillIcon: cc.Sprite,label:cc.Label) {
-        if(label){
-            label.string = count>0?`${count}`:``;
+    private drawSkillCoolDown(coolDown: number, count: number, graphics: cc.Graphics, coolDownFuc: Function, coolDownNode: cc.Node, skillIcon: cc.Sprite, label: cc.Label) {
+        if (label) {
+            label.string = count > 0 ? `${count}` : ``;
         }
         if (coolDown < 0) {
             return;

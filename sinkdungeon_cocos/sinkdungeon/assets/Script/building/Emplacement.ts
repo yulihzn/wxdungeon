@@ -50,10 +50,10 @@ export default class Emplacement extends Building {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.setShooterHv(this.shooterTop, cc.v3(0, 1));
-        this.setShooterHv(this.shooterBottom, cc.v3(0, -1));
-        this.setShooterHv(this.shooterLeft, cc.v3(-1, 0));
-        this.setShooterHv(this.shooterRight, cc.v3(1, 0));
+        this.setShooterHv(this.shooterTop, cc.v2(0, 1));
+        this.setShooterHv(this.shooterBottom, cc.v2(0, -1));
+        this.setShooterHv(this.shooterLeft, cc.v2(-1, 0));
+        this.setShooterHv(this.shooterRight, cc.v2(1, 0));
         let from = FromData.getClone('炮台','emplacement');
         this.shooterTop.from.valueCopy(from);
         this.shooterBottom.from.valueCopy(from);
@@ -174,7 +174,7 @@ export default class Emplacement extends Building {
         }
         shooter.fireBullet(0,cc.v3(64,0));
     }
-    setShooterHv(shooter: Shooter, hv: cc.Vec3) {
+    setShooterHv(shooter: Shooter, hv: cc.Vec2) {
         shooter.setHv(hv);
     }
     update(dt) {
