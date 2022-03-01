@@ -1,3 +1,4 @@
+import DataUtils from "../utils/DataUtils";
 import IndexZ from "../utils/IndexZ";
 import DamageData from "./DamageData";
 import FromData from "./FromData";
@@ -47,35 +48,29 @@ export default class AreaOfEffectData {
         if(!data){
             return;
         }
-        this.duration = data.duration?data.duration:0;
+        DataUtils.baseCopy(this,data);
         this.interval = data.interval?data.interval:0.1;
-        this.delay = data.delay?data.delay:0;
-        this.scale = data.scale?data.scale:0;
         this.zIndex = data.zIndex?data.zIndex:IndexZ.ACTOR;
-        this.isFromEnemy = data.isFromEnemy?data.isFromEnemy:false;
-        this.canBreakBuilding = data.canBreakBuilding?data.canBreakBuilding:false;
-        this.canBreakBullet = data.canBreakBullet?data.canBreakBullet:false;
-        this.isRotate = data.isRotate?data.isRotate:false;
-        this.canBeatBack = data.canBeatBack?data.canBeatBack:false;
         this.statusList = data.statusList?data.statusList:[];
         this.damage.valueCopy(data.damage);
         this.from.valueCopy(data.from);
     }
     clone():AreaOfEffectData{
         let e = new AreaOfEffectData();
-        e.duration = this.duration;
-        e.interval = this.interval;
-        e.delay = this.delay;
-        e.scale = this.scale;
-        e.isFromEnemy = this.isFromEnemy;
-        e.canBreakBuilding = this.canBreakBuilding;
-        e.canBreakBullet = this.canBreakBullet;
-        e.canBeatBack = this.canBeatBack;
-        e.damage = this.damage.clone();
-        e.from = this.from.clone();
-        e.statusList = this.statusList;
-        e.zIndex = this.zIndex;
-        e.isRotate = this.isRotate;
+        e.valueCopy(this);
+        // e.duration = this.duration;
+        // e.interval = this.interval;
+        // e.delay = this.delay;
+        // e.scale = this.scale;
+        // e.isFromEnemy = this.isFromEnemy;
+        // e.canBreakBuilding = this.canBreakBuilding;
+        // e.canBreakBullet = this.canBreakBullet;
+        // e.canBeatBack = this.canBeatBack;
+        // e.damage = this.damage.clone();
+        // e.from = this.from.clone();
+        // e.statusList = this.statusList;
+        // e.zIndex = this.zIndex;
+        // e.isRotate = this.isRotate;
         return e;
     }
 }

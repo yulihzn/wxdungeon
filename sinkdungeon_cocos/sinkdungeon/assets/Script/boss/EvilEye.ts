@@ -89,11 +89,11 @@ export default class EvilEye extends Boss {
         }
 
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
-        if (this.data.currentHealth > this.data.Common.maxHealth) {
-            this.data.currentHealth = this.data.Common.maxHealth;
+        if (this.data.currentHealth > this.data.Common.MaxHealth) {
+            this.data.currentHealth = this.data.Common.MaxHealth;
         }
-        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
+        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.MaxHealth);
+        let isHalf = this.data.currentHealth < this.data.Common.MaxHealth / 2;
         if (isHalf && !this.isHalfBlood) {
             this.isHalfBlood = true;
             this.anim.play("EvilEyeHurt");
@@ -123,7 +123,7 @@ export default class EvilEye extends Boss {
         this.changeZIndex();
         let pos = this.getMovePos();
         let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
-        let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
+        let isHalf = this.data.currentHealth < this.data.Common.MaxHealth / 2;
         if (playerDis < 100) {
             this.entity.Move.linearVelocity = cc.Vec2.ZERO;
         }
@@ -230,7 +230,7 @@ export default class EvilEye extends Boss {
         this.entity.NodeRender.node = this.node;
         this.entity.Move.linearDamping = 10;
         if (this.healthBar) {
-            this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+            this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.MaxHealth);
             this.healthBar.node.active = !this.sc.isDied;
         }
     }

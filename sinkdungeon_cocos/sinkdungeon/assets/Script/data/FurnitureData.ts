@@ -9,6 +9,7 @@
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import DataUtils from "../utils/DataUtils";
 import InventoryData from "./InventoryData";
 
 
@@ -31,17 +32,18 @@ export default class FurnitureData {
         if (!data) {
             return;
         }
-        this.id = data.id?data.id:'';
-        this.purchased = data.purchased;
-        this.price = data.price;
-        this.nameCn = data.nameCn ? data.nameCn : '';
-        this.nameEn = data.nameEn ? data.nameEn : '';
-        this.resName = data.resName ? data.resName : '';
-        this.info = data.info ? data.info : '';
+        DataUtils.baseCopy(this,data);
+        // this.id = data.id?data.id:'';
+        // this.purchased = data.purchased;
+        // this.price = data.price;
+        // this.nameCn = data.nameCn ? data.nameCn : '';
+        // this.nameEn = data.nameEn ? data.nameEn : '';
+        // this.resName = data.resName ? data.resName : '';
+        // this.info = data.info ? data.info : '';
         this.scale = data.scale ? data.scale : 1;
-        this.collider = data.collider ? data.collider : '';
-        this.isOpen = data.isOpen;
-        this.storage = data.storage?data.storage:0;
+        // this.collider = data.collider ? data.collider : '';
+        // this.isOpen = data.isOpen;
+        // this.storage = data.storage?data.storage:0;
         if(this.storage>32){
             this.storage = 32;
         }
@@ -56,26 +58,27 @@ export default class FurnitureData {
     }
     clone(): FurnitureData {
         let data = new FurnitureData();
-        data.purchased = this.purchased;
-        data.scale = this.scale;
-        data.price = this.price;
-        data.nameCn = this.nameCn;
-        data.nameEn = this.nameEn;
-        data.info = this.info;
-        data.scale = this.scale;
-        data.collider = this.collider;
-        data.isOpen = this.isOpen;
-        data.resName = this.resName;
-        data.id = this.id;
-        data.storage = this.storage;
-        if(this.storageList&&this.storage>0){
-            data.storageList = [];
-            for(let idata of this.storageList){
-                let ida = new InventoryData();
-                ida.valueCopy(idata);
-                data.storageList.push(ida);
-            }
-        }
+        data.valueCopy(this);
+        // data.purchased = this.purchased;
+        // data.scale = this.scale;
+        // data.price = this.price;
+        // data.nameCn = this.nameCn;
+        // data.nameEn = this.nameEn;
+        // data.info = this.info;
+        // data.scale = this.scale;
+        // data.collider = this.collider;
+        // data.isOpen = this.isOpen;
+        // data.resName = this.resName;
+        // data.id = this.id;
+        // data.storage = this.storage;
+        // if(this.storageList&&this.storage>0){
+        //     data.storageList = [];
+        //     for(let idata of this.storageList){
+        //         let ida = new InventoryData();
+        //         ida.valueCopy(idata);
+        //         data.storageList.push(ida);
+        //     }
+        // }
         return data;
     }
 }

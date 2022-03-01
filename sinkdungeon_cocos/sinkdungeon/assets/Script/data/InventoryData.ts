@@ -1,3 +1,4 @@
+import DataUtils from "../utils/DataUtils";
 import BaseData from "./BaseData";
 import EquipmentData from "./EquipmentData";
 import ItemData from "./ItemData";
@@ -26,8 +27,9 @@ export default class InventoryData extends BaseData {
         if (!data) {
             return;
         }
-        this.type = data.type ? data.type : 0;
-        this.price = data.price ? data.price : 0;
+        DataUtils.baseCopy(this,data);
+        // this.type = data.type ? data.type : 0;
+        // this.price = data.price ? data.price : 0;
         if (data.equipmentData) {
             this.equipmentData = new EquipmentData();
             this.equipmentData.valueCopy(data.equipmentData);
@@ -43,17 +45,18 @@ export default class InventoryData extends BaseData {
             this.level = 0;
         }
         this.itemData = data.itemData;
-        this.createTime = data.createTime ? data.createTime : 0;
+        // this.createTime = data.createTime ? data.createTime : 0;
     }
     public clone(): InventoryData {
         let e = new InventoryData();
-        e.equipmentData = this.equipmentData;
-        e.itemData = this.itemData;
-        e.createTime = this.createTime;
-        e.id = this.id;
-        e.type = this.type;
-        e.price = this.price;
-        e.level = this.level;
+        e.valueCopy(this);
+        // e.equipmentData = this.equipmentData;
+        // e.itemData = this.itemData;
+        // e.createTime = this.createTime;
+        // e.id = this.id;
+        // e.type = this.type;
+        // e.price = this.price;
+        // e.level = this.level;
         return e;
     }
     public setEmpty() {

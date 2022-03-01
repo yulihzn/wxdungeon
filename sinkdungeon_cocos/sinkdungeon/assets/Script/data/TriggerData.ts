@@ -8,6 +8,7 @@
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import DataUtils from "../utils/DataUtils";
 import BaseData from "./BaseData";
 
 /**触发数据类  */
@@ -75,47 +76,49 @@ export default class TriggerData extends BaseData{
         if(!data){
             return;
         }
-        this.uuid = data.uuid?data.uuid:'';
-        this.res = data.res?data.res:'';
-        this.id = data.id? data.id : 0;
-        this.group = data.group?data.group:0;
-        this.type = data.type ? data.type : 0;
-        this.count = data.count ? data.count : 0;
-        this.target = data.target ? data.target : 0;
-        this.range = data.range ? data.range : 0;
-        this.maxAmmo = data.maxAmmo? data.maxAmmo : 0;
-        this.bulletInterval = data.bulletInterval?data.bulletInterval:0;
-        this.bulletAngle = data.bulletAngle? data.bulletAngle: 0;
-        this.bulletSize = data.bulletSize?data.bulletSize:0;
-        this.bulletOffsetX = data.bulletOffsetX?data.bulletOffsetX:0;
-        this.bulletArcOffsetX = data.bulletArcOffsetX?data.bulletArcOffsetX:0;
-        this.bulletArcExNum = data.bulletArcExNum?data.bulletArcExNum:0;
-        this.bulletLineExNum = data.bulletLineExNum?data.bulletLineExNum:0;
-        this.bulletLineInterval = data.bulletLineInterval?data.bulletLineInterval:0;
-        this.bulletSpeed = data.bulletSpeed?data.bulletSpeed:0;
-        this.autoInterval = data.autoInterval?data.autoInterval:0;
+        DataUtils.baseCopy(this,data);
+        // this.uuid = data.uuid?data.uuid:'';
+        // this.res = data.res?data.res:'';
+        // this.id = data.id? data.id : 0;
+        // this.group = data.group?data.group:0;
+        // this.type = data.type ? data.type : 0;
+        // this.count = data.count ? data.count : 0;
+        // this.target = data.target ? data.target : 0;
+        // this.range = data.range ? data.range : 0;
+        // this.maxAmmo = data.maxAmmo? data.maxAmmo : 0;
+        // this.bulletInterval = data.bulletInterval?data.bulletInterval:0;
+        // this.bulletAngle = data.bulletAngle? data.bulletAngle: 0;
+        // this.bulletSize = data.bulletSize?data.bulletSize:0;
+        // this.bulletOffsetX = data.bulletOffsetX?data.bulletOffsetX:0;
+        // this.bulletArcOffsetX = data.bulletArcOffsetX?data.bulletArcOffsetX:0;
+        // this.bulletArcExNum = data.bulletArcExNum?data.bulletArcExNum:0;
+        // this.bulletLineExNum = data.bulletLineExNum?data.bulletLineExNum:0;
+        // this.bulletLineInterval = data.bulletLineInterval?data.bulletLineInterval:0;
+        // this.bulletSpeed = data.bulletSpeed?data.bulletSpeed:0;
+        // this.autoInterval = data.autoInterval?data.autoInterval:0;
     }
     public clone(): TriggerData {
         let e = new TriggerData();
-        e.uuid = e.uuid;
-        e.res = this.res;
-        e.id = this.id;
-        e.group = e.group;
-        e.type = this.type;
-        e.count = this.count;
-        e.target = this.target;
-        e.range = this.range;
-        e.maxAmmo = this.maxAmmo;
-        e.bulletInterval = this.bulletInterval;
-        e.bulletAngle = this.bulletAngle;
-        e.bulletSize = this.bulletSize;
-        e.bulletOffsetX = this.bulletOffsetX;
-        e.bulletArcOffsetX = this.bulletArcOffsetX;
-        e.bulletArcExNum = this.bulletArcExNum;
-        e.bulletLineExNum = this.bulletLineExNum;
-        e.bulletLineInterval = this.bulletLineInterval;
-        e.bulletSpeed = this.bulletSpeed;
-        e.autoInterval = this.autoInterval;
+        e.valueCopy(this);
+        // e.uuid = e.uuid;
+        // e.res = this.res;
+        // e.id = this.id;
+        // e.group = e.group;
+        // e.type = this.type;
+        // e.count = this.count;
+        // e.target = this.target;
+        // e.range = this.range;
+        // e.maxAmmo = this.maxAmmo;
+        // e.bulletInterval = this.bulletInterval;
+        // e.bulletAngle = this.bulletAngle;
+        // e.bulletSize = this.bulletSize;
+        // e.bulletOffsetX = this.bulletOffsetX;
+        // e.bulletArcOffsetX = this.bulletArcOffsetX;
+        // e.bulletArcExNum = this.bulletArcExNum;
+        // e.bulletLineExNum = this.bulletLineExNum;
+        // e.bulletLineInterval = this.bulletLineInterval;
+        // e.bulletSpeed = this.bulletSpeed;
+        // e.autoInterval = this.autoInterval;
         return e;
     }
     

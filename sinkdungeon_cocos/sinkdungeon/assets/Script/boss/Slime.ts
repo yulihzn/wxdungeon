@@ -205,8 +205,8 @@ export default class Slime extends Boss {
             return false;
         }
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
-        if (this.data.currentHealth > this.data.Common.maxHealth) {
-            this.data.currentHealth = this.data.Common.maxHealth;
+        if (this.data.currentHealth > this.data.Common.MaxHealth) {
+            this.data.currentHealth = this.data.Common.MaxHealth;
         }
         this.isHurt = true;
         this.isDashing = false;
@@ -214,13 +214,13 @@ export default class Slime extends Boss {
         this.scheduleOnce(() => { if (this.node) { this.isHurt = false; } }, 0.1);
         this.anim.play('SlimeHit');
         this.meleeSkill.IsExcuting = false;
-        if (this.data.currentHealth < this.data.Common.maxHealth / 2 && !this.isCrownFall && this.slimeType == 0) {
+        if (this.data.currentHealth < this.data.Common.MaxHealth / 2 && !this.isCrownFall && this.slimeType == 0) {
             this.isCrownFall = true;
             this.sc.isShow = false;
             this.scheduleOnce(() => { this.sc.isShow = true; this.crown.opacity = 0; }, 1)
             this.anim.play('SlimeCrownFall');
         }
-        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.MaxHealth);
         let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
         AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
         return true;

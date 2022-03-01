@@ -8,6 +8,7 @@ import OilGoldData from "./OilGoldData";
 import TalentData from "./TalentData";
 import Shield from "../logic/Shield";
 import LifeData from "./LifeData";
+import DataUtils from "../utils/DataUtils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -112,40 +113,45 @@ export default class PlayerData {
     }
 
     public valueCopy(data: PlayerData): void {
+        if(!data){
+            return;
+        }
+        DataUtils.baseCopy(this,data);
         this.common.valueCopy(data.common);
         this.pos = data.pos ? cc.v3(data.pos.x, data.pos.y) : cc.v3(4, 7);
-        this.name = data.name ? data.name : '';
+        // this.name = data.name ? data.name : '';
         this.equipmentTotalData.valueCopy(data.equipmentTotalData);
         this.statusTotalData.valueCopy(data.statusTotalData);
         this.avatarData.valueCopy(data.avatarData);
         this.oilGoldData.valueCopy(data.oilGoldData);
         this.lifeData.valueCopy(data.lifeData);
         this.StatusList = data.statusList;
-        this.currentHealth = data.currentHealth ? data.currentHealth : 0;
-        this.currentDream = data.currentDream ? data.currentDream : 0;
-        this.currentAmmo = data.currentAmmo ? data.currentAmmo : 0;
-        this.common.maxHealth = data.common.maxHealth ? data.common.maxHealth : 0;
-        this.common.moveSpeed = data.common.moveSpeed ? data.common.moveSpeed : 0;
+        // this.currentHealth = data.currentHealth ? data.currentHealth : 0;
+        // this.currentDream = data.currentDream ? data.currentDream : 0;
+        // this.currentAmmo = data.currentAmmo ? data.currentAmmo : 0;
+        // this.common.maxHealth = data.common.maxHealth ? data.common.maxHealth : 0;
+        // this.common.moveSpeed = data.common.moveSpeed ? data.common.moveSpeed : 0;
         this.shadowList = data.shadowList;
     }
 
     public clone(): PlayerData {
         let e = new PlayerData();
-        e.common = this.common.clone();
-        e.pos = this.pos;
-        e.name = this.name;
-        e.currentHealth = this.currentHealth;
-        e.currentDream = this.currentDream;
-        e.currentAmmo = this.currentAmmo;
-        e.equipmentTotalData = this.equipmentTotalData.clone();
-        e.statusTotalData = this.statusTotalData.clone();
-        e.avatarData = this.avatarData.clone();
-        e.oilGoldData = this.oilGoldData.clone();
-        e.organizationTalentData = this.organizationTalentData.clone();
-        e.professionTalentData = this.professionTalentData.clone();
-        e.lifeData = this.lifeData.clone();
-        e.StatusList = this.statusList;
-        e.shadowList = this.shadowList;
+        e.valueCopy(this);
+        // e.common = this.common.clone();
+        // e.pos = this.pos;
+        // e.name = this.name;
+        // e.currentHealth = this.currentHealth;
+        // e.currentDream = this.currentDream;
+        // e.currentAmmo = this.currentAmmo;
+        // e.equipmentTotalData = this.equipmentTotalData.clone();
+        // e.statusTotalData = this.statusTotalData.clone();
+        // e.avatarData = this.avatarData.clone();
+        // e.oilGoldData = this.oilGoldData.clone();
+        // e.organizationTalentData = this.organizationTalentData.clone();
+        // e.professionTalentData = this.professionTalentData.clone();
+        // e.lifeData = this.lifeData.clone();
+        // e.StatusList = this.statusList;
+        // e.shadowList = this.shadowList;
         return e;
     }
 
@@ -154,8 +160,8 @@ export default class PlayerData {
     public getFinalAttackPoint(): DamageData {
         let data = this.FinalCommon;
         let dd = new DamageData();
-        let damageMin = data.damageMin;
-        let damageMax = data.damageMax;
+        let damageMin = data.DamageMin;
+        let damageMax = data.DamageMax;
         let chance = data.criticalStrikeRate / 100;
         let isCritical = Random.rand() < chance;
         let attack = isCritical ? damageMin + damageMax : damageMin;
@@ -163,8 +169,8 @@ export default class PlayerData {
             attack = 0;
         }
         dd.isCriticalStrike = isCritical;
-        dd.realDamage = data.realDamage;
-        dd.magicDamage = data.magicDamage;
+        dd.realDamage = data.RealDamage;
+        dd.magicDamage = data.MagicDamage;
         dd.physicalDamage = attack;
         if (this.avatarData.organizationIndex == AvatarData.TECH) {
             dd.physicalDamage += this.currentDream * 0.5;
@@ -175,7 +181,7 @@ export default class PlayerData {
     public getFinalRemoteDamage(): DamageData {
         let data = this.FinalCommon;
         let dd = new DamageData();
-        let remoteDamage = data.remoteDamage;
+        let remoteDamage = data.RemoteDamage;
         if (this.avatarData.organizationIndex == AvatarData.HUNTER) {
             remoteDamage += this.currentDream * 0.5;
         }
@@ -193,7 +199,7 @@ export default class PlayerData {
     public getDamage(damageData: DamageData, blockLevel: number): DamageData {
         let data = this.FinalCommon;
         let finalDamageData = damageData.clone();
-        let defence = data.defence;
+        let defence = data.Defence;
         let defenceMagic = data.magicDefence / 100;
         let blockPhysical = data.blockPhysical / 100;
         let blockMagic = data.blockMagic / 100;
@@ -237,7 +243,7 @@ export default class PlayerData {
     //初始速度300,最大速度600 最小速度为0
     public getMoveSpeed(): number {
         let data = this.FinalCommon;
-        let speed = data.moveSpeed;
+        let speed = data.MoveSpeed;
         if (speed > PlayerData.DEFAULT_SPEED * 2) { speed = PlayerData.DEFAULT_SPEED * 2 }
         if (speed < -PlayerData.DEFAULT_SPEED * 2) { speed = -PlayerData.DEFAULT_SPEED * 2; }
         return speed;
@@ -246,7 +252,7 @@ export default class PlayerData {
     //生命值
     public getHealth(data:CommonData): cc.Vec3 {
         let rate = 1;
-        let maxHealth = data.maxHealth;
+        let maxHealth = data.MaxHealth;
         if (this.lifeData.sanity <= 0) {
             maxHealth = 1;
         }
@@ -261,7 +267,7 @@ export default class PlayerData {
     //梦境值
     public getDream(data:CommonData): cc.Vec3 {
         let rate = 1;
-        let maxDream = data.maxDream;
+        let maxDream = data.MaxDream;
         if (this.lifeData.sanity <= 0) {
             maxDream = 1;
         }

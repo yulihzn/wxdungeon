@@ -1,3 +1,4 @@
+import DataUtils from "../utils/DataUtils";
 import EquipmentData from "./EquipmentData";
 
 // Learn TypeScript:
@@ -63,48 +64,52 @@ export default class EquipmentStringData {
     }
 
     public valueCopy(data:EquipmentData):void{
-        this.maxHealth = data.Common.maxHealth ? data.Common.maxHealth : 0;
-        this.maxDream = data.Common.maxDream ? data.Common.maxDream : 0;
-        this.damageMin = data.Common.damageMin ? data.Common.damageMin : 0;
-        this.damageMax = data.Common.damageMax ? data.Common.damageMax : 0;
-        this.criticalStrikeRate = data.Common.criticalStrikeRate ? data.Common.criticalStrikeRate : 0;
-        this.defence = data.Common.defence ? data.Common.defence : 0;
-        this.lifeDrain = data.Common.lifeDrain ? data.Common.lifeDrain : 0;
-        this.damageBack = data.Common.damageBack ? data.Common.damageBack : 0;
-        this.moveSpeed = data.Common.moveSpeed ? data.Common.moveSpeed : 0;
-        this.attackSpeed = data.Common.attackSpeed ? data.Common.attackSpeed : 0;
-        this.remoteCooldown = data.Common.remoteCooldown?data.Common.remoteCooldown:0;
-        this.remoteDamage = data.Common.remoteDamage?data.Common.remoteDamage:0;
-        this.remoteCritRate = data.Common.remoteCritRate?data.Common.remoteCritRate:0;
-        this.remoteInterval = data.Common.remoteInterval?data.Common.remoteInterval:0;
-        this.dodge = data.Common.dodge ? data.Common.dodge : 0;
-        this.realDamage = data.Common.realDamage ? data.Common.realDamage : 0;
-        this.realRate = data.Common.realRate ? data.Common.realRate : 0;
-        this.magicDefence = data.Common.magicDefence ? data.Common.magicDefence : 0;
-        this.iceRate = data.Common.iceRate ? data.Common.iceRate : 0;
-        this.magicDamage = data.Common.magicDamage ? data.Common.magicDamage : 0;
-        this.fireRate = data.Common.fireRate ? data.Common.fireRate : 0;
-        this.lighteningRate = data.Common.lighteningRate ? data.Common.lighteningRate : 0;
-        this.toxicRate = data.Common.toxicRate ? data.Common.toxicRate : 0;
-        this.curseRate = data.Common.curseRate ? data.Common.curseRate : 0;
-        this.nameCn = data.nameCn?data.nameCn:'';
-        this.nameEn = data.nameEn?data.nameEn:'';
-        this.equipmetType = data.equipmetType?data.equipmetType:'';
-        this.desc = data.desc?data.desc:'';
+        if(!data){
+            return;
+        }
+        DataUtils.baseCopy(this,data);
+        // this.maxHealth = data.Common.maxHealth ? data.Common.maxHealth : 0;
+        // this.maxDream = data.Common.maxDream ? data.Common.maxDream : 0;
+        // this.damageMin = data.Common.damageMin ? data.Common.damageMin : 0;
+        // this.damageMax = data.Common.damageMax ? data.Common.damageMax : 0;
+        // this.criticalStrikeRate = data.Common.criticalStrikeRate ? data.Common.criticalStrikeRate : 0;
+        // this.defence = data.Common.defence ? data.Common.defence : 0;
+        // this.lifeDrain = data.Common.lifeDrain ? data.Common.lifeDrain : 0;
+        // this.damageBack = data.Common.damageBack ? data.Common.damageBack : 0;
+        // this.moveSpeed = data.Common.moveSpeed ? data.Common.moveSpeed : 0;
+        // this.attackSpeed = data.Common.attackSpeed ? data.Common.attackSpeed : 0;
+        // this.remoteCooldown = data.Common.remoteCooldown?data.Common.remoteCooldown:0;
+        // this.remoteDamage = data.Common.remoteDamage?data.Common.remoteDamage:0;
+        // this.remoteCritRate = data.Common.remoteCritRate?data.Common.remoteCritRate:0;
+        // this.remoteInterval = data.Common.remoteInterval?data.Common.remoteInterval:0;
+        // this.dodge = data.Common.dodge ? data.Common.dodge : 0;
+        // this.realDamage = data.Common.realDamage ? data.Common.realDamage : 0;
+        // this.realRate = data.Common.realRate ? data.Common.realRate : 0;
+        // this.magicDefence = data.Common.magicDefence ? data.Common.magicDefence : 0;
+        // this.iceRate = data.Common.iceRate ? data.Common.iceRate : 0;
+        // this.magicDamage = data.Common.magicDamage ? data.Common.magicDamage : 0;
+        // this.fireRate = data.Common.fireRate ? data.Common.fireRate : 0;
+        // this.lighteningRate = data.Common.lighteningRate ? data.Common.lighteningRate : 0;
+        // this.toxicRate = data.Common.toxicRate ? data.Common.toxicRate : 0;
+        // this.curseRate = data.Common.curseRate ? data.Common.curseRate : 0;
+        // this.nameCn = data.nameCn?data.nameCn:'';
+        // this.nameEn = data.nameEn?data.nameEn:'';
+        // this.equipmetType = data.equipmetType?data.equipmetType:'';
+        // this.desc = data.desc?data.desc:'';
         this.img = data.img?data.img:'emptyequipment';
-        this.stab = data.stab?data.stab:0;
-        this.far = data.far?data.far:0;
-        this.bulletArcExNum = data.bulletArcExNum?data.bulletArcExNum:0;
-        this.bulletLineExNum = data.bulletLineExNum?data.bulletLineExNum:0;
-        this.bulletLineInterval = data.bulletLineInterval?data.bulletLineInterval:0;
-        this.trouserslong = data.trouserslong?data.trouserslong:0;
-        this.showShooter = data.showShooter?data.showShooter:0;
-        this.isHeavy = data.isHeavy?data.isHeavy:0;
-        this.bulletType = data.bulletType?data.bulletType:'';
-        this.isLineAim = data.isLineAim?data.isLineAim:0;
-        this.hideHair = data.hideHair?data.hideHair:0;
-        this.bulletSize = data.bulletSize?data.bulletSize:0;
-        this.bulletExSpeed = data.bulletExSpeed?data.bulletExSpeed:0;
+        // this.stab = data.stab?data.stab:0;
+        // this.far = data.far?data.far:0;
+        // this.bulletArcExNum = data.bulletArcExNum?data.bulletArcExNum:0;
+        // this.bulletLineExNum = data.bulletLineExNum?data.bulletLineExNum:0;
+        // this.bulletLineInterval = data.bulletLineInterval?data.bulletLineInterval:0;
+        // this.trouserslong = data.trouserslong?data.trouserslong:0;
+        // this.showShooter = data.showShooter?data.showShooter:0;
+        // this.isHeavy = data.isHeavy?data.isHeavy:0;
+        // this.bulletType = data.bulletType?data.bulletType:'';
+        // this.isLineAim = data.isLineAim?data.isLineAim:0;
+        // this.hideHair = data.hideHair?data.hideHair:0;
+        // this.bulletSize = data.bulletSize?data.bulletSize:0;
+        // this.bulletExSpeed = data.bulletExSpeed?data.bulletExSpeed:0;
   
     }
     public clone():EquipmentStringData{

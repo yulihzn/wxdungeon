@@ -87,7 +87,7 @@ export default abstract class Boss extends Actor {
         this.changeZIndex();
         this.scheduleOnce(() => {
             if (this.healthBar) {
-                this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+                this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.MaxHealth);
             }
         }, 0.1);
     }

@@ -1,3 +1,4 @@
+import DataUtils from "../utils/DataUtils";
 import CommonData from "./CommonData";
 
 export default class TalentData {
@@ -23,31 +24,39 @@ export default class TalentData {
     }
 
     public valueCopy(data: TalentData): void {
+        if(!data){
+            return;
+        }
+        let nameCn = this.nameCn;
+        let nameEn = this.nameEn;
+        let desc = this.desc;
+        DataUtils.baseCopy(this,data);
         this.common.valueCopy(data.common);
-        this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
-        this.nameEn = data.nameEn ? data.nameEn : this.nameEn;
-        this.desc = data.desc ? data.desc : this.desc;
-        this.resName = data.resName ? data.resName : '';
-        this.cooldown = data.cooldown ? data.cooldown : 0;
-        this.passive = data.passive ? data.passive : 0;
+        this.nameCn = data.nameCn ? data.nameCn : nameCn;
+        this.nameEn = data.nameEn ? data.nameEn : nameEn;
+        this.desc = data.desc ? data.desc : desc;
+        // this.resName = data.resName ? data.resName : '';
+        // this.cooldown = data.cooldown ? data.cooldown : 0;
+        // this.passive = data.passive ? data.passive : 0;
         this.storePoint = data.storePoint||data.storePoint==0 ? data.storePoint : 1;
         this.cost = data.cost||data.cost==0?data.cost:1;
-        this.useCount = data.useCount?data.useCount:0;
-        this.lastTime = data.lastTime?data.lastTime:0;
+        // this.useCount = data.useCount?data.useCount:0;
+        // this.lastTime = data.lastTime?data.lastTime:0;
     }
     public clone(): TalentData {
         let e = new TalentData();
-        e.common = this.common.clone();
-        e.nameCn = this.nameCn;
-        e.nameEn = this.nameEn;
-        e.desc = this.desc;
-        e.resName = this.resName;
-        e.cooldown = this.cooldown;
-        e.passive = this.passive;
-        e.lastTime = this.lastTime;
-        e.storePoint = this.storePoint;
-        e.cost = this.cost;
-        e.useCount = this.useCount;
+        e.valueCopy(this);
+        // e.common = this.common.clone();
+        // e.nameCn = this.nameCn;
+        // e.nameEn = this.nameEn;
+        // e.desc = this.desc;
+        // e.resName = this.resName;
+        // e.cooldown = this.cooldown;
+        // e.passive = this.passive;
+        // e.lastTime = this.lastTime;
+        // e.storePoint = this.storePoint;
+        // e.cost = this.cost;
+        // e.useCount = this.useCount;
         return e;
     }
 }

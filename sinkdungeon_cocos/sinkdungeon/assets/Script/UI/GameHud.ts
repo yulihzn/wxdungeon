@@ -153,7 +153,7 @@ export default class GameHud extends cc.Component {
         let finalData = Logic.playerData.FinalCommon;
         this.healthBarUpdate(Logic.playerData.currentHealth, Logic.playerData.getHealth(finalData).y);
         this.dreamBarUpdate(Logic.playerData.currentDream, Logic.playerData.getDream(finalData).y);
-        this.ammoUpdate(Logic.playerData.currentAmmo,finalData.maxAmmo);
+        this.ammoUpdate(Logic.playerData.currentAmmo,finalData.MaxAmmo);
         this.fadeIn();
         this.initFollowArrows();
     }

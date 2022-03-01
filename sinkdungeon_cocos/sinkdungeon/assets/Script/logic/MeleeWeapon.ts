@@ -258,7 +258,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (this.isFist) {
             speedScaleFix = 1;
         }
-        let animSpeed = 1 + finalCommon.attackSpeed / 500;
+        let animSpeed = 1 + finalCommon.AttackSpeed / 500;
         //最慢
         if (animSpeed < 0.8) {
             animSpeed = 0.8;
@@ -459,11 +459,11 @@ export default class MeleeWeapon extends BaseColliderComponent {
         let p = this.weaponFirePoint.position.clone();
         let ran = Logic.getRandomNum(0, 100);
         let finalCommon = this.playerData.FinalCommon;
-        let waves = [finalCommon.magicDamage > 0 && ran < finalCommon.iceRate ? MeleeWeapon.ELEMENT_TYPE_ICE : 0
-            , finalCommon.magicDamage > 0 && ran < finalCommon.fireRate ? MeleeWeapon.ELEMENT_TYPE_FIRE : 0
-            , finalCommon.magicDamage > 0 && ran < finalCommon.lighteningRate ? MeleeWeapon.ELEMENT_TYPE_LIGHTENING : 0
-            , finalCommon.magicDamage > 0 && ran < finalCommon.toxicRate ? MeleeWeapon.ELEMENT_TYPE_TOXIC : 0
-            , finalCommon.magicDamage > 0 && ran < finalCommon.curseRate ? MeleeWeapon.ELEMENT_TYPE_CURSE : 0];
+        let waves = [finalCommon.MagicDamage > 0 && ran < finalCommon.iceRate ? MeleeWeapon.ELEMENT_TYPE_ICE : 0
+            , finalCommon.MagicDamage > 0 && ran < finalCommon.fireRate ? MeleeWeapon.ELEMENT_TYPE_FIRE : 0
+            , finalCommon.MagicDamage > 0 && ran < finalCommon.lighteningRate ? MeleeWeapon.ELEMENT_TYPE_LIGHTENING : 0
+            , finalCommon.MagicDamage > 0 && ran < finalCommon.toxicRate ? MeleeWeapon.ELEMENT_TYPE_TOXIC : 0
+            , finalCommon.MagicDamage > 0 && ran < finalCommon.curseRate ? MeleeWeapon.ELEMENT_TYPE_CURSE : 0];
         // let delay = (!this.isStab && this.isFar) ? 0.5 : 0;
         this.scheduleOnce(() => {
             for (let w of waves) {
@@ -580,9 +580,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (attackTarget.tag == CCollider.TAG.NONPLAYER) {
             let monster = attackTarget.node.getComponent(NonPlayer);
             if (monster && !monster.sc.isDied && !this.isMiss && monster.data.isEnemy > 0) {
-                damage.isBackAttack = monster.isPlayerBehindAttack() && common.damageBack > 0;
+                damage.isBackAttack = monster.isPlayerBehindAttack() && common.DamageBack > 0;
                 if (damage.isBackAttack) {
-                    damage.realDamage += common.damageBack;
+                    damage.realDamage += common.DamageBack;
                 }
                 damageSuccess = monster.takeDamage(damage);
                 if (damageSuccess) {

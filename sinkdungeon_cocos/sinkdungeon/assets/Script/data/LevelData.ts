@@ -1,3 +1,4 @@
+import DataUtils from "../utils/DataUtils";
 import ExitData from "./ExitData";
 import MapLightData from "./MapLightData";
 
@@ -75,36 +76,40 @@ export default class LevelData {
     //     this.map = turnArr;
     // }
     valueCopy(data: LevelData) {
-        this.name = data.name;
-        this.index = data.index;
-        this.chapter = data.chapter;
-        this.width = data.width;
-        this.height = data.height;
-        this.seed = data.seed;
-        this.roomWidth = data.roomWidth;
-        this.roomHeight = data.roomHeight;
+        if(!data){
+            return;
+        }
+        DataUtils.baseCopy(this,data);
+        // this.name = data.name;
+        // this.index = data.index;
+        // this.chapter = data.chapter;
+        // this.width = data.width;
+        // this.height = data.height;
+        // this.seed = data.seed;
+        // this.roomWidth = data.roomWidth;
+        // this.roomHeight = data.roomHeight;
         this.map = data.map;
         this.roomTypes = data.roomTypes;
         this.minimap = data.minimap;
         this.minimaplock = data.minimaplock;
-        this.floorRes = data.floorRes;
-        this.floorCoverRes = data.floorCoverRes;
-        this.floorCoverRes1 = data.floorCoverRes1;
-        this.floorCoverRes2 = data.floorCoverRes2;
-        this.floorCoverRes3 = data.floorCoverRes3;
-        this.floorCoverRes4 = data.floorCoverRes4;
-        this.floorCoverRes5 = data.floorCoverRes5;
-        this.wallRes1 = data.wallRes1;
-        this.wallRes2 = data.wallRes2;
-        this.wallRes3 = data.wallRes3;
-        this.wallRes4 = data.wallRes4;
-        this.wallRes5 = data.wallRes5;
-        this.wallRes6 = data.wallRes6;
-        this.doorRes = data.doorRes;
-        this.exitRes = data.exitRes;
-        this.exits = data.exits;
-        this.needRadomDecorate = data.needRadomDecorate;
-        this.isWater = data.isWater;
+        // this.floorRes = data.floorRes;
+        // this.floorCoverRes = data.floorCoverRes;
+        // this.floorCoverRes1 = data.floorCoverRes1;
+        // this.floorCoverRes2 = data.floorCoverRes2;
+        // this.floorCoverRes3 = data.floorCoverRes3;
+        // this.floorCoverRes4 = data.floorCoverRes4;
+        // this.floorCoverRes5 = data.floorCoverRes5;
+        // this.wallRes1 = data.wallRes1;
+        // this.wallRes2 = data.wallRes2;
+        // this.wallRes3 = data.wallRes3;
+        // this.wallRes4 = data.wallRes4;
+        // this.wallRes5 = data.wallRes5;
+        // this.wallRes6 = data.wallRes6;
+        // this.doorRes = data.doorRes;
+        // this.exitRes = data.exitRes;
+        // this.exits = data.exits;
+        // this.needRadomDecorate = data.needRadomDecorate;
+        // this.isWater = data.isWater;
         this.lights = data.lights;
     }
     getRoomMap(x: number, y: number): string[][] {

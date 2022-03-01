@@ -1,3 +1,4 @@
+import DataUtils from "../utils/DataUtils";
 import BaseData from "./BaseData";
 
 // Learn TypeScript:
@@ -27,22 +28,24 @@ export default class LifeData extends BaseData{
         if(!data){
             return;
         }
-        this.sanity = data.sanity?data.sanity:0;
-        this.solidSatiety = data.solidSatiety?data.solidSatiety:0;
-        this.liquidSatiety = data.liquidSatiety?data.liquidSatiety:0;
-        this.poo = data.poo?data.poo:0;
-        this.pee = data.pee?data.pee:0;
+        DataUtils.baseCopy(this,data);
+        // this.sanity = data.sanity?data.sanity:0;
+        // this.solidSatiety = data.solidSatiety?data.solidSatiety:0;
+        // this.liquidSatiety = data.liquidSatiety?data.liquidSatiety:0;
+        // this.poo = data.poo?data.poo:0;
+        // this.pee = data.pee?data.pee:0;
         this.timeScale = data.timeScale?data.timeScale:1;
        
     }
     public clone():LifeData{
         let e = new LifeData();
-        e.sanity = this.sanity;
-        e.solidSatiety = this.solidSatiety;
-        e.liquidSatiety = this.liquidSatiety;
-        e.poo = this.poo;
-        e.pee = this.pee;
-        e.timeScale = this.timeScale;
+        e.valueCopy(this);
+        // e.sanity = this.sanity;
+        // e.solidSatiety = this.solidSatiety;
+        // e.liquidSatiety = this.liquidSatiety;
+        // e.poo = this.poo;
+        // e.pee = this.pee;
+        // e.timeScale = this.timeScale;
         return e;
     }
     

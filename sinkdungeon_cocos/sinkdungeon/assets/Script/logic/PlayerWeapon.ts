@@ -136,6 +136,9 @@ export default class PlayerWeapon extends cc.Component {
         this.meleeWeapon.attack(data, fistCombo);
     }
     remoteAttack(data: PlayerData, cooldownNode: cc.Node, bulletArcExNum: number, bulletLineExNum: number): boolean {
+        if(this.player.inventoryManager.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.REMOTE){
+            return false;
+        }
         if (this.isCooling) {
             return false;
         }
@@ -179,11 +182,11 @@ export default class PlayerWeapon extends cc.Component {
             cooldownNode.width = 80;
             cooldownNode.stopAllActions();
             cc.tween(cooldownNode).to(cooldown / 1000, { width: 0 }).call(() => {
-                data.currentAmmo = finalData.maxAmmo;
+                data.currentAmmo = finalData.MaxAmmo;
                 this.isCooling = false;
             }).start();
         }
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: data.currentAmmo, y: finalData.maxAmmo });
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: data.currentAmmo, y: finalData.MaxAmmo });
         return true;
     }
 

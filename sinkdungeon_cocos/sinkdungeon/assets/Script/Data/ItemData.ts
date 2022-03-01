@@ -1,3 +1,4 @@
+import DataUtils from "../utils/DataUtils";
 import BaseData from "./BaseData";
 import CommonData from "./CommonData";
 import TriggerData from "./TriggerData";
@@ -50,52 +51,55 @@ export default class ItemData extends BaseData {
         if (!data) {
             return;
         }
-        this.uuid = data.uuid ? data.uuid : '';
+        let name = this.nameCn;
+        DataUtils.baseCopy(this,data);
+        // this.uuid = data.uuid ? data.uuid : '';
         this.id = data.id ? data.id : 20000000;
         this.common.valueCopy(data.common);
         this.pos = data.pos ? cc.v3(data.pos.x, data.pos.y) : cc.v3(0, 0);
-        this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
-        this.nameEn = data.nameEn;
-        this.duration = data.duration;
+        this.nameCn = data.nameCn ? data.nameCn : name;
+        // this.nameEn = data.nameEn;
+        // this.duration = data.duration;
         this.resName = data.resName ? data.resName : 'emptyitem';
-        this.info = data.info ? data.info : '';
-        this.desc = data.desc ? data.desc : '';
-        this.isTaken = data.isTaken ? data.isTaken : false;
-        this.canSave = data.canSave ? data.canSave : 0;
+        // this.info = data.info ? data.info : '';
+        // this.desc = data.desc ? data.desc : '';
+        // this.isTaken = data.isTaken ? data.isTaken : false;
+        // this.canSave = data.canSave ? data.canSave : 0;
         this.count = data.count ? data.count : 1;
         this.cooldown = data.cooldown ? data.cooldown : 1;
-        this.price = data.price ? data.price : 0;
-        this.statusList = data.statusList ? data.statusList : '';
-        this.sanity = data.sanity?data.sanity:0;
-        this.solidSatiety = data.solidSatiety?data.solidSatiety:0;
-        this.liquidSatiety = data.liquidSatiety?data.liquidSatiety:0;
+        // this.price = data.price ? data.price : 0;
+        // this.statusList = data.statusList ? data.statusList : '';
+        // this.sanity = data.sanity?data.sanity:0;
+        // this.solidSatiety = data.solidSatiety?data.solidSatiety:0;
+        // this.liquidSatiety = data.liquidSatiety?data.liquidSatiety:0;
         this.exTriggers = data.exTriggers?data.exTriggers:[];
-        this.lastTime = data.lastTime?data.lastTime:0;
+        // this.lastTime = data.lastTime?data.lastTime:0;
 
     }
     public clone(): ItemData {
         let e = new ItemData();
-        e.uuid = this.uuid;
-        e.id = this.id;
-        e.common = this.common.clone();
-        e.pos = this.pos;
-        e.nameCn = this.nameCn;
-        e.nameEn = this.nameEn;
-        e.duration = this.duration;
-        e.info = this.info;
-        e.desc = this.desc;
-        e.resName = this.resName;
-        e.isTaken = this.isTaken;
-        e.canSave = this.canSave;
-        e.count = this.count;
-        e.cooldown = this.cooldown;
-        e.price = this.price;
-        e.statusList = this.statusList;
-        e.sanity = this.sanity;
-        e.solidSatiety = this.solidSatiety;
-        e.liquidSatiety = this.liquidSatiety;
-        e.exTriggers = this.exTriggers;
-        e.lastTime = this.lastTime;
+        e.valueCopy(this);
+        // e.uuid = this.uuid;
+        // e.id = this.id;
+        // e.common = this.common.clone();
+        // e.pos = this.pos;
+        // e.nameCn = this.nameCn;
+        // e.nameEn = this.nameEn;
+        // e.duration = this.duration;
+        // e.info = this.info;
+        // e.desc = this.desc;
+        // e.resName = this.resName;
+        // e.isTaken = this.isTaken;
+        // e.canSave = this.canSave;
+        // e.count = this.count;
+        // e.cooldown = this.cooldown;
+        // e.price = this.price;
+        // e.statusList = this.statusList;
+        // e.sanity = this.sanity;
+        // e.solidSatiety = this.solidSatiety;
+        // e.liquidSatiety = this.liquidSatiety;
+        // e.exTriggers = this.exTriggers;
+        // e.lastTime = this.lastTime;
         return e;
     }
 

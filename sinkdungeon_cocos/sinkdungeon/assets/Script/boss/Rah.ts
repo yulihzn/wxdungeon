@@ -60,10 +60,10 @@ export default class Rah extends Boss {
         }
 
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
-        if (this.data.currentHealth > this.data.Common.maxHealth) {
-            this.data.currentHealth = this.data.Common.maxHealth;
+        if (this.data.currentHealth > this.data.Common.MaxHealth) {
+            this.data.currentHealth = this.data.Common.MaxHealth;
         }
-        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.MaxHealth);
         let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
         AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
         return true;
@@ -95,7 +95,7 @@ export default class Rah extends Boss {
         let absh = Math.abs(h);
         let absv = Math.abs(v);
         this.isFaceRight = h > 0;
-        let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
+        let isHalf = this.data.currentHealth < this.data.Common.MaxHealth / 2;
         if (playerDis < 100) {
             this.entity.Move.linearVelocity = cc.Vec2.ZERO;
         }
@@ -210,7 +210,7 @@ export default class Rah extends Boss {
         this.entity.NodeRender.node = this.node;
         this.entity.Move.linearDamping = 10;
         if (this.healthBar) {
-            this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+            this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.MaxHealth);
             this.healthBar.node.active = !this.sc.isDied;
         }
     }

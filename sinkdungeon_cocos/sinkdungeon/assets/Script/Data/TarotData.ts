@@ -1,3 +1,4 @@
+import DataUtils from "../utils/DataUtils";
 import CommonData from "./CommonData";
 
 export default class TarotData {
@@ -14,20 +15,25 @@ export default class TarotData {
     word6: string = '';
 
     public valueCopy(data: TarotData): void {
-        this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
-        this.nameEn = data.nameEn ? data.nameEn : this.nameEn;
-        this.index = data.index ? data.index : this.index;
-        this.resName = data.resName?data.resName:this.resName;
-        this.desc = data.desc;
+        if(!data){
+            return;
+        }
+        DataUtils.baseCopy(this,data,true);
+        // this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
+        // this.nameEn = data.nameEn ? data.nameEn : this.nameEn;
+        // this.index = data.index ? data.index : this.index;
+        // this.resName = data.resName?data.resName:this.resName;
+        // this.desc = data.desc;
 
     }
     public clone(): TarotData {
         let e = new TarotData();
-        e.nameCn = this.nameCn;
-        e.nameEn = this.nameEn;
-        e.index = this.index;
-        e.resName = this.resName;
-        e.desc = this.desc;
+        e.valueCopy(this);
+        // e.nameCn = this.nameCn;
+        // e.nameEn = this.nameEn;
+        // e.index = this.index;
+        // e.resName = this.resName;
+        // e.desc = this.desc;
         return e;
     }
 }

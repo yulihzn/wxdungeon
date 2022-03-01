@@ -1,3 +1,4 @@
+import DataUtils from "../utils/DataUtils";
 import BaseData from "./BaseData";
 import ItemData from "./ItemData";
 
@@ -10,16 +11,21 @@ export default class GoodsData extends BaseData{
         this.item = new ItemData();
     }
     public valueCopy(data: GoodsData): void {
-        this.uuid = data.uuid?data.uuid:'';
-        this.count = data.count ? data.count : this.count;
+        if(!data){
+            return;
+        }
+        DataUtils.baseCopy(this,data);
+        // this.uuid = data.uuid?data.uuid:'';
+        // this.count = data.count ? data.count : this.count;
         this.item.valueCopy(data.item);
 
     }
     public clone(): GoodsData {
         let e = new GoodsData();
-        e.uuid = this.uuid;
-        e.count = this.count;
-        e.item = this.item.clone();
+        e.valueCopy(this);
+        // e.uuid = this.uuid;
+        // e.count = this.count;
+        // e.item = this.item.clone();
         return e;
     }
 }

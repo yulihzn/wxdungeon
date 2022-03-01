@@ -108,7 +108,7 @@ export default class Captain extends Boss {
             this.exshooter.data.bulletArcExNum = 99;
             this.exshooter.data.bulletArcOffsetX = 32;
             this.exshooter.data.bulletLineInterval = 1;
-            if (this.data.currentHealth < this.data.Common.maxHealth / 2) {
+            if (this.data.currentHealth < this.data.Common.MaxHealth / 2) {
                 this.exshooter.data.bulletLineExNum = 1;
             }
             this.exshooter.fireBullet(0, cc.v3(16, 0));
@@ -134,7 +134,7 @@ export default class Captain extends Boss {
         }
         this.shooter.data.bulletArcExNum = 0;
         this.fireWithGun();
-        if (this.data.currentHealth < this.data.Common.maxHealth / 2) {
+        if (this.data.currentHealth < this.data.Common.MaxHealth / 2) {
             this.scheduleOnce(() => { this.fireWithGun(); }, 0.5);
 
         }
@@ -187,12 +187,12 @@ export default class Captain extends Boss {
             return false;
         }
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
-        if (this.data.currentHealth > this.data.Common.maxHealth) {
-            this.data.currentHealth = this.data.Common.maxHealth;
+        if (this.data.currentHealth > this.data.Common.MaxHealth) {
+            this.data.currentHealth = this.data.Common.MaxHealth;
         }
 
         // this.anim.playAdditive('CaptainHit');
-        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.MaxHealth);
         let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
         AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
         return true;
@@ -277,7 +277,7 @@ export default class Captain extends Boss {
 
         let movement = cc.v2(h, v);
         let speed = 200;
-        if (this.data.currentHealth < this.data.Common.maxHealth / 2) {
+        if (this.data.currentHealth < this.data.Common.MaxHealth / 2) {
             speed = 240;
         }
         movement = movement.normalize().mul(speed);

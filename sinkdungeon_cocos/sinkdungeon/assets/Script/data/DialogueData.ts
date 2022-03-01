@@ -1,3 +1,4 @@
+import DataUtils from "../utils/DataUtils";
 import IndexZ from "../utils/IndexZ";
 import DamageData from "./DamageData";
 import FromData from "./FromData";
@@ -31,31 +32,33 @@ export default class DialogueData {
         if(!data){
             return;
         }
+        DataUtils.baseCopy(this,data);
         this.interval = data.interval?data.interval:0.1;
-        this.delay = data.delay?data.delay:0;
-        this.count = data.count?data.count:0;
+        // this.delay = data.delay?data.delay:0;
+        // this.count = data.count?data.count:0;
         this.type = data.type?data.type:IndexZ.ACTOR;
-        this.isFromEnemy = data.isFromEnemy?data.isFromEnemy:false;
-        this.canBreakBuilding = data.canBreakBuilding?data.canBreakBuilding:false;
-        this.canBreakBullet = data.canBreakBullet?data.canBreakBullet:false;
-        this.isRotate = data.isRotate?data.isRotate:false;
-        this.canBeatBack = data.canBeatBack?data.canBeatBack:false;
+        // this.isFromEnemy = data.isFromEnemy?data.isFromEnemy:false;
+        // this.canBreakBuilding = data.canBreakBuilding?data.canBreakBuilding:false;
+        // this.canBreakBullet = data.canBreakBullet?data.canBreakBullet:false;
+        // this.isRotate = data.isRotate?data.isRotate:false;
+        // this.canBeatBack = data.canBeatBack?data.canBeatBack:false;
         this.statusList = data.statusList?data.statusList:[];
         this.from.valueCopy(data.from);
     }
     clone():DialogueData{
         let e = new DialogueData();
-        e.interval = this.interval;
-        e.delay = this.delay;
-        e.count = this.count;
-        e.isFromEnemy = this.isFromEnemy;
-        e.canBreakBuilding = this.canBreakBuilding;
-        e.canBreakBullet = this.canBreakBullet;
-        e.canBeatBack = this.canBeatBack;
-        e.from = this.from.clone();
-        e.statusList = this.statusList;
-        e.type = this.type;
-        e.isRotate = this.isRotate;
+        e.valueCopy(this);
+        // e.interval = this.interval;
+        // e.delay = this.delay;
+        // e.count = this.count;
+        // e.isFromEnemy = this.isFromEnemy;
+        // e.canBreakBuilding = this.canBreakBuilding;
+        // e.canBreakBullet = this.canBreakBullet;
+        // e.canBeatBack = this.canBeatBack;
+        // e.from = this.from.clone();
+        // e.statusList = this.statusList;
+        // e.type = this.type;
+        // e.isRotate = this.isRotate;
         return e;
     }
 }

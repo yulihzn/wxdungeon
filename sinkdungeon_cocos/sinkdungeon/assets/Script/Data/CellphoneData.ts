@@ -1,3 +1,4 @@
+import DataUtils from "../utils/DataUtils";
 import BaseData from "./BaseData";
 import EquipmentData from "./EquipmentData";
 import FurnitureData from "./FurnitureData";
@@ -25,8 +26,9 @@ export default class CellphoneData extends BaseData{
         if(!data){
             return;
         }
-        this.type = data.type?data.type:0;
-        this.price = data.price?data.price:0;
+        DataUtils.baseCopy(this,data);
+        // this.type = data.type?data.type:0;
+        // this.price = data.price?data.price:0;
         if(data.furnitureData){
             this.furnitureData = new FurnitureData();
             this.furnitureData.valueCopy(data.furnitureData);
@@ -37,15 +39,16 @@ export default class CellphoneData extends BaseData{
             this.itemData.valueCopy(data.itemData);
         }
         this.itemData=data.itemData;
-        this.createTime = data.createTime?data.createTime:0;
+        // this.createTime = data.createTime?data.createTime:0;
     }
     public clone():CellphoneData{
         let e = new CellphoneData();
-        e.furnitureData = this.furnitureData;
-        e.itemData = this.itemData;
-        e.createTime = this.createTime;
-        e.type = this.type;
-        e.price = this.price;
+        e.valueCopy(this);
+        // e.furnitureData = this.furnitureData;
+        // e.itemData = this.itemData;
+        // e.createTime = this.createTime;
+        // e.type = this.type;
+        // e.price = this.price;
         return e;
     }
     public setEmpty(){

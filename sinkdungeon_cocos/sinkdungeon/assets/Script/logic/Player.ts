@@ -201,7 +201,7 @@ export default class Player extends Actor {
         }
         this.pos = Logic.playerData.pos.clone();
         this.defaultPos = Logic.playerData.pos.clone();
-        this.baseAttackPoint = Logic.playerData.FinalCommon.damageMin;
+        this.baseAttackPoint = Logic.playerData.FinalCommon.DamageMin;
         this.updatePlayerPos();
         this.entity.NodeRender.node = this.node;
         EventHelper.emit(EventHelper.CAMERA_LOOK, { pos: this.getCenterPosition(), isDirect: true });
@@ -380,9 +380,9 @@ export default class Player extends Actor {
             case InventoryManager.REMOTE:
                 this.weaponLeft.shooter.data = equipData.clone();
                 let finalData = this.data.FinalCommon;
-                if (this.data.currentAmmo > finalData.maxAmmo || this.data.currentAmmo <= 0) {
-                    this.data.currentAmmo = finalData.maxAmmo;
-                    EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.data.currentAmmo, y: finalData.maxAmmo });
+                if (this.data.currentAmmo > finalData.MaxAmmo || this.data.currentAmmo <= 0) {
+                    this.data.currentAmmo = finalData.MaxAmmo;
+                    EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.data.currentAmmo, y: finalData.MaxAmmo });
                 }
                 this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
                 let c = cc.color(255, 255, 255).fromHEX(this.weaponLeft.shooter.data.color);

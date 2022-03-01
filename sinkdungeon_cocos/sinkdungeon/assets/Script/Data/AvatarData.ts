@@ -1,3 +1,4 @@
+import DataUtils from "../utils/DataUtils";
 import ProfessionData from "./ProfessionData";
 
 export default class AvatarData {
@@ -21,30 +22,32 @@ export default class AvatarData {
         if (!data) {
             return;
         }
-        this.organizationIndex = data.organizationIndex ? data.organizationIndex : this.organizationIndex;
-        this.professionData.valueCopy(data.professionData);
-        this.skinColor = data.skinColor ? data.skinColor : this.skinColor;
-        this.hairResName = data.hairResName ? data.hairResName : this.hairResName;
-        this.hairColor = data.hairColor ? data.hairColor : this.hairColor;
-        this.eyesResName = data.eyesResName ? data.eyesResName : this.eyesResName;
-        this.eyesColor = data.eyesColor ? data.eyesColor : this.eyesColor;
-        this.faceResName = data.faceResName ? data.faceResName : this.faceResName;
-        this.faceColor = data.faceColor ? data.faceColor : this.faceColor;
-        this.petName = data.petName&&data.petName ? data.petName : this.petName;
+        DataUtils.baseCopy(this,data,true);
+        // this.organizationIndex = data.organizationIndex ? data.organizationIndex : this.organizationIndex;
+        // this.professionData.valueCopy(data.professionData);
+        // this.skinColor = data.skinColor ? data.skinColor : this.skinColor;
+        // this.hairResName = data.hairResName ? data.hairResName : this.hairResName;
+        // this.hairColor = data.hairColor ? data.hairColor : this.hairColor;
+        // this.eyesResName = data.eyesResName ? data.eyesResName : this.eyesResName;
+        // this.eyesColor = data.eyesColor ? data.eyesColor : this.eyesColor;
+        // this.faceResName = data.faceResName ? data.faceResName : this.faceResName;
+        // this.faceColor = data.faceColor ? data.faceColor : this.faceColor;
+        // this.petName = data.petName&&data.petName ? data.petName : this.petName;
 
     }
     public clone(): AvatarData {
         let e = new AvatarData();
-        e.organizationIndex = this.organizationIndex;
-        e.professionData = this.professionData;
-        e.skinColor = this.skinColor;
-        e.hairResName = this.hairResName;
-        e.hairColor = this.hairColor;
-        e.eyesResName = this.eyesResName;
-        e.eyesColor = this.eyesColor;
-        e.faceResName = this.faceResName;
-        e.faceColor = this.faceColor;
-        e.petName = this.petName;
+        e.valueCopy(this);
+        // e.organizationIndex = this.organizationIndex;
+        // e.professionData = this.professionData;
+        // e.skinColor = this.skinColor;
+        // e.hairResName = this.hairResName;
+        // e.hairColor = this.hairColor;
+        // e.eyesResName = this.eyesResName;
+        // e.eyesColor = this.eyesColor;
+        // e.faceResName = this.faceResName;
+        // e.faceColor = this.faceColor;
+        // e.petName = this.petName;
         return e;
     }
 }

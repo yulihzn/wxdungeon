@@ -87,19 +87,19 @@ export default class PlayerInfoDialog extends cc.Component {
         if(!this.attack){return;}
         let baseCommonData = playerData.Common.clone().add(playerData.AvatarData.professionData.Common);
         this.organization.string = AvatarData.ORGANIZATION[playerData.AvatarData.organizationIndex];
-        this.attack.string = this.getInfo(baseCommonData.damageMin,equipmentData.Common.damageMin,statusData.Common.damageMin)+'    MAX:'+this.getInfo(baseCommonData.damageMax,equipmentData.Common.damageMax,statusData.Common.damageMax);
+        this.attack.string = this.getInfo(baseCommonData.DamageMin,equipmentData.Common.DamageMin,statusData.Common.DamageMin)+'    MAX:'+this.getInfo(baseCommonData.DamageMax,equipmentData.Common.DamageMax,statusData.Common.DamageMax);
         this.criticalStrikeRate.string = this.getInfo(baseCommonData.criticalStrikeRate,equipmentData.Common.criticalStrikeRate,statusData.Common.criticalStrikeRate,true);
-        this.defence.string = this.getInfo(baseCommonData.defence,equipmentData.Common.defence,statusData.Common.defence);
+        this.defence.string = this.getInfo(baseCommonData.Defence,equipmentData.Common.Defence,statusData.Common.Defence);
         this.lifeDrain.string = this.getInfo(baseCommonData.lifeDrain,equipmentData.Common.lifeDrain,statusData.Common.lifeDrain,true);
-        this.damageBack.string = this.getInfo(baseCommonData.damageBack,equipmentData.Common.damageBack,statusData.Common.damageBack);
-        this.moveSpeed.string = this.getInfo(baseCommonData.moveSpeed,equipmentData.Common.moveSpeed,statusData.Common.moveSpeed);
-        this.attackSpeed.string = this.getInfo(baseCommonData.attackSpeed,equipmentData.Common.attackSpeed,statusData.Common.attackSpeed);
+        this.damageBack.string = this.getInfo(baseCommonData.DamageBack,equipmentData.Common.DamageBack,statusData.Common.DamageBack);
+        this.moveSpeed.string = this.getInfo(baseCommonData.MoveSpeed,equipmentData.Common.MoveSpeed,statusData.Common.MoveSpeed);
+        this.attackSpeed.string = this.getInfo(baseCommonData.AttackSpeed,equipmentData.Common.AttackSpeed,statusData.Common.AttackSpeed);
         this.dodge.string = this.getInfo(baseCommonData.dodge,equipmentData.Common.dodge,statusData.Common.dodge,true);
-        this.health.string = playerData.currentHealth.toFixed(1).replace('.0','')+'/'+this.getInfo(baseCommonData.maxHealth,equipmentData.Common.maxHealth,statusData.Common.maxHealth);
-        this.dream.string = playerData.currentDream.toFixed(1).replace('.0','')+'/'+this.getInfo(baseCommonData.maxDream,equipmentData.Common.maxDream,statusData.Common.maxDream);
-        this.realDamage.string = this.getInfo(baseCommonData.realDamage,equipmentData.Common.realDamage,statusData.Common.realDamage);
+        this.health.string = playerData.currentHealth.toFixed(1).replace('.0','')+'/'+this.getInfo(baseCommonData.MaxHealth,equipmentData.Common.MaxHealth,statusData.Common.MaxHealth);
+        this.dream.string = playerData.currentDream.toFixed(1).replace('.0','')+'/'+this.getInfo(baseCommonData.MaxDream,equipmentData.Common.MaxDream,statusData.Common.MaxDream);
+        this.realDamage.string = this.getInfo(baseCommonData.RealDamage,equipmentData.Common.RealDamage,statusData.Common.RealDamage);
         this.realRate.string = this.getInfo(baseCommonData.realRate,equipmentData.Common.realRate,statusData.Common.realRate,true);
-        this.magicDamage.string = this.getInfo(baseCommonData.magicDamage,equipmentData.Common.magicDamage,statusData.Common.magicDamage);
+        this.magicDamage.string = this.getInfo(baseCommonData.MagicDamage,equipmentData.Common.MagicDamage,statusData.Common.MagicDamage);
         this.magicDefence.string = this.getInfo(baseCommonData.magicDefence,equipmentData.Common.magicDefence,statusData.Common.magicDefence,true);
         this.iceRate.string = this.getInfo(baseCommonData.iceRate,equipmentData.Common.iceRate,statusData.Common.iceRate,true);
         this.fireRate.string = this.getInfo(baseCommonData.fireRate,equipmentData.Common.fireRate,statusData.Common.fireRate,true);
@@ -107,7 +107,7 @@ export default class PlayerInfoDialog extends cc.Component {
         this.toxicRate.string = this.getInfo(baseCommonData.toxicRate,equipmentData.Common.toxicRate,statusData.Common.toxicRate,true);
         this.curseRate.string = this.getInfo(baseCommonData.curseRate,equipmentData.Common.curseRate,statusData.Common.curseRate,true);
         this.remoteCritRate.string = this.getInfo(baseCommonData.remoteCritRate,equipmentData.Common.remoteCritRate,statusData.Common.remoteCritRate,true);
-        this.remoteDamage.string = this.getInfo(baseCommonData.remoteDamage,equipmentData.Common.remoteDamage,statusData.Common.remoteDamage);
+        this.remoteDamage.string = this.getInfo(baseCommonData.RemoteDamage,equipmentData.Common.RemoteDamage,statusData.Common.RemoteDamage);
         this.remoteCooldown.string = this.getInfo(baseCommonData.remoteCooldown,equipmentData.Common.remoteCooldown,statusData.Common.remoteCooldown);
         this.sanity.string = this.getInfo(playerData.LifeData.sanity,0,0,true);
         this.solidSatiety.string = this.getInfo(playerData.LifeData.solidSatiety,0,0,true);

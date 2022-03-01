@@ -1,6 +1,7 @@
 import CommonData from "./CommonData";
 import BaseData from "./BaseData";
 import EquipmentData from "./EquipmentData";
+import DataUtils from "../utils/DataUtils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -33,33 +34,35 @@ export default class SuitData extends BaseData{
         if(!data){
             return;
         }
+        DataUtils.baseCopy(this,data);
         for(let equip of data.equipList){
             let e = new EquipmentData();
             e.valueCopy(equip);
             this.equipList.push(e);
         }
-        this.count = data.count?data.count:0;
-        this.nameCn = data.nameCn?data.nameCn:'';
-        this.nameEn = data.nameEn?data.nameEn:'';
-        this.suitType = data.suitType?data.suitType:'';
-        this.desc = data.desc?data.desc:'';
-        this.suitNames = data.suitNames?data.suitNames:'';
+        // this.count = data.count?data.count:0;
+        // this.nameCn = data.nameCn?data.nameCn:'';
+        // this.nameEn = data.nameEn?data.nameEn:'';
+        // this.suitType = data.suitType?data.suitType:'';
+        // this.desc = data.desc?data.desc:'';
+        // this.suitNames = data.suitNames?data.suitNames:'';
     }
     public clone():SuitData{
         let e = new SuitData();
-        let list = [];
-        for(let equip of this.equipList){
-            let eq = new EquipmentData();
-            eq.valueCopy(equip);
-            list.push(eq);
-        }
-        e.equipList = list;
-        e.nameCn = this.nameCn;
-        e.nameEn = this.nameEn;
-        e.count = this.count;
-        e.suitType = this.suitType;
-        e.desc = this.desc;
-        e.suitNames = this.suitNames;
+        e.valueCopy(this);
+        // let list = [];
+        // for(let equip of this.equipList){
+        //     let eq = new EquipmentData();
+        //     eq.valueCopy(equip);
+        //     list.push(eq);
+        // }
+        // e.equipList = list;
+        // e.nameCn = this.nameCn;
+        // e.nameEn = this.nameEn;
+        // e.count = this.count;
+        // e.suitType = this.suitType;
+        // e.desc = this.desc;
+        // e.suitNames = this.suitNames;
         return e;
     }
     

@@ -1,3 +1,4 @@
+import DataUtils from "../utils/DataUtils";
 import BaseData from "./BaseData";
 import CommonData from "./CommonData";
 
@@ -32,21 +33,23 @@ export default class OilGoldData extends BaseData {
         if(!data){
             return;
         }
+        DataUtils.baseCopy(this,data);
         this.common.valueCopy(data.common);
-        this.fragments = data.fragments?data.fragments:0;
-        this.level = data.level?data.level:0;
-        this.index = data.index?data.index:0;
-        this.value = data.value?data.value:0;
+        // this.fragments = data.fragments?data.fragments:0;
+        // this.level = data.level?data.level:0;
+        // this.index = data.index?data.index:0;
+        // this.value = data.value?data.value:0;
 
       
     }
     public clone(): OilGoldData {
         let e = new OilGoldData();
-        e.fragments = this.fragments;
-        e.common = this.common.clone();
-        e.level = this.level;
-        e.index = this.index;
-        e.value = this.value;
+        e.valueCopy(this);
+        // e.fragments = this.fragments;
+        // e.common = this.common.clone();
+        // e.level = this.level;
+        // e.index = this.index;
+        // e.value = this.value;
         return e;
     }
     

@@ -1,3 +1,4 @@
+import DataUtils from "../utils/DataUtils";
 import EquipmentData from "./EquipmentData";
 import ItemData from "./ItemData";
 
@@ -34,6 +35,7 @@ export default class BuildingData {
         if(!data){
             return;
         }
+        DataUtils.baseCopy(this,data);
         this.defaultPos = data.defaultPos?cc.v3(data.defaultPos.x,data.defaultPos.y):cc.v3(0,0);
         this.position = data.position?cc.v3(data.position.x,data.position.y):cc.v3(0,0);
         if(data.equipdata){
@@ -44,46 +46,47 @@ export default class BuildingData {
             this.itemdata = new ItemData();
             this.itemdata.valueCopy(data.itemdata);
         }
-        this.price = data.price;
-        this.isSaled = data.isSaled;
-        this.shopType = data.shopType;
+        // this.price = data.price;
+        // this.isSaled = data.isSaled;
+        // this.shopType = data.shopType;
         this.quality = data.quality?data.quality:1;
-        this.isOpen = data.isOpen;
-        this.maxHealth = data.maxHealth?data.maxHealth:0;
-        this.currentHealth = data.currentHealth?data.currentHealth:0;
+        // this.isOpen = data.isOpen;
+        // this.maxHealth = data.maxHealth?data.maxHealth:0;
+        // this.currentHealth = data.currentHealth?data.currentHealth:0;
         this.generatorList = [];
         if(data.generatorList){
             this.generatorList = data.generatorList;
         }
-        this.generatorCount = data.generatorCount?data.generatorCount:0;
-        this.generatorInterval = data.generatorInterval?data.generatorInterval:0;
-        this.interact = data.interact?data.interact:0;
-        this.rollover = data.rollover?data.rollover:0;
+        // this.generatorCount = data.generatorCount?data.generatorCount:0;
+        // this.generatorInterval = data.generatorInterval?data.generatorInterval:0;
+        // this.interact = data.interact?data.interact:0;
+        // this.rollover = data.rollover?data.rollover:0;
     }
     clone():BuildingData{
         let data = new BuildingData();
-        data.defaultPos=this.defaultPos;
-        data.position=this.position;
-        data.isOpen=this.isOpen;
-        data.quality=this.quality;
-        if(this.equipdata){
-            data.equipdata = new EquipmentData();
-            data.equipdata.valueCopy(this.equipdata);
-        }
-        if(this.itemdata){
-            data.itemdata = new ItemData();
-            data.itemdata.valueCopy(this.itemdata);
-        }
-        data.price = this.price;
-        data.shopType = this.shopType;
-        data.isSaled = this.isSaled;
-        data.maxHealth = this.maxHealth;
-        data.currentHealth = this.currentHealth;
-        data.generatorInterval = this.generatorInterval;
-        data.generatorCount = this.generatorCount;
-        data.generatorList = this.generatorList;
-        data.interact = this.interact;
-        data.rollover = this.rollover;
+        data.valueCopy(this);
+        // data.defaultPos=this.defaultPos;
+        // data.position=this.position;
+        // data.isOpen=this.isOpen;
+        // data.quality=this.quality;
+        // if(this.equipdata){
+        //     data.equipdata = new EquipmentData();
+        //     data.equipdata.valueCopy(this.equipdata);
+        // }
+        // if(this.itemdata){
+        //     data.itemdata = new ItemData();
+        //     data.itemdata.valueCopy(this.itemdata);
+        // }
+        // data.price = this.price;
+        // data.shopType = this.shopType;
+        // data.isSaled = this.isSaled;
+        // data.maxHealth = this.maxHealth;
+        // data.currentHealth = this.currentHealth;
+        // data.generatorInterval = this.generatorInterval;
+        // data.generatorCount = this.generatorCount;
+        // data.generatorList = this.generatorList;
+        // data.interact = this.interact;
+        // data.rollover = this.rollover;
         return data;
     }
 }

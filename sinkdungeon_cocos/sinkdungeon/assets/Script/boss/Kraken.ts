@@ -11,7 +11,6 @@ import FromData from "../data/FromData";
 import Achievement from "../logic/Achievement";
 import IndexZ from "../utils/IndexZ";
 import Item from "../item/Item";
-import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -102,10 +101,10 @@ export default class Kraken extends Boss {
         }
 
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
-        if (this.data.currentHealth > this.data.Common.maxHealth) {
-            this.data.currentHealth = this.data.Common.maxHealth;
+        if (this.data.currentHealth > this.data.Common.MaxHealth) {
+            this.data.currentHealth = this.data.Common.MaxHealth;
         }
-        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.MaxHealth);
         let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
         AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
         this.nearHandSkill.next(() => {
@@ -157,7 +156,7 @@ export default class Kraken extends Boss {
         this.entity.NodeRender.node = this.node;
         this.entity.Move.linearDamping = 10;
         if (this.healthBar) {
-            this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+            this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.MaxHealth);
             this.healthBar.node.active = !this.sc.isDied;
         }
         if (!this.anim) {
@@ -210,7 +209,7 @@ export default class Kraken extends Boss {
                     this.shooter.fireBullet(30);
                     this.shooter.fireBullet(-30);
                 }
-                if (this.data.currentHealth < this.data.Common.maxHealth / 2) {
+                if (this.data.currentHealth < this.data.Common.MaxHealth / 2) {
                     this.dungeon.addFallStone(this.dungeon.player.node.position, true);
                     this.shooter.fireBullet(30);
                     this.shooter.fireBullet(-30);

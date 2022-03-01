@@ -410,9 +410,9 @@ export default class InteractBuilding extends Building {
         if (attackTarget.tag == CCollider.TAG.NONPLAYER) {
             let monster = attackTarget.node.getComponent(NonPlayer);
             if (monster && !monster.sc.isDied && monster.data.isEnemy > 0) {
-                damage.isBackAttack = monster.isPlayerBehindAttack() && common.damageBack > 0;
+                damage.isBackAttack = monster.isPlayerBehindAttack() && common.DamageBack > 0;
                 if (damage.isBackAttack) {
-                    damage.realDamage += common.damageBack;
+                    damage.realDamage += common.DamageBack;
                 }
                 damageSuccess = monster.takeDamage(damage);
                 if (damageSuccess) {

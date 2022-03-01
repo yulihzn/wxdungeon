@@ -1,3 +1,5 @@
+import DataUtils from "../utils/DataUtils";
+
 export default class FromData{
     name:string = '';
     res:string = '';
@@ -6,9 +8,10 @@ export default class FromData{
         if(!data){
             return;
         }
-        this.name = data.name ? data.name : '';
-        this.res = data.res ? data.res : '';
-        this.id = data.id?data.id:0;
+        DataUtils.baseCopy(this,data);
+        // this.name = data.name ? data.name : '';
+        // this.res = data.res ? data.res : '';
+        // this.id = data.id?data.id:0;
     }
     public static getClone(name:string,res:string,id?:number):FromData{
         let e = new FromData();
@@ -19,9 +22,10 @@ export default class FromData{
     }
     public clone(): FromData {
         let e = new FromData();
-        e.name = this.name;
-        e.res = this.res;
-        e.id = this.id;
+        e.valueCopy(this);
+        // e.name = this.name;
+        // e.res = this.res;
+        // e.id = this.id;
         return e;
     }
 }

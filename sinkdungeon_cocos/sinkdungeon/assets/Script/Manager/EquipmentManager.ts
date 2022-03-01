@@ -478,7 +478,7 @@ export default class EquipmentManager extends BaseManager {
             data.id = data.id + parseInt(tempid);
         }
         data.uuid = data.genNonDuplicateID();
-        for(let ex of data.exTriggers){
+        for (let ex of data.exTriggers) {
             ex.uuid = data.genNonDuplicateID();
         }
         let desc = EquipmentManager.getRandomDesc(data, chestQuality);
@@ -524,7 +524,7 @@ export default class EquipmentManager extends BaseManager {
             data.id = data.id + parseInt(tempid);
         }
         data.uuid = data.genNonDuplicateID();
-        for(let ex of data.exTriggers){
+        for (let ex of data.exTriggers) {
             ex.uuid = data.genNonDuplicateID();
         }
         let common = data.Common.clone();
@@ -573,16 +573,23 @@ export default class EquipmentManager extends BaseManager {
     static getInfoBase(common: CommonData): string {
         let info = ``;
         info += common.remoteDamage == 0 ? `` : `子弹伤害${common.remoteDamage}\n`;
+        info += common.remoteDamagePercent == 0 ? `` : `子弹伤害${common.remoteDamagePercent > 0 ? '提升' : '降低'}${common.remoteDamagePercent}%\n`;
         info += common.remoteCritRate == 0 ? `` : `子弹暴击率${common.remoteCritRate.toFixed(1).replace('.0', '')}\n`;
         info += common.remoteCooldown == 0 ? `` : `装填时间${(common.remoteCooldown) / 1000}s\n`;
         info += common.remoteInterval == 0 ? `` : `射击间隔${(common.remoteInterval) / 1000}s\n`;
         info += common.remoteAngle == 0 ? `` : `误差角度${common.remoteAngle}\n`;
         info += common.maxAmmo == 0 ? `` : `弹夹容量${common.maxAmmo > 0 ? common.maxAmmo : '∞'}\n`;
-        info += common.damageMin == 0 ? `` : `攻击${common.damageMin} 最大攻击力${common.damageMax}\n`;
+        info += common.maxAmmoPercent == 0 ? `` : `弹夹容量${common.maxAmmoPercent > 0 ? '提升' : '降低'}${common.maxAmmoPercent}%\n`;
+        info += common.damageMin == 0 ? `` : `攻击${common.damageMin} ${common.damageMax != 0 ? '最大攻击力' + common.damageMax : ''}\n`;
         info += common.damageMin == 0 && common.damageMax != 0 ? `最大攻击力${common.damageMax}\n` : ``
+        info += common.damageMinPercent == 0 ? `` : `攻击${common.damageMin > 0 ? '提升' : '降低'}${common.damageMin}%\n`;
+        info += common.damageMaxPercent == 0 ? `` : `最大攻击力${common.damageMaxPercent > 0 ? '提升' : '降低'}${common.damageMaxPercent}%\n`;
         info += common.defence == 0 ? `` : `防御${common.defence}\n`;
+        info += common.defencePercent == 0 ? `` : `防御${common.defencePercent > 0 ? '提升' : '降低'}${common.defencePercent}%\n`;
         info += common.maxHealth == 0 ? `` : `生命${common.maxHealth}\n`;
+        info += common.maxHealthPercent == 0 ? `` : `生命${common.maxHealthPercent > 0 ? '提升' : '降低'}${common.maxHealthPercent}%\n`;
         info += common.maxDream == 0 ? `` : `梦境${common.maxDream}\n`;
+        info += common.maxDreamPercent == 0 ? `` : `梦境${common.maxDreamPercent > 0 ? '提升' : '降低'}${common.maxDreamPercent}%\n`;
         if (info.length > 0 && info.lastIndexOf('\n') != -1) {
             info = info.substring(0, info.lastIndexOf('\n'));
         }
@@ -594,8 +601,11 @@ export default class EquipmentManager extends BaseManager {
         info += common.criticalStrikeRate == 0 ? `` : `暴击${common.criticalStrikeRate.toFixed(1).replace('.0', '')}%\n`;
         info += common.lifeDrain == 0 ? `` : `吸血${common.lifeDrain.toFixed(1).replace('.0', '')}%\n`;
         info += common.damageBack == 0 ? `` : `背刺${common.damageBack}\n`;
+        info += common.damageBackPercent == 0 ? `` : `背刺${common.damageBackPercent > 0 ? '提升' : '降低'}${common.damageBackPercent}%\n`;
         info += common.moveSpeed == 0 ? `` : `移速${common.moveSpeed}\n`;
+        info += common.moveSpeedPercent == 0 ? `` : `移速${common.moveSpeedPercent > 0 ? '提升' : '降低'}${common.moveSpeedPercent}%\n`;
         info += common.attackSpeed == 0 ? `` : `攻速${common.attackSpeed}\n`;
+        info += common.attackSpeedPercent == 0 ? `` : `攻速${common.attackSpeedPercent > 0 ? '提升' : '降低'}${common.attackSpeedPercent}%\n`;
         info += common.dodge == 0 ? `` : `闪避${common.dodge.toFixed(1).replace('.0', '')}%\n`;
         info += common.blockDamage == 0 ? `` : `弹反伤害${common.blockDamage}\n`;
         info += common.blockPhysical == 0 ? `` : `格挡物免${common.blockPhysical}%\n`;
@@ -610,8 +620,10 @@ export default class EquipmentManager extends BaseManager {
         let info = ``;
         info += data && data.isReflect > 0 ? `反弹子弹\n` : ``;
         info += common.realDamage == 0 ? `` : `攻击附加${common.realDamage}点流血伤害\n`;
+        info += common.realDamagePercent == 0 ? `` : `流血伤害${common.realDamagePercent > 0 ? '提升' : '降低'}${common.realDamagePercent}%\n`;
         info += common.realRate == 0 ? `` : `攻击有${common.realRate}%几率释放流血\n`;
         info += common.magicDamage == 0 ? `` : `攻击附加${common.magicDamage}点元素伤害\n`;
+        info += common.magicDamagePercent == 0 ? `` : `元素伤害${common.magicDamagePercent > 0 ? '提升' : '降低'}${common.magicDamagePercent}%\n`;
         info += common.iceRate == 0 ? `` : `攻击有${common.iceRate}%几率释放冰冻\n`;
         info += common.fireRate == 0 ? `` : `攻击有${common.fireRate}%几率释放燃烧\n`;
         info += common.lighteningRate == 0 ? `` : `攻击有${common.lighteningRate}%几率释放闪电\n`;
@@ -709,6 +721,20 @@ export default class EquipmentManager extends BaseManager {
         price += data.Common.lighteningRate;//雷元素几率%
         price += data.Common.toxicRate * 2;//毒元素几率%
         price += data.Common.curseRate * 2;//诅咒元素几率%
+
+        price += data.Common.maxHealthPercent * 10;//最大生命%
+        price += data.Common.maxDreamPercent * 10;//最大梦境值%
+        price += data.Common.maxAmmoPercent * 10;//子弹容量%
+        price += data.Common.damageMinPercent * 10;//最小攻击%
+        price += data.Common.damageMaxPercent * 10;//最大攻击%
+        price += data.Common.damageBackPercent * 10;//背面额外攻击伤害%
+        price += data.Common.defencePercent * 10;//物理防御%
+        price += data.Common.moveSpeedPercent * 10;//移速%
+        price += data.Common.attackSpeedPercent * 10;//攻速%
+        price += data.Common.remoteDamagePercent * 10;//远程攻击%
+        price += data.Common.realDamagePercent * 10;//真实伤害%
+        price += data.Common.magicDamagePercent * 10;//魔法伤害%
+        
         return price > 0 ? Math.floor(price) : 0;
     }
     updateLogic(dt: number, player: Player) {

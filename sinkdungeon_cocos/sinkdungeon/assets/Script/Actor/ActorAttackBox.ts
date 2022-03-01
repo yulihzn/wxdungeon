@@ -137,9 +137,9 @@ export default class ActorAttackBox extends cc.Component {
                 this.isAttacking = false;
                 let from = FromData.getClone(m.data.nameCn, m.data.resName+'anim000');
                 let dd = m.data.getAttackPoint();
-                dd.isBackAttack = m.isFaceTargetBehind(a) && m.data.FinalCommon.damageBack > 0;
+                dd.isBackAttack = m.isFaceTargetBehind(a) && m.data.FinalCommon.DamageBack > 0;
                 if (dd.isBackAttack) {
-                    dd.realDamage += m.data.FinalCommon.damageBack;
+                    dd.realDamage += m.data.FinalCommon.DamageBack;
                 }
                 dd.isMelee = true;
                 if(this.isSpecial){

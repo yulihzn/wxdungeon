@@ -54,10 +54,10 @@ export default class Sphinx extends Boss {
         }
 
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
-        if (this.data.currentHealth > this.data.Common.maxHealth) {
-            this.data.currentHealth = this.data.Common.maxHealth;
+        if (this.data.currentHealth > this.data.Common.MaxHealth) {
+            this.data.currentHealth = this.data.Common.MaxHealth;
         }
-        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.MaxHealth);
         this.playHit(this.node.getChildByName('sprite'));
         let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
         AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
@@ -126,7 +126,7 @@ export default class Sphinx extends Boss {
         this.entity.NodeRender.node = this.node;
         this.entity.Move.linearDamping = 10;
         if (this.healthBar) {
-            this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+            this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.MaxHealth);
             this.healthBar.node.active = !this.sc.isDied;
         }
     }
