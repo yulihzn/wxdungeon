@@ -159,6 +159,7 @@ CCProgram fs %{
 
   void main () {
     vec4 o = blur13color(v_uv0);
+    // vec4 o = getC(v_uv0);
     ALPHA_TEST(o);
     gl_FragColor = o;
   }

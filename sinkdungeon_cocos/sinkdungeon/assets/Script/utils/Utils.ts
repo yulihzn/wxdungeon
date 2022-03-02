@@ -100,4 +100,13 @@ export default class Utils {
          }
         return pos;
     }
+
+    static isFirstEqual(mapStr: string, typeStr: string) {
+        let isequal = mapStr[0] == typeStr;
+        return isequal;
+    }
+    static isThe(mapStr: string, typeStr: string): boolean {
+        let isequal = mapStr.indexOf(typeStr) != -1;
+        return isequal;
+    }
 }

@@ -131,14 +131,14 @@ export default class SpecialManager extends cc.Component {
         }
         let howl = cc.instantiate(this.howl);
         let howlScript = howl.getComponent(AreaOfEffect);
-        howlScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, new AreaOfEffectData()
+        howlScript.show(this.dungeon.node, pos, cc.v2(1, 0), 0, new AreaOfEffectData()
             .init(0, 2, 1.5, isVariation?3:2, IndexZ.getActorZIndex(howl.position), true, false, true, false, false, new DamageData(1), from, [StatusManager.DIZZ]));
     }
     private addClaw(pos: cc.Vec3, isFaceRight: boolean, from: FromData,isVariation:boolean) {
         let claw = cc.instantiate(this.claw);
         pos.y += 32;
         let areaScript = claw.getComponent(AreaOfEffect);
-        areaScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, new AreaOfEffectData()
+        areaScript.show(this.dungeon.node, pos, cc.v2(1, 0), 0, new AreaOfEffectData()
             .init(0, 0.15, 0.1, isVariation?2:1, IndexZ.getActorZIndex(claw.position), true, false, true, false, false, new DamageData(2), from, [StatusManager.BLEEDING]));
     }
 
@@ -170,14 +170,14 @@ export default class SpecialManager extends cc.Component {
             }).start();
         }
         let areaScript = aoe.getComponent(AreaOfEffect);
-        areaScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, aoeData);
+        areaScript.show(this.dungeon.node, pos, cc.v2(1, 0), 0, aoeData);
     }
     private addBlade(pos: cc.Vec3, isFaceRight: boolean, from: FromData,isVariation:boolean) {
         let prefab = cc.instantiate(this.blade);
         pos.y += 64;
         prefab.scaleX = isFaceRight ? 1 : -1;
         let areaScript = prefab.getComponent(AreaOfEffect);
-        areaScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, new AreaOfEffectData()
+        areaScript.show(this.dungeon.node, pos, cc.v2(1, 0), 0, new AreaOfEffectData()
             .init(0, 0.2, 0.1, isVariation?2:1, IndexZ.getActorZIndex(prefab.position), true, false, true, false, false, new DamageData(2), from, []));
     }
 }

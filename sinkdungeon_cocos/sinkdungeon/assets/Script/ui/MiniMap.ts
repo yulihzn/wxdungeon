@@ -37,8 +37,9 @@ export default class MiniMap extends cc.Component {
 	startPos = cc.v3(0, 0);
 	touchPos = cc.v2(0, 0);
 	isAniming = false;
-	currentBoTile: MiniTile;
+	currentTile: MiniTile;
 	isDrag = false;
+	lastPlayerPos = cc.v2(-1,-1);
 
 
 	// LIFE-CYCLE CALLBACKS:
@@ -93,16 +94,21 @@ export default class MiniMap extends cc.Component {
 				this.tileSize = node.width;
 				this.map[i][j] = node.getComponent(MiniTile);
 				this.layer.addChild(this.map[i][j].node);
-				this.map[i][j].init(i, j, true, i == currentPos.x && j == currentPos.y);
+				this.map[i][j].init(i, j,i == currentPos.x && j == currentPos.y);
 				if (this.map[i][j].isCurrentRoom) {
-					this.currentBoTile = this.map[i][j];
+					this.currentTile = this.map[i][j];
 				}
 			}
 		}
 	}
 	changeMap(x: number, y: number) {
-		if (this.currentBoTile) {
-			this.currentBoTile.updateMap(x, y);
+		if(x==this.lastPlayerPos.x&&y==this.lastPlayerPos.y){
+			return;
+		}
+		if (this.currentTile) {
+			this.lastPlayerPos.x = x;
+			this.lastPlayerPos.y = y;
+			this.currentTile.updateMap(x, y);
 		}
 	}
 	openMap() {
@@ -126,8 +132,8 @@ export default class MiniMap extends cc.Component {
 	}
 
 	update(dt) {
-		if (!this.isDrag && this.currentBoTile) {
-			this.layer.position = Logic.lerpPos(this.layer.position, cc.v3(-this.currentBoTile.node.position.x, -this.currentBoTile.node.position.y), dt * 1);
+		if (!this.isDrag && this.currentTile) {
+			this.layer.position = Logic.lerpPos(this.layer.position, cc.v3(-this.currentTile.node.position.x, -this.currentTile.node.position.y), dt * 1);
 		}
 	}
 }

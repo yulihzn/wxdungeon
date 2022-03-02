@@ -25,7 +25,6 @@ export default class MiniTile extends cc.Component {
     graphics: cc.Graphics;
     x: number;
     y: number;
-    needDetails = false;
     isCurrentRoom = false;
     map: string[][];
     minimap: string[][];
@@ -38,11 +37,10 @@ export default class MiniTile extends cc.Component {
     start() {
 
     }
-    init(x: number, y: number, needDetails: boolean, isCurrentRoom: boolean) {
+    init(x: number, y: number, isCurrentRoom: boolean) {
         this.isCurrentRoom = isCurrentRoom;
         this.x = x;
         this.y = y;
-        this.needDetails = needDetails;
         this.graphics = this.getComponent(cc.Graphics);
         this.initMap();
     }
@@ -113,14 +111,16 @@ export default class MiniTile extends cc.Component {
         if (this.isCurrentRoom) {
             this.bg.color = this.getColor(MiniMap.ColorLevel.PLAYER);
         }
-        if (rectroom.isFound) {
-            this.drawMap(-1, -1);
-        }
+        // if (rectroom.isFound) {
+        //     this.drawMap(-1, -1,this.baseGraphics,true);
+        // }
+        this.drawMap(-1, -1, this.graphics);
     }
-    private drawMap(playerX: number, playerY: number) {
-        if (!this.needDetails) {
+    private drawMap(playerX: number, playerY: number, graphics: cc.Graphics) {
+        if (!graphics) {
             return;
         }
+        graphics.clear();
         let levelData = Logic.worldLoader.getCurrentLevelData();
         if (this.map.length < 1) {
             return;
@@ -133,59 +133,58 @@ export default class MiniTile extends cc.Component {
             for (let i = 0; i < width; i++) {
                 let mapDataStr = this.map[i][j];
                 let isTriangle = false;
-                this.graphics.fillColor = cc.color(33, 33, 33, alpha);//灰色
+                graphics.fillColor = cc.color(33, 33, 33, alpha);//灰色
                 if (this.isFirstEqual(mapDataStr, '#')) {
-                    this.graphics.fillColor = cc.color(119, 136, 153, alpha);//浅灰色
-                    if(this.isThe(mapDataStr,'#00')||this.isThe(mapDataStr,'#00')
-                    ||this.isThe(mapDataStr,'#00')||this.isThe(mapDataStr,'#00')){
+                    graphics.fillColor = cc.color(119, 136, 153, alpha);//浅灰色
+                    if (this.isThe(mapDataStr, '#00') || this.isThe(mapDataStr, '#00')
+                        || this.isThe(mapDataStr, '#00') || this.isThe(mapDataStr, '#00')) {
                         isTriangle = true;
                     }
                 } else if (this.isFirstEqual(mapDataStr, '*')) {
-                    this.graphics.fillColor = cc.color(33, 33, 33, alpha);//灰色
+                    graphics.fillColor = cc.color(33, 33, 33, alpha);//灰色
                 } else if (this.isFirstEqual(mapDataStr, '~')) {
-                    this.graphics.fillColor = cc.color(0, 128, 128, alpha);//水鸭色
+                    graphics.fillColor = cc.color(0, 128, 128, alpha);//水鸭色
                 } else if (mapDataStr == '@S') {
-                    this.graphics.fillColor = cc.color(60, 179, 113, alpha);//春天的绿色	
+                    graphics.fillColor = cc.color(60, 179, 113, alpha);//春天的绿色	
                 } else if (this.isFirstEqual(mapDataStr, 'D')) {
                     let dir = BuildingManager.getDoorDir(mapDataStr);
                     let isLock = dir > 7 && dir < 12;
-                    this.graphics.fillColor = cc.color(240, 248, 255, alpha);//爱丽丝蓝
+                    graphics.fillColor = cc.color(240, 248, 255, alpha);//爱丽丝蓝
                     if (isLock) {
-                        this.graphics.fillColor = cc.color(255, 69, 0, alpha);//橙红色
+                        graphics.fillColor = cc.color(255, 69, 0, alpha);//橙红色
                     }
-                    if(dir>15){
-                        this.graphics.fillColor = cc.color(33, 33, 33, alpha);//灰色
+                    if (dir > 15) {
+                        graphics.fillColor = cc.color(33, 33, 33, alpha);//灰色
                     }
                 } else if (this.isFirstEqual(mapDataStr, 'E')) {
-                    this.graphics.fillColor = cc.color(0, 255, 0, alpha);//酸橙色
+                    graphics.fillColor = cc.color(0, 255, 0, alpha);//酸橙色
                 } else if (this.isFirstEqual(mapDataStr, 'P')) {
-                    this.graphics.fillColor = cc.color(32, 178, 170, alpha);//浅海洋绿
+                    graphics.fillColor = cc.color(32, 178, 170, alpha);//浅海洋绿
                 } else if (this.isFirstEqual(mapDataStr, 'z')) {
                     this.sign.spriteFrame = Logic.spriteFrameRes('minimapboss');
                 }
                 if (!this.isFirstEqual(mapDataStr, '-')) {
-                    if(isTriangle){
-                        this.graphics.moveTo(i * tileSize - this.node.width / 2, j * tileSize - this.node.width / 2);
-                        this.graphics.lineTo(i * tileSize - this.node.width / 2+tileSize, j * tileSize - this.node.width / 2)
-                        this.graphics.lineTo(i * tileSize - this.node.width / 2+tileSize/2, j * tileSize - this.node.width / 2+tileSize);
-                        this.graphics.close();
-                        this.graphics.fill();
-                    }else{
-                        this.graphics.fillRect(i * tileSize - this.node.width / 2, j * tileSize - this.node.width / 2, tileSize, tileSize);
+                    if (isTriangle) {
+                        graphics.moveTo(i * tileSize - this.node.width / 2, j * tileSize - this.node.width / 2);
+                        graphics.lineTo(i * tileSize - this.node.width / 2 + tileSize, j * tileSize - this.node.width / 2)
+                        graphics.lineTo(i * tileSize - this.node.width / 2 + tileSize / 2, j * tileSize - this.node.width / 2 + tileSize);
+                        graphics.close();
+                        graphics.fill();
+                    } else {
+                        graphics.fillRect(i * tileSize - this.node.width / 2, j * tileSize - this.node.width / 2, tileSize, tileSize);
                     }
-                }
-                if (this.isCurrentRoom) {
-                    this.graphics.strokeColor = cc.color(0, 255, 0, alpha);//绿色
-                    this.graphics.lineWidth = 2;
-                    this.graphics.rect(playerX * tileSize - this.node.width / 2, playerY * tileSize - this.node.width / 2, tileSize, tileSize);
-                    this.graphics.stroke();
                 }
             }
         }
+        if (this.isCurrentRoom) {
+            graphics.strokeColor = cc.color(0, 255, 0, 255);//绿色
+            graphics.lineWidth = 2;
+            graphics.rect(playerX * tileSize - this.node.width / 2, playerY * tileSize - this.node.width / 2, tileSize, tileSize);
+            graphics.stroke();
+        }
     }
     public updateMap(playerX: number, playerY: number) {
-        this.graphics.clear();
-        this.drawMap(playerX, playerY);
+        this.drawMap(playerX, playerY, this.graphics);
     }
     getMapColor(roomType: RoomType, roomTypeType: RoomType, isClear: boolean, typeNormal: number, typeClear: number) {
         if (roomType.isEqual(roomTypeType)) {

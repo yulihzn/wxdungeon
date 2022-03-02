@@ -237,6 +237,7 @@ export default class Furniture extends Building {
         Logic.inventoryManager.furnitureMap.set(furnitureData.id, this.furnitureData);
         if (this.furnitureData.purchased) {
             this.sprite.node.color = cc.color(255, 255, 255, 255);
+            this.sprite.node.opacity = 255;
             this.lock.node.active = false;
             if (this.furnitureData.isOpen) {
                 this.boxcover.node.active = false;
