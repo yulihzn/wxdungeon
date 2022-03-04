@@ -95,6 +95,19 @@
       false,
       false,
       false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
     ]
   ],
   "design-resolution-height": 1280,
@@ -138,7 +151,8 @@
     "shadow",
     "bullet",
     "light",
-    "hide"
+    "hide",
+    "shadow1"
   ],
   "last-module-event-record-time": 1646042356858,
   "simulator-orientation": false,

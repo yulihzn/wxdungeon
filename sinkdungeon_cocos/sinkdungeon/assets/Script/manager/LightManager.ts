@@ -21,13 +21,19 @@ export default class LightManager extends BaseManager {
     camera: cc.Camera = null;
     @property(cc.Camera)
     shadowCamera: cc.Camera = null;
+    @property(cc.Camera)
+    shadowCamera1: cc.Camera = null;
     private static lightList: ShadowOfSight[] = [];
     @property(cc.Sprite)
-    shadow: cc.Sprite = null;//最后绘制阴影
+    shadow: cc.Sprite = null;//第一次绘制阴影
+    @property(cc.Sprite)
+    shadow1: cc.Sprite = null;//最后绘制阴影
     @property(cc.Graphics)
     shadowRay: cc.Graphics = null;//阴影graphics绘制
     mat: cc.MaterialVariant;
+    mat1: cc.MaterialVariant;
     private shadowTexture: cc.RenderTexture;
+    private shadowTexture1: cc.RenderTexture;
     static readonly ALPHA_START = 10;
     static readonly ALPHA_END = 200;
     static readonly ROOM_LIGHT = 50;
@@ -38,6 +44,7 @@ export default class LightManager extends BaseManager {
     }
     onLoad() {
         this.mat = this.shadow.getMaterial(0);
+        this.mat1 = this.shadow1.getMaterial(0);
         this.timeChange();
     }
     private render() {
@@ -49,12 +56,20 @@ export default class LightManager extends BaseManager {
             }
         }
         //将阴影镜头下的图片赋值到主镜头结点图片
+        let scale = 8;
         if (!this.shadowTexture) {
             this.shadowTexture = new cc.RenderTexture();
-            this.shadowTexture.initWithSize(cc.visibleRect.width / 4, cc.visibleRect.height / 4);
+            this.shadowTexture.initWithSize(cc.visibleRect.width / scale, cc.visibleRect.height / scale);
             this.shadowTexture.setFilters(cc.Texture2D.Filter.LINEAR, cc.Texture2D.Filter.LINEAR);
             this.shadowCamera.targetTexture = this.shadowTexture;
             this.shadow.spriteFrame = new cc.SpriteFrame(this.shadowTexture);
+        }
+        if (!this.shadowTexture1) {
+            this.shadowTexture1 = new cc.RenderTexture();
+            this.shadowTexture1.initWithSize(cc.visibleRect.width / scale, cc.visibleRect.height / scale);
+            this.shadowTexture1.setFilters(cc.Texture2D.Filter.LINEAR, cc.Texture2D.Filter.LINEAR);
+            this.shadowCamera1.targetTexture = this.shadowTexture1;
+            this.shadow1.spriteFrame = new cc.SpriteFrame(this.shadowTexture1);
         }
     }
     public static registerLight(lights: ShadowOfSight[], actorNode: cc.Node) {
@@ -160,6 +175,7 @@ export default class LightManager extends BaseManager {
             if (this.shadow) {
                 let c1 = this.shadowRay.node.convertToNodeSpaceAR(p1);
                 this.shadow.node.position = cc.v3(c1);
+                this.shadow1.node.position = cc.v3(c1);
             }
         }
 

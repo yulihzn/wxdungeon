@@ -52,7 +52,7 @@
         "desc": "",
         "scale": 4,
         "collider": "0,0,128,128",
-        "price": 1000
+        "price": 0
     },
     "furniture006": {
         "id": "furniture006",
@@ -163,7 +163,7 @@
         "desc": "",
         "scale": 4,
         "collider": "0,32,128,64",
-        "price": 200
+        "price": 0
     },
     "furniture016": {
         "id": "furniture016",
@@ -207,7 +207,7 @@
         "desc": "",
         "scale": 5,
         "collider": "12,24,64,128",
-        "price": 249
+        "price": 0
     },
     "furniture020": {
         "id": "furniture020",
