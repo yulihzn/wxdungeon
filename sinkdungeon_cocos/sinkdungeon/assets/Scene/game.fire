@@ -2031,7 +2031,9 @@
       "__id__": 11
     },
     "_enabled": true,
-    "nonplayer": null,
+    "nonplayer": {
+      "__uuid__": "89ae4080-6cef-4cdc-a7b1-bea5b647c43d"
+    },
     "_id": "5asu5NpXZPIpjeZe21KoXc"
   },
   {

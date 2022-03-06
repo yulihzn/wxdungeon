@@ -24,7 +24,7 @@ export default class AvatarData {
         }
         DataUtils.baseCopy(this,data,true);
         // this.organizationIndex = data.organizationIndex ? data.organizationIndex : this.organizationIndex;
-        // this.professionData.valueCopy(data.professionData);
+        this.professionData.valueCopy(data.professionData);
         // this.skinColor = data.skinColor ? data.skinColor : this.skinColor;
         // this.hairResName = data.hairResName ? data.hairResName : this.hairResName;
         // this.hairColor = data.hairColor ? data.hairColor : this.hairColor;
