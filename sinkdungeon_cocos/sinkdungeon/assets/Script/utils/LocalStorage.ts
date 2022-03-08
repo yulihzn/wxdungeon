@@ -19,7 +19,6 @@ export default class LocalStorage {
 
     public static SAVE_NAME = 'SINKDUNGEON_SAVE';
     public static SAVE_DUNGEON = 'SAVE_DUNGEON';
-    public static SAVE_DUNGEON_BY_POINT = 'SAVE_DUNGEON_BY_POINT';
     public static KEY_ACHIEVEMENT = 'KEY_ACHIEVEMENT';
     public static KEY_COIN = 'KEY_COIN';
     public static KEY_COIN_DREAM_COUNT = 'KEY_DREAM_COIN_COUNT';
@@ -29,7 +28,9 @@ export default class LocalStorage {
     public static KEY_SWITCH_SHOW_EQUIPDIALOG = 'KEY_SWITCH_SHOW_EQUIPDIALOG';
     public static KEY_FURNITURES = 'KEY_FURNITURES';
     public static VAULE_OPEN = '1';
-    static DEFAULT_MAP = { KEY_SWITCH_SHOW_SHADOW: 1 ,KEY_SWITCH_SHOW_GAMEPAD:0,KEY_SWITCH_SHOW_EQUIPDIALOG:0,KEY_SWITCH_LOW_POWER:0};
+    public static KEY_LAST_SAVE_SLOT = 'KEY_LAST_SAVE_SLOT';
+    static DEFAULT_MAP = { KEY_SWITCH_SHOW_SHADOW: 1 ,KEY_SWITCH_SHOW_GAMEPAD:0,
+        KEY_SWITCH_SHOW_EQUIPDIALOG:0,KEY_SWITCH_LOW_POWER:0,KEY_LAST_SAVE_SLOT:0};
 
     static getValue(key: string): string {
         return cc.sys.localStorage.getItem(key);
@@ -107,4 +108,7 @@ export default class LocalStorage {
         LocalStorage.saveData(key, isOpen ? 1 : 0);
     }
 
+    static saveLastSaveSlotKey(){
+        
+    }
 }

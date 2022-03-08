@@ -29,8 +29,9 @@ export default class ProfileManager{
         this.loadProfile();
     }
    
-    private getSaveData():ProfileData{
-        let s = LocalStorage.getValue(false?LocalStorage.SAVE_DUNGEON_BY_POINT:LocalStorage.SAVE_DUNGEON);
+    private getSaveData(slot?:number):ProfileData{
+        let str = slot?`${slot}`:'';
+        let s = LocalStorage.getValue(LocalStorage.SAVE_DUNGEON+str);
         if(s){
             return JSON.parse(s);
         }

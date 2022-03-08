@@ -126,6 +126,8 @@ export default class PlayerData {
         this.oilGoldData.valueCopy(data.oilGoldData);
         this.lifeData.valueCopy(data.lifeData);
         this.StatusList = data.statusList;
+        this.organizationTalentData.valueCopy(data.organizationTalentData);
+        this.professionTalentData.valueCopy(data.professionTalentData);
         // this.currentHealth = data.currentHealth ? data.currentHealth : 0;
         // this.currentDream = data.currentDream ? data.currentDream : 0;
         // this.currentAmmo = data.currentAmmo ? data.currentAmmo : 0;
