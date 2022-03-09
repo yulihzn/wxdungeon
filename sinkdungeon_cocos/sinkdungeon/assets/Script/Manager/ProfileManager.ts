@@ -29,7 +29,7 @@ export default class ProfileManager{
         this.loadProfile();
     }
    
-    private getSaveData(slot?:number):ProfileData{
+    private getSaveData(slot:number):ProfileData{
         let str = slot?`${slot}`:'';
         let s = LocalStorage.getValue(LocalStorage.SAVE_DUNGEON+str);
         if(s){
@@ -50,7 +50,7 @@ export default class ProfileManager{
     }
     
     loadProfile():boolean{
-        let data = this.getSaveData();
+        let data = this.getSaveData(LocalStorage.getLastSaveSlotKey());
         if(!data){
             this.hasSaveData = false;
             return false;

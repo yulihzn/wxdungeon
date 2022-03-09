@@ -108,7 +108,12 @@ export default class LocalStorage {
         LocalStorage.saveData(key, isOpen ? 1 : 0);
     }
 
-    static saveLastSaveSlotKey(){
-        
+    static getLastSaveSlotKey(){
+        let v = LocalStorage.getValueFromData(LocalStorage.KEY_LAST_SAVE_SLOT);
+        let num = v||v==0 ? parseInt(v) : LocalStorage.DEFAULT_MAP[LocalStorage.KEY_LAST_SAVE_SLOT];
+        return num;
+    }
+    static setLastSaveSlotKey(slot:number){
+        LocalStorage.saveData(LocalStorage.KEY_LAST_SAVE_SLOT, slot);
     }
 }
