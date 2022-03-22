@@ -115,7 +115,9 @@
         "duration": 30,
         "common": {
             "defence": 9999,
-            "dodge": 100
+            "dodge": 100,
+            "damageMin":500,
+            "moveSpeed":999
         }
     },
     "status011": {

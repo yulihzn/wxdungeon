@@ -215,8 +215,6 @@ export default class Player extends Actor {
         if (Logic.isCheatMode) {
             this.scheduleOnce(() => {
                 this.addStatus(StatusManager.PERFECTDEFENCE, new FromData());
-                this.data.Common.damageMin = 499;
-                this.data.Common.moveSpeed = 999;
             }, 0.2);
         }
         this.lights = this.getComponentsInChildren(ShadowOfSight);

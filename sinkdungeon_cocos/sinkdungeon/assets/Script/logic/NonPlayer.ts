@@ -414,10 +414,10 @@ export default class NonPlayer extends Actor {
         const beforetween = cc.tween().delay(0.5 * speedScale).call(() => { if (before) { before(isSpecial); } })
 
         //摇晃
-        const shaketween = cc.tween().by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
-            .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
-            .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
-            .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) });
+        const shaketween = cc.tween().by(0.05, { position: cc.v3(5, 0) }).by(0.05, { position: cc.v3(-5, 0) })
+            .by(0.05, { position: cc.v3(5, 0) }).by(0.05, { position: cc.v3(-5, 0) })
+            .by(0.05, { position: cc.v3(5, 0) }).by(0.05, { position: cc.v3(-5, 0) })
+            .by(0.05, { position: cc.v3(5, 0) }).by(0.05, { position: cc.v3(-5, 0) });
 
         const arrattack: string[] = [`anim009`];
         const arrspecial: string[] = [];
@@ -943,9 +943,10 @@ export default class NonPlayer extends Actor {
             this.sc.isDisguising = false;
         }
         //闪烁
-        if (this.data.blink > 0 && !this.sc.isBlinking) {
+        if (this.data.blink > 0 && !this.sc.isBlinking && !this.sc.isAttacking) {
             this.blinkStep.next(() => {
                 this.sc.isBlinking = true;
+                this.sc.isAttacking = false;
             }, this.data.blink, true)
         }
         //冲刺
@@ -1184,6 +1185,7 @@ export default class NonPlayer extends Actor {
     public enterIdle() {
         //ecs关联节点
         this.sc.isMoving = false;
+        this.sc.isAttacking = false;
         this.setLinearVelocity(cc.Vec2.ZERO);
         this.entity.NodeRender.node = this.node;
         let action = cc.tween()
@@ -1198,6 +1200,7 @@ export default class NonPlayer extends Actor {
     }
     /** 移动*/
     public enterWalk() {
+        this.sc.isAttacking = false;
         let action = cc.tween()
             .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_WALK00) })
             .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_WALK01) })
@@ -1211,6 +1214,7 @@ export default class NonPlayer extends Actor {
     }
     /**眩晕 */
     public enterDizz() {
+        this.sc.isAttacking = false;
         this.sprite.stopAllActions();
     }
     /**闪烁 */
