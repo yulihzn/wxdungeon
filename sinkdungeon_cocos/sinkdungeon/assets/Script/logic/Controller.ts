@@ -23,6 +23,9 @@ export default class Controller extends cc.Component {
     shootAction: cc.Node = null;
     shootActionTouched = false;
     @property(cc.Node)
+    jumpAction: cc.Node = null;
+    jumpActionTouched = false;
+    @property(cc.Node)
     interactAction: cc.Node = null;
     interactActionTouched = false;
     @property(cc.Node)
@@ -76,6 +79,19 @@ export default class Controller extends cc.Component {
         this.shootAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
             this.shootActionTouched = false;
             cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL);
+        }, this)
+
+        this.jumpAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
+            this.jumpActionTouched = true;
+        }, this)
+
+        this.jumpAction.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
+            this.jumpActionTouched = false;
+            cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL);
+        }, this)
+
+        this.jumpAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
+            this.jumpActionTouched = false;
         }, this)
 
         this.skillAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
@@ -177,6 +193,7 @@ export default class Controller extends cc.Component {
         if (Controller.isMouseMode()) {
             this.attackAction.active = false;
             this.shootAction.active = false;
+            this.jumpAction.active = false;
             this.skillAction.active = false;
             this.skillAction1.active = false;
             this.coolDown.node.position = cc.v3(-100, -80);
@@ -188,6 +205,7 @@ export default class Controller extends cc.Component {
         } else {
             this.attackAction.active = true;
             this.shootAction.active = true;
+            this.jumpAction.active = true;
             this.skillAction.active = true;
             this.skillAction1.active = true;
             this.coolDown.node.position = this.skillAction.position.clone();
@@ -327,6 +345,9 @@ export default class Controller extends cc.Component {
             }
             if (this.shootActionTouched) {
                 cc.director.emit(EventHelper.PLAYER_REMOTEATTACK);
+            }
+            if (this.jumpActionTouched) {
+                cc.director.emit(EventHelper.PLAYER_JUMP);
             }
             if (this.skillActionTouched) {
                 cc.director.emit(EventHelper.PLAYER_SKILL);

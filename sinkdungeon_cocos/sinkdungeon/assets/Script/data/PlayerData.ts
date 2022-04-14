@@ -27,6 +27,7 @@ export default class PlayerData {
     static DEFAULT_ATTACK = 1;
     static DEFAULT_BACK_ATTACK = 0;
     static DEFAULT_DREAM = 5;
+    static DEFAULT_JUMP_HEIGHT = 128;
     name: string = '';
     pos: cc.Vec3 = cc.v3(5, 5);
 

@@ -279,6 +279,9 @@ export default class PlayerAvatar extends cc.Component {
         this.setInWaterMat(this.bodySprite, inWater);
         this.setInWaterMat(this.clothesSprite, inWater);
     }
+    public hideShadow(){
+        this.shadowSprite.node.opacity = 0;
+    }
     private setInWaterMat(sprite: cc.Sprite, inWater: boolean) {
         if (!sprite || !sprite.spriteFrame) {
             return;

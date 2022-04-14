@@ -28,6 +28,7 @@ export default class KeyboardController extends cc.Component {
     isC = false;
     isD = false;
     isE = false;
+    isJ = false;
 
     isLongPress = false;
     touchStart = false;
@@ -50,6 +51,7 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.u: this.openCellphone(); break;
             case cc.macro.KEY.j: this.isA = true; break;
             case cc.macro.KEY.space: this.isB = true; break;
+            case cc.macro.KEY.k: this.isJ = true; break;
             case cc.macro.KEY.e: this.isC = true; this.touchStart = true; this.scheduleOnce(() => {
                 if (!this.touchStart) {
                     return;
@@ -90,6 +92,7 @@ export default class KeyboardController extends cc.Component {
 
             case cc.macro.KEY.j: this.isA = false; break;
             case cc.macro.KEY.space: this.isB = false; EventHelper.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL); break;
+            case cc.macro.KEY.k: this.isJ = false; break;
             case cc.macro.KEY.e: this.isC = false;
                 if (!this.isLongPress) { this.trigger(); }
                 this.touchStart = false; this.isLongPress = false;
@@ -158,6 +161,9 @@ export default class KeyboardController extends cc.Component {
         }
         if (this.isE) {
             cc.director.emit(EventHelper.PLAYER_SKILL1);
+        }
+        if (this.isJ) {
+            cc.director.emit(EventHelper.PLAYER_JUMP);
         }
 
     }

@@ -5,7 +5,6 @@ import ActorEntity from "../entity/ActorEntity";
 
 export default class MoveSystem extends ecs.ComblockSystem<ActorEntity>{
 
-
     filter(): ecs.IMatcher {
         return ecs.allOf(MoveComponent, TransformComponent);
     }
@@ -20,6 +19,10 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity>{
             let temp = move.linearVelocity.mul(this.dt);
             transform.position.x += temp.x;
             transform.position.y += temp.y;
+            transform.z += move.linearVelocityZ * this.dt;
+            if (transform.z < 0) {
+                transform.z = 0;
+            }
             if (move.linearVelocity.x > 0) {
                 move.linearVelocity.x -= move.linearDamping;
                 if (move.linearVelocity.x < 0) {
@@ -42,8 +45,14 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity>{
                     move.linearVelocity.y = 0;
                 }
             }
+            if (move.linearVelocityZ > MoveComponent.MIN_LINEAR_VELOCITY_Z) {
+                move.linearVelocityZ -= move.linearDampingZ;
+            }
             if (e.NodeRender.node) {
                 e.NodeRender.node.setPosition(transform.position);
+            }
+            if (e.NodeRender.root) {
+                e.NodeRender.root.setPosition(cc.v3(0, transform.z));
             }
         }
     }

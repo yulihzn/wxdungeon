@@ -59,6 +59,10 @@ export default class Player extends Actor {
     floatinglabelManager: FloatinglabelManager = null;
     @property(cc.Vec3)
     pos: cc.Vec3 = null;
+    @property(cc.Node)
+    root:cc.Node = null;
+    @property(cc.Node)
+    shadow:cc.Node = null;
     @property(cc.Prefab)
     walksmoke: cc.Prefab = null;
     private smokePool: cc.NodePool = null;
@@ -118,6 +122,8 @@ export default class Player extends Actor {
     liquidStep: NextStep = new NextStep();
     pooStep: NextStep = new NextStep();
     peeStep: NextStep = new NextStep();
+    jumpUping = false;
+    jumpDowning = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -189,6 +195,13 @@ export default class Player extends Actor {
                     if (this.node) this.remoteAttack();
                 }
             });
+            EventHelper.on(EventHelper.PLAYER_JUMP
+                , (detail) => {
+                    if (this.jumpDowning) {
+                        return;
+                    }
+                    if (this.node) this.jump();
+                });
         EventHelper.on(EventHelper.PLAYER_USEDREAM
             , (detail) => { if (this.node && this.data.AvatarData.organizationIndex == AvatarData.HUNTER) this.updateDream(detail.value) });
         EventHelper.on(EventHelper.HUD_TIME_TICK, (detail) => {
@@ -204,6 +217,7 @@ export default class Player extends Actor {
         this.baseAttackPoint = Logic.playerData.FinalCommon.DamageMin;
         this.updatePlayerPos();
         this.entity.NodeRender.node = this.node;
+        this.entity.NodeRender.root = this.root;
         EventHelper.emit(EventHelper.CAMERA_LOOK, { pos: this.getCenterPosition(), isDirect: true });
         this.shooterEx.player = this;
         this.shooterEx.isEx = true;
@@ -947,7 +961,19 @@ export default class Player extends Actor {
             this.sc.isVanishing = false;
         }, duration)
     }
-    jump() {
+    jump(){
+        // if(this.jumpDowning){
+        //     return;
+        // }
+        if(this.entity.Transform.z>PlayerData.DEFAULT_JUMP_HEIGHT){
+            this.jumpDowning = true;
+            this.jumpUping = false;
+        }else{
+            this.jumpUping = true;
+            this.entity.Move.linearVelocityZ  = 1000;
+        }
+    }
+    talentJump() {
         if (!this.CanJump) {
             return;
         }
@@ -1222,6 +1248,7 @@ export default class Player extends Actor {
         if (this.avatar) {
             // this.avatar.showHandsWithInteract(showHands, isLift && !this.interactBuilding.isAttacking);
             this.avatar.showLegsWithWater(this.isLevelWater && !this.sc.isJumping);
+            this.avatar.hideShadow();
         }
         this.showUiButton();
         for (let s of this.shadowList) {
@@ -1229,6 +1256,15 @@ export default class Player extends Actor {
                 s.updateLogic(dt);
             }
         }
+        if(this.entity.Move.linearVelocityZ < 0){
+            this.jumpDowning = true;
+        }
+        if(this.entity.Transform.z <=0){
+            this.jumpDowning = false;
+            this.jumpUping = false;
+        }
+        let scale = 1-this.root.y/PlayerData.DEFAULT_JUMP_HEIGHT/2;
+        this.shadow.scale = scale<0.5?0.5:scale;
     }
     getScaleSize(): number {
         let sn = this.IsVariation ? 1.5 : 1;

@@ -269,7 +269,7 @@ export default class ProfessionTalent extends Talent {
     }
     private jump(shooterEx:Shooter) {
         AudioPlayer.play(AudioPlayer.JUMP);
-        this.player.jump();
+        this.player.talentJump();
         this.scheduleOnce(() => {
             AudioPlayer.play(AudioPlayer.BOOM);
             let d = this.player.data.getFinalAttackPoint();
