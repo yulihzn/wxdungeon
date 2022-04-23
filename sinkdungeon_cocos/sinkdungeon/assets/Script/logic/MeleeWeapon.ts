@@ -467,7 +467,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         // let delay = (!this.isStab && this.isFar) ? 0.5 : 0;
         this.scheduleOnce(() => {
             for (let w of waves) {
-                if(this.dungeon){
+                if (this.dungeon) {
                     this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar);
                 }
             }
@@ -495,6 +495,10 @@ export default class MeleeWeapon extends BaseColliderComponent {
             this.rotateCollider(this.hv);
         }
         this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 5);
+        let z = this.player.root.y;
+        let zpos = this.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO)
+        this.node.y = -z;
+        this.spriteNode.position = this.node.convertToNodeSpaceAR(zpos);
 
     }
 
