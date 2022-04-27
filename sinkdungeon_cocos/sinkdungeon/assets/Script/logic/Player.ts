@@ -60,9 +60,9 @@ export default class Player extends Actor {
     @property(cc.Vec3)
     pos: cc.Vec3 = null;
     @property(cc.Node)
-    root:cc.Node = null;
+    root: cc.Node = null;
     @property(cc.Node)
-    shadow:cc.Node = null;
+    shadow: cc.Node = null;
     @property(cc.Prefab)
     walksmoke: cc.Prefab = null;
     private smokePool: cc.NodePool = null;
@@ -124,6 +124,7 @@ export default class Player extends Actor {
     peeStep: NextStep = new NextStep();
     jumpUping = false;
     jumpDowning = false;
+    jumpTimeEnd = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -195,13 +196,13 @@ export default class Player extends Actor {
                     if (this.node) this.remoteAttack();
                 }
             });
-            EventHelper.on(EventHelper.PLAYER_JUMP
-                , (detail) => {
-                    if (this.jumpDowning) {
-                        return;
-                    }
-                    if (this.node) this.jump();
-                });
+        EventHelper.on(EventHelper.PLAYER_JUMP
+            , (detail) => {
+                if (this.jumpDowning) {
+                    return;
+                }
+                if (this.node) this.jump();
+            });
         EventHelper.on(EventHelper.PLAYER_USEDREAM
             , (detail) => { if (this.node && this.data.AvatarData.organizationIndex == AvatarData.HUNTER) this.updateDream(detail.value) });
         EventHelper.on(EventHelper.HUD_TIME_TICK, (detail) => {
@@ -256,7 +257,7 @@ export default class Player extends Actor {
         if (isFromSave) {
             let currentTime = Date.now();
             for (let i = 0; i < count; i++) {
-                if (this.data.ShadowList[i] && currentTime-this.data.ShadowList[i] < lifeTime*1000) {
+                if (this.data.ShadowList[i] && currentTime - this.data.ShadowList[i] < lifeTime * 1000) {
                     let shadow = cc.instantiate(this.shadowPrefab).getComponent(ShadowPlayer);
                     shadow.init(this, this.shadowSpriteframe, i, lifeTime);
                     this.shadowList.push(shadow);
@@ -494,7 +495,11 @@ export default class Player extends Actor {
         this.updatePlayerPos();
     }
     changeZIndex(pos: cc.Vec3) {
-        this.node.zIndex = IndexZ.getActorZIndex(this.entity.Transform.position);
+        let offsetY = this.entity.Transform.z;
+        if (offsetY > 0) {
+            offsetY += 500;
+        }
+        this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.entity.Transform.position.x, this.entity.Transform.position.y - offsetY));
     }
     addStatus(statusType: string, from: FromData, isFromSave?: boolean) {
         if (!this.node || this.sc.isDied) {
@@ -692,7 +697,7 @@ export default class Player extends Actor {
         if (maxAmmo > 1) {
             this.schedule(() => {
                 this.exTriggerBulletFire(data);
-            }, bulletInterval, maxAmmo-1);
+            }, bulletInterval, maxAmmo - 1);
         } else {
             this.exTriggerBulletFire(data);
         }
@@ -961,17 +966,16 @@ export default class Player extends Actor {
             this.sc.isVanishing = false;
         }, duration)
     }
-    jump(){
-        // if(this.jumpDowning){
-        //     return;
-        // }
-        if(this.entity.Transform.z>PlayerData.DEFAULT_JUMP_HEIGHT){
-            this.jumpDowning = true;
-            this.jumpUping = false;
-        }else{
-            this.jumpUping = true;
-            this.entity.Move.linearVelocityZ  = 1000;
+    jump() {
+
+        if (this.jumpTimeEnd) {
+            return
         }
+        this.scheduleOnce(() => {
+            this.jumpTimeEnd = true;
+        }, 0.2)
+        this.jumpUping = true;
+        this.entity.Move.linearVelocityZ = 800;
     }
     talentJump() {
         if (!this.CanJump) {
@@ -1256,15 +1260,21 @@ export default class Player extends Actor {
                 s.updateLogic(dt);
             }
         }
-        if(this.entity.Move.linearVelocityZ < 0){
+        if (this.entity.Move.linearVelocityZ < 0) {
             this.jumpDowning = true;
         }
-        if(this.entity.Transform.z <=0){
+        if (this.entity.Transform.z <= this.entity.Transform.base) {
             this.jumpDowning = false;
             this.jumpUping = false;
+            this.jumpTimeEnd = false;
         }
-        let scale = 1-this.root.y/PlayerData.DEFAULT_JUMP_HEIGHT/2;
-        this.shadow.scale = scale<0.5?0.5:scale;
+        let y = this.root.y - this.entity.Transform.base;
+        if (y < 0) {
+            y = 0;
+        }
+        let scale = 1 - y / PlayerData.DEFAULT_JUMP_HEIGHT / 2;
+        this.shadow.scale = scale < 0.5 ? 0.5 : scale;
+        this.shadow.y = this.entity.Transform.base;
     }
     getScaleSize(): number {
         let sn = this.IsVariation ? 1.5 : 1;

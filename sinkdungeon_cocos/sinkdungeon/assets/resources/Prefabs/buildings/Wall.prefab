@@ -257,7 +257,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "92ece683-f67c-422b-8a55-f34ee0fe6a54"
+      "__id__": 0
     },
     "fileId": "40VTwBlaZIBJQq1AVZOKHb",
     "sync": false
@@ -366,7 +366,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "92ece683-f67c-422b-8a55-f34ee0fe6a54"
+      "__id__": 0
     },
     "fileId": "2a7tK1EqtEYKzbWOudIObC",
     "sync": false
@@ -475,7 +475,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "92ece683-f67c-422b-8a55-f34ee0fe6a54"
+      "__id__": 0
     },
     "fileId": "06CkkWRUxIxLLHolpZoWis",
     "sync": false
@@ -486,7 +486,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "92ece683-f67c-422b-8a55-f34ee0fe6a54"
+      "__id__": 0
     },
     "fileId": "32mYf/7aJML75psQgjDT2i",
     "sync": false
@@ -510,18 +510,19 @@
     },
     "_enabled": true,
     "tag": 1,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
+    "offsetX": 0,
+    "offsetY": 0,
     "type": 1,
     "radius": 64,
     "w": 128,
     "h": 128,
+    "zHeight": 128,
+    "bounce": 0,
     "sensor": false,
     "isStatic": true,
-    "tagIgnore": true,
+    "ignoreSameTag": false,
+    "targetTagList": [],
+    "ignoreTagList": [],
     "_id": ""
   },
   {
@@ -533,20 +534,19 @@
     },
     "_enabled": true,
     "tag": 1,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 128
-    },
     "offsetX": 0,
     "offsetY": 128,
     "type": 1,
     "radius": 64,
     "w": 128,
     "h": 128,
+    "zHeight": 128,
+    "bounce": 0,
     "sensor": true,
     "isStatic": true,
-    "tagIgnore": true,
+    "ignoreSameTag": false,
+    "targetTagList": [],
+    "ignoreTagList": [],
     "_id": ""
   },
   {
@@ -555,7 +555,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "92ece683-f67c-422b-8a55-f34ee0fe6a54"
+      "__id__": 0
     },
     "fileId": "",
     "sync": false

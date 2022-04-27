@@ -243,7 +243,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "0b4bda88-d943-4618-b355-452886e54d20"
+      "__id__": 0
     },
     "fileId": "50Kce7AyNAp6blk0YwrWhE",
     "sync": false
@@ -254,7 +254,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "0b4bda88-d943-4618-b355-452886e54d20"
+      "__id__": 0
     },
     "fileId": "7bpKAzWSpGMJUILrstD3St",
     "sync": false
@@ -274,9 +274,11 @@
     "radius": 64,
     "w": 400,
     "h": 96,
+    "zHeight": 64,
+    "bounce": 0,
     "sensor": false,
     "isStatic": true,
-    "isChild": false,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       12,
@@ -291,7 +293,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "0b4bda88-d943-4618-b355-452886e54d20"
+      "__id__": 0
     },
     "fileId": "",
     "sync": false

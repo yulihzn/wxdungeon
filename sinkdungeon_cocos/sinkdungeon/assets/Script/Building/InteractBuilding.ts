@@ -78,9 +78,9 @@ export default class InteractBuilding extends Building {
         let height = spriteFrame.getOriginalSize().height * this.sprite.node.scale / 3;
         let physicCollider = this.getComponent(CCollider);
         if (this.sprite.node.angle == 0) {
-            physicCollider.setSize(cc.size(width, height));
+            physicCollider.setSize(cc.size(width, height), height);
         } else {
-            physicCollider.setSize(cc.size(height, width));
+            physicCollider.setSize(cc.size(height, width), width);
         }
         this.entity.Move.linearDamping = this.isThrowing ? 5 : 10;
         physicCollider.sensor = this.data.currentHealth <= 0 ? true : false;
@@ -303,7 +303,7 @@ export default class InteractBuilding extends Building {
         }
         return true;
     }
-    onColliderPreSolve(other:CCollider,self:CCollider): void {
+    onColliderPreSolve(other: CCollider, self: CCollider): void {
         if (other.tag == CCollider.TAG.PLAYER) {
             if (this.isTaken || this.isAttacking) {
                 self.disabledOnce = true;
@@ -395,11 +395,11 @@ export default class InteractBuilding extends Building {
         let common = new CommonData();
         if (this.player) {
             damage = this.player.data.getFinalAttackPoint();
-            if(this.player.data.LifeData.sanity<=0){
+            if (this.player.data.LifeData.sanity <= 0) {
                 //疯狂状态伤害降到最低
-                damage.physicalDamage = damage.physicalDamage>1?1:damage.physicalDamage;
-                damage.magicDamage = damage.magicDamage>1?1:damage.magicDamage;
-                damage.realDamage = damage.realDamage>1?1:damage.realDamage;
+                damage.physicalDamage = damage.physicalDamage > 1 ? 1 : damage.physicalDamage;
+                damage.magicDamage = damage.magicDamage > 1 ? 1 : damage.magicDamage;
+                damage.realDamage = damage.realDamage > 1 ? 1 : damage.realDamage;
             }
             common = this.player.data.FinalCommon;
         }

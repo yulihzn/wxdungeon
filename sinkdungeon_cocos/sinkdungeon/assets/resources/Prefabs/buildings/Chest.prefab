@@ -184,7 +184,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "b885c951-6a0a-4f47-9811-d9e95a385a73"
+      "__id__": 0
     },
     "fileId": "d4cWWesqRCgajuq4MwDaCs",
     "sync": false
@@ -220,9 +220,11 @@
     "radius": 60,
     "w": 128,
     "h": 128,
+    "zHeight": 0,
+    "bounce": 0,
     "sensor": true,
     "isStatic": true,
-    "isChild": false,
+    "ignoreSameTag": false,
     "targetTagList": [
       3
     ],
@@ -235,7 +237,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "b885c951-6a0a-4f47-9811-d9e95a385a73"
+      "__id__": 0
     },
     "fileId": "",
     "sync": false

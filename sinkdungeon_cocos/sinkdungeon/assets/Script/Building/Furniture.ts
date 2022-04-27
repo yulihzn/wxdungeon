@@ -109,7 +109,7 @@ export default class Furniture extends Building {
             }
         });
         EventHelper.on(EventHelper.HUD_FURNITURE_REFRESH, (detail) => {
-            if(this.node&&detail.id == this.furnitureData.id){
+            if (this.node && detail.id == this.furnitureData.id) {
                 this.init(this.furnitureData);
             }
         })
@@ -223,12 +223,12 @@ export default class Furniture extends Building {
         if (save) {
             furnitureData.isOpen = save.isOpen;
             furnitureData.purchased = save.purchased;
-            furnitureData.storage = save.storage?save.storage:furnitureData.storage;
-            if(save.storageList&&save.storageList.length>0){
+            furnitureData.storage = save.storage ? save.storage : furnitureData.storage;
+            if (save.storageList && save.storageList.length > 0) {
                 furnitureData.storageList = save.storageList;
             }
         }
-        if(furnitureData.price<=0){
+        if (furnitureData.price <= 0) {
             furnitureData.isOpen = true;
             furnitureData.purchased = true;
         }
@@ -258,7 +258,7 @@ export default class Furniture extends Building {
             let arr = this.furnitureData.collider.split(',');
             let pcollider = this.getComponent(CCollider);
             pcollider.offset = cc.v2(parseInt(arr[0]), parseInt(arr[1]));
-            pcollider.setSize(cc.size(parseInt(arr[2]), parseInt(arr[3])));
+            pcollider.setSize(cc.size(parseInt(arr[2]), parseInt(arr[3])), this.furnitureData.height * this.furnitureData.scale);
         }
         LocalStorage.saveFurnitureData(this.furnitureData);
         Achievement.addFurnituresAchievement(this.furnitureData.id);

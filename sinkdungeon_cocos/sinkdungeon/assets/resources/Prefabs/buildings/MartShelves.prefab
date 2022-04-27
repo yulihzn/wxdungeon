@@ -264,7 +264,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "4e142e85-f29d-409b-adfd-cc92ca25bcc4"
+      "__id__": 0
     },
     "fileId": "a0n1gPe1NIx5/03Ed4nFPR",
     "sync": false
@@ -371,7 +371,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "4e142e85-f29d-409b-adfd-cc92ca25bcc4"
+      "__id__": 0
     },
     "fileId": "4bD++3YjJBb7PexTglBlWO",
     "sync": false
@@ -478,7 +478,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "4e142e85-f29d-409b-adfd-cc92ca25bcc4"
+      "__id__": 0
     },
     "fileId": "263FMZz0FAvb57hUDyXkhG",
     "sync": false
@@ -585,7 +585,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "4e142e85-f29d-409b-adfd-cc92ca25bcc4"
+      "__id__": 0
     },
     "fileId": "bcOH02UwRPo5jqSnKyKDK5",
     "sync": false
@@ -692,7 +692,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "4e142e85-f29d-409b-adfd-cc92ca25bcc4"
+      "__id__": 0
     },
     "fileId": "4eCGTeCW9L8qo8SQO5OY8C",
     "sync": false
@@ -799,7 +799,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "4e142e85-f29d-409b-adfd-cc92ca25bcc4"
+      "__id__": 0
     },
     "fileId": "9ceCG7J+tKzYonE/FIpB1v",
     "sync": false
@@ -810,7 +810,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "4e142e85-f29d-409b-adfd-cc92ca25bcc4"
+      "__id__": 0
     },
     "fileId": "7bpKAzWSpGMJUILrstD3St",
     "sync": false
@@ -1042,9 +1042,11 @@
     "radius": 64,
     "w": 120,
     "h": 20,
+    "zHeight": 32,
+    "bounce": 0,
     "sensor": true,
     "isStatic": true,
-    "isChild": false,
+    "ignoreSameTag": false,
     "targetTagList": [
       21
     ],
@@ -1093,9 +1095,11 @@
     "radius": 64,
     "w": 250,
     "h": 48,
+    "zHeight": 96,
+    "bounce": 0,
     "sensor": false,
     "isStatic": true,
-    "isChild": false,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       2,
@@ -1110,7 +1114,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "4e142e85-f29d-409b-adfd-cc92ca25bcc4"
+      "__id__": 0
     },
     "fileId": "",
     "sync": false

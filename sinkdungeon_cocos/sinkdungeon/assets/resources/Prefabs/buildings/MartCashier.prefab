@@ -267,7 +267,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "64770851-0f1f-4c4d-8c62-bff3704d8567"
+      "__id__": 0
     },
     "fileId": "50Kce7AyNAp6blk0YwrWhE",
     "sync": false
@@ -374,7 +374,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "64770851-0f1f-4c4d-8c62-bff3704d8567"
+      "__id__": 0
     },
     "fileId": "4dbcw1zaVNwZm28RiWe5EQ",
     "sync": false
@@ -481,7 +481,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "64770851-0f1f-4c4d-8c62-bff3704d8567"
+      "__id__": 0
     },
     "fileId": "95hqaemB5MqYKuxP4WBcgm",
     "sync": false
@@ -588,7 +588,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "64770851-0f1f-4c4d-8c62-bff3704d8567"
+      "__id__": 0
     },
     "fileId": "02UpapiYVM7KzSrxFHwCkZ",
     "sync": false
@@ -695,7 +695,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "64770851-0f1f-4c4d-8c62-bff3704d8567"
+      "__id__": 0
     },
     "fileId": "31pQdcYlJKO5VJueF7DQPV",
     "sync": false
@@ -802,7 +802,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "64770851-0f1f-4c4d-8c62-bff3704d8567"
+      "__id__": 0
     },
     "fileId": "f18V1bOn5CvqWY/t459IXm",
     "sync": false
@@ -813,7 +813,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "64770851-0f1f-4c4d-8c62-bff3704d8567"
+      "__id__": 0
     },
     "fileId": "7bpKAzWSpGMJUILrstD3St",
     "sync": false
@@ -959,9 +959,11 @@
     "radius": 2000,
     "w": 128,
     "h": 128,
+    "zHeight": 32,
+    "bounce": 0,
     "sensor": true,
     "isStatic": true,
-    "isChild": false,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [],
     "_id": ""
@@ -992,9 +994,11 @@
     "radius": 200,
     "w": 128,
     "h": 128,
+    "zHeight": 32,
+    "bounce": 0,
     "sensor": false,
     "isStatic": true,
-    "isChild": false,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       2,
@@ -1018,9 +1022,11 @@
     "radius": 200,
     "w": 128,
     "h": 480,
+    "zHeight": 32,
+    "bounce": 0,
     "sensor": false,
     "isStatic": true,
-    "isChild": false,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       12,
@@ -1045,7 +1051,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "64770851-0f1f-4c4d-8c62-bff3704d8567"
+      "__id__": 0
     },
     "fileId": "",
     "sync": false

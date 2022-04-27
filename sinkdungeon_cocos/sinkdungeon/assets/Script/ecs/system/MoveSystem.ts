@@ -20,8 +20,8 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity>{
             transform.position.x += temp.x;
             transform.position.y += temp.y;
             transform.z += move.linearVelocityZ * this.dt;
-            if (transform.z < 0) {
-                transform.z = 0;
+            if (transform.z < transform.base) {
+                transform.z = transform.base;
             }
             if (move.linearVelocity.x > 0) {
                 move.linearVelocity.x -= move.linearDamping;

@@ -25,31 +25,23 @@ export default class FurnitureData {
     collider = '';
     isOpen = false;//是否已经打开
     purchased = false;//是否购买
-    storageList:InventoryData[] = [];//储物列表
-    storage=0;//储物容量
+    storageList: InventoryData[] = [];//储物列表
+    storage = 0;//储物容量
+    height = 32;//家具高度
 
     valueCopy(data: FurnitureData) {
         if (!data) {
             return;
         }
-        DataUtils.baseCopy(this,data);
-        // this.id = data.id?data.id:'';
-        // this.purchased = data.purchased;
-        // this.price = data.price;
-        // this.nameCn = data.nameCn ? data.nameCn : '';
-        // this.nameEn = data.nameEn ? data.nameEn : '';
-        // this.resName = data.resName ? data.resName : '';
-        // this.info = data.info ? data.info : '';
-        this.scale = data.scale ? data.scale : 1;
-        // this.collider = data.collider ? data.collider : '';
-        // this.isOpen = data.isOpen;
-        // this.storage = data.storage?data.storage:0;
-        if(this.storage>32){
+        DataUtils.baseCopy(this, data);
+        this.height = data.height ?? 32;
+        this.scale = data.scale ?? 1;
+        if (this.storage > 32) {
             this.storage = 32;
         }
-        if(data.storageList&&data.storage>0){
+        if (data.storageList && data.storage > 0) {
             this.storageList = [];
-            for(let idata of data.storageList){
+            for (let idata of data.storageList) {
                 let ida = new InventoryData();
                 ida.valueCopy(idata);
                 this.storageList.push(ida);
@@ -59,26 +51,7 @@ export default class FurnitureData {
     clone(): FurnitureData {
         let data = new FurnitureData();
         data.valueCopy(this);
-        // data.purchased = this.purchased;
-        // data.scale = this.scale;
-        // data.price = this.price;
-        // data.nameCn = this.nameCn;
-        // data.nameEn = this.nameEn;
-        // data.info = this.info;
-        // data.scale = this.scale;
-        // data.collider = this.collider;
-        // data.isOpen = this.isOpen;
-        // data.resName = this.resName;
-        // data.id = this.id;
-        // data.storage = this.storage;
-        // if(this.storageList&&this.storage>0){
-        //     data.storageList = [];
-        //     for(let idata of this.storageList){
-        //         let ida = new InventoryData();
-        //         ida.valueCopy(idata);
-        //         data.storageList.push(ida);
-        //     }
-        // }
+
         return data;
     }
 }

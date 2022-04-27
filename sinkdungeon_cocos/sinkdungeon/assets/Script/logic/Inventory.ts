@@ -213,12 +213,12 @@ export default class Inventory extends cc.Component {
         cc.tween(this.equipmentNode).to(3, { opacity: 255 }).start();
     }
     start() {
-        this.equipSprites.forEach((sprite,key)=>{
+        this.equipSprites.forEach((sprite, key) => {
             sprite.spriteFrame = null;
             this.addEquipSpriteTouchEvent(sprite, key);
             this.equipCovers.set(key, sprite.node.parent.getChildByName('cover'));
         })
-        
+
         for (let key in this.inventoryManager.equips) {
             this.refreshEquipment(key, this.inventoryManager.equips[key].clone(), true, false);
         }
@@ -475,7 +475,7 @@ export default class Inventory extends cc.Component {
                 }
             }
             let currentTime = Date.now();
-            this.equipCovers.forEach((node,key)=>{
+            this.equipCovers.forEach((node, key) => {
                 let data = this.inventoryManager.equips[key];
                 if (data) {
                     let percent = (currentTime - data.lastTime) / (data.cooldown * 1000);//当前百分比

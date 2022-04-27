@@ -117,7 +117,6 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                 } else if (other.ignoreTags.has(collider.tag)) {
                     continue;
                 }
-
                 let isCollision = false;
                 if (collider.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.RECT) {
                     //矩形检测
@@ -142,15 +141,14 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                 }
                 activeCount++;
                 if (isCollision) {
-                    collider.preSolve(other,this.dt);
-                    other.preSolve(collider,this.dt);
+                    collider.preSolve(other, this.dt);
+                    other.preSolve(collider, this.dt);
                     collider.contact(other, this.dt);
                     other.contact(collider, this.dt);
-                    collider.physicTest(other,this.dt);
-                    other.physicTest(collider,this.dt);
+                    collider.physicTest(other, this.dt);
+                    other.physicTest(collider, this.dt);
                     collider.disabledOnce = false;
                     other.disabledOnce = false;
-                    collisionCount++;
                 } else {
                     collider.exit(other);
                     other.exit(collider);
@@ -158,6 +156,10 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                 //标记当前循环已经碰撞过的物体对
                 this.tempColliders.set(collider.id * 100000000 + other.id, true);
             }
+            if (!collider.sensor && collider.baseChangedCount < 1) {
+                collider.entity.Transform.base = 0;
+            }
+
         }
         this.quadTree.clear();
         // if(this.isDebug&&this.allCount+this.collisionCount+this.activeCount != allCount+activeCount+collisionCount){

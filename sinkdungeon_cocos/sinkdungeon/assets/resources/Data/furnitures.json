@@ -8,7 +8,8 @@
         "desc": "",
         "scale": 8,
         "collider": "240,114,232,90",
-        "price": 1000
+        "price": 1000,
+        "height": 3
     },
     "furniture002": {
         "id": "furniture002",
@@ -19,7 +20,8 @@
         "desc": "",
         "scale": 4,
         "collider": "0,64,128,256",
-        "price": 1000
+        "price": 1000,
+        "height": 4
     },
     "furniture003": {
         "id": "furniture003",
@@ -30,7 +32,8 @@
         "desc": "",
         "scale": 8,
         "collider": "185,64,330,155",
-        "price": 1000
+        "price": 1000,
+        "height": 8
     },
     "furniture004": {
         "id": "furniture004",
@@ -41,7 +44,8 @@
         "desc": "",
         "scale": 4,
         "collider": "0,0,128,128",
-        "price": 800
+        "price": 800,
+        "height": 16
     },
     "furniture005": {
         "id": "furniture005",
@@ -52,7 +56,8 @@
         "desc": "",
         "scale": 4,
         "collider": "0,0,128,128",
-        "price": 0
+        "price": 0,
+        "height": 8
     },
     "furniture006": {
         "id": "furniture006",
@@ -63,7 +68,8 @@
         "desc": "一元一次，每次一元",
         "scale": 6,
         "collider": "0,0,128,128",
-        "price": 0
+        "price": 0,
+        "height": 28
     },
     "furniture007": {
         "id": "furniture007",
@@ -74,7 +80,8 @@
         "desc": "",
         "scale": 4,
         "collider": "0,0,128,128",
-        "price": 0
+        "price": 0,
+        "height": 8
     },
     "furniture008": {
         "id": "furniture008",
@@ -85,7 +92,8 @@
         "desc": "",
         "scale": 4,
         "collider": "0,0,128,128",
-        "price": 0
+        "price": 0,
+        "height": 8
     },
     "furniture009": {
         "id": "furniture009",
@@ -96,7 +104,8 @@
         "desc": "",
         "scale": 6,
         "collider": "0,0,128,128",
-        "price": 1000
+        "price": 1000,
+        "height": 28
     },
     "furniture010": {
         "id": "furniture010",
@@ -107,7 +116,8 @@
         "desc": "",
         "scale": 4,
         "collider": "0,0,128,128",
-        "price": 1000
+        "price": 1000,
+        "height": 18
     },
     "furniture011": {
         "id": "furniture011",
@@ -118,8 +128,9 @@
         "desc": "",
         "scale": 8,
         "collider": "64,0,256,128",
-        "storage":8,
-        "price": 1000
+        "storage": 8,
+        "price": 1000,
+        "height": 30
     },
     "furniture012": {
         "id": "furniture012",
@@ -130,7 +141,8 @@
         "desc": "",
         "scale": 4,
         "collider": "0,-20,80,40",
-        "price": 200
+        "price": 200,
+        "height": 8
     },
     "furniture013": {
         "id": "furniture013",
@@ -141,7 +153,8 @@
         "desc": "",
         "scale": 4,
         "collider": "0,-20,80,40",
-        "price": 200
+        "price": 200,
+        "height": 8
     },
     "furniture014": {
         "id": "furniture014",
@@ -152,7 +165,8 @@
         "desc": "",
         "scale": 5,
         "collider": "16,30,128,128",
-        "price": 300
+        "price": 300,
+        "height": 8
     },
     "furniture015": {
         "id": "furniture015",
@@ -163,7 +177,8 @@
         "desc": "",
         "scale": 4,
         "collider": "0,32,128,64",
-        "price": 0
+        "price": 0,
+        "height": 15
     },
     "furniture016": {
         "id": "furniture016",
@@ -174,7 +189,8 @@
         "desc": "",
         "scale": 8,
         "collider": "64,36,256,128",
-        "price": 799
+        "price": 799,
+        "height": 24
     },
     "furniture017": {
         "id": "furniture017",
@@ -185,7 +201,8 @@
         "desc": "",
         "scale": 8,
         "collider": "64,64,256,256",
-        "price": 1000
+        "price": 1000,
+        "height": 29
     },
     "furniture018": {
         "id": "furniture018",
@@ -196,7 +213,8 @@
         "desc": "",
         "scale": 8,
         "collider": "64,0,256,128",
-        "price": 700
+        "price": 700,
+        "height": 25
     },
     "furniture019": {
         "id": "furniture019",
@@ -207,7 +225,8 @@
         "desc": "",
         "scale": 5,
         "collider": "12,24,64,128",
-        "price": 0
+        "price": 0,
+        "height": 28
     },
     "furniture020": {
         "id": "furniture020",
@@ -218,6 +237,7 @@
         "desc": "楼下的垃圾桶为什么也要花钱？",
         "scale": 5,
         "collider": "16,8,80,128",
-        "price": 0
+        "price": 0,
+        "height": 20
     }
 }

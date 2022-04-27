@@ -75,6 +75,8 @@ export default class CCollider extends cc.Component {
     })
     h: number = 128;
     @property
+    zHeight = 32
+    @property
     bounce: number = 0;
     @property
     sensor: boolean = false;
@@ -111,6 +113,7 @@ export default class CCollider extends cc.Component {
     private _radius: number;
     private _points: cc.Vec2[] = [];
     isRotate = false;
+    baseChangedCount = 0;
     private _disableOnce = false;
     set disabledOnce(disabledOnce: boolean) {
         this._disableOnce = disabledOnce;
@@ -119,9 +122,12 @@ export default class CCollider extends cc.Component {
         return this._disableOnce;
     }
 
-    setSize(s: cc.Size) {
+    setSize(s: cc.Size, zHeight?: number) {
         this.w = s.width;
         this.h = s.height;
+        if (zHeight) {
+            this.zHeight = zHeight;
+        }
     }
     set offset(o: cc.Vec2) {
         this.offsetX = o.x;
@@ -139,6 +145,9 @@ export default class CCollider extends cc.Component {
     get points() {
         return this._points;
     }
+    get z() {
+        return this.entity.Transform.z;
+    }
     private onContactListener: OnContactListener;
     public setOnContactListener(onContactListener: OnContactListener) {
         this.onContactListener = onContactListener;
@@ -148,6 +157,7 @@ export default class CCollider extends cc.Component {
     }
     public fixCenterAndScale() {
         this.isStaying = false;
+        this.baseChangedCount = 0;
         let offset = cc.v3(this.offsetX, this.offsetY);
         this._center = this.node.convertToWorldSpaceAR(cc.v3(this.offsetX, this.offsetY));
 
@@ -222,13 +232,28 @@ export default class CCollider extends cc.Component {
         }
     }
 
+    isOnOtherSurface(other: CCollider) {
+        return this.z == other.z + other.zHeight;
+    }
+    isBelowOther(other: CCollider) {
+        return this.z + this.zHeight < other.z;
+    }
+    isAboveOther(other: CCollider) {
+        return this.z >= other.z + other.zHeight;
+    }
+    isHeightNotCollid(other: CCollider) {
+        return this.isBelowOther(other) || this.isAboveOther(other);
+    }
     preSolve(other: CCollider, dt: number) {
+        if (this.isHeightNotCollid(other)) {
+            return;
+        }
         if (this.onContactListener) {
             this.onContactListener.onColliderPreSolve(other, this);
         }
     }
     contact(other: CCollider, dt: number) {
-        if (this._disableOnce || other.disabledOnce) {
+        if (this._disableOnce || other.disabledOnce || this.isHeightNotCollid(other)) {
             return;
         }
         if (this.inColliders.has(other.id)) {
@@ -284,24 +309,39 @@ export default class CCollider extends cc.Component {
         let isTop = tps[1].y > ops[1].y;
         let isBottom = tps[0].y < ops[0].y;
         let pos = this.entity.Move.linearVelocity.clone();
-        let offset = this.bounce>0?this.bounce:10;
+        let offset = this.bounce > 0 ? this.bounce : 10;
         let lenVertical = Math.abs(center1.y - center2.y);//两者中心位置的纵向距离
         let lenHorizonal = Math.abs(center1.x - center2.x);//两者中心位置的横向距离
         let offsetVertical = (h1 + h2) / 2 - lenVertical;//两者纵向重合部分的长度
         let offsetHorizonal = (w1 + w2) / 2 - lenHorizonal;//两者横向重合部分的长度
         //两者包围盒互相包含对方中点的时候添加一个反向斥力
-        if(rect1.contains(center2)||rect2.contains(center1)){
-            pos = center1.sub(center2).normalizeSelf().mul(offset);
-        }else{
-            if(isLeft&&pos.x>=0&&offsetHorizonal>0&&offsetHorizonal<offsetVertical){
-                pos.x = -offset;
-            }else if(isRight&&pos.x<=0&&offsetHorizonal>0&&offsetHorizonal<offsetVertical){
-                pos.x = offset;
-            }else if(isTop&&pos.y<=0&&offsetVertical>0&&offsetHorizonal>offsetVertical){
-                pos.y = offset;
-            }else if(isBottom&&pos.y>=0&&offsetVertical>0&&offsetHorizonal>offsetVertical){
-                pos.y = -offset;
+        if (rect1.contains(center2) || rect2.contains(center1)) {
+            if (this.isAboveOther(other)) {
+                //上方
+                this.entity.Transform.base = other.z + other.zHeight;
+                this.baseChangedCount++;
+            } else if (this.isBelowOther(other)) {
+                //下方
+            } else {
+                pos = center1.sub(center2).normalizeSelf().mul(offset);
             }
+        } else {
+
+            if (!this.isHeightNotCollid(other)) {
+                if (isLeft && pos.x >= 0 && offsetHorizonal > 0 && offsetHorizonal < offsetVertical) {
+                    pos.x = -offset;
+                } else if (isRight && pos.x <= 0 && offsetHorizonal > 0 && offsetHorizonal < offsetVertical) {
+                    pos.x = offset;
+                } else if (isTop && pos.y <= 0 && offsetVertical > 0 && offsetHorizonal > offsetVertical) {
+                    pos.y = offset;
+                } else if (isBottom && pos.y >= 0 && offsetVertical > 0 && offsetHorizonal > offsetVertical) {
+                    pos.y = -offset;
+                }
+            } else if (this.isAboveOther(other) && this.entity.Transform.base <= other.z + other.zHeight) {
+                this.entity.Transform.base = other.z + other.zHeight;
+                this.baseChangedCount++;
+            }
+
             // if(isLeft||isRight){
             //     //如果左下角在目标左上角的下面且左上角在目标左上角的下面
             //     if(tps[0].y>ops[0].y&&tps[1].y<ops[1].y||tps[0].y<ops[0].y&&tps[1].y>ops[1].y){

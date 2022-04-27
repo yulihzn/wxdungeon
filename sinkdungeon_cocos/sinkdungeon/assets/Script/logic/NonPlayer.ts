@@ -163,6 +163,7 @@ export default class NonPlayer extends Actor {
     start() {
         this.changeZIndex();
         this.healthBar.refreshHealth(this.data.getHealth().x, this.data.getHealth().y);
+        this.healthBar.hideWhenFull = true;
         if (this.data.lifeTime > 0) {
             let lifeTimeStep = new NextStep();
             this.leftLifeTime = this.data.lifeTime;
@@ -171,7 +172,7 @@ export default class NonPlayer extends Actor {
                 if (this.leftLifeTime <= 0 && this.data) {
                     this.data.currentHealth = 0;
                 }
-            },1)
+            }, 1)
         }
         this.addSaveStatusList();
         this.entity.Move.linearDamping = 5;
