@@ -394,10 +394,10 @@ export default class CCollider extends cc.Component {
         graphics.strokeColor = cc.color(255, 255, 255, 160);
         graphics.fillColor = cc.color(255, 255, 255, 60);
         graphics.lineWidth = 4;
+        let center = graphics.node.convertToNodeSpaceAR(this.w_center);
         if (this.type == CCollider.TYPE.CIRCLE) {
             let r1 = graphics.node.convertToNodeSpaceAR(cc.v3(this.w_radius, 0));
             let r2 = graphics.node.convertToNodeSpaceAR(cc.v3(0, 0));
-            let center = graphics.node.convertToNodeSpaceAR(this.w_center);
             graphics.circle(center.x, center.y, r1.sub(r2).mag());
             if (this.isStaying) {
                 graphics.fill();
@@ -422,8 +422,27 @@ export default class CCollider extends cc.Component {
         let p0 = graphics.node.convertToNodeSpaceAR(cc.v3(0, 0));
         let pw = graphics.node.convertToNodeSpaceAR(cc.v3(aabb.width, 0));
         let ph = graphics.node.convertToNodeSpaceAR(cc.v3(aabb.height, 0));
-        graphics.rect(p.x, p.y, pw.sub(p0).mag(), ph.sub(p0).mag());
+        let nw = pw.sub(p0).mag();
+        let nh = ph.sub(p0).mag();
+        graphics.rect(p.x, p.y, nw, nh);
         graphics.stroke();
+        if (!this.sensor) {
+            let zh = graphics.node.convertToNodeSpaceAR(cc.v3(this.zHeight, 0));
+            let nzh = zh.sub(p0).mag();
+            graphics.strokeColor = cc.color(0, 0, 255, 40);
+            graphics.moveTo(p.x + nw * 0.25, p.y);
+            graphics.lineTo(p.x + nw * 0.25, p.y + nzh);
+            graphics.stroke();
+            graphics.strokeColor = cc.color(0, 255, 0, 40);
+            graphics.moveTo(p.x + nw * 0.75, p.y + nh);
+            graphics.lineTo(p.x + nw * 0.75, p.y + nh + nzh);
+            graphics.stroke();
+            graphics.strokeColor = cc.color(0, 255, 255, 40);
+            graphics.moveTo(p.x + nw * 0.25, p.y + nzh);
+            graphics.lineTo(p.x + nw * 0.75, p.y + nh + nzh);
+            graphics.stroke();
+        }
+
     }
     get Aabb(): cc.Rect {
         return this._aabb;
