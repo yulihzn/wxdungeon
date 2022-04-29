@@ -974,8 +974,11 @@ export default class Player extends Actor {
         this.scheduleOnce(() => {
             this.jumpTimeEnd = true;
         }, 0.2)
+        if (!this.jumpUping) {
+            AudioPlayer.play(AudioPlayer.DASH);
+        }
         this.jumpUping = true;
-        this.entity.Move.linearVelocityZ = 800;
+        this.entity.Move.linearVelocityZ = 600;
     }
     talentJump() {
         if (!this.CanJump) {
