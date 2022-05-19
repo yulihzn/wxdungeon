@@ -1,0 +1,14 @@
+{ "columns":64,
+ "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tileset.png",
+ "imageheight":512,
+ "imagewidth":512,
+ "margin":0,
+ "name":"tileset",
+ "spacing":0,
+ "tilecount":4096,
+ "tiledversion":"1.8.4",
+ "tileheight":8,
+ "tilewidth":8,
+ "type":"tileset",
+ "version":"1.8"
+}
