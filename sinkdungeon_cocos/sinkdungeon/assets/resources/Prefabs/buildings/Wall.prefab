@@ -28,13 +28,10 @@
       },
       {
         "__id__": 14
-      },
-      {
-        "__id__": 15
       }
     ],
     "_prefab": {
-      "__id__": 16
+      "__id__": 15
     },
     "_opacity": 255,
     "_color": {
@@ -193,14 +190,14 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        -16,
+        0,
         0,
         0,
         0,
         0,
         1,
-        1,
-        1,
+        1.2,
+        1.2,
         1
       ]
     },
@@ -290,7 +287,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 128,
-      "height": 128
+      "height": 256
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -302,7 +299,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        -64,
+        -60,
         0,
         0,
         0,
@@ -342,7 +339,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "26a5a7ac-88d3-49c2-9693-5b61801abb31"
+      "__uuid__": "1cf3ce41-0308-4bef-b443-e70125e8fb67"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -411,7 +408,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        128,
+        256,
         0,
         0,
         0,
@@ -451,7 +448,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "655f5e4a-3f3d-4da1-8e31-325ead5ae504"
+      "__uuid__": "9fdf9f4a-ecfd-407b-bc21-ecf3f674ec58"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -519,30 +516,6 @@
     "zHeight": 9999,
     "bounce": 0,
     "sensor": false,
-    "isStatic": true,
-    "ignoreSameTag": false,
-    "targetTagList": [],
-    "ignoreTagList": [],
-    "_id": ""
-  },
-  {
-    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 1,
-    "offsetX": 0,
-    "offsetY": 128,
-    "type": 1,
-    "radius": 64,
-    "w": 128,
-    "h": 128,
-    "zHeight": 128,
-    "bounce": 0,
-    "sensor": true,
     "isStatic": true,
     "ignoreSameTag": false,
     "targetTagList": [],

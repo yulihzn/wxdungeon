@@ -108,7 +108,7 @@ export default class Utils {
         let isequal = mapStr[0] == typeStr
         return isequal
     }
-    static isThe(mapStr: string, typeStr: string): boolean {
+    static hasThe(mapStr: string, typeStr: string): boolean {
         if (!mapStr) {
             return false
         }
