@@ -144,7 +144,7 @@ export default class MiniTile extends cc.Component {
                 } else if (mapDataStr == "@S") {
                     graphics.fillColor = cc.color(60, 179, 113, alpha) //春天的绿色
                 } else if (this.isFirstEqual(mapDataStr, "D")) {
-                    let dir = BuildingManager.getDoorDir(mapDataStr)
+                    let dir = parseInt(mapDataStr[3])
                     let isLock = dir > 7 && dir < 12
                     graphics.fillColor = cc.color(240, 248, 255, alpha) //爱丽丝蓝
                     if (isLock) {

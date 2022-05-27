@@ -259,7 +259,7 @@ export default class BuildingManager extends BaseManager {
         } else if (this.isFirstEqual(mapDataStr, "B")) {
             //生成木盒子 并且根据之前记录的位置放置
             this.addBox(mapDataStr, indexPos)
-        } else if (mapDataStr == "C0") {
+        } else if (this.isFirstEqual(mapDataStr, "C")) {
             //生成宝箱 房间清理的情况下箱子是打开的
             this.addChest(indexPos)
         } else if (this.isFirstEqual(mapDataStr, "D")) {
@@ -465,7 +465,7 @@ export default class BuildingManager extends BaseManager {
             let b = box.getComponent(Box)
             b.setDefaultPos(indexPos)
             //生成植物
-            if (mapDataStr == "B1") {
+            if (mapDataStr == "B001") {
                 b.boxType = Box.PLANT
             }
             //设置对应存档盒子的位置
@@ -781,14 +781,8 @@ export default class BuildingManager extends BaseManager {
     }
     private addExitDoor(mapDataStr: string, indexPos: cc.Vec3, exits: ExitData[]) {
         Logic.getBuildings(BuildingManager.EXITDOOR, (prefab: cc.Prefab) => {
-            let dir = parseInt(mapDataStr[1])
-            if (isNaN(dir)) {
-                if (mapDataStr == "Ea") {
-                    dir = 10
-                } else if (mapDataStr == "Eb") {
-                    dir = 11
-                }
-            }
+            let dir = parseInt(mapDataStr[3])
+            let type = parseInt(mapDataStr.substring(1, 3))
             let d = ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level)
             for (let e of exits) {
                 if (e.fromPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
@@ -798,7 +792,7 @@ export default class BuildingManager extends BaseManager {
             }
             let p = this.addBuilding(prefab, indexPos)
             let exitdoor = p.getComponent(ExitDoor)
-            exitdoor.init(dir, d)
+            exitdoor.init(type, dir, d)
             this.exitdoors.push(exitdoor)
         })
     }
@@ -818,48 +812,19 @@ export default class BuildingManager extends BaseManager {
             }
         })
     }
-    static getDoorDir(mapDataStr: string) {
-        let dir = parseInt(mapDataStr[1])
-        if (isNaN(dir)) {
-            if (mapDataStr == "Da") {
-                dir = 8
-            } else if (mapDataStr == "Db") {
-                dir = 9
-            } else if (mapDataStr == "Dc") {
-                dir = 10
-            } else if (mapDataStr == "Dd") {
-                dir = 11
-            } else if (mapDataStr == "De") {
-                dir = 12
-            } else if (mapDataStr == "Df") {
-                dir = 13
-            } else if (mapDataStr == "Dg") {
-                dir = 14
-            } else if (mapDataStr == "Dh") {
-                dir = 15
-            } else if (mapDataStr == "Di") {
-                dir = 16
-            } else if (mapDataStr == "Dj") {
-                dir = 17
-            } else if (mapDataStr == "Dk") {
-                dir = 18
-            } else if (mapDataStr == "Dl") {
-                dir = 19
-            }
-        }
-        return dir
-    }
+
     private addDoor(mapDataStr: string, indexPos: cc.Vec3, isDecorate: boolean) {
         Logic.getBuildings(BuildingManager.DOOR, (prefab: cc.Prefab) => {
-            let dir = BuildingManager.getDoorDir(mapDataStr)
+            let dir = parseInt(mapDataStr[3])
+            let type = parseInt(mapDataStr.substring(1, 3))
             let door = this.addBuilding(prefab, indexPos).getComponent(Door)
             door.isDoor = true
             door.dir = dir % 4
-            door.isEmpty = dir > 3 && dir < 8
-            door.isLock = dir > 7 && dir < 12
+            door.isLock = type == 1
+            door.isEmpty = type == 2
+            door.isTransparent = type == 3
+            door.isHidden = type == 4
             door.isDecorate = isDecorate
-            door.isHidden = dir > 11 && dir < 16
-            door.isTransparent = dir > 15
             this.doors.push(door)
         })
     }

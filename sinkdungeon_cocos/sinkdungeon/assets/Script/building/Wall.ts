@@ -80,6 +80,8 @@ export default class Wall extends Building {
         if (this.type == Wall.TYPE_OTHER) {
             this.roofsprite.node.opacity = 0
             this.wallsprite.spriteFrame = spriteframe
+            this.wallsprite.node.width = 16
+            this.wallsprite.node.height = 32
             return
         }
         if (Utils.hasThe(wallName, "fence")) {
@@ -131,46 +133,85 @@ export default class Wall extends Building {
             }
             return
         }
-        spriteframe.setRect(cc.rect(0, 0, 8, 8))
-        this.roofsprite.spriteFrame = spriteframe
-        spriteframe.setRect(cc.rect(0, 24, 8, 16))
-        this.wallsprite.spriteFrame = spriteframe
+        let rect = spriteframe.getRect()
+        let sf1 = spriteframe.clone()
+        let sf2 = spriteframe.clone()
+
+        this.roofsprite.node.width = 16
+        this.roofsprite.node.height = 16
+        this.wallsprite.node.width = 16
+        this.wallsprite.node.height = 16
+        this.roofsprite.spriteFrame = sf1
+        this.wallsprite.spriteFrame = sf2
+        let unit = 16
+        let pos1 = cc.v2(0, 0)
+        let pos2 = cc.v2(0, 0)
         switch (this.type) {
             case Wall.TYPE_INNER_CORNER_BOTTOM_RIGHT:
-                spriteframe.setRect(cc.rect(0, 0, 8, 8))
-                this.roofsprite.spriteFrame = spriteframe
-                spriteframe.setRect(cc.rect(0, 24, 8, 16))
-                this.wallsprite.spriteFrame = spriteframe
+                pos1 = cc.v2(0, 0)
+                pos2 = cc.v2(1, 3)
                 break
             case Wall.TYPE_BOTTOM:
+                pos1 = cc.v2(1, 0)
+                pos2 = cc.v2(1, 3)
                 break
             case Wall.TYPE_INNER_CORNER_BOTTOM_LEFT:
+                pos1 = cc.v2(2, 0)
+                pos2 = cc.v2(1, 3)
                 break
             case Wall.TYPE__RIGHT:
+                pos1 = cc.v2(0, 1)
+                pos2 = cc.v2(1, 3)
                 break
             case Wall.TYPE_CENTER:
+                pos1 = cc.v2(1, 1)
+                pos2 = cc.v2(1, 3)
                 break
             case Wall.TYPE_LEFT:
+                pos1 = cc.v2(2, 1)
+                pos2 = cc.v2(1, 3)
                 break
             case Wall.TYPE_INNER_CORNER_TOP_RIGHT:
+                pos1 = cc.v2(0, 2)
+                pos2 = cc.v2(0, 3)
                 break
             case Wall.TYPE_TOP:
+                pos1 = cc.v2(1, 2)
+                pos2 = cc.v2(1, 3)
                 break
             case Wall.TYPE_INNER_CORNER_TOP_LEFT:
+                pos1 = cc.v2(2, 2)
+                pos2 = cc.v2(4, 3)
                 break
             case Wall.TYPE_CORNER_TOP_LEFT:
+                pos1 = cc.v2(3, 0)
+                pos2 = cc.v2(1, 3)
                 break
             case Wall.TYPE_CORNER_TOP_RIGHT:
+                pos1 = cc.v2(4, 0)
+                pos2 = cc.v2(1, 3)
                 break
             case Wall.TYPE_CORNER_BOTTOM_LEFT:
+                pos1 = cc.v2(3, 1)
+                pos2 = cc.v2(1, 3)
                 break
             case Wall.TYPE_CORNER_BOTTOM_RIGHT:
+                pos1 = cc.v2(4, 1)
+                pos2 = cc.v2(1, 3)
                 break
             case Wall.TYPE_INNER_CORNER_TOP_RIGHT_BOTTOM_LEFT:
+                pos1 = cc.v2(3, 2)
+                pos2 = cc.v2(1, 3)
                 break
             case Wall.TYPE_INNER_CORNER_TOP_LEFT_BOTTOM_RIGHT:
+                pos1 = cc.v2(4, 2)
+                pos2 = cc.v2(1, 3)
                 break
         }
+        sf1.setRect(cc.rect(rect.x + unit * pos1.x, rect.y + unit * pos1.y, unit, unit))
+        sf2.setRect(cc.rect(rect.x + unit * pos2.x, rect.y + unit * pos2.y, unit, unit))
+        this.roofsprite.spriteFrame = sf1
+        this.wallsprite.spriteFrame = sf2
     }
     setPos(pos: cc.Vec3) {
         this.pos = pos
@@ -210,7 +251,7 @@ export default class Wall extends Building {
             this.type = Wall.TYPE_EMPTY
         } else if (Utils.hasThe(mapStr, "##")) {
             this.type = Wall.TYPE_OTHER
-            let resIndex = parseInt(mapStr.substring(1))
+            let resIndex = parseInt(mapStr.substring(2))
             this.wallName = leveldata.getWallRes(resIndex, true)
         } else {
             let index = parseInt(mapStr.substring(3))
@@ -220,11 +261,6 @@ export default class Wall extends Building {
         }
         this.changeRes(this.wallName)
 
-        // if (this.isTop()) {
-        //     for (let c of this.ccolliders) {
-        //         c.tag = CCollider.TAG.WALL_TOP
-        //     }
-        // }
         this.setTargetTags(CCollider.TAG.PLAYER, CCollider.TAG.NONPLAYER, CCollider.TAG.GOODNONPLAYER, CCollider.TAG.BOSS, CCollider.TAG.BUILDING, CCollider.TAG.BULLET)
         if (onlyShow) {
             this.entity.destroy()
@@ -269,9 +305,9 @@ export default class Wall extends Building {
         if (this.type != Wall.TYPE_EMPTY && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
             if (!this.combineWall) EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER, { type: 0, other: other, self: self })
             if (this.type == Wall.TYPE_OTHER) {
-                this.wallsprite.node.opacity = 180
+                this.wallsprite.node.opacity = 120
             } else {
-                this.roofsprite.node.opacity = 180
+                this.roofsprite.node.opacity = 120
             }
         }
     }
@@ -281,7 +317,11 @@ export default class Wall extends Building {
         }
         if (this.type != Wall.TYPE_EMPTY && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
             if (!this.combineWall) EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER, { type: 1, other: other, self: self })
-            this.wallsprite.node.opacity = 255
+            if (this.type == Wall.TYPE_OTHER) {
+                this.wallsprite.node.opacity = 120
+            } else {
+                this.roofsprite.node.opacity = 120
+            }
         }
     }
     onColliderExit(other: CCollider, self: CCollider): void {
@@ -290,7 +330,11 @@ export default class Wall extends Building {
         }
         if (this.type != Wall.TYPE_EMPTY && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
             if (!this.combineWall) EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER, { type: 2, other: other, self: self })
-            this.wallsprite.node.opacity = 255
+            if (this.type == Wall.TYPE_OTHER) {
+                this.wallsprite.node.opacity = 255
+            } else {
+                this.roofsprite.node.opacity = 255
+            }
         }
     }
 

@@ -28,10 +28,13 @@
       },
       {
         "__id__": 14
+      },
+      {
+        "__id__": 15
       }
     ],
     "_prefab": {
-      "__id__": 15
+      "__id__": 16
     },
     "_opacity": 255,
     "_color": {
@@ -132,8 +135,8 @@
         0,
         0,
         1,
-        1,
-        1,
+        8,
+        8,
         1
       ]
     },
@@ -177,8 +180,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
+      "width": 16,
+      "height": 16
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -196,7 +199,7 @@
         0,
         0,
         1,
-        1.2,
+        1,
         1.2,
         1
       ]
@@ -286,8 +289,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 128,
-      "height": 256
+      "width": 16,
+      "height": 16
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -299,7 +302,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        -60,
+        -8,
         0,
         0,
         0,
@@ -351,7 +354,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": false,
+    "_isTrimmedMode": true,
     "_atlas": {
       "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
     },
@@ -395,8 +398,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
+      "width": 16,
+      "height": 16
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -408,7 +411,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        256,
+        16,
         0,
         0,
         0,
@@ -460,7 +463,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": false,
+    "_isTrimmedMode": true,
     "_atlas": {
       "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
     },
@@ -519,6 +522,35 @@
     "isStatic": true,
     "ignoreSameTag": false,
     "targetTagList": [],
+    "ignoreTagList": [],
+    "_id": ""
+  },
+  {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 0,
+    "offsetX": 0,
+    "offsetY": 128,
+    "type": 1,
+    "radius": 64,
+    "w": 128,
+    "h": 128,
+    "zHeight": 9999,
+    "bounce": 0,
+    "sensor": true,
+    "isStatic": true,
+    "ignoreSameTag": true,
+    "targetTagList": [
+      3,
+      5,
+      7,
+      11
+    ],
     "ignoreTagList": [],
     "_id": ""
   },

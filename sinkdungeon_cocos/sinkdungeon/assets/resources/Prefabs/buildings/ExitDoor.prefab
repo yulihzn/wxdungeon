@@ -328,7 +328,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "3492fec7-e5bf-4a78-a92e-5d4e72dfb825"
+      "__id__": 0
     },
     "fileId": "136/Oa4qlA84MlvN6Hxpxj",
     "sync": false
@@ -403,7 +403,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "3492fec7-e5bf-4a78-a92e-5d4e72dfb825"
+      "__id__": 0
     },
     "fileId": "43wORsh1dHCoiLr/2u9297",
     "sync": false
@@ -424,7 +424,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "c65fb0a4-5d77-4d87-a812-ed938e6e41fd"
+      "__uuid__": "9fdf9f4a-ecfd-407b-bc21-ecf3f674ec58"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -448,7 +448,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "3492fec7-e5bf-4a78-a92e-5d4e72dfb825"
+      "__id__": 0
     },
     "fileId": "337wJvtl9Bv6VHozjawVIG",
     "sync": false
@@ -627,7 +627,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "3492fec7-e5bf-4a78-a92e-5d4e72dfb825"
+      "__id__": 0
     },
     "fileId": "b5rqydS6lGDqDnBZdhRTrA",
     "sync": false
@@ -736,7 +736,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "3492fec7-e5bf-4a78-a92e-5d4e72dfb825"
+      "__id__": 0
     },
     "fileId": "eavi/zB/ZOXaokW2DK5coG",
     "sync": false
@@ -845,7 +845,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "3492fec7-e5bf-4a78-a92e-5d4e72dfb825"
+      "__id__": 0
     },
     "fileId": "3cTS2mgjtOYrBVfUEkcLzs",
     "sync": false
@@ -856,7 +856,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "3492fec7-e5bf-4a78-a92e-5d4e72dfb825"
+      "__id__": 0
     },
     "fileId": "cbkX9zehNLPohQQ5r0nM4d",
     "sync": false
@@ -886,7 +886,8 @@
     "radius": 64,
     "w": 128,
     "h": 128,
-    "density": 0,
+    "zHeight": 32,
+    "bounce": 0,
     "sensor": false,
     "isStatic": true,
     "ignoreSameTag": false,
@@ -913,7 +914,8 @@
     "radius": 64,
     "w": 128,
     "h": 64,
-    "density": 0,
+    "zHeight": 32,
+    "bounce": 0,
     "sensor": true,
     "isStatic": true,
     "ignoreSameTag": false,
@@ -929,7 +931,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "3492fec7-e5bf-4a78-a92e-5d4e72dfb825"
+      "__id__": 0
     },
     "fileId": "",
     "sync": false
