@@ -189,7 +189,7 @@ export default class BuildingManager extends BaseManager {
         this.colliderCombineMap.clear()
     }
 
-    private isThe(mapStr: string, typeStr: string): boolean {
+    private hasThe(mapStr: string, typeStr: string): boolean {
         if (!mapStr) {
             return false
         }
@@ -375,21 +375,27 @@ export default class BuildingManager extends BaseManager {
             Logic.getBuildings(BuildingManager.TRAP, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
             })
-        } else if (this.isFirstEqual(mapDataStr, "W")) {
-            //生成可破坏装饰 并且根据之前记录的位置放置
-            this.addInteractBuilding(mapDataStr, indexPos)
         } else if (mapDataStr == "T002") {
             //生成电锯,占据5个格子
             Logic.getBuildings(BuildingManager.SAW, (prefab: cc.Prefab) => {
                 let saw = this.addBuilding(prefab, indexPos)
                 saw.getComponent(Saw).setPos(indexPos)
             })
+        } else if (this.isFirstEqual(mapDataStr, "U")) {
+            Logic.getBuildings(BuildingManager.WALLPAINT, (prefab: cc.Prefab) => {
+                let wallpaint = this.addBuilding(prefab, indexPos).getComponent(WallPaint)
+                wallpaint.node.zIndex = IndexZ.getActorZIndex(wallpaint.node.position.add(cc.v3(0, 120)))
+                wallpaint.init(mapDataStr)
+            })
+        } else if (this.isFirstEqual(mapDataStr, "W")) {
+            //生成可破坏装饰 并且根据之前记录的位置放置
+            this.addInteractBuilding(mapDataStr, indexPos)
         } else if (this.isFirstEqual(mapDataStr, "Z")) {
-            if (parseInt(mapDataStr[1]) == 0 || parseInt(mapDataStr[1]) == 1) {
+            if (mapDataStr == "Z0" || mapDataStr == "Z1") {
                 Logic.getBuildings(BuildingManager.ROOMBED, (prefab: cc.Prefab) => {
                     let p = this.addBuilding(prefab, indexPos)
                     let rb = p.getComponent(RoomBed)
-                    rb.init(dungeon, parseInt(mapDataStr[1]) == 1)
+                    rb.init(dungeon, mapDataStr == "Z1")
                 })
             } else {
                 //生成家具
@@ -518,7 +524,7 @@ export default class BuildingManager extends BaseManager {
         })
     }
     private addDecorate(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
-        if (mapDataStr == "+0") {
+        if (mapDataStr == "+2") {
             //生成营火
             Logic.getBuildings(BuildingManager.CAMPFIRE, (prefab: cc.Prefab) => {
                 let camp = this.addBuilding(prefab, indexPos)
@@ -540,41 +546,33 @@ export default class BuildingManager extends BaseManager {
             })
         } else if (mapDataStr == "+4") {
             this.addPracticeEquipItem(dungeon, indexPos)
-        } else if (mapDataStr == "+a") {
+        } else if (mapDataStr == "+++0") {
             Logic.getBuildings(BuildingManager.GRASS01, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
             })
-        } else if (mapDataStr == "+b") {
+        } else if (mapDataStr == "+++1") {
             Logic.getBuildings(BuildingManager.GRASS02, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
             })
-        } else if (mapDataStr == "+c") {
+        } else if (mapDataStr == "+++2") {
             Logic.getBuildings(BuildingManager.GRASS03, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
             })
-        } else if (mapDataStr == "+d") {
+        } else if (mapDataStr == "+++3") {
             Logic.getBuildings(BuildingManager.GRASS04, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
-            })
-        } else if (this.isThe(mapDataStr, "+p")) {
-            Logic.getBuildings(BuildingManager.WALLPAINT, (prefab: cc.Prefab) => {
-                let wallpaint = this.addBuilding(prefab, indexPos).getComponent(WallPaint)
-                wallpaint.node.zIndex = IndexZ.getActorZIndex(wallpaint.node.position.add(cc.v3(0, 120)))
-                wallpaint.init(mapDataStr)
             })
         } else {
             Logic.getBuildings(BuildingManager.DECORATIONFLOOR, (prefab: cc.Prefab) => {
                 let fd = this.addBuilding(prefab, indexPos)
                 let df = fd.getComponent(DecorationFloor)
-                if (mapDataStr == "++") {
+                if (mapDataStr == "+1") {
                     df.init(dungeon, "exitarrow", 4, 0)
-                } else if (mapDataStr == "+2") {
-                    df.init(dungeon, "exitarrow", 4, 0)
-                } else if (mapDataStr == "+5") {
+                } else if (mapDataStr == "++0") {
                     df.init(dungeon, "roomoutside0", 32, 1, cc.v3(0.95, 0.5), 255, IndexZ.BASE)
-                } else if (mapDataStr == "+6") {
+                } else if (mapDataStr == "++1") {
                     df.init(dungeon, "roomoutside1", 32, 1, cc.v3(0.95, 0.5), 255, IndexZ.BASE)
-                } else if (mapDataStr == "+7") {
+                } else if (mapDataStr == "++2") {
                     df.init(dungeon, "roomoutside2", 32, 1, cc.v3(0, 0.5), 255, IndexZ.BASE)
                 } else {
                     df.init(dungeon, "dev", 4, 0)
