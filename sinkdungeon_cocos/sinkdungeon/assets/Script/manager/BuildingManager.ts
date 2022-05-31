@@ -331,23 +331,15 @@ export default class BuildingManager extends BaseManager {
                 }
             })
         } else if (mapDataStr == "Q0") {
-            //生成塔罗
-            Logic.getBuildings(BuildingManager.TAROTTABLE, (prefab: cc.Prefab) => {
-                this.addBuilding(prefab, indexPos)
-            })
-        } else if (mapDataStr == "R0") {
+        } else if (this.isFirstEqual(mapDataStr, "P")) {
             Logic.getBuildings(BuildingManager.SHIPSTAIRS, (prefab: cc.Prefab) => {
                 let node = this.addBuilding(prefab, indexPos)
                 node.setScale(16)
                 node.zIndex = IndexZ.WALLINTERNAL
-            })
-        } else if (mapDataStr == "R1") {
-            //生成楼梯
-            Logic.getBuildings(BuildingManager.SHIPSTAIRS, (prefab: cc.Prefab) => {
-                let node = this.addBuilding(prefab, indexPos)
-                node.setScale(-16, 16)
-                node.getComponent(CCollider).offset = cc.v2(-8, 0)
-                node.zIndex = IndexZ.WALLINTERNAL
+                if (parseInt(mapDataStr[1]) == 1) {
+                    node.setScale(-16, 16)
+                    node.getComponent(CCollider).offset = cc.v2(-8, 0)
+                }
             })
         } else if (mapDataStr == "S0") {
             //生成商店
@@ -363,22 +355,22 @@ export default class BuildingManager extends BaseManager {
                 let mart = this.addBuilding(prefab, indexPos)
                 mart.zIndex += 10
             })
-        } else if (mapDataStr == "Sa" || mapDataStr == "Sb" || mapDataStr == "Sc") {
+        } else if (mapDataStr == "S3" || mapDataStr == "S4" || mapDataStr == "S5") {
             //生成货架
             this.addMartShelves(mapDataStr, indexPos)
-        } else if (mapDataStr == "Sd") {
+        } else if (mapDataStr == "S6") {
             //生成收银台
             Logic.getBuildings(BuildingManager.MARTCASHIER, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
                 let pos = Dungeon.getPosInMap(indexPos)
                 dungeon.nonPlayerManager.addNonPlayerFromData(NonPlayerManager.SHOP_KEEPER, cc.v3(pos.x - 60, pos.y + 180), dungeon)
             })
-        } else if (mapDataStr == "Se") {
+        } else if (mapDataStr == "S7") {
             //生成餐桌
             Logic.getBuildings(BuildingManager.MARTTABLE, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
             })
-        } else if (mapDataStr == "T0") {
+        } else if (mapDataStr == "T000") {
             //生成陷阱
             Logic.getBuildings(BuildingManager.TRAP, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
@@ -386,7 +378,7 @@ export default class BuildingManager extends BaseManager {
         } else if (this.isFirstEqual(mapDataStr, "W")) {
             //生成可破坏装饰 并且根据之前记录的位置放置
             this.addInteractBuilding(mapDataStr, indexPos)
-        } else if (mapDataStr == "X0") {
+        } else if (mapDataStr == "T002") {
             //生成电锯,占据5个格子
             Logic.getBuildings(BuildingManager.SAW, (prefab: cc.Prefab) => {
                 let saw = this.addBuilding(prefab, indexPos)
@@ -665,56 +657,41 @@ export default class BuildingManager extends BaseManager {
             case "L9":
                 prefabName = BuildingManager.LAMPFIREPAN
                 break
-            case "La":
+            case "L10":
                 prefabName = BuildingManager.LAMPROAD
                 break
-            case "Lb":
+            case "L11":
                 prefabName = BuildingManager.LAMPFIREFLY
                 break
-            case "Lc":
+            case "LL020":
+            case "LL021":
+            case "LL022":
+            case "LL023":
                 prefabName = BuildingManager.LAMPDIRECT
                 break
-            case "L001":
+            case "LL010":
+            case "LL011":
+            case "LL012":
+            case "LL013":
+            case "LL014":
+            case "LL015":
+            case "LL016":
+            case "LL017":
+            case "LL018":
+            case "LL019":
                 prefabName = BuildingManager.LAMPLIGHT
                 isCustom = true
                 break
-            case "L003":
-                prefabName = BuildingManager.LAMPLIGHT
-                isCustom = true
-                break
-            case "L005":
-                prefabName = BuildingManager.LAMPLIGHT
-                isCustom = true
-                break
-            case "L007":
-                prefabName = BuildingManager.LAMPLIGHT
-                isCustom = true
-                break
-            case "L009":
-                prefabName = BuildingManager.LAMPLIGHT
-                isCustom = true
-                break
-            case "L011":
-                prefabName = BuildingManager.LAMPLIGHT
-                isCustom = true
-                isRect = true
-                break
-            case "L013":
-                prefabName = BuildingManager.LAMPLIGHT
-                isCustom = true
-                isRect = true
-                break
-            case "L015":
-                prefabName = BuildingManager.LAMPLIGHT
-                isCustom = true
-                isRect = true
-                break
-            case "L017":
-                prefabName = BuildingManager.LAMPLIGHT
-                isCustom = true
-                isRect = true
-                break
-            case "L019":
+            case "LL000":
+            case "LL001":
+            case "LL002":
+            case "LL003":
+            case "LL004":
+            case "LL005":
+            case "LL006":
+            case "LL007":
+            case "LL008":
+            case "LL009":
                 prefabName = BuildingManager.LAMPLIGHT
                 isCustom = true
                 isRect = true
@@ -728,7 +705,7 @@ export default class BuildingManager extends BaseManager {
             if (isCustom) {
                 let b = node.getComponent(Building)
                 if (b.lights.length > 0) {
-                    let index = parseInt(mapDataStr[3])
+                    let index = parseInt(mapDataStr[4])
                     let range = Dungeon.TILE_SIZE * index
                     b.lights[0].setCustomColliderStyle(isRect, range, range, range / 2)
                 }
@@ -926,40 +903,40 @@ export default class BuildingManager extends BaseManager {
             case "Z9":
                 data.valueCopy(Logic.furnitures[Furniture.STOOL])
                 break
-            case "Za":
+            case "Z10":
                 data.valueCopy(Logic.furnitures[Furniture.COOKING_BENCH])
                 break
-            case "Zb":
+            case "Z11":
                 data.valueCopy(Logic.furnitures[Furniture.DOLL_MACHINE])
                 break
-            case "Zc":
+            case "Z12":
                 data.valueCopy(Logic.furnitures[Furniture.COOKING_BENCH_2])
                 break
-            case "Zd":
+            case "Z13":
                 data.valueCopy(Logic.furnitures[Furniture.COOKING_BENCH_3])
                 break
-            case "Ze":
+            case "Z14":
                 data.valueCopy(Logic.furnitures[Furniture.BATH])
                 break
-            case "Zf":
+            case "Z15":
                 data.valueCopy(Logic.furnitures[Furniture.LITTLE_TABLE])
                 break
-            case "Zg":
+            case "Z16":
                 data.valueCopy(Logic.furnitures[Furniture.LITTLE_TABLE_1])
                 break
-            case "Zh":
+            case "Z17":
                 data.valueCopy(Logic.furnitures[Furniture.LITTLE_TABLE_2])
                 break
-            case "Zi":
+            case "Z18":
                 data.valueCopy(Logic.furnitures[Furniture.FISHTANK])
                 break
-            case "Zj":
+            case "Z19":
                 data.valueCopy(Logic.furnitures[Furniture.BOOKSHELF])
                 break
-            case "Zk":
+            case "Z20":
                 data.valueCopy(Logic.furnitures[Furniture.WATERDISPENER])
                 break
-            case "Zl":
+            case "Z21":
                 data.valueCopy(Logic.furnitures[Furniture.TRASHCAN])
                 break
             default:
@@ -987,35 +964,35 @@ export default class BuildingManager extends BaseManager {
                 let script = building.getComponent(Furniture)
                 script.init(data)
             })
-        } else if (mapDataStr == "Za") {
+        } else if (mapDataStr == "Z10") {
             Logic.getBuildings(BuildingManager.ROOMKITCHEN, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomKitchen).init(indexPos)
                 let script = building.getComponent(Furniture)
                 script.init(data)
             })
-        } else if (mapDataStr == "Zh") {
+        } else if (mapDataStr == "Z17") {
             Logic.getBuildings(BuildingManager.ROOMCLOCK, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomClock).init(indexPos)
                 let script = building.getComponent(Furniture)
                 script.init(data)
             })
-        } else if (mapDataStr == "Zi") {
+        } else if (mapDataStr == "Z18") {
             Logic.getBuildings(BuildingManager.ROOMFISHTANK, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomFishtank).init(indexPos, dungeon)
                 let script = building.getComponent(Furniture)
                 script.init(data)
             })
-        } else if (mapDataStr == "Zk") {
+        } else if (mapDataStr == "Z20") {
             Logic.getBuildings(BuildingManager.ROOMWATERDISPENSER, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomWaterDispenser).init(indexPos)
                 let script = building.getComponent(Furniture)
                 script.init(data)
             })
-        } else if (mapDataStr == "Zl") {
+        } else if (mapDataStr == "Z21") {
             Logic.getBuildings(BuildingManager.ROOMTRASHCAN, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomTrashCan).init(indexPos)

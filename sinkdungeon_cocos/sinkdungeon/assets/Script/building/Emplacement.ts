@@ -33,17 +33,21 @@ export default class Emplacement extends Building {
     private timeDelay = 0
     dungeon: Dungeon
     anim: cc.Animation
-    static readonly ALL = 0 //G0
+    static readonly BOTTOM = 0 //G0
     static readonly TOP = 1 //G1
-    static readonly BOTTOM = 2 //G2
+    static readonly RIGHT = 2 //G2
     static readonly LEFT = 3 //G3
-    static readonly RIGHT = 4 //G4
-    static readonly TOPBOTTOM = 5 //G5
-    static readonly TOPLEFT = 6 //G6
-    static readonly TOPRIGHT = 7 //G7
-    static readonly BOTTOMLEFT = 8 //G8
-    static readonly BOTTOMRIGHT = 9 //G9
-    static readonly LEFTRIGHT = 10 //Ga
+    static readonly TOPBOTTOM = 4 //G4
+    static readonly LEFTRIGHT = 5 //G5
+    static readonly BOTTOMRIGHT = 6 //G6
+    static readonly BOTTOMLEFT = 7 //G7
+    static readonly TOPLEFT = 8 //G8
+    static readonly TOPRIGHT = 9 //G9
+    static readonly BOTTOMLEFTRIGHT = 10 //G10
+    static readonly TOPLEFTRIGHT = 11 //G11
+    static readonly RIGHTTOPBOTTOM = 12 //G12
+    static readonly LEFTTOPBOTTOM = 13 //G13
+    static readonly ALL = 14 //G14
     dirType = 0 //方向类型
     // LIFE-CYCLE CALLBACKS:
 
@@ -61,7 +65,7 @@ export default class Emplacement extends Building {
     setDirType(mapStr: string) {
         switch (mapStr) {
             case "G0":
-                this.dirType = Emplacement.ALL
+                this.dirType = Emplacement.BOTTOM
                 this.hideOrShowShooter(0, 1, 0, 0)
                 break
             case "G1":
@@ -69,7 +73,7 @@ export default class Emplacement extends Building {
                 this.hideOrShowShooter(1, 0, 0, 0)
                 break
             case "G2":
-                this.dirType = Emplacement.BOTTOM
+                this.dirType = Emplacement.RIGHT
                 this.hideOrShowShooter(0, 0, 1, 0)
                 break
             case "G3":
@@ -77,32 +81,48 @@ export default class Emplacement extends Building {
                 this.hideOrShowShooter(0, 0, 0, 1)
                 break
             case "G4":
-                this.dirType = Emplacement.RIGHT
-                this.hideOrShowShooter(0, 0, 0, 1)
-                break
-            case "G5":
                 this.dirType = Emplacement.TOPBOTTOM
                 this.hideOrShowShooter(1, 1, 0, 0)
                 break
+            case "G5":
+                this.dirType = Emplacement.LEFTRIGHT
+                this.hideOrShowShooter(0, 0, 1, 1)
+                break
             case "G6":
-                this.dirType = Emplacement.TOPLEFT
-                this.hideOrShowShooter(1, 0, 1, 0)
-                break
-            case "G7":
-                this.dirType = Emplacement.TOPRIGHT
-                this.hideOrShowShooter(1, 0, 0, 1)
-                break
-            case "G8":
-                this.dirType = Emplacement.BOTTOMLEFT
-                this.hideOrShowShooter(0, 1, 1, 0)
-                break
-            case "G9":
                 this.dirType = Emplacement.BOTTOMRIGHT
                 this.hideOrShowShooter(0, 1, 0, 1)
                 break
-            case "Ga":
-                this.dirType = Emplacement.LEFTRIGHT
-                this.hideOrShowShooter(0, 0, 1, 1)
+            case "G7":
+                this.dirType = Emplacement.BOTTOMLEFT
+                this.hideOrShowShooter(0, 1, 1, 0)
+                break
+            case "G8":
+                this.dirType = Emplacement.TOPLEFT
+                this.hideOrShowShooter(1, 0, 1, 0)
+                break
+            case "G9":
+                this.dirType = Emplacement.TOPRIGHT
+                this.hideOrShowShooter(1, 0, 0, 1)
+                break
+            case "G10":
+                this.dirType = Emplacement.BOTTOMLEFTRIGHT
+                this.hideOrShowShooter(0, 1, 1, 1)
+                break
+            case "G11":
+                this.dirType = Emplacement.TOPLEFTRIGHT
+                this.hideOrShowShooter(1, 0, 1, 1)
+                break
+            case "G12":
+                this.dirType = Emplacement.RIGHTTOPBOTTOM
+                this.hideOrShowShooter(1, 1, 0, 1)
+                break
+            case "G13":
+                this.dirType = Emplacement.LEFTTOPBOTTOM
+                this.hideOrShowShooter(1, 1, 1, 0)
+                break
+            case "G14":
+                this.dirType = Emplacement.ALL
+                this.hideOrShowShooter(1, 1, 1, 1)
                 break
         }
     }
@@ -172,6 +192,26 @@ export default class Emplacement extends Building {
             case Emplacement.LEFTRIGHT:
                 this.fireShooter(this.shooterLeft)
                 this.fireShooter(this.shooterRight)
+                break
+            case Emplacement.LEFTTOPBOTTOM:
+                this.fireShooter(this.shooterLeft)
+                this.fireShooter(this.shooterTop)
+                this.fireShooter(this.shooterBottom)
+                break
+            case Emplacement.RIGHTTOPBOTTOM:
+                this.fireShooter(this.shooterRight)
+                this.fireShooter(this.shooterTop)
+                this.fireShooter(this.shooterBottom)
+                break
+            case Emplacement.TOPLEFTRIGHT:
+                this.fireShooter(this.shooterRight)
+                this.fireShooter(this.shooterTop)
+                this.fireShooter(this.shooterLeft)
+                break
+            case Emplacement.BOTTOMLEFTRIGHT:
+                this.fireShooter(this.shooterRight)
+                this.fireShooter(this.shooterBottom)
+                this.fireShooter(this.shooterLeft)
                 break
             default:
                 this.fireShooter(this.shooterTop)
