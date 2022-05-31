@@ -26,7 +26,6 @@ export default class NonPlayerManager extends BaseManager {
     public static readonly DOG = 'nonplayer100';
     public static readonly CAT = 'nonplayer101';
     public static readonly FISH = 'nonplayer102';
-    private loadingManager: LoadingManager = new LoadingManager();
     // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}
@@ -86,8 +85,8 @@ export default class NonPlayerManager extends BaseManager {
     }
 
     public addNonPlayerFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
-        if (mapDataStr == 'N0') {
-            this.addNonPlayerFromData(NonPlayerManager.NON_SHADOW, Dungeon.getPosInMap(indexPos), dungeon);
+        if (Dungeon.isFirstEqual(mapDataStr, 'n')) {
+            this.addNonPlayerFromData(`nonplayer${mapDataStr.substring(1)}`, Dungeon.getPosInMap(indexPos), dungeon);
         }
     }
     private getNonPlayer(nonPlayerData: NonPlayerData, dungeon: Dungeon,callback:Function): void {

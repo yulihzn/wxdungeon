@@ -153,35 +153,13 @@ export default class MonsterManager extends BaseManager {
     }
 
     public addMonstersAndBossFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
-        if (Dungeon.isFirstEqual(mapDataStr, 'M')) {
-            let index = parseInt(mapDataStr[1]);
-            if (isNaN(index)) {
-                if (mapDataStr[1] == 'a') {
-                    this.addMonsterFromData(MonsterManager.MONSTER_DUMMY, indexPos, dungeon, false);
-                } else if (mapDataStr[1] == 'b') {
-                    this.addMonsterFromData(MonsterManager.MONSTER_CHEST, indexPos, dungeon, false);
-                } else if (mapDataStr[1] == 'c') {
-                    this.addMonsterFromData(MonsterManager.MONSTER_MICE, indexPos, dungeon, false);
-                }
-            } else {
-                let arr = new Array();
-                switch (Logic.chapterIndex) {
-                    case Logic.CHAPTER00: arr = MonsterManager.MONSTERS_LAB; break;
-                    case Logic.CHAPTER01: arr = MonsterManager.MONSTERS_SHIP; break;
-                    case Logic.CHAPTER02: arr = MonsterManager.MONSTERS_FOREST; break;
-                    case Logic.CHAPTER03: arr = MonsterManager.MONSTERS_PYRAMID; break;
-                    case Logic.CHAPTER04: arr = MonsterManager.MONSTERS_DUNGEON; break;
-                    case Logic.CHAPTER05: arr = MonsterManager.MONSTERS_DUNGEON; break;
-                    case Logic.CHAPTER099: arr = MonsterManager.MONSTERS_LAB; break;
-                }
-                this.addMonsterFromData(arr[index], indexPos, dungeon, false);
-            }
+        if (Dungeon.isFirstEqual(mapDataStr, 'm')) {
+            this.addMonsterFromData(`monster${mapDataStr.substring(1)}`, indexPos, dungeon, false);
             return;
         }
         if (mapDataStr == 'z0') {
             this.addBoss(this.iceDemon, 'iconboss000', this.maxHealth00, 0, 2, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'z1') {
+        }else if (mapDataStr == 'z1') {
             this.addBoss(this.warmachine, 'iconboss001', this.maxHealth01, 2, 3.5, indexPos, dungeon);
         }
         else if (mapDataStr == 'z2') {
