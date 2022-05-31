@@ -53,6 +53,7 @@ export default class LevelData {
     needRadomDecorate = false
     isWater = false
     map: string[][] = []
+    floormap: string[][] = []
     roomTypes: string[][] = []
     minimap: string[][] = []
     minimaplock: string[][] = []
@@ -126,36 +127,11 @@ export default class LevelData {
             return
         }
         DataUtils.baseCopy(this, data)
-        // this.name = data.name;
-        // this.index = data.index;
-        // this.chapter = data.chapter;
-        // this.width = data.width;
-        // this.height = data.height;
-        // this.seed = data.seed;
-        // this.roomWidth = data.roomWidth;
-        // this.roomHeight = data.roomHeight;
         this.map = data.map
+        this.floormap = data.floormap
         this.roomTypes = data.roomTypes
         this.minimap = data.minimap
         this.minimaplock = data.minimaplock
-        // this.floorRes = data.floorRes;
-        // this.floorCoverRes = data.floorCoverRes;
-        // this.floorCoverRes1 = data.floorCoverRes1;
-        // this.floorCoverRes2 = data.floorCoverRes2;
-        // this.floorCoverRes3 = data.floorCoverRes3;
-        // this.floorCoverRes4 = data.floorCoverRes4;
-        // this.floorCoverRes5 = data.floorCoverRes5;
-        // this.wallRes1 = data.wallRes1;
-        // this.wallRes2 = data.wallRes2;
-        // this.wallRes3 = data.wallRes3;
-        // this.wallRes4 = data.wallRes4;
-        // this.wallRes5 = data.wallRes5;
-        // this.wallRes6 = data.wallRes6;
-        // this.doorRes = data.doorRes;
-        // this.exitRes = data.exitRes;
-        // this.exits = data.exits;
-        // this.needRadomDecorate = data.needRadomDecorate;
-        // this.isWater = data.isWater;
         this.lights = data.lights
     }
     getRoomMap(x: number, y: number): string[][] {
@@ -167,6 +143,19 @@ export default class LevelData {
             temp[i] = new Array()
             for (let j = 0; j < this.roomHeight; j++) {
                 temp[i][j] = this.map[i + x * this.roomWidth][j + y * this.roomHeight]
+            }
+        }
+        return temp
+    }
+    getRoomFloorMap(x: number, y: number): string[][] {
+        let temp: string[][] = new Array()
+        if (x < 0 || y < 0 || x > this.width - 1 || y > this.height - 1) {
+            return temp
+        }
+        for (let i = 0; i < this.roomWidth; i++) {
+            temp[i] = new Array()
+            for (let j = 0; j < this.roomHeight; j++) {
+                temp[i][j] = this.floormap[i + x * this.roomWidth][j + y * this.roomHeight]
             }
         }
         return temp

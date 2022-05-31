@@ -46,6 +46,7 @@ export default class Dungeon extends cc.Component {
     @property(cc.Camera)
     mainCamera: cc.Camera = null
     mapData: string[][] = [] //地图数据
+    floorData: string[][] = [] //地图地面数据
     tilesmap: Tile[][] = new Array() //地面列表
     floorIndexMap: cc.Vec3[] = new Array() //地板下标列表
     static WIDTH_SIZE: number = 7
@@ -184,7 +185,9 @@ export default class Dungeon extends cc.Component {
         this.lightManager.shadowRay.node.zIndex = IndexZ.SHADOW + 10
         this.currentPos = cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y)
         let mapData: string[][] = Logic.mapManager.getCurrentMapStringArray()
+        let floorData: string[][] = Logic.mapManager.getCurrentFloorMapStringArray()
         this.mapData = mapData
+        this.floorData = floorData
         let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData()
         let exits = leveldata.getExitList()
         Logic.changeDungeonSize()
@@ -209,7 +212,7 @@ export default class Dungeon extends cc.Component {
                         this.tilesmap[i] = new Array(i)
                         for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
                             //越往下层级越高，j是行，i是列
-                            this.addTiles(mapData[i][j], cc.v3(i, j), leveldata, false)
+                            this.addTiles(floorData[i][j], cc.v3(i, j), leveldata, false)
                             //加载建筑
                             this.buildingManager.addBuildingsFromMap(this, mapData, mapData[i][j], cc.v3(i, j), leveldata, exits)
                             //房间未清理时加载物品
@@ -313,8 +316,9 @@ export default class Dungeon extends cc.Component {
     }
     private addBuildingsFromSideMap(offset: cc.Vec3) {
         let mapData: string[][] = Logic.mapManager.getCurrentSideMapStringArray(offset)
+        let floorData: string[][] = Logic.mapManager.getCurrentSideFloorMapStringArray(offset)
         let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData()
-        if (!mapData[0]) {
+        if (!mapData[0] || !floorData[0]) {
             return
         }
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
@@ -349,7 +353,7 @@ export default class Dungeon extends cc.Component {
                 }
                 if (needAdd) {
                     let indexPos = cc.v3(i + Dungeon.WIDTH_SIZE * offset.x, j + Dungeon.HEIGHT_SIZE * offset.y)
-                    this.addTiles(mapData[i][j], indexPos.clone(), leveldata, true)
+                    this.addTiles(floorData[i][j], indexPos.clone(), leveldata, true)
                     this.buildingManager.addBuildingsFromSideMap(mapData[i][j], mapData, indexPos.clone(), leveldata)
                 }
             }

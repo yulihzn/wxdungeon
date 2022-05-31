@@ -108,13 +108,17 @@ export default class WorldLoader {
                     }
                 }
                 let map = new Array()
+                let floormap = new Array()
                 let rooms = new Array()
                 let w = temp.width * temp.roomWidth
                 let h = temp.height * temp.roomHeight
                 for (let i = 0; i < h; i++) {
                     map[i] = new Array()
+                    floormap[i] = new Array()
                     rooms[i] = new Array()
                     for (let j = 0; j < w; j++) {
+                        let value0 = tiledmap.json.layers[0].data[i * w + j]
+                        floormap[i][j] = tileset[value0 - 1]
                         let value1 = tiledmap.json.layers[1].data[i * w + j]
                         map[i][j] = tileset[value1 - 1]
                         let value2 = tiledmap.json.layers[2].data[i * w + j]
@@ -123,16 +127,20 @@ export default class WorldLoader {
                 }
                 //对应行列在里是反过来的
                 let turnMap = new Array()
+                let turnfloorMap = new Array()
                 let turnRooms = new Array()
                 for (let i = 0; i < map[0].length; i++) {
+                    turnfloorMap[i] = new Array()
                     turnMap[i] = new Array()
                     turnRooms[i] = new Array()
                     for (let j = 0; j < map.length; j++) {
+                        turnfloorMap[i][map.length - 1 - j] = map[j][i]
                         turnMap[i][map.length - 1 - j] = map[j][i]
                         turnRooms[i][rooms.length - 1 - j] = rooms[j][i]
                     }
                 }
                 temp.map = turnMap
+                temp.floormap = turnfloorMap
                 let flagMap = new Array()
                 let miniMap = new Array()
                 let miniLockMap = new Array()
