@@ -305,7 +305,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 21,
+      "width": 23,
       "height": 13
     },
     "_anchorPoint": {
@@ -587,7 +587,7 @@
       "ctor": "Float64Array",
       "array": [
         64.467,
-        136.349,
+        134.968,
         0,
         0,
         0,
@@ -1179,12 +1179,12 @@
     "_enabled": true,
     "tag": 12,
     "offsetX": 64,
-    "offsetY": 36,
+    "offsetY": -24,
     "type": 1,
     "radius": 64,
-    "w": 256,
-    "h": 128,
-    "zHeight": 192,
+    "w": 255,
+    "h": 80,
+    "zHeight": 24,
     "bounce": 0,
     "sensor": false,
     "isStatic": true,

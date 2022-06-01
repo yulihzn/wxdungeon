@@ -7,9 +7,9 @@
         "info": "",
         "desc": "",
         "scale": 8,
-        "collider": "240,114,232,90",
+        "collider": "232,107,238,104",
         "price": 1000,
-        "height": 3
+        "height": 8
     },
     "furniture002": {
         "id": "furniture002",
@@ -176,7 +176,7 @@
         "info": "身心得到释放",
         "desc": "",
         "scale": 4,
-        "collider": "0,32,128,64",
+        "collider": "0,32,128,64,8",
         "price": 0,
         "height": 15
     },
@@ -188,7 +188,7 @@
         "info": "一台普通的电视机，但有时候容易没信号，看电视的时候缓解了疲劳",
         "desc": "",
         "scale": 8,
-        "collider": "64,36,256,128",
+        "collider": "64,-24,255,80,24",
         "price": 799,
         "height": 24
     },
@@ -236,7 +236,7 @@
         "info": "可以翻找一些没用的垃圾",
         "desc": "楼下的垃圾桶为什么也要花钱？",
         "scale": 5,
-        "collider": "16,8,80,128",
+        "collider": "16,-48,80,16,90",
         "price": 0,
         "height": 20
     }
