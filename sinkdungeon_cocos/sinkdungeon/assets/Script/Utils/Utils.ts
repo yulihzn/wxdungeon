@@ -115,4 +115,20 @@ export default class Utils {
         let isequal = mapStr.indexOf(typeStr) != -1
         return isequal
     }
+    static getNumberStr3(i:number){
+        if(i<10){
+            return `00${i}`
+        }else if(i<100){
+            return `0${i}`
+        }else {
+            return `${i}`
+        }
+    }
+    static getNumberStr2(i:number){
+        if(i<10){
+            return `0${i}`
+        }else {
+            return `${i}`
+        }
+    }
 }

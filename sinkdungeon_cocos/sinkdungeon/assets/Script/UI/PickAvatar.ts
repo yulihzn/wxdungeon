@@ -20,6 +20,7 @@ import EquipmentManager from "../manager/EquipmentManager";
 import InventoryManager from "../manager/InventoryManager";
 import LoadingManager from "../manager/LoadingManager";
 import LoadingIcon from "./LoadingIcon";
+import Utils from "../utils/Utils";
 
 
 const { ccclass, property } = cc._decorator;
@@ -215,11 +216,11 @@ export default class PickAvatar extends cc.Component {
         //发型
         let hairList = [];
         for (let i = 0; i < 10; i++) {
-            hairList.push(new AttributeData(i, `样式${i}`, `avatarhair0${i > 9 ? '' : '0'}${i}anim00`, '', '', ''));
+            hairList.push(new AttributeData(i, `样式${i}`, `avatarhair${Utils.getNumberStr3(i)}`, '', '', ''));
         }
         this.hairSelector = this.addAttributeSelector('发型：', hairList)
         this.hairSelector.selectorCallback = (data: AttributeData) => {
-            this.hairSprite.spriteFrame = Logic.spriteFrameRes(data.resName + '0');
+            this.hairSprite.spriteFrame = Logic.spriteFrameRes(data.resName+'anim0');
             this.data.hairResName = data.resName;
         };
         //头发颜色
@@ -231,11 +232,11 @@ export default class PickAvatar extends cc.Component {
         //眼睛
         let eyesList = [];
         for (let i = 0; i < 22; i++) {
-            eyesList.push(new AttributeData(i, `样式${i}`, `avatareyes0${i > 9 ? '' : '0'}${i}`, '', '', ''));
+            eyesList.push(new AttributeData(i, `样式${i}`, `avatareyes${Utils.getNumberStr3(i)}`, '', '', ''));
         }
         this.eyesSelector = this.addAttributeSelector('眼睛：', eyesList)
         this.eyesSelector.selectorCallback = (data: AttributeData) => {
-            this.eyesSprite.spriteFrame = Logic.spriteFrameRes(data.resName);
+            this.eyesSprite.spriteFrame = Logic.spriteFrameRes(data.resName+'anim0');
             this.data.eyesResName = data.resName;
         };
         //眼睛颜色
@@ -247,11 +248,11 @@ export default class PickAvatar extends cc.Component {
         //面颊
         let faceList = [];
         for (let i = 0; i < 15; i++) {
-            faceList.push(new AttributeData(i, `样式${i}`, `avatarface0${i > 9 ? '' : '0'}${i}`, '', '', ''));
+            faceList.push(new AttributeData(i, `样式${i}`, `avatarface${Utils.getNumberStr3(i)}`, '', '', ''));
         }
         this.faceSelector = this.addAttributeSelector('面颊：', faceList)
         this.faceSelector.selectorCallback = (data: AttributeData) => {
-            this.faceSprite.spriteFrame = Logic.spriteFrameRes(data.resName);
+            this.faceSprite.spriteFrame = Logic.spriteFrameRes(data.resName+'anim0');
             this.data.faceResName = data.resName;
         };
         //脸部颜色
@@ -266,14 +267,14 @@ export default class PickAvatar extends cc.Component {
         let petNames = ['柯基', '家猫', '橙子鱼'];
         let petList = [];
         for (let i = 0; i < petNames.length; i++) {
-            petList.push(new AttributeData(i, `${petNames[i]}`, `nonplayer1${i > 9 ? '' : '0'}${i}`, '', '', ''));
+            petList.push(new AttributeData(i, `${petNames[i]}`, `nonplayer1${Utils.getNumberStr2(i)}`, '', '', ''));
         }
         this.petSelector = this.addAttributeSelector('宠物：', petList);
         this.petSelector.selectorCallback = (data: AttributeData) => {
             LoadingManager.loadNpcSpriteAtlas(data.resName, () => {
                 this.petSprite.spriteFrame = Logic.spriteFrameRes(data.resName + 'anim000');
             })
-            this.data.petName = `nonplayer1${data.id > 9 ? '' : '0'}${data.id}`;
+            this.data.petName = `nonplayer1${Utils.getNumberStr2(data.id)}`;
         };
         this.petSelector.node.active = this.organizationSelector.CurrentData.id == AvatarData.HUNTER;
         this.petSprite.node.active = this.organizationSelector.CurrentData.id == AvatarData.HUNTER;
@@ -296,6 +297,7 @@ export default class PickAvatar extends cc.Component {
         this.resetSpriteSize(this.remoteSprite);
         this.resetSpriteSize(this.shieldSprite);
     }
+  
     private resetSpriteSize(sprite: cc.Sprite) {
         if (sprite.spriteFrame) {
             sprite.node.width = sprite.spriteFrame.getOriginalSize().width;

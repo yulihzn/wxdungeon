@@ -445,7 +445,7 @@ export default class Player extends Actor {
                 this.updateEquipment(this.avatar.cloakSprite, equipData.color, spriteFrame)
                 break
         }
-        this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, this.currentDir)
+        this.avatar.changeEquipDirSpriteFrame(this.inventoryManager)
         this.shield.changeZIndexByDir(this.avatar.node.zIndex, this.currentDir, this.isFaceRight)
         this.updateInfoUi()
     }
@@ -899,9 +899,8 @@ export default class Player extends Actor {
             }
             this.weaponLeft.changeZIndexByDir(this.avatar.node.zIndex, dir)
             this.weaponRight.changeZIndexByDir(this.avatar.node.zIndex, dir)
-            this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, dir)
+            this.avatar.changeEquipDirSpriteFrame(this.inventoryManager)
             this.shield.changeZIndexByDir(this.avatar.node.zIndex, dir, this.isFaceRight)
-            this.avatar.changeAvatarByDir(dir)
         }
     }
 
@@ -1525,7 +1524,6 @@ export default class Player extends Actor {
         this.avatar.drink()
         this.addStatus(StatusManager.HEALING, new FromData())
         this.addStatus(StatusManager.DRINK, new FromData())
-        this.avatar.changeAvatarByDir(PlayerAvatar.DIR_RIGHT)
     }
     canEatOrDrink(data: ItemData): boolean {
         let life = this.data.LifeData

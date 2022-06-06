@@ -5,7 +5,7 @@
   "savePath": "D:\\wxcx\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\Texture",
   "images": [],
   "folders": [
-    "E:/cocosproject/wxdungeon/sinkdungeon_resource/Texture/textures/equipment"
+    "D:/wxcx/wxdungeon/sinkdungeon_resource/Texture/equipment"
   ],
   "packOptions": {
     "textureName": "equipment",

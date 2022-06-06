@@ -10,7 +10,7 @@ export default class AvatarData {
     organizationIndex: number = 0;//['弥世逐流','宝藏猎人','幽光守护','翠金科技']
     professionData: ProfessionData = new ProfessionData();
     skinColor: string = '#ffe1c5';
-    hairResName: string = 'avatarhair000anim00';
+    hairResName: string = 'avatarhair000';
     hairColor: string = '#000000';
     eyesResName: string = 'avatareyes000';
     eyesColor: string = '#000000';

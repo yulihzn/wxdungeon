@@ -51,7 +51,8 @@ export default class PlayerAvatar extends cc.Component {
     spriteNode: cc.Node = null
     data: AvatarData
     isAniming = false
-    // LIFE-CYCLE CALLBACKS:
+    idlehair = [0, 1]
+
 
     onLoad() {
         this.init()
@@ -95,19 +96,9 @@ export default class PlayerAvatar extends cc.Component {
         this.handLeftSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor)
         this.handRightSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor)
         this.hairSprite.node.stopAllActions()
-        this.changeAvatarByDir(PlayerAvatar.DIR_RIGHT)
-        let index = 0
-        this.schedule(
-            () => {
-                this.hairSprite.spriteFrame = Logic.spriteFrameRes(this.data.hairResName + this.idlehair[index++])
-                if (index > 1) {
-                    index = 0
-                }
-            },
-            0.2,
-            cc.macro.REPEAT_FOREVER,
-            0.1
-        )
+        this.addSpriteFrameAnim(this.faceSprite,this.data.faceResName)
+        this.addSpriteFrameAnim(this.hairSprite,this.data.hairResName)
+        this.addSpriteFrameAnim(this.eyesSprite,this.data.eyesResName)
     }
     private getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node
@@ -210,24 +201,42 @@ export default class PlayerAvatar extends cc.Component {
         this.footLeftSprite.getMaterial(0).setProperty("addColor", isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT)
         this.footLeftSprite.getMaterial(0).setProperty("addColor", isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT)
     }
-    changeEquipDirSpriteFrame(inventoryManager: InventoryManager, dir: number) {
+    private countAnimLength(resName:string,index?:number){
+        let i = 0
+        if(index){
+            i = index
+        }
+        if(Logic.spriteFrameRes(`${resName}anim${++i}`)){
+            this.countAnimLength(resName,i)
+        }else{
+            return i
+        }
+    }
+    private addSpriteFrameAnim(sprite:cc.Sprite,resName:string){
+        let resLength = this.countAnimLength(resName)
+        sprite.unscheduleAllCallbacks()
+        let index = 0
+        if(resLength>1){
+            sprite.schedule(
+                () => {
+                    sprite.spriteFrame = Logic.spriteFrameRes(`${resName}anim${index++}`)
+                    if (index > resLength-1) {
+                        index = 0
+                    }
+                },
+                0.2,
+                cc.macro.REPEAT_FOREVER,
+                0.1
+            )
+        }else{
+            sprite.spriteFrame = Logic.spriteFrameRes(`${resName}anim0`)
+        }
+    }
+    changeEquipDirSpriteFrame(inventoryManager: InventoryManager) {
         let helmet = inventoryManager.equips[InventoryManager.HELMET]
         let clothes = inventoryManager.equips[InventoryManager.CLOTHES]
-        this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1
-        if (dir == 0 && Logic.spriteFrameRes(helmet.img + "anim2")) {
-            this.helmetSprite.spriteFrame = Logic.spriteFrameRes(helmet.img + "anim2")
-        } else if (dir == 1 && Logic.spriteFrameRes(helmet.img + "anim1")) {
-            this.helmetSprite.spriteFrame = Logic.spriteFrameRes(helmet.img + "anim1")
-        } else {
-            this.helmetSprite.spriteFrame = Logic.spriteFrameRes(helmet.img + "anim0")
-        }
-        if (dir == 0 && Logic.spriteFrameRes(clothes.img + "anim2")) {
-            this.clothesSprite.spriteFrame = Logic.spriteFrameRes(clothes.img + "anim2")
-        } else if (dir == 1 && Logic.spriteFrameRes(clothes.img + "anim1")) {
-            this.clothesSprite.spriteFrame = Logic.spriteFrameRes(clothes.img + "anim1")
-        } else {
-            this.clothesSprite.spriteFrame = Logic.spriteFrameRes(clothes.img + "anim0")
-        }
+        this.addSpriteFrameAnim(this.helmetSprite,helmet.img)
+        this.addSpriteFrameAnim(this.clothesSprite,clothes.img)
     }
     private playDie() {
         this.anim.play("AvatarDie")
@@ -235,40 +244,7 @@ export default class PlayerAvatar extends cc.Component {
     private playIdle(dir: number) {
         this.anim.play("AvatarIdle")
     }
-    idlehair = [0, 1]
-    changeAvatarByDir(dir: number, isFaceUp?: number) {
-        let eyesprefix = this.data.eyesResName
-        let faceprefix = this.data.faceResName
-        switch (dir) {
-            case PlayerAvatar.DIR_UP:
-                this.idlehair = [2, 3]
-                this.eyesSprite.spriteFrame = null
-                this.faceSprite.spriteFrame = null
-                break
-            case PlayerAvatar.DIR_DOWN:
-                this.idlehair = [0, 1]
-                this.eyesSprite.spriteFrame = Logic.spriteFrameRes(eyesprefix)
-                this.faceSprite.spriteFrame = Logic.spriteFrameRes(faceprefix)
-                break
-            case PlayerAvatar.DIR_LEFT:
-                this.idlehair = [4, 5]
-                this.eyesSprite.spriteFrame = Logic.spriteFrameRes("side" + eyesprefix)
-                this.faceSprite.spriteFrame = Logic.spriteFrameRes("side" + faceprefix)
-                break
-            case PlayerAvatar.DIR_RIGHT:
-                this.idlehair = [4, 5]
-                this.eyesSprite.spriteFrame = Logic.spriteFrameRes("side" + eyesprefix)
-                this.faceSprite.spriteFrame = Logic.spriteFrameRes("side" + faceprefix)
-                break
-        }
-        let eyeColor = cc.Color.WHITE.fromHEX(this.data.eyesColor)
-        this.eyesSprite.getMaterial(0).setProperty("eyeColor", eyeColor)
-        this.hairSprite.spriteFrame = Logic.spriteFrameRes(this.data.hairResName + this.idlehair[0])
-        if (dir != 4) {
-            this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1
-            this.handRightSprite.node.zIndex = dir == 0 ? this.bodySprite.node.zIndex - 1 : this.bodySprite.node.zIndex + 1
-        }
-    }
+    
     public showLegsWithWater(inWater: boolean) {
         this.legLeftSprite.node.opacity = inWater ? 0 : 255
         this.legRightSprite.node.opacity = inWater ? 0 : 255
@@ -292,10 +268,10 @@ export default class PlayerAvatar extends cc.Component {
         sprite.getMaterial(0).setProperty("isRotated", sprite.spriteFrame.isRotated() ? 1.0 : 0.0)
     }
     private playWalk(dir: number) {
-        this.anim.play(dir == PlayerAvatar.DIR_UP || dir == PlayerAvatar.DIR_DOWN ? "AvatarWalkVertical" : "AvatarWalkHorizontal")
+        this.anim.play("AvatarWalkHorizontal")
     }
     private playAttack(dir: number) {
-        this.anim.play(dir == PlayerAvatar.DIR_UP || dir == PlayerAvatar.DIR_DOWN ? "AvatarAttackVertical" : "AvatarAttackHorizontal")
+        this.anim.play("AvatarAttackHorizontal")
         let offsetX = 0
         let offsetY = 0
         switch (dir) {

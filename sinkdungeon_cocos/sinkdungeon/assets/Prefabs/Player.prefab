@@ -2267,6 +2267,7 @@
     "radius": 0,
     "w": 0,
     "h": 0,
+    "zHeight": 32,
     "bounce": 0,
     "sensor": true,
     "isStatic": true,
@@ -4046,7 +4047,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "5e81c319-d700-47b1-b91b-5cf65e4187cc"
+      "__uuid__": "e8a8f4c9-532a-404f-b407-02cb1d1418a6"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -4155,7 +4156,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "03e554aa-d044-46bc-be56-49b8227896a7"
+      "__uuid__": "d64151f5-a8d6-4681-b035-8b33d8737a08"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -4264,7 +4265,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "2dc82b66-e227-48dd-b42f-5d1615755bdc"
+      "__uuid__": "9687749a-d255-4db8-be84-f36f54bf8bd7"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -6449,6 +6450,7 @@
     "radius": 0,
     "w": 0,
     "h": 0,
+    "zHeight": 32,
     "bounce": 0,
     "sensor": true,
     "isStatic": true,
@@ -7582,6 +7584,7 @@
     "radius": 60,
     "w": 128,
     "h": 128,
+    "zHeight": 32,
     "bounce": 0,
     "sensor": true,
     "isStatic": true,
@@ -7744,6 +7747,7 @@
     "radius": 64,
     "w": 32,
     "h": 40,
+    "zHeight": 32,
     "bounce": 0,
     "sensor": false,
     "isStatic": false,
@@ -7769,6 +7773,7 @@
     "radius": 32,
     "w": 32,
     "h": 64,
+    "zHeight": 32,
     "bounce": 0,
     "sensor": true,
     "isStatic": true,
