@@ -116,7 +116,8 @@
         "common": {
             "defence": 9999,
             "dodge": 100,
-            "damageMin":500,
+            "damageMin":250,
+            "criticalStrikeRate":100,
             "moveSpeed":999
         }
     },

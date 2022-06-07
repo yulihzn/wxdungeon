@@ -9,49 +9,50 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const { ccclass, property } = cc._decorator
-import Shooter from "./Shooter"
-import Logic from "./Logic"
-import Dungeon from "./Dungeon"
+import Shooter from './Shooter'
+import Logic from './Logic'
+import Dungeon from './Dungeon'
 
-import Achievement from "./Achievement"
+import Achievement from './Achievement'
 
-import PlayerAvatar from "./PlayerAvatar"
-import PlayerWeapon from "./PlayerWeapon"
-import { EventHelper } from "./EventHelper"
+import PlayerAvatar from './PlayerAvatar'
+import PlayerWeapon from './PlayerWeapon'
+import { EventHelper } from './EventHelper'
 
-import ShadowPlayer from "../actor/ShadowPlayer"
-import Actor from "../base/Actor"
-import InteractBuilding from "../building/InteractBuilding"
-import AvatarData from "../data/AvatarData"
-import DamageData from "../data/DamageData"
-import EquipmentData from "../data/EquipmentData"
-import FromData from "../data/FromData"
-import ItemData from "../data/ItemData"
-import PlayerData from "../data/PlayerData"
-import StatusData from "../data/StatusData"
-import TalentData from "../data/TalentData"
-import ShadowOfSight from "../effect/ShadowOfSight"
-import Equipment from "../equipment/Equipment"
-import Item from "../item/Item"
-import FloatinglabelManager from "../manager/FloatingLabelManager"
-import InventoryManager from "../manager/InventoryManager"
-import LightManager from "../manager/LightManager"
-import StatusManager from "../manager/StatusManager"
-import OrganizationTalent from "../talent/OrganizationTalent"
-import ProfessionTalent from "../talent/ProfessionTalent"
-import Talent from "../talent/Talent"
-import Tips from "../ui/Tips"
-import AudioPlayer from "../utils/AudioPlayer"
-import IndexZ from "../utils/IndexZ"
-import Random from "../utils/Random"
-import MeleeWeapon from "./MeleeWeapon"
-import Shield from "./Shield"
-import CCollider from "../collider/CCollider"
-import StatusIconList from "../ui/StatusIconList"
-import Utils from "../utils/Utils"
-import NextStep from "../utils/NextStep"
-import LifeData from "../data/LifeData"
-import TriggerData from "../data/TriggerData"
+import ShadowPlayer from '../actor/ShadowPlayer'
+import Actor from '../base/Actor'
+import InteractBuilding from '../building/InteractBuilding'
+import AvatarData from '../data/AvatarData'
+import DamageData from '../data/DamageData'
+import EquipmentData from '../data/EquipmentData'
+import FromData from '../data/FromData'
+import ItemData from '../data/ItemData'
+import PlayerData from '../data/PlayerData'
+import StatusData from '../data/StatusData'
+import TalentData from '../data/TalentData'
+import ShadowOfSight from '../effect/ShadowOfSight'
+import Equipment from '../equipment/Equipment'
+import Item from '../item/Item'
+import FloatinglabelManager from '../manager/FloatingLabelManager'
+import InventoryManager from '../manager/InventoryManager'
+import LightManager from '../manager/LightManager'
+import StatusManager from '../manager/StatusManager'
+import OrganizationTalent from '../talent/OrganizationTalent'
+import ProfessionTalent from '../talent/ProfessionTalent'
+import Talent from '../talent/Talent'
+import Tips from '../ui/Tips'
+import AudioPlayer from '../utils/AudioPlayer'
+import IndexZ from '../utils/IndexZ'
+import Random from '../utils/Random'
+import MeleeWeapon from './MeleeWeapon'
+import Shield from './Shield'
+import CCollider from '../collider/CCollider'
+import StatusIconList from '../ui/StatusIconList'
+import Utils from '../utils/Utils'
+import NextStep from '../utils/NextStep'
+import LifeData from '../data/LifeData'
+import TriggerData from '../data/TriggerData'
+import ActorBottomDir from '../actor/ActorBottomDir'
 @ccclass
 export default class Player extends Actor {
     @property(FloatinglabelManager)
@@ -75,14 +76,17 @@ export default class Player extends Actor {
     statusManager: StatusManager = null
     @property(PlayerAvatar)
     avatar: PlayerAvatar = null
-    @property(Shield)
-    shield: Shield = null
     @property(cc.Node)
     remoteCooldown: cc.Node = null
+    @property(cc.Node)
+    shieldNode: cc.Node = null
+    shield: Shield = null
     @property(cc.Camera)
     shadowCamera: cc.Camera = null
     @property(cc.Prefab)
     shadowPrefab: cc.Prefab = null
+    @property(ActorBottomDir)
+    bottomDir: ActorBottomDir = null
     professionTalent: ProfessionTalent = null
     organizationTalent: OrganizationTalent = null
 
@@ -95,8 +99,6 @@ export default class Player extends Actor {
     private touchDelay = false
     inventoryManager: InventoryManager = null
     data: PlayerData
-
-    currentDir = 3
 
     attackTarget: CCollider
 
@@ -126,6 +128,7 @@ export default class Player extends Actor {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.shield = this.shieldNode.getComponent(Shield)
         this.lastConsumeTime = Logic.realTime
         this.entity.Move.linearDamping = 5
         this.entity.Move.linearVelocity = cc.v2(0, 0)
@@ -148,38 +151,38 @@ export default class Player extends Actor {
         this.weaponRight.init(this, false, false)
         this.remoteCooldown.width = 0
         this.remoteCooldown.opacity = 200
-        EventHelper.on(EventHelper.PLAYER_TRIGGER, (detail) => {
+        EventHelper.on(EventHelper.PLAYER_TRIGGER, detail => {
             if (this.node) this.triggerThings(detail && detail.isLongPress)
         })
-        EventHelper.on(EventHelper.PLAYER_EXIT_FROM_SETTINGS, (detail) => {
-            cc.director.loadScene("start")
+        EventHelper.on(EventHelper.PLAYER_EXIT_FROM_SETTINGS, detail => {
+            cc.director.loadScene('start')
         })
-        EventHelper.on(EventHelper.PLAYER_USEITEM, (detail) => {
+        EventHelper.on(EventHelper.PLAYER_USEITEM, detail => {
             if (this.node) this.useItem(detail.itemData)
         })
-        EventHelper.on(EventHelper.PLAYER_SKILL, (detail) => {
+        EventHelper.on(EventHelper.PLAYER_SKILL, detail => {
             if (this.node) this.useSkill()
         })
-        EventHelper.on(EventHelper.PLAYER_SKILL1, (detail) => {
+        EventHelper.on(EventHelper.PLAYER_SKILL1, detail => {
             if (this.node) this.useSkill1()
         })
-        EventHelper.on(EventHelper.PLAYER_UPDATE_OILGOLD_DATA, (detail) => {
+        EventHelper.on(EventHelper.PLAYER_UPDATE_OILGOLD_DATA, detail => {
             if (this.node) {
                 this.data.OilGoldData.valueCopy(Logic.playerData.OilGoldData)
             }
         })
-        EventHelper.on(EventHelper.PLAYER_ATTACK, (detail) => {
+        EventHelper.on(EventHelper.PLAYER_ATTACK, detail => {
             if (this.useInteractBuilding(true)) {
                 return
             }
             if (this.node) this.meleeAttack()
         })
-        EventHelper.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL, (detail) => {
+        EventHelper.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL, detail => {
             if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
                 this.shield.cancel(this.isFaceRight)
             }
         })
-        EventHelper.on(EventHelper.PLAYER_REMOTEATTACK, (detail) => {
+        EventHelper.on(EventHelper.PLAYER_REMOTEATTACK, detail => {
             if (this.useInteractBuilding(false)) {
                 return
             }
@@ -189,16 +192,16 @@ export default class Player extends Actor {
                 if (this.node) this.remoteAttack()
             }
         })
-        EventHelper.on(EventHelper.PLAYER_JUMP, (detail) => {
+        EventHelper.on(EventHelper.PLAYER_JUMP, detail => {
             if (this.jumpDowning) {
                 return
             }
             if (this.node) this.jump()
         })
-        EventHelper.on(EventHelper.PLAYER_USEDREAM, (detail) => {
+        EventHelper.on(EventHelper.PLAYER_USEDREAM, detail => {
             if (this.node && this.data.AvatarData.organizationIndex == AvatarData.HUNTER) this.updateDream(detail.value)
         })
-        EventHelper.on(EventHelper.HUD_TIME_TICK, (detail) => {
+        EventHelper.on(EventHelper.HUD_TIME_TICK, detail => {
             if (this.node) {
                 this.timeConsumeLife()
             }
@@ -216,10 +219,10 @@ export default class Player extends Actor {
         this.shooterEx.player = this
         this.shooterEx.isEx = true
         this.smokePool = new cc.NodePool()
-        EventHelper.on(EventHelper.POOL_DESTORY_WALKSMOKE, (detail) => {
+        EventHelper.on(EventHelper.POOL_DESTORY_WALKSMOKE, detail => {
             this.destroySmoke(detail.coinNode)
         })
-        this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
+        this.playerAnim(PlayerAvatar.STATE_IDLE)
         if (Logic.isCheatMode) {
             this.scheduleOnce(() => {
                 this.addStatus(StatusManager.PERFECTDEFENCE, new FromData())
@@ -227,6 +230,9 @@ export default class Player extends Actor {
         }
         this.lights = this.getComponentsInChildren(ShadowOfSight)
         LightManager.registerLight(this.lights, this.node)
+        if (this.bottomDir) {
+            this.bottomDir.init(this)
+        }
     }
 
     public initShadowList(isFromSave: boolean, count: number, lifeTime: number) {
@@ -291,7 +297,7 @@ export default class Player extends Actor {
     }
 
     actorName(): string {
-        return "Player"
+        return 'Player'
     }
     /**
      *
@@ -323,7 +329,7 @@ export default class Player extends Actor {
         if (dizzDuration > 0 && !this.sc.isJumping) {
             this.sc.isDizzing = true
             this.entity.Move.linearVelocity = cc.Vec2.ZERO
-            this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
+            this.playerAnim(PlayerAvatar.STATE_IDLE)
             this.scheduleOnce(() => {
                 this.sc.isDizzing = false
             }, dizzDuration)
@@ -445,8 +451,8 @@ export default class Player extends Actor {
                 this.updateEquipment(this.avatar.cloakSprite, equipData.color, spriteFrame)
                 break
         }
-        this.avatar.changeEquipDirSpriteFrame(this.inventoryManager)
-        this.shield.changeZIndexByDir(this.avatar.node.zIndex, this.currentDir, this.isFaceRight)
+        this.avatar.changeEquipSpriteFrame(this.inventoryManager)
+        this.shield.changeZIndex(this.avatar.node.zIndex, this.isFaceRight)
         this.updateInfoUi()
     }
     private updateEquipment(sprite: cc.Sprite, color: string, spriteFrame: cc.SpriteFrame, size?: number): void {
@@ -581,8 +587,7 @@ export default class Player extends Actor {
                     this.shield.faceRightChange(this.isFaceRight)
                 }
             }
-            this.isFaceUp = pos.y > 0
-            this.playerAnim(PlayerAvatar.STATE_ATTACK, this.currentDir)
+            this.playerAnim(PlayerAvatar.STATE_ATTACK)
             this.stopHiding()
         }
     }
@@ -613,7 +618,7 @@ export default class Player extends Actor {
         }
         if (!this.interactBuilding.isAniming) {
             this.stopHiding()
-            this.playerAnim(PlayerAvatar.STATE_ATTACK, this.currentDir)
+            this.playerAnim(PlayerAvatar.STATE_ATTACK)
             return this.interactBuilding.interact(this, false, isMelee, !isMelee)
         }
         return true
@@ -843,9 +848,12 @@ export default class Player extends Actor {
             this.data.pos = this.pos.clone()
         }
         if (!pos.equals(cc.Vec3.ZERO)) {
+            this.hv = cc.v2(pos).normalize()
             this.shooterEx.setHv(cc.v2(pos.x, pos.y))
             this.weaponLeft.shooter.setHv(cc.v2(pos.x, pos.y))
             this.weaponRight.shooter.setHv(cc.v2(pos.x, pos.y))
+        } else {
+            this.hv = cc.v2(0, 0)
         }
         let h = pos.x
         let v = pos.y
@@ -862,12 +870,13 @@ export default class Player extends Actor {
         movement = movement.mul(speed)
         this.entity.Move.linearVelocity = movement
         this.sc.isMoving = h != 0 || v != 0
+
         //调整武器方向
         if (this.weaponRight.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponRight.meleeWeapon.IsAttacking) {
-            this.weaponRight.meleeWeapon.Hv = cc.v2(pos.x, pos.y)
+            this.weaponRight.meleeWeapon.Hv = cc.v2(pos.x > 0 ? 1 : -1, 0)
         }
         if (this.weaponLeft.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponLeft.meleeWeapon.IsAttacking) {
-            this.weaponLeft.meleeWeapon.Hv = cc.v2(pos.x, pos.y)
+            this.weaponLeft.meleeWeapon.Hv = cc.v2(pos.x > 0 ? 1 : -1, 0)
         }
         if (this.sc.isMoving && !this.weaponLeft.meleeWeapon.IsAttacking && !this.weaponRight.meleeWeapon.IsAttacking) {
             if (!this.shield.isAniming && !this.shield.isDefendOrParrying) {
@@ -877,34 +886,26 @@ export default class Player extends Actor {
                     this.shield.faceRightChange(this.isFaceRight)
                 }
             }
-            this.isFaceUp = this.weaponLeft.meleeWeapon.Hv.y > 0
         }
 
         if (!this.sc.isJumping) {
             if (this.sc.isMoving && !this.isStone) {
-                this.playerAnim(PlayerAvatar.STATE_WALK, dir)
+                this.playerAnim(PlayerAvatar.STATE_WALK)
             } else {
-                this.playerAnim(PlayerAvatar.STATE_IDLE, dir)
+                this.playerAnim(PlayerAvatar.STATE_IDLE)
             }
         }
         if (dir != 4) {
             this.changeZIndex(this.pos)
         }
         if (dir != 4 && !this.shield.isAniming && !this.shield.isDefendOrParrying && !this.avatar.isAniming) {
-            this.currentDir = dir
-            if (dir == PlayerAvatar.DIR_DOWN && this.isFaceUp) {
-                dir = PlayerAvatar.DIR_UP
-            } else if (dir == PlayerAvatar.DIR_UP && !this.isFaceUp) {
-                dir = PlayerAvatar.DIR_DOWN
-            }
-            this.weaponLeft.changeZIndexByDir(this.avatar.node.zIndex, dir)
-            this.weaponRight.changeZIndexByDir(this.avatar.node.zIndex, dir)
-            this.avatar.changeEquipDirSpriteFrame(this.inventoryManager)
-            this.shield.changeZIndexByDir(this.avatar.node.zIndex, dir, this.isFaceRight)
+            this.weaponLeft.changeZIndexByFace(this.avatar.node.zIndex, dir == PlayerAvatar.DIR_RIGHT)
+            this.weaponRight.changeZIndexByFace(this.avatar.node.zIndex, dir == PlayerAvatar.DIR_RIGHT)
+            this.shield.changeZIndex(this.avatar.node.zIndex, this.isFaceRight)
         }
     }
 
-    playerAnim(status: number, dir: number): void {
+    playerAnim(status: number): void {
         if (status == PlayerAvatar.STATE_IDLE && this.avatar.status != PlayerAvatar.STATE_IDLE) {
             this.weaponLeft.shooter.playWalk(false)
             this.weaponRight.shooter.playWalk(false)
@@ -931,7 +932,7 @@ export default class Player extends Actor {
             case PlayerAvatar.STATE_DIE:
                 break
         }
-        this.avatar.playAnim(status, dir)
+        this.avatar.playAnim(status)
     }
 
     start() {
@@ -946,13 +947,13 @@ export default class Player extends Actor {
             return
         }
         this.sc.isFalling = true
-        this.avatar.playAnim(PlayerAvatar.STATE_FALL, this.currentDir)
+        this.avatar.playAnim(PlayerAvatar.STATE_FALL)
         this.scheduleOnce(() => {
             this.transportPlayer(this.defaultPos)
-            this.playerAnim(PlayerAvatar.STATE_IDLE, 1)
+            this.playerAnim(PlayerAvatar.STATE_IDLE)
             let dd = new DamageData()
             dd.realDamage = 1
-            this.takeDamage(dd, FromData.getClone("跌落", ""))
+            this.takeDamage(dd, FromData.getClone('跌落', ''))
             this.sc.isFalling = false
         }, 2)
     }
@@ -1001,9 +1002,9 @@ export default class Player extends Actor {
             this.weaponRight.node.opacity = 0
             this.shield.node.opacity = 0
         }, 0.1)
-        this.avatar.playAnim(PlayerAvatar.STATE_JUMP, this.currentDir)
+        this.avatar.playAnim(PlayerAvatar.STATE_JUMP)
         this.scheduleOnce(() => {
-            this.avatar.playAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
+            this.avatar.playAnim(PlayerAvatar.STATE_IDLE)
             this.sc.isJumping = false
             this.weaponLeft.node.opacity = 255
             this.weaponRight.node.opacity = 255
@@ -1134,7 +1135,7 @@ export default class Player extends Actor {
             return
         }
         this.sc.isDied = true
-        this.avatar.playAnim(PlayerAvatar.STATE_DIE, this.currentDir)
+        this.avatar.playAnim(PlayerAvatar.STATE_DIE)
         EventHelper.emit(EventHelper.HUD_STOP_COUNTTIME)
         this.scheduleOnce(() => {
             EventHelper.emit(EventHelper.HUD_FADE_OUT)
@@ -1151,7 +1152,7 @@ export default class Player extends Actor {
         Logic.saveData()
         this.scheduleOnce(() => {
             cc.audioEngine.stopMusic()
-            cc.director.loadScene("gameover")
+            cc.director.loadScene('gameover')
         }, 3)
         this.dungeon.darkAfterKill()
     }
@@ -1290,6 +1291,7 @@ export default class Player extends Actor {
         let scale = 1 - y / PlayerData.DEFAULT_JUMP_HEIGHT / 2
         this.shadow.scale = scale < 0.5 ? 0.5 : scale
         this.shadow.y = this.entity.Transform.base
+        this.bottomDir.node.y = this.entity.Transform.base
     }
     getScaleSize(): number {
         let sn = this.IsVariation ? 1.5 : 1
@@ -1417,7 +1419,7 @@ export default class Player extends Actor {
                 life.poo = 100
                 this.pooStep.next(() => {
                     this.sanityChange(-1)
-                    Utils.toast("你的肚子一阵翻腾。", false, true)
+                    Utils.toast('你的肚子一阵翻腾。', false, true)
                 }, 30)
             }
         }
@@ -1427,20 +1429,20 @@ export default class Player extends Actor {
                 life.pee = 100
                 this.peeStep.next(() => {
                     this.sanityChange(-1)
-                    Utils.toast("你的膀胱快要炸了。", false, true)
+                    Utils.toast('你的膀胱快要炸了。', false, true)
                 }, 30)
             }
         }
         if (this.data.LifeData.solidSatiety <= 0) {
             this.solidStep.next(() => {
                 this.sanityChange(-1)
-                Utils.toast("你快要饿死了。", false, true)
+                Utils.toast('你快要饿死了。', false, true)
             }, 30)
         }
         if (this.data.LifeData.liquidSatiety <= 0) {
             this.liquidStep.next(() => {
                 this.sanityChange(-1)
-                Utils.toast("你快要渴死了。", false, true)
+                Utils.toast('你快要渴死了。', false, true)
             }, 30)
         }
         this.updateLife(0, -solidLoss, -liquidLoss)
@@ -1454,7 +1456,7 @@ export default class Player extends Actor {
         } else if (this.data.LifeData.sanity <= 0) {
             this.data.LifeData.sanity = 0
             if (sanity != 0) {
-                Utils.toast("精神崩溃了。。。", false, true)
+                Utils.toast('精神崩溃了。。。', false, true)
                 let sd = new StatusData()
                 sd.valueCopy(Logic.status[StatusManager.INSANE])
                 sd.Common.damageMin += this.data.getFinalAttackPoint().physicalDamage
@@ -1496,7 +1498,7 @@ export default class Player extends Actor {
         cc.tween(this.data.LifeData)
             .to(3, { poo: 0, pee: 0 })
             .call(() => {
-                Utils.toast("你感觉一身轻松。", false, true)
+                Utils.toast('你感觉一身轻松。', false, true)
             })
             .start()
         let total = this.data.LifeData.pee + this.data.LifeData.poo
@@ -1509,10 +1511,10 @@ export default class Player extends Actor {
     read() {
         this.avatar.read()
         if (Random.getRandomNum(0, 100) > 90) {
-            Utils.toast("你用量子波动速读看完了一本书,书里的内容让你不寒而栗。", false, true)
+            Utils.toast('你用量子波动速读看完了一本书,书里的内容让你不寒而栗。', false, true)
             this.sanityChange(-10)
         } else {
-            Utils.toast("你用量子波动速读看完了一本书,奇怪的知识又增加了。", false, true)
+            Utils.toast('你用量子波动速读看完了一本书,奇怪的知识又增加了。', false, true)
             this.sanityChange(5)
         }
     }
@@ -1527,31 +1529,31 @@ export default class Player extends Actor {
     }
     canEatOrDrink(data: ItemData): boolean {
         let life = this.data.LifeData
-        let str = "你觉得"
+        let str = '你觉得'
         let can = true
         if (data.solidSatiety > 0) {
             if (life.solidSatiety > 90) {
                 can = false
-                str += "太饱了"
+                str += '太饱了'
                 if (life.poo > 90) {
-                    str += "，而且要憋不住"
+                    str += '，而且要憋不住'
                 }
-                str += "，完全吃不下了。"
+                str += '，完全吃不下了。'
             } else if (life.poo > 90) {
                 can = false
-                str += "要憋不住了,完全吃不下了。"
+                str += '要憋不住了,完全吃不下了。'
             }
         } else if (data.liquidSatiety > 0) {
             if (life.liquidSatiety > 90) {
                 can = false
-                str += "太胀了"
+                str += '太胀了'
                 if (life.pee > 90) {
-                    str += "，而且要憋不住"
+                    str += '，而且要憋不住'
                 }
-                str += "，完全喝不下了。"
+                str += '，完全喝不下了。'
             } else if (life.poo > 90) {
                 can = false
-                str += "要憋不住了,完全喝不下了。"
+                str += '要憋不住了,完全喝不下了。'
             }
         }
         if (!can) {

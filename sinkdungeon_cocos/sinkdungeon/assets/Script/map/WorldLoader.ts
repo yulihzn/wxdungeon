@@ -1,6 +1,6 @@
-import ChapterData from "../data/ChapterData"
-import LevelData from "../data/LevelData"
-import Logic from "../logic/Logic"
+import ChapterData from '../data/ChapterData'
+import LevelData from '../data/LevelData'
+import Logic from '../logic/Logic'
 /**
  * 地图文件加载器
  * 保存大地图数据和房间数据
@@ -77,11 +77,12 @@ export default class WorldLoader {
     //     return allfileRooms;
     // }
     private loadTileSets() {
-        cc.resources.load("Data/world/tileset", (err: Error, resource: cc.JsonAsset) => {
+        cc.log('加载地图块')
+        cc.resources.load('Data/world/tileset', (err: Error, resource: cc.JsonAsset) => {
             if (err) {
                 cc.error(err)
             } else {
-                cc.log("tileset loaded")
+                cc.log('加载地图块完成')
                 let tileset: { [key: string]: string[] } = {}
                 for (let value of resource.json.tiles) {
                     tileset[value.id] = value.type
@@ -91,9 +92,10 @@ export default class WorldLoader {
         })
     }
     private loadTiledMaps(tileset: { [key: string]: string[] }) {
-        cc.resources.loadDir("Data/world/tiledmap", cc.JsonAsset, (err: Error, assert: cc.JsonAsset[]) => {
+        cc.log('加载世界')
+        cc.resources.loadDir('Data/world/tiledmap', cc.JsonAsset, (err: Error, assert: cc.JsonAsset[]) => {
             for (let tiledmap of assert) {
-                let arr = tiledmap.name.split("_")
+                let arr = tiledmap.name.split('_')
                 let chapter = parseInt(arr[1])
                 let data = chapter == 99 ? this.realWorldMap : this.worldMap[chapter]
                 let temp: LevelData = tiledmap.json.layers[1].properties
@@ -174,7 +176,7 @@ export default class WorldLoader {
                 })
             }
             this.isloaded = true
-            cc.log("world loaded")
+            cc.log('加载世界完成')
         })
     }
     // private loadChapterLevel(data: ChapterData) {

@@ -138,6 +138,7 @@
         "scale":0.5,
         "isEnemy":0,
         "isFollow":1,
-        "lifeTime": 0
+        "lifeTime": 0,
+        "fly":128
     }
 }

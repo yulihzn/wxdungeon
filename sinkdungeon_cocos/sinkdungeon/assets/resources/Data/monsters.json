@@ -240,7 +240,8 @@
         "dash": 0,
         "boxType": 2,
         "attackType": 1,
-        "disguise": 200
+        "disguise": 200,
+        "fly":128
     },
     "monster011": {
         "nameCn": "小鸡",

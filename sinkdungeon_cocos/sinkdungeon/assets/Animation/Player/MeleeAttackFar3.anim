@@ -334,23 +334,7 @@
         "offsetY": [
           {
             "frame": 0,
-            "value": 0
-          },
-          {
-            "frame": 0.3,
-            "value": 0
-          },
-          {
-            "frame": 0.3333333333333333,
-            "value": 0
-          },
-          {
-            "frame": 0.8,
-            "value": 0
-          },
-          {
-            "frame": 0.85,
-            "value": 0
+            "value": -40
           }
         ],
         "w": [
@@ -386,11 +370,11 @@
           },
           {
             "frame": 0.3333333333333333,
-            "value": 64
+            "value": 70
           },
           {
             "frame": 0.8,
-            "value": 64
+            "value": 70
           },
           {
             "frame": 0.85,

@@ -1,12 +1,12 @@
-import MapData from "../data/MapData"
-import RectRoom from "../rect/RectRoom"
-import RectDungeon from "../rect/RectDungeon"
-import Logic from "../logic/Logic"
-import EquipmentData from "../data/EquipmentData"
-import ItemData from "../data/ItemData"
-import Random4Save from "../utils/Random4Save"
-import RoomType from "../rect/RoomType"
-import BuildingData from "../data/BuildingData"
+import MapData from '../data/MapData'
+import RectRoom from '../rect/RectRoom'
+import RectDungeon from '../rect/RectDungeon'
+import Logic from '../logic/Logic'
+import EquipmentData from '../data/EquipmentData'
+import ItemData from '../data/ItemData'
+import Random4Save from '../utils/Random4Save'
+import RoomType from '../rect/RoomType'
+import BuildingData from '../data/BuildingData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -44,7 +44,7 @@ export default class MapManager {
             //加载地图
             Logic.mapManager.reset()
         }
-        cc.log("maps loaded")
+        cc.log('加载地图完成')
     }
 
     reset(pos?: cc.Vec3) {
@@ -81,7 +81,7 @@ export default class MapManager {
     /** 获取当前房间地图数据copy 每次加载dungeon的时候读取一次*/
     public getCurrentMapStringArray(): string[][] {
         let room = this.getCurrentRoom()
-        let mdd = new MapData("")
+        let mdd = new MapData('')
         let data = Logic.worldLoader.getCurrentLevelData()
         mdd.map = data.getRoomMap(room.x, room.y)
         //添加随机元素
@@ -90,14 +90,14 @@ export default class MapManager {
     }
     public getCurrentSideMapStringArray(offset: cc.Vec3): string[][] {
         let room = this.getCurrentRoom()
-        let mdd = new MapData("")
+        let mdd = new MapData('')
         let data = Logic.worldLoader.getCurrentLevelData()
         mdd.map = data.getRoomMap(room.x + offset.x, room.y + offset.y)
         return mdd.map
     }
     public getCurrentFloorMapStringArray(): string[][] {
         let room = this.getCurrentRoom()
-        let mdd = new MapData("")
+        let mdd = new MapData('')
         let data = Logic.worldLoader.getCurrentLevelData()
         mdd.map = data.getRoomFloorMap(room.x, room.y)
         //添加随机元素
@@ -107,7 +107,7 @@ export default class MapManager {
     }
     public getCurrentSideFloorMapStringArray(offset: cc.Vec3): string[][] {
         let room = this.getCurrentRoom()
-        let mdd = new MapData("")
+        let mdd = new MapData('')
         let data = Logic.worldLoader.getCurrentLevelData()
         mdd.map = data.getRoomFloorMap(room.x + offset.x, room.y + offset.y)
         return mdd.map
@@ -247,7 +247,7 @@ export default class MapManager {
             pos.push(cc.v3(dx, dy))
         }
         for (let p of pos) {
-            if (mapData.map[p.x][p.y] == "**") {
+            if (mapData.map[p.x][p.y] == '**') {
                 mapData.map[p.x][p.y] = `*${rand4save.getRandomNum(0, 2)}`
             }
         }
@@ -260,7 +260,7 @@ export default class MapManager {
             pos.push(cc.v3(dx, dy))
         }
         for (let p of pos) {
-            if (mapData.map[p.x][p.y] == "**" || mapData.map[p.x][p.y].indexOf("W") != -1) {
+            if (mapData.map[p.x][p.y] == '**' || mapData.map[p.x][p.y].indexOf('W') != -1) {
                 mapData.map[p.x][p.y] = `W${rand4save.getRandomNum(0, 2)}`
             }
         }
