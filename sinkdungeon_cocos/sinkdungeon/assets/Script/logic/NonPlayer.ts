@@ -967,8 +967,8 @@ export default class NonPlayer extends Actor {
         if (this.specialStep.IsExcuting && this.data.specialType.length > 0) {
             range += 100
         }
-        if (targetDis < 600 && this.data.meleeDash > 0) {
-            range = Utils.getDistanceBySpeedSecond(this.specialStep.IsExcuting ? this.data.specialDash : this.data.meleeDash, this.entity.Move.linearDamping, 0.8)
+        if (this.data.meleeDash > 0) {
+            range = this.specialStep.IsExcuting ? 300 : 600
         }
         let canMelee = this.data.melee > 0 && targetDis < range * this.node.scaleY
         let canRemote = this.data.remote > 0 && targetDis < 600 * this.node.scaleY

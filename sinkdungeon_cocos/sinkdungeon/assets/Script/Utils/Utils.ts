@@ -135,14 +135,14 @@ export default class Utils {
         return ((speed + speed * speed) * damping * 0.016) / 2
     }
     static getDistanceBySpeedSecond(speed: number, damping: number, second: number) {
-        let sum = (speed * second) / 60
+        let sum = speed * 0.016667
         let speednew = speed
-        for (let i = 0; i < 59; i++) {
+        for (let i = 0; i < Math.floor(second / 0.016667); i++) {
             speednew = speed - damping
             if (speednew < 0) {
-                speednew = 0
+                break
             }
-            sum += (speednew * second) / 60
+            sum += speednew * 0.016667
         }
         return sum
     }
