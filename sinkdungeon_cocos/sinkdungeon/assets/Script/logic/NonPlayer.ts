@@ -33,13 +33,13 @@ import StateMachine from '../base/fsm/StateMachine'
 import State from '../base/fsm/State'
 import DefaultStateMachine from '../base/fsm/DefaultStateMachine'
 import NonPlayerActorState from '../actor/NonPlayerActorState'
-import StateContext from '../base/StateContext'
 import NonPlayerData from '../data/NonPlayerData'
 import StatusData from '../data/StatusData'
 import ActorUtils from '../utils/ActorUtils'
 import CCollider from '../collider/CCollider'
 import AreaDetector from '../actor/AreaDetector'
 import ActorBottomDir from '../actor/ActorBottomDir'
+import Utils from '../utils/Utils'
 
 @ccclass
 export default class NonPlayer extends Actor {
@@ -107,7 +107,6 @@ export default class NonPlayer extends Actor {
     particleBlood: cc.ParticleSystem
     effectNode: cc.Node
     hitLightSprite: cc.Sprite
-    shadowScale = 1
     moveStep = new NextStep()
     remoteStep = new NextStep()
     meleeStep = new NextStep()
@@ -158,7 +157,8 @@ export default class NonPlayer extends Actor {
         if (this.bottomDir) {
             this.bottomDir.init(this, this.data.isEnemy > 0 ? cc.Color.RED : cc.Color.YELLOW)
         }
-        this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0)
+        this.initSize()
+        this.dangerBox.init(this, this.data)
         this.dangerTips.opacity = 0
         this.specialStep.init()
         this.stateMachine = new DefaultStateMachine(this, NonPlayerActorState.PRPARE, NonPlayerActorState.GLOBAL)
@@ -286,6 +286,22 @@ export default class NonPlayer extends Actor {
         }
         return this.bodySprite.spriteFrame.name
     }
+    public initSize() {
+        let bodyRect = this.data.bodyRect.split(',')
+        this.boxCollider.offset = cc.v2(parseInt(bodyRect[0]), parseInt(bodyRect[1]))
+        this.boxCollider.w = parseInt(bodyRect[2])
+        this.boxCollider.h = parseInt(bodyRect[3])
+        this.boxCollider.zHeight = parseInt(bodyRect[4])
+        this.boxCollider.tag = this.data.isEnemy > 0 ? CCollider.TAG.NONPLAYER : CCollider.TAG.GOODNONPLAYER
+        if (this.data.blink > 0) {
+            this.boxCollider.setIgnoreTags([CCollider.TAG.WALL])
+            this.boxCollider.setIgnoreTags([CCollider.TAG.WALL_TOP])
+            this.boxCollider.setIgnoreTags([CCollider.TAG.BUILDING])
+            this.boxCollider.setIgnoreTags([CCollider.TAG.WARTER])
+        }
+        this.shadow.width = this.boxCollider.w
+        this.shadow.height = this.boxCollider.h
+    }
     public changeBodyRes(resName: string, suffix?: string) {
         if (!this.sprite) {
             this.sprite = this.root.getChildByName('sprite')
@@ -303,61 +319,6 @@ export default class NonPlayer extends Actor {
             this.setInWaterMat(this.bodySprite, this.isLevelWater && this.data.water < 1)
         } else {
             this.bodySprite.spriteFrame = null
-        }
-        let y = 48,
-            w = 80,
-            h = 80
-        switch (this.data.boxType) {
-            case 0:
-                y = 32
-                w = 80
-                h = 64
-                break
-            case 1:
-                y = 48
-                w = 48
-                h = 96
-                break
-            case 2:
-                y = 48
-                w = 80
-                h = 80
-                break
-            case 3:
-                y = 64
-                w = 80
-                h = 128
-                break
-            case 4:
-                y = 32
-                w = 128
-                h = 48
-                break
-            case 5:
-                y = 48
-                w = 128
-                h = 96
-                break
-            default:
-                y = 48
-                w = 80
-                h = 80
-                break
-        }
-        this.boxCollider.offset = cc.v2(0, y)
-        this.boxCollider.w = w
-        this.boxCollider.h = h
-        this.boxCollider.tag = this.data.isEnemy > 0 ? CCollider.TAG.NONPLAYER : CCollider.TAG.GOODNONPLAYER
-        if (this.data.blink > 0) {
-            this.boxCollider.setIgnoreTags([CCollider.TAG.WALL])
-            this.boxCollider.setIgnoreTags([CCollider.TAG.WALL_TOP])
-            this.boxCollider.setIgnoreTags([CCollider.TAG.BUILDING])
-            this.boxCollider.setIgnoreTags([CCollider.TAG.WARTER])
-        }
-        if (this.data.boxType > 2) {
-            this.shadowScale = 1.5
-        } else {
-            this.shadowScale = 1
         }
     }
     private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
@@ -437,15 +398,15 @@ export default class NonPlayer extends Actor {
         if (speedScale > 2) {
             speedScale = 2
         }
-        let pos = cc.v2(target.node.position.clone().sub(this.node.position))
-        this.anim.pause()
-        if (pos.equals(cc.Vec2.ZERO)) {
-            pos = cc.v2(1, 0)
+        let pos1 = cc.v2(this.isFaceRight ? -32 : 32, 0)
+        let pos2 = cc.v2(this.isFaceRight ? 32 : -32, 0)
+        if (this.data.fly > 0) {
+            pos2 = cc.v2(0, 0)
         }
-        pos = pos.normalize().mul(this.isFaceRight ? 48 : -48)
+        this.anim.pause()
         this.sprite.stopAllActions()
         let stabDelay = 0
-        if (this.data.attackType == ActorAttackBox.ATTACK_STAB && isMelee) {
+        if (((!isSpecial && this.data.meleeDash > 0) || (isSpecial && this.data.specialDash > 0)) && isMelee) {
             stabDelay = 0.8 * speedScale
         }
         const beforetween = cc
@@ -522,24 +483,25 @@ export default class NonPlayer extends Actor {
         //退后
         const backofftween = cc
             .tween()
-            .by(0.5 * speedScale, { position: cc.v3(-pos.x / 8, -pos.y / 8) })
+            .to(0.5 * speedScale, { position: cc.v3(pos1.x, pos1.y) })
             .delay(stabDelay)
         //前进
         const forwardtween = cc
             .tween()
-            .by(0.2 * speedScale, { position: cc.v3(pos.x, pos.y) })
+            .to(0.2 * speedScale, { position: cc.v3(pos2.x, pos2.y) })
             .delay(stabDelay)
         const specialTypeCanMelee = this.data.specialType.length <= 0 || this.data.specialType == SpecialManager.AFTER_ASH
         const attackpreparetween = cc.tween().call(() => {
             //展示近战提示框
-            if ((isMelee && !isSpecial) || (isSpecial && isMelee && specialTypeCanMelee)) {
-                this.dangerBox.show(this.data.attackType, isSpecial, this.data.boxType == 5, this.hv)
+            if ((isMelee && !isSpecial) || (isSpecial && isMelee && specialTypeCanMelee) || (isSpecial && this.data.specialDash > 0)) {
+                this.dangerBox.show(
+                    this.data.attackRect,
+                    isSpecial,
+                    Utils.getDistanceBySpeedSecond(isSpecial ? this.data.specialDash : this.data.meleeDash, this.entity.Move.linearDamping, 0.8 * speedScale),
+                    cc.v2(this.isFaceRight ? 1 : -1, 0)
+                )
             }
             if (isSpecial) {
-                //展示特殊冲刺提示框
-                if (this.data.specialDash > 0) {
-                    this.dangerBox.show(ActorAttackBox.ATTACK_STAB, false, false, this.hv)
-                }
                 //延迟添加特殊物体
                 this.scheduleOnce(() => {
                     if (!this.sc.isDied) {
@@ -560,14 +522,14 @@ export default class NonPlayer extends Actor {
             this.dangerBox.hide(isMiss)
             //普通冲刺
             if ((isMelee && !isSpecial) || (isSpecial && this.data.specialType.length <= 0)) {
-                if (this.data.attackType == ActorAttackBox.ATTACK_STAB) {
-                    this.move(cc.v3(this.hv.x, this.hv.y), isSpecial ? 600 : 300)
+                if ((!isSpecial && this.data.meleeDash > 0) || (isSpecial && this.data.specialDash > 0)) {
+                    this.move(cc.v3(this.isFaceRight ? 1 : -1, 0), isSpecial ? this.data.specialDash : this.data.meleeDash)
                 }
             }
             if (isSpecial) {
                 //特殊冲刺
                 if (this.data.specialDash > 0) {
-                    this.move(cc.v3(this.hv.x, this.hv.y), this.data.specialDash)
+                    this.move(cc.v3(this.isFaceRight ? 1 : -1, 0), this.data.specialDash)
                 }
                 //延迟添加特殊物体
                 this.scheduleOnce(() => {
@@ -689,29 +651,13 @@ export default class NonPlayer extends Actor {
         this.entity.Move.linearVelocity = this.currentlinearVelocitySpeed.clone()
     }
 
-    /**
-     * 是否玩家背后攻击
-     */
-    public isPlayerBehindAttack(): boolean {
-        let isPlayerRight = this.dungeon.player.node.position.x > this.node.position.x
-        let isSelfFaceRight = this.isFaceRight
-        return (isPlayerRight && !isSelfFaceRight) || (!isPlayerRight && isSelfFaceRight)
-    }
-    /**
-     * 攻击目标是否背面朝着怪物
-     */
-    public isFaceTargetBehind(target: Actor): boolean {
-        let isTargetRight = target.node.position.x > this.node.position.x
-        let isTargetFaceRight = target.isFaceRight
-        return (isTargetRight && isTargetFaceRight) || (!isTargetRight && !isTargetFaceRight)
-    }
     private fall() {
         AudioPlayer.play(AudioPlayer.BLEEDING)
         if (this.data.isStatic > 0 || this.data.isHeavy > 0 || this.IsVariation) {
             return
         }
         this.sc.isFalling = true
-        this.bodySprite.node.angle = this.isPlayerBehindAttack() ? -75 : 105
+        this.bodySprite.node.angle = ActorUtils.isBehindTarget(this.dungeon.player, this) ? -75 : 105
         this.jumpUping = true
         this.entity.Move.linearVelocityZ = 1000
     }
@@ -855,26 +801,7 @@ export default class NonPlayer extends Actor {
             this.particleBlood.stopSystem()
         }, 0.5)
     }
-    addPlayerStatus(actor: Actor, from: FromData) {
-        if (Logic.getRandomNum(0, 100) < this.data.FinalCommon.iceRate) {
-            actor.addStatus(StatusManager.FROZEN, from)
-        }
-        if (Logic.getRandomNum(0, 100) < this.data.FinalCommon.fireRate) {
-            actor.addStatus(StatusManager.BURNING, from)
-        }
-        if (Logic.getRandomNum(0, 100) < this.data.FinalCommon.lighteningRate) {
-            actor.addStatus(StatusManager.DIZZ, from)
-        }
-        if (Logic.getRandomNum(0, 100) < this.data.FinalCommon.toxicRate) {
-            actor.addStatus(StatusManager.TOXICOSIS, from)
-        }
-        if (Logic.getRandomNum(0, 100) < this.data.FinalCommon.curseRate) {
-            actor.addStatus(StatusManager.CURSING, from)
-        }
-        if (Logic.getRandomNum(0, 100) < this.data.FinalCommon.realRate) {
-            actor.addStatus(StatusManager.BLEEDING, from)
-        }
-    }
+
     killed() {
         if (this.sc.isDied) {
             return
@@ -1035,15 +962,13 @@ export default class NonPlayer extends Actor {
                 true
             )
         }
-        let range = 100
+        let attckRect = this.data.attackRect.split(',')
+        let range = parseInt(attckRect[0]) + parseInt(attckRect[2])
         if (this.specialStep.IsExcuting && this.data.specialType.length > 0) {
-            range = 200
+            range += 100
         }
-        if (this.data.attackType == ActorAttackBox.ATTACK_STAB) {
-            range = 300
-            if (this.specialStep.IsExcuting) {
-                range = 600
-            }
+        if (targetDis < 600 && this.data.meleeDash > 0) {
+            range = Utils.getDistanceBySpeedSecond(this.specialStep.IsExcuting ? this.data.specialDash : this.data.meleeDash, this.entity.Move.linearDamping, 0.8)
         }
         let canMelee = this.data.melee > 0 && targetDis < range * this.node.scaleY
         let canRemote = this.data.remote > 0 && targetDis < 600 * this.node.scaleY
@@ -1158,7 +1083,7 @@ export default class NonPlayer extends Actor {
         if (this.data.dash > 0 && !this.isPassive && ActorUtils.isTargetAlive(target) && targetDis < 600 && targetDis > 100) {
             this.dashStep.next(() => {
                 this.sc.isDashing = true
-                this.dangerBox.show(ActorAttackBox.ATTACK_DASH, false, this.data.boxType == 5, this.hv)
+                this.dangerBox.show(this.data.attackRect, false, 500, this.hv)
                 this.dangerBox.hide(false)
                 this.enterWalk()
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
@@ -1302,9 +1227,10 @@ export default class NonPlayer extends Actor {
             y = 0
         }
         let scale = 1 - y / 64
-        this.shadow.scale = scale < 0.5 ? 0.5 * this.shadowScale : scale * this.shadowScale
+        this.shadow.scale = scale < 0.5 ? 0.5 : scale
         this.shadow.y = this.entity.Transform.base
         this.bottomDir.node.y = this.entity.Transform.base
+        cc.log(`${this.entity.Move.linearVelocity.x},${this.entity.Move.linearVelocity.y}`)
     }
     private setInWaterMat(sprite: cc.Sprite, inWater: boolean) {
         if (!sprite || !sprite.spriteFrame) {

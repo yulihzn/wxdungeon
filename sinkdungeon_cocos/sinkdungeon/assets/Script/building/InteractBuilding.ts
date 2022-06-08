@@ -1,22 +1,23 @@
-import Dungeon from "../logic/Dungeon"
-import Logic from "../logic/Logic"
-import Building from "./Building"
-import { EventHelper } from "../logic/EventHelper"
-import AudioPlayer from "../utils/AudioPlayer"
-import Item from "../item/Item"
-import IndexZ from "../utils/IndexZ"
-import DamageData from "../data/DamageData"
-import Player from "../logic/Player"
-import Actor from "../base/Actor"
-import Boss from "../boss/Boss"
-import AvatarData from "../data/AvatarData"
-import CommonData from "../data/CommonData"
-import FromData from "../data/FromData"
-import StatusManager from "../manager/StatusManager"
-import NonPlayer from "../logic/NonPlayer"
-import Box from "./Box"
-import HitBuilding from "./HitBuilding"
-import CCollider from "../collider/CCollider"
+import Dungeon from '../logic/Dungeon'
+import Logic from '../logic/Logic'
+import Building from './Building'
+import { EventHelper } from '../logic/EventHelper'
+import AudioPlayer from '../utils/AudioPlayer'
+import Item from '../item/Item'
+import IndexZ from '../utils/IndexZ'
+import DamageData from '../data/DamageData'
+import Player from '../logic/Player'
+import Actor from '../base/Actor'
+import Boss from '../boss/Boss'
+import AvatarData from '../data/AvatarData'
+import CommonData from '../data/CommonData'
+import FromData from '../data/FromData'
+import StatusManager from '../manager/StatusManager'
+import NonPlayer from '../logic/NonPlayer'
+import Box from './Box'
+import HitBuilding from './HitBuilding'
+import CCollider from '../collider/CCollider'
+import ActorUtils from '../utils/ActorUtils'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,7 +39,7 @@ export default class InteractBuilding extends Building {
     // LIFE-CYCLE CALLBACKS:
     private timeDelay = 0
     decorateType = 0
-    resName = "decorate000"
+    resName = 'decorate000'
     sprite: cc.Sprite
     shadow: cc.Node
     mat: cc.MaterialVariant
@@ -50,8 +51,8 @@ export default class InteractBuilding extends Building {
     isAniming = false
     private hasTargetMap: Map<number, number> = new Map()
     onLoad() {
-        this.sprite = this.node.getChildByName("sprite").getComponent(cc.Sprite)
-        this.shadow = this.node.getChildByName("shadow")
+        this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite)
+        this.shadow = this.node.getChildByName('shadow')
     }
     start() {}
     init(isInteract: boolean, decorateType: number) {
@@ -99,7 +100,7 @@ export default class InteractBuilding extends Building {
     }
     changeRes(resName: string, suffix?: string) {
         if (!this.sprite) {
-            this.sprite = this.node.getChildByName("sprite").getComponent(cc.Sprite)
+            this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite)
         }
         let spriteFrame = Logic.spriteFrameRes(resName)
         if (suffix && Logic.spriteFrameRes(resName + suffix)) {
@@ -108,11 +109,11 @@ export default class InteractBuilding extends Building {
         this.sprite.node.opacity = 255
         this.sprite.spriteFrame = spriteFrame
         if (!this.mat) {
-            this.mat = this.node.getChildByName("sprite").getComponent(cc.Sprite).getMaterial(0)
+            this.mat = this.node.getChildByName('sprite').getComponent(cc.Sprite).getMaterial(0)
         }
-        this.mat.setProperty("textureSizeWidth", spriteFrame.getTexture().width * this.sprite.node.scaleX)
-        this.mat.setProperty("textureSizeHeight", spriteFrame.getTexture().height * this.sprite.node.scaleY)
-        this.mat.setProperty("outlineColor", cc.color(200, 200, 200))
+        this.mat.setProperty('textureSizeWidth', spriteFrame.getTexture().width * this.sprite.node.scaleX)
+        this.mat.setProperty('textureSizeHeight', spriteFrame.getTexture().height * this.sprite.node.scaleY)
+        this.mat.setProperty('outlineColor', cc.color(200, 200, 200))
         this.sprite.node.angle = this.data.rollover > 0 ? 90 : 0
     }
 
@@ -122,15 +123,15 @@ export default class InteractBuilding extends Building {
     }
     hitLight(isHit: boolean) {
         if (!this.mat) {
-            this.mat = this.node.getChildByName("sprite").getComponent(cc.Sprite).getMaterial(0)
+            this.mat = this.node.getChildByName('sprite').getComponent(cc.Sprite).getMaterial(0)
         }
-        this.mat.setProperty("addColor", isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT)
+        this.mat.setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT)
     }
     highLight(isHigh: boolean) {
         if (!this.mat) {
-            this.mat = this.node.getChildByName("sprite").getComponent(cc.Sprite).getMaterial(0)
+            this.mat = this.node.getChildByName('sprite').getComponent(cc.Sprite).getMaterial(0)
         }
-        this.mat.setProperty("openOutline", isHigh ? 1 : 0)
+        this.mat.setProperty('openOutline', isHigh ? 1 : 0)
     }
     takeDamage(damage: DamageData): boolean {
         if (this.data.currentHealth <= 0) {
@@ -150,21 +151,21 @@ export default class InteractBuilding extends Building {
         this.isAttacking = false
         cc.tween(this.sprite.node)
             .call(() => {
-                this.changeRes(this.resName, "anim001")
+                this.changeRes(this.resName, 'anim001')
                 this.hitLight(true)
             })
             .delay(0.1)
             .call(() => {
                 this.hitLight(false)
-                this.changeRes(this.resName, "anim002")
+                this.changeRes(this.resName, 'anim002')
             })
             .delay(0.1)
             .call(() => {
-                this.changeRes(this.resName, "anim003")
+                this.changeRes(this.resName, 'anim003')
             })
             .delay(0.1)
             .call(() => {
-                this.changeRes(this.resName, "anim004")
+                this.changeRes(this.resName, 'anim004')
                 this.sprite.node.angle = 0
                 this.updateCollider()
                 let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed))
@@ -193,7 +194,7 @@ export default class InteractBuilding extends Building {
     rollover() {
         this.data.rollover = this.data.rollover > 0 ? 0 : 1
         cc.tween(this.sprite.node)
-            .to(0.5, { angle: this.data.rollover > 0 ? 90 : 0 }, { easing: "bounceOut" })
+            .to(0.5, { angle: this.data.rollover > 0 ? 90 : 0 }, { easing: 'bounceOut' })
             .start()
         this.updateCollider()
     }
@@ -273,7 +274,7 @@ export default class InteractBuilding extends Building {
         if (this.isLift) {
             cc.tween(this.sprite.node)
                 .to(0.2, { position: cc.v3(0, 128) })
-                .to(0.2, { position: cc.v3(0, 0) }, { easing: "bounceOut" })
+                .to(0.2, { position: cc.v3(0, 0) }, { easing: 'bounceOut' })
                 .start()
             cc.tween(this.shadow).to(0.5, { scale: 3 }).to(0.5, { scale: 4 }).start()
         }
@@ -444,7 +445,7 @@ export default class InteractBuilding extends Building {
         if (attackTarget.tag == CCollider.TAG.NONPLAYER) {
             let monster = attackTarget.node.getComponent(NonPlayer)
             if (monster && !monster.sc.isDied && monster.data.isEnemy > 0) {
-                damage.isBackAttack = monster.isPlayerBehindAttack() && common.DamageBack > 0
+                damage.isBackAttack = ActorUtils.isBehindTarget(this.player, monster) && common.DamageBack > 0
                 if (damage.isBackAttack) {
                     damage.realDamage += common.DamageBack
                 }

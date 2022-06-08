@@ -592,7 +592,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (attackTarget.tag == CCollider.TAG.NONPLAYER) {
             let monster = attackTarget.node.getComponent(NonPlayer)
             if (monster && !monster.sc.isDied && !this.isMiss && monster.data.isEnemy > 0) {
-                damage.isBackAttack = monster.isPlayerBehindAttack() && common.DamageBack > 0
+                damage.isBackAttack = ActorUtils.isBehindTarget(this.player, monster) && common.DamageBack > 0
                 if (damage.isBackAttack) {
                     damage.realDamage += common.DamageBack
                 }

@@ -24,6 +24,7 @@ export default class NonPlayerData {
     remote: number = 0 //是否远程大于0 远程会远离目标到一定范围 数字代表CD
     melee: number = 0 //是否近战大于0 近战会接近目标 数字代表CD
     dash: number = 0 //是否冲刺大于0 当距离够的时候会发起冲刺，往目标地点冲刺进行撞击 数字代表CD
+    meleeDash: number = 0 //近战冲刺瞬时速度
     disguise: number = 0 //是否伪装大于0,数值为距离 伪装状态下不能移动和攻击，当接近的时候会恢复
     scale: number = 0 //1正常 怪物大小
     bulletType: string = '' //子弹类型
@@ -47,14 +48,14 @@ export default class NonPlayerData {
     specialType = '' //特殊类型
     specialDistance = 0 //特殊类型位置x
     specialDelay = 0 //特殊攻击延迟放置时间
-    specialDash = 0 //特殊攻击是否冲刺
+    specialDash = 0 //特殊攻击是否冲刺 冲刺瞬时速度
     bodyColor = '#ffffff'
     pos: cc.Vec3 = cc.v3(0, 0)
     currentHealth: number = 0
     /**box规格
      * 小型爬行的21x21 0:y32w80h64，站立的21x21 1:y48w48h96， 占满的21x21 2:y48w80h80，
      * 中等站立的32x32 3:y64w80h128，中等爬行的32x32 4:y32w128h48，大型站立或爬行的48x24 5:y48w128h96*/
-    boxType = 0
+    boxType = 0 //废弃
     attackType = 0 //近战攻击模式 0：普通 1：突刺 2：范围
     isEnemy = 0 //是否是敌人
     isFollow = 0 //是否跟随
@@ -77,6 +78,8 @@ export default class NonPlayerData {
     noLoot = 0 //是否没有掉落
     water = 0 //是否水生生物
     fly = 0 //飞
+    bodyRect = '' //0,0,48,32,105身形 取代原来的bodyType和attackType
+    attackRect = '' //-32,0,112,32,80攻击区域
     private statusTotalData: StatusData
     private common: CommonData
     private statusList: StatusData[]

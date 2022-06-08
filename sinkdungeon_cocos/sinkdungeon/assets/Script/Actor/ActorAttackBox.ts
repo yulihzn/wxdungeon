@@ -5,6 +5,9 @@ import Utils from '../utils/Utils'
 import Dungeon from '../logic/Dungeon'
 import NonPlayer from '../logic/NonPlayer'
 import CCollider from '../collider/CCollider'
+import NonPlayerData from '../data/NonPlayerData'
+import Logic from '../logic/Logic'
+import StatusManager from '../manager/StatusManager'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -20,19 +23,15 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class ActorAttackBox extends cc.Component {
-    static readonly ATTACK_NORMAL = 0
-    static readonly ATTACK_STAB = 1 //位移突刺
-    static readonly ATTACK_AREA = 2 //范围攻击
-    static readonly ATTACK_DASH = 3 //冲刺攻击
     isEnemy = false
     attackType = 0
     collider: CCollider
     isAttacking = false
-    nonPlayer: NonPlayer
-    dungeon: Dungeon
+    actor: Actor
     hv: cc.Vec2 = cc.v2(1, 0)
     isSpecial = false
     isLarge = false //是否放大
+    data: NonPlayerData = new NonPlayerData()
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -40,74 +39,53 @@ export default class ActorAttackBox extends cc.Component {
         this.collider = this.getComponent(CCollider)
     }
 
-    init(nonPlayer: NonPlayer, dungeon: Dungeon, isEnemy: boolean) {
-        this.isEnemy = isEnemy
-        this.nonPlayer = nonPlayer
-        this.dungeon = dungeon
+    init(actor: Actor, data: NonPlayerData) {
+        this.isEnemy = data.isEnemy > 0
+        this.actor = actor
+        this.data = data
         if (!this.collider) {
             this.collider = this.getComponent(CCollider)
         }
-        if (isEnemy) {
+        if (this.isEnemy) {
             this.collider.setTargetTags([CCollider.TAG.GOODNONPLAYER, CCollider.TAG.PLAYER])
         } else {
             this.collider.setTargetTags([CCollider.TAG.NONPLAYER, CCollider.TAG.BOSS])
         }
     }
     start() {}
-    //展示
-    show(attackType: number, isSpecial: boolean, isLarge: boolean, hv: cc.Vec2) {
-        if (!this.nonPlayer) {
+    /**
+     * 展示攻击提示
+     * @param boxRect
+     * @param isSpecial
+     * @param dashLength
+     * @param hv
+     * @returns
+     */
+    show(boxRect: string, isSpecial: boolean, dashLength: number, hv: cc.Vec2) {
+        if (!this.actor) {
+            cc.log('attackBox not init')
             return
         }
-        this.isLarge = isLarge
-        this.isSpecial = isSpecial
-        this.attackType = attackType
-        this.changeBoxSize(attackType)
-        this.node.opacity = 80
-        this.collider.enabled = true
         this.setHv(hv)
-    }
-    private changeBoxSize(attackType: number) {
-        let radius = 64
-        let offset = cc.v2(radius, 0)
-        this.node.anchorX = 0
-        this.node.width = this.isLarge ? radius * 1.5 : radius
-        this.node.height = radius
-        this.node.position = cc.v3(-16, 32)
-        this.collider.offset = offset
-        this.collider.w = this.isLarge ? radius * 1.5 : radius
-        this.collider.h = radius
-        switch (attackType) {
-            case ActorAttackBox.ATTACK_NORMAL:
-                break
-            case ActorAttackBox.ATTACK_STAB:
-                this.node.width = this.isSpecial ? 400 : 200
-                this.collider.offset = cc.v2(0, 0)
-                break
-            case ActorAttackBox.ATTACK_AREA:
-                this.node.anchorX = 0.5
-                radius = 160
-                if (this.isLarge) {
-                    radius = 320
-                }
-                this.node.width = radius
-                this.node.height = radius
-                this.node.position = cc.v3(0, 32)
-                this.collider.w = radius
-                this.collider.h = radius
-                this.collider.offset = cc.v2(0, 0)
-                break
-            case ActorAttackBox.ATTACK_DASH:
-                this.node.anchorX = 0.5
-                radius = 64
-                this.node.width = radius
-                this.node.height = radius
-                this.node.position = cc.v3(0, 32)
-                this.collider.w = radius
-                this.collider.h = radius
-                this.collider.offset = cc.v2(0, 0)
-                break
-        }
+        this.collider.enabled = true
+        this.isSpecial = isSpecial
+        this.node.opacity = 128
+        let rectArr = boxRect.split(',')
+        this.node.position = cc.v3(parseInt(rectArr[0]), parseInt(rectArr[1]))
+        let w = parseInt(rectArr[2])
+        let h = parseInt(rectArr[3])
+        this.node.stopAllActions()
+        this.node.width = 0
+        cc.tween(this.node)
+            .to(0.1, { width: w })
+            .delay(0.1)
+            .to(0.1, { width: w + dashLength })
+            .start()
+        this.node.height = h
+        this.collider.offset = cc.v2(w / 2, 0)
+        this.collider.w = w
+        this.collider.h = h
+        this.collider.zHeight = parseInt(rectArr[4])
     }
     //隐藏
     hide(isMiss: boolean) {
@@ -122,28 +100,48 @@ export default class ActorAttackBox extends cc.Component {
         this.collider.enabled = false
     }
     onColliderStay(other: CCollider, self: CCollider) {
-        if (this.isAttacking && this.nonPlayer) {
+        if (this.isAttacking && this.actor) {
             let a = other.getComponent(Actor)
-            let m = this.nonPlayer
+            let m = this.actor
             let target = ActorUtils.getEnemyCollisionTarget(other, !this.isEnemy)
             if (target) {
-                this.nonPlayer.sc.isDashing = false
+                this.actor.sc.isDashing = false
                 this.isAttacking = false
-                let from = FromData.getClone(m.data.nameCn, m.data.resName + 'anim000')
-                let dd = m.data.getAttackPoint()
-                dd.isBackAttack = m.isFaceTargetBehind(a) && m.data.FinalCommon.DamageBack > 0
+                let from = FromData.getClone(this.data.nameCn, this.data.resName + 'anim000')
+                let dd = this.data.getAttackPoint()
+                dd.isBackAttack = ActorUtils.isBehindTarget(m, a) && this.data.FinalCommon.DamageBack > 0
                 if (dd.isBackAttack) {
-                    dd.realDamage += m.data.FinalCommon.DamageBack
+                    dd.realDamage += this.data.FinalCommon.DamageBack
                 }
                 dd.isMelee = true
                 if (this.isSpecial) {
                     dd.physicalDamage = dd.physicalDamage * 2
                 }
-                if (a.takeDamage(dd, from, this.nonPlayer)) {
-                    m.addPlayerStatus(a, from)
+                if (a.takeDamage(dd, from, this.actor)) {
+                    this.addBaseStatus(a, this.data, from)
                 }
                 this.isSpecial = false
             }
+        }
+    }
+    addBaseStatus(actor: Actor, data: NonPlayerData, from: FromData) {
+        if (Logic.getRandomNum(0, 100) < data.FinalCommon.iceRate) {
+            actor.addStatus(StatusManager.FROZEN, from)
+        }
+        if (Logic.getRandomNum(0, 100) < data.FinalCommon.fireRate) {
+            actor.addStatus(StatusManager.BURNING, from)
+        }
+        if (Logic.getRandomNum(0, 100) < data.FinalCommon.lighteningRate) {
+            actor.addStatus(StatusManager.DIZZ, from)
+        }
+        if (Logic.getRandomNum(0, 100) < data.FinalCommon.toxicRate) {
+            actor.addStatus(StatusManager.TOXICOSIS, from)
+        }
+        if (Logic.getRandomNum(0, 100) < data.FinalCommon.curseRate) {
+            actor.addStatus(StatusManager.CURSING, from)
+        }
+        if (Logic.getRandomNum(0, 100) < data.FinalCommon.realRate) {
+            actor.addStatus(StatusManager.BLEEDING, from)
         }
     }
     setHv(hv: cc.Vec2) {

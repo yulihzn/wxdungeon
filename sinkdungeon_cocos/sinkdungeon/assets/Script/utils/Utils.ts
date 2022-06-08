@@ -8,7 +8,7 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import { EventHelper } from "../logic/EventHelper"
+import { EventHelper } from '../logic/EventHelper'
 
 const { ccclass, property } = cc._decorator
 
@@ -48,7 +48,7 @@ export default class Utils {
         let date = new Date(time)
         let m = date.getMonth() + 1
         let d = date.getDate()
-        return `${m < 10 ? "0" : ""}${m}月${d < 10 ? "0" : ""}${d}日 ${this.getWeek(date)}`
+        return `${m < 10 ? '0' : ''}${m}月${d < 10 ? '0' : ''}${d}日 ${this.getWeek(date)}`
     }
     static getHour(time: number) {
         let date = new Date(time)
@@ -57,21 +57,21 @@ export default class Utils {
             h = 0
         }
         let m = date.getMinutes()
-        return `${h < 10 ? "0" : ""}${h}:${m < 10 ? "0" : ""}${m}`
+        return `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}`
     }
     static getYear(time: number) {
         let date = new Date(time)
-        return date.getFullYear() + "年"
+        return date.getFullYear() + '年'
     }
     static getWeek(date: Date) {
-        let week = ""
-        if (date.getDay() == 0) week = "星期日"
-        if (date.getDay() == 1) week = "星期一"
-        if (date.getDay() == 2) week = "星期二"
-        if (date.getDay() == 3) week = "星期三"
-        if (date.getDay() == 4) week = "星期四"
-        if (date.getDay() == 5) week = "星期五"
-        if (date.getDay() == 6) week = "星期六"
+        let week = ''
+        if (date.getDay() == 0) week = '星期日'
+        if (date.getDay() == 1) week = '星期一'
+        if (date.getDay() == 2) week = '星期二'
+        if (date.getDay() == 3) week = '星期三'
+        if (date.getDay() == 4) week = '星期四'
+        if (date.getDay() == 5) week = '星期五'
+        if (date.getDay() == 6) week = '星期六'
         return week
     }
 
@@ -115,20 +115,32 @@ export default class Utils {
         let isequal = mapStr.indexOf(typeStr) != -1
         return isequal
     }
-    static getNumberStr3(i:number){
-        if(i<10){
+    static getNumberStr3(i: number) {
+        if (i < 10) {
             return `00${i}`
-        }else if(i<100){
+        } else if (i < 100) {
             return `0${i}`
-        }else {
+        } else {
             return `${i}`
         }
     }
-    static getNumberStr2(i:number){
-        if(i<10){
+    static getNumberStr2(i: number) {
+        if (i < 10) {
             return `0${i}`
-        }else {
+        } else {
             return `${i}`
         }
+    }
+    static getDistanceBySpeed(speed: number, damping: number) {
+        return ((speed + speed * speed) * damping * 0.016) / 2
+    }
+    static getDistanceBySpeedSecond(speed: number, damping: number, second: number) {
+        let sum = (speed * second) / 60
+        let speednew = speed
+        for (let i = 0; i < 59; i++) {
+            speednew = speed - damping
+            sum += (speednew * second) / 60
+        }
+        return sum
     }
 }
