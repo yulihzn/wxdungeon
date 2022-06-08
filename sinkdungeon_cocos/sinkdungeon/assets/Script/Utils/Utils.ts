@@ -139,6 +139,9 @@ export default class Utils {
         let speednew = speed
         for (let i = 0; i < 59; i++) {
             speednew = speed - damping
+            if (speednew < 0) {
+                speednew = 0
+            }
             sum += (speednew * second) / 60
         }
         return sum
