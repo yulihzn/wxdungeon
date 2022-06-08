@@ -533,7 +533,7 @@ export default class NonPlayer extends Actor {
         const attackpreparetween = cc.tween().call(() => {
             //展示近战提示框
             if ((isMelee && !isSpecial) || (isSpecial && isMelee && specialTypeCanMelee)) {
-                this.dangerBox.show(this.data.attackType, isSpecial, this.data.boxType == 5, cc.v2(1, 0))
+                this.dangerBox.show(this.data.attackType, isSpecial, this.data.boxType == 5, this.hv)
             }
             if (isSpecial) {
                 //展示特殊冲刺提示框
@@ -1424,7 +1424,7 @@ export default class NonPlayer extends Actor {
         this.entity.NodeRender.node = this.node
         this.entity.NodeRender.root = this.root
         this.entity.Transform.flyZ = this.data.fly
-        this.entity.Move.ratioZ = this.data.fly > 0 ? 0.5 : 1
+        this.entity.Move.ratioZ = this.data.fly > 0 ? 0.3 : 1
         let action = cc
             .tween()
             .delay(0.2)

@@ -379,7 +379,7 @@
         "invisible": 0,
         "noLoot": 1,
         "remote": 0,
-        "melee": 5,
+        "melee": 3,
         "boxType": 1,
         "dash": 0
     },

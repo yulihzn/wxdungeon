@@ -112,7 +112,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "DangerBox",
+    "_name": "dangerbox",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -133,7 +133,7 @@
     "_prefab": {
       "__id__": 6
     },
-    "_opacity": 0,
+    "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
@@ -143,8 +143,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 80,
-      "height": 40
+      "width": 96,
+      "height": 32
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -155,7 +155,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -16,
+        -32,
         0,
         0,
         0,
