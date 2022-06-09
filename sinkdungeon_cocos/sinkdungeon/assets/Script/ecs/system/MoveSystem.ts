@@ -18,12 +18,12 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity> {
             let temp = move.linearVelocity.mul(this.dt)
             transform.position.x += temp.x
             transform.position.y += temp.y
-            transform.z += move.linearVelocityZ * this.dt * move.ratioZ
+            transform.z += move.linearVelocityZ * this.dt
             if (transform.z < transform.base) {
                 transform.z = transform.base
             }
-            if (transform.flyZ > 0 && move.linearVelocityZ < 0 && transform.z < transform.base + transform.flyZ) {
-                transform.z -= move.linearVelocityZ * this.dt * move.ratioZ * 2
+            if (transform.flyZ > 0 && transform.z > transform.base + transform.flyZ) {
+                transform.z = transform.base + transform.flyZ
             }
             if (move.linearVelocity.x > 0) {
                 move.linearVelocity.x -= move.linearDamping

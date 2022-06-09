@@ -9,7 +9,7 @@
   "genMipmaps": false,
   "packable": true,
   "width": 48,
-  "height": 48,
+  "height": 24,
   "platformSettings": {},
   "subMetas": {
     "weaponlightanim000": {
@@ -25,9 +25,9 @@
       "trimX": 0,
       "trimY": 0,
       "width": 48,
-      "height": 48,
+      "height": 24,
       "rawWidth": 48,
-      "rawHeight": 48,
+      "rawHeight": 24,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

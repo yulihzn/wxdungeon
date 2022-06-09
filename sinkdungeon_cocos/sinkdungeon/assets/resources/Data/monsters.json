@@ -15,7 +15,7 @@
         "currentHealth": 100,
         "invisible": 0,
         "remote": 0,
-        "melee": 10,
+        "melee": 5,
         "boxType": 0,
         "attackFrames": 3,
         "specialFrames": 3,
@@ -403,7 +403,7 @@
         "isTest": 1,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 0,
+            "moveSpeed": 200,
             "maxHealth": 99999,
             "defence": 0,
             "damageMin": 0.1

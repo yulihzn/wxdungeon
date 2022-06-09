@@ -121,9 +121,6 @@ export default class Player extends Actor {
     liquidStep: NextStep = new NextStep()
     pooStep: NextStep = new NextStep()
     peeStep: NextStep = new NextStep()
-    jumpUping = false
-    jumpDowning = false
-    jumpTimeEnd = false
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -193,7 +190,7 @@ export default class Player extends Actor {
             }
         })
         EventHelper.on(EventHelper.PLAYER_JUMP, detail => {
-            if (this.jumpDowning) {
+            if (this.sc.isJumpingDown) {
                 return
             }
             if (this.node) this.jump()
@@ -980,16 +977,16 @@ export default class Player extends Actor {
         }, duration)
     }
     jump() {
-        if (this.jumpTimeEnd) {
+        if (this.sc.jumpTimeEnd) {
             return
         }
         this.scheduleOnce(() => {
-            this.jumpTimeEnd = true
+            this.sc.jumpTimeEnd = true
         }, 0.3)
-        if (!this.jumpUping) {
+        if (!this.sc.isJumpingUp) {
             AudioPlayer.play(AudioPlayer.DASH)
         }
-        this.jumpUping = true
+        this.sc.isJumpingUp = true
         this.entity.Move.linearVelocityZ = 600
     }
     talentJump() {
@@ -1266,9 +1263,8 @@ export default class Player extends Actor {
             this.weaponRight.handsUp(showHands, isLift, this.interactBuilding && this.interactBuilding.isAttacking)
         }
         if (this.avatar) {
-            // this.avatar.showHandsWithInteract(showHands, isLift && !this.interactBuilding.isAttacking);
             this.avatar.showLegsWithWater(this.isLevelWater && !this.sc.isJumping)
-            this.avatar.hideShadow()
+            this.shadow.opacity = this.isLevelWater && !this.sc.isJumping ? 0 : 128
         }
         this.showUiButton()
         for (let s of this.shadowList) {
@@ -1277,12 +1273,12 @@ export default class Player extends Actor {
             }
         }
         if (this.entity.Move.linearVelocityZ < 0) {
-            this.jumpDowning = true
+            this.sc.isJumpingDown = true
         }
         if (this.entity.Transform.z <= this.entity.Transform.base) {
-            this.jumpDowning = false
-            this.jumpUping = false
-            this.jumpTimeEnd = false
+            this.sc.isJumpingDown = false
+            this.sc.isJumpingUp = false
+            this.sc.jumpTimeEnd = false
         }
         let y = this.root.y - this.entity.Transform.base
         if (y < 0) {
@@ -1397,7 +1393,7 @@ export default class Player extends Actor {
     }
 
     get Hv(): cc.Vec2 {
-        return this.weaponRight.meleeWeapon.Hv
+        return this.hv
     }
     useItem(data: ItemData) {
         Item.userIt(data, this)

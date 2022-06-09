@@ -121,9 +121,10 @@ export default class NonPlayer extends Actor {
     parentNonPlayer: NonPlayer //父类npc
     childNonPlayerList: NonPlayer[] = [] //子类
     private isLevelWater = false
-    jumpUping = false
-    jumpDowning = false
-    jumpTimeEnd = false
+    specialDashLength = 0
+    meleeDashLength = 0
+    attackRect = []
+    bodyRect = []
 
     public stateMachine: StateMachine<NonPlayer, State<NonPlayer>>
     get IsVariation() {
@@ -162,12 +163,6 @@ export default class NonPlayer extends Actor {
         this.dangerTips.opacity = 0
         this.specialStep.init()
         this.stateMachine = new DefaultStateMachine(this, NonPlayerActorState.PRPARE, NonPlayerActorState.GLOBAL)
-        // this.graphics.strokeColor = cc.Color.ORANGE;
-        // this.graphics.circle(0,0,100);
-        // this.graphics.stroke();
-        // this.graphics.strokeColor = cc.Color.RED;
-        // this.graphics.circle(0,0,80);
-        // this.graphics.stroke();
     }
 
     start() {
@@ -193,18 +188,29 @@ export default class NonPlayer extends Actor {
         this.addSaveStatusList()
         this.entity.Move.linearDamping = 5
         this.entity.Move.linearVelocity = cc.v2(0, 0)
+        let speedScale = 1 - this.data.FinalCommon.AttackSpeed / 1000
+        this.meleeDashLength = Utils.getDistanceBySpeedSecond(this.data.meleeDash, this.entity.Move.linearDamping, 0.8 * speedScale)
+        this.specialDashLength = Utils.getDistanceBySpeedSecond(this.data.specialDash, this.entity.Move.linearDamping, 0.8 * speedScale)
+        let attackArr = this.data.attackRect.split(',')
+        let bodyArr = this.data.bodyRect.split(',')
+        for (let num of attackArr) {
+            this.attackRect.push(parseInt(num))
+        }
+        for (let num of bodyArr) {
+            this.bodyRect.push(parseInt(num))
+        }
     }
     jump() {
-        if (this.jumpTimeEnd) {
+        if (this.sc.jumpTimeEnd) {
             return
         }
         this.scheduleOnce(() => {
-            this.jumpTimeEnd = true
+            this.sc.jumpTimeEnd = true
         }, 0.3)
-        if (!this.jumpUping) {
+        if (!this.sc.isJumpingUp) {
             AudioPlayer.play(AudioPlayer.DASH)
         }
-        this.jumpUping = true
+        this.sc.isJumpingUp = true
         this.entity.Move.linearVelocityZ = 600
     }
     /**挨打光效 */
@@ -288,6 +294,9 @@ export default class NonPlayer extends Actor {
     }
     public initSize() {
         let bodyRect = this.data.bodyRect.split(',')
+        if (!this.boxCollider) {
+            this.boxCollider = this.getComponent(CCollider)
+        }
         this.boxCollider.offset = cc.v2(parseInt(bodyRect[0]), parseInt(bodyRect[1]))
         this.boxCollider.w = parseInt(bodyRect[2])
         this.boxCollider.h = parseInt(bodyRect[3])
@@ -307,10 +316,6 @@ export default class NonPlayer extends Actor {
             this.sprite = this.root.getChildByName('sprite')
             this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite)
         }
-        if (!this.boxCollider) {
-            this.boxCollider = this.getComponent(CCollider)
-        }
-
         let spriteFrame = this.getSpriteFrameByName(resName, suffix)
         if (spriteFrame) {
             this.bodySprite.spriteFrame = spriteFrame
@@ -398,12 +403,13 @@ export default class NonPlayer extends Actor {
         if (speedScale > 2) {
             speedScale = 2
         }
-        let pos1 = cc.v2(this.isFaceRight ? -32 : 32, 0)
-        let pos2 = cc.v2(this.isFaceRight ? 32 : -32, 0)
+        let pos1 = cc.v2(-32, 0)
+        let pos2 = cc.v2(32, 0)
         if (this.data.fly > 0) {
             pos2 = cc.v2(0, 0)
         }
         this.anim.pause()
+        this.bodySprite.node.stopAllActions()
         this.sprite.stopAllActions()
         let stabDelay = 0
         if (((!isSpecial && this.data.meleeDash > 0) || (isSpecial && this.data.specialDash > 0)) && isMelee) {
@@ -462,7 +468,7 @@ export default class NonPlayer extends Actor {
                     .tween()
                     .delay(0.2 * speedScale)
                     .call(() => {
-                        this.entity.Transform.flyZ = 0
+                        this.sc.isFlying = false
                         this.changeBodyRes(this.data.resName, arr[i])
                     })
             )
@@ -475,7 +481,7 @@ export default class NonPlayer extends Actor {
                     .tween()
                     .delay(0.2 * speedScale)
                     .call(() => {
-                        this.entity.Transform.flyZ = this.data.fly
+                        this.sc.isFlying = false
                         this.changeBodyRes(this.data.resName, arr[i])
                     })
             )
@@ -494,12 +500,7 @@ export default class NonPlayer extends Actor {
         const attackpreparetween = cc.tween().call(() => {
             //展示近战提示框
             if ((isMelee && !isSpecial) || (isSpecial && isMelee && specialTypeCanMelee) || (isSpecial && this.data.specialDash > 0)) {
-                this.dangerBox.show(
-                    this.data.attackRect,
-                    isSpecial,
-                    Utils.getDistanceBySpeedSecond(isSpecial ? this.data.specialDash : this.data.meleeDash, this.entity.Move.linearDamping, 0.8 * speedScale),
-                    cc.v2(this.isFaceRight ? 1 : -1, 0)
-                )
+                this.dangerBox.show(this.data.attackRect, isSpecial, isSpecial ? this.specialDashLength : this.meleeDashLength, cc.v2(this.isFaceRight ? 1 : -1, 0))
             }
             if (isSpecial) {
                 //延迟添加特殊物体
@@ -520,17 +521,11 @@ export default class NonPlayer extends Actor {
         const attackingtween = cc.tween().call(() => {
             //隐藏近战提示
             this.dangerBox.hide(isMiss)
-            //普通冲刺
-            if ((isMelee && !isSpecial) || (isSpecial && this.data.specialType.length <= 0)) {
-                if ((!isSpecial && this.data.meleeDash > 0) || (isSpecial && this.data.specialDash > 0)) {
-                    this.move(cc.v3(this.isFaceRight ? 1 : -1, 0), isSpecial ? this.data.specialDash : this.data.meleeDash)
-                }
+            //冲刺
+            if ((!isSpecial && this.data.meleeDash > 0) || (isSpecial && this.data.specialDash > 0)) {
+                this.move(cc.v3(this.isFaceRight ? 1 : -1, 0), isSpecial ? this.data.specialDash : this.data.meleeDash)
             }
             if (isSpecial) {
-                //特殊冲刺
-                if (this.data.specialDash > 0) {
-                    this.move(cc.v3(this.isFaceRight ? 1 : -1, 0), this.data.specialDash)
-                }
                 //延迟添加特殊物体
                 this.scheduleOnce(() => {
                     this.specialManager.dungeon = this.dungeon
@@ -616,26 +611,22 @@ export default class NonPlayer extends Actor {
                 allAction = cc.tween().then(beforetween).then(specialMelee).then(aftertween)
             }
         }
-        cc.tween(this.sprite).then(allAction).start()
+        cc.tween(this.bodySprite.node).then(allAction).start()
     }
 
     //移动，返回速度
     private move(pos: cc.Vec3, speed: number) {
         if (pos.equals(cc.Vec3.ZERO)) {
+            this.hv = cc.v2(0, 0)
             return
         }
-        pos = pos.normalizeSelf()
-        if (!pos.equals(cc.Vec3.ZERO)) {
-            this.hv = cc.v2(pos)
-            this.pos = Dungeon.getIndexInMap(this.node.position)
-        } else {
-            this.hv = cc.v2(0, 0)
-        }
+        pos = pos.normalize()
+        this.hv = cc.v2(pos)
+        this.pos = Dungeon.getIndexInMap(this.node.position)
         let h = pos.x
         let v = pos.y
         let absh = Math.abs(h)
         let absv = Math.abs(v)
-
         let mul = absh > absv ? absh : absv
         mul = mul == 0 ? 1 : mul
         let movement = cc.v2(h, v)
@@ -658,7 +649,7 @@ export default class NonPlayer extends Actor {
         }
         this.sc.isFalling = true
         this.bodySprite.node.angle = ActorUtils.isBehindTarget(this.dungeon.player, this) ? -75 : 105
-        this.jumpUping = true
+        this.sc.isJumpingUp = true
         this.entity.Move.linearVelocityZ = 1000
     }
     fallFinish() {
@@ -696,10 +687,12 @@ export default class NonPlayer extends Actor {
             //停止伪装打断攻击
             this.sc.isDisguising = false
             this.sc.isAttacking = false
+            this.sc.isFlying = false
             if (damageData.isCriticalStrike) {
                 this.fall()
             }
             this.sprite.stopAllActions()
+            this.bodySprite.node.stopAllActions()
             this.changeBodyRes(this.data.resName, Logic.getHalfChance() ? NonPlayer.RES_HIT001 : NonPlayer.RES_HIT002)
             if (this.anim.getAnimationState('MonsterIdle').isPlaying) {
                 this.anim.pause()
@@ -710,7 +703,6 @@ export default class NonPlayer extends Actor {
         if (isHurting) {
             let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2]
             AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)])
-            this.entity.Transform.flyZ = 0
             this.hitLight(true)
             this.hitLightS(damageData)
             if (damageData.isBackAttack) {
@@ -738,7 +730,7 @@ export default class NonPlayer extends Actor {
     /**受伤状态重置 */
     private hurtReset = () => {
         if (this.node) {
-            this.entity.Transform.flyZ = this.data.fly
+            this.sc.isFlying = true
             this.hitLight(false)
             this.resetBodyColor()
             if (this.sc.isHurting) {
@@ -810,6 +802,7 @@ export default class NonPlayer extends Actor {
         this.sc.isDisguising = false
         this.dashStep.IsExcuting = false
         this.sprite.stopAllActions()
+        this.bodySprite.node.stopAllActions()
         this.dangerBox.finish()
         this.bodySprite.node.angle = 0
         this.anim.play('MonsterDie')
@@ -962,15 +955,14 @@ export default class NonPlayer extends Actor {
                 true
             )
         }
-        let attckRect = this.data.attackRect.split(',')
-        let range = parseInt(attckRect[0]) + parseInt(attckRect[2])
+        let range = parseInt(this.attackRect[0]) + parseInt(this.attackRect[2])
         if (this.specialStep.IsExcuting && this.data.specialType.length > 0) {
             range += 100
         }
         if (this.data.meleeDash > 0) {
-            range = this.specialStep.IsExcuting ? 300 : 600
+            range = this.specialStep.IsExcuting ? this.specialDashLength : this.meleeDashLength
         }
-        let canMelee = this.data.melee > 0 && targetDis < range * this.node.scaleY
+        let canMelee = this.data.melee > 0 && targetDis < range * this.node.scaleY && Math.abs(this.node.position.y - target.node.y) < this.bodyRect[3] * this.node.scaleY
         let canRemote = this.data.remote > 0 && targetDis < 600 * this.node.scaleY
         if (canMelee && !this.meleeStep.IsInCooling) {
             this.meleeStep.next(() => {
@@ -1124,7 +1116,7 @@ export default class NonPlayer extends Actor {
                 this.sc.isMoving = true
                 this.moveStep.next(
                     () => {
-                        let pos = this.getMovePosFromTarget(target)
+                        let pos = this.getMovePosFromTarget(target, false, true)
                         if (this.data.flee > 0) {
                             pos = this.getMovePosFromTarget(target, true)
                             pos = cc.v3(-pos.x, -pos.y)
@@ -1191,13 +1183,14 @@ export default class NonPlayer extends Actor {
         }
         if (this.parentNonPlayer && this.parentNonPlayer.data) {
             this.graphics.clear()
-            this.graphics.strokeColor = cc.color(0, 255, 0, 128)
+            this.graphics.strokeColor = cc.color(0, 255, 0, 60)
             this.graphics.lineWidth = 5
             if (this.parentNonPlayer.data.childMode == 0 && this.parentNonPlayer.sc.isDied) {
                 this.data.currentHealth = 0
             } else {
                 this.graphics.moveTo(0, 32)
-                let pos = cc.v3(this.parentNonPlayer.node.position.x - this.node.position.x, this.parentNonPlayer.node.position.y - this.node.position.y)
+                let pos = this.node.convertToNodeSpaceAR(this.parentNonPlayer.node.convertToWorldSpaceAR(cc.v3(0, 32)))
+                // let pos = cc.v3(this.parentNonPlayer.node.position.x - this.node.position.x, this.parentNonPlayer.node.position.y - this.node.position.y)
                 this.graphics.lineTo(pos.x, pos.y + 32)
                 this.graphics.stroke()
             }
@@ -1214,12 +1207,12 @@ export default class NonPlayer extends Actor {
             }
         }
         if (this.entity.Move.linearVelocityZ < 0) {
-            this.jumpDowning = true
+            this.sc.isJumpingDown = true
         }
         if (this.entity.Transform.z <= this.entity.Transform.base) {
-            this.jumpDowning = false
-            this.jumpUping = false
-            this.jumpTimeEnd = false
+            this.sc.isJumpingDown = false
+            this.sc.isJumpingUp = false
+            this.sc.jumpTimeEnd = false
             this.fallFinish()
         }
         let y = this.root.y - this.entity.Transform.base
@@ -1230,7 +1223,9 @@ export default class NonPlayer extends Actor {
         this.shadow.scale = scale < 0.5 ? 0.5 : scale
         this.shadow.y = this.entity.Transform.base
         this.bottomDir.node.y = this.entity.Transform.base
-        cc.log(`${this.entity.Move.linearVelocity.x},${this.entity.Move.linearVelocity.y}`)
+        if (this.data.fly > 0 && this.sc.isFlying) {
+            this.entity.Move.linearVelocityZ = 300
+        }
     }
     private setInWaterMat(sprite: cc.Sprite, inWater: boolean) {
         if (!sprite || !sprite.spriteFrame) {
@@ -1243,7 +1238,14 @@ export default class NonPlayer extends Actor {
         sprite.getMaterial(0).setProperty('hidebottom', inWater ? 1.0 : 0.0)
         sprite.getMaterial(0).setProperty('isRotated', sprite.spriteFrame.isRotated() ? 1.0 : 0.0)
     }
-    private getMovePosFromTarget(target?: Actor, isFlee?: boolean): cc.Vec3 {
+    /**
+     * 返回移动的方向
+     * @param target
+     * @param isFlee
+     * @param justForSameY 仅限追踪的时候保持和目标同一y
+     * @returns
+     */
+    private getMovePosFromTarget(target?: Actor, isFlee?: boolean, justForSameY?: boolean): cc.Vec3 {
         let newPos = cc.v3(0, 0)
         newPos.x += Logic.getRandomNum(0, 400) - 200
         newPos.y += Logic.getRandomNum(0, 400) - 200
@@ -1263,6 +1265,8 @@ export default class NonPlayer extends Actor {
             } else {
                 newPos = newPos.addSelf(cc.v3(64, 0))
             }
+        } else if (justForSameY && Math.abs(newPos.y - this.node.position.y) > this.bodyRect[3] * this.node.scaleY) {
+            newPos = cc.v3(this.node.position.x, newPos.y)
         }
         if (newPos.x > this.node.position.x) {
             newPos = newPos.addSelf(cc.v3(32, 0))
@@ -1323,6 +1327,7 @@ export default class NonPlayer extends Actor {
     /**出场动作 */
     public enterShow() {
         this.sprite.stopAllActions()
+        this.bodySprite.node.stopAllActions()
         this.bodySprite.node.color = cc.Color.BLACK
         cc.tween(this.bodySprite.node)
             .to(1, { color: cc.color(255, 255, 255).fromHEX(this.data.bodyColor) })
@@ -1335,6 +1340,7 @@ export default class NonPlayer extends Actor {
     public enterDisguise() {
         this.sc.isShow = true
         this.sprite.stopAllActions()
+        this.bodySprite.node.stopAllActions()
         if (this.anim.getAnimationState('MonsterIdle').isPlaying) {
             this.anim.pause()
         }
@@ -1350,7 +1356,7 @@ export default class NonPlayer extends Actor {
         this.entity.NodeRender.node = this.node
         this.entity.NodeRender.root = this.root
         this.entity.Transform.flyZ = this.data.fly
-        this.entity.Move.ratioZ = this.data.fly > 0 ? 0.3 : 1
+        this.sc.isFlying = true
         let action = cc
             .tween()
             .delay(0.2)
@@ -1398,6 +1404,7 @@ export default class NonPlayer extends Actor {
     /**眩晕 */
     public enterDizz() {
         this.sc.isAttacking = false
+        this.bodySprite.node.stopAllActions()
         this.sprite.stopAllActions()
     }
     /**闪烁 */
@@ -1429,7 +1436,7 @@ export default class NonPlayer extends Actor {
     moveTimeDelay = 0
     isTestResetTimeDelay(dt: number): boolean {
         this.moveTimeDelay += dt
-        if (this.moveTimeDelay > 10) {
+        if (this.moveTimeDelay > 30) {
             this.moveTimeDelay = 0
             return true
         }

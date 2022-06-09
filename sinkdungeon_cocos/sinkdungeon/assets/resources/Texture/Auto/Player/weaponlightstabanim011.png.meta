@@ -9,7 +9,7 @@
   "genMipmaps": false,
   "packable": true,
   "width": 48,
-  "height": 48,
+  "height": 32,
   "platformSettings": {},
   "subMetas": {
     "weaponlightstabanim011": {
@@ -25,9 +25,9 @@
       "trimX": 0,
       "trimY": 0,
       "width": 48,
-      "height": 48,
+      "height": 32,
       "rawWidth": 48,
-      "rawHeight": 48,
+      "rawHeight": 32,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

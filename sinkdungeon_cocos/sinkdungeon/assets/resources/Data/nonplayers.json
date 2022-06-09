@@ -17,6 +17,8 @@
         "boxType":1,
         "isEnemy":0,
         "isFollow":1,
+        "bodyRect":"0,0,48,32,105",
+        "attackRect":"-32,0,112,32,80",
         "lifeTime": 30
     },
     "nonplayer002": {
@@ -39,6 +41,8 @@
         "scale":1.2,
         "isEnemy":0,
         "isFollow":1,
+        "bodyRect":"0,0,48,32,105",
+        "attackRect":"-32,0,112,32,80",
         "lifeTime": 0
     },
     "nonplayer003": {
@@ -63,6 +67,8 @@
         "scale":0.75,
         "isEnemy":0,
         "isFollow":1,
+        "bodyRect":"0,0,80,40,90",
+        "attackRect":"-32,0,112,40,80",
         "lifeTime": 0
     },
     "nonplayer100": {
@@ -87,6 +93,8 @@
         "scale":0.75,
         "isEnemy":0,
         "isFollow":1,
+        "bodyRect":"0,0,80,40,90",
+        "attackRect":"-32,0,112,40,80",
         "lifeTime": 0
     },
     "nonplayer101": {
@@ -111,6 +119,8 @@
         "scale":0.75,
         "isEnemy":0,
         "isFollow":1,
+        "bodyRect":"0,0,80,40,90",
+        "attackRect":"-32,0,112,40,80",
         "lifeTime": 0
     },
     "nonplayer102": {
@@ -139,6 +149,8 @@
         "isEnemy":0,
         "isFollow":1,
         "lifeTime": 0,
-        "fly":128
+        "bodyRect":"0,0,80,40,90",
+        "attackRect":"-32,0,112,40,80",
+        "fly":32
     }
 }

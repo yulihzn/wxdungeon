@@ -2,14 +2,15 @@
   "__type__": "cc.AnimationClip",
   "_name": "Bullet001Hit",
   "_objFlags": 0,
-  "_rawFiles": null,
+  "_native": "",
   "_duration": 0.5,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
   "curveData": {
     "paths": {
-      "sprite": {
+      "root/sprite": {
+        "comps": {},
         "props": {
           "opacity": [
             {
@@ -19,7 +20,8 @@
           ]
         }
       },
-      "light": {
+      "root/light": {
+        "comps": {},
         "props": {
           "scale": [
             {

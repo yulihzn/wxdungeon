@@ -2,8 +2,6 @@ import FromData from '../data/FromData'
 import Actor from '../base/Actor'
 import ActorUtils from '../utils/ActorUtils'
 import Utils from '../utils/Utils'
-import Dungeon from '../logic/Dungeon'
-import NonPlayer from '../logic/NonPlayer'
 import CCollider from '../collider/CCollider'
 import NonPlayerData from '../data/NonPlayerData'
 import Logic from '../logic/Logic'
@@ -31,21 +29,26 @@ export default class ActorAttackBox extends cc.Component {
     hv: cc.Vec2 = cc.v2(1, 0)
     isSpecial = false
     isLarge = false //是否放大
+    sprite: cc.Node
     data: NonPlayerData = new NonPlayerData()
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.node.opacity = 0
-        this.collider = this.getComponent(CCollider)
+        this.sprite = this.node.getChildByName('sprite')
+        if (this.sprite) {
+            this.collider = this.sprite.getComponent(CCollider)
+        }
     }
 
     init(actor: Actor, data: NonPlayerData) {
+        if (!this.sprite) {
+            this.sprite = this.node.getChildByName('sprite')
+            this.collider = this.sprite.getComponent(CCollider)
+        }
+        this.sprite.opacity = 0
         this.isEnemy = data.isEnemy > 0
         this.actor = actor
         this.data = data
-        if (!this.collider) {
-            this.collider = this.getComponent(CCollider)
-        }
         if (this.isEnemy) {
             this.collider.setTargetTags([CCollider.TAG.GOODNONPLAYER, CCollider.TAG.PLAYER])
         } else {
@@ -69,19 +72,23 @@ export default class ActorAttackBox extends cc.Component {
         this.setHv(hv)
         this.collider.enabled = true
         this.isSpecial = isSpecial
-        this.node.opacity = 128
+        this.sprite.opacity = 60
         let rectArr = boxRect.split(',')
-        this.node.position = cc.v3(parseInt(rectArr[0]), parseInt(rectArr[1]))
+        this.sprite.position = cc.v3(parseInt(rectArr[0]), parseInt(rectArr[1]))
         let w = parseInt(rectArr[2])
         let h = parseInt(rectArr[3])
-        this.node.stopAllActions()
-        this.node.width = 0
-        cc.tween(this.node)
+        let len = dashLength - w
+        if (len < 0) {
+            len = 0
+        }
+        this.sprite.stopAllActions()
+        this.sprite.width = 0
+        cc.tween(this.sprite)
             .to(0.1, { width: w })
             .delay(0.1)
-            .to(0.1, { width: w + dashLength })
+            .to(0.1, { width: w + len })
             .start()
-        this.node.height = h
+        this.sprite.height = h
         this.collider.offset = cc.v2(w / 2, 0)
         this.collider.w = w
         this.collider.h = h
@@ -90,11 +97,11 @@ export default class ActorAttackBox extends cc.Component {
     //隐藏
     hide(isMiss: boolean) {
         this.isAttacking = !isMiss
-        this.node.opacity = 0
+        this.sprite.opacity = 0
     }
     //结束
     finish() {
-        this.node.opacity = 0
+        this.sprite.opacity = 0
         this.isAttacking = false
         this.isSpecial = false
         this.collider.enabled = false
@@ -162,6 +169,6 @@ export default class ActorAttackBox extends cc.Component {
             return
         }
         //设置旋转角度
-        this.node.angle = Utils.getRotateAngle(direction, this.node.scaleX < 0)
+        this.node.angle = Utils.getRotateAngle(direction)
     }
 }

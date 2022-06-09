@@ -6,7 +6,6 @@ export class MoveComponent extends ecs.IComponent {
     static readonly MIN_LINEAR_DAMPING_Z = 100
     linearVelocity: cc.Vec2 = cc.Vec2.ZERO
     linearDamping = 0
-    ratioZ = 1
     linearVelocityZ = MoveComponent.MIN_LINEAR_VELOCITY_Z
     linearDampingZ = MoveComponent.MIN_LINEAR_DAMPING_Z
     reset(): void {

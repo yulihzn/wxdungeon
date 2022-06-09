@@ -111,11 +111,11 @@ export default class LoadingManager {
             } else {
                 Logic.equipments = resource.json
                 this.isEquipmentLoaded = true
-                cc.log('加载装备完成')
                 Logic.equipmentNameList = new Array()
                 for (let key in resource.json) {
                     Logic.equipmentNameList.push(key)
                 }
+                cc.log(`加载装备(${Logic.equipmentNameList.length})完成`)
                 // let stringmap = new Array();
                 // for(let key in resource.json){
                 //     let temp = new EquipmentStringData();
@@ -147,7 +147,7 @@ export default class LoadingManager {
                 }
 
                 this.isProfessionLoaded = true
-                cc.log('加载职业完成')
+                cc.log(`加载职业(${Logic.professionList.length})完成`)
             }
         })
     }
@@ -162,7 +162,7 @@ export default class LoadingManager {
             } else {
                 Logic.talents = resource.json
                 this.isSkillsLoaded = true
-                cc.log('加载技能完成')
+                cc.log(`加载技能完成`)
             }
         })
     }
@@ -378,12 +378,12 @@ export default class LoadingManager {
             LoadingManager.resourceLoadMap.get(name).push(callback)
         } else {
             LoadingManager.resourceLoadMap.set(name, new Array())
-            cc.log(`加载${name}图集`)
+            cc.log(`加载${name}预制`)
             cc.resources.load(`Prefabs/buildings/${name}`, cc.Prefab, (err: Error, prefab: cc.Prefab) => {
                 if (prefab) {
                     Logic.buildings[name] = prefab
                 }
-                cc.log(`加载${name}图集${prefab ? '完成' : '失败'}`)
+                cc.log(`加载${name}预制${prefab ? '完成' : '失败'}`)
                 if (callback) {
                     callback(prefab ? 1 : 2)
                 }

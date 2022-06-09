@@ -26,7 +26,6 @@ export default class PlayerAvatar extends cc.Component {
     static readonly STATE_JUMP = 5
     status = PlayerAvatar.STATE_IDLE
     anim: cc.Animation
-    shadowSprite: cc.Sprite = null
     cloakSprite: cc.Sprite = null
     legLeftSprite: cc.Sprite = null
     legRightSprite: cc.Sprite = null
@@ -61,7 +60,6 @@ export default class PlayerAvatar extends cc.Component {
         this.avatarNode = this.getSpriteChildNode(['sprite', 'avatar'])
         this.spriteNode = this.getSpriteChildNode(['sprite'])
         this.cloakSprite = this.getSpriteChildSprite(['sprite', 'cloak'])
-        this.shadowSprite = this.getSpriteChildSprite(['sprite', 'shadow'])
         this.legLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legleft'])
         this.legRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legright'])
         this.footLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legleft', 'foot'])
@@ -245,14 +243,11 @@ export default class PlayerAvatar extends cc.Component {
     public showLegsWithWater(inWater: boolean) {
         this.legLeftSprite.node.opacity = inWater ? 0 : 255
         this.legRightSprite.node.opacity = inWater ? 0 : 255
-        this.shadowSprite.node.opacity = inWater ? 0 : 255
         this.pantsSprite.node.opacity = inWater ? 0 : 255
         this.setInWaterMat(this.bodySprite, inWater)
         this.setInWaterMat(this.clothesSprite, inWater)
     }
-    public hideShadow() {
-        this.shadowSprite.node.opacity = 0
-    }
+
     private setInWaterMat(sprite: cc.Sprite, inWater: boolean) {
         if (!sprite || !sprite.spriteFrame) {
             return

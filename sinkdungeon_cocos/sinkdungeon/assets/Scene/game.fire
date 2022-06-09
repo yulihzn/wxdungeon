@@ -8954,8 +8954,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 64,
-      "height": 64
+      "width": 32,
+      "height": 32
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -8966,8 +8966,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -45.25,
-        -30,
+        -54,
+        -16,
         0,
         0,
         0,
@@ -9050,8 +9050,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 64,
-      "height": 64
+      "width": 32,
+      "height": 32
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -9062,8 +9062,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        34.75,
-        -30,
+        -16,
+        -16,
         0,
         0,
         0,
@@ -9146,8 +9146,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 64,
-      "height": 64
+      "width": 32,
+      "height": 32
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -9158,8 +9158,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        114.75,
-        -30,
+        20,
+        -16,
         0,
         0,
         0,
@@ -9242,8 +9242,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 64,
-      "height": 64
+      "width": 32,
+      "height": 32
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -9254,8 +9254,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        194.75,
-        -30,
+        57,
+        -16,
         0,
         0,
         0,
@@ -9338,8 +9338,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 64,
-      "height": 64
+      "width": 32,
+      "height": 32
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -9350,8 +9350,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        274.75,
-        -30,
+        94,
+        -16,
         0,
         0,
         0,
