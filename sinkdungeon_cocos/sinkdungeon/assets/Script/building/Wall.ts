@@ -1,10 +1,10 @@
-import { EventHelper } from "./../logic/EventHelper"
-import Dungeon from "../logic/Dungeon"
-import Logic from "../logic/Logic"
-import Building from "./Building"
-import LevelData from "../data/LevelData"
-import CCollider from "../collider/CCollider"
-import Utils from "../utils/Utils"
+import { EventHelper } from './../logic/EventHelper'
+import Dungeon from '../logic/Dungeon'
+import Logic from '../logic/Logic'
+import Building from './Building'
+import LevelData from '../data/LevelData'
+import CCollider from '../collider/CCollider'
+import Utils from '../utils/Utils'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -21,15 +21,15 @@ const { ccclass, property } = cc._decorator
 @ccclass
 export default class Wall extends Building {
     static readonly TYPE_EMPTY = -1 //空
-    static readonly TYPE_NORMAL = 0 //普通
-    static readonly TYPE_CORNER = 1 //外角
-    static readonly TYPE_INNER = 2 //内角
-    static readonly TYPE_CONVEX = 3 //凸角
-    static readonly TYPE_CONCAVE = 4 //凹角
-    static readonly TYPE_INNER_CORNER = 5 //内外角
-    static readonly TYPE_TWO_SIDES = 6 //横竖
-    static readonly TYPE_ALONE = 7 //单独
-    static readonly TYPE_ROOF = 8 //房顶
+    // static readonly TYPE_NORMAL = 0 //普通
+    // static readonly TYPE_CORNER = 1 //外角
+    // static readonly TYPE_INNER = 2 //内角
+    // static readonly TYPE_CONVEX = 3 //凸角
+    // static readonly TYPE_CONCAVE = 4 //凹角
+    // static readonly TYPE_INNER_CORNER = 5 //内外角
+    // static readonly TYPE_TWO_SIDES = 6 //横竖
+    // static readonly TYPE_ALONE = 7 //单独
+    // static readonly TYPE_ROOF = 8 //房顶
 
     static readonly TYPE_INNER_CORNER_BOTTOM_RIGHT = 0 //右下内角
     static readonly TYPE_BOTTOM = 1 //下墙 屋顶0
@@ -53,10 +53,10 @@ export default class Wall extends Building {
     wallsprite: cc.Sprite
     roofsprite: cc.Sprite
     shadowsprite: cc.Sprite
-    mapStr: string = "##"
-    wallName: string = "" //wall***anim000 roof***anim000
-    roofName: string = ""
-    resNameSecond: string = ""
+    mapStr: string = '##'
+    wallName: string = '' //wall***anim000 roof***anim000
+    roofName: string = ''
+    resNameSecond: string = ''
     type: number = Wall.TYPE_EMPTY
     dir = 0
     combineWall: Wall
@@ -66,9 +66,9 @@ export default class Wall extends Building {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.wallsprite = this.node.getChildByName("sprite").getChildByName("wallsprite").getComponent(cc.Sprite)
-        this.roofsprite = this.node.getChildByName("sprite").getChildByName("roofsprite").getComponent(cc.Sprite)
-        this.shadowsprite = this.node.getChildByName("sprite").getChildByName("shadow").getComponent(cc.Sprite)
+        this.wallsprite = this.node.getChildByName('sprite').getChildByName('wallsprite').getComponent(cc.Sprite)
+        this.roofsprite = this.node.getChildByName('sprite').getChildByName('roofsprite').getComponent(cc.Sprite)
+        this.shadowsprite = this.node.getChildByName('sprite').getChildByName('shadow').getComponent(cc.Sprite)
     }
     changeRes(wallName: string) {
         let rand4save = Logic.mapManager.getRandom4Save(this.seed)
@@ -84,7 +84,7 @@ export default class Wall extends Building {
             this.wallsprite.node.height = 32
             return
         }
-        if (Utils.hasThe(wallName, "fence")) {
+        if (Utils.hasThe(wallName, 'fence')) {
             this.roofsprite.node.opacity = 0
             this.wallsprite.spriteFrame = null
             switch (this.type) {
@@ -221,9 +221,9 @@ export default class Wall extends Building {
     start() {}
     private ajustSpriteShow(isShowShadow: boolean, roofAngle: number, flipWall: boolean, flipRoof: cc.Vec3) {
         if (!this.wallsprite) {
-            this.wallsprite = this.node.getChildByName("sprite").getChildByName("wallsprite").getComponent(cc.Sprite)
-            this.roofsprite = this.node.getChildByName("sprite").getChildByName("roofsprite").getComponent(cc.Sprite)
-            this.shadowsprite = this.node.getChildByName("sprite").getChildByName("shadow").getComponent(cc.Sprite)
+            this.wallsprite = this.node.getChildByName('sprite').getChildByName('wallsprite').getComponent(cc.Sprite)
+            this.roofsprite = this.node.getChildByName('sprite').getChildByName('roofsprite').getComponent(cc.Sprite)
+            this.shadowsprite = this.node.getChildByName('sprite').getChildByName('shadow').getComponent(cc.Sprite)
         }
         this.shadowsprite.node.opacity = isShowShadow ? 80 : 0
         this.roofsprite.node.angle = roofAngle
@@ -231,25 +231,16 @@ export default class Wall extends Building {
         this.roofsprite.node.scaleX = flipRoof.x
         this.roofsprite.node.scaleY = flipRoof.y
     }
-    public isTop(): boolean {
-        return (
-            (this.type == Wall.TYPE_NORMAL && this.dir == 0) ||
-            (this.type == Wall.TYPE_CORNER && this.dir < 2) ||
-            (this.type == Wall.TYPE_INNER && this.dir < 2) ||
-            (this.type == Wall.TYPE_INNER_CORNER && this.dir < 2) ||
-            (this.type == Wall.TYPE_CONVEX && this.dir == 0) ||
-            (this.type == Wall.TYPE_CONCAVE && this.dir == 0)
-        )
-    }
-    public isSide(): boolean {
-        return this.type == Wall.TYPE_NORMAL && this.dir > 1
+
+    public typeNeedTransparent(): boolean {
+        return this.type == Wall.TYPE_INNER_CORNER_BOTTOM_RIGHT || this.type == Wall.TYPE_BOTTOM || this.type == Wall.TYPE_INNER_CORNER_BOTTOM_LEFT || this.type == Wall.TYPE_OTHER
     }
     init(mapStr: string, leveldata: LevelData, onlyShow: boolean, combineCountX: number, combineCountY: number) {
         this.node.opacity = 255
         this.mapStr = mapStr
-        if (Utils.hasThe(mapStr, "###")) {
+        if (Utils.hasThe(mapStr, '###')) {
             this.type = Wall.TYPE_EMPTY
-        } else if (Utils.hasThe(mapStr, "##")) {
+        } else if (Utils.hasThe(mapStr, '##')) {
             this.type = Wall.TYPE_OTHER
             let resIndex = parseInt(mapStr.substring(2))
             this.wallName = leveldata.getWallRes(resIndex, true)
@@ -282,7 +273,7 @@ export default class Wall extends Building {
             }
         }
         if (this.combineWall) {
-            EventHelper.on(EventHelper.DUNGEON_WALL_COLLIDER, (detail) => {
+            EventHelper.on(EventHelper.DUNGEON_WALL_COLLIDER + this.combineWall.node.uuid, detail => {
                 if (this.node) {
                     if (detail.type == 0) {
                         this.onColliderEnter(detail.other, detail.self)
@@ -295,15 +286,13 @@ export default class Wall extends Building {
             })
         }
     }
-    private isInnerOrCorner(type: number): boolean {
-        return type == Wall.TYPE_INNER || type == Wall.TYPE_CORNER || type == Wall.TYPE_INNER_CORNER
-    }
+
     onColliderEnter(other: CCollider, self: CCollider): void {
         if (!self.sensor) {
             return
         }
-        if (this.type != Wall.TYPE_EMPTY && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
-            if (!this.combineWall) EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER, { type: 0, other: other, self: self })
+        if (this.typeNeedTransparent() && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
+            if (!this.combineWall) EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER + this.node.uuid, { type: 0, other: other, self: self })
             if (this.type == Wall.TYPE_OTHER) {
                 this.wallsprite.node.opacity = 120
             } else {
@@ -315,8 +304,8 @@ export default class Wall extends Building {
         if (!self.sensor) {
             return
         }
-        if (this.type != Wall.TYPE_EMPTY && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
-            if (!this.combineWall) EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER, { type: 1, other: other, self: self })
+        if (this.typeNeedTransparent() && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
+            if (!this.combineWall) EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER + this.node.uuid, { type: 1, other: other, self: self })
             if (this.type == Wall.TYPE_OTHER) {
                 this.wallsprite.node.opacity = 120
             } else {
@@ -328,8 +317,8 @@ export default class Wall extends Building {
         if (!self.sensor) {
             return
         }
-        if (this.type != Wall.TYPE_EMPTY && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
-            if (!this.combineWall) EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER, { type: 2, other: other, self: self })
+        if (this.typeNeedTransparent() && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
+            if (!this.combineWall) EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER + this.node.uuid, { type: 2, other: other, self: self })
             if (this.type == Wall.TYPE_OTHER) {
                 this.wallsprite.node.opacity = 255
             } else {

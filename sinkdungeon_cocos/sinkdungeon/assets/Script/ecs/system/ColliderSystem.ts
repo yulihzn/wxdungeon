@@ -117,9 +117,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
                     continue
                 }
                 let isCollision = false
-                if (collider.isHeightNotCollid(other)) {
-                    //高度检测
-                } else if (collider.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.RECT) {
+                if (collider.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.RECT) {
                     //矩形检测
                     if (collider.isRotate && other.isRotate) {
                         isCollision = this.polygonPolygon(collider.points, other.points)

@@ -39,7 +39,6 @@ import EnergyShield from '../building/EnergyShield'
 import EquipmentManager from './EquipmentManager'
 import Furniture from '../building/Furniture'
 import FurnitureData from '../data/FurnitureData'
-import LocalStorage from '../utils/LocalStorage'
 import RoomFishtank from '../building/RoomFishtank'
 import CCollider from '../collider/CCollider'
 import WallPaint from '../building/WallPaint'
@@ -840,31 +839,34 @@ export default class BuildingManager extends BaseManager {
             let wall = node.getComponent(Wall)
             let combineCountX = 0
             let combineCountY = 0
+            //判断当前墙壁下标是否在合并表里，如果有设置最初合并的墙
             let isCombine = this.colliderCombineMap.has(`i${indexPos.x}j${indexPos.y}`)
             if (isCombine) {
                 wall.combineWall = this.colliderCombineMap.get(`i${indexPos.x}j${indexPos.y}`)
             }
+            //如果还未合并且非装饰的情况下往右遍历
             if (!isCombine && !onlyShow) {
                 for (let i = indexPos.x + 1; i < mapData.length; i++) {
                     let next = mapData[i][indexPos.y]
                     if (mapDataStr == next) {
+                        //下一个相同元素记录下标并存储当前元素
                         this.colliderCombineMap.set(`i${i}j${indexPos.y}`, wall)
                         combineCountX++
                     } else {
                         break
                     }
                 }
-                if (combineCountX < 1) {
-                    for (let j = indexPos.y + 1; j < mapData[indexPos.x].length; j++) {
-                        let next = mapData[indexPos.x][j]
-                        if (mapDataStr == next) {
-                            this.colliderCombineMap.set(`i${indexPos.x}j${j}`, null)
-                            combineCountY++
-                        } else {
-                            break
-                        }
-                    }
-                }
+                // if (combineCountX < 1) {
+                //     for (let j = indexPos.y + 1; j < mapData[indexPos.x].length; j++) {
+                //         let next = mapData[indexPos.x][j]
+                //         if (mapDataStr == next) {
+                //             this.colliderCombineMap.set(`i${indexPos.x}j${j}`, null)
+                //             combineCountY++
+                //         } else {
+                //             break
+                //         }
+                //     }
+                // }
             }
             wall.init(mapDataStr, levelData, onlyShow || isCombine, combineCountX, combineCountY)
         })
@@ -941,62 +943,62 @@ export default class BuildingManager extends BaseManager {
             Logic.getBuildings(BuildingManager.ROOMTV, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 let script = building.getComponent(Furniture)
-                script.init(data)
+                script.init(data, false)
             })
         } else if (mapDataStr == 'Z4') {
             Logic.getBuildings(BuildingManager.ROOMSOFA, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.zIndex = IndexZ.ACTOR
                 let script = building.getComponent(Furniture)
-                script.init(data)
+                script.init(data, false)
             })
         } else if (mapDataStr == 'Z9') {
             Logic.getBuildings(BuildingManager.ROOMSTOOL, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomStool).init(indexPos, dungeon)
                 let script = building.getComponent(Furniture)
-                script.init(data)
+                script.init(data, false)
             })
         } else if (mapDataStr == 'Z10') {
             Logic.getBuildings(BuildingManager.ROOMKITCHEN, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomKitchen).init(indexPos)
                 let script = building.getComponent(Furniture)
-                script.init(data)
+                script.init(data, false)
             })
         } else if (mapDataStr == 'Z17') {
             Logic.getBuildings(BuildingManager.ROOMCLOCK, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomClock).init(indexPos)
                 let script = building.getComponent(Furniture)
-                script.init(data)
+                script.init(data, false)
             })
         } else if (mapDataStr == 'Z18') {
             Logic.getBuildings(BuildingManager.ROOMFISHTANK, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomFishtank).init(indexPos, dungeon)
                 let script = building.getComponent(Furniture)
-                script.init(data)
+                script.init(data, false)
             })
         } else if (mapDataStr == 'Z20') {
             Logic.getBuildings(BuildingManager.ROOMWATERDISPENSER, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomWaterDispenser).init(indexPos)
                 let script = building.getComponent(Furniture)
-                script.init(data)
+                script.init(data, false)
             })
         } else if (mapDataStr == 'Z21') {
             Logic.getBuildings(BuildingManager.ROOMTRASHCAN, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomTrashCan).init(indexPos)
                 let script = building.getComponent(Furniture)
-                script.init(data)
+                script.init(data, false)
             })
         } else {
             Logic.getBuildings(BuildingManager.FURNITURE, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 let script = building.getComponent(Furniture)
-                script.init(data)
+                script.init(data, true)
             })
         }
     }

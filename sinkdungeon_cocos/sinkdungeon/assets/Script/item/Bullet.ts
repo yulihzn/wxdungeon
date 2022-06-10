@@ -437,11 +437,7 @@ export default class Bullet extends BaseColliderComponent {
             if (!damageSuccess) {
                 let wall = attackTarget.getComponent(Wall)
                 if (wall) {
-                    if (wall.isTop()) {
-                        isDestory = sensor
-                    } else {
-                        isDestory = wall.isSide()
-                    }
+                    isDestory = !sensor
                 }
                 if (isDestory && attackTarget.getComponent(ExitDoor)) {
                     isDestory = false

@@ -247,7 +247,7 @@ export default class CCollider extends cc.Component {
         return this.z + this.zHeight < other.z
     }
     isAboveOther(other: CCollider) {
-        return this.z > other.z + other.zHeight
+        return this.z >= other.z + other.zHeight
     }
     isHeightNotCollid(other: CCollider) {
         return this.isBelowOther(other) || this.isAboveOther(other)
@@ -325,7 +325,7 @@ export default class CCollider extends cc.Component {
         let offsetHorizonal = (w1 + w2) / 2 - lenHorizonal //两者横向重合部分的长度
         //两者包围盒互相包含对方中点的时候添加一个反向斥力
         if (rect1.contains(center2) || rect2.contains(center1)) {
-            if (this.isAboveOther(other) || this.isOnOtherSurface(other)) {
+            if (this.isAboveOther(other)) {
                 //上方和表面
                 this.entity.Transform.base = other.z + other.zHeight
                 this.baseChangedCount++
@@ -345,7 +345,7 @@ export default class CCollider extends cc.Component {
                 } else if (isBottom && pos.y >= 0 && offsetVertical > 0 && offsetHorizonal > offsetVertical) {
                     pos.y = -offset
                 }
-            } else if ((this.isAboveOther(other) || this.isOnOtherSurface(other)) && this.entity.Transform.base <= other.z + other.zHeight) {
+            } else if (this.isAboveOther(other) && this.entity.Transform.base <= other.z + other.zHeight) {
                 this.entity.Transform.base = other.z + other.zHeight
                 this.baseChangedCount++
             }

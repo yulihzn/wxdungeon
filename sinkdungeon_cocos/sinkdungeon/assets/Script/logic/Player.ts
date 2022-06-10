@@ -190,10 +190,12 @@ export default class Player extends Actor {
             }
         })
         EventHelper.on(EventHelper.PLAYER_JUMP, detail => {
-            if (this.sc.isJumpingDown) {
-                return
+            if (this.node) {
+                if (this.sc.isJumpingDown) {
+                    return
+                }
+                this.jump()
             }
-            if (this.node) this.jump()
         })
         EventHelper.on(EventHelper.PLAYER_USEDREAM, detail => {
             if (this.node && this.data.AvatarData.organizationIndex == AvatarData.HUNTER) this.updateDream(detail.value)
@@ -1292,6 +1294,7 @@ export default class Player extends Actor {
         this.shadow.scale = scale < 0.5 ? 0.5 : scale
         this.shadow.y = this.entity.Transform.base
         this.bottomDir.node.y = this.entity.Transform.base
+        this.changeZIndex(this.pos)
     }
     getScaleSize(): number {
         let sn = this.IsVariation ? 1.5 : 1

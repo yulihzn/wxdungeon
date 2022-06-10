@@ -141,7 +141,7 @@
       "ctor": "Float64Array",
       "array": [
         -64,
-        -64,
+        -112,
         0,
         0,
         0,
@@ -263,7 +263,7 @@
       "ctor": "Float64Array",
       "array": [
         -64,
-        -64,
+        -32,
         0,
         0,
         0,
@@ -808,7 +808,7 @@
       "ctor": "Float64Array",
       "array": [
         -64,
-        -64,
+        -112,
         0,
         0,
         0,
@@ -1036,7 +1036,7 @@
       "ctor": "Float64Array",
       "array": [
         216.428,
-        114.148,
+        139.516,
         0,
         0,
         0,
@@ -1245,7 +1245,7 @@
     "_enabled": true,
     "tag": 12,
     "offsetX": 192,
-    "offsetY": -10,
+    "offsetY": 20,
     "type": 1,
     "radius": 12,
     "w": 512,
@@ -1273,7 +1273,7 @@
     "_enabled": true,
     "tag": 12,
     "offsetX": 404,
-    "offsetY": -90,
+    "offsetY": -70,
     "type": 1,
     "radius": 12,
     "w": 88,

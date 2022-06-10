@@ -141,7 +141,7 @@
       "ctor": "Float64Array",
       "array": [
         -64,
-        -64,
+        -16,
         0,
         0,
         0,
@@ -254,7 +254,7 @@
       "ctor": "Float64Array",
       "array": [
         -64,
-        -64,
+        -16,
         0,
         0,
         0,
@@ -472,7 +472,7 @@
       "ctor": "Float64Array",
       "array": [
         -64,
-        -64,
+        -16,
         0,
         0,
         0,
@@ -587,7 +587,7 @@
       "ctor": "Float64Array",
       "array": [
         64.467,
-        134.968,
+        180,
         0,
         0,
         0,
@@ -632,6 +632,8 @@
     "showLight": true,
     "showRayCast": false,
     "fromSky": false,
+    "z": 0,
+    "zHeight": 0,
     "_id": ""
   },
   {
@@ -791,7 +793,7 @@
       "ctor": "Float64Array",
       "array": [
         64,
-        64,
+        112,
         0,
         0,
         0,
@@ -1179,7 +1181,7 @@
     "_enabled": true,
     "tag": 12,
     "offsetX": 64,
-    "offsetY": -24,
+    "offsetY": 24,
     "type": 1,
     "radius": 64,
     "w": 255,
