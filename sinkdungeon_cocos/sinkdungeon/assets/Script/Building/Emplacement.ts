@@ -1,9 +1,9 @@
-import Dungeon from "../logic/Dungeon"
-import Shooter from "../logic/Shooter"
-import Logic from "../logic/Logic"
-import Building from "./Building"
-import FromData from "../data/FromData"
-import IndexZ from "../utils/IndexZ"
+import Dungeon from '../logic/Dungeon'
+import Shooter from '../logic/Shooter'
+import Logic from '../logic/Logic'
+import Building from './Building'
+import FromData from '../data/FromData'
+import IndexZ from '../utils/IndexZ'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -56,7 +56,7 @@ export default class Emplacement extends Building {
         this.setShooterHv(this.shooterBottom, cc.v2(0, -1))
         this.setShooterHv(this.shooterLeft, cc.v2(-1, 0))
         this.setShooterHv(this.shooterRight, cc.v2(1, 0))
-        let from = FromData.getClone("炮台", "emplacement")
+        let from = FromData.getClone('炮台', 'emplacement')
         this.shooterTop.from.valueCopy(from)
         this.shooterBottom.from.valueCopy(from)
         this.shooterLeft.from.valueCopy(from)
@@ -64,63 +64,63 @@ export default class Emplacement extends Building {
     }
     setDirType(mapStr: string) {
         switch (mapStr) {
-            case "G0":
+            case 'G0':
                 this.dirType = Emplacement.BOTTOM
                 this.hideOrShowShooter(0, 1, 0, 0)
                 break
-            case "G1":
+            case 'G1':
                 this.dirType = Emplacement.TOP
                 this.hideOrShowShooter(1, 0, 0, 0)
                 break
-            case "G2":
+            case 'G2':
                 this.dirType = Emplacement.RIGHT
                 this.hideOrShowShooter(0, 0, 1, 0)
                 break
-            case "G3":
+            case 'G3':
                 this.dirType = Emplacement.LEFT
                 this.hideOrShowShooter(0, 0, 0, 1)
                 break
-            case "G4":
+            case 'G4':
                 this.dirType = Emplacement.TOPBOTTOM
                 this.hideOrShowShooter(1, 1, 0, 0)
                 break
-            case "G5":
+            case 'G5':
                 this.dirType = Emplacement.LEFTRIGHT
                 this.hideOrShowShooter(0, 0, 1, 1)
                 break
-            case "G6":
+            case 'G6':
                 this.dirType = Emplacement.BOTTOMRIGHT
                 this.hideOrShowShooter(0, 1, 0, 1)
                 break
-            case "G7":
+            case 'G7':
                 this.dirType = Emplacement.BOTTOMLEFT
                 this.hideOrShowShooter(0, 1, 1, 0)
                 break
-            case "G8":
+            case 'G8':
                 this.dirType = Emplacement.TOPLEFT
                 this.hideOrShowShooter(1, 0, 1, 0)
                 break
-            case "G9":
+            case 'G9':
                 this.dirType = Emplacement.TOPRIGHT
                 this.hideOrShowShooter(1, 0, 0, 1)
                 break
-            case "G10":
+            case 'G10':
                 this.dirType = Emplacement.BOTTOMLEFTRIGHT
                 this.hideOrShowShooter(0, 1, 1, 1)
                 break
-            case "G11":
+            case 'G11':
                 this.dirType = Emplacement.TOPLEFTRIGHT
                 this.hideOrShowShooter(1, 0, 1, 1)
                 break
-            case "G12":
+            case 'G12':
                 this.dirType = Emplacement.RIGHTTOPBOTTOM
                 this.hideOrShowShooter(1, 1, 0, 1)
                 break
-            case "G13":
+            case 'G13':
                 this.dirType = Emplacement.LEFTTOPBOTTOM
                 this.hideOrShowShooter(1, 1, 1, 0)
                 break
-            case "G14":
+            case 'G14':
                 this.dirType = Emplacement.ALL
                 this.hideOrShowShooter(1, 1, 1, 1)
                 break
@@ -229,37 +229,38 @@ export default class Emplacement extends Building {
     fireShooter(shooter: Shooter) {
         if (!shooter.dungeon) {
             shooter.dungeon = this.dungeon
-            shooter.data.bulletType = "bullet010"
+            shooter.actor = this
+            shooter.data.bulletType = 'bullet010'
             shooter.data.bulletLineExNum = 0
             shooter.data.bulletLineInterval = 0.5
-            shooter.data.img = "emplacement"
+            shooter.data.img = 'emplacement'
             shooter.isBuilding = true
 
             switch (Logic.chapterIndex) {
                 case Logic.CHAPTER00:
                     shooter.data.bulletLineExNum = 0
-                    shooter.data.bulletType = "laser001"
+                    shooter.data.bulletType = 'laser001'
                     break
                 case Logic.CHAPTER01:
-                    shooter.data.bulletType = "bullet010"
+                    shooter.data.bulletType = 'bullet010'
                     break
                 case Logic.CHAPTER02:
-                    shooter.data.bulletType = "bullet013"
+                    shooter.data.bulletType = 'bullet013'
                     break
                 case Logic.CHAPTER03:
-                    shooter.data.bulletType = "bullet006"
+                    shooter.data.bulletType = 'bullet006'
                     shooter.data.bulletLineExNum = 1
                     break
                 case Logic.CHAPTER04:
-                    shooter.data.bulletType = "bullet024"
+                    shooter.data.bulletType = 'bullet024'
                     shooter.data.bulletLineExNum = 1
                     break
                 case Logic.CHAPTER05:
-                    shooter.data.bulletType = "bullet024"
+                    shooter.data.bulletType = 'bullet024'
                     shooter.data.bulletLineExNum = 1
                     break
                 case Logic.CHAPTER099:
-                    shooter.data.bulletType = "bullet010"
+                    shooter.data.bulletType = 'bullet010'
                     break
             }
         }

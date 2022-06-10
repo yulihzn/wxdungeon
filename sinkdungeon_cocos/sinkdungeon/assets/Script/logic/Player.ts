@@ -1162,14 +1162,18 @@ export default class Player extends Actor {
             this.weaponRight.meleeWeapon.dungeon = dungeon
             this.weaponRight.shooter.dungeon = dungeon
             this.shooterEx.dungeon = dungeon
+            this.shooterEx.actor = this
         }
         for (let s of this.shadowList) {
             if (s.node && !s.weaponLeft.shadowWeapon.dungeon) {
                 s.weaponLeft.shadowWeapon.dungeon = dungeon
                 s.weaponLeft.shooter.dungeon = dungeon
+                s.weaponLeft.shooter.actor = this
                 s.weaponRight.shadowWeapon.dungeon = dungeon
                 s.weaponRight.shooter.dungeon = dungeon
+                s.weaponRight.shooter.actor = this
                 s.shooterEx.dungeon = dungeon
+                s.shooterEx.actor = this
             }
         }
         if (!this.sc.isShow) {

@@ -379,6 +379,7 @@ export default class NonPlayer extends Actor {
                 this.shooter.data.bulletSize = 0.5
             }
             this.shooter.dungeon = this.dungeon
+            this.shooter.actor = this
             this.shooter.data.remoteAudio = this.data.remoteAudio
             this.shooter.isFromPlayer = this.data.isEnemy < 1
             this.shooter.data.bulletArcExNum = this.data.bulletArcExNum

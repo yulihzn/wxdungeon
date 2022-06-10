@@ -43,6 +43,7 @@ export default class Shooter extends cc.Component {
     laser: cc.Prefab = null
     @property
     isAI: boolean = false
+    actor: Actor = null
     isFromPlayer = false
     dungeon: Dungeon = null
     //只有赋值才代表是玩家真正的shooter
@@ -69,7 +70,6 @@ export default class Shooter extends cc.Component {
     private sensorTargetMap = new Map<number, boolean>()
     private ignoreMap = new Map<number, boolean>()
     public defaultPos = cc.v3(0, 0)
-    actor: Actor = null
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics)
@@ -84,6 +84,7 @@ export default class Shooter extends cc.Component {
 
         this.initIgnoreMap(this.getParentNode().getComponent(Actor))
     }
+    public init() {}
     private initIgnoreMap(actor: Actor) {
         if (!actor) {
             return false
@@ -357,19 +358,6 @@ export default class Shooter extends cc.Component {
             0
         )
     }
-    //暂时不用，待完善
-    // private fireNetsBullet(dir: number, bulletType: string) {
-    //     switch (dir) {
-    //         case 0: this.setHv(cc.v3(0, 1)); break;
-    //         case 1: this.setHv(cc.v3(0, -1)); break;
-    //         case 2: this.setHv(cc.v3(-1, 0)); break;
-    //         case 3: this.setHv(cc.v3(1, 0)); break;
-    //     }
-    //     let poses = [0, 128, -128, 256, -256];
-    //     for (let i = 0; i < poses.length; i++) {
-    //         this.fire(bulletType, this.bullet, this.bulletPool, 0, this.hv.clone(), cc.v3(64, poses[i]));
-    //     }
-    // }
 
     /**
      * 发射子弹
@@ -408,13 +396,15 @@ export default class Shooter extends cc.Component {
         let pos = this.node.convertToWorldSpaceAR(p)
         pos = this.dungeon.node.convertToNodeSpaceAR(pos)
         bulletPrefab.parent = this.dungeon.node
-        bulletPrefab.position = pos
         bulletPrefab.scaleX = 1
         bulletPrefab.scaleY = 1
         bulletPrefab.active = true
         if (isLaser) {
+            bulletPrefab.position = pos
             this.showLaser(angleOffset, hv, bulletPrefab, bulletData, pos)
         } else {
+            pos.y -= 32
+            bulletPrefab.position = pos
             this.showBullet(angleOffset, hv, bulletPrefab, bulletData, pos, aoePrefab, aoeData)
         }
     }
@@ -510,7 +500,7 @@ export default class Shooter extends cc.Component {
         } else {
             this.sensorTargetMap.set(CCollider.TAG.ENERGY_SHIELD, true)
         }
-        let result = GameWorldSystem.colliderSystem.nearestRayCast(cc.v2(p1), cc.v2(p2), this.aimTargetMap, this.sensorTargetMap, this.ignoreMap)
+        let result = GameWorldSystem.colliderSystem.nearestRayCast(cc.v2(p1), cc.v2(p2), this.actor.entity.Transform.z, 32, this.aimTargetMap, this.sensorTargetMap, this.ignoreMap)
         if (result) {
             p = this.node.convertToNodeSpaceAR(cc.v3(result.point))
         }

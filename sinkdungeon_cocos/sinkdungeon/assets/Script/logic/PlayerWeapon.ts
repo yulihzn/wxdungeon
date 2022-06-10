@@ -71,6 +71,7 @@ export default class PlayerWeapon extends cc.Component {
         this.shooter = this.getComponentInChildren(Shooter)
         this.shooter.player = this.player
         this.shooter.parentNode = this.player.node
+        this.shooter.actor = this.player
     }
     handsUp(isUp: boolean, isLift: boolean, isAttacking: boolean) {
         if (this.isHandsUp && isUp) {

@@ -52,6 +52,7 @@ export default class ShadowPlayer extends cc.Component {
         this.weaponRight.node.opacity = 0;
         this.shooterEx.player = this.player;
         this.shooterEx.isEx = true;
+        this.shooterEx.actor = this.player
         this.mat = this.sprite.getMaterial(0);
         this.sprite.node.scaleX = this.SCALE;
         this.sprite.node.scaleY = -this.SCALE;

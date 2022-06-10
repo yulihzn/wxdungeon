@@ -1,53 +1,53 @@
-import Dungeon from "../logic/Dungeon"
-import Logic from "../logic/Logic"
-import FootBoard from "../building/FootBoard"
-import IndexZ from "../utils/IndexZ"
-import Saw from "../building/Saw"
-import Emplacement from "../building/Emplacement"
-import DecorationFloor from "../building/DecorationFloor"
-import Chest from "../building/Chest"
-import Box from "../building/Box"
-import ShopTable from "../building/ShopTable"
-import FallStone from "../building/FallStone"
-import MagicLightening from "../building/MagicLightening"
-import HitBuilding from "../building/HitBuilding"
-import ExitDoor from "../building/ExitDoor"
-import Door from "../building/Door"
-import Wall from "../building/Wall"
-import AirExit from "../building/AirExit"
-import LevelData from "../data/LevelData"
-import Portal from "../building/Portal"
-import RoomBed from "../building/RoomBed"
-import Building from "../building/Building"
-import ExitData from "../data/ExitData"
-import BaseManager from "./BaseManager"
-import DryadGrass from "../boss/DryadGrass"
-import Utils from "../utils/Utils"
-import ShadowOfSight from "../effect/ShadowOfSight"
-import LightManager from "./LightManager"
-import SavePoint from "../building/SavePoint"
-import MartShelves from "../building/MartShelves"
-import NonPlayerManager from "./NonPlayerManager"
-import MonsterManager from "./MonsterManager"
-import MonsterGenerator from "../building/MonsterGenerator"
-import MgWentLine from "../building/MgWentLine"
-import RoomStool from "../building/RoomStool"
-import MgCrack from "../building/MgCrack"
-import InteractBuilding from "../building/InteractBuilding"
-import Player from "../logic/Player"
-import EnergyShield from "../building/EnergyShield"
-import EquipmentManager from "./EquipmentManager"
-import Furniture from "../building/Furniture"
-import FurnitureData from "../data/FurnitureData"
-import LocalStorage from "../utils/LocalStorage"
-import RoomFishtank from "../building/RoomFishtank"
-import CCollider from "../collider/CCollider"
-import WallPaint from "../building/WallPaint"
-import RoomWaterDispenser from "../building/RoomWaterDispenser"
-import RoomClock from "../building/RoomClock"
-import RoomTrashCan from "../building/RoomTrashCan"
-import RoomKitchen from "../building/RoomKitchen"
-import AudioPlayer from "../utils/AudioPlayer"
+import Dungeon from '../logic/Dungeon'
+import Logic from '../logic/Logic'
+import FootBoard from '../building/FootBoard'
+import IndexZ from '../utils/IndexZ'
+import Saw from '../building/Saw'
+import Emplacement from '../building/Emplacement'
+import DecorationFloor from '../building/DecorationFloor'
+import Chest from '../building/Chest'
+import Box from '../building/Box'
+import ShopTable from '../building/ShopTable'
+import FallStone from '../building/FallStone'
+import MagicLightening from '../building/MagicLightening'
+import HitBuilding from '../building/HitBuilding'
+import ExitDoor from '../building/ExitDoor'
+import Door from '../building/Door'
+import Wall from '../building/Wall'
+import AirExit from '../building/AirExit'
+import LevelData from '../data/LevelData'
+import Portal from '../building/Portal'
+import RoomBed from '../building/RoomBed'
+import Building from '../building/Building'
+import ExitData from '../data/ExitData'
+import BaseManager from './BaseManager'
+import DryadGrass from '../boss/DryadGrass'
+import Utils from '../utils/Utils'
+import ShadowOfSight from '../effect/ShadowOfSight'
+import LightManager from './LightManager'
+import SavePoint from '../building/SavePoint'
+import MartShelves from '../building/MartShelves'
+import NonPlayerManager from './NonPlayerManager'
+import MonsterManager from './MonsterManager'
+import MonsterGenerator from '../building/MonsterGenerator'
+import MgWentLine from '../building/MgWentLine'
+import RoomStool from '../building/RoomStool'
+import MgCrack from '../building/MgCrack'
+import InteractBuilding from '../building/InteractBuilding'
+import Player from '../logic/Player'
+import EnergyShield from '../building/EnergyShield'
+import EquipmentManager from './EquipmentManager'
+import Furniture from '../building/Furniture'
+import FurnitureData from '../data/FurnitureData'
+import LocalStorage from '../utils/LocalStorage'
+import RoomFishtank from '../building/RoomFishtank'
+import CCollider from '../collider/CCollider'
+import WallPaint from '../building/WallPaint'
+import RoomWaterDispenser from '../building/RoomWaterDispenser'
+import RoomClock from '../building/RoomClock'
+import RoomTrashCan from '../building/RoomTrashCan'
+import RoomKitchen from '../building/RoomKitchen'
+import AudioPlayer from '../utils/AudioPlayer'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -63,76 +63,76 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class BuildingManager extends BaseManager {
-    static readonly AIREXIT = "AirExit"
-    static readonly AIRTRANSPORT = "AirTransport"
-    static readonly AIRTRANSPORTMODEL = "AirTransportModel"
-    static readonly BED = "Bed"
-    static readonly BOX = "Box"
-    static readonly CAMPFIRE = "CampFire"
-    static readonly CHEST = "Chest"
-    static readonly COAST = "Coast"
-    static readonly DARKNESS = "Darkness"
-    static readonly INTERACTBUILDING = "InteractBuilding"
-    static readonly DECORATIONFLOOR = "DecorationFloor"
-    static readonly DECORATIONOVERHEAD = "DecorationOverHead"
-    static readonly DOOR = "Door"
-    static readonly DRYADTWINE = "DryadTwine"
-    static readonly EMPLACEMENT = "Emplacement"
-    static readonly EXITDOOR = "ExitDoor"
-    static readonly FALLSTONE = "FallStone"
-    static readonly FOOTBOARD = "FootBoard"
-    static readonly HITBUILDING = "HitBuilding"
-    static readonly ICEDEMONTHRON = "IceDemonThron"
-    static readonly LIGHTENINGFALL = "LighteningFall"
-    static readonly MARTCASHIER = "MartCashier"
-    static readonly MARTFRIDGE = "MartFridge"
-    static readonly MARTSHELVES = "MartShelves"
-    static readonly MARTTABLE = "MartTable"
-    static readonly MIST = "Mist"
-    static readonly PORTAL = "Portal"
-    static readonly ROOMBED = "RoomBed"
-    static readonly ROOMTV = "RoomTv"
-    static readonly ROOMSTOOL = "RoomStool"
-    static readonly ROOMSOFA = "RoomSofa"
-    static readonly ROOMFISHTANK = "RoomFishtank"
-    static readonly ROOMWATERDISPENSER = "RoomWaterDispenser"
-    static readonly ROOMCLOCK = "RoomClock"
-    static readonly ROOMTRASHCAN = "RoomTrashCan"
-    static readonly ROOMKITCHEN = "RoomKitchen"
-    static readonly SAVEPOINT = "SavePoint"
-    static readonly SAW = "Saw"
-    static readonly SHIPSTAIRS = "Shipstairs"
-    static readonly SHOP = "Shop"
-    static readonly SHOPMART = "ShopMart"
-    static readonly SHOPTABLE = "ShopTable"
-    static readonly TAROTTABLE = "TarotTable"
-    static readonly TRAP = "Trap"
-    static readonly WALL = "Wall"
-    static readonly WATER = "Water"
-    static readonly LAMPLIGHT = "LampLight"
-    static readonly LAMPSUN = "LampSun"
-    static readonly LAMPSHIP = "LampShip"
-    static readonly LAMPSEARCH = "LampSearch"
-    static readonly LAMPFIREPAN = "LampFirePan"
-    static readonly LAMPTORCH = "LampTorch"
-    static readonly LAMPROAD = "LampRoad"
-    static readonly LAMPFIREFLY = "LampFireFly"
-    static readonly LAMPDIRECT = "LampDirectLight"
-    static readonly MUSHROOM01 = "MushRoom01"
-    static readonly MUSHROOM02 = "MushRoom02"
-    static readonly MUSHROOM03 = "MushRoom03"
-    static readonly MUSHROOM04 = "MushRoom04"
-    static readonly GRASS01 = "Grass01"
-    static readonly GRASS02 = "Grass02"
-    static readonly GRASS03 = "Grass03"
-    static readonly GRASS04 = "Grass04"
-    static readonly WENTLINE = "WentLine"
-    static readonly CRACK = "Crack"
-    static readonly WATERCOLLIDER = "WaterCollider"
-    static readonly WATERFALL = "WaterFall"
-    static readonly ENERGYSHIELD = "EnergyShield"
-    static readonly FURNITURE = "Furniture"
-    static readonly WALLPAINT = "WallPaint"
+    static readonly AIREXIT = 'AirExit'
+    static readonly AIRTRANSPORT = 'AirTransport'
+    static readonly AIRTRANSPORTMODEL = 'AirTransportModel'
+    static readonly BED = 'Bed'
+    static readonly BOX = 'Box'
+    static readonly CAMPFIRE = 'CampFire'
+    static readonly CHEST = 'Chest'
+    static readonly COAST = 'Coast'
+    static readonly DARKNESS = 'Darkness'
+    static readonly INTERACTBUILDING = 'InteractBuilding'
+    static readonly DECORATIONFLOOR = 'DecorationFloor'
+    static readonly DECORATIONOVERHEAD = 'DecorationOverHead'
+    static readonly DOOR = 'Door'
+    static readonly DRYADTWINE = 'DryadTwine'
+    static readonly EMPLACEMENT = 'Emplacement'
+    static readonly EXITDOOR = 'ExitDoor'
+    static readonly FALLSTONE = 'FallStone'
+    static readonly FOOTBOARD = 'FootBoard'
+    static readonly HITBUILDING = 'HitBuilding'
+    static readonly ICEDEMONTHRON = 'IceDemonThron'
+    static readonly LIGHTENINGFALL = 'LighteningFall'
+    static readonly MARTCASHIER = 'MartCashier'
+    static readonly MARTFRIDGE = 'MartFridge'
+    static readonly MARTSHELVES = 'MartShelves'
+    static readonly MARTTABLE = 'MartTable'
+    static readonly MIST = 'Mist'
+    static readonly PORTAL = 'Portal'
+    static readonly ROOMBED = 'RoomBed'
+    static readonly ROOMTV = 'RoomTv'
+    static readonly ROOMSTOOL = 'RoomStool'
+    static readonly ROOMSOFA = 'RoomSofa'
+    static readonly ROOMFISHTANK = 'RoomFishtank'
+    static readonly ROOMWATERDISPENSER = 'RoomWaterDispenser'
+    static readonly ROOMCLOCK = 'RoomClock'
+    static readonly ROOMTRASHCAN = 'RoomTrashCan'
+    static readonly ROOMKITCHEN = 'RoomKitchen'
+    static readonly SAVEPOINT = 'SavePoint'
+    static readonly SAW = 'Saw'
+    static readonly SHIPSTAIRS = 'Shipstairs'
+    static readonly SHOP = 'Shop'
+    static readonly SHOPMART = 'ShopMart'
+    static readonly SHOPTABLE = 'ShopTable'
+    static readonly TAROTTABLE = 'TarotTable'
+    static readonly TRAP = 'Trap'
+    static readonly WALL = 'Wall'
+    static readonly WATER = 'Water'
+    static readonly LAMPLIGHT = 'LampLight'
+    static readonly LAMPSUN = 'LampSun'
+    static readonly LAMPSHIP = 'LampShip'
+    static readonly LAMPSEARCH = 'LampSearch'
+    static readonly LAMPFIREPAN = 'LampFirePan'
+    static readonly LAMPTORCH = 'LampTorch'
+    static readonly LAMPROAD = 'LampRoad'
+    static readonly LAMPFIREFLY = 'LampFireFly'
+    static readonly LAMPDIRECT = 'LampDirectLight'
+    static readonly MUSHROOM01 = 'MushRoom01'
+    static readonly MUSHROOM02 = 'MushRoom02'
+    static readonly MUSHROOM03 = 'MushRoom03'
+    static readonly MUSHROOM04 = 'MushRoom04'
+    static readonly GRASS01 = 'Grass01'
+    static readonly GRASS02 = 'Grass02'
+    static readonly GRASS03 = 'Grass03'
+    static readonly GRASS04 = 'Grass04'
+    static readonly WENTLINE = 'WentLine'
+    static readonly CRACK = 'Crack'
+    static readonly WATERCOLLIDER = 'WaterCollider'
+    static readonly WATERFALL = 'WaterFall'
+    static readonly ENERGYSHIELD = 'EnergyShield'
+    static readonly FURNITURE = 'Furniture'
+    static readonly WALLPAINT = 'WallPaint'
 
     // LIFE-CYCLE CALLBACKS:
     footboards: FootBoard[] = new Array()
@@ -144,18 +144,18 @@ export default class BuildingManager extends BaseManager {
     colliderCombineMap: Map<string, Wall> = new Map()
     savePointS: SavePoint
     coastColliderList = [
-        "128,128,0,0",
-        "128,128,0,0",
-        "128,128,0,0",
-        "128,128,0,0",
-        "128,64,0,-32",
-        "128,64,0,32",
-        "64,128,32,0",
-        "64,128,-32,0",
-        "64,64,-32,32",
-        "64,64,32,32",
-        "64,64,-32,-32",
-        "64,64,32,-32",
+        '128,128,0,0',
+        '128,128,0,0',
+        '128,128,0,0',
+        '128,128,0,0',
+        '128,64,0,-32',
+        '128,64,0,32',
+        '64,128,32,0',
+        '64,128,-32,0',
+        '64,64,-32,32',
+        '64,64,32,32',
+        '64,64,-32,-32',
+        '64,64,32,-32'
     ]
 
     private shelvesFoodIndex = 0
@@ -224,96 +224,96 @@ export default class BuildingManager extends BaseManager {
         return building
     }
     public addBuildingsFromMap(dungeon: Dungeon, mapData: string[][], mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData, exits: ExitData[]) {
-        if (mapDataStr == "==") {
+        if (mapDataStr == '==') {
             this.waterIndexList.push(indexPos)
-        } else if (this.isFirstEqual(mapDataStr, "*")) {
-        } else if (this.isFirstEqual(mapDataStr, "#")) {
+        } else if (this.isFirstEqual(mapDataStr, '*')) {
+        } else if (this.isFirstEqual(mapDataStr, '#')) {
             //生成墙
             this.addDirWalls(mapDataStr, mapData, indexPos, levelData, false)
-        } else if (this.isFirstEqual(mapDataStr, "-")) {
+        } else if (this.isFirstEqual(mapDataStr, '-')) {
             Logic.getBuildings(BuildingManager.DARKNESS, (prefab: cc.Prefab) => {
                 let dn = this.addBuilding(prefab, indexPos)
                 dn.zIndex = IndexZ.DARKNESS
-                if (mapDataStr == "-0") {
+                if (mapDataStr == '-0') {
                     dn.zIndex = IndexZ.ROOF
                 }
             })
-        } else if (this.isFirstEqual(mapDataStr, "~")) {
+        } else if (this.isFirstEqual(mapDataStr, '~')) {
             this.addWater(mapDataStr, indexPos)
-        } else if (this.isFirstEqual(mapDataStr, "+")) {
+        } else if (this.isFirstEqual(mapDataStr, '+')) {
             //生成装饰
             this.addDecorate(dungeon, mapDataStr, indexPos)
-        } else if (mapDataStr == "@@") {
+        } else if (mapDataStr == '@@') {
             Logic.getBuildings(BuildingManager.FOOTBOARD, (prefab: cc.Prefab) => {
                 //生成踏板
                 let foot = this.addBuilding(prefab, indexPos)
                 foot.zIndex = IndexZ.FLOOR
                 this.footboards.push(foot.getComponent(FootBoard))
             })
-        } else if (mapDataStr == "@S") {
+        } else if (mapDataStr == '@S') {
             Logic.getBuildings(BuildingManager.SAVEPOINT, (prefab: cc.Prefab) => {
                 //生成存档点
                 let save = this.addBuilding(prefab, indexPos)
                 this.savePointS = save.getComponent(SavePoint)
             })
-        } else if (this.isFirstEqual(mapDataStr, "B")) {
+        } else if (this.isFirstEqual(mapDataStr, 'B')) {
             //生成木盒子 并且根据之前记录的位置放置
             this.addBox(mapDataStr, indexPos)
-        } else if (this.isFirstEqual(mapDataStr, "C")) {
+        } else if (this.isFirstEqual(mapDataStr, 'C')) {
             //生成宝箱 房间清理的情况下箱子是打开的
             this.addChest(indexPos)
-        } else if (this.isFirstEqual(mapDataStr, "D")) {
+        } else if (this.isFirstEqual(mapDataStr, 'D')) {
             //生成门
             this.addDoor(mapDataStr, indexPos, false)
-        } else if (this.isFirstEqual(mapDataStr, "E")) {
+        } else if (this.isFirstEqual(mapDataStr, 'E')) {
             //生成出口
             this.addExitDoor(mapDataStr, indexPos, exits)
-        } else if (mapDataStr == "F0") {
+        } else if (mapDataStr == 'F0') {
             //生成落石
             this.addFallStone(indexPos, false)
-        } else if (mapDataStr == "F1") {
+        } else if (mapDataStr == 'F1') {
             //生成落雷
             this.addLighteningFall(indexPos, true, true, true)
-        } else if (this.isFirstEqual(mapDataStr, "G")) {
+        } else if (this.isFirstEqual(mapDataStr, 'G')) {
             //生成炮台
             Logic.getBuildings(BuildingManager.EMPLACEMENT, (prefab: cc.Prefab) => {
                 let em = this.addBuilding(prefab, indexPos).getComponent(Emplacement)
                 em.setDirType(mapDataStr)
                 em.dungeon = dungeon
             })
-        } else if (this.isFirstEqual(mapDataStr, "H")) {
+        } else if (this.isFirstEqual(mapDataStr, 'H')) {
             //生成可打击建筑
             this.addHitBuilding(dungeon, mapDataStr, indexPos)
-        } else if (mapDataStr == "I0") {
+        } else if (mapDataStr == 'I0') {
             //生成通风管
             Logic.getBuildings(BuildingManager.WENTLINE, (prefab: cc.Prefab) => {
                 let p = this.addBuilding(prefab, indexPos).getComponent(MgWentLine)
                 p.init(dungeon, 1, 6, [MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_BITE_ZOMBIE])
                 this.monsterGeneratorList.push(p)
             })
-        } else if (mapDataStr == "I6") {
+        } else if (mapDataStr == 'I6') {
             //生成墙缝
             Logic.getBuildings(BuildingManager.CRACK, (prefab: cc.Prefab) => {
                 let p = this.addBuilding(prefab, indexPos).getComponent(MgCrack)
                 p.init(dungeon, 0.5, 15, [MonsterManager.MONSTER_SCARAB])
                 this.monsterGeneratorList.push(p)
             })
-        } else if (this.isFirstEqual(mapDataStr, "J")) {
-        } else if (this.isFirstEqual(mapDataStr, "K")) {
-        } else if (this.isFirstEqual(mapDataStr, "L")) {
+        } else if (this.isFirstEqual(mapDataStr, 'J')) {
+        } else if (this.isFirstEqual(mapDataStr, 'K')) {
+        } else if (this.isFirstEqual(mapDataStr, 'L')) {
             //生成灯
             this.addLamp(mapDataStr, indexPos)
-        } else if (this.isFirstEqual(mapDataStr, "O")) {
+        } else if (this.isFirstEqual(mapDataStr, 'O')) {
             //生成顶部栏
             Logic.getBuildings(BuildingManager.DECORATIONOVERHEAD, (prefab: cc.Prefab) => {
                 let head = this.addBuilding(prefab, indexPos)
-                if (mapDataStr == "O1") {
+                if (mapDataStr == 'O1') {
                     head.angle = 90
                 }
                 head.opacity = 80
                 head.zIndex = IndexZ.ROOF
             })
-        } else if (this.isFirstEqual(mapDataStr, "P")) {
+        } else if (this.isFirstEqual(mapDataStr, 'P')) {
             //生成传送门
             Logic.getBuildings(BuildingManager.PORTAL, (prefab: cc.Prefab) => {
                 if (Logic.isCheatMode) {
@@ -330,8 +330,8 @@ export default class BuildingManager extends BaseManager {
                     this.portals.push(portal)
                 }
             })
-        } else if (mapDataStr == "Q0") {
-        } else if (this.isFirstEqual(mapDataStr, "P")) {
+        } else if (mapDataStr == 'Q0') {
+        } else if (this.isFirstEqual(mapDataStr, 'P')) {
             Logic.getBuildings(BuildingManager.SHIPSTAIRS, (prefab: cc.Prefab) => {
                 let node = this.addBuilding(prefab, indexPos)
                 node.setScale(16)
@@ -341,61 +341,61 @@ export default class BuildingManager extends BaseManager {
                     node.getComponent(CCollider).offset = cc.v2(-8, 0)
                 }
             })
-        } else if (mapDataStr == "S0") {
+        } else if (mapDataStr == 'S0') {
             //生成商店
             this.addShopTable(indexPos)
-        } else if (mapDataStr == "S1") {
+        } else if (mapDataStr == 'S1') {
             //生成店主
             Logic.getBuildings(BuildingManager.SHOP, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
             })
-        } else if (mapDataStr == "S2") {
+        } else if (mapDataStr == 'S2') {
             //生成有家
             Logic.getBuildings(BuildingManager.SHOPMART, (prefab: cc.Prefab) => {
                 let mart = this.addBuilding(prefab, indexPos)
                 mart.zIndex += 10
             })
-        } else if (mapDataStr == "S3" || mapDataStr == "S4" || mapDataStr == "S5") {
+        } else if (mapDataStr == 'S3' || mapDataStr == 'S4' || mapDataStr == 'S5') {
             //生成货架
             this.addMartShelves(mapDataStr, indexPos)
-        } else if (mapDataStr == "S6") {
+        } else if (mapDataStr == 'S6') {
             //生成收银台
             Logic.getBuildings(BuildingManager.MARTCASHIER, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
                 let pos = Dungeon.getPosInMap(indexPos)
                 dungeon.nonPlayerManager.addNonPlayerFromData(NonPlayerManager.SHOP_KEEPER, cc.v3(pos.x - 60, pos.y + 180), dungeon)
             })
-        } else if (mapDataStr == "S7") {
+        } else if (mapDataStr == 'S7') {
             //生成餐桌
             Logic.getBuildings(BuildingManager.MARTTABLE, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
             })
-        } else if (mapDataStr == "T000") {
+        } else if (mapDataStr == 'T000') {
             //生成陷阱
             Logic.getBuildings(BuildingManager.TRAP, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
             })
-        } else if (mapDataStr == "T002") {
+        } else if (mapDataStr == 'T002') {
             //生成电锯,占据5个格子
             Logic.getBuildings(BuildingManager.SAW, (prefab: cc.Prefab) => {
                 let saw = this.addBuilding(prefab, indexPos)
                 saw.getComponent(Saw).setPos(indexPos)
             })
-        } else if (this.isFirstEqual(mapDataStr, "U")) {
+        } else if (this.isFirstEqual(mapDataStr, 'U')) {
             Logic.getBuildings(BuildingManager.WALLPAINT, (prefab: cc.Prefab) => {
                 let wallpaint = this.addBuilding(prefab, indexPos).getComponent(WallPaint)
                 wallpaint.node.zIndex = IndexZ.getActorZIndex(wallpaint.node.position.add(cc.v3(0, 120)))
                 wallpaint.init(mapDataStr)
             })
-        } else if (this.isFirstEqual(mapDataStr, "W")) {
+        } else if (this.isFirstEqual(mapDataStr, 'W')) {
             //生成可破坏装饰 并且根据之前记录的位置放置
             this.addInteractBuilding(mapDataStr, indexPos)
-        } else if (this.isFirstEqual(mapDataStr, "Z")) {
-            if (mapDataStr == "Z0" || mapDataStr == "Z1") {
+        } else if (this.isFirstEqual(mapDataStr, 'Z')) {
+            if (mapDataStr == 'Z0' || mapDataStr == 'Z1') {
                 Logic.getBuildings(BuildingManager.ROOMBED, (prefab: cc.Prefab) => {
                     let p = this.addBuilding(prefab, indexPos)
                     let rb = p.getComponent(RoomBed)
-                    rb.init(dungeon, mapDataStr == "Z1")
+                    rb.init(dungeon, mapDataStr == 'Z1')
                 })
             } else {
                 //生成家具
@@ -404,27 +404,27 @@ export default class BuildingManager extends BaseManager {
         }
     }
     public addBuildingsFromSideMap(mapDataStr: string, mapData: string[][], indexPos: cc.Vec3, levelData: LevelData) {
-        if (this.isFirstEqual(mapDataStr, "#")) {
+        if (this.isFirstEqual(mapDataStr, '#')) {
             //生成墙
             this.addDirWalls(mapDataStr, mapData, indexPos, levelData, true)
-        } else if (this.isFirstEqual(mapDataStr, "-")) {
+        } else if (this.isFirstEqual(mapDataStr, '-')) {
             //生成黑暗
             Logic.getBuildings(BuildingManager.DARKNESS, (prefab: cc.Prefab) => {
                 let dn = this.addBuilding(prefab, indexPos)
                 dn.zIndex = IndexZ.DARKNESS
-                if (mapDataStr == "-0") {
+                if (mapDataStr == '-0') {
                     dn.zIndex = IndexZ.ROOF
                 }
             })
-        } else if (this.isFirstEqual(mapDataStr, "~")) {
+        } else if (this.isFirstEqual(mapDataStr, '~')) {
             //生成水
             this.addWater(mapDataStr, indexPos)
-        } else if (mapDataStr == "+3") {
+        } else if (mapDataStr == '+3') {
             //生成汽艇
             Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
             })
-        } else if (this.isFirstEqual(mapDataStr, "D")) {
+        } else if (this.isFirstEqual(mapDataStr, 'D')) {
             //生成门
             this.addDoor(mapDataStr, indexPos, true)
         }
@@ -463,7 +463,7 @@ export default class BuildingManager extends BaseManager {
             let b = box.getComponent(Box)
             b.setDefaultPos(indexPos)
             //生成植物
-            if (mapDataStr == "B001") {
+            if (mapDataStr == 'B001') {
                 b.boxType = Box.PLANT
             }
             //设置对应存档盒子的位置
@@ -524,41 +524,36 @@ export default class BuildingManager extends BaseManager {
         })
     }
     private addDecorate(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
-        if (mapDataStr == "+2") {
+        if (mapDataStr == '+2') {
             //生成营火
             Logic.getBuildings(BuildingManager.CAMPFIRE, (prefab: cc.Prefab) => {
                 let camp = this.addBuilding(prefab, indexPos)
-                let shadow = camp.getChildByName("sprite").getChildByName("shadow")
-                shadow.position = Dungeon.getPosInMap(indexPos)
-                shadow.position = cc.v3(shadow.position.x, shadow.position.y + 40)
-                shadow.parent = this.node
-                shadow.zIndex = IndexZ.FLOOR
-                let fallentree = camp.getChildByName("sprite").getChildByName("fallentree")
+                let fallentree = camp.getChildByName('sprite').getChildByName('fallentree')
                 fallentree.position = Dungeon.getPosInMap(indexPos)
-                fallentree.position = cc.v3(shadow.position.x, shadow.position.y + 40)
+                fallentree.position = cc.v3(fallentree.position.x, fallentree.position.y + 40)
                 fallentree.parent = this.node
                 fallentree.zIndex = IndexZ.getActorZIndex(fallentree.position)
                 fallentree.setScale(6, 4)
             })
-        } else if (mapDataStr == "+3") {
+        } else if (mapDataStr == '+3') {
             Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
             })
-        } else if (mapDataStr == "+4") {
+        } else if (mapDataStr == '+4') {
             this.addPracticeEquipItem(dungeon, indexPos)
-        } else if (mapDataStr == "+++0") {
+        } else if (mapDataStr == '+++0') {
             Logic.getBuildings(BuildingManager.GRASS01, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
             })
-        } else if (mapDataStr == "+++1") {
+        } else if (mapDataStr == '+++1') {
             Logic.getBuildings(BuildingManager.GRASS02, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
             })
-        } else if (mapDataStr == "+++2") {
+        } else if (mapDataStr == '+++2') {
             Logic.getBuildings(BuildingManager.GRASS03, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
             })
-        } else if (mapDataStr == "+++3") {
+        } else if (mapDataStr == '+++3') {
             Logic.getBuildings(BuildingManager.GRASS04, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
             })
@@ -566,44 +561,44 @@ export default class BuildingManager extends BaseManager {
             Logic.getBuildings(BuildingManager.DECORATIONFLOOR, (prefab: cc.Prefab) => {
                 let fd = this.addBuilding(prefab, indexPos)
                 let df = fd.getComponent(DecorationFloor)
-                if (mapDataStr == "+1") {
-                    df.init(dungeon, "exitarrow", 4, 0)
-                } else if (mapDataStr == "++0") {
-                    df.init(dungeon, "roomoutside0", 32, 1, cc.v3(0.95, 0.5), 255, IndexZ.BASE)
-                } else if (mapDataStr == "++1") {
-                    df.init(dungeon, "roomoutside1", 32, 1, cc.v3(0.95, 0.5), 255, IndexZ.BASE)
-                } else if (mapDataStr == "++2") {
-                    df.init(dungeon, "roomoutside2", 32, 1, cc.v3(0, 0.5), 255, IndexZ.BASE)
+                if (mapDataStr == '+1') {
+                    df.init(dungeon, 'exitarrow', 4, 0)
+                } else if (mapDataStr == '++0') {
+                    df.init(dungeon, 'roomoutside0', 32, 1, cc.v3(0.95, 0.5), 255, IndexZ.BASE)
+                } else if (mapDataStr == '++1') {
+                    df.init(dungeon, 'roomoutside1', 32, 1, cc.v3(0.95, 0.5), 255, IndexZ.BASE)
+                } else if (mapDataStr == '++2') {
+                    df.init(dungeon, 'roomoutside2', 32, 1, cc.v3(0, 0.5), 255, IndexZ.BASE)
                 } else {
-                    df.init(dungeon, "dev", 4, 0)
+                    df.init(dungeon, 'dev', 4, 0)
                 }
             })
         }
     }
     private addWater(mapDataStr: string, indexPos: cc.Vec3) {
         let pint = parseInt(mapDataStr[1])
-        if ((pint >= 0 && pint <= 9) || mapDataStr == "~a" || mapDataStr == "~b") {
+        if ((pint >= 0 && pint <= 9) || mapDataStr == '~a' || mapDataStr == '~b') {
             Logic.getBuildings(BuildingManager.COAST, (prefab: cc.Prefab) => {
                 let co = this.addBuilding(prefab, indexPos)
                 let pbc = co.getComponent(CCollider)
                 let fint = pint
-                if (mapDataStr == "~a") {
+                if (mapDataStr == '~a') {
                     fint = 10
-                } else if (mapDataStr == "~b") {
+                } else if (mapDataStr == '~b') {
                     fint = 11
                 }
-                co.getChildByName("sprite").getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`coast00${fint}`)
-                let arr = this.coastColliderList[fint].split(",")
+                co.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`coast00${fint}`)
+                let arr = this.coastColliderList[fint].split(',')
                 pbc.setSize(cc.size(parseInt(arr[0]), parseInt(arr[1])))
                 pbc.offset = cc.v2(parseInt(arr[2]), parseInt(arr[3]))
                 co.zIndex = IndexZ.WATER
             })
-        } else if (mapDataStr == "~f") {
+        } else if (mapDataStr == '~f') {
             Logic.getBuildings(BuildingManager.WATERFALL, (prefab: cc.Prefab) => {
                 AudioPlayer.play(AudioPlayer.WATERFALL, false, true)
                 let dn = this.addBuilding(prefab, indexPos)
             })
-        } else if (mapDataStr == "~#") {
+        } else if (mapDataStr == '~#') {
             Logic.getBuildings(BuildingManager.WATERCOLLIDER, (prefab: cc.Prefab) => {
                 let dn = this.addBuilding(prefab, indexPos)
                 dn.zIndex = IndexZ.WATER
@@ -621,75 +616,75 @@ export default class BuildingManager extends BaseManager {
         let isRect = false
         let isCustom = false
         switch (mapDataStr) {
-            case "L0":
+            case 'L0':
                 prefabName = BuildingManager.LAMPLIGHT
                 break
-            case "L1":
+            case 'L1':
                 prefabName = BuildingManager.LAMPSUN
                 isOverHead = true
                 break
-            case "L2":
+            case 'L2':
                 prefabName = BuildingManager.LAMPSHIP
                 isOverHead = true
                 break
-            case "L3":
+            case 'L3':
                 prefabName = BuildingManager.MUSHROOM01
                 break
-            case "L4":
+            case 'L4':
                 prefabName = BuildingManager.MUSHROOM02
                 break
-            case "L5":
+            case 'L5':
                 prefabName = BuildingManager.MUSHROOM03
                 break
-            case "L6":
+            case 'L6':
                 prefabName = BuildingManager.MUSHROOM04
                 break
-            case "L7":
+            case 'L7':
                 prefabName = BuildingManager.LAMPSEARCH
                 isOverHead = true
                 break
-            case "L8":
+            case 'L8':
                 prefabName = BuildingManager.LAMPTORCH
                 isOverHead = true
                 break
-            case "L9":
+            case 'L9':
                 prefabName = BuildingManager.LAMPFIREPAN
                 break
-            case "L10":
+            case 'L10':
                 prefabName = BuildingManager.LAMPROAD
                 break
-            case "L11":
+            case 'L11':
                 prefabName = BuildingManager.LAMPFIREFLY
                 break
-            case "LL020":
-            case "LL021":
-            case "LL022":
-            case "LL023":
+            case 'LL020':
+            case 'LL021':
+            case 'LL022':
+            case 'LL023':
                 prefabName = BuildingManager.LAMPDIRECT
                 break
-            case "LL010":
-            case "LL011":
-            case "LL012":
-            case "LL013":
-            case "LL014":
-            case "LL015":
-            case "LL016":
-            case "LL017":
-            case "LL018":
-            case "LL019":
+            case 'LL010':
+            case 'LL011':
+            case 'LL012':
+            case 'LL013':
+            case 'LL014':
+            case 'LL015':
+            case 'LL016':
+            case 'LL017':
+            case 'LL018':
+            case 'LL019':
                 prefabName = BuildingManager.LAMPLIGHT
                 isCustom = true
                 break
-            case "LL000":
-            case "LL001":
-            case "LL002":
-            case "LL003":
-            case "LL004":
-            case "LL005":
-            case "LL006":
-            case "LL007":
-            case "LL008":
-            case "LL009":
+            case 'LL000':
+            case 'LL001':
+            case 'LL002':
+            case 'LL003':
+            case 'LL004':
+            case 'LL005':
+            case 'LL006':
+            case 'LL007':
+            case 'LL008':
+            case 'LL009':
                 prefabName = BuildingManager.LAMPLIGHT
                 isCustom = true
                 isRect = true
@@ -712,12 +707,12 @@ export default class BuildingManager extends BaseManager {
     }
     private getGoodsList(type: string): string[] {
         if (this.foodList.length < 1 && this.drinkList.length < 1) {
-            let prefix = "goods"
+            let prefix = 'goods'
             for (let goods of Logic.goodsNameList) {
                 let index = goods.substring(prefix.length, prefix.length + 1)
-                if (index == "0") {
+                if (index == '0') {
                     this.drinkList.push(goods)
-                } else if (index == "1") {
+                } else if (index == '1') {
                     this.foodList.push(goods)
                 }
             }
@@ -877,64 +872,64 @@ export default class BuildingManager extends BaseManager {
     private addFurnitures(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
         let data = new FurnitureData()
         switch (mapDataStr) {
-            case "Z2":
+            case 'Z2':
                 data.valueCopy(Logic.furnitures[Furniture.DESK])
                 break
-            case "Z3":
+            case 'Z3':
                 data.valueCopy(Logic.furnitures[Furniture.TV])
                 break
-            case "Z4":
+            case 'Z4':
                 data.valueCopy(Logic.furnitures[Furniture.SOFA])
                 break
-            case "Z5":
+            case 'Z5':
                 data.valueCopy(Logic.furnitures[Furniture.DINNER_TABLE])
                 break
-            case "Z6":
+            case 'Z6':
                 data.valueCopy(Logic.furnitures[Furniture.FRIDGE])
                 break
-            case "Z7":
+            case 'Z7':
                 data.valueCopy(Logic.furnitures[Furniture.WASHING_MACHINE])
                 break
-            case "Z8":
+            case 'Z8':
                 data.valueCopy(Logic.furnitures[Furniture.CUPBOARD])
                 break
-            case "Z9":
+            case 'Z9':
                 data.valueCopy(Logic.furnitures[Furniture.STOOL])
                 break
-            case "Z10":
+            case 'Z10':
                 data.valueCopy(Logic.furnitures[Furniture.COOKING_BENCH])
                 break
-            case "Z11":
+            case 'Z11':
                 data.valueCopy(Logic.furnitures[Furniture.DOLL_MACHINE])
                 break
-            case "Z12":
+            case 'Z12':
                 data.valueCopy(Logic.furnitures[Furniture.COOKING_BENCH_2])
                 break
-            case "Z13":
+            case 'Z13':
                 data.valueCopy(Logic.furnitures[Furniture.COOKING_BENCH_3])
                 break
-            case "Z14":
+            case 'Z14':
                 data.valueCopy(Logic.furnitures[Furniture.BATH])
                 break
-            case "Z15":
+            case 'Z15':
                 data.valueCopy(Logic.furnitures[Furniture.LITTLE_TABLE])
                 break
-            case "Z16":
+            case 'Z16':
                 data.valueCopy(Logic.furnitures[Furniture.LITTLE_TABLE_1])
                 break
-            case "Z17":
+            case 'Z17':
                 data.valueCopy(Logic.furnitures[Furniture.LITTLE_TABLE_2])
                 break
-            case "Z18":
+            case 'Z18':
                 data.valueCopy(Logic.furnitures[Furniture.FISHTANK])
                 break
-            case "Z19":
+            case 'Z19':
                 data.valueCopy(Logic.furnitures[Furniture.BOOKSHELF])
                 break
-            case "Z20":
+            case 'Z20':
                 data.valueCopy(Logic.furnitures[Furniture.WATERDISPENER])
                 break
-            case "Z21":
+            case 'Z21':
                 data.valueCopy(Logic.furnitures[Furniture.TRASHCAN])
                 break
             default:
@@ -942,55 +937,55 @@ export default class BuildingManager extends BaseManager {
         }
 
         let building: cc.Node
-        if (mapDataStr == "Z3") {
+        if (mapDataStr == 'Z3') {
             Logic.getBuildings(BuildingManager.ROOMTV, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 let script = building.getComponent(Furniture)
                 script.init(data)
             })
-        } else if (mapDataStr == "Z4") {
+        } else if (mapDataStr == 'Z4') {
             Logic.getBuildings(BuildingManager.ROOMSOFA, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.zIndex = IndexZ.ACTOR
                 let script = building.getComponent(Furniture)
                 script.init(data)
             })
-        } else if (mapDataStr == "Z9") {
+        } else if (mapDataStr == 'Z9') {
             Logic.getBuildings(BuildingManager.ROOMSTOOL, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomStool).init(indexPos, dungeon)
                 let script = building.getComponent(Furniture)
                 script.init(data)
             })
-        } else if (mapDataStr == "Z10") {
+        } else if (mapDataStr == 'Z10') {
             Logic.getBuildings(BuildingManager.ROOMKITCHEN, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomKitchen).init(indexPos)
                 let script = building.getComponent(Furniture)
                 script.init(data)
             })
-        } else if (mapDataStr == "Z17") {
+        } else if (mapDataStr == 'Z17') {
             Logic.getBuildings(BuildingManager.ROOMCLOCK, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomClock).init(indexPos)
                 let script = building.getComponent(Furniture)
                 script.init(data)
             })
-        } else if (mapDataStr == "Z18") {
+        } else if (mapDataStr == 'Z18') {
             Logic.getBuildings(BuildingManager.ROOMFISHTANK, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomFishtank).init(indexPos, dungeon)
                 let script = building.getComponent(Furniture)
                 script.init(data)
             })
-        } else if (mapDataStr == "Z20") {
+        } else if (mapDataStr == 'Z20') {
             Logic.getBuildings(BuildingManager.ROOMWATERDISPENSER, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomWaterDispenser).init(indexPos)
                 let script = building.getComponent(Furniture)
                 script.init(data)
             })
-        } else if (mapDataStr == "Z21") {
+        } else if (mapDataStr == 'Z21') {
             Logic.getBuildings(BuildingManager.ROOMTRASHCAN, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomTrashCan).init(indexPos)
@@ -1012,16 +1007,16 @@ export default class BuildingManager extends BaseManager {
             let hitBuilding = this.addBuilding(prefab, indexPos)
             let h = hitBuilding.getComponent(HitBuilding)
             h.setDefaultPos(indexPos)
-            let resName = "car"
+            let resName = 'car'
             let equipmentNames = []
             let itemNames = []
             let maxhealth = 9999
             let scale = 4
             let colliderExtrude = 0
             switch (mapDataStr) {
-                case "H0":
-                    resName = "car"
-                    equipmentNames = ["shield001"]
+                case 'H0':
+                    resName = 'car'
+                    equipmentNames = ['shield001']
                     itemNames = []
                     maxhealth = 5
                     scale = 8

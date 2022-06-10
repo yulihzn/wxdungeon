@@ -44,25 +44,24 @@ const { ccclass, property } = cc._decorator
 export default class Bullet extends BaseColliderComponent {
     @property(cc.Prefab)
     boom: cc.Prefab = null
+
     @property(cc.Node)
     root: cc.Node = null
     @property(cc.Node)
     shadow: cc.Node = null
     data: BulletData = new BulletData()
-
-    anim: cc.Animation
     dir = 0
     tagetPos = cc.v3(0, 0)
     hv = cc.v2(0, 0)
     isFromPlayer = false
+    collider: CCollider
+    dungeon: Dungeon
+    startPos: cc.Vec3 = cc.v3(0, 0) //子弹起始位置
 
+    anim: cc.Animation
     sprite: cc.Sprite
     light: cc.Sprite
-    collider: CCollider
-
-    dungeon: Dungeon
-
-    startPos: cc.Vec3 = cc.v3(0, 0) //子弹起始位置
+    base: cc.Node
 
     isTrackDelay = false //是否延迟追踪
     isDecelerateDelay = false //是否延迟减速
@@ -78,11 +77,13 @@ export default class Bullet extends BaseColliderComponent {
         super.onLoad()
         this.anim = this.getComponent(cc.Animation)
         this.collider = this.getComponentInChildren(CCollider)
-        this.sprite = this.root.getChildByName('sprite').getComponent(cc.Sprite)
+        this.base = this.root.getChildByName('base')
+        this.base.angle = 0
+        this.sprite = this.base.getChildByName('sprite').getComponent(cc.Sprite)
         this.sprite.node.opacity = 255
-        this.sprite.node.angle = 0
-        this.light = this.root.getChildByName('light').getComponent(cc.Sprite)
+        this.light = this.base.getChildByName('light').getComponent(cc.Sprite)
         this.light.node.opacity = 0
+        this.entity.Transform.flyZ = 32
     }
     onEnable() {
         this.tagetPos = cc.v3(0, 0)
@@ -90,15 +91,16 @@ export default class Bullet extends BaseColliderComponent {
         this.entity.NodeRender.root = this.root
         this.entity.Move.linearVelocity = cc.v2(0, 0)
         this.currentLinearVelocity = cc.v2(0, 0)
-        if (!this.sprite) {
-            this.sprite = this.root.getChildByName('sprite').getComponent(cc.Sprite)
+        if (!this.base) {
+            this.base = this.root.getChildByName('base')
+            this.sprite = this.base.getChildByName('sprite').getComponent(cc.Sprite)
+            this.light = this.base.getChildByName('light').getComponent(cc.Sprite)
         }
-        this.sprite.node.opacity = 255
         this.sprite.node.angle = 0
-        if (!this.light) {
-            this.light = this.root.getChildByName('light').getComponent(cc.Sprite)
-        }
+        this.sprite.node.opacity = 255
         this.light.node.opacity = 0
+        this.changeAngle(0)
+
         this.isTrackDelay = false
         this.isDecelerateDelay = false
         this.isHit = false
@@ -107,8 +109,7 @@ export default class Bullet extends BaseColliderComponent {
     timeDelay = 0
     checkTimeDelay = 0
     changeAngle(angle: number) {
-        this.sprite.node.angle = angle
-        this.light.node.angle = angle
+        this.base.angle = angle
         this.shadow.angle = angle
     }
     update(dt) {
@@ -140,7 +141,8 @@ export default class Bullet extends BaseColliderComponent {
         }
         let scale = 1 - y / 64
         this.shadow.scale = scale < 0.5 ? 0.5 : scale
-        this.shadow.y = this.entity.Transform.base - 32
+        this.shadow.y = this.entity.Transform.base
+        this.entity.Move.linearVelocityZ = 1000
     }
 
     private checkTraking(): void {
@@ -171,6 +173,7 @@ export default class Bullet extends BaseColliderComponent {
             this.entity.Transform.base = this.shooter.actor.entity.Transform.base
             this.entity.Transform.z = this.shooter.actor.entity.Transform.z
         }
+        this.entity.Transform.flyZ = 32
     }
 
     private changeRes(resName: string, lightName: string, lightColor: string, suffix?: string) {
@@ -245,7 +248,6 @@ export default class Bullet extends BaseColliderComponent {
 
         if (this.data.isRotate > 0) {
             cc.tween(this.sprite.node).repeatForever(spawntween).start()
-            cc.tween(this.shadow).repeatForever(rotatetween).start()
         } else {
             cc.tween(this.sprite.node).repeatForever(idletween).start()
         }
@@ -277,7 +279,7 @@ export default class Bullet extends BaseColliderComponent {
                 let pos = this.node.convertToWorldSpaceAR(cc.Vec3.ZERO)
                 this.shooter.fireSplitBullet(
                     this.data.splitBulletType,
-                    this.sprite.node.angle,
+                    this.base.angle,
                     this.shooter.node.convertToNodeSpaceAR(pos),
                     this.data.splitArcExNum,
                     this.data.splitLineExNum
@@ -475,7 +477,6 @@ export default class Bullet extends BaseColliderComponent {
         // this.rigidBody.linearVelocity = this.rigidBody.linearVelocity.rotate(cc.Vec2.angle(pos,reflect));
         let angle = -180 + Logic.getRandomNum(0, 10) - 20
         this.changeAngle(this.sprite.node.angle + angle)
-        // this.node.angle += angle
         this.currentLinearVelocity = this.currentLinearVelocity.rotate((angle * Math.PI) / 180)
         this.isFromPlayer = true
         this.data.isTracking = 0
@@ -541,7 +542,6 @@ export default class Bullet extends BaseColliderComponent {
             return
         }
         //设置旋转角度
-        // this.node.angle = Utils.getRotateAngle(direction, this.node.scaleX < 0)
         this.changeAngle(Utils.getRotateAngle(direction, this.node.scaleX < 0))
     }
 

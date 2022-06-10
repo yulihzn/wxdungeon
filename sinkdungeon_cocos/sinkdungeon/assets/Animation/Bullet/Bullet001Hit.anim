@@ -9,7 +9,7 @@
   "wrapMode": 1,
   "curveData": {
     "paths": {
-      "root/sprite": {
+      "root/base/sprite": {
         "comps": {},
         "props": {
           "opacity": [
@@ -20,7 +20,7 @@
           ]
         }
       },
-      "root/light": {
+      "root/base/light": {
         "comps": {},
         "props": {
           "scale": [
