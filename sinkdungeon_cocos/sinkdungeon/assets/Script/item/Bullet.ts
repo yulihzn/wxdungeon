@@ -167,6 +167,10 @@ export default class Bullet extends BaseColliderComponent {
             this.collider.h = 16
         }
         this.collider.sensor = data.isPhysical == 0
+        if (this.shooter && this.shooter.actor) {
+            this.entity.Transform.base = this.shooter.actor.entity.Transform.base
+            this.entity.Transform.z = this.shooter.actor.entity.Transform.z
+        }
     }
 
     private changeRes(resName: string, lightName: string, lightColor: string, suffix?: string) {
@@ -186,6 +190,7 @@ export default class Bullet extends BaseColliderComponent {
             this.light.spriteFrame = s2
             let color = cc.color(255, 255, 255).fromHEX(lightColor)
             this.light.node.color = color
+            this.shadow.color = color
         }
     }
     private getSpriteFrameByName(resName: string, suffix?: string, needDefaultSuffix?: boolean): cc.SpriteFrame {
@@ -272,7 +277,7 @@ export default class Bullet extends BaseColliderComponent {
                 let pos = this.node.convertToWorldSpaceAR(cc.Vec3.ZERO)
                 this.shooter.fireSplitBullet(
                     this.data.splitBulletType,
-                    this.node.angle,
+                    this.sprite.node.angle,
                     this.shooter.node.convertToNodeSpaceAR(pos),
                     this.data.splitArcExNum,
                     this.data.splitLineExNum
@@ -469,7 +474,8 @@ export default class Bullet extends BaseColliderComponent {
         // this.node.angle-=cc.Vec2.angle(pos,reflect)*180/Math.PI;
         // this.rigidBody.linearVelocity = this.rigidBody.linearVelocity.rotate(cc.Vec2.angle(pos,reflect));
         let angle = -180 + Logic.getRandomNum(0, 10) - 20
-        this.node.angle += angle
+        this.changeAngle(this.sprite.node.angle + angle)
+        // this.node.angle += angle
         this.currentLinearVelocity = this.currentLinearVelocity.rotate((angle * Math.PI) / 180)
         this.isFromPlayer = true
         this.data.isTracking = 0
