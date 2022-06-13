@@ -136,7 +136,7 @@ export default class WorldLoader {
                     turnMap[i] = new Array()
                     turnRooms[i] = new Array()
                     for (let j = 0; j < map.length; j++) {
-                        turnfloorMap[i][map.length - 1 - j] = map[j][i]
+                        turnfloorMap[i][map.length - 1 - j] = floormap[j][i]
                         turnMap[i][map.length - 1 - j] = map[j][i]
                         turnRooms[i][rooms.length - 1 - j] = rooms[j][i]
                     }

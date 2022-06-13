@@ -101,8 +101,8 @@ export default class MapManager {
         let data = Logic.worldLoader.getCurrentLevelData()
         mdd.map = data.getRoomFloorMap(room.x, room.y)
         //添加随机元素
-        let rand4save = new Random4Save(room.seed)
-        this.addRandomTile(mdd, rand4save)
+        // let rand4save = new Random4Save(room.seed)
+        // this.addRandomTile(mdd, rand4save)
         return mdd.map
     }
     public getCurrentSideFloorMapStringArray(offset: cc.Vec3): string[][] {
@@ -260,7 +260,8 @@ export default class MapManager {
             pos.push(cc.v3(dx, dy))
         }
         for (let p of pos) {
-            if (mapData.map[p.x][p.y] == '**' || mapData.map[p.x][p.y].indexOf('W') != -1) {
+            //装饰建筑或者空
+            if (!mapData.map[p.x][p.y] || mapData.map[p.x][p.y].indexOf('W') != -1) {
                 mapData.map[p.x][p.y] = `W${rand4save.getRandomNum(0, 2)}`
             }
         }

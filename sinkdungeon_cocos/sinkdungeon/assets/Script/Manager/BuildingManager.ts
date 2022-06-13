@@ -224,7 +224,6 @@ export default class BuildingManager extends BaseManager {
     }
     public addBuildingsFromMap(dungeon: Dungeon, mapData: string[][], mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData, exits: ExitData[]) {
         if (mapDataStr == '==') {
-            this.waterIndexList.push(indexPos)
         } else if (this.isFirstEqual(mapDataStr, '*')) {
         } else if (this.isFirstEqual(mapDataStr, '#')) {
             //生成墙
@@ -575,7 +574,10 @@ export default class BuildingManager extends BaseManager {
         }
     }
     private addWater(mapDataStr: string, indexPos: cc.Vec3) {
+        this.waterIndexList.push(indexPos)
         let pint = parseInt(mapDataStr[1])
+        let index = parseInt(mapDataStr.substring(3))
+        let resIndex = parseInt(mapDataStr.substring(1, 3))
         if ((pint >= 0 && pint <= 9) || mapDataStr == '~a' || mapDataStr == '~b') {
             Logic.getBuildings(BuildingManager.COAST, (prefab: cc.Prefab) => {
                 let co = this.addBuilding(prefab, indexPos)
@@ -592,12 +594,12 @@ export default class BuildingManager extends BaseManager {
                 pbc.offset = cc.v2(parseInt(arr[2]), parseInt(arr[3]))
                 co.zIndex = IndexZ.WATER
             })
-        } else if (mapDataStr == '~f') {
+        } else if (this.hasThe(mapDataStr, '~~')) {
             Logic.getBuildings(BuildingManager.WATERFALL, (prefab: cc.Prefab) => {
                 AudioPlayer.play(AudioPlayer.WATERFALL, false, true)
                 let dn = this.addBuilding(prefab, indexPos)
             })
-        } else if (mapDataStr == '~#') {
+        } else if (this.hasThe(mapDataStr, '~#')) {
             Logic.getBuildings(BuildingManager.WATERCOLLIDER, (prefab: cc.Prefab) => {
                 let dn = this.addBuilding(prefab, indexPos)
                 dn.zIndex = IndexZ.WATER

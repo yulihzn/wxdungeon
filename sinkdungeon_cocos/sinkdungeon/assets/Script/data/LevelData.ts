@@ -1,9 +1,9 @@
-import DataUtils from "../utils/DataUtils"
-import ExitData from "./ExitData"
-import MapLightData from "./MapLightData"
+import DataUtils from '../utils/DataUtils'
+import ExitData from './ExitData'
+import MapLightData from './MapLightData'
 
 export default class LevelData {
-    name: string = "" //名称
+    name: string = '' //名称
     index: number = 0 //关卡包含的列表下标
     chapter: number = 0 //章节下标
     width: number = 0 //地图单位宽
@@ -11,13 +11,16 @@ export default class LevelData {
     seed: number = 0 //随机种子
     roomWidth: number = 0 //房间宽
     roomHeight: number = 0 //房间高
-    floorRes = "" //地板资源名
-    floorCoverRes = "" //地板覆盖物
-    floorCoverRes1 = "" //地板覆盖物1
-    floorCoverRes2 = "" //地板覆盖物2
-    floorCoverRes3 = "" //地板覆盖物3
-    floorCoverRes4 = "" //地板覆盖物4
-    floorCoverRes5 = "" //地板覆盖物5
+    floorRes = '' //地板资源名
+    floorRes1 = '' //地板资源名1
+    floorRes2 = '' //地板资源名2
+    floorRes3 = '' //地板资源名3
+    floorRes4 = '' //地板资源名4
+    floorRes5 = '' //地板资源名5
+    floorRes6 = '' //地板资源名6
+    floorRes7 = '' //地板资源名7
+    floorRes8 = '' //地板资源名8
+    floorRes9 = '' //地板资源名9
     /**
      * 墙壁资源名#0000 #00
      * 00右下内角,01下墙,02左下内角,
@@ -28,28 +31,28 @@ export default class LevelData {
      * ##0独立矮墙体
      * ###空墙
      */
-    wallRes0 = "" //墙壁资源名1(#0000)
-    wallRes1 = "" //墙壁资源名1(#0100)
-    wallRes2 = "" //墙壁资源名2(#0200)
-    wallRes3 = "" //墙壁资源名3(#0300)
-    wallRes4 = "" //墙壁资源名4(#0400)
-    wallRes5 = "" //墙壁资源名5(#0500)
-    wallRes6 = "" //墙壁资源名6(#0600)
-    wallRes7 = "" //墙壁资源名7(#0700)
-    wallRes8 = "" //墙壁资源名8(#0800)
-    wallRes9 = "" //墙壁资源名9(#0900)
-    wallResOther0 = "" //墙壁资源名1(##0独立矮墙体)
-    wallResOther1 = "" //墙壁资源名1(##1独立矮墙体)
-    wallResOther2 = "" //墙壁资源名2(##2独立矮墙体)
-    wallResOther3 = "" //墙壁资源名3(##3独立矮墙体)
-    wallResOther4 = "" //墙壁资源名4(##4独立矮墙体)
-    wallResOther5 = "" //墙壁资源名5(##5独立矮墙体)
-    wallResOther6 = "" //墙壁资源名6(##6独立矮墙体)
-    wallResOther7 = "" //墙壁资源名7(##7独立矮墙体)
-    wallResOther8 = "" //墙壁资源名8(##8独立矮墙体)
-    wallResOther9 = "" //墙壁资源名9(##9独立矮墙体)
-    doorRes = "" //门资源名
-    exitRes = "" //出入口资源名
+    wallRes0 = '' //墙壁资源名1(#0000)
+    wallRes1 = '' //墙壁资源名1(#0100)
+    wallRes2 = '' //墙壁资源名2(#0200)
+    wallRes3 = '' //墙壁资源名3(#0300)
+    wallRes4 = '' //墙壁资源名4(#0400)
+    wallRes5 = '' //墙壁资源名5(#0500)
+    wallRes6 = '' //墙壁资源名6(#0600)
+    wallRes7 = '' //墙壁资源名7(#0700)
+    wallRes8 = '' //墙壁资源名8(#0800)
+    wallRes9 = '' //墙壁资源名9(#0900)
+    wallResOther0 = '' //墙壁资源名1(##0独立矮墙体)
+    wallResOther1 = '' //墙壁资源名1(##1独立矮墙体)
+    wallResOther2 = '' //墙壁资源名2(##2独立矮墙体)
+    wallResOther3 = '' //墙壁资源名3(##3独立矮墙体)
+    wallResOther4 = '' //墙壁资源名4(##4独立矮墙体)
+    wallResOther5 = '' //墙壁资源名5(##5独立矮墙体)
+    wallResOther6 = '' //墙壁资源名6(##6独立矮墙体)
+    wallResOther7 = '' //墙壁资源名7(##7独立矮墙体)
+    wallResOther8 = '' //墙壁资源名8(##8独立矮墙体)
+    wallResOther9 = '' //墙壁资源名9(##9独立矮墙体)
+    doorRes = '' //门资源名
+    exitRes = '' //出入口资源名
     needRadomDecorate = false
     isWater = false
     map: string[][] = []
@@ -57,7 +60,7 @@ export default class LevelData {
     roomTypes: string[][] = []
     minimap: string[][] = []
     minimaplock: string[][] = []
-    exits: string = "" //16,4,0,1,27,1;27,1,0,0,16,4;分号隔开，出口坐标，章节，入口坐标（y轴向下）
+    exits: string = '' //16,4,0,1,27,1;27,1,0,0,16,4;分号隔开，出口坐标，章节，入口坐标（y轴向下）
     lights: MapLightData[]
 
     getWallRes(index: number, isOther?: boolean) {
@@ -82,6 +85,30 @@ export default class LevelData {
                 return isOther ? this.wallResOther8 : this.wallRes8
             case 9:
                 return isOther ? this.wallResOther9 : this.wallRes9
+        }
+    }
+    getFloorRes(index: number) {
+        switch (index) {
+            case 0:
+                return this.floorRes
+            case 1:
+                return this.floorRes1
+            case 2:
+                return this.floorRes2
+            case 3:
+                return this.floorRes3
+            case 4:
+                return this.floorRes4
+            case 5:
+                return this.floorRes5
+            case 6:
+                return this.floorRes6
+            case 7:
+                return this.floorRes7
+            case 8:
+                return this.floorRes8
+            case 9:
+                return this.floorRes9
         }
     }
     // constructor(strs: string) {
@@ -163,10 +190,10 @@ export default class LevelData {
     getExitList(): ExitData[] {
         let list = new Array()
         if (this.exits && this.exits.length > 0) {
-            let arr = this.exits.split("#")
+            let arr = this.exits.split('#')
             for (let str of arr) {
                 let data = new ExitData()
-                let temps = str.split(",")
+                let temps = str.split(',')
                 let fx = parseInt(temps[0])
                 let fy = this.roomHeight * this.height - parseInt(temps[1]) - 1 //这里y是反过来的
                 let tx = parseInt(temps[4])

@@ -87,56 +87,61 @@ export default class Wall extends Building {
         if (Utils.hasThe(wallName, 'fence')) {
             this.roofsprite.node.opacity = 0
             this.wallsprite.spriteFrame = null
+            this.wallsprite.trim = false
+            this.wallsprite.node.width = 16
+            this.wallsprite.node.height = 32
             switch (this.type) {
                 case Wall.TYPE_INNER_CORNER_BOTTOM_RIGHT:
-                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`wallNameanim10`)
+                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`${wallName}anim10`)
                     break
                 case Wall.TYPE_BOTTOM:
-                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`wallNameanim1`)
+                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`${wallName}anim1`)
                     break
                 case Wall.TYPE_INNER_CORNER_BOTTOM_LEFT:
-                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`wallNameanim11`)
+                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`${wallName}anim11`)
                     break
                 case Wall.TYPE__RIGHT:
-                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`wallNameanim3`)
+                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`${wallName}anim3`)
                     break
                 case Wall.TYPE_CENTER:
                     break
                 case Wall.TYPE_LEFT:
-                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`wallNameanim2`)
+                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`${wallName}anim2`)
                     break
                 case Wall.TYPE_INNER_CORNER_TOP_RIGHT:
-                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`wallNameanim9`)
+                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`${wallName}anim9`)
                     break
                 case Wall.TYPE_TOP:
-                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`wallNameanim8`)
+                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`${wallName}anim0`)
                     break
                 case Wall.TYPE_INNER_CORNER_TOP_LEFT:
-                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`wallNameanim5`)
+                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`${wallName}anim8`)
                     break
                 case Wall.TYPE_CORNER_TOP_LEFT:
-                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`wallNameanim0`)
+                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`${wallName}anim4`)
                     break
                 case Wall.TYPE_CORNER_TOP_RIGHT:
-                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`wallNameanim6`)
+                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`${wallName}anim5`)
                     break
                 case Wall.TYPE_CORNER_BOTTOM_LEFT:
-                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`wallNameanim7`)
+                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`${wallName}anim7`)
                     break
                 case Wall.TYPE_CORNER_BOTTOM_RIGHT:
-                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`wallNameanim6`)
+                    this.wallsprite.spriteFrame = Logic.spriteFrameRes(`${wallName}anim6`)
                     break
                 case Wall.TYPE_INNER_CORNER_TOP_RIGHT_BOTTOM_LEFT:
                     break
                 case Wall.TYPE_INNER_CORNER_TOP_LEFT_BOTTOM_RIGHT:
                     break
             }
+            this.ajustSpriteShow(false)
             return
         }
         let rect = spriteframe.getRect()
         let sf1 = spriteframe.clone()
         let sf2 = spriteframe.clone()
-
+        this.roofsprite.trim = true
+        this.wallsprite.trim = true
         this.roofsprite.node.width = 16
         this.roofsprite.node.height = 16
         this.wallsprite.node.width = 16
@@ -219,17 +224,11 @@ export default class Wall extends Building {
         this.node.position = this.entity.Transform.position.clone()
     }
     start() {}
-    private ajustSpriteShow(isShowShadow: boolean, roofAngle: number, flipWall: boolean, flipRoof: cc.Vec3) {
+    private ajustSpriteShow(isShowShadow: boolean) {
         if (!this.wallsprite) {
-            this.wallsprite = this.node.getChildByName('sprite').getChildByName('wallsprite').getComponent(cc.Sprite)
-            this.roofsprite = this.node.getChildByName('sprite').getChildByName('roofsprite').getComponent(cc.Sprite)
             this.shadowsprite = this.node.getChildByName('sprite').getChildByName('shadow').getComponent(cc.Sprite)
         }
         this.shadowsprite.node.opacity = isShowShadow ? 80 : 0
-        this.roofsprite.node.angle = roofAngle
-        this.wallsprite.node.scaleX = flipWall ? -1 : 1
-        this.roofsprite.node.scaleX = flipRoof.x
-        this.roofsprite.node.scaleY = flipRoof.y
     }
 
     public typeNeedTransparent(): boolean {

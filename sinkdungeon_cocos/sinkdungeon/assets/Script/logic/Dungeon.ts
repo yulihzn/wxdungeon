@@ -1,26 +1,26 @@
-import Player from "./Player"
-import Tile from "./Tile"
-import Logic from "./Logic"
-import { EventHelper } from "./EventHelper"
-import MonsterManager from "../manager/MonsterManager"
-import EquipmentManager from "../manager/EquipmentManager"
-import EquipmentData from "../data/EquipmentData"
-import DungeonStyleManager from "../manager/DungeonStyleManager"
-import ShopTable from "../building/ShopTable"
-import AudioPlayer from "../utils/AudioPlayer"
-import RoomType from "../rect/RoomType"
-import IndexZ from "../utils/IndexZ"
-import BuildingManager from "../manager/BuildingManager"
-import LevelData from "../data/LevelData"
-import NonPlayerManager from "../manager/NonPlayerManager"
-import ItemManager from "../manager/ItemManager"
-import Utils from "../utils/Utils"
-import LightManager from "../manager/LightManager"
-import DamageData from "../data/DamageData"
-import GameWorldSystem from "../ecs/system/GameWorldSystem"
-import Random from "../utils/Random"
-import LoadingManager from "../manager/LoadingManager"
-import StatusIconList from "../ui/StatusIconList"
+import Player from './Player'
+import Tile from './Tile'
+import Logic from './Logic'
+import { EventHelper } from './EventHelper'
+import MonsterManager from '../manager/MonsterManager'
+import EquipmentManager from '../manager/EquipmentManager'
+import EquipmentData from '../data/EquipmentData'
+import DungeonStyleManager from '../manager/DungeonStyleManager'
+import ShopTable from '../building/ShopTable'
+import AudioPlayer from '../utils/AudioPlayer'
+import RoomType from '../rect/RoomType'
+import IndexZ from '../utils/IndexZ'
+import BuildingManager from '../manager/BuildingManager'
+import LevelData from '../data/LevelData'
+import NonPlayerManager from '../manager/NonPlayerManager'
+import ItemManager from '../manager/ItemManager'
+import Utils from '../utils/Utils'
+import LightManager from '../manager/LightManager'
+import DamageData from '../data/DamageData'
+import GameWorldSystem from '../ecs/system/GameWorldSystem'
+import Random from '../utils/Random'
+import LoadingManager from '../manager/LoadingManager'
+import StatusIconList from '../ui/StatusIconList'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -46,8 +46,8 @@ export default class Dungeon extends cc.Component {
     @property(cc.Camera)
     mainCamera: cc.Camera = null
     mapData: string[][] = [] //地图数据
-    floorData: string[][] = [] //地图地面数据
     tilesmap: Tile[][] = new Array() //地面列表
+    floorCombineMap: Map<string, string> = new Map()
     floorIndexMap: cc.Vec3[] = new Array() //地板下标列表
     static WIDTH_SIZE: number = 7
     static HEIGHT_SIZE: number = 7
@@ -104,39 +104,39 @@ export default class Dungeon extends cc.Component {
         //初始化动画
         this.anim = this.getComponent(cc.Animation)
         //初始化监听
-        EventHelper.on(EventHelper.PLAYER_MOVE, (detail) => {
+        EventHelper.on(EventHelper.PLAYER_MOVE, detail => {
             this.playerAction(detail.dir, detail.pos, detail.dt)
         })
-        EventHelper.on(EventHelper.DUNGEON_SETEQUIPMENT, (detail) => {
+        EventHelper.on(EventHelper.DUNGEON_SETEQUIPMENT, detail => {
             if (this.node) this.addEquipment(detail.res, detail.pos, detail.equipmentData)
         })
-        EventHelper.on(EventHelper.DUNGEON_ADD_COIN, (detail) => {
+        EventHelper.on(EventHelper.DUNGEON_ADD_COIN, detail => {
             this.addCoin(detail.pos, detail.count)
         })
-        EventHelper.on(EventHelper.DUNGEON_ADD_OILGOLD, (detail) => {
+        EventHelper.on(EventHelper.DUNGEON_ADD_OILGOLD, detail => {
             this.addOilGold(detail.pos, detail.count)
         })
-        EventHelper.on(EventHelper.DUNGEON_ADD_ITEM, (detail) => {
+        EventHelper.on(EventHelper.DUNGEON_ADD_ITEM, detail => {
             if (this.node) this.addItem(detail.pos, detail.res, detail.count)
         })
-        EventHelper.on(EventHelper.DUNGEON_ADD_FALLSTONE, (detail) => {
+        EventHelper.on(EventHelper.DUNGEON_ADD_FALLSTONE, detail => {
             this.addFallStone(detail.pos, detail.isAuto)
         })
-        EventHelper.on(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, (detail) => {
+        EventHelper.on(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, detail => {
             this.addLighteningFall(detail.pos, false, false, detail.showArea, detail.damage)
         })
-        EventHelper.on(EventHelper.DUNGEON_SHAKEONCE, (detail) => {
+        EventHelper.on(EventHelper.DUNGEON_SHAKEONCE, detail => {
             if (this.anim) {
-                this.anim.play("DungeonShakeOnce")
+                this.anim.play('DungeonShakeOnce')
             }
         })
-        EventHelper.on(EventHelper.BOSS_ADDSLIME, (detail) => {
+        EventHelper.on(EventHelper.BOSS_ADDSLIME, detail => {
             this.addBossSlime(detail.slimeType, detail.posIndex)
         })
-        EventHelper.on(EventHelper.TEST_SHOW_NODE_COUNT, (detail) => {
+        EventHelper.on(EventHelper.TEST_SHOW_NODE_COUNT, detail => {
             this.logNodeCount()
         })
-        EventHelper.on(EventHelper.DUNGEON_DISAPPEAR, (detail) => {
+        EventHelper.on(EventHelper.DUNGEON_DISAPPEAR, detail => {
             if (this.node) {
                 this.isDisappeared = true
                 for (let b of this.buildingManager.buildingList) {
@@ -187,7 +187,6 @@ export default class Dungeon extends cc.Component {
         let mapData: string[][] = Logic.mapManager.getCurrentMapStringArray()
         let floorData: string[][] = Logic.mapManager.getCurrentFloorMapStringArray()
         this.mapData = mapData
-        this.floorData = floorData
         let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData()
         let exits = leveldata.getExitList()
         Logic.changeDungeonSize()
@@ -195,7 +194,7 @@ export default class Dungeon extends cc.Component {
         for (let arr of this.tilesmap) {
             Utils.clearComponentArray(arr)
         }
-        let colliderdebug = this.node.getChildByName("colliderdebug")
+        let colliderdebug = this.node.getChildByName('colliderdebug')
         colliderdebug.zIndex = IndexZ.UI
         this.rootSystem = new GameWorldSystem(Dungeon.WIDTH_SIZE * Dungeon.TILE_SIZE, Dungeon.HEIGHT_SIZE * Dungeon.TILE_SIZE, colliderdebug.getComponent(cc.Graphics))
         this.rootSystem.init()
@@ -212,7 +211,7 @@ export default class Dungeon extends cc.Component {
                         this.tilesmap[i] = new Array(i)
                         for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
                             //越往下层级越高，j是行，i是列
-                            this.addTiles(floorData[i][j], cc.v3(i, j), leveldata, false)
+                            this.addTiles(floorData, cc.v3(i, j), cc.v3(i, j), leveldata, false)
                             //加载建筑
                             this.buildingManager.addBuildingsFromMap(this, mapData, mapData[i][j], cc.v3(i, j), leveldata, exits)
                             //房间未清理时加载物品
@@ -250,11 +249,11 @@ export default class Dungeon extends cc.Component {
                     }, 1)
                     //设置门开关
                     this.setDoors(true, true)
-                    cc.log("load finished")
+                    cc.log('load finished')
                     this.scheduleOnce(() => {
                         this.isInitFinish = true
                         cc.tween(this.fog).to(3, { scale: 5 }).start()
-                        let blackcenter = this.fog.getChildByName("sprite").getChildByName("blackcenter")
+                        let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter')
                         cc.tween(blackcenter).delay(0.1).to(0.5, { opacity: 0 }).start()
                         this.logNodeCount()
                         this.addOilGoldOnGround()
@@ -269,29 +268,63 @@ export default class Dungeon extends cc.Component {
         this.cameraTargetNode = this.player.node
         this.fog.setPosition(this.player.node.position.clone())
     }
-    private addTiles(mapDataStr: string, indexPos: cc.Vec3, leveldata: LevelData, onlyShow: boolean) {
-        if (Dungeon.isFirstEqual(mapDataStr, "*") && mapDataStr != "**") {
-            let t = cc.instantiate(this.tile)
-            t.parent = this.node
-            t.position = Dungeon.getPosInMap(indexPos.clone())
-            t.zIndex = IndexZ.BASE + (Dungeon.HEIGHT_SIZE - indexPos.y) * 10
-            let tile = t.getComponent(Tile)
-            tile.isAutoShow = false
-            tile.tileType = mapDataStr
-            tile.coverPrefix = leveldata.floorCoverRes
-            tile.cover1 = leveldata.floorCoverRes1
-            tile.cover2 = leveldata.floorCoverRes2
-            tile.cover3 = leveldata.floorCoverRes3
-            tile.cover4 = leveldata.floorCoverRes4
-            tile.cover5 = leveldata.floorCoverRes5
-            tile.floorPrefix = leveldata.floorRes
-            if (!onlyShow) {
-                this.tilesmap[indexPos.x][indexPos.y] = tile
+    /**
+     *
+     * @param floorData 地板数据
+     * @param floorPos 装饰地板下标
+     * @param indexPos 地图地板下标可为负数
+     * @param leveldata
+     * @param onlyShow
+     */
+    private addTiles(floorData: string[][], floorPos: cc.Vec3, indexPos: cc.Vec3, leveldata: LevelData, onlyShow: boolean) {
+        let mapDataStr = floorData[floorPos.x][floorPos.y]
+        if (Utils.hasThe(mapDataStr, '*')) {
+            let index = parseInt(mapDataStr.substring(3))
+            let resIndex = parseInt(mapDataStr.substring(1, 3))
+            let isCombine = this.floorCombineMap.has(`i${floorPos.x}j${floorPos.y}`)
+            if (!isCombine) {
+                let t = cc.instantiate(this.tile)
+                t.parent = this.node
+                let pos = Dungeon.getPosInMap(indexPos.clone())
+                t.position = cc.v3(pos.x - Dungeon.TILE_SIZE / 2, pos.y - Dungeon.TILE_SIZE / 2)
+                t.zIndex = (index > 0 ? IndexZ.FLOOR : IndexZ.BASE) + (Dungeon.HEIGHT_SIZE - indexPos.y) * 10
+                let tile = t.getComponent(Tile)
+                tile.isAutoShow = false
+                tile.tileType = mapDataStr
+                tile.resName = leveldata.getFloorRes(resIndex)
+                if (!onlyShow) {
+                    this.tilesmap[indexPos.x][indexPos.y] = tile
+                }
+                let combineCountX = 0
+                let combineCountY = 0
+                for (let i = floorPos.x + 1; i < floorData.length; i++) {
+                    let next = floorData[i][floorPos.y]
+                    if (mapDataStr == next) {
+                        //下一个元素相同宽度++,并存储该坐标
+                        this.floorCombineMap.set(`i${i}j${floorPos.y}`, mapDataStr)
+                        combineCountX++
+                    } else {
+                        break
+                    }
+                }
+                for (let j = floorPos.y + 1; j < floorData[floorPos.x].length; j++) {
+                    let next = floorData[floorPos.x][j]
+                    if (mapDataStr == next) {
+                        //遍历x设置坐标
+                        for (let i = 0; i < combineCountX + 2; i++) {
+                            if (mapDataStr == floorData[floorPos.x + i][j]) {
+                                this.floorCombineMap.set(`i${floorPos.x + i}j${j}`, mapDataStr)
+                            }
+                        }
+                        combineCountY++
+                    } else {
+                        break
+                    }
+                }
+                tile.w = combineCountX + 1
+                tile.h = combineCountY + 1
             }
-        }
-        if (!onlyShow && Dungeon.isFirstEqual(mapDataStr, "*")) {
-            let index = parseInt(mapDataStr[1])
-            if (isNaN(index) || index < 5) {
+            if (!onlyShow) {
                 this.floorIndexMap.push(indexPos.clone())
             }
         }
@@ -321,6 +354,7 @@ export default class Dungeon extends cc.Component {
         if (!mapData[0] || !floorData[0]) {
             return
         }
+        this.floorCombineMap.clear()
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
                 let needAdd = false
@@ -353,7 +387,7 @@ export default class Dungeon extends cc.Component {
                 }
                 if (needAdd) {
                     let indexPos = cc.v3(i + Dungeon.WIDTH_SIZE * offset.x, j + Dungeon.HEIGHT_SIZE * offset.y)
-                    this.addTiles(floorData[i][j], indexPos.clone(), leveldata, true)
+                    this.addTiles(floorData, cc.v3(i, j), indexPos.clone(), leveldata, true)
                     this.buildingManager.addBuildingsFromSideMap(mapData[i][j], mapData, indexPos.clone(), leveldata)
                 }
             }
@@ -362,7 +396,7 @@ export default class Dungeon extends cc.Component {
 
     public darkAfterKill() {
         cc.tween(this.fog).to(1, { scale: 0.6 }).start()
-        let blackcenter = this.fog.getChildByName("sprite").getChildByName("blackcenter")
+        let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter')
         cc.tween(blackcenter).delay(0.2).to(1, { opacity: 255 }).start()
     }
 
@@ -479,12 +513,12 @@ export default class Dungeon extends cc.Component {
     public shakeForKraken() {
         this.CameraZoom = Dungeon.DEFAULT_ZOOM_MIN
         this.needZoomIn = true
-        this.anim.playAdditive("DungeonShakeOnce")
+        this.anim.playAdditive('DungeonShakeOnce')
         this.scheduleOnce(() => {
-            this.anim.playAdditive("DungeonShakeOnce")
+            this.anim.playAdditive('DungeonShakeOnce')
         }, 1)
         this.scheduleOnce(() => {
-            this.anim.playAdditive("DungeonShakeOnce")
+            this.anim.playAdditive('DungeonShakeOnce')
         }, 2)
     }
 
