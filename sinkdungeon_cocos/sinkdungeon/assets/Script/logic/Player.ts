@@ -114,7 +114,7 @@ export default class Player extends Actor {
     public shadowList: ShadowPlayer[] = []
     private shadowTexture: cc.RenderTexture
     private shadowSpriteframe: cc.SpriteFrame
-    private isLevelWater = false
+    isInWaterTile = false
     statusIconList: StatusIconList
     lastConsumeTime = 0
     solidStep: NextStep = new NextStep()
@@ -137,7 +137,6 @@ export default class Player extends Actor {
         this.sc.isDied = false
         this.isStone = false
         this.sc.isShow = false
-        this.isLevelWater = Logic.worldLoader.getCurrentLevelData().isWater
         this.scheduleOnce(() => {
             this.sc.isShow = true
             this.addSaveStatusList()
@@ -364,7 +363,7 @@ export default class Player extends Actor {
         if (!smokePrefab || smokePrefab.active) {
             smokePrefab = cc.instantiate(this.walksmoke)
         }
-        if (this.isLevelWater && !this.sc.isJumping) {
+        if (this.isInWater()) {
             pos = pos.add(cc.v3(0, 32))
         }
         smokePrefab.parent = parentNode
@@ -839,7 +838,7 @@ export default class Player extends Actor {
         if (this.professionTalent.IsExcuting && this.professionTalent.hashTalent(Talent.TALENT_007) && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(0.01)
         }
-        if (this.isLevelWater && !this.sc.isJumping) {
+        if (this.isInWater()) {
             pos = pos.mul(0.5)
         }
         if (!pos.equals(cc.Vec3.ZERO)) {
@@ -1269,8 +1268,8 @@ export default class Player extends Actor {
             this.weaponRight.handsUp(showHands, isLift, this.interactBuilding && this.interactBuilding.isAttacking)
         }
         if (this.avatar) {
-            this.avatar.showLegsWithWater(this.isLevelWater && !this.sc.isJumping)
-            this.shadow.opacity = this.isLevelWater && !this.sc.isJumping ? 0 : 128
+            this.avatar.showLegsWithWater(this.isInWater())
+            this.shadow.opacity = this.isInWater() ? 0 : 128
         }
         this.showUiButton()
         for (let s of this.shadowList) {
@@ -1295,6 +1294,9 @@ export default class Player extends Actor {
         this.shadow.y = this.entity.Transform.base
         this.bottomDir.node.y = this.entity.Transform.base
         this.changeZIndex(this.pos)
+    }
+    isInWater() {
+        return this.isInWaterTile && this.entity.Transform.z < 32
     }
     getScaleSize(): number {
         let sn = this.IsVariation ? 1.5 : 1

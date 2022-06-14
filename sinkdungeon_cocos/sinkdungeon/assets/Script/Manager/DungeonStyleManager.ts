@@ -162,28 +162,28 @@ export default class DungeonStyleManager extends BaseManager {
         this.floor.zIndex = IndexZ.BACKGROUNDFLOOR
         let sprite = this.floor.getComponent(cc.Sprite)
         sprite.spriteFrame = Logic.spriteFrameRes(`${leveldata.floorRes}001`)
-        if (leveldata.isWater) {
-            sprite.spriteFrame = Logic.spriteFrameRes(`wateridle000`)
-            let action = cc
-                .tween()
-                .delay(0.2)
-                .call(() => {
-                    sprite.spriteFrame = Logic.spriteFrameRes(`wateridle000`)
-                })
-                .delay(0.2)
-                .call(() => {
-                    sprite.spriteFrame = Logic.spriteFrameRes(`wateridle001`)
-                })
-                .delay(0.2)
-                .call(() => {
-                    sprite.spriteFrame = Logic.spriteFrameRes(`wateridle002`)
-                })
-                .delay(0.2)
-                .call(() => {
-                    sprite.spriteFrame = Logic.spriteFrameRes(`wateridle003`)
-                })
-            this.floor.stopAllActions()
-            cc.tween(this.floor).repeatForever(action).start()
-        }
+        // if (leveldata.isWater) {
+        //     sprite.spriteFrame = Logic.spriteFrameRes(`wateridle000`)
+        //     let action = cc
+        //         .tween()
+        //         .delay(0.2)
+        //         .call(() => {
+        //             sprite.spriteFrame = Logic.spriteFrameRes(`wateridle000`)
+        //         })
+        //         .delay(0.2)
+        //         .call(() => {
+        //             sprite.spriteFrame = Logic.spriteFrameRes(`wateridle001`)
+        //         })
+        //         .delay(0.2)
+        //         .call(() => {
+        //             sprite.spriteFrame = Logic.spriteFrameRes(`wateridle002`)
+        //         })
+        //         .delay(0.2)
+        //         .call(() => {
+        //             sprite.spriteFrame = Logic.spriteFrameRes(`wateridle003`)
+        //         })
+        //     this.floor.stopAllActions()
+        //     cc.tween(this.floor).repeatForever(action).start()
+        // }
     }
 }

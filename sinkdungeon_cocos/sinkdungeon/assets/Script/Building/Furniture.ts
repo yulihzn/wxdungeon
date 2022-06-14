@@ -18,6 +18,7 @@ import RoomWaterDispenser from './RoomWaterDispenser'
 import Player from '../logic/Player'
 import RoomTrashCan from './RoomTrashCan'
 import RoomKitchen from './RoomKitchen'
+import IndexZ from '../utils/IndexZ'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -263,14 +264,22 @@ export default class Furniture extends Building {
             this.lock.node.active = true
         }
         this.changeRes(this.furnitureData.resName, isNormal)
-        if (isNormal && this.furnitureData.collider.length > 0) {
-            let arr = this.furnitureData.collider.split(',')
-            let pcollider = this.getComponent(CCollider)
-            pcollider.offset = cc.v2(parseInt(arr[0]), parseInt(arr[1]))
-            pcollider.setSize(cc.size(parseInt(arr[2]), parseInt(arr[3])), this.furnitureData.height * this.furnitureData.scale)
+        let pcollider = this.getComponent(CCollider)
+        if (isNormal) {
+            if (this.furnitureData.collider.length > 0) {
+                let arr = this.furnitureData.collider.split(',')
+                pcollider.offset = cc.v2(parseInt(arr[0]), parseInt(arr[1]))
+                pcollider.setSize(cc.size(parseInt(arr[2]), parseInt(arr[3])), this.furnitureData.height * this.furnitureData.scale)
+            }
+            if (this.furnitureData.spritePos.length > 0) {
+                let arr = this.furnitureData.spritePos.split(',')
+                this.sprite.node.x = parseInt(arr[0])
+                this.sprite.node.y = parseInt(arr[1])
+            }
         }
         LocalStorage.saveFurnitureData(this.furnitureData)
         Achievement.addFurnituresAchievement(this.furnitureData.id)
+        this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.node.position.x, this.node.position.y + pcollider.offset.y))
     }
     // private isNormal() {
     //     if (

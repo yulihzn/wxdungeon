@@ -103,7 +103,7 @@
       "__id__": 1
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 3
@@ -244,7 +244,7 @@
       "ctor": "Float64Array",
       "array": [
         -64,
-        -64,
+        0,
         0,
         0,
         0,
@@ -284,7 +284,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "f491d3ae-72d4-4105-991e-d9cec8fe163c"
+      "__uuid__": "105c3cc1-7187-4b45-91fd-400d58094937"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -321,7 +321,7 @@
       "__id__": 1
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 9
@@ -824,12 +824,12 @@
     "_enabled": true,
     "tag": 12,
     "offsetX": 0,
-    "offsetY": -32,
+    "offsetY": 43,
     "type": 1,
     "radius": 64,
-    "w": 128,
-    "h": 64,
-    "zHeight": 32,
+    "w": 80,
+    "h": 40,
+    "zHeight": 29,
     "bounce": 0,
     "sensor": false,
     "isStatic": true,

@@ -54,7 +54,6 @@ export default class LevelData {
     doorRes = '' //门资源名
     exitRes = '' //出入口资源名
     needRadomDecorate = false
-    isWater = false
     map: string[][] = []
     floormap: string[][] = []
     roomTypes: string[][] = []

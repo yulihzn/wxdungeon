@@ -50,6 +50,7 @@ export default class PlayerAvatar extends cc.Component {
     data: AvatarData
     isAniming = false
     idlehair = [0, 1]
+    waterY = 0
 
     onLoad() {
         this.init()
@@ -246,6 +247,8 @@ export default class PlayerAvatar extends cc.Component {
         this.pantsSprite.node.opacity = inWater ? 0 : 255
         this.setInWaterMat(this.bodySprite, inWater)
         this.setInWaterMat(this.clothesSprite, inWater)
+        this.waterY = inWater ? -32 : 0
+        this.node.y = Logic.lerp(this.node.y, this.waterY, 0.2)
     }
 
     private setInWaterMat(sprite: cc.Sprite, inWater: boolean) {

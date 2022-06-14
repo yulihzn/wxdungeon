@@ -127,7 +127,6 @@ export default class BuildingManager extends BaseManager {
     static readonly GRASS04 = 'Grass04'
     static readonly WENTLINE = 'WentLine'
     static readonly CRACK = 'Crack'
-    static readonly WATERCOLLIDER = 'WaterCollider'
     static readonly WATERFALL = 'WaterFall'
     static readonly ENERGYSHIELD = 'EnergyShield'
     static readonly FURNITURE = 'Furniture'
@@ -164,7 +163,6 @@ export default class BuildingManager extends BaseManager {
     private interactBuildings: InteractBuilding[] = []
     public lastInteractBuilding: InteractBuilding
     public buildingList: Building[] = []
-    public waterIndexList: cc.Vec3[] = new Array() //水下标列表
 
     clear(): void {
         Utils.clearComponentArray(this.footboards)
@@ -184,7 +182,6 @@ export default class BuildingManager extends BaseManager {
         this.buildingList = new Array()
         this.shelvesFoodIndex = 0
         this.shelvesDrinkIndex = 0
-        this.waterIndexList = new Array()
         this.colliderCombineMap.clear()
     }
 
@@ -237,7 +234,7 @@ export default class BuildingManager extends BaseManager {
                 }
             })
         } else if (this.isFirstEqual(mapDataStr, '~')) {
-            this.addWater(mapDataStr, indexPos)
+            this.addWaterBuilding(mapDataStr, indexPos)
         } else if (this.isFirstEqual(mapDataStr, '+')) {
             //生成装饰
             this.addDecorate(dungeon, mapDataStr, indexPos)
@@ -416,7 +413,7 @@ export default class BuildingManager extends BaseManager {
             })
         } else if (this.isFirstEqual(mapDataStr, '~')) {
             //生成水
-            this.addWater(mapDataStr, indexPos)
+            this.addWaterBuilding(mapDataStr, indexPos)
         } else if (mapDataStr == '+3') {
             //生成汽艇
             Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL, (prefab: cc.Prefab) => {
@@ -562,9 +559,9 @@ export default class BuildingManager extends BaseManager {
                 if (mapDataStr == '+1') {
                     df.init(dungeon, 'exitarrow', 4, 0)
                 } else if (mapDataStr == '++0') {
-                    df.init(dungeon, 'roomoutside0', 32, 1, cc.v3(0.9, 0.5), 255, IndexZ.BASE)
+                    df.init(dungeon, 'roomoutside0', 32, 1, cc.v3(0.7, 0.5), 255, IndexZ.BASE)
                 } else if (mapDataStr == '++1') {
-                    df.init(dungeon, 'roomoutside1', 32, 1, cc.v3(0.9, 0.5), 255, IndexZ.BASE)
+                    df.init(dungeon, 'roomoutside1', 32, 1, cc.v3(0.7, 0.5), 255, IndexZ.BASE)
                 } else if (mapDataStr == '++2') {
                     df.init(dungeon, 'roomoutside2', 32, 1, cc.v3(0, 0.5), 255, IndexZ.BASE)
                 } else {
@@ -573,41 +570,23 @@ export default class BuildingManager extends BaseManager {
             })
         }
     }
-    private addWater(mapDataStr: string, indexPos: cc.Vec3) {
-        this.waterIndexList.push(indexPos)
-        let pint = parseInt(mapDataStr[1])
-        let index = parseInt(mapDataStr.substring(3))
-        let resIndex = parseInt(mapDataStr.substring(1, 3))
-        if ((pint >= 0 && pint <= 9) || mapDataStr == '~a' || mapDataStr == '~b') {
+    private addWaterBuilding(mapDataStr: string, indexPos: cc.Vec3) {
+        if (this.hasThe(mapDataStr, '~#')) {
             Logic.getBuildings(BuildingManager.COAST, (prefab: cc.Prefab) => {
+                let fint = parseInt(mapDataStr.substring(2))
                 let co = this.addBuilding(prefab, indexPos)
                 let pbc = co.getComponent(CCollider)
-                let fint = pint
-                if (mapDataStr == '~a') {
-                    fint = 10
-                } else if (mapDataStr == '~b') {
-                    fint = 11
-                }
                 co.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`coast00${fint}`)
                 let arr = this.coastColliderList[fint].split(',')
                 pbc.setSize(cc.size(parseInt(arr[0]), parseInt(arr[1])))
                 pbc.offset = cc.v2(parseInt(arr[2]), parseInt(arr[3]))
+                pbc.zHeight = 128
                 co.zIndex = IndexZ.WATER
             })
         } else if (this.hasThe(mapDataStr, '~~')) {
             Logic.getBuildings(BuildingManager.WATERFALL, (prefab: cc.Prefab) => {
                 AudioPlayer.play(AudioPlayer.WATERFALL, false, true)
                 let dn = this.addBuilding(prefab, indexPos)
-            })
-        } else if (this.hasThe(mapDataStr, '~#')) {
-            Logic.getBuildings(BuildingManager.WATERCOLLIDER, (prefab: cc.Prefab) => {
-                let dn = this.addBuilding(prefab, indexPos)
-                dn.zIndex = IndexZ.WATER
-            })
-        } else {
-            Logic.getBuildings(BuildingManager.WATER, (prefab: cc.Prefab) => {
-                let dn = this.addBuilding(prefab, indexPos)
-                dn.zIndex = IndexZ.WATER
             })
         }
     }

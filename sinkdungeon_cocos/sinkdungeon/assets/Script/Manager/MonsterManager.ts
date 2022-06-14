@@ -1,14 +1,14 @@
-import NonPlayer from "../logic/NonPlayer"
-import Dungeon from "../logic/Dungeon"
-import Logic from "../logic/Logic"
-import RoomType from "../rect/RoomType"
-import Boss from "../boss/Boss"
-import BaseManager from "./BaseManager"
-import GameHud from "../ui/GameHud"
-import MonsterRandomAttr from "./MonsterRandomAttr"
-import Random4Save from "../utils/Random4Save"
-import NonPlayerData from "../data/NonPlayerData"
-import LoadingManager from "./LoadingManager"
+import NonPlayer from '../logic/NonPlayer'
+import Dungeon from '../logic/Dungeon'
+import Logic from '../logic/Logic'
+import RoomType from '../rect/RoomType'
+import Boss from '../boss/Boss'
+import BaseManager from './BaseManager'
+import GameHud from '../ui/GameHud'
+import MonsterRandomAttr from './MonsterRandomAttr'
+import Random4Save from '../utils/Random4Save'
+import NonPlayerData from '../data/NonPlayerData'
+import LoadingManager from './LoadingManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -24,47 +24,47 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class MonsterManager extends BaseManager {
-    public static readonly BOSS_KRAKEN = "BOSS_KRAKEN"
-    public static readonly MONSTER_SLIME = "monster000"
-    public static readonly MONSTER_GOBLIN = "monster001"
-    public static readonly MONSTER_MUMMY = "monster002"
-    public static readonly MONSTER_ANUBIS = "monster003"
-    public static readonly MONSTER_PIRATE = "monster004"
-    public static readonly MONSTER_SAILOR = "monster005"
-    public static readonly MONSTER_OCTOPUS = "monster006"
-    public static readonly MONSTER_KILLER = "monster007"
-    public static readonly MONSTER_STRONGSAILOR = "monster008"
-    public static readonly MONSTER_CHEST = "monster009"
-    public static readonly MONSTER_GARGOYLE = "monster010"
-    public static readonly MONSTER_CHICKEN = "monster011"
-    public static readonly MONSTER_SCARAB = "monster012"
-    public static readonly MONSTER_GOBLIN_ARCHER = "monster013"
-    public static readonly MONSTER_TERRORDRONE = "monster014"
-    public static readonly MONSTER_WEREWOLF = "monster015"
-    public static readonly MONSTER_DUMMY = "monster016"
-    public static readonly MONSTER_ZEBRA = "monster017"
-    public static readonly MONSTER_GIRAFFE = "monster018"
-    public static readonly MONSTER_ZOOMBIE = "monster019"
-    public static readonly MONSTER_ELECTRICEYE = "monster020"
-    public static readonly MONSTER_FISHMAN = "monster021"
-    public static readonly MONSTER_CROCODILE = "monster022"
-    public static readonly MONSTER_SNAKE = "monster023"
-    public static readonly MONSTER_DEMON = "monster024"
-    public static readonly MONSTER_WARLOCK = "monster025"
-    public static readonly MONSTER_SPIDER = "monster026"
-    public static readonly MONSTER_BOOMER = "monster027"
-    public static readonly MONSTER_SANDSTATUE = "monster028"
-    public static readonly MONSTER_HIPPO = "monster029"
-    public static readonly MONSTER_CYCLOPS = "monster030"
-    public static readonly MONSTER_ICEDEMON = "monster031"
-    public static readonly MONSTER_BITE_ZOMBIE = "monster032"
-    public static readonly MONSTER_BANANA = "monster033"
-    public static readonly MONSTER_HOLO_DEVICE = "monster034"
-    public static readonly MONSTER_HOLO = "monster035"
-    public static readonly MONSTER_LASRERDRONE = "monster036"
-    public static readonly MONSTER_GHOST = "monster037"
-    public static readonly MONSTER_FISH = "monster038"
-    public static readonly MONSTER_MICE = "monster039"
+    public static readonly BOSS_KRAKEN = 'BOSS_KRAKEN'
+    public static readonly MONSTER_SLIME = 'monster000'
+    public static readonly MONSTER_GOBLIN = 'monster001'
+    public static readonly MONSTER_MUMMY = 'monster002'
+    public static readonly MONSTER_ANUBIS = 'monster003'
+    public static readonly MONSTER_PIRATE = 'monster004'
+    public static readonly MONSTER_SAILOR = 'monster005'
+    public static readonly MONSTER_OCTOPUS = 'monster006'
+    public static readonly MONSTER_KILLER = 'monster007'
+    public static readonly MONSTER_STRONGSAILOR = 'monster008'
+    public static readonly MONSTER_CHEST = 'monster009'
+    public static readonly MONSTER_GARGOYLE = 'monster010'
+    public static readonly MONSTER_CHICKEN = 'monster011'
+    public static readonly MONSTER_SCARAB = 'monster012'
+    public static readonly MONSTER_GOBLIN_ARCHER = 'monster013'
+    public static readonly MONSTER_TERRORDRONE = 'monster014'
+    public static readonly MONSTER_WEREWOLF = 'monster015'
+    public static readonly MONSTER_DUMMY = 'monster016'
+    public static readonly MONSTER_ZEBRA = 'monster017'
+    public static readonly MONSTER_GIRAFFE = 'monster018'
+    public static readonly MONSTER_ZOOMBIE = 'monster019'
+    public static readonly MONSTER_ELECTRICEYE = 'monster020'
+    public static readonly MONSTER_FISHMAN = 'monster021'
+    public static readonly MONSTER_CROCODILE = 'monster022'
+    public static readonly MONSTER_SNAKE = 'monster023'
+    public static readonly MONSTER_DEMON = 'monster024'
+    public static readonly MONSTER_WARLOCK = 'monster025'
+    public static readonly MONSTER_SPIDER = 'monster026'
+    public static readonly MONSTER_BOOMER = 'monster027'
+    public static readonly MONSTER_SANDSTATUE = 'monster028'
+    public static readonly MONSTER_HIPPO = 'monster029'
+    public static readonly MONSTER_CYCLOPS = 'monster030'
+    public static readonly MONSTER_ICEDEMON = 'monster031'
+    public static readonly MONSTER_BITE_ZOMBIE = 'monster032'
+    public static readonly MONSTER_BANANA = 'monster033'
+    public static readonly MONSTER_HOLO_DEVICE = 'monster034'
+    public static readonly MONSTER_HOLO = 'monster035'
+    public static readonly MONSTER_LASRERDRONE = 'monster036'
+    public static readonly MONSTER_GHOST = 'monster037'
+    public static readonly MONSTER_FISH = 'monster038'
+    public static readonly MONSTER_MICE = 'monster039'
     public static readonly MONSTERS_LAB = [
         MonsterManager.MONSTER_ZEBRA,
         MonsterManager.MONSTER_TERRORDRONE,
@@ -75,7 +75,7 @@ export default class MonsterManager extends BaseManager {
         MonsterManager.MONSTER_ICEDEMON,
         MonsterManager.MONSTER_BITE_ZOMBIE,
         MonsterManager.MONSTER_HOLO_DEVICE,
-        MonsterManager.MONSTER_LASRERDRONE,
+        MonsterManager.MONSTER_LASRERDRONE
     ]
     public static readonly MONSTERS_SHIP = [
         MonsterManager.MONSTER_PIRATE,
@@ -84,7 +84,7 @@ export default class MonsterManager extends BaseManager {
         MonsterManager.MONSTER_STRONGSAILOR,
         MonsterManager.MONSTER_FISHMAN,
         MonsterManager.MONSTER_BOOMER,
-        MonsterManager.MONSTER_GHOST,
+        MonsterManager.MONSTER_GHOST
     ]
     public static readonly MONSTERS_FOREST = [
         MonsterManager.MONSTER_SLIME,
@@ -94,14 +94,14 @@ export default class MonsterManager extends BaseManager {
         MonsterManager.MONSTER_SNAKE,
         MonsterManager.MONSTER_CHICKEN,
         MonsterManager.MONSTER_HIPPO,
-        MonsterManager.MONSTER_BANANA,
+        MonsterManager.MONSTER_BANANA
     ]
     public static readonly MONSTERS_PYRAMID = [
         MonsterManager.MONSTER_MUMMY,
         MonsterManager.MONSTER_ANUBIS,
         MonsterManager.MONSTER_SCARAB,
         MonsterManager.MONSTER_CROCODILE,
-        MonsterManager.MONSTER_SANDSTATUE,
+        MonsterManager.MONSTER_SANDSTATUE
     ]
     public static readonly MONSTERS_DUNGEON = [
         MonsterManager.MONSTER_GARGOYLE,
@@ -109,7 +109,7 @@ export default class MonsterManager extends BaseManager {
         MonsterManager.MONSTER_DEMON,
         MonsterManager.MONSTER_CYCLOPS,
         MonsterManager.MONSTER_SPIDER,
-        MonsterManager.MONSTER_CYCLOPS,
+        MonsterManager.MONSTER_CYCLOPS
     ]
     public static readonly MONSTERS_SPECIAL = [MonsterManager.MONSTER_DUMMY, MonsterManager.MONSTER_CHEST, MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_MICE]
     // LIFE-CYCLE CALLBACKS:
@@ -191,31 +191,31 @@ export default class MonsterManager extends BaseManager {
     }
 
     public addMonstersAndBossFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
-        if (Dungeon.isFirstEqual(mapDataStr, "m")) {
+        if (Dungeon.isFirstEqual(mapDataStr, 'm')) {
             this.addMonsterFromData(`monster${mapDataStr.substring(1)}`, indexPos, dungeon, false)
             return
         }
-        if (mapDataStr == "z0") {
-            this.addBoss(this.iceDemon, "iconboss000", this.maxHealth00, 0, 2, indexPos, dungeon)
-        } else if (mapDataStr == "z1") {
-            this.addBoss(this.warmachine, "iconboss001", this.maxHealth01, 2, 3.5, indexPos, dungeon)
-        } else if (mapDataStr == "z2") {
-            this.addBoss(this.captain, "iconboss002", this.maxHealth02, 2, 0, indexPos, dungeon)
-        } else if (mapDataStr == "z3") {
+        if (mapDataStr == 'z0') {
+            this.addBoss(this.iceDemon, 'iconboss000', this.maxHealth00, 0, 2, indexPos, dungeon)
+        } else if (mapDataStr == 'z1') {
+            this.addBoss(this.warmachine, 'iconboss001', this.maxHealth01, 2, 3.5, indexPos, dungeon)
+        } else if (mapDataStr == 'z2') {
+            this.addBoss(this.captain, 'iconboss002', this.maxHealth02, 2, 0, indexPos, dungeon)
+        } else if (mapDataStr == 'z3') {
             dungeon.shakeForKraken()
-            this.addBoss(this.kraken, "iconboss003", this.maxHealth03, 2, 3.5, indexPos, dungeon)
-        } else if (mapDataStr == "z4") {
+            this.addBoss(this.kraken, 'iconboss003', this.maxHealth03, 2, 3.5, indexPos, dungeon)
+        } else if (mapDataStr == 'z4') {
             this.addBossSlime(0, indexPos, dungeon)
-        } else if (mapDataStr == "z5") {
-            this.addBoss(this.dryad, "iconboss005", this.maxHealth05, 2, 2, indexPos, dungeon)
-        } else if (mapDataStr == "z6") {
-            this.addBoss(this.rah, "iconboss006", this.maxHealth06, 2, 2, indexPos, dungeon)
-        } else if (mapDataStr == "z7") {
-            this.addBoss(this.sphinx, "iconboss007", this.maxHealth07, 2, 2, indexPos, dungeon)
-        } else if (mapDataStr == "z8") {
-            this.addBoss(this.evilEye, "iconboss008", this.maxHealth08, 2, 2, indexPos, dungeon)
-        } else if (mapDataStr == "z9") {
-            this.addBoss(this.dragon, "iconboss009", this.maxHealth09, 5, 2, indexPos, dungeon)
+        } else if (mapDataStr == 'z5') {
+            this.addBoss(this.dryad, 'iconboss005', this.maxHealth05, 2, 2, indexPos, dungeon)
+        } else if (mapDataStr == 'z6') {
+            this.addBoss(this.rah, 'iconboss006', this.maxHealth06, 2, 2, indexPos, dungeon)
+        } else if (mapDataStr == 'z7') {
+            this.addBoss(this.sphinx, 'iconboss007', this.maxHealth07, 2, 2, indexPos, dungeon)
+        } else if (mapDataStr == 'z8') {
+            this.addBoss(this.evilEye, 'iconboss008', this.maxHealth08, 2, 2, indexPos, dungeon)
+        } else if (mapDataStr == 'z9') {
+            this.addBoss(this.dragon, 'iconboss009', this.maxHealth09, 5, 2, indexPos, dungeon)
         }
     }
     private getRandomMonsterSeed(): number {
@@ -228,7 +228,7 @@ export default class MonsterManager extends BaseManager {
      * @param parent 父节点
      */
     private getMonster(resName: string, dungeon: Dungeon, isSummon: boolean, callBack: Function) {
-        LoadingManager.loadNpcSpriteAtlas(resName, (status) => {
+        LoadingManager.loadNpcSpriteAtlas(resName, status => {
             if (status == LoadingManager.LOAD_FAIL) {
                 return
             }
@@ -309,23 +309,23 @@ export default class MonsterManager extends BaseManager {
                 switch (rand) {
                     case 0:
                         data.Common.iceRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er
-                        data.bodyColor = "#CCFFFF"
+                        data.bodyColor = '#CCFFFF'
                         break
                     case 1:
                         data.Common.fireRate = data.Common.fireRate + er > 100 ? 100 : data.Common.fireRate + er
-                        data.bodyColor = "#FF6633"
+                        data.bodyColor = '#FF6633'
                         break
                     case 2:
                         data.Common.lighteningRate = data.Common.lighteningRate + er > 100 ? 100 : data.Common.lighteningRate + er
-                        data.bodyColor = "#0099FF"
+                        data.bodyColor = '#0099FF'
                         break
                     case 3:
                         data.Common.toxicRate = data.Common.toxicRate + er > 100 ? 100 : data.Common.toxicRate + er
-                        data.bodyColor = "#66CC00"
+                        data.bodyColor = '#66CC00'
                         break
                     case 4:
                         data.Common.curseRate = data.Common.curseRate + er > 100 ? 100 : data.Common.curseRate + er
-                        data.bodyColor = "#660099"
+                        data.bodyColor = '#660099'
                         break
                 }
             }
@@ -346,6 +346,7 @@ export default class MonsterManager extends BaseManager {
         monster.node.active = true
         monster.pos = pos
         monster.defautPos = pos
+        monster.lastWaterPos = pos
         monster.updatePlayerPos()
         monster.parentNonPlayer = parent
         this.isRoomInitWithEnemy = monster.data.isTest < 1
@@ -390,7 +391,7 @@ export default class MonsterManager extends BaseManager {
         slime.initCollider()
         slime.dungeon = dungeon
         let data = new NonPlayerData()
-        data.resName = "iconboss004"
+        data.resName = 'iconboss004'
         data.Common.moveSpeed = 200
         switch (type) {
             case 0:
@@ -472,29 +473,30 @@ export default class MonsterManager extends BaseManager {
         for (let i = 0; i < dungeon.floorIndexMap.length; i++) {
             indexmap.push(dungeon.floorIndexMap[i])
         }
-        for (let p of dungeon.buildingManager.waterIndexList) {
-            waterindexmap.push(p)
+        for (let i = 0; i < dungeon.waterIndexMap.length; i++) {
+            waterindexmap.push(dungeon.waterIndexMap[i])
         }
-        if (Logic.worldLoader.getCurrentLevelData().isWater) {
-            for (let i = 0; i <= num + up; i++) {
-                if (waterindexmap.length < 1) {
-                    continue
-                }
-                let randindex = rand4save.getRandomNum(0, waterindexmap.length - 1)
-                let pos = waterindexmap[randindex]
-                waterindexmap.splice(randindex, 1)
-                this.addMonsterFromData(MonsterManager.MONSTER_FISH, cc.v3(pos.x, pos.y), dungeon, false)
+        let groundmonstercount = 0
+        //地上的
+        for (let i = 0; i <= num + up; i++) {
+            if (indexmap.length < 1) {
+                continue
             }
-        } else {
-            for (let i = 0; i <= num + up; i++) {
-                if (indexmap.length < 1) {
-                    continue
-                }
-                let randindex = rand4save.getRandomNum(0, indexmap.length - 1)
-                let pos = indexmap[randindex]
-                indexmap.splice(randindex, 1)
-                this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y), dungeon, false)
+            let randindex = rand4save.getRandomNum(0, indexmap.length - 1)
+            let pos = indexmap[randindex]
+            indexmap.splice(randindex, 1)
+            groundmonstercount++
+            this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y), dungeon, false)
+        }
+        //水里的
+        for (let i = 0; i <= num + up - groundmonstercount; i++) {
+            if (waterindexmap.length < 1) {
+                continue
             }
+            let randindex = rand4save.getRandomNum(0, waterindexmap.length - 1)
+            let pos = waterindexmap[randindex]
+            waterindexmap.splice(randindex, 1)
+            this.addMonsterFromData(MonsterManager.MONSTER_FISH, cc.v3(pos.x, pos.y), dungeon, false)
         }
     }
     updateLogic(dt: number) {

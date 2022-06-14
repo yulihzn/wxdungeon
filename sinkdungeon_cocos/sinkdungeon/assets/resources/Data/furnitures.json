@@ -19,7 +19,8 @@
         "info": "",
         "desc": "",
         "scale": 4,
-        "collider": "0,64,128,256",
+        "spritePos":"-64,-50",
+        "collider": "-32,10,59,110,10",
         "price": 1000,
         "height": 4
     },
@@ -43,7 +44,8 @@
         "info": "",
         "desc": "",
         "scale": 4,
-        "collider": "0,0,128,128",
+        "spritePos":"-64,0",
+        "collider": "0,32,128,64,64",
         "price": 800,
         "height": 16
     },
@@ -115,7 +117,8 @@
         "info": "",
         "desc": "",
         "scale": 4,
-        "collider": "0,0,128,128",
+        "spritePos":"-64,0",
+        "collider": "0,28,114,50,20",
         "price": 1000,
         "height": 18
     },
@@ -127,7 +130,8 @@
         "info": "",
         "desc": "",
         "scale": 8,
-        "collider": "64,0,256,128",
+        "spritePos":"-64,0",
+        "collider": "64,32,256,64,192",
         "storage": 8,
         "price": 1000,
         "height": 30
@@ -140,7 +144,8 @@
         "info": "",
         "desc": "",
         "scale": 4,
-        "collider": "0,-20,80,40",
+        "spritePos":"-64,0",
+        "collider": "0,43,80,40,29",
         "price": 200,
         "height": 8
     },
@@ -152,7 +157,8 @@
         "info": "",
         "desc": "",
         "scale": 4,
-        "collider": "0,-20,80,40",
+        "spritePos":"-64,0",
+        "collider": "0,43,80,40,29",
         "price": 200,
         "height": 8
     },
@@ -212,7 +218,8 @@
         "info": "书本上面有许多书可以读",
         "desc": "",
         "scale": 8,
-        "collider": "64,0,256,128",
+        "spritePos":"-64,0",
+        "collider": "64,32,256,64,192",
         "price": 700,
         "height": 25
     },

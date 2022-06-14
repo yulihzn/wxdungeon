@@ -29,6 +29,8 @@ export default class Tile extends cc.Component {
     resName = ''
     w = 1
     h = 1
+    isWater = false
+    rect = cc.rect(0, 0, 128, 128)
     onLoad() {
         this.isAutoShow = true
         this.anim = this.getComponent(cc.Animation)
@@ -37,6 +39,13 @@ export default class Tile extends cc.Component {
 
     start() {
         this.changeRes(this.resName, this.w, this.h)
+        this.rect.x = this.node.position.x
+        this.rect.y = this.node.position.y
+        this.rect.width = this.floor.node.width * this.floor.node.scale
+        this.rect.height = this.floor.node.height * this.floor.node.scale
+        if (this.isWater) {
+            this.waterIdle()
+        }
     }
 
     //animation
@@ -58,7 +67,7 @@ export default class Tile extends cc.Component {
         this.isAnimPlaying = false
     }
     breakTile() {
-        if (this.isAnimPlaying) {
+        if (this.isAnimPlaying || this.isWater) {
             return
         }
         this.anim.play('TileBreak')
@@ -66,13 +75,16 @@ export default class Tile extends cc.Component {
         this.isAnimPlaying = true
     }
     showTile() {
-        if (this.isAnimPlaying || !this.anim) {
+        if (this.isAnimPlaying || !this.anim || this.isWater) {
             return
         }
         this.anim.play('TileShow')
         this.isBroken = false
         this.isBreakingNow = false
         this.isAnimPlaying = true
+    }
+    containsRect(rect: cc.Rect) {
+        return this.rect.containsRect(rect)
     }
 
     changeRes(resName: string, width: number, height: number) {
@@ -82,6 +94,28 @@ export default class Tile extends cc.Component {
         }
         this.floor.node.width = 32 * width
         this.floor.node.height = 32 * height
+    }
+    waterIdle() {
+        let action = cc
+            .tween()
+            .delay(0.2)
+            .call(() => {
+                this.changeRes('wateridle000', this.w, this.h)
+            })
+            .delay(0.2)
+            .call(() => {
+                this.changeRes('wateridle001', this.w, this.h)
+            })
+            .delay(0.2)
+            .call(() => {
+                this.changeRes('wateridle002', this.w, this.h)
+            })
+            .delay(0.2)
+            .call(() => {
+                this.changeRes('wateridle003', this.w, this.h)
+            })
+        this.floor.node.stopAllActions()
+        cc.tween(this.floor.node).repeatForever(action).start()
     }
     disappear() {
         cc.tween(this.node)

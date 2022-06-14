@@ -120,7 +120,8 @@ export default class NonPlayer extends Actor {
     leftLifeTime = 0
     parentNonPlayer: NonPlayer //父类npc
     childNonPlayerList: NonPlayer[] = [] //子类
-    private isLevelWater = false
+    isInWaterTile = false
+    lastWaterPos = cc.v3(0, 0)
     specialDashLength = 0
     meleeDashLength = 0
     attackRect = []
@@ -151,9 +152,10 @@ export default class NonPlayer extends Actor {
         this.attrNode = this.root.getChildByName('attr')
         this.areaDetector = this.getComponentInChildren(AreaDetector)
         this.resetBodyColor()
-        this.isLevelWater = Logic.worldLoader.getCurrentLevelData().isWater
         if (this.data.isStatic > 0) {
             this.entity.Collider.colliders[0].isStatic = true
+            this.node.width = this.entity.Collider.colliders[0].w
+            this.node.height = this.entity.Collider.colliders[0].h
         }
         if (this.bottomDir) {
             this.bottomDir.init(this, this.data.isEnemy > 0 ? cc.Color.RED : cc.Color.YELLOW)
@@ -321,10 +323,14 @@ export default class NonPlayer extends Actor {
             this.bodySprite.spriteFrame = spriteFrame
             this.bodySprite.node.width = spriteFrame.getOriginalSize().width
             this.bodySprite.node.height = spriteFrame.getOriginalSize().height
-            this.setInWaterMat(this.bodySprite, this.isLevelWater && this.data.water < 1)
+            this.setInWaterMat(this.bodySprite, this.data.water < 1 && this.isInWater())
+            this.sprite.y = this.isInWater() && this.data.water < 1 ? -32 : 0
         } else {
             this.bodySprite.spriteFrame = null
         }
+    }
+    isInWater() {
+        return this.isInWaterTile && this.entity.Transform.z < 32
     }
     private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
         let spriteFrame = Logic.spriteFrameRes(resName + suffix)
@@ -624,6 +630,8 @@ export default class NonPlayer extends Actor {
         pos = pos.normalize()
         this.hv = cc.v2(pos)
         this.pos = Dungeon.getIndexInMap(this.node.position)
+        if (this.data.water > 0 && this.isInWaterTile) {
+        }
         let h = pos.x
         let v = pos.y
         let absh = Math.abs(h)
@@ -1052,6 +1060,10 @@ export default class NonPlayer extends Actor {
         //修正位置
         this.entity.Transform.position = Dungeon.fixOuterMap(this.entity.Transform.position)
         this.pos = Dungeon.getIndexInMap(this.entity.Transform.position)
+        this.isInWaterTile = this.dungeon.isActorPosInWater(this)
+        if (this.isInWaterTile) {
+            this.lastWaterPos = Dungeon.getIndexInMap(this.entity.Transform.position)
+        }
         this.changeZIndex()
         this.updateAttack()
         let target = ActorUtils.getNearestEnemyActor(this.entity.Transform.position, this.data.isEnemy > 0, this.dungeon)
@@ -1156,7 +1168,7 @@ export default class NonPlayer extends Actor {
 
         this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255
         if (this.shadow) {
-            this.shadow.opacity = this.sc.isDisguising || this.data.water > 0 || this.isLevelWater ? 0 : 128
+            this.shadow.opacity = this.sc.isDisguising || this.data.water > 0 || this.isInWater() ? 0 : 128
         }
         if (this.sc.isDisguising && this.anim) {
             this.anim.pause()
@@ -1180,6 +1192,10 @@ export default class NonPlayer extends Actor {
         }
         if (this.data.isTest > 0 && this.isTestResetTimeDelay(dt) && !this.isPassive) {
             this.pos = this.defautPos.clone()
+            this.updatePlayerPos()
+        }
+        if (this.data.water > 0 && !this.isInWaterTile) {
+            this.pos = this.lastWaterPos.clone()
             this.updatePlayerPos()
         }
         if (this.parentNonPlayer && this.parentNonPlayer.data) {

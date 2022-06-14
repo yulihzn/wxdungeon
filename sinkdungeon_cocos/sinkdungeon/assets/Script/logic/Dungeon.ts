@@ -21,6 +21,7 @@ import GameWorldSystem from '../ecs/system/GameWorldSystem'
 import Random from '../utils/Random'
 import LoadingManager from '../manager/LoadingManager'
 import StatusIconList from '../ui/StatusIconList'
+import Actor from '../base/Actor'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -47,8 +48,9 @@ export default class Dungeon extends cc.Component {
     mainCamera: cc.Camera = null
     mapData: string[][] = [] //地图数据
     tilesmap: Tile[][] = new Array() //地面列表
-    floorCombineMap: Map<string, string> = new Map()
+    floorCombineMap: Map<string, Tile> = new Map()
     floorIndexMap: cc.Vec3[] = new Array() //地板下标列表
+    waterIndexMap: cc.Vec3[] = new Array() //地板下标列表
     static WIDTH_SIZE: number = 7
     static HEIGHT_SIZE: number = 7
     static readonly MAPX: number = 64
@@ -203,6 +205,7 @@ export default class Dungeon extends cc.Component {
         this.rootSystem.init()
         this.tilesmap = new Array()
         this.floorIndexMap = new Array()
+        this.waterIndexMap = new Array()
         //放置之前留在地上的物品和装备
         this.addItemListOnGround()
         this.addEquipmentListOnGround()
@@ -281,7 +284,8 @@ export default class Dungeon extends cc.Component {
      */
     private addTiles(floorData: string[][], floorPos: cc.Vec3, indexPos: cc.Vec3, leveldata: LevelData, onlyShow: boolean) {
         let mapDataStr = floorData[floorPos.x][floorPos.y]
-        if (Utils.hasThe(mapDataStr, '*')) {
+        let isWater = Utils.hasThe(mapDataStr, '~')
+        if (Utils.hasThe(mapDataStr, '*') || Utils.hasThe(mapDataStr, '~')) {
             let index = parseInt(mapDataStr.substring(3))
             let resIndex = parseInt(mapDataStr.substring(1, 3))
             let isCombine = this.floorCombineMap.has(`i${floorPos.x}j${floorPos.y}`)
@@ -294,6 +298,7 @@ export default class Dungeon extends cc.Component {
                 let tile = t.getComponent(Tile)
                 tile.isAutoShow = false
                 tile.tileType = mapDataStr
+                tile.isWater = isWater
                 tile.resName = leveldata.getFloorRes(resIndex)
                 if (!onlyShow) {
                     this.tilesmap[indexPos.x][indexPos.y] = tile
@@ -304,7 +309,7 @@ export default class Dungeon extends cc.Component {
                     let next = floorData[i][floorPos.y]
                     if (mapDataStr == next) {
                         //下一个元素相同宽度++,并存储该坐标
-                        this.floorCombineMap.set(`i${i}j${floorPos.y}`, mapDataStr)
+                        this.floorCombineMap.set(`i${i}j${floorPos.y}`, tile)
                         combineCountX++
                     } else {
                         break
@@ -315,8 +320,8 @@ export default class Dungeon extends cc.Component {
                     if (mapDataStr == next) {
                         //遍历x设置坐标
                         for (let i = 0; i < combineCountX + 2; i++) {
-                            if (mapDataStr == floorData[floorPos.x + i][j]) {
-                                this.floorCombineMap.set(`i${floorPos.x + i}j${j}`, mapDataStr)
+                            if (floorPos.x + i < floorData.length && mapDataStr == floorData[floorPos.x + i][j]) {
+                                this.floorCombineMap.set(`i${floorPos.x + i}j${j}`, tile)
                             }
                         }
                         combineCountY++
@@ -326,9 +331,17 @@ export default class Dungeon extends cc.Component {
                 }
                 tile.w = combineCountX + 1
                 tile.h = combineCountY + 1
+            } else {
+                if (!onlyShow) {
+                    this.tilesmap[indexPos.x][indexPos.y] = this.floorCombineMap.get(`i${floorPos.x}j${floorPos.y}`)
+                }
             }
             if (!onlyShow) {
-                this.floorIndexMap.push(indexPos.clone())
+                if (isWater) {
+                    this.waterIndexMap.push(indexPos.clone())
+                } else {
+                    this.floorIndexMap.push(indexPos.clone())
+                }
             }
         }
     }
@@ -684,6 +697,24 @@ export default class Dungeon extends cc.Component {
         if (tile && tile.isAutoShow) {
             this.breakTile(pos)
         }
+        this.player.isInWaterTile = this.isActorPosInWater(this.player)
+    }
+    isActorPosInWater(actor: Actor) {
+        if (this.waterIndexMap.length < 1) {
+            return
+        }
+        if (!this.tilesmap) {
+            return false
+        }
+        let pos = Dungeon.getIndexInMap(actor.node.position)
+        if (!this.tilesmap[pos.x] || !this.tilesmap[pos.x][pos.y]) {
+            return false
+        }
+        let tile = this.tilesmap[pos.x][pos.y]
+        let pp = actor.node.position
+        let w = actor.node.width
+        let h = actor.node.height
+        return tile.isWater && tile.containsRect(cc.rect(pp.x - w / 2, pp.y - h / 2, w, h))
     }
     lerp(self: cc.Vec3, to: cc.Vec3, ratio: number): cc.Vec3 {
         let out = cc.v3(0, 0)
