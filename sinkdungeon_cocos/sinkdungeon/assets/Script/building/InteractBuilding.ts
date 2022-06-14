@@ -41,7 +41,10 @@ export default class InteractBuilding extends Building {
     decorateType = 0
     resName = 'decorate000'
     sprite: cc.Sprite
-    shadow: cc.Node
+    @property(cc.Node)
+    root: cc.Node = null
+    @property(cc.Node)
+    shadow: cc.Node = null
     mat: cc.MaterialVariant
     isTaken = false
     isAttacking = false
@@ -51,7 +54,7 @@ export default class InteractBuilding extends Building {
     isAniming = false
     private hasTargetMap: Map<number, number> = new Map()
     onLoad() {
-        this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite)
+        this.sprite = this.root.getChildByName('sprite').getComponent(cc.Sprite)
         this.shadow = this.node.getChildByName('shadow')
     }
     start() {}
@@ -97,10 +100,12 @@ export default class InteractBuilding extends Building {
         this.entity.Move.linearDamping = this.isThrowing ? 5 : 10
         physicCollider.sensor = this.data.currentHealth <= 0 ? true : false
         physicCollider.bounce = 100
+        this.entity.NodeRender.root = this.root
+        this.entity.Transform.flyZ = 128
     }
     changeRes(resName: string, suffix?: string) {
         if (!this.sprite) {
-            this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite)
+            this.sprite = this.root.getChildByName('sprite').getComponent(cc.Sprite)
         }
         let spriteFrame = Logic.spriteFrameRes(resName)
         if (suffix && Logic.spriteFrameRes(resName + suffix)) {
@@ -109,7 +114,7 @@ export default class InteractBuilding extends Building {
         this.sprite.node.opacity = 255
         this.sprite.spriteFrame = spriteFrame
         if (!this.mat) {
-            this.mat = this.node.getChildByName('sprite').getComponent(cc.Sprite).getMaterial(0)
+            this.mat = this.root.getChildByName('sprite').getComponent(cc.Sprite).getMaterial(0)
         }
         this.mat.setProperty('textureSizeWidth', spriteFrame.getTexture().width * this.sprite.node.scaleX)
         this.mat.setProperty('textureSizeHeight', spriteFrame.getTexture().height * this.sprite.node.scaleY)
@@ -117,19 +122,15 @@ export default class InteractBuilding extends Building {
         this.sprite.node.angle = this.data.rollover > 0 ? 90 : 0
     }
 
-    //Animation
-    BreakingFinish() {
-        this.reset()
-    }
     hitLight(isHit: boolean) {
         if (!this.mat) {
-            this.mat = this.node.getChildByName('sprite').getComponent(cc.Sprite).getMaterial(0)
+            this.mat = this.root.getChildByName('sprite').getComponent(cc.Sprite).getMaterial(0)
         }
         this.mat.setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT)
     }
     highLight(isHigh: boolean) {
         if (!this.mat) {
-            this.mat = this.node.getChildByName('sprite').getComponent(cc.Sprite).getMaterial(0)
+            this.mat = this.root.getChildByName('sprite').getComponent(cc.Sprite).getMaterial(0)
         }
         this.mat.setProperty('openOutline', isHigh ? 1 : 0)
     }
@@ -403,6 +404,7 @@ export default class InteractBuilding extends Building {
         if (this.isTimeDelay(dt)) {
             this.updatePosition()
         }
+
         if (this.isSaveTimeDelay(dt)) {
             this.data.position = this.entity.Transform.position
             let saveDecorate = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos)
@@ -410,6 +412,13 @@ export default class InteractBuilding extends Building {
                 saveDecorate.valueCopy(this.data)
             }
         }
+        let y = this.root.y - this.entity.Transform.base
+        if (y < 0) {
+            y = 0
+        }
+        let scale = 1 - y / 64
+        this.shadow.scale = scale < 0.5 ? 0.5 : scale
+        this.shadow.y = this.entity.Transform.base
     }
 
     private beatBack(node: Actor, hv: cc.Vec2, power: number) {
