@@ -85,6 +85,7 @@ export default class Wall extends Building {
             return
         }
         if (Utils.hasThe(wallName, 'fence')) {
+            this.isFence = true
             this.roofsprite.node.opacity = 0
             this.wallsprite.spriteFrame = null
             this.wallsprite.trim = false
@@ -231,23 +232,29 @@ export default class Wall extends Building {
         this.shadowsprite.node.opacity = isShowShadow ? 80 : 0
     }
 
-    public typeNeedTransparent(): boolean {
-        return this.type == Wall.TYPE_INNER_CORNER_BOTTOM_RIGHT || this.type == Wall.TYPE_BOTTOM || this.type == Wall.TYPE_INNER_CORNER_BOTTOM_LEFT || this.type == Wall.TYPE_OTHER
+    public static typeNeedTransparent(type: number): boolean {
+        return type == Wall.TYPE_INNER_CORNER_BOTTOM_RIGHT || type == Wall.TYPE_BOTTOM || type == Wall.TYPE_INNER_CORNER_BOTTOM_LEFT || type == Wall.TYPE_OTHER
+    }
+    public static getType(mapStr: string) {
+        let type = Wall.TYPE_EMPTY
+        if (Utils.hasThe(mapStr, '###')) {
+            type = Wall.TYPE_EMPTY
+        } else if (Utils.hasThe(mapStr, '##')) {
+            type = Wall.TYPE_OTHER
+        } else {
+            let index = parseInt(mapStr.substring(3))
+            type = index
+        }
+        return type
     }
     init(mapStr: string, leveldata: LevelData, onlyShow: boolean, combineCountX: number, combineCountY: number) {
         this.node.opacity = 255
         this.mapStr = mapStr
-        if (Utils.hasThe(mapStr, '###')) {
-            this.type = Wall.TYPE_EMPTY
-        } else if (Utils.hasThe(mapStr, '##')) {
-            this.type = Wall.TYPE_OTHER
-            let resIndex = parseInt(mapStr.substring(2))
-            this.wallName = leveldata.getWallRes(resIndex, true)
+        this.type = Wall.getType(mapStr)
+        if (this.type == Wall.TYPE_OTHER) {
+            this.wallName = leveldata.getWallRes(parseInt(mapStr.substring(2)), true)
         } else {
-            let index = parseInt(mapStr.substring(3))
-            this.type = index
-            let resIndex = parseInt(mapStr.substring(1, 3))
-            this.wallName = leveldata.getWallRes(resIndex)
+            this.wallName = leveldata.getWallRes(parseInt(mapStr.substring(1, 3)))
         }
         this.changeRes(this.wallName)
 
@@ -290,12 +297,16 @@ export default class Wall extends Building {
         if (!self.sensor) {
             return
         }
-        if (this.typeNeedTransparent() && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
-            if (!this.combineWall) EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER + this.node.uuid, { type: 0, other: other, self: self })
-            if (this.type == Wall.TYPE_OTHER) {
-                this.wallsprite.node.opacity = 120
-            } else {
-                this.roofsprite.node.opacity = 120
+        if (Wall.typeNeedTransparent(this.type) && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
+            if (!this.combineWall) {
+                EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER + this.node.uuid, { type: 0, other: other, self: self })
+            }
+            if (Wall.typeNeedTransparent(this.type)) {
+                if (this.type == Wall.TYPE_OTHER || this.isFence) {
+                    this.wallsprite.node.opacity = 120
+                } else {
+                    this.roofsprite.node.opacity = 120
+                }
             }
         }
     }
@@ -303,12 +314,16 @@ export default class Wall extends Building {
         if (!self.sensor) {
             return
         }
-        if (this.typeNeedTransparent() && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
-            if (!this.combineWall) EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER + this.node.uuid, { type: 1, other: other, self: self })
-            if (this.type == Wall.TYPE_OTHER) {
-                this.wallsprite.node.opacity = 120
-            } else {
-                this.roofsprite.node.opacity = 120
+        if (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER) {
+            if (!this.combineWall) {
+                EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER + this.node.uuid, { type: 1, other: other, self: self })
+            }
+            if (Wall.typeNeedTransparent(this.type)) {
+                if (this.type == Wall.TYPE_OTHER || this.isFence) {
+                    this.wallsprite.node.opacity = 120
+                } else {
+                    this.roofsprite.node.opacity = 120
+                }
             }
         }
     }
@@ -316,12 +331,16 @@ export default class Wall extends Building {
         if (!self.sensor) {
             return
         }
-        if (this.typeNeedTransparent() && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
-            if (!this.combineWall) EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER + this.node.uuid, { type: 2, other: other, self: self })
-            if (this.type == Wall.TYPE_OTHER) {
-                this.wallsprite.node.opacity = 255
-            } else {
-                this.roofsprite.node.opacity = 255
+        if (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER) {
+            if (!this.combineWall) {
+                EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER + this.node.uuid, { type: 2, other: other, self: self })
+            }
+            if (Wall.typeNeedTransparent(this.type)) {
+                if (this.type == Wall.TYPE_OTHER || this.isFence) {
+                    this.wallsprite.node.opacity = 255
+                } else {
+                    this.roofsprite.node.opacity = 255
+                }
             }
         }
     }

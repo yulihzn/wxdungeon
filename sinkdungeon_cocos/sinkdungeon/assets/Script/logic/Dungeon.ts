@@ -196,7 +196,10 @@ export default class Dungeon extends cc.Component {
         }
         let colliderdebug = this.node.getChildByName('colliderdebug')
         colliderdebug.zIndex = IndexZ.UI
-        this.rootSystem = new GameWorldSystem(Dungeon.WIDTH_SIZE * Dungeon.TILE_SIZE, Dungeon.HEIGHT_SIZE * Dungeon.TILE_SIZE, colliderdebug.getComponent(cc.Graphics))
+        let p0 = this.node.convertToWorldSpaceAR(cc.v3(0, 0))
+        let p1 = this.node.convertToWorldSpaceAR(cc.v3(Dungeon.WIDTH_SIZE * Dungeon.TILE_SIZE, Dungeon.WIDTH_SIZE * Dungeon.TILE_SIZE))
+        let rect = cc.rect(p0.x, p0.y, p1.x - p0.x, p1.y - p0.y)
+        this.rootSystem = new GameWorldSystem(rect, colliderdebug.getComponent(cc.Graphics))
         this.rootSystem.init()
         this.tilesmap = new Array()
         this.floorIndexMap = new Array()
@@ -287,7 +290,7 @@ export default class Dungeon extends cc.Component {
                 t.parent = this.node
                 let pos = Dungeon.getPosInMap(indexPos.clone())
                 t.position = cc.v3(pos.x - Dungeon.TILE_SIZE / 2, pos.y - Dungeon.TILE_SIZE / 2)
-                t.zIndex = (index > 0 ? IndexZ.FLOOR : IndexZ.BASE) + (Dungeon.HEIGHT_SIZE - indexPos.y) * 10
+                t.zIndex = (resIndex > 0 ? IndexZ.FLOOR : IndexZ.BASE) + (Dungeon.HEIGHT_SIZE - indexPos.y) * 10
                 let tile = t.getComponent(Tile)
                 tile.isAutoShow = false
                 tile.tileType = mapDataStr

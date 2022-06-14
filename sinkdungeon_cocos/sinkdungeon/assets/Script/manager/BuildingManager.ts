@@ -562,9 +562,9 @@ export default class BuildingManager extends BaseManager {
                 if (mapDataStr == '+1') {
                     df.init(dungeon, 'exitarrow', 4, 0)
                 } else if (mapDataStr == '++0') {
-                    df.init(dungeon, 'roomoutside0', 32, 1, cc.v3(0.95, 0.5), 255, IndexZ.BASE)
+                    df.init(dungeon, 'roomoutside0', 32, 1, cc.v3(0.9, 0.5), 255, IndexZ.BASE)
                 } else if (mapDataStr == '++1') {
-                    df.init(dungeon, 'roomoutside1', 32, 1, cc.v3(0.95, 0.5), 255, IndexZ.BASE)
+                    df.init(dungeon, 'roomoutside1', 32, 1, cc.v3(0.9, 0.5), 255, IndexZ.BASE)
                 } else if (mapDataStr == '++2') {
                     df.init(dungeon, 'roomoutside2', 32, 1, cc.v3(0, 0.5), 255, IndexZ.BASE)
                 } else {
@@ -841,6 +841,7 @@ export default class BuildingManager extends BaseManager {
             let wall = node.getComponent(Wall)
             let combineCountX = 0
             let combineCountY = 0
+
             //判断当前墙壁下标是否在合并表里，如果有设置最初合并的墙
             let isCombine = this.colliderCombineMap.has(`i${indexPos.x}j${indexPos.y}`)
             if (isCombine) {
@@ -850,10 +851,15 @@ export default class BuildingManager extends BaseManager {
             if (!isCombine && !onlyShow) {
                 for (let i = indexPos.x + 1; i < mapData.length; i++) {
                     let next = mapData[i][indexPos.y]
-                    if (mapDataStr == next) {
-                        //下一个相同元素记录下标并存储当前元素
-                        this.colliderCombineMap.set(`i${i}j${indexPos.y}`, wall)
-                        combineCountX++
+                    if (Utils.isFirstEqual(next, '#')) {
+                        let type = Wall.getType(next)
+                        if (Wall.typeNeedTransparent(type)) {
+                            //下一个相同元素记录下标并存储当前元素
+                            this.colliderCombineMap.set(`i${i}j${indexPos.y}`, wall)
+                            combineCountX++
+                        } else {
+                            break
+                        }
                     } else {
                         break
                     }

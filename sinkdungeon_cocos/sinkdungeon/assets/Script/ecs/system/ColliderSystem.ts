@@ -15,15 +15,15 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
     private allCount = 0
     private collisionCount = 0
     private activeCount = 0
-    constructor(width: number, height: number, graphics: cc.Graphics) {
+    constructor(bounds: cc.Rect, graphics: cc.Graphics) {
         super()
-        let bounds = {
-            x: -width,
-            y: -height,
-            width: width * 2,
-            height: height * 2
+        let b = {
+            x: bounds.x,
+            y: bounds.y,
+            width: bounds.width,
+            height: bounds.height
         }
-        this.quadTree = new Quadtree(bounds)
+        this.quadTree = new Quadtree(b)
         this.graphics = graphics
     }
     init() {
