@@ -46,8 +46,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
+      "width": 128,
+      "height": 128
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -144,7 +144,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        64.342,
+        94,
         0,
         0,
         0,
@@ -1295,13 +1295,13 @@
     },
     "_enabled": true,
     "tag": 1,
-    "offsetX": 0,
-    "offsetY": 0,
+    "offsetX": 3,
+    "offsetY": 33,
     "type": 1,
     "radius": 200,
-    "w": 100,
-    "h": 48,
-    "zHeight": 128,
+    "w": 140,
+    "h": 62,
+    "zHeight": 145,
     "bounce": 0,
     "sensor": false,
     "isStatic": true,

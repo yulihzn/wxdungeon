@@ -5,13 +5,14 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import GoodsData from "../data/GoodsData"
-import { EventHelper } from "../logic/EventHelper"
-import Goods from "../item/Goods"
-import Logic from "../logic/Logic"
-import Tips from "../ui/Tips"
-import Building from "./Building"
-import CCollider from "../collider/CCollider"
+import GoodsData from '../data/GoodsData'
+import { EventHelper } from '../logic/EventHelper'
+import Goods from '../item/Goods'
+import Logic from '../logic/Logic'
+import Tips from '../ui/Tips'
+import Building from './Building'
+import CCollider from '../collider/CCollider'
+import IndexZ from '../utils/IndexZ'
 
 const { ccclass, property } = cc._decorator
 
@@ -19,9 +20,9 @@ const { ccclass, property } = cc._decorator
 export default class MartShelves extends Building {
     static readonly SIZE_NORMAL = 21
     static readonly SIZE_FRIDGE = 12
-    static readonly TYPE_NORMAL = "S3"
-    static readonly TYPE_WOOD = "S4"
-    static readonly TYPE_FRIDGE = "S5"
+    static readonly TYPE_NORMAL = 'S3'
+    static readonly TYPE_WOOD = 'S4'
+    static readonly TYPE_FRIDGE = 'S5'
     @property(cc.Prefab)
     goods: cc.Prefab = null
     @property(cc.Node)
@@ -50,16 +51,17 @@ export default class MartShelves extends Building {
         this.type = type
         this.changeBg(type)
         this.addGoods(goodsNameList)
+        this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.node.position.x, this.node.position.y + this.ccolliders[0].offset.y))
     }
     changeBg(type: string) {
         if (!this.martshelvesbg) {
-            this.martshelvesbg = this.node.getChildByName("sprite").getChildByName("martshelves")
-            this.martshelvesside0 = this.node.getChildByName("sprite").getChildByName("martshelvesside0")
-            this.martshelvesside1 = this.node.getChildByName("sprite").getChildByName("martshelvesside1")
-            this.martshelvesside2 = this.node.getChildByName("sprite").getChildByName("martshelvesside2")
-            this.martshelvesside3 = this.node.getChildByName("sprite").getChildByName("martshelvesside3")
+            this.martshelvesbg = this.node.getChildByName('sprite').getChildByName('martshelves')
+            this.martshelvesside0 = this.node.getChildByName('sprite').getChildByName('martshelvesside0')
+            this.martshelvesside1 = this.node.getChildByName('sprite').getChildByName('martshelvesside1')
+            this.martshelvesside2 = this.node.getChildByName('sprite').getChildByName('martshelvesside2')
+            this.martshelvesside3 = this.node.getChildByName('sprite').getChildByName('martshelvesside3')
         }
-        let color = type == MartShelves.TYPE_WOOD ? "#DF8143" : "#FFFFFF"
+        let color = type == MartShelves.TYPE_WOOD ? '#DF8143' : '#FFFFFF'
         this.martshelvesbg.color = cc.color().fromHEX(color)
         if (type != MartShelves.TYPE_FRIDGE) {
             this.martshelvesside0.color = cc.color().fromHEX(color)

@@ -658,9 +658,9 @@ export default class NonPlayer extends Actor {
         movement = movement.mul(speed)
         if (this.data.water > 0 && this.isInWater()) {
             movement = movement.mul(0.5)
-            this.swimmingAudioStep.next(()=>{
+            this.swimmingAudioStep.next(() => {
                 AudioPlayer.play(AudioPlayer.SWIMMING)
-            },2.5)
+            }, 2.5)
         }
         this.setLinearVelocity(movement)
         this.changeZIndex()
@@ -715,6 +715,8 @@ export default class NonPlayer extends Actor {
             this.sc.isDisguising = false
             this.sc.isAttacking = false
             this.sc.isFlying = false
+            this.meleeStep.refreshCoolDown(this.data.melee)
+            this.remoteStep.refreshCoolDown(this.data.remote)
             if (damageData.isCriticalStrike) {
                 this.fall()
             }
@@ -1139,7 +1141,7 @@ export default class NonPlayer extends Actor {
 
         //相隔指定长度的时候需要停下来，否则执行移动操作
         if (!this.isPassive) {
-            let needStop = (this.data.melee > 0 && targetDis < 64) || (this.data.remote > 0 && this.data.melee <= 0 && targetDis < 300) || this.shooter.isAiming
+            let needStop = (this.data.melee > 0 && targetDis < 64) || (this.data.remote > 0 && this.data.melee <= 0 && targetDis < 300) || this.shooter.isAiming || speed <= 0
             if (needStop) {
                 this.sc.isMoving = false
             } else if (isTracking) {
