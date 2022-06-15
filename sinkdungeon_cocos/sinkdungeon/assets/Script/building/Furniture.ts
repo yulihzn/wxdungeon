@@ -308,6 +308,8 @@ export default class Furniture extends Building {
                 this.tips.node.scale = 2
                 this.boxback.node.scale = this.furnitureData.scale
                 this.boxcover.node.scale = this.furnitureData.scale
+                this.boxback.node.y = this.sprite.node.y
+                this.boxcover.node.y = this.sprite.node.y
                 let width = this.sprite.node.width * this.sprite.node.scale
                 let height = this.sprite.node.height * this.sprite.node.scale
                 this.tips.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height - Dungeon.TILE_SIZE / 2)
