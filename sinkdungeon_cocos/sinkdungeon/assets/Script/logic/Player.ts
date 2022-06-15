@@ -87,6 +87,8 @@ export default class Player extends Actor {
     shadowPrefab: cc.Prefab = null
     @property(ActorBottomDir)
     bottomDir: ActorBottomDir = null
+    @property(cc.Prefab)
+    waterSpark: cc.Prefab = null
     professionTalent: ProfessionTalent = null
     organizationTalent: OrganizationTalent = null
 
@@ -121,7 +123,8 @@ export default class Player extends Actor {
     liquidStep: NextStep = new NextStep()
     pooStep: NextStep = new NextStep()
     peeStep: NextStep = new NextStep()
-
+    lastTimeInWater = false
+    swimmingAudioStep:NextStep = new NextStep()
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -840,6 +843,9 @@ export default class Player extends Actor {
         }
         if (this.isInWater()) {
             pos = pos.mul(0.5)
+            this.swimmingAudioStep.next(() => {
+                AudioPlayer.play(AudioPlayer.SWIMMING)
+            }, 2.5)
         }
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.entity.Transform.position)
@@ -983,7 +989,7 @@ export default class Player extends Actor {
         }
         this.scheduleOnce(() => {
             this.sc.jumpTimeEnd = true
-        }, 0.3)
+        }, 0.2)
         if (!this.sc.isJumpingUp) {
             AudioPlayer.play(AudioPlayer.DASH)
         }
@@ -1268,7 +1274,7 @@ export default class Player extends Actor {
             this.weaponRight.handsUp(showHands, isLift, this.interactBuilding && this.interactBuilding.isAttacking)
         }
         if (this.avatar) {
-            this.avatar.showLegsWithWater(this.isInWater())
+            this.avatar.showLegsWithWater(this.isInWater(), this.isInWaterTile)
             this.shadow.opacity = this.isInWater() ? 0 : 128
         }
         this.showUiButton()
@@ -1293,7 +1299,18 @@ export default class Player extends Actor {
         this.shadow.scale = scale < 0.5 ? 0.5 : scale
         this.shadow.y = this.entity.Transform.base
         this.bottomDir.node.y = this.entity.Transform.base
+        this.bottomDir.node.opacity = this.isInWater() ? 128 : 255
         this.changeZIndex(this.pos)
+        this.showWaterSpark()
+    }
+    showWaterSpark() {
+        if (!this.lastTimeInWater && this.isInWater()) {
+            let light = cc.instantiate(this.waterSpark)
+            light.parent = this.node
+            light.position = cc.v3(0, 0)
+            AudioPlayer.play(AudioPlayer.JUMP_WATER)
+        }
+        this.lastTimeInWater = this.isInWater()
     }
     isInWater() {
         return this.isInWaterTile && this.entity.Transform.z < 32

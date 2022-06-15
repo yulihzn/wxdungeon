@@ -103,7 +103,7 @@ export default class Chest extends Building {
                             // dungeon.addEquipment('weapon018', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
                             // dungeon.addEquipment('weapon019', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
                             // dungeon.addEquipment('weapon033', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
-                            dungeon.addEquipment(EquipmentManager.REMOTE_ALIENGUN, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            // dungeon.addEquipment(EquipmentManager.REMOTE_ALIENGUN, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment('shield007', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
                             // dungeon.addEquipment('helmet006', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
                             // dungeon.addEquipment('clothes010', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);

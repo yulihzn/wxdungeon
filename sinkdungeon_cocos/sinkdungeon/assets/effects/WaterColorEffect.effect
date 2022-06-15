@@ -16,6 +16,10 @@ CCEffect %{
         addColor: { value: [0.0, 0.0, 0.0, 0.0], inspector: { type: color } }
         hidebottom: { value: 0.0}
         isRotated: { value: 0.0}
+        amplitude: { value: 0.004}
+        angularVelocity: { value: 50.0}
+        frequency: { value: 10.0}
+        offset: { value: 0.0}
         rect: {value: [0.0,0.0,1.0,1.0]}
 }%
 
@@ -60,7 +64,7 @@ CCProgram fs %{
   
   #include <alpha-test>
   #include <texture>
-
+  #include <cc-global>
   in vec4 v_color;
 
   #if USE_TEXTURE
@@ -73,6 +77,10 @@ CCProgram fs %{
     vec4 rect;
     float hidebottom;
     float isRotated;
+    float amplitude;		// 振幅
+    float angularVelocity;	// 角速度
+    float frequency;		// 频率
+    float offset;			// 偏距
   };
   void main () {
     vec4 o = vec4(1, 1, 1, 1);
@@ -90,25 +98,34 @@ CCProgram fs %{
     
     o.rgb = o.rgb + addColor.rgb;
     if(hidebottom > 0.9){
+      // 初相位（正值表现为向左移动，负值则表现为向右移动）
+      // cc_time 是 Cocos Creator 提供的运行时间全局变量（类型：vec4）
+      float initiaPhase = frequency * cc_time.x;
+      // 代入正弦曲线公式计算 y 值
+      // y = Asin(ωx ± φt) + k
       if(isRotated>0.9){
-        // if(v_uv0.y>=rect.y&&v_uv0.y<=rect.y+rect.w){
-        // }
-          if(v_uv0.x < rect.x+rect.z*0.5){
-            o.a = 0.1;
-          }else if(v_uv0.x < rect.x+rect.z*0.55){
+        float x = amplitude * sin(angularVelocity * v_uv0.y + initiaPhase) + offset;
+          if(v_uv0.x < rect.x+(rect.z+x)*0.5){
+            if(o.a != 0.0){
+              o.a = 0.1;
+            }
+          }else if(v_uv0.x < rect.x+(rect.z+x)*0.52){
               o = vec4(1, 1, 1, 1);
           }
         
       }else{
-        // if(v_uv0.x>=rect.x&&v_uv0.x<=rect.x+rect.z){
-        // }
-          if(v_uv0.y > rect.y+rect.w*0.5){
-            o.a = 0.1;
-          }else if(v_uv0.y > rect.y+rect.w*0.45){
+        float y = amplitude * sin(angularVelocity * v_uv0.x + initiaPhase) + offset;
+        //如果y大于当前rect的一半
+          if(v_uv0.y -rect.y> (rect.w+y)*0.5){
+            if(o.a != 0.0){
+              o.a = 0.1;
+            }
+          }else if(v_uv0.y -rect.y> (rect.w+y)*0.48){
             o = vec4(1, 1, 1, 1);
           }
         
       }
+       
     }
     gl_FragColor = o;
   }

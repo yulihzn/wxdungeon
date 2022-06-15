@@ -191,7 +191,12 @@ export default class PlayerWeapon extends cc.Component {
             x = 0
         }
         let y = this.interactBuildingAttacking || !this.interactBuildingLift ? 0 : this.handsUpPos.y
-        this.node.position = Logic.lerpPos(this.node.position, this.player.isFaceRight ? this.selfDefaultPos.add(cc.v3(x, y)) : this.otherDefaultPos.add(cc.v3(x, y)), dt * 5)
+        let offestY = this.player.isInWater() ? -24 : 0
+        this.node.position = Logic.lerpPos(
+            this.node.position,
+            this.player.isFaceRight ? this.selfDefaultPos.add(cc.v3(x, y + offestY)) : this.otherDefaultPos.add(cc.v3(x, y + offestY)),
+            dt * 5
+        )
         if (this.meleeWeapon) {
             this.meleeWeapon.updateLogic(dt)
         }

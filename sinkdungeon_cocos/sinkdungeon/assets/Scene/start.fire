@@ -7194,6 +7194,12 @@
     "jump": {
       "__uuid__": "1abc19cc-6317-4b60-ab22-a9eb71f7161a"
     },
+    "jumpwater": {
+      "__uuid__": "a7ac2b88-7e73-41f9-ab3c-e8792238643a"
+    },
+    "swimming": {
+      "__uuid__": "03964d2d-0a9c-479f-9dfd-0165b8e9ff17"
+    },
     "bg01": {
       "__uuid__": "a601a25d-abcb-42b9-9e58-2f8cfea4ebc9"
     },

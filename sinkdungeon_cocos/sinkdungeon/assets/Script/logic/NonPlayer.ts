@@ -88,6 +88,8 @@ export default class NonPlayer extends Actor {
     attrPrefab: cc.Prefab = null
     @property(ActorBottomDir)
     bottomDir: ActorBottomDir = null
+    @property(cc.Prefab)
+    waterSpark: cc.Prefab = null
     private attrNode: cc.Node
     private sprite: cc.Node
     private bodySprite: cc.Sprite
@@ -113,6 +115,7 @@ export default class NonPlayer extends Actor {
     specialStep = new NextStep()
     dashStep = new NextStep()
     blinkStep = new NextStep()
+    swimmingAudioStep = new NextStep()
     attrmap: { [key: string]: number } = {}
     mat: cc.MaterialVariant
     animStatus = NonPlayer.ANIM_NONE
@@ -126,7 +129,8 @@ export default class NonPlayer extends Actor {
     meleeDashLength = 0
     attackRect = []
     bodyRect = []
-
+    waterY = 0
+    lastTimeInWater = false
     public stateMachine: StateMachine<NonPlayer, State<NonPlayer>>
     get IsVariation() {
         return this.isVariation || this.data.StatusTotalData.variation > 0
@@ -324,10 +328,18 @@ export default class NonPlayer extends Actor {
             this.bodySprite.node.width = spriteFrame.getOriginalSize().width
             this.bodySprite.node.height = spriteFrame.getOriginalSize().height
             this.setInWaterMat(this.bodySprite, this.data.water < 1 && this.isInWater())
-            this.sprite.y = this.isInWater() && this.data.water < 1 ? -32 : 0
         } else {
             this.bodySprite.spriteFrame = null
         }
+    }
+    showWaterSpark() {
+        if (!this.lastTimeInWater && this.isInWater()) {
+            let light = cc.instantiate(this.waterSpark)
+            light.parent = this.node
+            light.position = cc.v3(0, 0)
+            AudioPlayer.play(AudioPlayer.JUMP_WATER)
+        }
+        this.lastTimeInWater = this.isInWater()
     }
     isInWater() {
         return this.isInWaterTile && this.entity.Transform.z < 32
@@ -629,20 +641,27 @@ export default class NonPlayer extends Actor {
         }
         pos = pos.normalize()
         this.hv = cc.v2(pos)
+
         this.pos = Dungeon.getIndexInMap(this.node.position)
-        if (this.data.water > 0 && this.isInWaterTile) {
-        }
+
         let h = pos.x
         let v = pos.y
         let absh = Math.abs(h)
         let absv = Math.abs(v)
         let mul = absh > absv ? absh : absv
         mul = mul == 0 ? 1 : mul
+
         let movement = cc.v2(h, v)
         if (speed < 0) {
             speed = 0
         }
         movement = movement.mul(speed)
+        if (this.data.water > 0 && this.isInWater()) {
+            movement = movement.mul(0.5)
+            this.swimmingAudioStep.next(()=>{
+                AudioPlayer.play(AudioPlayer.SWIMMING)
+            },2.5)
+        }
         this.setLinearVelocity(movement)
         this.changeZIndex()
     }
@@ -664,7 +683,6 @@ export default class NonPlayer extends Actor {
     fallFinish() {
         this.sc.isFalling = false
         this.bodySprite.node.angle = 0
-        this.sprite.y = 0
         this.sprite.x = 0
     }
     public takeDamage(damageData: DamageData): boolean {
@@ -1240,9 +1258,14 @@ export default class NonPlayer extends Actor {
         this.shadow.scale = scale < 0.5 ? 0.5 : scale
         this.shadow.y = this.entity.Transform.base
         this.bottomDir.node.y = this.entity.Transform.base
+        this.bottomDir.node.opacity = this.isInWater() ? 128 : 255
+        this.setInWaterMat(this.bodySprite, this.data.water < 1 && this.isInWater())
+        this.waterY = this.isInWaterTile && this.data.water < 1 ? -32 : 0
+        this.sprite.y = Logic.lerp(this.sprite.y, this.waterY, 0.2)
         if (this.data.fly > 0 && this.sc.isFlying) {
             this.entity.Move.linearVelocityZ = 300
         }
+        this.showWaterSpark()
     }
     private setInWaterMat(sprite: cc.Sprite, inWater: boolean) {
         if (!sprite || !sprite.spriteFrame) {

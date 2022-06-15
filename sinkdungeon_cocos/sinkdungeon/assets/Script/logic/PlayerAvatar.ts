@@ -241,13 +241,13 @@ export default class PlayerAvatar extends cc.Component {
         this.anim.play('AvatarIdle')
     }
 
-    public showLegsWithWater(inWater: boolean) {
+    public showLegsWithWater(inWater: boolean, inWaterTile: boolean) {
         this.legLeftSprite.node.opacity = inWater ? 0 : 255
         this.legRightSprite.node.opacity = inWater ? 0 : 255
         this.pantsSprite.node.opacity = inWater ? 0 : 255
         this.setInWaterMat(this.bodySprite, inWater)
         this.setInWaterMat(this.clothesSprite, inWater)
-        this.waterY = inWater ? -32 : 0
+        this.waterY = inWaterTile ? -32 : 0
         this.node.y = Logic.lerp(this.node.y, this.waterY, 0.2)
     }
 
@@ -260,6 +260,8 @@ export default class PlayerAvatar extends cc.Component {
         let texture = sprite.spriteFrame.getTexture()
         sprite.getMaterial(0).setProperty('rect', [rect.x / texture.width, rect.y / texture.height, rect.width / texture.width, rect.height / texture.height])
         sprite.getMaterial(0).setProperty('hidebottom', inWater ? 1 : 0)
+        sprite.getMaterial(0).setProperty('angularVelocity', 300)
+        sprite.getMaterial(0).setProperty('amplitude', 0.001)
         sprite.getMaterial(0).setProperty('isRotated', sprite.spriteFrame.isRotated() ? 1.0 : 0.0)
     }
     private playWalk() {
