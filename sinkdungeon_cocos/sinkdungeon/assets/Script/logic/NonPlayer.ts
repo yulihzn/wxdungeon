@@ -422,10 +422,13 @@ export default class NonPlayer extends Actor {
         if (speedScale > 2) {
             speedScale = 2
         }
-        let pos1 = cc.v2(-32, 0)
-        let pos2 = cc.v2(32, 0)
-        if (this.data.fly > 0) {
-            pos2 = cc.v2(0, 0)
+        let pos = cc.v2(target.node.position.clone().sub(this.node.position))
+        if (pos.equals(cc.Vec2.ZERO)) {
+            pos = cc.v2(1, 0)
+        }
+        pos = pos.normalize().mul(this.isFaceRight ? 32 : -32)
+        if (!this.isFaceRight) {
+            pos.y = -pos.y
         }
         this.anim.pause()
         this.bodySprite.node.stopAllActions()
@@ -508,18 +511,18 @@ export default class NonPlayer extends Actor {
         //退后
         const backofftween = cc
             .tween()
-            .to(0.5 * speedScale, { position: cc.v3(pos1.x, pos1.y) })
+            .to(0.5 * speedScale, { position: cc.v3(-pos.x, -pos.y) })
             .delay(stabDelay)
         //前进
         const forwardtween = cc
             .tween()
-            .to(0.2 * speedScale, { position: cc.v3(pos2.x, pos2.y) })
+            .to(0.2 * speedScale, { position: this.data.fly > 0 ? cc.v3(0, 0) : cc.v3(pos.x, pos.y) })
             .delay(stabDelay)
         const specialTypeCanMelee = this.data.specialType.length <= 0 || this.data.specialType == SpecialManager.AFTER_ASH
         const attackpreparetween = cc.tween().call(() => {
             //展示近战提示框
             if ((isMelee && !isSpecial) || (isSpecial && isMelee && specialTypeCanMelee) || (isSpecial && this.data.specialDash > 0)) {
-                this.dangerBox.show(this.data.attackRect, isSpecial, isSpecial ? this.specialDashLength : this.meleeDashLength, cc.v2(this.isFaceRight ? 1 : -1, 0))
+                this.dangerBox.show(this.data.attackRect, isSpecial, isSpecial ? this.specialDashLength : this.meleeDashLength, this.hv)
             }
             if (isSpecial) {
                 //延迟添加特殊物体
@@ -542,7 +545,7 @@ export default class NonPlayer extends Actor {
             this.dangerBox.hide(isMiss)
             //冲刺
             if ((!isSpecial && this.data.meleeDash > 0) || (isSpecial && this.data.specialDash > 0)) {
-                this.move(cc.v3(this.isFaceRight ? 1 : -1, 0), isSpecial ? this.data.specialDash : this.data.meleeDash)
+                this.move(cc.v3(this.hv), isSpecial ? this.data.specialDash : this.data.meleeDash)
             }
             if (isSpecial) {
                 //延迟添加特殊物体
@@ -991,7 +994,8 @@ export default class NonPlayer extends Actor {
         if (this.data.meleeDash > 0) {
             range = this.specialStep.IsExcuting ? this.specialDashLength : this.meleeDashLength
         }
-        let canMelee = this.data.melee > 0 && targetDis < range * this.node.scaleY && Math.abs(this.node.position.y - target.node.y) < this.bodyRect[3] * this.node.scaleY
+        //&& Math.abs(this.node.position.y - target.node.y) < this.bodyRect[3] * this.node.scaleY
+        let canMelee = this.data.melee > 0 && targetDis < range * this.node.scaleY
         let canRemote = this.data.remote > 0 && targetDis < 600 * this.node.scaleY
         if (canMelee && !this.meleeStep.IsInCooling) {
             this.meleeStep.next(() => {
@@ -1307,7 +1311,7 @@ export default class NonPlayer extends Actor {
             } else {
                 newPos = newPos.addSelf(cc.v3(64, 0))
             }
-        } else if (justForSameY && Math.abs(newPos.y - this.node.position.y) > this.bodyRect[3] * this.node.scaleY) {
+        } else if (justForSameY && Math.abs(newPos.y - this.node.position.y) > this.bodyRect[3] * this.node.scaleY + this.attackRect[2]) {
             newPos = cc.v3(this.node.position.x, newPos.y)
         }
         if (newPos.x > this.node.position.x) {

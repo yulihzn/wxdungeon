@@ -385,7 +385,6 @@ export default class Shooter extends cc.Component {
         if (!bulletPrefab || bulletPrefab.active) {
             bulletPrefab = cc.instantiate(prefab)
         }
-        bulletPrefab.parent = this.node
         let p = cc.v3(0, 0)
         if (defaultPos) {
             p = defaultPos.clone()
@@ -395,6 +394,7 @@ export default class Shooter extends cc.Component {
         }
         let pos = this.node.convertToWorldSpaceAR(p)
         pos = this.dungeon.node.convertToNodeSpaceAR(pos)
+
         bulletPrefab.parent = this.dungeon.node
         bulletPrefab.scaleX = 1
         bulletPrefab.scaleY = 1
@@ -403,7 +403,7 @@ export default class Shooter extends cc.Component {
             bulletPrefab.position = pos
             this.showLaser(angleOffset, hv, bulletPrefab, bulletData, pos)
         } else {
-            pos.y -= 32
+            pos.y = this.getParentNode().y
             bulletPrefab.position = pos
             this.showBullet(angleOffset, hv, bulletPrefab, bulletData, pos, aoePrefab, aoeData)
         }
