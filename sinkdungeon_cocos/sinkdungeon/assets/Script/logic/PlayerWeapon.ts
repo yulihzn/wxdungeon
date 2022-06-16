@@ -15,6 +15,7 @@ import PlayerData from '../data/PlayerData'
 import MeleeShadowWeapon from './MeleeShadowWeapon'
 import Logic from './Logic'
 import Random from '../utils/Random'
+import MeleeColliderWeapon from './MeleeColliderWeapon'
 
 const { ccclass, property } = cc._decorator
 /**
@@ -24,6 +25,7 @@ const { ccclass, property } = cc._decorator
 export default class PlayerWeapon extends cc.Component {
     player: Player = null
     meleeWeapon: MeleeWeapon = null
+    colliderWeapon: MeleeColliderWeapon = null
     shadowWeapon: MeleeShadowWeapon = null
     shooter: Shooter = null
     private isLeftHand: boolean = false //是否左手

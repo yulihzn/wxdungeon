@@ -26,6 +26,7 @@ import CCollider from '../collider/CCollider'
 import BaseColliderComponent from '../base/BaseColliderComponent'
 import Controller from './Controller'
 import TriggerData from '../data/TriggerData'
+import MeleeWeapon from './MeleeWeapon'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -40,16 +41,7 @@ import TriggerData from '../data/TriggerData'
 const { ccclass, property } = cc._decorator
 
 @ccclass
-export default class MeleeWeapon extends BaseColliderComponent {
-    public static readonly ELEMENT_TYPE_ICE = 1
-    public static readonly ELEMENT_TYPE_FIRE = 2
-    public static readonly ELEMENT_TYPE_LIGHTENING = 3
-    public static readonly ELEMENT_TYPE_TOXIC = 4
-    public static readonly ELEMENT_TYPE_CURSE = 5
-    public static readonly COMBO1: number = 1
-    public static readonly COMBO2: number = 2
-    public static readonly COMBO3: number = 3
-
+export default class MeleeColliderWeapon extends BaseColliderComponent {
     @property(cc.Node)
     playerNode: cc.Node = null
     player: Player = null
@@ -97,78 +89,20 @@ export default class MeleeWeapon extends BaseColliderComponent {
     protected canMove = false
     protected playerData: PlayerData
 
-    get IsSword() {
-        return !this.isStab && !this.isFar && !this.isFist && !this.isBlunt
-    }
-    get IsDagger() {
-        return this.isStab && !this.isFar && !this.isFist && !this.isBlunt
-    }
-    set IsSecond(isSecond: boolean) {
-        this.isSecond = isSecond
-    }
-    get IsFist() {
-        return this.isFist
-    }
-    get IsComboing() {
-        return this.isComboing
-    }
-    get IsAttacking() {
-        return this.isAttacking
-    }
-    get IsReflect() {
-        return this.isReflect
-    }
-    get GlovesSprite() {
-        return this.glovesSprite
-    }
-    get ComboType() {
-        return this.comboType
-    }
+    protected collider: CCollider
 
     onLoad() {
         super.onLoad()
-        this.anim = this.getComponent(cc.Animation)
-        this.player = this.playerNode.getComponent(Player)
-        this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos))
-        this.meleeLightRightPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightRightPos))
-        this.initSprite()
-    }
-    protected initSprite() {
-        this.weaponFirePoint = this.node.getChildByName('firepoint')
-        this.spriteNode = this.node.getChildByName('sprite')
-        this.weaponSprite = this.getSpriteChildSprite(['sprite', InventoryManager.WEAPON])
-        this.weaponLightSprite = this.getSpriteChildSprite(['sprite', 'meleelight'])
-        this.handSprite = this.getSpriteChildSprite(['sprite', 'hand'])
-        this.glovesSprite = this.getSpriteChildSprite(['sprite', 'hand', 'gloves'])
-        this.handSprite.node.color = cc.Color.WHITE.fromHEX(this.player.avatar.data.skinColor)
-        for (let i = 0; i < 4; i++) {
-            this.weaponFirePoints.push(this.weaponFirePoint.getChildByName(`point${i}`))
-        }
+        this.collider = this.entity.Collider.colliders[0]
     }
 
     set Hv(hv: cc.Vec2) {
-        if (Controller.isMouseMode() && Controller.mousePos && this.dungeon) {
-            let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.player.node.position))
-            this.hv = Controller.mousePos.add(cc.v2(this.dungeon.mainCamera.node.position)).sub(p).normalize()
-            return
-        }
-        let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 300)
-        if (!pos.equals(cc.Vec3.ZERO)) {
-            this.hv = cc.v2(pos).normalize()
-        } else {
-            this.hv = hv.normalize()
-        }
+        this.hv = hv.normalize()
     }
     get Hv(): cc.Vec2 {
         return this.hv
     }
-    protected getSpriteChildSprite(childNames: string[]): cc.Sprite {
-        let node = this.node
-        for (let name of childNames) {
-            node = node.getChildByName(name)
-        }
-        return node.getComponent(cc.Sprite)
-    }
+
     protected changeSprite(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
         this.weaponSprite.spriteFrame = spriteFrame
         let color1 = cc.color(255, 255, 255).fromHEX(equipData.color)
@@ -323,40 +257,6 @@ export default class MeleeWeapon extends BaseColliderComponent {
             return '1'
         }
     }
-    protected getWaveLight(dungeonNode: cc.Node, p: cc.Vec3, elementType: number, isStab: boolean, isFar: boolean) {
-        let lights = [this.iceLight, this.fireLight, this.lighteningLight, this.toxicLight, this.curseLight]
-        let audios = [AudioPlayer.ELECTRIC_ATTACK, AudioPlayer.FIREBALL, AudioPlayer.ELECTRIC_ATTACK, AudioPlayer.ELECTRIC_ATTACK, AudioPlayer.ELECTRIC_ATTACK]
-        if (elementType < 1 || elementType > lights.length || !this.dungeon) {
-            return
-        }
-        let firePrefab: cc.Node = cc.instantiate(lights[elementType - 1])
-        AudioPlayer.play(audios[elementType - 1])
-        let timeScale = this.anim.getAnimationState(this.getAttackAnimName()).speed
-        let ps = [p]
-        for (let node of this.weaponFirePoints) {
-            if (node) {
-                ps.push(p.add(node.position))
-            }
-        }
-        for (let i = 0; i < ps.length; i++) {
-            let psp = ps[i]
-            psp = this.node.convertToWorldSpaceAR(psp)
-            psp = dungeonNode.convertToNodeSpaceAR(psp)
-            ps[i] = psp.clone()
-        }
-        firePrefab.parent = dungeonNode
-        firePrefab.position = ps[0]
-        firePrefab.zIndex = IndexZ.OVERHEAD
-        firePrefab.opacity = 255
-        firePrefab.setScale(0.2)
-        firePrefab.active = true
-        cc.tween(firePrefab)
-            .to(0.1 / timeScale, { position: ps[1] })
-            .to(0.1 / timeScale, { position: ps[2] })
-            .to(0.1 / timeScale, { position: ps[3] })
-            .to(0.1 / timeScale, { position: ps[4] })
-            .start()
-    }
     //Anim
     MeleeAttackFinish() {
         this.isAttacking = false
@@ -371,165 +271,27 @@ export default class MeleeWeapon extends BaseColliderComponent {
     ComboFinish() {
         this.isComboing = false
     }
-    //Anim
-    ComboTime() {
-        if (this.isAttackPressed) {
-            this.isAttackPressed = false
-            this.anim.pause()
-            if (this.comboMiss) {
-                this.player.showFloatFont(this.node.parent, 0, false, true, false, false, false)
-            }
-            this.attackDo(this.playerData, this.comboMiss, this.fistCombo)
-            this.player.playerAnim(PlayerAvatar.STATE_ATTACK)
-            this.player.stopHiding()
-            this.isComboing = false
-        }
-    }
-    //Anim
-    ExAttackTime() {
-        this.player.exTrigger(TriggerData.GROUP_ATTACK, this.comboType, null, null)
-    }
-    //Anim
-    AudioTime() {
-        let audioName = AudioPlayer.MELEE
-        let swordNames = [AudioPlayer.SWORD_ATTACK, AudioPlayer.SWORD_ATTACK1, AudioPlayer.SWORD_ATTACK2]
-        let swordName = swordNames[Logic.getRandomNum(0, 2)]
-        let fistNames = [AudioPlayer.FIST, AudioPlayer.FIST1, AudioPlayer.FIST2]
-        let fistName = fistNames[Logic.getRandomNum(0, 2)]
-        //匕首
-        if (this.isStab && !this.isFar) {
-            audioName = fistName
-            if (this.comboType == MeleeWeapon.COMBO3) {
-                audioName = swordName
-            }
-        }
-        //长剑
-        if (!this.isStab && !this.isFar) {
-            audioName = swordName
-            // if (this.comboType == MeleeWeapon.COMBO3) {
-            //     audioName = AudioPlayer.MELEE;
-            // }
-        }
-        //长枪
-        if (this.isStab && this.isFar) {
-            audioName = swordName
-        }
-        //大剑
-        if (!this.isStab && this.isFar) {
-            audioName = swordName
-            // if (this.comboType == MeleeWeapon.COMBO3) {
-            //     audioName = AudioPlayer.MELEE;
-            // }
-        }
-        if (this.isFist) {
-            audioName = fistName
-        }
-        AudioPlayer.play(audioName)
-    }
-    /**Anim 清空攻击列表*/
-    RefreshTime() {
+
+    /** 清空攻击列表*/
+    clearTargetMap() {
         this.hasTargetMap.clear()
     }
-    /**Anim 冲刺*/
-    DashTime(speed?: number) {
-        AudioPlayer.play(AudioPlayer.DASH)
-        if (!speed) {
-            speed = 300
-        }
-        this.schedule(
-            () => {
-                this.player.getWalkSmoke(this.player.node, this.node.position)
-            },
-            0.05,
-            4,
-            0
-        )
-        let pos = this.player.hv.clone()
-        this.player.sc.isMoving = false
-        this.player.isWeaponDashing = true
-        if (pos.equals(cc.Vec2.ZERO)) {
-            pos = this.player.isFaceRight ? cc.v2(1, 0) : cc.v2(-1, 0)
-        } else {
-            pos = pos.normalizeSelf()
-        }
-        this.hv = pos.clone()
-        pos = pos.mul(speed)
-        this.player.entity.Move.linearVelocity = pos
-        this.scheduleOnce(() => {
-            this.player.isWeaponDashing = false
-            this.player.entity.Move.linearVelocity = cc.Vec2.ZERO
-            this.player.playerAnim(PlayerAvatar.STATE_IDLE)
-        }, 0.2)
-    }
-    //Anim
-    EffectTime() {
-        let p = this.weaponFirePoint.position.clone()
-        let ran = Logic.getRandomNum(0, 100)
-        let finalCommon = this.playerData.FinalCommon
-        let waves = [
-            finalCommon.MagicDamage > 0 && ran < finalCommon.iceRate ? MeleeWeapon.ELEMENT_TYPE_ICE : 0,
-            finalCommon.MagicDamage > 0 && ran < finalCommon.fireRate ? MeleeWeapon.ELEMENT_TYPE_FIRE : 0,
-            finalCommon.MagicDamage > 0 && ran < finalCommon.lighteningRate ? MeleeWeapon.ELEMENT_TYPE_LIGHTENING : 0,
-            finalCommon.MagicDamage > 0 && ran < finalCommon.toxicRate ? MeleeWeapon.ELEMENT_TYPE_TOXIC : 0,
-            finalCommon.MagicDamage > 0 && ran < finalCommon.curseRate ? MeleeWeapon.ELEMENT_TYPE_CURSE : 0
-        ]
-        this.scheduleOnce(() => {
-            for (let w of waves) {
-                if (this.dungeon) {
-                    this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar)
-                }
-            }
-        }, 0)
-    }
 
-    public setWeaponInVisible(flag: boolean) {
-        if (flag) {
-            this.weaponSprite.node.opacity = 0
-        } else {
-            this.weaponSprite.node.opacity = 255
-        }
-    }
-    public updateLogic(dt: number) {
-        if (Controller.isMouseMode() && Controller.mousePos && this.dungeon) {
-            let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.player.node.position))
-            this.hv = Controller.mousePos.add(cc.v2(this.dungeon.mainCamera.node.position)).sub(p).normalize()
-        } else {
-            let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400)
-            if (!pos.equals(cc.Vec3.ZERO)) {
-                this.hv = cc.v2(pos)
-            }
-        }
-        if (!this.isAttacking) {
-            this.rotateCollider(this.hv)
-        }
-        this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 5)
-        let z = this.player.root.y
-        this.node.y = -z
-        if (this.spriteNode) {
-            let zpos = this.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO)
-            this.spriteNode.position = this.node.convertToNodeSpaceAR(zpos)
-        }
+    public updateLogic(hv: cc.Vec2, collider: CCollider, isAttacking: boolean) {
+        this.isAttacking = isAttacking
+        this.hv = hv.clone()
+        this.collider.offset = collider.offset
+        this.collider.w = collider.w
+        this.collider.h = collider.h
+        this.collider.zHeight = collider.zHeight
+        this.rotateCollider(this.hv)
     }
 
     protected rotateCollider(direction: cc.Vec2) {
         if (direction.equals(cc.Vec2.ZERO)) {
             return
         }
-        //设置缩放方向
-        let sx = Math.abs(this.node.scaleX)
-        this.node.scaleX = this.player.node.scaleX > 0 ? sx : -sx
-        let sy = Math.abs(this.node.scaleY)
-        this.node.scaleY = this.node.scaleX < 0 ? -sy : sy
-        //设置旋转角度
-        this.currentAngle = Utils.getRotateAngle(direction, this.node.scaleX < 0)
-        if (this.currentAngle < 0) {
-            this.currentAngle += 360
-        }
-        if (this.currentAngle >= 0 && this.currentAngle <= 90 && this.node.angle >= 225 && this.node.angle <= 360) {
-            this.node.angle -= 360
-        } else if (this.node.angle >= 0 && this.node.angle <= 90 && this.currentAngle >= 225 && this.currentAngle <= 360) {
-            this.node.angle += 360
-        }
+        this.node.angle = Utils.getRotateAngle(direction, false)
     }
 
     onColliderStay(other: CCollider, self: CCollider) {
@@ -562,10 +324,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (this.comboType == MeleeWeapon.COMBO3) {
             power += 100
         }
-
         pos = pos.normalize().mul(power)
         this.scheduleOnce(() => {
-            // cc.log(`beat x=${pos.x},y=${pos.y}`);
             actor.entity.Move.linearVelocity = cc.v2(pos.x, pos.y)
         }, 0.05)
     }

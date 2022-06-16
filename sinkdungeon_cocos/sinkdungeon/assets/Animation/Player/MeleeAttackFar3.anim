@@ -156,12 +156,6 @@
               "value": 200
             }
           ],
-          "scaleY": [
-            {
-              "frame": 0,
-              "value": 6
-            }
-          ],
           "x": [
             {
               "frame": 0,
@@ -172,16 +166,21 @@
               "value": 100
             }
           ],
-          "scaleX": [
-            {
-              "frame": 0,
-              "value": 6
-            }
-          ],
           "y": [
             {
               "frame": 0,
               "value": 0
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 6,
+                "y": 6,
+                "z": 1
+              }
             }
           ]
         }
@@ -319,7 +318,7 @@
             "value": 122
           },
           {
-            "frame": 0.5166666666666667,
+            "frame": 0.5,
             "value": 141
           },
           {
@@ -334,7 +333,23 @@
         "offsetY": [
           {
             "frame": 0,
-            "value": -40
+            "value": 0
+          },
+          {
+            "frame": 0.3,
+            "value": 0
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": 0
+          },
+          {
+            "frame": 0.8,
+            "value": 0
+          },
+          {
+            "frame": 0.85,
+            "value": 0
           }
         ],
         "w": [
@@ -370,11 +385,11 @@
           },
           {
             "frame": 0.3333333333333333,
-            "value": 70
+            "value": 64
           },
           {
             "frame": 0.8,
-            "value": 70
+            "value": 64
           },
           {
             "frame": 0.85,

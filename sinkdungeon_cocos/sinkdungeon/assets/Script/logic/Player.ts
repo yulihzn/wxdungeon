@@ -70,6 +70,10 @@ export default class Player extends Actor {
     weaponLeft: PlayerWeapon = null
     @property(PlayerWeapon)
     weaponRight: PlayerWeapon = null
+    @property(MeleeWeapon)
+    meleeLeft: MeleeWeapon = null
+    @property(MeleeWeapon)
+    meleeRight: MeleeWeapon = null
     @property(Shooter)
     shooterEx: Shooter = null
     @property(StatusManager)
@@ -124,7 +128,7 @@ export default class Player extends Actor {
     pooStep: NextStep = new NextStep()
     peeStep: NextStep = new NextStep()
     lastTimeInWater = false
-    swimmingAudioStep:NextStep = new NextStep()
+    swimmingAudioStep: NextStep = new NextStep()
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {

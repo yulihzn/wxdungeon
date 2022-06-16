@@ -128,16 +128,6 @@
       },
       "sprite/meleelight": {
         "props": {
-          "scale": [
-            {
-              "frame": 0,
-              "value": {
-                "__type__": "cc.Vec2",
-                "x": 4,
-                "y": 4
-              }
-            }
-          ],
           "opacity": [
             {
               "frame": 0,
@@ -157,6 +147,17 @@
                 0,
                 0
               ]
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 3,
+                "y": 3,
+                "z": 1
+              }
             }
           ]
         },
@@ -293,7 +294,7 @@
         "offsetY": [
           {
             "frame": 0,
-            "value": -40
+            "value": 0
           }
         ],
         "w": [
@@ -325,15 +326,15 @@
           },
           {
             "frame": 0.16666666666666666,
-            "value": 80
+            "value": 128
           },
           {
             "frame": 0.3333333333333333,
-            "value": 100
+            "value": 144
           },
           {
             "frame": 0.8333333333333334,
-            "value": 100
+            "value": 144
           },
           {
             "frame": 0.85,
