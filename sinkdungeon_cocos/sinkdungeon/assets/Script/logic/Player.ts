@@ -125,6 +125,8 @@ export default class Player extends Actor {
     peeStep: NextStep = new NextStep()
     lastTimeInWater = false
     swimmingAudioStep: NextStep = new NextStep()
+    jumpHeight = 128
+    jumpSecond = 0.1
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -535,8 +537,8 @@ export default class Player extends Actor {
             this.sc.isDizzing ||
             this.sc.isDied ||
             this.sc.isFalling ||
-            this.sc.isJumping ||
             this.sc.isVanishing ||
+            this.avatar.isAniming ||
             this.isInteractBuildingAniming ||
             (this.weaponLeft.meleeWeapon.IsAttacking && this.weaponLeft.meleeWeapon.IsFist) ||
             (this.weaponRight.meleeWeapon.IsAttacking && this.weaponRight.meleeWeapon.IsFist) ||
@@ -599,7 +601,7 @@ export default class Player extends Actor {
             this.sc.isDizzing ||
             this.sc.isDied ||
             this.sc.isFalling ||
-            this.sc.isJumping ||
+            this.avatar.isAniming ||
             this.sc.isVanishing ||
             this.weaponRight.meleeWeapon.IsAttacking ||
             this.weaponLeft.meleeWeapon.IsAttacking ||
@@ -626,7 +628,7 @@ export default class Player extends Actor {
         return true
     }
     remoteAttack() {
-        if (!this.data || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling || this.sc.isVanishing || !this.weaponLeft.shooter || this.sc.isJumping) {
+        if (!this.data || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling || this.sc.isVanishing || !this.weaponLeft.shooter || this.avatar.isAniming) {
             return
         }
         let arcEx = 0
@@ -993,9 +995,14 @@ export default class Player extends Actor {
         }, duration)
     }
     jump() {
+        if (!this.CanJump) {
+            return
+        }
         if (this.sc.jumpTimeEnd) {
             return
         }
+        let second = 0.2
+        let speed = 600
         this.scheduleOnce(() => {
             this.sc.jumpTimeEnd = true
         }, 0.2)
@@ -1004,6 +1011,8 @@ export default class Player extends Actor {
         }
         this.sc.isJumpingUp = true
         this.entity.Move.linearVelocityZ = 600
+        this.avatar.playAnim(PlayerAvatar.STATE_JUMP, this.currentDir)
+        this.exTrigger(TriggerData.GROUP_JUMP, TriggerData.TYPE_JUMP_START, null, null)
     }
     talentJump() {
         if (!this.CanJump) {
@@ -1299,6 +1308,7 @@ export default class Player extends Actor {
             this.sc.isJumpingDown = false
             this.sc.isJumpingUp = false
             this.sc.jumpTimeEnd = false
+            this.sc.isJumping = false
         }
         let y = this.root.y - this.entity.Transform.base
         if (y < 0) {

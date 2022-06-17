@@ -131,20 +131,48 @@ export default class Utils {
             return `${i}`
         }
     }
-    static getDistanceBySpeed(speed: number, damping: number) {
-        return ((speed + speed * speed) * damping * 0.016) / 2
+    /**S=vt-（at^2）/2 S是位移 v是初速度 t是时间*/
+    static getDistanceBySpeed(speed: number, damping: number, second: number) {
+        let rate = cc.game.getFrameRate()
+        if (!rate || rate < 0) {
+            rate = 60
+        }
+        let v = speed * 60
+        let a = damping * 60
+        let t = second
+
+        return v * t - (a * t * t) / 2
     }
     static getDistanceBySpeedSecond(speed: number, damping: number, second: number) {
-        let sum = speed * 0.016
+        let rate = cc.game.getFrameRate()
+        if (!rate || rate < 0) {
+            rate = 60
+        }
+        let dt = 1 / rate
+        let sum = speed * dt
         let speednew = speed
-        for (let i = 0; i < Math.floor(second / 0.016); i++) {
+        for (let i = 0; i < Math.floor(second / dt); i++) {
             speednew = speed - damping
             if (speednew < 0) {
                 break
             }
-            sum += speednew * 0.016
+            sum += speednew * dt
         }
-        cc.log(sum)
         return sum
+    }
+    static getSecondBySpeedAndDistance(speed: number, damping: number, distance: number) {
+        let rate = cc.game.getFrameRate()
+        if (!rate || rate < 0) {
+            rate = 60
+        }
+        let dt = 1 / rate
+        let sum = 0
+        let second = 0
+        while (sum > distance || speed <= 0) {
+            sum += speed * dt
+            speed -= damping
+            second += dt
+        }
+        return second
     }
 }
