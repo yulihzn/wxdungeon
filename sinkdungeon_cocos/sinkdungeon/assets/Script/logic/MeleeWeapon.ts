@@ -132,6 +132,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos))
         this.meleeLightRightPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightRightPos))
         this.initSprite()
+        this.entity.destroy()
     }
     protected initSprite() {
         this.weaponFirePoint = this.node.getChildByName('firepoint')
@@ -380,7 +381,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 this.player.showFloatFont(this.node.parent, 0, false, true, false, false, false)
             }
             this.attackDo(this.playerData, this.comboMiss, this.fistCombo)
-            this.player.playerAnim(PlayerAvatar.STATE_ATTACK)
+            this.player.playerAnim(PlayerAvatar.STATE_ATTACK, this.player.currentDir)
             this.player.stopHiding()
             this.isComboing = false
         }
@@ -458,7 +459,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         this.scheduleOnce(() => {
             this.player.isWeaponDashing = false
             this.player.entity.Move.linearVelocity = cc.Vec2.ZERO
-            this.player.playerAnim(PlayerAvatar.STATE_IDLE)
+            this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir)
         }, 0.2)
     }
     //Anim

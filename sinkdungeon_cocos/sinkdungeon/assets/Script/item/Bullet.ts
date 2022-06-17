@@ -27,6 +27,7 @@ import Shield from '../logic/Shield'
 import CCollider from '../collider/CCollider'
 import BaseColliderComponent from '../base/BaseColliderComponent'
 import TriggerData from '../data/TriggerData'
+import MeleeCollideHelper from '../logic/MeleeCollideHelper'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -83,7 +84,7 @@ export default class Bullet extends BaseColliderComponent {
         this.sprite.node.opacity = 255
         this.light = this.base.getChildByName('light').getComponent(cc.Sprite)
         this.light.node.opacity = 0
-        this.entity.Transform.flyZ = 32
+        this.entity.Transform.flyZ = 24
     }
     onEnable() {
         this.tagetPos = cc.v3(0, 0)
@@ -173,7 +174,7 @@ export default class Bullet extends BaseColliderComponent {
             this.entity.Transform.base = this.shooter.actor.entity.Transform.base
             this.entity.Transform.z = this.shooter.actor.entity.Transform.z
         }
-        this.entity.Transform.flyZ = 32
+        this.entity.Transform.flyZ = 24
     }
 
     private changeRes(resName: string, lightName: string, lightColor: string, suffix?: string) {
@@ -402,7 +403,11 @@ export default class Bullet extends BaseColliderComponent {
                 isDestory = true
             }
         } else if (tag == CCollider.TAG.PLAYER_HIT) {
-            let meleeWeapon: MeleeWeapon = attackTarget.getComponent(MeleeWeapon)
+            let helper = attackTarget.getComponent(MeleeCollideHelper)
+            let meleeWeapon: MeleeWeapon
+            if (helper) {
+                meleeWeapon = helper.meleeWeapon
+            }
             let shadowWeapon: MeleeShadowWeapon
             if (!meleeWeapon) {
                 shadowWeapon = attackTarget.getComponent(MeleeShadowWeapon)
@@ -410,6 +415,7 @@ export default class Bullet extends BaseColliderComponent {
                     meleeWeapon = shadowWeapon.meleeWeapon
                 }
             }
+
             if (meleeWeapon && meleeWeapon.IsAttacking && !this.isFromPlayer) {
                 //子弹偏转
                 let isReverse = false

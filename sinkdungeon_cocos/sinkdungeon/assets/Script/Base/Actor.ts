@@ -43,6 +43,7 @@ export default abstract class Actor extends cc.Component implements OnContactLis
     abstract updateLife(sanity: number, solid: number, liquid: number): void
     invisible = false //是否隐身
     isFaceRight = true
+    isFaceUp = true
     lights: ShadowOfSight[] = [] //光源
     ccolliders: CCollider[]
     sc: StateContext = new StateContext()

@@ -25,6 +25,7 @@ export default class PlayerAvatar extends cc.Component {
     static readonly STATE_DIE = 4
     static readonly STATE_JUMP = 5
     status = PlayerAvatar.STATE_IDLE
+    dir = PlayerAvatar.DIR_RIGHT
     anim: cc.Animation
     cloakSprite: cc.Sprite = null
     legLeftSprite: cc.Sprite = null
@@ -51,11 +52,16 @@ export default class PlayerAvatar extends cc.Component {
     isAniming = false
     idlehair = [0, 1]
     waterY = 0
+    isInit = false
 
     onLoad() {
         this.init()
     }
     private init() {
+        if (this.isInit) {
+            return
+        }
+        this.isInit = true
         this.data = Logic.playerData.AvatarData.clone()
         this.anim = this.getComponent(cc.Animation)
         this.avatarNode = this.getSpriteChildNode(['sprite', 'avatar'])
@@ -93,9 +99,10 @@ export default class PlayerAvatar extends cc.Component {
         this.handLeftSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor)
         this.handRightSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor)
         this.hairSprite.node.stopAllActions()
-        this.addSpriteFrameAnim(this.faceSprite, this.data.faceResName)
-        this.addSpriteFrameAnim(this.hairSprite, this.data.hairResName)
-        this.addSpriteFrameAnim(this.eyesSprite, this.data.eyesResName)
+        this.changeAvatarByDir(PlayerAvatar.DIR_RIGHT)
+        this.updateSpriteFrameAnim(this.faceSprite, this.data.faceResName, 1)
+        this.updateSpriteFrameAnim(this.hairSprite, this.data.hairResName, 2)
+        this.updateSpriteFrameAnim(this.eyesSprite, this.data.eyesResName, 1)
     }
     private getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node
@@ -129,7 +136,7 @@ export default class PlayerAvatar extends cc.Component {
             }
         }
     }
-    playAnim(status: number) {
+    playAnim(status: number, dir: number) {
         if (!this.anim) {
             this.init()
         }
@@ -169,6 +176,9 @@ export default class PlayerAvatar extends cc.Component {
                 break
         }
         this.status = status
+        if (dir != 4) {
+            this.dir = dir
+        }
     }
 
     changeLegColor(isLong: boolean, colorHex: string) {
@@ -197,48 +207,30 @@ export default class PlayerAvatar extends cc.Component {
         this.footLeftSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT)
         this.footLeftSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT)
     }
-    private countAnimLength(resName: string, index?: number) {
-        let i = 0
-        if (index) {
-            i = index
-        }
-        if (Logic.spriteFrameRes(`${resName}anim${++i}`)) {
-            return this.countAnimLength(resName, i)
-        } else {
-            return i
-        }
-    }
-    private addSpriteFrameAnim(sprite: cc.Sprite, resName: string) {
-        let resLength = this.countAnimLength(resName)
-        sprite.unscheduleAllCallbacks()
-        let index = 0
-        if (resLength > 1) {
-            sprite.schedule(
-                () => {
-                    sprite.spriteFrame = Logic.spriteFrameRes(`${resName}anim${index++}`)
-                    if (index > resLength - 1) {
-                        index = 0
-                    }
-                },
-                0.2,
-                cc.macro.REPEAT_FOREVER,
-                0.1
-            )
-        } else {
-            sprite.spriteFrame = Logic.spriteFrameRes(`${resName}anim0`)
-        }
-    }
-    changeEquipSpriteFrame(inventoryManager: InventoryManager) {
+
+    changeEquipDirSpriteFrame(inventoryManager: InventoryManager, dir: number) {
         let helmet = inventoryManager.equips[InventoryManager.HELMET]
         let clothes = inventoryManager.equips[InventoryManager.CLOTHES]
-        this.addSpriteFrameAnim(this.helmetSprite, helmet.img)
-        this.addSpriteFrameAnim(this.clothesSprite, clothes.img)
+        this.updateSpriteFrameAnim(this.helmetSprite, helmet.img, helmet.anim)
+        this.updateSpriteFrameAnim(this.clothesSprite, clothes.img, clothes.anim)
     }
     private playDie() {
         this.anim.play('AvatarDie')
     }
     private playIdle() {
         this.anim.play('AvatarIdle')
+    }
+    changeAvatarByDir(dir: number) {
+        if (this.isAniming) {
+            return
+        }
+        let eyeColor = cc.Color.WHITE.fromHEX(this.data.eyesColor)
+        this.eyesSprite.getMaterial(0).setProperty('eyeColor', eyeColor)
+        if (dir != 4) {
+            this.dir = dir
+            this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1
+            this.handRightSprite.node.zIndex = dir == 0 ? this.bodySprite.node.zIndex - 1 : this.bodySprite.node.zIndex + 1
+        }
     }
 
     public showLegsWithWater(inWater: boolean, inWaterTile: boolean) {
@@ -264,6 +256,23 @@ export default class PlayerAvatar extends cc.Component {
         sprite.getMaterial(0).setProperty('amplitude', 0.001)
         sprite.getMaterial(0).setProperty('isRotated', sprite.spriteFrame.isRotated() ? 1.0 : 0.0)
     }
+    private updateSpriteFrameAnim(sprite: cc.Sprite, resName: string, animCount: number) {
+        let resLength = animCount && animCount != 0 ? animCount : 1
+        sprite.unscheduleAllCallbacks()
+        let index = 0
+        sprite.schedule(
+            () => {
+                let start = this.dir == PlayerAvatar.DIR_UP ? resLength : 0
+                sprite.spriteFrame = Logic.spriteFrameRes(`${resName}anim${start + index++}`)
+                if (index > resLength - 1) {
+                    index = 0
+                }
+            },
+            0.2,
+            cc.macro.REPEAT_FOREVER,
+            0.1
+        )
+    }
     private playWalk() {
         this.anim.play('AvatarWalkHorizontal')
     }
@@ -278,7 +287,7 @@ export default class PlayerAvatar extends cc.Component {
             .to(0.1, { position: cc.v3(0, 0) })
             .delay(0.1)
             .call(() => {
-                this.playAnim(PlayerAvatar.STATE_IDLE)
+                this.playAnim(PlayerAvatar.STATE_IDLE, this.dir)
             })
             .start()
     }
@@ -315,6 +324,18 @@ export default class PlayerAvatar extends cc.Component {
         }, 5)
     }
     start() {}
-
-    // update (dt) {}
+    checkTimeDelay = 0
+    isAnimTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt
+        if (this.checkTimeDelay > 0.2) {
+            this.checkTimeDelay = 0
+            return true
+        }
+        return false
+    }
+    // update(dt: number) {
+    //     if (this.isAnimTimeDelay(dt)) {
+    //         this.updateEquipFrameAnim(this.clothesSprite)
+    //     }
+    // }
 }

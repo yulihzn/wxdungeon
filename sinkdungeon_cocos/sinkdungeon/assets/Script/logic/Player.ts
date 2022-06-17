@@ -70,10 +70,6 @@ export default class Player extends Actor {
     weaponLeft: PlayerWeapon = null
     @property(PlayerWeapon)
     weaponRight: PlayerWeapon = null
-    @property(MeleeWeapon)
-    meleeLeft: MeleeWeapon = null
-    @property(MeleeWeapon)
-    meleeRight: MeleeWeapon = null
     @property(Shooter)
     shooterEx: Shooter = null
     @property(StatusManager)
@@ -105,7 +101,7 @@ export default class Player extends Actor {
     private touchDelay = false
     inventoryManager: InventoryManager = null
     data: PlayerData
-
+    currentDir = 3
     attackTarget: CCollider
 
     defaultPos = cc.v3(0, 0)
@@ -227,7 +223,7 @@ export default class Player extends Actor {
         EventHelper.on(EventHelper.POOL_DESTORY_WALKSMOKE, detail => {
             this.destroySmoke(detail.coinNode)
         })
-        this.playerAnim(PlayerAvatar.STATE_IDLE)
+        this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
         if (Logic.isCheatMode) {
             this.scheduleOnce(() => {
                 this.addStatus(StatusManager.PERFECTDEFENCE, new FromData())
@@ -334,7 +330,7 @@ export default class Player extends Actor {
         if (dizzDuration > 0 && !this.sc.isJumping) {
             this.sc.isDizzing = true
             this.entity.Move.linearVelocity = cc.Vec2.ZERO
-            this.playerAnim(PlayerAvatar.STATE_IDLE)
+            this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
             this.scheduleOnce(() => {
                 this.sc.isDizzing = false
             }, dizzDuration)
@@ -456,8 +452,8 @@ export default class Player extends Actor {
                 this.updateEquipment(this.avatar.cloakSprite, equipData.color, spriteFrame)
                 break
         }
-        this.avatar.changeEquipSpriteFrame(this.inventoryManager)
-        this.shield.changeZIndex(this.avatar.node.zIndex, this.isFaceRight)
+        this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, this.currentDir)
+        this.shield.changeZIndexByDir(this.avatar.node.zIndex, this.currentDir, this.isFaceRight)
         this.updateInfoUi()
     }
     private updateEquipment(sprite: cc.Sprite, color: string, spriteFrame: cc.SpriteFrame, size?: number): void {
@@ -592,7 +588,8 @@ export default class Player extends Actor {
                     this.shield.faceRightChange(this.isFaceRight)
                 }
             }
-            this.playerAnim(PlayerAvatar.STATE_ATTACK)
+            this.isFaceUp = pos.y > 0
+            this.playerAnim(PlayerAvatar.STATE_ATTACK, this.currentDir)
             this.stopHiding()
         }
     }
@@ -623,7 +620,7 @@ export default class Player extends Actor {
         }
         if (!this.interactBuilding.isAniming) {
             this.stopHiding()
-            this.playerAnim(PlayerAvatar.STATE_ATTACK)
+            this.playerAnim(PlayerAvatar.STATE_ATTACK, this.currentDir)
             return this.interactBuilding.interact(this, false, isMelee, !isMelee)
         }
         return true
@@ -881,10 +878,10 @@ export default class Player extends Actor {
 
         //调整武器方向
         if (this.weaponRight.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponRight.meleeWeapon.IsAttacking) {
-            this.weaponRight.meleeWeapon.Hv = cc.v2(pos.x > 0 ? 1 : -1, 0)
+            this.weaponRight.meleeWeapon.Hv = cc.v2(pos.x, pos.y)
         }
         if (this.weaponLeft.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponLeft.meleeWeapon.IsAttacking) {
-            this.weaponLeft.meleeWeapon.Hv = cc.v2(pos.x > 0 ? 1 : -1, 0)
+            this.weaponLeft.meleeWeapon.Hv = cc.v2(pos.x, pos.y)
         }
         if (this.sc.isMoving && !this.weaponLeft.meleeWeapon.IsAttacking && !this.weaponRight.meleeWeapon.IsAttacking) {
             if (!this.shield.isAniming && !this.shield.isDefendOrParrying) {
@@ -894,26 +891,34 @@ export default class Player extends Actor {
                     this.shield.faceRightChange(this.isFaceRight)
                 }
             }
+            this.isFaceUp = this.weaponLeft.meleeWeapon.Hv.y > 0
         }
 
         if (!this.sc.isJumping) {
             if (this.sc.isMoving && !this.isStone) {
-                this.playerAnim(PlayerAvatar.STATE_WALK)
+                this.playerAnim(PlayerAvatar.STATE_WALK, dir)
             } else {
-                this.playerAnim(PlayerAvatar.STATE_IDLE)
+                this.playerAnim(PlayerAvatar.STATE_IDLE, dir)
             }
         }
         if (dir != 4) {
             this.changeZIndex(this.pos)
         }
         if (dir != 4 && !this.shield.isAniming && !this.shield.isDefendOrParrying && !this.avatar.isAniming) {
-            this.weaponLeft.changeZIndexByFace(this.avatar.node.zIndex, dir == PlayerAvatar.DIR_RIGHT)
-            this.weaponRight.changeZIndexByFace(this.avatar.node.zIndex, dir == PlayerAvatar.DIR_RIGHT)
-            this.shield.changeZIndex(this.avatar.node.zIndex, this.isFaceRight)
+            this.currentDir = dir
+            if (dir == PlayerAvatar.DIR_DOWN && this.isFaceUp) {
+                dir = PlayerAvatar.DIR_UP
+            } else if (dir == PlayerAvatar.DIR_UP && !this.isFaceUp) {
+                dir = PlayerAvatar.DIR_DOWN
+            }
+            this.weaponLeft.changeZIndexByDir(this.avatar.node.zIndex, dir)
+            this.weaponRight.changeZIndexByDir(this.avatar.node.zIndex, dir)
+            this.shield.changeZIndexByDir(this.avatar.node.zIndex, dir, this.isFaceRight)
+            this.avatar.changeAvatarByDir(dir)
         }
     }
 
-    playerAnim(status: number): void {
+    playerAnim(status: number, dir: number): void {
         if (status == PlayerAvatar.STATE_IDLE && this.avatar.status != PlayerAvatar.STATE_IDLE) {
             this.weaponLeft.shooter.playWalk(false)
             this.weaponRight.shooter.playWalk(false)
@@ -940,7 +945,7 @@ export default class Player extends Actor {
             case PlayerAvatar.STATE_DIE:
                 break
         }
-        this.avatar.playAnim(status)
+        this.avatar.playAnim(status, dir)
     }
 
     start() {
@@ -955,10 +960,10 @@ export default class Player extends Actor {
             return
         }
         this.sc.isFalling = true
-        this.avatar.playAnim(PlayerAvatar.STATE_FALL)
+        this.avatar.playAnim(PlayerAvatar.STATE_FALL, this.currentDir)
         this.scheduleOnce(() => {
             this.transportPlayer(this.defaultPos)
-            this.playerAnim(PlayerAvatar.STATE_IDLE)
+            this.playerAnim(PlayerAvatar.STATE_IDLE, 1)
             let dd = new DamageData()
             dd.realDamage = 1
             this.takeDamage(dd, FromData.getClone('跌落', ''))
@@ -1010,9 +1015,9 @@ export default class Player extends Actor {
             this.weaponRight.node.opacity = 0
             this.shield.node.opacity = 0
         }, 0.1)
-        this.avatar.playAnim(PlayerAvatar.STATE_JUMP)
+        this.avatar.playAnim(PlayerAvatar.STATE_JUMP, this.currentDir)
         this.scheduleOnce(() => {
-            this.avatar.playAnim(PlayerAvatar.STATE_IDLE)
+            this.avatar.playAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
             this.sc.isJumping = false
             this.weaponLeft.node.opacity = 255
             this.weaponRight.node.opacity = 255
@@ -1143,7 +1148,7 @@ export default class Player extends Actor {
             return
         }
         this.sc.isDied = true
-        this.avatar.playAnim(PlayerAvatar.STATE_DIE)
+        this.avatar.playAnim(PlayerAvatar.STATE_DIE, this.currentDir)
         EventHelper.emit(EventHelper.HUD_STOP_COUNTTIME)
         this.scheduleOnce(() => {
             EventHelper.emit(EventHelper.HUD_FADE_OUT)
@@ -1552,6 +1557,7 @@ export default class Player extends Actor {
         this.avatar.drink()
         this.addStatus(StatusManager.HEALING, new FromData())
         this.addStatus(StatusManager.DRINK, new FromData())
+        this.avatar.changeAvatarByDir(PlayerAvatar.DIR_RIGHT)
     }
     canEatOrDrink(data: ItemData): boolean {
         let life = this.data.LifeData

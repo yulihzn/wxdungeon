@@ -2768,6 +2768,7 @@
         "titlecolor": "#ffffff",
         "img": "clothes004",
         "price": 30,
+        "anim":3,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3004,6 +3005,7 @@
         "img": "clothes013",
         "price": 30,
         "suitType": "suit007",
+        "anim":3,
         "common": {
             "damageMin": 0,
             "damageMax": 5,
@@ -3127,6 +3129,7 @@
         "titlecolor": "#ffffff",
         "img": "clothes018",
         "price": 30,
+        "anim":3,
         "suitType": "suit005",
         "common": {
             "damageMin": 0,
@@ -3296,6 +3299,7 @@
         "titlecolor": "#ffffff",
         "img": "clothes025",
         "price": 60,
+        "anim":3,
         "exTriggers": [
             {
                 "id": 0,

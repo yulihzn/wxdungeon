@@ -342,7 +342,7 @@ export default class ProfessionTalent extends Talent {
         this.player.entity.Move.linearVelocity = pos
         this.scheduleOnce(() => {
             this.player.entity.Move.linearVelocity = cc.Vec2.ZERO
-            this.player.playerAnim(PlayerAvatar.STATE_IDLE)
+            this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir)
             this.IsExcuting = false
         }, 0.5)
     }

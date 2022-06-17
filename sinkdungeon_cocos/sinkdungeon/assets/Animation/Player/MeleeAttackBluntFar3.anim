@@ -50,17 +50,6 @@
               "value": -235
             }
           ],
-          "scale": [
-            {
-              "frame": 0,
-              "value": {
-                "__type__": "cc.Vec3",
-                "x": 6,
-                "y": 6,
-                "z": 0
-              }
-            }
-          ],
           "position": [
             {
               "frame": 0,

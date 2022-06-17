@@ -15,7 +15,8 @@ import PlayerData from '../data/PlayerData'
 import MeleeShadowWeapon from './MeleeShadowWeapon'
 import Logic from './Logic'
 import Random from '../utils/Random'
-import MeleeColliderWeapon from './MeleeColliderWeapon'
+import MeleeCollideHelper from './MeleeCollideHelper'
+import PlayerAvatar from './PlayerAvatar'
 
 const { ccclass, property } = cc._decorator
 /**
@@ -23,9 +24,10 @@ const { ccclass, property } = cc._decorator
  */
 @ccclass
 export default class PlayerWeapon extends cc.Component {
+    @property(MeleeCollideHelper)
+    meleeCollideHelper: MeleeCollideHelper = null
     player: Player = null
     meleeWeapon: MeleeWeapon = null
-    colliderWeapon: MeleeColliderWeapon = null
     shadowWeapon: MeleeShadowWeapon = null
     shooter: Shooter = null
     private isLeftHand: boolean = false //是否左手
@@ -100,11 +102,20 @@ export default class PlayerWeapon extends cc.Component {
             }, 0.1)
         }
     }
-    changeZIndexByFace(avatarZindex: number, isFaceRight: boolean) {
-        if (isFaceRight) {
-            this.node.zIndex = this.isLeftHand ? avatarZindex - 1 : avatarZindex + 1
-        } else {
-            this.node.zIndex = this.isLeftHand ? avatarZindex + 1 : avatarZindex - 1
+    changeZIndexByDir(avatarZindex: number, dir: number) {
+        switch (dir) {
+            case PlayerAvatar.DIR_UP:
+                this.node.zIndex = avatarZindex - 1
+                break
+            case PlayerAvatar.DIR_DOWN:
+                this.node.zIndex = avatarZindex + 1
+                break
+            case PlayerAvatar.DIR_LEFT:
+                this.node.zIndex = this.isLeftHand ? avatarZindex + 1 : avatarZindex - 1
+                break
+            case PlayerAvatar.DIR_RIGHT:
+                this.node.zIndex = this.isLeftHand ? avatarZindex - 1 : avatarZindex + 1
+                break
         }
     }
     changeWeapon(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
@@ -201,6 +212,9 @@ export default class PlayerWeapon extends cc.Component {
         )
         if (this.meleeWeapon) {
             this.meleeWeapon.updateLogic(dt)
+        }
+        if (this.meleeCollideHelper) {
+            this.meleeCollideHelper.updateLogic(cc.v3(this.node.position.x, 0))
         }
         if (this.shooter) {
             this.shooter.updateLogic(dt)

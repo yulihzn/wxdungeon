@@ -33,8 +33,8 @@ export default class FurnitureData {
             return
         }
         DataUtils.baseCopy(this, data)
-        this.height = data.height ?? 32
-        this.scale = data.scale ?? 1
+        this.height = data.height ? data.height : 32
+        this.scale = data.scale ? data.scale : 1
         if (this.storage > 32) {
             this.storage = 32
         }

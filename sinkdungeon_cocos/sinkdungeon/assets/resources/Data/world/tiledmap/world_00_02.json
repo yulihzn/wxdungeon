@@ -94,12 +94,12 @@
                  "value":"walllab00"
                 }, 
                 {
-                 "name":"wallRes3",
+                 "name":"wallResOther0",
                  "type":"string",
                  "value":"wall00anim000"
                 }, 
                 {
-                 "name":"wallRes4",
+                 "name":"wallResOther1",
                  "type":"string",
                  "value":"wall00anim001"
                 }, 

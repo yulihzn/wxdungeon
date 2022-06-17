@@ -20,6 +20,7 @@ import Shield from '../logic/Shield'
 import CCollider from '../collider/CCollider'
 import BaseColliderComponent from '../base/BaseColliderComponent'
 import GameWorldSystem from '../ecs/system/GameWorldSystem'
+import MeleeCollideHelper from '../logic/MeleeCollideHelper'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -342,7 +343,11 @@ export default class Laser extends BaseColliderComponent {
                 }
             }
         } else if (tag == CCollider.TAG.PLAYER_HIT) {
-            let meleeWeapon: MeleeWeapon = attackTarget.getComponent(MeleeWeapon)
+            let helper = attackTarget.getComponent(MeleeCollideHelper)
+            let meleeWeapon: MeleeWeapon
+            if (helper) {
+                meleeWeapon = helper.meleeWeapon
+            }
             let shadowWeapon: MeleeShadowWeapon
             if (!meleeWeapon) {
                 shadowWeapon = attackTarget.getComponent(MeleeShadowWeapon)
