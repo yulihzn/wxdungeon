@@ -12,10 +12,13 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity> {
         for (let e of entities) {
             let move = e.Move
             let transform = e.Transform
-            if (move.linearDamping < 0) {
-                move.linearDamping = 0
+            if (move.damping < 0) {
+                move.damping = 0
             }
             let temp = move.linearVelocity.mul(this.dt)
+            let damping = move.damping * this.dt
+            let gravity = move.gravity * this.dt
+            let acceleration = move.acceleration * this.dt
             transform.position.x += temp.x
             transform.position.y += temp.y
             transform.z += move.linearVelocityZ * this.dt
@@ -26,29 +29,32 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity> {
                 transform.z = transform.base + transform.flyZ
             }
             if (move.linearVelocity.x > 0) {
-                move.linearVelocity.x -= move.linearDamping
+                move.linearVelocity.x -= damping
                 if (move.linearVelocity.x < 0) {
                     move.linearVelocity.x = 0
                 }
             } else if (move.linearVelocity.x < 0) {
-                move.linearVelocity.x += move.linearDamping
+                move.linearVelocity.x += damping
                 if (move.linearVelocity.x > 0) {
                     move.linearVelocity.x = 0
                 }
             }
             if (move.linearVelocity.y > 0) {
-                move.linearVelocity.y -= move.linearDamping
+                move.linearVelocity.y -= damping
                 if (move.linearVelocity.y < 0) {
                     move.linearVelocity.y = 0
                 }
             } else if (move.linearVelocity.y < 0) {
-                move.linearVelocity.y += move.linearDamping
+                move.linearVelocity.y += damping
                 if (move.linearVelocity.y > 0) {
                     move.linearVelocity.y = 0
                 }
             }
+            move.linearVelocity.x += acceleration
+            move.linearVelocity.y += acceleration
+
             if (move.linearVelocityZ > MoveComponent.MIN_LINEAR_VELOCITY_Z) {
-                move.linearVelocityZ -= move.linearDampingZ
+                move.linearVelocityZ -= gravity
             }
             if (e.NodeRender.node) {
                 e.NodeRender.node.setPosition(transform.position)

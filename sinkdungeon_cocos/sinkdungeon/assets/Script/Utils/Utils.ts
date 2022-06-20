@@ -131,48 +131,66 @@ export default class Utils {
             return `${i}`
         }
     }
-    /**S=vt-（at^2）/2 S是位移 v是初速度 t是时间*/
-    static getDistanceBySpeed(speed: number, damping: number, second: number) {
+    static getRate() {
         let rate = cc.game.getFrameRate()
         if (!rate || rate < 0) {
             rate = 60
         }
-        let v = speed * 60
-        let a = damping * 60
-        let t = second
+        return rate
+    }
+    /**
+     * 获取匀减速的距离，加速度不能为0
+     * S=(v*v-v0*v0)/2a
+     * @param speed
+     * @param damping
+     * @returns
+     */
+    static getDashDistanceBySpeed(speed: number, damping: number) {
+        if (damping == 0) {
+            return 0
+        }
+        let rate = Utils.getRate()
+        return Math.abs((speed * speed * rate * 0.5) / damping)
+    }
+    /**
+     * 获取指定距离匀减速初速度
+     * @param distance
+     * @param damping
+     */
+    static getDashSpeedByDistance(distance: number, damping: number) {
+        if (damping == 0) {
+            return 0
+        }
 
-        return v * t - (a * t * t) / 2
+        return Math.sqrt(distance * damping * 2)
     }
-    static getDistanceBySpeedSecond(speed: number, damping: number, second: number) {
-        let rate = cc.game.getFrameRate()
-        if (!rate || rate < 0) {
-            rate = 60
-        }
-        let dt = 1 / rate
-        let sum = speed * dt
-        let speednew = speed
-        for (let i = 0; i < Math.floor(second / dt); i++) {
-            speednew = speed - damping
-            if (speednew < 0) {
-                break
+    /**
+     * 获取指定时间内匀减速的距离
+     * S=v0t+at^2/2
+     * @param speed
+     * @param damping
+     * @param second
+     * @returns
+     */
+    static getDashDistanceByTime(speed: number, damping: number, second: number) {
+        let v = speed
+        let a = damping
+        let t = second
+        if (a != 0) {
+            let t0 = v / a
+            if (t > t0) {
+                t = t0
             }
-            sum += speednew * dt
         }
-        return sum
+        return v * t - a * t * t * 0.5
     }
-    static getSecondBySpeedAndDistance(speed: number, damping: number, distance: number) {
-        let rate = cc.game.getFrameRate()
-        if (!rate || rate < 0) {
-            rate = 60
+
+    static getJumpTimeBySpeedDistance(distance: number, speed: number, damping: number) {
+        let s = Utils.getDashDistanceBySpeed(speed, damping)
+        if (distance < s) {
+            return 0
         }
-        let dt = 1 / rate
-        let sum = 0
-        let second = 0
-        while (sum > distance || speed <= 0) {
-            sum += speed * dt
-            speed -= damping
-            second += dt
-        }
-        return second
+        s = distance - s
+        return s / speed
     }
 }

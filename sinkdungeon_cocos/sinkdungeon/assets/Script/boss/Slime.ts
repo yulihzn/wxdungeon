@@ -1,19 +1,19 @@
-import Boss from "./Boss"
-import DamageData from "../data/DamageData"
-import HealthBar from "../logic/HealthBar"
-import { EventHelper } from "../logic/EventHelper"
-import Logic from "../logic/Logic"
-import Dungeon from "../logic/Dungeon"
-import SlimeVenom from "./SlimeVenom"
-import MonsterManager from "../manager/MonsterManager"
-import NextStep from "../utils/NextStep"
-import AudioPlayer from "../utils/AudioPlayer"
-import FromData from "../data/FromData"
-import Achievement from "../logic/Achievement"
-import Item from "../item/Item"
-import IndexZ from "../utils/IndexZ"
-import ActorUtils from "../utils/ActorUtils"
-import CCollider from "../collider/CCollider"
+import Boss from './Boss'
+import DamageData from '../data/DamageData'
+import HealthBar from '../logic/HealthBar'
+import { EventHelper } from '../logic/EventHelper'
+import Logic from '../logic/Logic'
+import Dungeon from '../logic/Dungeon'
+import SlimeVenom from './SlimeVenom'
+import MonsterManager from '../manager/MonsterManager'
+import NextStep from '../utils/NextStep'
+import AudioPlayer from '../utils/AudioPlayer'
+import FromData from '../data/FromData'
+import Achievement from '../logic/Achievement'
+import Item from '../item/Item'
+import IndexZ from '../utils/IndexZ'
+import ActorUtils from '../utils/ActorUtils'
+import CCollider from '../collider/CCollider'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -84,18 +84,18 @@ export default class Slime extends Boss {
         this.anim = this.getComponent(cc.Animation)
         this.updatePlayerPos()
         this.venomPool = new cc.NodePool()
-        this.sprite = this.node.getChildByName("sprite")
-        this.crown = this.sprite.getChildByName("crown")
-        this.decorate = this.node.getChildByName("sprite").getChildByName("body").getChildByName("decorate")
-        this.dashlight = this.sprite.getChildByName("dashlight")
+        this.sprite = this.node.getChildByName('sprite')
+        this.crown = this.sprite.getChildByName('crown')
+        this.decorate = this.node.getChildByName('sprite').getChildByName('body').getChildByName('decorate')
+        this.dashlight = this.sprite.getChildByName('dashlight')
         this.dashlight.opacity = 0
-        EventHelper.on("destoryvenom", (detail) => {
+        EventHelper.on('destoryvenom', detail => {
             this.destroyVenom(detail.coinNode)
         })
         this.scheduleOnce(() => {
             this.sc.isShow = true
             this.entity.NodeRender.node = this.node
-            this.entity.Move.linearDamping = 10
+            this.entity.Move.damping = 600
         }, 1)
     }
 
@@ -147,7 +147,7 @@ export default class Slime extends Boss {
         let target = ActorUtils.getNearestEnemyActor(this.entity.Transform.position, true, this.dungeon)
         let newdis = ActorUtils.getTargetDistance(this, target)
         if (newdis < attackRange && target) {
-            target.takeDamage(this.data.getAttackPoint(), FromData.getClone(this.actorName(), "bossslimehelmet"), this)
+            target.takeDamage(this.data.getAttackPoint(), FromData.getClone(this.actorName(), 'bossslimehelmet'), this)
         }
     }
     onColliderEnter(other: CCollider, self: CCollider) {
@@ -156,7 +156,7 @@ export default class Slime extends Boss {
             if (target && this.isDashing && this.dungeon && !this.isHurt && !this.sc.isDied) {
                 this.isDashing = false
                 this.entity.Move.linearVelocity = cc.Vec2.ZERO
-                target.takeDamage(this.data.getAttackPoint(), FromData.getClone(this.actorName(), "bossslimehelmet"), this)
+                target.takeDamage(this.data.getAttackPoint(), FromData.getClone(this.actorName(), 'bossslimehelmet'), this)
             }
         }
     }
@@ -237,7 +237,7 @@ export default class Slime extends Boss {
                 this.isHurt = false
             }
         }, 0.1)
-        this.anim.play("SlimeHit")
+        this.anim.play('SlimeHit')
         this.meleeSkill.IsExcuting = false
         if (this.data.currentHealth < this.data.Common.MaxHealth / 2 && !this.isCrownFall && this.slimeType == 0) {
             this.isCrownFall = true
@@ -246,7 +246,7 @@ export default class Slime extends Boss {
                 this.sc.isShow = true
                 this.crown.opacity = 0
             }, 1)
-            this.anim.play("SlimeCrownFall")
+            this.anim.play('SlimeCrownFall')
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.MaxHealth)
         let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2]
@@ -260,7 +260,7 @@ export default class Slime extends Boss {
         }
         this.sc.isDied = true
         this.isDashing = false
-        this.anim.play("SlimeDie")
+        this.anim.play('SlimeDie')
         let collider: CCollider = this.getComponent(CCollider)
         collider.sensor = true
         this.scheduleOnce(() => {
@@ -306,10 +306,10 @@ export default class Slime extends Boss {
             if (!pos.equals(cc.Vec3.ZERO)) {
                 pos = pos.normalizeSelf()
             }
-            let isPlayAttack = this.anim.getAnimationState("SlimeAttack").isPlaying
+            let isPlayAttack = this.anim.getAnimationState('SlimeAttack').isPlaying
             if (!isPlayAttack) {
                 this.meleeSkill.IsExcuting = true
-                this.anim.play("SlimeAttack")
+                this.anim.play('SlimeAttack')
             }
         }
         let speed = 300 - 50 * this.scaleSize
@@ -355,13 +355,13 @@ export default class Slime extends Boss {
         if (this.isMoving) {
             this.isFaceRight = h > 0
         }
-        let isPlayAttack = this.anim.getAnimationState("SlimeAttack").isPlaying
-        if (!this.anim.getAnimationState("SlimeIdle").isPlaying && !isPlayAttack) {
-            this.anim.play("SlimeIdle")
+        let isPlayAttack = this.anim.getAnimationState('SlimeAttack').isPlaying
+        if (!this.anim.getAnimationState('SlimeIdle').isPlaying && !isPlayAttack) {
+            this.anim.play('SlimeIdle')
         }
         this.changeZIndex()
     }
     actorName() {
-        return "史莱姆之王"
+        return '史莱姆之王'
     }
 }

@@ -125,14 +125,13 @@ export default class Player extends Actor {
     peeStep: NextStep = new NextStep()
     lastTimeInWater = false
     swimmingAudioStep: NextStep = new NextStep()
-    jumpHeight = 128
-    jumpSecond = 0.1
+    lastLinearVelocityZ = 0 //上次向上的速度
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.shield = this.shieldNode.getComponent(Shield)
         this.lastConsumeTime = Logic.realTime
-        this.entity.Move.linearDamping = 5
+        this.entity.Move.damping = 300
         this.entity.Move.linearVelocity = cc.v2(0, 0)
         this.statusManager.statusIconList = this.statusIconList
         this.inventoryManager = Logic.inventoryManager
@@ -978,7 +977,6 @@ export default class Player extends Actor {
             this.sc.isFalling ||
             this.sc.isDizzing ||
             !this.sc.isShow ||
-            this.sc.isJumping ||
             this.sc.isVanishing ||
             this.weaponRight.meleeWeapon.IsAttacking ||
             this.weaponLeft.meleeWeapon.IsAttacking ||
@@ -998,19 +996,20 @@ export default class Player extends Actor {
         if (!this.CanJump) {
             return
         }
-        if (this.sc.jumpTimeEnd) {
+        if (this.sc.jumpTimeOver) {
             return
         }
-        let second = 0.2
-        let speed = 600
-        this.scheduleOnce(() => {
-            this.sc.jumpTimeEnd = true
-        }, 0.2)
-        if (!this.sc.isJumpingUp) {
+        let speed = this.data.getJumpSpeed()
+        if (!this.sc.isJumping) {
+            let second = Utils.getJumpTimeBySpeedDistance(PlayerData.DEFAULT_JUMP_HEIGHT, speed, this.entity.Move.gravity)
+            this.scheduleOnce(() => {
+                this.sc.jumpTimeOver = true
+            }, second)
             AudioPlayer.play(AudioPlayer.DASH)
         }
         this.sc.isJumpingUp = true
-        this.entity.Move.linearVelocityZ = 600
+        this.sc.isJumping = true
+        this.entity.Move.linearVelocityZ = speed
         this.avatar.playAnim(PlayerAvatar.STATE_JUMP, this.currentDir)
         this.exTrigger(TriggerData.GROUP_JUMP, TriggerData.TYPE_JUMP_START, null, null)
     }
@@ -1301,13 +1300,16 @@ export default class Player extends Actor {
                 s.updateLogic(dt)
             }
         }
-        if (this.entity.Move.linearVelocityZ < 0) {
+        //跳跃中向上的力消失时代表到达最顶端
+        if (this.sc.isJumping && this.entity.Move.linearVelocityZ < 0) {
             this.sc.isJumpingDown = true
+            this.sc.isJumpingUp = false
+            this.exTrigger(TriggerData.GROUP_JUMP, TriggerData.TYPE_JUMP_HIGHEST)
         }
         if (this.entity.Transform.z <= this.entity.Transform.base) {
             this.sc.isJumpingDown = false
             this.sc.isJumpingUp = false
-            this.sc.jumpTimeEnd = false
+            this.sc.jumpTimeOver = false
             this.sc.isJumping = false
         }
         let y = this.root.y - this.entity.Transform.base
@@ -1321,6 +1323,15 @@ export default class Player extends Actor {
         this.bottomDir.node.opacity = this.isInWater() ? 128 : 255
         this.changeZIndex(this.pos)
         this.showWaterSpark()
+    }
+    private updateJump() {
+        if (this.sc.isJumping) {
+            //如果速度往下，且上次速度往上代表到达最高点
+            if (this.entity.Move.linearVelocityZ <= 0 && this.lastLinearVelocityZ > 0) {
+            }
+            this.lastLinearVelocityZ = this.entity.Move.linearVelocityZ
+        } else {
+        }
     }
     showWaterSpark() {
         if (!this.lastTimeInWater && this.isInWater()) {

@@ -98,6 +98,17 @@
         "desc": "疯狂射击",
         "price": 30
     },
+    "bottle006": {
+        "id": 20010006,
+        "nameCn": "跳跃瓶",
+        "nameEn": "jump speed bottle",
+        "resName": "bottle006",
+        "canSave": 1,
+        "statusList": "status037",
+        "info": "跳跃速度加200",
+        "desc": "轻功水上漂",
+        "price": 20
+    },
     "goldfinger": {
         "id": 20020000,
         "nameCn": "金手指",

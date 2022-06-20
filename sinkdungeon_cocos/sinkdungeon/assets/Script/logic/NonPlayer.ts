@@ -125,8 +125,6 @@ export default class NonPlayer extends Actor {
     childNonPlayerList: NonPlayer[] = [] //子类
     isInWaterTile = false
     lastWaterPos = cc.v3(0, 0)
-    specialDashLength = 0
-    meleeDashLength = 0
     attackRect = []
     bodyRect = []
     waterY = 0
@@ -192,11 +190,9 @@ export default class NonPlayer extends Actor {
             )
         }
         this.addSaveStatusList()
-        this.entity.Move.linearDamping = 5
+        this.entity.Move.damping = 300
         this.entity.Move.linearVelocity = cc.v2(0, 0)
         let speedScale = 1 - this.data.FinalCommon.AttackSpeed / 1000
-        this.meleeDashLength = Utils.getDistanceBySpeedSecond(this.data.meleeDash, this.entity.Move.linearDamping, 0.8 * speedScale)
-        this.specialDashLength = Utils.getDistanceBySpeedSecond(this.data.specialDash, this.entity.Move.linearDamping, 0.8 * speedScale)
         let attackArr = this.data.attackRect.split(',')
         let bodyArr = this.data.bodyRect.split(',')
         for (let num of attackArr) {
@@ -206,12 +202,13 @@ export default class NonPlayer extends Actor {
             this.bodyRect.push(parseInt(num))
         }
     }
+
     jump() {
-        if (this.sc.jumpTimeEnd) {
+        if (this.sc.jumpTimeOver) {
             return
         }
         this.scheduleOnce(() => {
-            this.sc.jumpTimeEnd = true
+            this.sc.jumpTimeOver = true
         }, 0.3)
         if (!this.sc.isJumpingUp) {
             AudioPlayer.play(AudioPlayer.DASH)
@@ -522,7 +519,12 @@ export default class NonPlayer extends Actor {
         const attackpreparetween = cc.tween().call(() => {
             //展示近战提示框
             if ((isMelee && !isSpecial) || (isSpecial && isMelee && specialTypeCanMelee) || (isSpecial && this.data.specialDash > 0)) {
-                this.dangerBox.show(this.data.attackRect, isSpecial, isSpecial ? this.specialDashLength : this.meleeDashLength, this.hv)
+                this.dangerBox.show(
+                    this.data.attackRect,
+                    isSpecial,
+                    ActorUtils.getDashDistance(this, isSpecial ? this.data.specialDash : this.data.meleeDash, 0.8 * speedScale),
+                    this.hv
+                )
             }
             if (isSpecial) {
                 //延迟添加特殊物体
@@ -938,7 +940,9 @@ export default class NonPlayer extends Actor {
                 this.addLootSaveItem(Item.BOTTLE_DREAM)
             } else if (rand >= percent + offset * 6 && rand < percent + offset * 7) {
                 this.addLootSaveItem(Item.BOTTLE_REMOTE)
-            } else if (rand >= percent + offset * 7 && rand < 1) {
+            } else if (rand >= percent + offset * 7 && rand < percent + offset * 8) {
+                this.addLootSaveItem(Item.BOTTLE_JUMP)
+            } else if (rand >= percent + offset * 8 && rand < 1) {
             }
         }
     }
@@ -992,7 +996,8 @@ export default class NonPlayer extends Actor {
             range += 100
         }
         if (this.data.meleeDash > 0) {
-            range = this.specialStep.IsExcuting ? this.specialDashLength : this.meleeDashLength
+            let speedScale = 1 - this.data.FinalCommon.AttackSpeed / 1000
+            range = ActorUtils.getDashDistance(this, this.specialStep.IsExcuting ? this.data.specialDash : this.data.meleeDash, 0.8 * speedScale)
         }
         //&& Math.abs(this.node.position.y - target.node.y) < this.bodyRect[3] * this.node.scaleY
         let canMelee = this.data.melee > 0 && targetDis < range * this.node.scaleY
@@ -1187,7 +1192,7 @@ export default class NonPlayer extends Actor {
             this.sprite.opacity = this.lerp(this.sprite.opacity, 19, dt * 3)
         }
 
-        this.entity.Move.linearDamping = this.sc.isDashing ? 0 : 5
+        this.entity.Move.damping = this.sc.isDashing ? 0 : 300
         this.dashlight.opacity = this.sc.isDashing ? 128 : 0
 
         this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255
@@ -1253,7 +1258,7 @@ export default class NonPlayer extends Actor {
         if (this.entity.Transform.z <= this.entity.Transform.base) {
             this.sc.isJumpingDown = false
             this.sc.isJumpingUp = false
-            this.sc.jumpTimeEnd = false
+            this.sc.jumpTimeOver = false
             this.fallFinish()
         }
         let y = this.root.y - this.entity.Transform.base

@@ -5,6 +5,7 @@ import Dungeon from '../logic/Dungeon'
 import Logic from '../logic/Logic'
 import NonPlayer from '../logic/NonPlayer'
 import Player from '../logic/Player'
+import Utils from './Utils'
 
 const { ccclass, property } = cc._decorator
 
@@ -196,7 +197,7 @@ export default class ActorUtils {
      * @returns
      */
     static isTargetCanTrack(target: Actor): boolean {
-        if (target.isValid && !target.sc.isDied && target.sc.isShow && !target.sc.isJumping) {
+        if (target.isValid && !target.sc.isDied && target.sc.isShow) {
             return true
         }
         return false
@@ -209,5 +210,16 @@ export default class ActorUtils {
         let isTargetOnRight = target.node.position.x > self.node.position.x
         let isTargetFaceRight = target.isFaceRight
         return (isTargetOnRight && isTargetFaceRight) || (!isTargetOnRight && !isTargetFaceRight)
+    }
+
+    /**
+     * 获取冲刺距离
+     */
+    static getDashDistance(actor: Actor, speed: number, second: number) {
+        if (!actor || !actor.entity || !actor.entity.Move) {
+            cc.log('actor或者entity不存在')
+            return 0
+        }
+        return Utils.getDashDistanceByTime(speed, actor.entity.Move.damping, second)
     }
 }

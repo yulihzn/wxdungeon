@@ -97,7 +97,7 @@ export default class InteractBuilding extends Building {
         } else {
             physicCollider.setSize(cc.size(height, width), width)
         }
-        this.entity.Move.linearDamping = this.isThrowing ? 5 : 10
+        this.entity.Move.damping = this.isThrowing ? 5 : 10
         physicCollider.sensor = this.data.currentHealth <= 0 ? true : false
         physicCollider.bounce = 100
         this.entity.NodeRender.root = this.root

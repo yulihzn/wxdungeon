@@ -21,6 +21,7 @@ export default class CommonData {
     defence: number = 0 //物理防御
     moveSpeed: number = 0 //移速
     attackSpeed: number = 0 //攻速
+    jumpSpeed: number = 0 //跳跃速度
     remoteDamage: number = 0 //远程攻击
     realDamage = 0 //真实伤害
     magicDamage = 0 //魔法伤害
@@ -53,6 +54,7 @@ export default class CommonData {
     defencePercent: number = 0 //物理防御%
     moveSpeedPercent: number = 0 //移速%
     attackSpeedPercent: number = 0 //攻速%
+    jumpSpeedPercent: number = 0 //跳速%
     remoteDamagePercent: number = 0 //远程攻击%
     realDamagePercent = 0 //真实伤害%
     magicDamagePercent = 0 //魔法伤害%
@@ -92,6 +94,9 @@ export default class CommonData {
     get AttackSpeed() {
         return this.returnNumberValue(this.attackSpeed, this.attackSpeedPercent / 100)
     }
+    get JumpSpeed() {
+        return this.returnNumberValue(this.jumpSpeed, this.jumpSpeedPercent / 100)
+    }
     get RemoteDamage() {
         return this.returnNumberValue(this.remoteDamage, this.remoteDamagePercent / 100)
     }
@@ -125,6 +130,7 @@ export default class CommonData {
         this.damageBack += data.damageBack ? data.damageBack : 0
         this.moveSpeed += data.moveSpeed ? data.moveSpeed : 0
         this.attackSpeed += data.attackSpeed ? data.attackSpeed : 0
+        this.jumpSpeed += data.jumpSpeed ? data.jumpSpeed : 0
         this.remoteCooldown += data.remoteCooldown ? data.remoteCooldown : 0
         this.remoteInterval += data.remoteInterval ? data.remoteInterval : 0
         this.remoteAngle += data.remoteAngle ? data.remoteAngle : 0
@@ -154,6 +160,7 @@ export default class CommonData {
         this.defencePercent = DataUtils.addPercentFixed(this.defencePercent, data.defencePercent)
         this.moveSpeedPercent = DataUtils.addPercentFixed(this.moveSpeedPercent, data.moveSpeedPercent)
         this.attackSpeedPercent = DataUtils.addPercentFixed(this.attackSpeedPercent, data.attackSpeedPercent)
+        this.jumpSpeedPercent = DataUtils.addPercentFixed(this.jumpSpeedPercent, data.jumpSpeedPercent)
         this.remoteDamagePercent = DataUtils.addPercentFixed(this.remoteDamagePercent, data.remoteDamagePercent)
         this.realDamagePercent = DataUtils.addPercentFixed(this.realDamagePercent, data.realDamagePercent)
         this.magicDamagePercent = DataUtils.addPercentFixed(this.magicDamagePercent, data.magicDamagePercent)

@@ -854,5 +854,16 @@
             "attackSpeed":100,
             "defence":-100
         }
+    },
+    "status073": {
+        "nameCn": "跳跃速度",
+        "nameEn": "jump higher",
+        "spriteFrameName": "iconmovespeed",
+        "id": 73,
+        "desc": "",
+        "duration": 30,
+        "common": {
+            "jumpSpeed": 200
+        }
     }
 }

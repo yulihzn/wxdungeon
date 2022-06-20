@@ -157,7 +157,7 @@ export default class Kraken extends Boss {
     }
     showBoss() {
         this.entity.NodeRender.node = this.node
-        this.entity.Move.linearDamping = 10
+        this.entity.Move.damping = 600
         if (this.healthBar) {
             this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.MaxHealth)
             this.healthBar.node.active = !this.sc.isDied
