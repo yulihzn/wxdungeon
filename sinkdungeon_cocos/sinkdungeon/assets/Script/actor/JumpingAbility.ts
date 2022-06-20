@@ -34,7 +34,9 @@ export default class JumpingAbility extends cc.Component {
             }, second)
             AudioPlayer.play(AudioPlayer.DASH)
         }
-        this.actor.entity.Move.linearVelocityZ = speed
+        if (!this.isTimeOut || !this.isPressing) {
+            this.actor.entity.Move.linearVelocityZ = speed
+        }
     }
     /**短暂浮空 */
     airPause() {}
