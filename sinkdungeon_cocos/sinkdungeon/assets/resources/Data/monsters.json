@@ -59,7 +59,7 @@
         "shooterOffsetY": 45,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 100,
+            "moveSpeed": 1,
             "maxHealth": 200,
             "curseRate": 100,
             "magicDamage": 6,
@@ -248,7 +248,7 @@
         "specialAttack": 15,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 450,
+            "moveSpeed": 5,
             "maxHealth": 200,
             "damageMin": 15
         },
@@ -278,7 +278,7 @@
         "specialAudio": "CHICKEN",
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 50,
+            "moveSpeed": 1,
             "maxHealth": 100,
             "damageMin": 9
         },
