@@ -84,7 +84,7 @@ export default class Bullet extends BaseColliderComponent {
         this.sprite.node.opacity = 255
         this.light = this.base.getChildByName('light').getComponent(cc.Sprite)
         this.light.node.opacity = 0
-        this.entity.Transform.flyZ = 24
+        this.entity.Move.gravity = 0
     }
     onEnable() {
         this.tagetPos = cc.v3(0, 0)
@@ -174,7 +174,7 @@ export default class Bullet extends BaseColliderComponent {
             this.entity.Transform.base = this.shooter.actor.entity.Transform.base
             this.entity.Transform.z = this.shooter.actor.entity.Transform.z
         }
-        this.entity.Transform.flyZ = 24
+        this.entity.Move.gravity = 0
     }
 
     private changeRes(resName: string, lightName: string, lightColor: string, suffix?: string) {

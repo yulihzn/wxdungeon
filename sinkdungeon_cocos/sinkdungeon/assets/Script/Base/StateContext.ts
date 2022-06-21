@@ -11,10 +11,6 @@ export default class StateContext {
     isFalling = false //是否倒地
     isBlinking = false //是否正在瞬移
     isJumping = false //是否正在跳跃
-    isJumpingUp = false //是否正在往上跳跃
-    isJumpingDown = false //是否正在往下降落
-    isSecondJump = false //是否二段跳
-    jumpTimeOver = false //当前跳跃按键持续时间结束
     isVanishing = false //是否消失
     isTalking = false //是否对话
     isFlying = false //是否正在飞行

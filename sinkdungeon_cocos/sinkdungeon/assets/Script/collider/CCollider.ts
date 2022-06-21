@@ -318,7 +318,7 @@ export default class CCollider extends cc.Component {
         let isTop = tps[1].y > ops[1].y
         let isBottom = tps[0].y < ops[0].y
         let pos = this.entity.Move.linearVelocity.clone()
-        let offset = this.bounce > 0 ? this.bounce : 50
+        let offset = this.bounce > 0 ? this.bounce : 1
         let lenVertical = Math.abs(center1.y - center2.y) //两者中心位置的纵向距离
         let lenHorizonal = Math.abs(center1.x - center2.x) //两者中心位置的横向距离
         let offsetVertical = (h1 + h2) / 2 - lenVertical //两者纵向重合部分的长度

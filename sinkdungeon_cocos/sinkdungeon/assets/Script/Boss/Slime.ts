@@ -95,7 +95,7 @@ export default class Slime extends Boss {
         this.scheduleOnce(() => {
             this.sc.isShow = true
             this.entity.NodeRender.node = this.node
-            this.entity.Move.damping = 600
+            this.entity.Move.damping = 6
         }, 1)
     }
 
@@ -312,7 +312,7 @@ export default class Slime extends Boss {
                 this.anim.play('SlimeAttack')
             }
         }
-        let speed = 300 - 50 * this.scaleSize
+        let speed = 3 - 0.5 * this.scaleSize
         //冲刺
         let dashRange = 128 + 35 * this.scaleSize
         if (playerDis > dashRange && !this.dungeon.player.sc.isDied && !this.isDashing && this.sc.isShow && Logic.getHalfChance()) {

@@ -109,7 +109,7 @@ export default class ProfessionTalent extends Talent {
             case Talent.TALENT_009:
                 return this.canSteal()
             case Talent.TALENT_019:
-                return this.player.CanJump
+                return this.player.CanJump && this.player.sc.isJumping
         }
         return true
     }
@@ -315,9 +315,9 @@ export default class ProfessionTalent extends Talent {
             .start()
     }
     private dash() {
-        let speed = 1500
+        let speed = 15
         if (this.player.IsVariation) {
-            speed = 2000
+            speed = 20
         }
         AudioPlayer.play(AudioPlayer.DASH)
         this.schedule(
@@ -348,8 +348,7 @@ export default class ProfessionTalent extends Talent {
     }
     private jump(shooterEx: Shooter) {
         AudioPlayer.play(AudioPlayer.JUMP)
-        this.player.talentJump()
-        this.scheduleOnce(() => {
+        this.player.talentJump(() => {
             AudioPlayer.play(AudioPlayer.BOOM)
             let d = this.player.data.getFinalAttackPoint()
             d.isMelee = true
@@ -363,7 +362,7 @@ export default class ProfessionTalent extends Talent {
                 new AreaOfEffectData().init(0, 0.15, 0, scale, IndexZ.OVERHEAD, false, true, true, false, false, d, new FromData(), [StatusManager.DIZZ])
             )
             this.talentSkill.IsExcuting = false
-        }, 0.8)
+        })
     }
     private canSteal() {
         let actor = ActorUtils.getNearestEnemyActor(this.player.node.position, false, this.player.weaponRight.meleeWeapon.dungeon)

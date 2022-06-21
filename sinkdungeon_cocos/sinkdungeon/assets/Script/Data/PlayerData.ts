@@ -22,12 +22,12 @@ import DataUtils from '../utils/DataUtils'
 
 export default class PlayerData {
     static DEFAULT_HEALTH = 10
-    static DEFAULT_SPEED = 350
-    static DEFAULT_JUMP_SPEED = 600
+    static DEFAULT_SPEED = 6
+    static DEFAULT_JUMP_SPEED = 8
+    static DEFAULT_JUMP_HEIGHT = 2
     static DEFAULT_ATTACK = 1
     static DEFAULT_BACK_ATTACK = 0
     static DEFAULT_DREAM = 5
-    static DEFAULT_JUMP_HEIGHT = 200
     name: string = ''
     pos: cc.Vec3 = cc.v3(5, 5)
 

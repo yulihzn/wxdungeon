@@ -425,7 +425,7 @@ export default class Shooter extends cc.Component {
         }
         bd.size += this.data.bulletSize
         bd.speed += this.data.bulletExSpeed
-        if (bd.speed + this.data.bulletExSpeed > 50) {
+        if (bd.speed + this.data.bulletExSpeed > 0.5) {
             bd.speed += this.data.bulletExSpeed
         }
         bd.from.valueCopy(this.from)
@@ -452,7 +452,7 @@ export default class Shooter extends cc.Component {
         }
         bd.size += this.data.bulletSize
         bd.speed += this.data.bulletExSpeed
-        if (bd.speed + this.data.bulletExSpeed > 50) {
+        if (bd.speed + this.data.bulletExSpeed > 0.5) {
             bd.speed += this.data.bulletExSpeed
         }
         bd.from.valueCopy(this.from)

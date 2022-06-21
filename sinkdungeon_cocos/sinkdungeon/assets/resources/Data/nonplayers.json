@@ -6,7 +6,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "common": {
-            "moveSpeed": 500,
+            "moveSpeed": 5,
             "maxHealth": 5,
             "damageMin": 2
         },
@@ -54,7 +54,7 @@
         "specialAttack":10,
         "specialAudio":"DOG",
         "common": {
-            "moveSpeed": 400,
+            "moveSpeed": 4,
             "maxHealth": 50,
             "damageMin": 5
         },
@@ -80,7 +80,7 @@
         "specialAttack":10,
         "specialAudio":"DOG",
         "common": {
-            "moveSpeed": 400,
+            "moveSpeed": 4,
             "maxHealth": 50,
             "damageMin": 5
         },
@@ -106,7 +106,7 @@
         "specialAttack":10,
         "specialAudio":"CAT",
         "common": {
-            "moveSpeed": 400,
+            "moveSpeed": 4,
             "maxHealth": 50,
             "damageMin": 5
         },
@@ -134,7 +134,7 @@
         "specialBulletArcExNum": 2,
         "specialAudio":"FISHTANK",
         "common": {
-            "moveSpeed": 300,
+            "moveSpeed": 3,
             "maxHealth": 50,
             "remoteDamage":5,
             "damageMin": 5

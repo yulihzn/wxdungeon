@@ -40,8 +40,8 @@ export default class TriggerData extends BaseData {
     static readonly TYPE_USE_TALENT = 1 //触发类别 使用技能 √
     static readonly TYPE_AUTO = 0 //触发类别 间隔自动 √
     static readonly TYPE_JUMP_START = 0 //触发类别 跳跃开始
-    static readonly TYPE_JUMP_HIGHEST = 0 //触发类别 跳跃最高点
-    static readonly TYPE_JUMP_END = 0 //触发类别 跳跃结束
+    static readonly TYPE_JUMP_HIGHEST = 1 //触发类别 跳跃最高点
+    static readonly TYPE_JUMP_END = 2 //触发类别 跳跃结束
     static readonly TARGET_SELF = 0 //触发目标 自己 √
     static readonly TARGET_OTHER = 1 //触发目标 敌对 √
     static readonly TARGET_OTHER_NEAREST = 2 //触发目标 最近敌对 √

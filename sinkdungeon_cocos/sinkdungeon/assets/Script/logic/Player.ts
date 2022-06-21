@@ -53,6 +53,7 @@ import NextStep from '../utils/NextStep'
 import LifeData from '../data/LifeData'
 import TriggerData from '../data/TriggerData'
 import ActorBottomDir from '../actor/ActorBottomDir'
+import JumpingAbility from '../actor/JumpingAbility'
 @ccclass
 export default class Player extends Actor {
     @property(FloatinglabelManager)
@@ -126,12 +127,13 @@ export default class Player extends Actor {
     lastTimeInWater = false
     swimmingAudioStep: NextStep = new NextStep()
     lastLinearVelocityZ = 0 //上次向上的速度
+    jumpAbility: JumpingAbility
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.shield = this.shieldNode.getComponent(Shield)
         this.lastConsumeTime = Logic.realTime
-        this.entity.Move.damping = 300
+        this.entity.Move.damping = 3
         this.entity.Move.linearVelocity = cc.v2(0, 0)
         this.statusManager.statusIconList = this.statusIconList
         this.inventoryManager = Logic.inventoryManager
@@ -194,10 +196,12 @@ export default class Player extends Actor {
         })
         EventHelper.on(EventHelper.PLAYER_JUMP, detail => {
             if (this.node) {
-                if (this.sc.isJumpingDown) {
-                    return
-                }
                 this.jump()
+            }
+        })
+        EventHelper.on(EventHelper.PLAYER_JUMP_CANCEL, detail => {
+            if (this.node) {
+                this.jumpCancel()
             }
         })
         EventHelper.on(EventHelper.PLAYER_USEDREAM, detail => {
@@ -235,6 +239,10 @@ export default class Player extends Actor {
         if (this.bottomDir) {
             this.bottomDir.init(this)
         }
+        this.jumpAbility = this.addComponent(JumpingAbility)
+        this.jumpAbility.init(this, 3, 0, (group: number, type: number) => {
+            this.exTrigger(group, type, null, null)
+        })
     }
 
     public initShadowList(isFromSave: boolean, count: number, lifeTime: number) {
@@ -565,7 +573,7 @@ export default class Player extends Actor {
             }
         } else if (this.fistCombo == MeleeWeapon.COMBO3) {
             isAttackDo = this.weaponRight.meleeWeapon.attack(this.data, this.fistCombo)
-            this.weaponRight.meleeWeapon.DashTime(400)
+            this.weaponRight.meleeWeapon.DashTime(4)
             if (isAttackDo) {
                 for (let s of this.shadowList) {
                     s.attack(this.data, this.fistCombo, this.weaponRight.meleeWeapon.Hv, false)
@@ -895,12 +903,10 @@ export default class Player extends Actor {
             this.isFaceUp = this.weaponLeft.meleeWeapon.Hv.y > 0
         }
 
-        if (!this.sc.isJumping) {
-            if (this.sc.isMoving && !this.isStone) {
-                this.playerAnim(PlayerAvatar.STATE_WALK, dir)
-            } else {
-                this.playerAnim(PlayerAvatar.STATE_IDLE, dir)
-            }
+        if (this.sc.isMoving && !this.isStone) {
+            this.playerAnim(PlayerAvatar.STATE_WALK, dir)
+        } else {
+            this.playerAnim(PlayerAvatar.STATE_IDLE, dir)
         }
         if (dir != 4) {
             this.changeZIndex(this.pos)
@@ -996,41 +1002,35 @@ export default class Player extends Actor {
         if (!this.CanJump) {
             return
         }
-        if (this.sc.jumpTimeOver) {
-            return
+        if (this.jumpAbility) {
+            this.jumpAbility.jump(this.data.getJumpSpeed(), PlayerData.DEFAULT_JUMP_HEIGHT, 1)
         }
-        let speed = this.data.getJumpSpeed()
-        if (!this.sc.isJumping) {
-            let second = Utils.getJumpTimeBySpeedDistance(PlayerData.DEFAULT_JUMP_HEIGHT, speed, this.entity.Move.gravity)
-            this.scheduleOnce(() => {
-                this.sc.jumpTimeOver = true
-            }, second)
-            AudioPlayer.play(AudioPlayer.DASH)
-        }
-        this.sc.isJumpingUp = true
-        this.sc.isJumping = true
-        this.entity.Move.linearVelocityZ = speed
-        this.avatar.playAnim(PlayerAvatar.STATE_JUMP, this.currentDir)
-        this.exTrigger(TriggerData.GROUP_JUMP, TriggerData.TYPE_JUMP_START, null, null)
     }
-    talentJump() {
+    jumpCancel() {
+        if (this.jumpAbility) {
+            this.jumpAbility.cancel()
+        }
+    }
+    airPause(speed: number, duration: number, pauseCallback?: Function) {
+        if (this.jumpAbility) {
+            this.jumpAbility.airPause(speed, duration, pauseCallback)
+        }
+    }
+    talentJump(callback: Function) {
         if (!this.CanJump) {
             return
         }
-        this.sc.isJumping = true
-        this.scheduleOnce(() => {
-            this.weaponLeft.node.opacity = 0
-            this.weaponRight.node.opacity = 0
-            this.shield.node.opacity = 0
-        }, 0.1)
-        this.avatar.playAnim(PlayerAvatar.STATE_JUMP, this.currentDir)
-        this.scheduleOnce(() => {
-            this.avatar.playAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
-            this.sc.isJumping = false
-            this.weaponLeft.node.opacity = 255
-            this.weaponRight.node.opacity = 255
-            this.shield.node.opacity = 255
-        }, 1.3)
+        if (this.jumpAbility) {
+            let key = 2
+            this.jumpAbility.jump(this.data.getJumpSpeed() * 3, PlayerData.DEFAULT_JUMP_HEIGHT * 3, key, (group: number, type: number) => {
+                if (type == TriggerData.TYPE_JUMP_END) {
+                    this.jumpAbility.removeCallback(key)
+                    callback()
+                } else if (type == TriggerData.TYPE_JUMP_HIGHEST) {
+                    this.jumpAbility.acceleratedFall(2)
+                }
+            })
+        }
     }
     /**
      * 挨打
@@ -1039,7 +1039,7 @@ export default class Player extends Actor {
      * @param actor 来源单位(目前只有monster和boss)
      */
     takeDamage(damageData: DamageData, from?: FromData, actor?: Actor): boolean {
-        if (!this.data || this.sc.isJumping || this.sc.isDied || this.sc.isVanishing) {
+        if (!this.data || this.sc.isDied || this.sc.isVanishing) {
             return false
         }
         let finalData = this.data.FinalCommon
@@ -1300,18 +1300,6 @@ export default class Player extends Actor {
                 s.updateLogic(dt)
             }
         }
-        //跳跃中向上的力消失时代表到达最顶端
-        if (this.sc.isJumping && this.entity.Move.linearVelocityZ < 0) {
-            this.sc.isJumpingDown = true
-            this.sc.isJumpingUp = false
-            this.exTrigger(TriggerData.GROUP_JUMP, TriggerData.TYPE_JUMP_HIGHEST)
-        }
-        if (this.entity.Transform.z <= this.entity.Transform.base) {
-            this.sc.isJumpingDown = false
-            this.sc.isJumpingUp = false
-            this.sc.jumpTimeOver = false
-            this.sc.isJumping = false
-        }
         let y = this.root.y - this.entity.Transform.base
         if (y < 0) {
             y = 0
@@ -1323,16 +1311,11 @@ export default class Player extends Actor {
         this.bottomDir.node.opacity = this.isInWater() ? 128 : 255
         this.changeZIndex(this.pos)
         this.showWaterSpark()
-    }
-    private updateJump() {
-        if (this.sc.isJumping) {
-            //如果速度往下，且上次速度往上代表到达最高点
-            if (this.entity.Move.linearVelocityZ <= 0 && this.lastLinearVelocityZ > 0) {
-            }
-            this.lastLinearVelocityZ = this.entity.Move.linearVelocityZ
-        } else {
+        if (this.jumpAbility) {
+            this.jumpAbility.updateLogic()
         }
     }
+
     showWaterSpark() {
         if (!this.lastTimeInWater && this.isInWater()) {
             let light = cc.instantiate(this.waterSpark)

@@ -206,21 +206,21 @@
             {
                 "common": {
                     "fireRate": 30,
-                    "moveSpeed": 30,
+                    "moveSpeed": 0.3,
                     "attackSpeed": 30
                 }
             },
             {
                 "common": {
                     "fireRate": 30,
-                    "moveSpeed": 30,
+                    "moveSpeed": 0.3,
                     "attackSpeed": 30
                 }
             },
             {
                 "common": {
                     "fireRate": 30,
-                    "moveSpeed": 30,
+                    "moveSpeed": 0.3,
                     "attackSpeed": 30
                 }
             }

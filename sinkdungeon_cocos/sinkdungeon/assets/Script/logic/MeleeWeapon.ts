@@ -234,6 +234,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
         let animname = this.getAttackAnimName()
         this.anim.play(animname)
         this.anim.getAnimationState(animname).speed = this.getAnimSpeed(data.FinalCommon)
+        if (this.player.sc.isJumping) {
+            this.player.airPause(1, 0.1)
+        }
         return true
     }
     public getAnimSpeed(finalCommon: CommonData): number {
@@ -435,7 +438,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     DashTime(speed?: number) {
         AudioPlayer.play(AudioPlayer.DASH)
         if (!speed) {
-            speed = 300
+            speed = 3
         }
         this.schedule(
             () => {
@@ -550,18 +553,18 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0)
         }
-        let power = 100 + this.exBeatBack
+        let power = 1 + this.exBeatBack
         if (!this.isFar && this.isStab) {
-            power = 100
+            power = 1
         } else if (this.isFar && this.isStab) {
-            power = 400
+            power = 4
         } else if (!this.isFar && !this.isStab) {
-            power = 240
+            power = 3
         } else {
-            power = 100
+            power = 1
         }
         if (this.comboType == MeleeWeapon.COMBO3) {
-            power += 100
+            power += 1
         }
 
         pos = pos.normalize().mul(power)

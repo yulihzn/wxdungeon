@@ -39,7 +39,8 @@ import ActorUtils from '../utils/ActorUtils'
 import CCollider from '../collider/CCollider'
 import AreaDetector from '../actor/AreaDetector'
 import ActorBottomDir from '../actor/ActorBottomDir'
-import Utils from '../utils/Utils'
+import JumpingAbility from '../actor/JumpingAbility'
+import TriggerData from '../data/TriggerData'
 
 @ccclass
 export default class NonPlayer extends Actor {
@@ -129,6 +130,7 @@ export default class NonPlayer extends Actor {
     bodyRect = []
     waterY = 0
     lastTimeInWater = false
+    jumpAbility: JumpingAbility
     public stateMachine: StateMachine<NonPlayer, State<NonPlayer>>
     get IsVariation() {
         return this.isVariation || this.data.StatusTotalData.variation > 0
@@ -166,6 +168,11 @@ export default class NonPlayer extends Actor {
         this.dangerBox.init(this, this.data)
         this.dangerTips.opacity = 0
         this.specialStep.init()
+        this.jumpAbility = this.addComponent(JumpingAbility)
+        this.jumpAbility.init(this, 1, 0, (group: number, type: number) => {
+            if (TriggerData.TYPE_JUMP_START == type) {
+            }
+        })
         this.stateMachine = new DefaultStateMachine(this, NonPlayerActorState.PRPARE, NonPlayerActorState.GLOBAL)
     }
 
@@ -190,9 +197,9 @@ export default class NonPlayer extends Actor {
             )
         }
         this.addSaveStatusList()
-        this.entity.Move.damping = 300
+        this.entity.Move.damping = 3
         this.entity.Move.linearVelocity = cc.v2(0, 0)
-        let speedScale = 1 - this.data.FinalCommon.AttackSpeed / 1000
+        let speedScale = 1 - this.data.FinalCommon.AttackSpeed / 10
         let attackArr = this.data.attackRect.split(',')
         let bodyArr = this.data.bodyRect.split(',')
         for (let num of attackArr) {
@@ -204,17 +211,24 @@ export default class NonPlayer extends Actor {
     }
 
     jump() {
-        if (this.sc.jumpTimeOver) {
-            return
+        if (this.jumpAbility) {
+            this.jumpAbility.jump(2, 4, 1)
         }
-        this.scheduleOnce(() => {
-            this.sc.jumpTimeOver = true
-        }, 0.3)
-        if (!this.sc.isJumpingUp) {
-            AudioPlayer.play(AudioPlayer.DASH)
+    }
+    jumpCancel() {
+        if (this.jumpAbility) {
+            this.jumpAbility.cancel()
         }
-        this.sc.isJumpingUp = true
-        this.entity.Move.linearVelocityZ = 600
+    }
+    fly() {
+        if (this.jumpAbility && this.data.fly > 0) {
+            this.jumpAbility.fly(1, this.data.fly)
+        }
+    }
+    flyCancel() {
+        if (this.jumpAbility && this.data.fly > 0) {
+            this.jumpAbility.flyCancel(2)
+        }
     }
     /**挨打光效 */
     private hitLightS(damage: DamageData) {
@@ -412,7 +426,7 @@ export default class NonPlayer extends Actor {
         }
     }
     private showAttackAnim(before: Function, attacking: Function, finish: Function, target: Actor, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {
-        let speedScale = 1 - this.data.FinalCommon.AttackSpeed / 1000
+        let speedScale = 1 - this.data.FinalCommon.AttackSpeed / 10
         if (speedScale < 0.5) {
             speedScale = 0.5
         }
@@ -487,7 +501,7 @@ export default class NonPlayer extends Actor {
                     .tween()
                     .delay(0.2 * speedScale)
                     .call(() => {
-                        this.sc.isFlying = false
+                        this.flyCancel()
                         this.changeBodyRes(this.data.resName, arr[i])
                     })
             )
@@ -500,7 +514,7 @@ export default class NonPlayer extends Actor {
                     .tween()
                     .delay(0.2 * speedScale)
                     .call(() => {
-                        this.sc.isFlying = false
+                        this.fly()
                         this.changeBodyRes(this.data.resName, arr[i])
                     })
             )
@@ -682,8 +696,11 @@ export default class NonPlayer extends Actor {
         }
         this.sc.isFalling = true
         this.bodySprite.node.angle = ActorUtils.isBehindTarget(this.dungeon.player, this) ? -75 : 105
-        this.sc.isJumpingUp = true
-        this.entity.Move.linearVelocityZ = 1000
+        if (this.jumpAbility) {
+            this.jumpAbility.airPause(8, 0.1, () => {
+                this.fallFinish()
+            })
+        }
     }
     fallFinish() {
         this.sc.isFalling = false
@@ -719,7 +736,7 @@ export default class NonPlayer extends Actor {
             //停止伪装打断攻击
             this.sc.isDisguising = false
             this.sc.isAttacking = false
-            this.sc.isFlying = false
+            this.flyCancel()
             this.meleeStep.refreshCoolDown(this.data.melee)
             this.remoteStep.refreshCoolDown(this.data.remote)
             if (damageData.isCriticalStrike) {
@@ -764,7 +781,7 @@ export default class NonPlayer extends Actor {
     /**受伤状态重置 */
     private hurtReset = () => {
         if (this.node) {
-            this.sc.isFlying = true
+            this.fly()
             this.hitLight(false)
             this.resetBodyColor()
             if (this.sc.isHurting) {
@@ -996,7 +1013,7 @@ export default class NonPlayer extends Actor {
             range += 100
         }
         if (this.data.meleeDash > 0) {
-            let speedScale = 1 - this.data.FinalCommon.AttackSpeed / 1000
+            let speedScale = 1 - this.data.FinalCommon.AttackSpeed / 10
             range = ActorUtils.getDashDistance(this, this.specialStep.IsExcuting ? this.data.specialDash : this.data.meleeDash, 0.8 * speedScale)
         }
         //&& Math.abs(this.node.position.y - target.node.y) < this.bodyRect[3] * this.node.scaleY
@@ -1192,7 +1209,7 @@ export default class NonPlayer extends Actor {
             this.sprite.opacity = this.lerp(this.sprite.opacity, 19, dt * 3)
         }
 
-        this.entity.Move.damping = this.sc.isDashing ? 0 : 300
+        this.entity.Move.damping = this.sc.isDashing ? 0 : 3
         this.dashlight.opacity = this.sc.isDashing ? 128 : 0
 
         this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255
@@ -1252,15 +1269,7 @@ export default class NonPlayer extends Actor {
                 this.data.currentHealth = 0
             }
         }
-        if (this.entity.Move.linearVelocityZ < 0) {
-            this.sc.isJumpingDown = true
-        }
-        if (this.entity.Transform.z <= this.entity.Transform.base) {
-            this.sc.isJumpingDown = false
-            this.sc.isJumpingUp = false
-            this.sc.jumpTimeOver = false
-            this.fallFinish()
-        }
+
         let y = this.root.y - this.entity.Transform.base
         if (y < 0) {
             y = 0
@@ -1273,10 +1282,10 @@ export default class NonPlayer extends Actor {
         this.setInWaterMat(this.bodySprite, this.data.water < 1 && this.isInWater())
         this.waterY = this.isInWaterTile && this.data.water < 1 ? -32 : 0
         this.sprite.y = Logic.lerp(this.sprite.y, this.waterY, 0.2)
-        if (this.data.fly > 0 && this.sc.isFlying) {
-            this.entity.Move.linearVelocityZ = 300
-        }
         this.showWaterSpark()
+        if (this.jumpAbility) {
+            this.jumpAbility.updateLogic()
+        }
     }
     private setInWaterMat(sprite: cc.Sprite, inWater: boolean) {
         if (!sprite || !sprite.spriteFrame) {
@@ -1406,8 +1415,7 @@ export default class NonPlayer extends Actor {
         this.setLinearVelocity(cc.Vec2.ZERO)
         this.entity.NodeRender.node = this.node
         this.entity.NodeRender.root = this.root
-        this.entity.Transform.flyZ = this.data.fly
-        this.sc.isFlying = true
+        this.fly()
         let action = cc
             .tween()
             .delay(0.2)

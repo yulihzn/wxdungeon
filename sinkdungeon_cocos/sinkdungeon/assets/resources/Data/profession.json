@@ -471,7 +471,7 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 50,
+            "moveSpeed": 0.5,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 1
@@ -561,7 +561,7 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 30,
+            "moveSpeed": 0.3,
             "attackSpeed": 30,
             "dodge": 0,
             "maxHealth": 0

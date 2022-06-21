@@ -280,7 +280,7 @@ export default class MonsterManager extends BaseManager {
                     data.dash = data.dash > 1 ? data.dash - 1 : 1
                 }
 
-                data.Common.moveSpeed = data.Common.moveSpeed > 0 ? data.Common.moveSpeed + 50 + 10 * monster.killPlayerCount : 0
+                data.Common.moveSpeed = data.Common.moveSpeed > 0 ? data.Common.moveSpeed + 0.5 + 0.1 * monster.killPlayerCount : 0
             }
             data.Common.maxDream += data.Common.maxDream * 0.25 * monster.killPlayerCount
             data.Common.damageMin += data.Common.damageMin * 0.25 * monster.killPlayerCount
@@ -392,7 +392,7 @@ export default class MonsterManager extends BaseManager {
         slime.dungeon = dungeon
         let data = new NonPlayerData()
         data.resName = 'iconboss004'
-        data.Common.moveSpeed = 200
+        data.Common.moveSpeed = 2
         switch (type) {
             case 0:
                 data.updateHA(this.maxHealth04, this.maxHealth04, 9)

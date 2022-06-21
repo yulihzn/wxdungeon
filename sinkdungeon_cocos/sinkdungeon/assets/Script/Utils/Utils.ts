@@ -131,13 +131,7 @@ export default class Utils {
             return `${i}`
         }
     }
-    static getRate() {
-        let rate = cc.game.getFrameRate()
-        if (!rate || rate < 0) {
-            rate = 60
-        }
-        return rate
-    }
+
     /**
      * 获取匀减速的距离，加速度不能为0
      * S=(v*v-v0*v0)/2a
@@ -149,8 +143,7 @@ export default class Utils {
         if (damping == 0) {
             return 0
         }
-        let rate = Utils.getRate()
-        return Math.abs((speed * speed * rate * 0.5) / damping)
+        return Math.abs((speed * speed * 0.5) / damping)
     }
     /**
      * 获取指定距离匀减速初速度
