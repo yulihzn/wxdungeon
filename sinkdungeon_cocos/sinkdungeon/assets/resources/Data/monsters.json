@@ -19,8 +19,8 @@
         "boxType": 0,
         "attackFrames": 3,
         "specialFrames": 3,
-        "bodyRect":"0,0,48,32,48",
-        "attackRect":"-32,0,112,32,50",
+        "bodyRect": "0,0,48,32,48",
+        "attackRect": "-32,0,112,32,50",
         "dash": 5
     },
     "monster001": {
@@ -42,8 +42,8 @@
         "remote": 0,
         "melee": 3,
         "boxType": 1,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster002": {
@@ -70,8 +70,8 @@
         "remote": 4,
         "melee": 3,
         "boxType": 1,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 5
     },
     "monster003": {
@@ -92,8 +92,8 @@
         "remote": 0,
         "melee": 3,
         "boxType": 1,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster004": {
@@ -114,8 +114,8 @@
         "remote": 0,
         "melee": 0.5,
         "boxType": 1,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster005": {
@@ -136,8 +136,8 @@
         "remote": 0,
         "melee": 3,
         "boxType": 1,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 5
     },
     "monster006": {
@@ -161,8 +161,8 @@
         "remote": 3,
         "melee": 0,
         "boxType": 2,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster007": {
@@ -186,8 +186,8 @@
         "remote": 4,
         "melee": 3,
         "boxType": 1,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster008": {
@@ -210,8 +210,8 @@
         "remote": 0,
         "melee": 3,
         "boxType": 1,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 4
     },
     "monster009": {
@@ -235,8 +235,8 @@
         "melee": 0.5,
         "dash": 0,
         "boxType": 2,
-        "bodyRect":"0,0,80,40,90",
-        "attackRect":"-32,0,112,40,80",
+        "bodyRect": "0,0,80,40,90",
+        "attackRect": "-32,0,112,40,80",
         "disguise": 80
     },
     "monster010": {
@@ -262,9 +262,9 @@
         "meleeDash": 6,
         "specialDash": 12,
         "disguise": 200,
-        "bodyRect":"0,0,80,40,105",
-        "attackRect":"-32,0,112,40,80",
-        "fly":3
+        "bodyRect": "0,0,80,40,105",
+        "attackRect": "-32,0,112,40,80",
+        "fly": 2
     },
     "monster011": {
         "nameCn": "小鸡",
@@ -288,8 +288,8 @@
         "melee": 0,
         "dash": 0,
         "boxType": 2,
-        "bodyRect":"0,0,80,40,90",
-        "attackRect":"-32,0,112,40,80",
+        "bodyRect": "0,0,80,40,90",
+        "attackRect": "-32,0,112,40,80",
         "disguise": 0
     },
     "monster012": {
@@ -313,8 +313,8 @@
         "melee": 3,
         "dash": 0,
         "boxType": 0,
-        "bodyRect":"0,0,80,40,90",
-        "attackRect":"-32,0,112,40,80",
+        "bodyRect": "0,0,80,40,90",
+        "attackRect": "-32,0,112,40,80",
         "disguise": 0
     },
     "monster013": {
@@ -338,8 +338,8 @@
         "remote": 5,
         "melee": 0,
         "boxType": 1,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster014": {
@@ -361,8 +361,8 @@
         "remote": 0,
         "melee": 3,
         "boxType": 0,
-        "bodyRect":"0,0,80,40,90",
-        "attackRect":"-32,0,112,40,80",
+        "bodyRect": "0,0,80,40,90",
+        "attackRect": "-32,0,112,40,80",
         "dash": 0
     },
     "monster015": {
@@ -389,8 +389,8 @@
         "scale": 1,
         "boxType": 3,
         "isRecovery": 1,
-        "bodyRect":"0,0,80,40,160",
-        "attackRect":"-32,0,144,40,160",
+        "bodyRect": "0,0,80,40,160",
+        "attackRect": "-32,0,144,40,160",
         "dash": 0
     },
     "monster016": {
@@ -414,8 +414,8 @@
         "remote": 0,
         "melee": 5,
         "boxType": 1,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "meleeDash": 6,
         "dash": 0
     },
@@ -442,8 +442,8 @@
         "remote": 4,
         "melee": 0,
         "boxType": 1,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster018": {
@@ -469,8 +469,8 @@
         "remote": 3,
         "melee": 0,
         "boxType": 3,
-        "bodyRect":"0,0,80,40,160",
-        "attackRect":"-32,0,144,40,160",
+        "bodyRect": "0,0,80,40,160",
+        "attackRect": "-32,0,144,40,160",
         "dash": 0
     },
     "monster019": {
@@ -495,8 +495,8 @@
         "remote": 0,
         "melee": 2,
         "boxType": 1,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster020": {
@@ -526,8 +526,8 @@
         "melee": 0,
         "scale": 1,
         "boxType": 2,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster021": {
@@ -548,8 +548,8 @@
         "remote": 0,
         "melee": 4,
         "boxType": 1,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 5
     },
     "monster022": {
@@ -577,8 +577,8 @@
         "melee": 4,
         "scale": 1,
         "boxType": 4,
-        "bodyRect":"0,0,80,40,80",
-        "attackRect":"-32,0,144,40,80",
+        "bodyRect": "0,0,80,40,80",
+        "attackRect": "-32,0,144,40,80",
         "dash": 0
     },
     "monster023": {
@@ -604,8 +604,8 @@
         "melee": 4,
         "scale": 1,
         "boxType": 5,
-        "bodyRect":"0,0,120,40,120",
-        "attackRect":"-32,0,180,40,120",
+        "bodyRect": "0,0,120,40,120",
+        "attackRect": "-32,0,180,40,120",
         "dash": 0
     },
     "monster024": {
@@ -630,8 +630,8 @@
         "blink": 3,
         "scale": 1,
         "boxType": 3,
-        "bodyRect":"0,0,80,40,160",
-        "attackRect":"-32,0,144,40,160",
+        "bodyRect": "0,0,80,40,160",
+        "attackRect": "-32,0,144,40,160",
         "dash": 0
     },
     "monster025": {
@@ -657,8 +657,8 @@
         "melee": 0,
         "scale": 1,
         "boxType": 1,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster026": {
@@ -685,8 +685,8 @@
         "melee": 4,
         "scale": 1,
         "boxType": 0,
-        "bodyRect":"0,0,48,32,80",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,80",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster027": {
@@ -714,8 +714,8 @@
         "melee": 0,
         "dash": 0,
         "boxType": 1,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "disguise": 0
     },
     "monster028": {
@@ -739,8 +739,8 @@
         "melee": 3,
         "dash": 0,
         "boxType": 1,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "disguise": 200
     },
     "monster029": {
@@ -763,8 +763,8 @@
         "melee": 3,
         "scale": 1.5,
         "boxType": 4,
-        "bodyRect":"0,0,120,40,120",
-        "attackRect":"-32,0,144,40,120",
+        "bodyRect": "0,0,120,40,120",
+        "attackRect": "-32,0,144,40,120",
         "dash": 10
     },
     "monster030": {
@@ -792,8 +792,8 @@
         "attackFrames": 3,
         "specialFrames": 3,
         "boxType": 5,
-        "bodyRect":"0,0,120,40,200",
-        "attackRect":"-32,0,180,40,200",
+        "bodyRect": "0,0,120,40,200",
+        "attackRect": "-32,0,180,40,200",
         "dash": 0
     },
     "monster031": {
@@ -820,8 +820,8 @@
         "boxType": 3,
         "attackFrames": 3,
         "specialFrames": 4,
-        "bodyRect":"0,0,80,40,80",
-        "attackRect":"-32,0,144,40,80",
+        "bodyRect": "0,0,80,40,80",
+        "attackRect": "-32,0,144,40,80",
         "dash": 0
     },
     "monster032": {
@@ -832,8 +832,9 @@
         "stageLevel": 0,
         "specialAttack": 10,
         "specialType": "special032",
-        "specialDelay": 0.7,
-        "specialDash": 12,
+        "specialDelay": 0.8,
+        "specialDash": 6,
+        "dashJump": 6,
         "specialAudio": "ZOMBIE_ATTACK",
         "common": {
             "remoteAngle": 5,
@@ -851,8 +852,8 @@
         "boxType": 1,
         "attackFrames": 2,
         "specialFrames": 5,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster033": {
@@ -880,8 +881,8 @@
         "attackFrames": 11,
         "specialFrames": 8,
         "boxType": 5,
-        "bodyRect":"0,0,120,40,120",
-        "attackRect":"-32,0,180,40,240",
+        "bodyRect": "0,0,120,40,120",
+        "attackRect": "-32,0,180,40,240",
         "dash": 0
     },
     "monster034": {
@@ -908,8 +909,8 @@
         "boxType": 2,
         "childCount": 3,
         "childResName": "monster035",
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster035": {
@@ -937,8 +938,8 @@
         "blink": 3,
         "scale": 1,
         "boxType": 2,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster036": {
@@ -964,8 +965,8 @@
         "remote": 3,
         "melee": 0,
         "boxType": 0,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster037": {
@@ -999,8 +1000,8 @@
         "blink": 3,
         "scale": 1,
         "boxType": 2,
-        "bodyRect":"0,0,48,32,105",
-        "attackRect":"-32,0,112,32,80",
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
         "dash": 0
     },
     "monster038": {
@@ -1025,8 +1026,8 @@
         "boxType": 0,
         "attackFrames": 3,
         "specialFrames": 3,
-        "bodyRect":"0,0,80,40,90",
-        "attackRect":"-32,0,112,40,80",
+        "bodyRect": "0,0,80,40,90",
+        "attackRect": "-32,0,112,40,80",
         "water": 1
     },
     "monster039": {
@@ -1049,8 +1050,8 @@
         "melee": 3,
         "boxType": 1,
         "specialAudio": "MOUSE",
-        "bodyRect":"0,0,80,40,90",
-        "attackRect":"-32,0,112,40,80",
+        "bodyRect": "0,0,80,40,90",
+        "attackRect": "-32,0,112,40,80",
         "dash": 0
     }
 }

@@ -186,4 +186,10 @@ export default class Utils {
         s = distance - s
         return s / speed
     }
+    static getDashTime(speed: number, damping: number) {
+        if (damping != 0) {
+            return speed / damping
+        }
+        return 0
+    }
 }

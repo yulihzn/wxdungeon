@@ -1,3 +1,4 @@
+import { MoveComponent } from './../ecs/component/MoveComponent'
 import Actor from '../base/Actor'
 import Boss from '../boss/Boss'
 import CCollider from '../collider/CCollider'
@@ -220,6 +221,9 @@ export default class ActorUtils {
             cc.log('actor或者entity不存在')
             return 0
         }
-        return Utils.getDashDistanceByTime(speed, actor.entity.Move.damping, second)
+        return Utils.getDashDistanceByTime(speed, actor.entity.Move.damping, second) * MoveComponent.PIXELS_PER_UNIT
+    }
+    static getDashTime(actor: Actor, speed: number) {
+        return Utils.getDashTime(speed, actor.entity.Move.damping)
     }
 }

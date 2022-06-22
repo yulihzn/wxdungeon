@@ -49,6 +49,7 @@ export default class NonPlayerData {
     specialDistance = 0 //特殊类型位置x
     specialDelay = 0 //特殊攻击延迟放置时间
     specialDash = 0 //特殊攻击是否冲刺 冲刺瞬时速度
+    dashJump = 0 //冲刺是否跳跃 数字代表速度
     bodyColor = '#ffffff'
     pos: cc.Vec3 = cc.v3(0, 0)
     currentHealth: number = 0

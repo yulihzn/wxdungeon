@@ -143,7 +143,7 @@ export default class Bullet extends BaseColliderComponent {
         let scale = 1 - y / 64
         this.shadow.scale = scale < 0.5 ? 0.5 : scale
         this.shadow.y = this.entity.Transform.base
-        this.entity.Move.linearVelocityZ = 1000
+        this.entity.Move.linearVelocityZ = 0
     }
 
     private checkTraking(): void {
@@ -156,7 +156,7 @@ export default class Bullet extends BaseColliderComponent {
             }
         }
     }
-    changeBullet(data: BulletData) {
+    changeBullet(data: BulletData, zHeight: number) {
         this.data = data
         this.changeRes(data.resName, data.lightName, data.lightColor)
         this.collider.type = CCollider.TYPE.RECT
@@ -172,7 +172,7 @@ export default class Bullet extends BaseColliderComponent {
         this.collider.sensor = data.isPhysical == 0
         if (this.shooter && this.shooter.actor) {
             this.entity.Transform.base = this.shooter.actor.entity.Transform.base
-            this.entity.Transform.z = this.shooter.actor.entity.Transform.z
+            this.entity.Transform.z = this.shooter.actor.entity.Transform.z + zHeight
         }
         this.entity.Move.gravity = 0
     }

@@ -1003,7 +1003,7 @@ export default class Player extends Actor {
             return
         }
         if (this.jumpAbility) {
-            this.jumpAbility.jump(this.data.getJumpSpeed(), PlayerData.DEFAULT_JUMP_HEIGHT, 1)
+            this.jumpAbility.jump(this.data.getJumpSpeed(), PlayerData.DEFAULT_JUMP_HEIGHT)
         }
     }
     jumpCancel() {

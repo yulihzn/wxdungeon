@@ -20,7 +20,7 @@ export default class JumpingAbility extends cc.Component {
     callbacks: Map<number, Function> = new Map()
     isJumpPressed = false
     isAirPause = false
-    maxJumpHeight = PlayerData.DEFAULT_JUMP_HEIGHT
+    maxJumpHeight = 0
     maxFlyHeight = 0
     flySpeed = 0
     /**初始化跳跃回调 */
@@ -34,7 +34,7 @@ export default class JumpingAbility extends cc.Component {
             this.callbacks.set(callbackKey, callback)
         }
     }
-    jump(speed: number, maxJumpHeightUnit: number, callbackKey: number, callback?: Function) {
+    jump(speed: number, maxJumpHeightUnit: number, callbackKey?: number, callback?: Function) {
         //判断跳跃是否按下，直到下次松开
         if (this.isJumpPressed) {
             return
@@ -116,6 +116,7 @@ export default class JumpingAbility extends cc.Component {
             this.callbacks.forEach((callback, key) => {
                 callback(TriggerData.GROUP_JUMP, TriggerData.TYPE_JUMP_HIGHEST)
             })
+            cc.log(`highest${this.actor.entity.Transform.z}`)
             if (!this.isAirPause && !this.actor.sc.isFlying && !this.isAcceleratedFall) {
                 this.actor.entity.Move.gravity = MoveComponent.DEFAULT_GRAVITY
                 if (this.actor.entity.Move.linearVelocityZ > 0) {
@@ -132,6 +133,9 @@ export default class JumpingAbility extends cc.Component {
             this.actor.sc.isJumping = false
             this.currentJumpCount = this.maxJumpCount
             this.actor.entity.Move.gravity = MoveComponent.DEFAULT_GRAVITY
+            this.isJumpPressed = false
+            this.isAirPause = false
+            cc.log(`ground`)
         }
         this.lastLinearVelocityZ = this.actor.entity.Move.linearVelocityZ
         this.lastZ = this.actor.entity.Transform.z

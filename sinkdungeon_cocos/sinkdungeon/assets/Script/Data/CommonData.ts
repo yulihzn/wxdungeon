@@ -15,6 +15,7 @@ export default class CommonData {
     maxHealth: number = 0 //最大生命
     maxDream: number = 0 //最大梦境值
     maxAmmo: number = 0 //子弹容量
+    ammoRecovery: number = 0 //子弹每秒回复量
     damageMin: number = 0 //最小攻击
     damageMax: number = 0 //最大攻击
     damageBack: number = 0 //背面额外攻击伤害
@@ -48,6 +49,7 @@ export default class CommonData {
     maxHealthPercent: number = 0 //最大生命%
     maxDreamPercent: number = 0 //最大梦境值%
     maxAmmoPercent: number = 0 //子弹容量%
+    ammoRecoveryPercent: number = 0 //自动回复速率%
     damageMinPercent: number = 0 //最小攻击%
     damageMaxPercent: number = 0 //最大攻击%
     damageBackPercent: number = 0 //背面额外攻击伤害%
@@ -75,6 +77,9 @@ export default class CommonData {
     }
     get MaxAmmo() {
         return this.returnNumberValue(this.maxAmmo, this.maxAmmoPercent / 100)
+    }
+    get AmmoRecovery() {
+        return this.returnNumberValue(this.ammoRecovery, this.ammoRecoveryPercent / 100)
     }
     get DamageMin() {
         return this.returnNumberValue(this.damageMin, this.damageMinPercent / 100)
@@ -125,6 +130,7 @@ export default class CommonData {
         this.damageMin += data.damageMin ? data.damageMin : 0
         this.damageMax += data.damageMax ? data.damageMax : 0
         this.maxAmmo += data.maxAmmo ? data.maxAmmo : 0
+        this.ammoRecovery += data.ammoRecovery ? data.ammoRecovery : 0
         this.remoteDamage += data.remoteDamage ? data.remoteDamage : 0
         this.defence += data.defence ? data.defence : 0
         this.damageBack += data.damageBack ? data.damageBack : 0
@@ -154,6 +160,7 @@ export default class CommonData {
         this.maxHealthPercent = DataUtils.addPercentFixed(this.maxHealthPercent, data.maxHealthPercent)
         this.maxDreamPercent = DataUtils.addPercentFixed(this.maxDreamPercent, data.maxDreamPercent)
         this.maxAmmoPercent = DataUtils.addPercentFixed(this.maxAmmoPercent, data.maxAmmoPercent)
+        this.ammoRecoveryPercent = DataUtils.addPercentFixed(this.ammoRecoveryPercent, data.ammoRecoveryPercent)
         this.damageMinPercent = DataUtils.addPercentFixed(this.damageMinPercent, data.damageMinPercent)
         this.damageMaxPercent = DataUtils.addPercentFixed(this.damageMaxPercent, data.damageMaxPercent)
         this.damageBackPercent = DataUtils.addPercentFixed(this.damageBackPercent, data.damageBackPercent)

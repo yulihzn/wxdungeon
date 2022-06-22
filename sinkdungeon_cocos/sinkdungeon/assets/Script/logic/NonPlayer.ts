@@ -212,7 +212,7 @@ export default class NonPlayer extends Actor {
 
     jump() {
         if (this.jumpAbility) {
-            this.jumpAbility.jump(2, 4, 1)
+            this.jumpAbility.jump(2, 4)
         }
     }
     jumpCancel() {
@@ -227,7 +227,7 @@ export default class NonPlayer extends Actor {
     }
     flyCancel() {
         if (this.jumpAbility && this.data.fly > 0) {
-            this.jumpAbility.flyCancel(2)
+            this.jumpAbility.flyCancel(1)
         }
     }
     /**挨打光效 */
@@ -562,6 +562,9 @@ export default class NonPlayer extends Actor {
             //冲刺
             if ((!isSpecial && this.data.meleeDash > 0) || (isSpecial && this.data.specialDash > 0)) {
                 this.move(cc.v3(this.hv), isSpecial ? this.data.specialDash : this.data.meleeDash)
+                if (this.data.dashJump > 0) {
+                    this.jumpAbility.jump(this.data.dashJump, 0)
+                }
             }
             if (isSpecial) {
                 //延迟添加特殊物体
@@ -697,7 +700,7 @@ export default class NonPlayer extends Actor {
         this.sc.isFalling = true
         this.bodySprite.node.angle = ActorUtils.isBehindTarget(this.dungeon.player, this) ? -75 : 105
         if (this.jumpAbility) {
-            this.jumpAbility.airPause(8, 0.1, () => {
+            this.jumpAbility.airPause(8, 0.2, () => {
                 this.fallFinish()
             })
         }

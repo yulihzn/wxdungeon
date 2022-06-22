@@ -393,6 +393,7 @@ export default class Shooter extends cc.Component {
             }
         }
         let pos = this.node.convertToWorldSpaceAR(p)
+        let z = this.getParentNode().convertToNodeSpaceAR(pos).y
         pos = this.dungeon.node.convertToNodeSpaceAR(pos)
 
         bulletPrefab.parent = this.dungeon.node
@@ -405,11 +406,20 @@ export default class Shooter extends cc.Component {
         } else {
             pos.y = this.getParentNode().y
             bulletPrefab.position = pos
-            this.showBullet(angleOffset, hv, bulletPrefab, bulletData, pos, aoePrefab, aoeData)
+            this.showBullet(angleOffset, hv, bulletPrefab, bulletData, pos, z, aoePrefab, aoeData)
         }
     }
 
-    private showBullet(angleOffset: number, hv: cc.Vec2, bulletPrefab: cc.Node, data: BulletData, startPos: cc.Vec3, aoePrefab: cc.Prefab, aoeData: AreaOfEffectData) {
+    private showBullet(
+        angleOffset: number,
+        hv: cc.Vec2,
+        bulletPrefab: cc.Node,
+        data: BulletData,
+        startPos: cc.Vec3,
+        zHeight: number,
+        aoePrefab: cc.Prefab,
+        aoeData: AreaOfEffectData
+    ) {
         let bullet = bulletPrefab.getComponent(Bullet)
         bullet.entity.Transform.position = startPos
         bullet.shooter = this
@@ -429,7 +439,7 @@ export default class Shooter extends cc.Component {
             bd.speed += this.data.bulletExSpeed
         }
         bd.from.valueCopy(this.from)
-        bullet.changeBullet(bd)
+        bullet.changeBullet(bd, zHeight)
         this.bulletName = bullet.name + bd.resName
         bullet.enabled = true
         bullet.aoeData.valueCopy(aoeData)

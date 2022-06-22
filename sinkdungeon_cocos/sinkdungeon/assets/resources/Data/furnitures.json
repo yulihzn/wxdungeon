@@ -104,8 +104,9 @@
         "resName": "roomfridge",
         "info": "",
         "desc": "",
-        "scale": 6,
-        "collider": "0,0,128,128",
+        "scale": 8,
+        "spritePos":"-64,-14",
+        "collider": "0,26,120,75,175",
         "price": 1000,
         "height": 28
     },

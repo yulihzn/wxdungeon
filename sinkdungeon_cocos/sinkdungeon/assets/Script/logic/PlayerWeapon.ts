@@ -44,6 +44,8 @@ export default class PlayerWeapon extends cc.Component {
     isHandsUp = false
     interactBuildingAttacking = false
     interactBuildingLift = false
+    private ammoRecovery = 0
+    private maxAmmo = 0
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -76,6 +78,9 @@ export default class PlayerWeapon extends cc.Component {
         this.shooter.player = this.player
         this.shooter.parentNode = this.player.node
         this.shooter.actor = this.player
+        let finalData = this.player.data.FinalCommon
+        this.ammoRecovery = finalData.AmmoRecovery
+        this.maxAmmo = finalData.MaxAmmo
     }
     handsUp(isUp: boolean, isLift: boolean, isAttacking: boolean) {
         if (this.isHandsUp && isUp) {
@@ -147,6 +152,8 @@ export default class PlayerWeapon extends cc.Component {
         }
         let canFire = false
         let finalData = data.FinalCommon
+        this.ammoRecovery = finalData.AmmoRecovery
+        this.maxAmmo = finalData.MaxAmmo
         let cooldown = finalData.remoteCooldown
         let remoteInterval = finalData.remoteInterval
         if (cooldown < 100) {
@@ -219,5 +226,22 @@ export default class PlayerWeapon extends cc.Component {
         if (this.shooter) {
             this.shooter.updateLogic(dt)
         }
+        if (this.shooter.data.equipmetType == InventoryManager.REMOTE && this.ammoRecovery > 0 && this.player.data.currentAmmo < this.maxAmmo && this.isCheckTimeDelay(dt)) {
+            this.player.data.currentAmmo += this.ammoRecovery
+            if (this.player.data.currentAmmo > this.maxAmmo) {
+                this.player.data.currentAmmo = this.maxAmmo
+            }
+            EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.player.data.currentAmmo, y: this.maxAmmo })
+        }
+    }
+
+    checkTimeDelay = 0
+    isCheckTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt
+        if (this.checkTimeDelay > 1) {
+            this.checkTimeDelay = 0
+            return true
+        }
+        return false
     }
 }

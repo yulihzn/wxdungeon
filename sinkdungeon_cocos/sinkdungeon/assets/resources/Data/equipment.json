@@ -9,7 +9,7 @@
         "titlecolor": "#ffffff",
         "img": "emptyequipment",
         "price": 0,
-        "exTriggers":[],
+        "exTriggers": [],
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -1315,6 +1315,7 @@
             "remoteCooldown": 300,
             "remoteInterval": 0,
             "remoteAngle": 5,
+            "ammoRecovery": 1,
             "maxAmmo": 1,
             "dodge": 0,
             "maxHealth": 0
@@ -1347,6 +1348,7 @@
             "attackSpeed": 0,
             "remoteCooldown": 1500,
             "remoteInterval": 0,
+            "ammoRecovery": 1,
             "maxAmmo": 1,
             "dodge": 0,
             "maxHealth": 0
@@ -1379,6 +1381,7 @@
             "attackSpeed": 0,
             "remoteCooldown": 2000,
             "remoteInterval": 100,
+            "ammoRecovery": 1,
             "maxAmmo": 10,
             "remoteAngle": 30,
             "dodge": 0,
@@ -1414,6 +1417,7 @@
             "attackSpeed": 0,
             "remoteCooldown": 1000,
             "remoteInterval": 0,
+            "ammoRecovery": 1,
             "maxAmmo": 1,
             "dodge": 0,
             "maxHealth": 0
@@ -1449,6 +1453,7 @@
             "remoteCooldown": 800,
             "remoteInterval": 0,
             "remoteAngle": 5,
+            "ammoRecovery": 1,
             "maxAmmo": 1,
             "dodge": 0,
             "maxHealth": 0
@@ -1483,6 +1488,7 @@
             "remoteCooldown": 2000,
             "remoteInterval": 0,
             "remoteAngle": 5,
+            "ammoRecovery": 1,
             "maxAmmo": 1,
             "dodge": 0,
             "maxHealth": 0
@@ -1518,6 +1524,7 @@
             "remoteCooldown": 2000,
             "remoteInterval": 200,
             "remoteAngle": 30,
+            "ammoRecovery": 1,
             "maxAmmo": 3,
             "dodge": 0,
             "maxHealth": 0
@@ -1550,6 +1557,7 @@
             "attackSpeed": 0,
             "remoteCooldown": 1000,
             "remoteInterval": 0,
+            "ammoRecovery": 1,
             "maxAmmo": 1,
             "remoteAngle": 5,
             "dodge": 0,
@@ -1585,6 +1593,7 @@
             "attackSpeed": 0,
             "remoteCooldown": 1500,
             "remoteInterval": 200,
+            "ammoRecovery": 1,
             "maxAmmo": 6,
             "remoteAngle": 5,
             "dodge": 0,
@@ -1619,6 +1628,7 @@
             "attackSpeed": 0,
             "remoteCooldown": 1500,
             "remoteInterval": 200,
+            "ammoRecovery": 1,
             "maxAmmo": 15,
             "remoteAngle": 15,
             "dodge": 0,
@@ -1654,6 +1664,7 @@
             "attackSpeed": 0,
             "remoteCooldown": 1000,
             "remoteInterval": 0,
+            "ammoRecovery": 1,
             "maxAmmo": 1,
             "remoteAngle": 5,
             "dodge": 0,
@@ -2768,7 +2779,7 @@
         "titlecolor": "#ffffff",
         "img": "clothes004",
         "price": 30,
-        "anim":3,
+        "anim": 3,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3005,7 +3016,7 @@
         "img": "clothes013",
         "price": 30,
         "suitType": "suit007",
-        "anim":3,
+        "anim": 3,
         "common": {
             "damageMin": 0,
             "damageMax": 5,
@@ -3129,7 +3140,7 @@
         "titlecolor": "#ffffff",
         "img": "clothes018",
         "price": 30,
-        "anim":3,
+        "anim": 3,
         "suitType": "suit005",
         "common": {
             "damageMin": 0,
@@ -3299,7 +3310,7 @@
         "titlecolor": "#ffffff",
         "img": "clothes025",
         "price": 60,
-        "anim":3,
+        "anim": 3,
         "exTriggers": [
             {
                 "id": 0,

@@ -235,7 +235,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         this.anim.play(animname)
         this.anim.getAnimationState(animname).speed = this.getAnimSpeed(data.FinalCommon)
         if (this.player.sc.isJumping) {
-            this.player.airPause(1, 0.1)
+            this.player.airPause(2, 0.1)
         }
         return true
     }
@@ -656,6 +656,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
         //停顿
         if (damageSuccess || attackSuccess) {
             anim.pause()
+            if (this.player.sc.isJumping) {
+                this.player.airPause(2, 0.2)
+            }
             if (!isShadow) {
                 EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: this.comboType == MeleeWeapon.COMBO3 })
             }
