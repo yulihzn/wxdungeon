@@ -240,7 +240,7 @@ export default class Player extends Actor {
             this.bottomDir.init(this)
         }
         this.jumpAbility = this.addComponent(JumpingAbility)
-        this.jumpAbility.init(this, 3, 0, (group: number, type: number) => {
+        this.jumpAbility.init(this, 2, 0, (group: number, type: number) => {
             this.exTrigger(group, type, null, null)
         })
     }

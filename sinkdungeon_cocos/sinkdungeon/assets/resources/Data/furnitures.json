@@ -8,7 +8,7 @@
         "desc": "",
         "scale": 8,
         "collider": "232,107,238,104",
-        "price": 1000,
+        "price": 800,
         "height": 8
     },
     "furniture002": {
@@ -19,9 +19,9 @@
         "info": "",
         "desc": "",
         "scale": 4,
-        "spritePos":"-64,-50",
+        "spritePos": "-64,-50",
         "collider": "-32,10,59,110,10",
-        "price": 1000,
+        "price": 400,
         "height": 4
     },
     "furniture003": {
@@ -33,7 +33,7 @@
         "desc": "",
         "scale": 8,
         "collider": "185,64,330,155",
-        "price": 1000,
+        "price": 400,
         "height": 8
     },
     "furniture004": {
@@ -44,7 +44,7 @@
         "info": "",
         "desc": "",
         "scale": 4,
-        "spritePos":"-64,0",
+        "spritePos": "-64,0",
         "collider": "0,32,128,64,64",
         "price": 800,
         "height": 16
@@ -105,9 +105,9 @@
         "info": "",
         "desc": "",
         "scale": 8,
-        "spritePos":"-64,-14",
+        "spritePos": "-64,-14",
         "collider": "0,26,120,75,175",
-        "price": 1000,
+        "price": 1200,
         "height": 28
     },
     "furniture010": {
@@ -118,9 +118,9 @@
         "info": "",
         "desc": "",
         "scale": 4,
-        "spritePos":"-64,0",
+        "spritePos": "-64,0",
         "collider": "0,28,114,50,20",
-        "price": 1000,
+        "price": 200,
         "height": 18
     },
     "furniture011": {
@@ -131,10 +131,10 @@
         "info": "",
         "desc": "",
         "scale": 8,
-        "spritePos":"-64,0",
+        "spritePos": "-64,0",
         "collider": "64,32,256,64,192",
         "storage": 8,
-        "price": 1000,
+        "price": 700,
         "height": 30
     },
     "furniture012": {
@@ -145,7 +145,7 @@
         "info": "",
         "desc": "",
         "scale": 4,
-        "spritePos":"-64,0",
+        "spritePos": "-64,0",
         "collider": "0,43,80,40,29",
         "price": 200,
         "height": 8
@@ -158,7 +158,7 @@
         "info": "",
         "desc": "",
         "scale": 4,
-        "spritePos":"-64,0",
+        "spritePos": "-64,0",
         "collider": "0,43,80,40,29",
         "price": 200,
         "height": 8
@@ -219,7 +219,7 @@
         "info": "书本上面有许多书可以读",
         "desc": "",
         "scale": 8,
-        "spritePos":"-64,0",
+        "spritePos": "-64,0",
         "collider": "64,32,256,64,192",
         "price": 700,
         "height": 25

@@ -403,7 +403,7 @@
         "isTest": 1,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 2,
+            "moveSpeed": 0,
             "maxHealth": 99999,
             "defence": 0,
             "damageMin": 0.1
@@ -412,11 +412,11 @@
         "invisible": 0,
         "noLoot": 1,
         "remote": 0,
-        "melee": 5,
+        "melee": 0,
         "boxType": 1,
         "bodyRect": "0,0,48,32,105",
         "attackRect": "-32,0,112,32,80",
-        "meleeDash": 6,
+        "meleeDash": 0,
         "dash": 0
     },
     "monster017": {

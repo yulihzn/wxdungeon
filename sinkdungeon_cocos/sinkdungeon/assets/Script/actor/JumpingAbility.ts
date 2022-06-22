@@ -116,7 +116,6 @@ export default class JumpingAbility extends cc.Component {
             this.callbacks.forEach((callback, key) => {
                 callback(TriggerData.GROUP_JUMP, TriggerData.TYPE_JUMP_HIGHEST)
             })
-            cc.log(`highest${this.actor.entity.Transform.z}`)
             if (!this.isAirPause && !this.actor.sc.isFlying && !this.isAcceleratedFall) {
                 this.actor.entity.Move.gravity = MoveComponent.DEFAULT_GRAVITY
                 if (this.actor.entity.Move.linearVelocityZ > 0) {
@@ -135,7 +134,6 @@ export default class JumpingAbility extends cc.Component {
             this.actor.entity.Move.gravity = MoveComponent.DEFAULT_GRAVITY
             this.isJumpPressed = false
             this.isAirPause = false
-            cc.log(`ground`)
         }
         this.lastLinearVelocityZ = this.actor.entity.Move.linearVelocityZ
         this.lastZ = this.actor.entity.Transform.z
