@@ -41,12 +41,12 @@
                 {
                  "name":"floorRes",
                  "type":"string",
-                 "value":"tile_lab"
+                 "value":"tile_lab001"
                 }, 
                 {
                  "name":"floorRes1",
                  "type":"string",
-                 "value":"tile_lab"
+                 "value":"tile_lab004"
                 }, 
                 {
                  "name":"height",
