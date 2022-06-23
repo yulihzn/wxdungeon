@@ -99,10 +99,9 @@ export default class WarMachine extends Boss {
         }, 5)
         this.getLoot()
     }
-    actionCount = 0
+    isMoveRight = false
     bossAction(): void {
         if (this.sc.isDied || !this.sc.isShow || !this.dungeon) {
-            this.actionCount = 0
             return
         }
         this.changeZIndex()
@@ -120,19 +119,17 @@ export default class WarMachine extends Boss {
         }
         this.fireGatling(isHalf)
         if (isHalf) {
-            this.actionCount++
-            let pos = cc.v3(1, 0)
-            if (this.actionCount > 10) {
+            if (this.isMoveRight && this.pos.x - this.defaultPos.x > 3) {
+                this.isMoveRight = false
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
-                pos = cc.v3(-1, 0)
-            }
-            if (this.actionCount > 20) {
+            } else if (!this.isMoveRight && this.defaultPos.x - this.pos.x > 3) {
+                this.isMoveRight = true
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
-                this.actionCount = 0
             }
+            let pos = cc.v3(this.isMoveRight ? 1 : -1, 0)
             if (!pos.equals(cc.Vec3.ZERO)) {
                 pos = pos.normalizeSelf()
-                this.move(pos, 600)
+                this.move(pos, 5)
             }
         }
         this.shooter01.setHv(cc.v2(0, -1))

@@ -866,8 +866,6 @@ export default class Player extends Actor {
             this.shooterEx.setHv(cc.v2(pos.x, pos.y))
             this.weaponLeft.shooter.setHv(cc.v2(pos.x, pos.y))
             this.weaponRight.shooter.setHv(cc.v2(pos.x, pos.y))
-        } else {
-            this.hv = cc.v2(0, 0)
         }
         let h = pos.x
         let v = pos.y
@@ -1011,9 +1009,9 @@ export default class Player extends Actor {
             this.jumpAbility.cancel()
         }
     }
-    airPause(speed: number, duration: number, pauseCallback?: Function) {
+    airPause(speed: number, duration: number, callbackKey?: number, callback?: Function) {
         if (this.jumpAbility) {
-            this.jumpAbility.airPause(speed, duration, pauseCallback)
+            this.jumpAbility.airPause(speed, duration, callbackKey, callback)
         }
     }
     talentJump(callback: Function) {
@@ -1021,10 +1019,9 @@ export default class Player extends Actor {
             return
         }
         if (this.jumpAbility) {
-            let key = 2
-            this.jumpAbility.jump(this.data.getJumpSpeed() * 3, PlayerData.DEFAULT_JUMP_HEIGHT * 3, key, (group: number, type: number) => {
+            this.jumpAbility.jump(this.data.getJumpSpeed() * 3, PlayerData.DEFAULT_JUMP_HEIGHT * 3, JumpingAbility.CALLBACK_JUMP, (group: number, type: number) => {
                 if (type == TriggerData.TYPE_JUMP_END) {
-                    this.jumpAbility.removeCallback(key)
+                    this.jumpAbility.removeCallback(JumpingAbility.CALLBACK_JUMP)
                     callback()
                 } else if (type == TriggerData.TYPE_JUMP_HIGHEST) {
                     this.jumpAbility.acceleratedFall(2)

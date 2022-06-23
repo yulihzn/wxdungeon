@@ -438,7 +438,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     DashTime(speed?: number) {
         AudioPlayer.play(AudioPlayer.DASH)
         if (!speed) {
-            speed = 3
+            speed = 6
         }
         this.schedule(
             () => {
@@ -553,18 +553,18 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0)
         }
-        let power = 1 + this.exBeatBack
+        let power = 2 + this.exBeatBack
         if (!this.isFar && this.isStab) {
-            power = 1
+            power = 2
         } else if (this.isFar && this.isStab) {
-            power = 4
+            power = 8
         } else if (!this.isFar && !this.isStab) {
-            power = 3
+            power = 5
         } else {
-            power = 1
+            power = 2
         }
         if (this.comboType == MeleeWeapon.COMBO3) {
-            power += 1
+            power += 2
         }
 
         pos = pos.normalize().mul(power)

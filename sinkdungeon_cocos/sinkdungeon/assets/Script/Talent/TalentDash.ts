@@ -44,9 +44,9 @@ export default class TalentDash extends Talent {
         if (this.hashTalent(Talent.DASH_13)) {
             cooldown = 2
         }
-        let speed = 12
+        let speed = 24
         if (this.hashTalent(Talent.DASH_14)) {
-            speed = 24
+            speed = 48
         }
         this.talentSkill.next(
             () => {
@@ -69,7 +69,7 @@ export default class TalentDash extends Talent {
                 }
                 let posv2 = cc.v2(pos.x, pos.y)
                 if (this.hashTalent(Talent.DASH_08)) {
-                    speed = 1
+                    speed = 2
                     this.showShadow(posv2)
                 }
                 this.hv = posv2.clone()
@@ -123,7 +123,7 @@ export default class TalentDash extends Talent {
             return
         }
         let pos = this.hv.clone()
-        let power = 10
+        let power = 20
         pos = pos.normalizeSelf().mul(power)
         node.entity.Move.linearVelocity = cc.v2(pos.x, pos.y)
     }

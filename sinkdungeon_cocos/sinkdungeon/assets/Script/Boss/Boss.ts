@@ -30,6 +30,7 @@ export default abstract class Boss extends Actor {
     healthBar: HealthBar = null
     dungeon: Dungeon
     pos: cc.Vec3 = cc.v3(0, 0)
+    defaultPos: cc.Vec3 = cc.v3(0, 0)
     data: NonPlayerData = new NonPlayerData()
     abstract init(type: number): void
     abstract killed(): void

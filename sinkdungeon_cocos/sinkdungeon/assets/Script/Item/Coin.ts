@@ -34,12 +34,12 @@ export default class Coin extends BaseColliderComponent {
     }
     onEnable() {
         this.anim = this.getComponent(cc.Animation)
-        let speed = 300
+        let speed = 6
         let x = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed
         let y = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed
 
         this.entity.Move.linearVelocity = cc.v2(x, y)
-        this.entity.Move.damping = 2
+        this.entity.Move.damping = 3
         this.isReady = false
         this.scheduleOnce(() => {
             this.isReady = true
@@ -85,7 +85,7 @@ export default class Coin extends BaseColliderComponent {
                 p.y += 10
                 let pos = p.sub(this.node.position)
                 if (!pos.equals(cc.Vec3.ZERO)) {
-                    this.entity.Move.linearVelocity = cc.v2(pos.x, pos.y).normalize().mul(800)
+                    this.entity.Move.linearVelocity = cc.v2(pos.x, pos.y).normalize().mul(16)
                     this.entity.Move.damping = 1
                 }
             }

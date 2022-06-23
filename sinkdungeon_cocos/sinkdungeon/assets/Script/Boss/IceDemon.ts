@@ -1,3 +1,4 @@
+import { MoveComponent } from './../ecs/component/MoveComponent'
 import Dungeon from '../logic/Dungeon'
 import { EventHelper } from '../logic/EventHelper'
 import Shooter from '../logic/Shooter'
@@ -14,6 +15,7 @@ import ActorUtils from '../utils/ActorUtils'
 import MagicIce from '../talent/MagicIce'
 import Logic from '../logic/Logic'
 import CCollider from '../collider/CCollider'
+import Utils from '../utils/Utils'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -131,7 +133,7 @@ export default class IceDemon extends Boss {
             playerDis > 60
         ) {
             pos = pos.normalizeSelf()
-            this.move(pos, 500)
+            this.move(pos, 10)
         }
     }
     getMovePos(): cc.Vec3 {
@@ -354,7 +356,7 @@ export default class IceDemon extends Boss {
                     let h = pos.x
                     let v = pos.y
                     let movement = cc.v2(h, v)
-                    movement = movement.normalize().mul(1500)
+                    movement = movement.normalize().mul(Utils.getDashSpeedByDistance(300 / MoveComponent.PIXELS_PER_UNIT, this.entity.Move.damping))
                     this.entity.Move.linearVelocity = movement
                 }, 1)
                 this.scheduleOnce(() => {
@@ -381,7 +383,7 @@ export default class IceDemon extends Boss {
                     let h = pos.x
                     let v = pos.y
                     let movement = cc.v2(h, v)
-                    movement = movement.normalize().mul(2500)
+                    movement = movement.normalize().mul(Utils.getDashSpeedByDistance(1000 / MoveComponent.PIXELS_PER_UNIT, this.entity.Move.damping))
                     this.entity.Move.linearVelocity = movement
                 }, 2.4)
                 this.scheduleOnce(() => {

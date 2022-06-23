@@ -161,7 +161,7 @@ export default class Dragon extends Boss {
             }
             if (!pos.equals(cc.Vec3.ZERO)) {
                 pos = pos.normalizeSelf()
-                this.move(pos, 800)
+                this.move(pos, 16)
             }
         }
     }

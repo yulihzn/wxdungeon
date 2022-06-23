@@ -30,11 +30,11 @@ export default class OilGold extends BaseColliderComponent {
         this.initCollider()
     }
     onEnable() {
-        let speed = 12
+        let speed = 6
         let x = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed
         let y = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed
         this.entity.Move.linearVelocity = cc.v2(x, y)
-        this.entity.Move.damping = 6
+        this.entity.Move.damping = 3
         this.isReady = false
         this.scheduleOnce(() => {
             this.isReady = true
@@ -100,7 +100,7 @@ export default class OilGold extends BaseColliderComponent {
                 let pos = p.sub(this.node.position)
                 if (!pos.equals(cc.Vec3.ZERO)) {
                     pos = pos.normalizeSelf()
-                    this.entity.Move.linearVelocity = cc.v2(pos.x, pos.y).normalize().mul(800)
+                    this.entity.Move.linearVelocity = cc.v2(pos.x, pos.y).normalize().mul(16)
                     this.entity.Move.damping = 1
                 }
             }

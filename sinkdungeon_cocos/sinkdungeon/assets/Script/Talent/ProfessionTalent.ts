@@ -109,7 +109,7 @@ export default class ProfessionTalent extends Talent {
             case Talent.TALENT_009:
                 return this.canSteal()
             case Talent.TALENT_019:
-                return this.player.CanJump && this.player.sc.isJumping
+                return this.player.CanJump && !this.player.sc.isJumping
         }
         return true
     }
@@ -315,9 +315,9 @@ export default class ProfessionTalent extends Talent {
             .start()
     }
     private dash() {
-        let speed = 15
+        let speed = 30
         if (this.player.IsVariation) {
-            speed = 20
+            speed = 40
         }
         AudioPlayer.play(AudioPlayer.DASH)
         this.schedule(

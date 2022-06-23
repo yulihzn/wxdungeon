@@ -398,9 +398,7 @@ export default class NonPlayer extends Actor {
 
     private remoteAttack(target: Actor, isSpecial: boolean) {
         this.remoteStep.IsExcuting = false
-        let p = this.shooter.node.position.clone()
-        p.x = this.shooter.node.scaleX > 0 ? p.x + 30 : -p.x - 30
-        this.hv = cc.v2(target.getCenterPosition().sub(this.node.position.add(p))).normalize()
+        this.hv = cc.v2(target.getCenterPosition().sub(this.node.position)).normalize()
         if (!this.hv.equals(cc.Vec2.ZERO)) {
             this.shooter.setHv(this.hv.clone())
             this.shooter.from.valueCopy(FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed))
@@ -421,7 +419,7 @@ export default class NonPlayer extends Actor {
             this.shooter.data.isLineAim = this.data.isLineAim
             this.shooter.data.bulletType = this.data.bulletType ? this.data.bulletType : 'bullet001'
             this.shooter.data.bulletExSpeed = this.data.bulletExSpeed
-            this.shooter.node.position = cc.v3(this.data.shooterOffsetX, this.data.shooterOffsetY)
+            this.shooter.node.position = cc.v3(this.isFaceRight ? this.data.shooterOffsetX : -this.data.shooterOffsetX, this.data.shooterOffsetY)
             this.shooter.fireBullet(this.data.Common.remoteAngle)
         }
     }
@@ -700,8 +698,11 @@ export default class NonPlayer extends Actor {
         this.sc.isFalling = true
         this.bodySprite.node.angle = ActorUtils.isBehindTarget(this.dungeon.player, this) ? -75 : 105
         if (this.jumpAbility) {
-            this.jumpAbility.airPause(8, 0.2, () => {
-                this.fallFinish()
+            this.jumpAbility.airPause(4, 0.2, JumpingAbility.CALLBACK_AIR_PAUSE, (group: number, type: number) => {
+                if (type == TriggerData.TYPE_JUMP_END) {
+                    this.jumpAbility.removeCallback(JumpingAbility.CALLBACK_AIR_PAUSE)
+                    this.fallFinish()
+                }
             })
         }
     }
@@ -715,7 +716,7 @@ export default class NonPlayer extends Actor {
             return false
         }
         //隐身中
-        if (this.data.invisible > 0 && this.sprite.opacity < 100 && Logic.getRandomNum(1, 10) > 4) {
+        if (this.data.invisible > 0 && Logic.getRandomNum(1, 10) > 4) {
             this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false)
             return false
         }
@@ -727,6 +728,9 @@ export default class NonPlayer extends Actor {
         let dd = this.data.getDamage(damageData)
         let dodge = this.data.FinalCommon.dodge / 100
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0
+        if (!isDodge && this.sprite.opacity < 100) {
+            isDodge = Random.rand() <= 0.9
+        }
         dd = isDodge ? new DamageData() : dd
         if (isDodge) {
             this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false)

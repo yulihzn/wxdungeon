@@ -140,6 +140,7 @@ export default class BuildingManager extends BaseManager {
     airExits: AirExit[] = new Array()
     monsterGeneratorList: MonsterGenerator[] = new Array()
     colliderCombineMap: Map<string, Wall> = new Map()
+    emptyMap: Map<string, cc.Vec3> = new Map()
     savePointS: SavePoint
     coastColliderList = [
         '128,128,0,0',
@@ -180,9 +181,11 @@ export default class BuildingManager extends BaseManager {
         this.foodList = new Array()
         this.interactBuildings = new Array()
         this.buildingList = new Array()
+        this.monsterGeneratorList = new Array()
         this.shelvesFoodIndex = 0
         this.shelvesDrinkIndex = 0
         this.colliderCombineMap.clear()
+        this.emptyMap.clear()
     }
 
     private hasThe(mapStr: string, typeStr: string): boolean {
@@ -220,7 +223,9 @@ export default class BuildingManager extends BaseManager {
         return building
     }
     public addBuildingsFromMap(dungeon: Dungeon, mapData: string[][], mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData, exits: ExitData[]) {
-        if (mapDataStr == '==') {
+        if (!mapDataStr || mapDataStr.length < 1 || mapDataStr == 'undefined') {
+            this.emptyMap.set(`x=${indexPos.x}y=${indexPos.y}`, indexPos)
+        } else if (mapDataStr == '==') {
         } else if (this.isFirstEqual(mapDataStr, '*')) {
         } else if (this.isFirstEqual(mapDataStr, '#')) {
             //生成墙
@@ -326,7 +331,7 @@ export default class BuildingManager extends BaseManager {
                 }
             })
         } else if (mapDataStr == 'Q0') {
-        } else if (this.isFirstEqual(mapDataStr, 'P')) {
+        } else if (this.isFirstEqual(mapDataStr, 'R')) {
             Logic.getBuildings(BuildingManager.SHIPSTAIRS, (prefab: cc.Prefab) => {
                 let node = this.addBuilding(prefab, indexPos)
                 node.setScale(16)
@@ -390,6 +395,7 @@ export default class BuildingManager extends BaseManager {
                 Logic.getBuildings(BuildingManager.ROOMBED, (prefab: cc.Prefab) => {
                     let p = this.addBuilding(prefab, indexPos)
                     let rb = p.getComponent(RoomBed)
+                    p.zIndex -= 1
                     rb.init(dungeon, mapDataStr == 'Z1')
                 })
             } else {
@@ -575,13 +581,13 @@ export default class BuildingManager extends BaseManager {
             Logic.getBuildings(BuildingManager.COAST, (prefab: cc.Prefab) => {
                 let fint = parseInt(mapDataStr.substring(2))
                 let co = this.addBuilding(prefab, indexPos)
-                let pbc = co.getComponent(CCollider)
-                co.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`coast00${fint}`)
-                let arr = this.coastColliderList[fint].split(',')
-                pbc.setSize(cc.size(parseInt(arr[0]), parseInt(arr[1])))
-                pbc.offset = cc.v2(parseInt(arr[2]), parseInt(arr[3]))
-                pbc.zHeight = 128
-                co.zIndex = IndexZ.WATER
+                co.zIndex = IndexZ.ACTOR
+                co.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`coast${Utils.getNumberStr3(fint)}`)
+                // let pbc = co.getComponent(CCollider)
+                // let arr = this.coastColliderList[fint].split(',')
+                // pbc.setSize(cc.size(parseInt(arr[0]), parseInt(arr[1])))
+                // pbc.offset = cc.v2(parseInt(arr[2]), parseInt(arr[3]))
+                // pbc.zHeight = 128
             })
         } else if (this.hasThe(mapDataStr, '~~')) {
             Logic.getBuildings(BuildingManager.WATERFALL, (prefab: cc.Prefab) => {

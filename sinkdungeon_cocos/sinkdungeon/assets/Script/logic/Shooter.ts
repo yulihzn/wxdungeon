@@ -57,7 +57,6 @@ export default class Shooter extends cc.Component {
     bulletName: string = ''
     sprite: cc.Node
     data: EquipmentData = new EquipmentData()
-    parentNode: cc.Node //该node为dungeon下发射器的载体
     private hv: cc.Vec2 = cc.v2(1, 0)
     isAiming = false //是否在瞄准
     //玩家远程伤害
@@ -581,8 +580,8 @@ export default class Shooter extends cc.Component {
         }
     }
     public getParentNode(): cc.Node {
-        if (this.parentNode) {
-            return this.parentNode
+        if (this.actor) {
+            return this.actor.node
         } else {
             return this.node.parent
         }

@@ -368,10 +368,23 @@
         <key>sourceSize</key>
         <string>{16,16}</string>
       </dict>
+      <key>bottle006.png</key>
+      <dict>
+        <key>frame</key>
+        <string>{{114,83},{13,13}}</string>
+        <key>offset</key>
+        <string>{-0.5,-0.5}</string>
+        <key>rotated</key>
+        <false/>
+        <key>sourceColorRect</key>
+        <string>{{1,2},{13,13}}</string>
+        <key>sourceSize</key>
+        <string>{16,16}</string>
+      </dict>
       <key>heart.png</key>
       <dict>
         <key>frame</key>
-        <string>{{114,83},{13,12}}</string>
+        <string>{{114,98},{13,12}}</string>
         <key>offset</key>
         <string>{0,0}</string>
         <key>rotated</key>
@@ -1836,7 +1849,7 @@
       <key>realTextureFileName</key>
       <string>item.png</string>
       <key>size</key>
-      <string>{128,103}</string>
+      <string>{128,111}</string>
       <key>textureFileName</key>
       <string>item</string>
     </dict>

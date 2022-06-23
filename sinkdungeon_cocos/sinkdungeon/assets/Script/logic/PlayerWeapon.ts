@@ -76,7 +76,6 @@ export default class PlayerWeapon extends cc.Component {
     private initShooter() {
         this.shooter = this.getComponentInChildren(Shooter)
         this.shooter.player = this.player
-        this.shooter.parentNode = this.player.node
         this.shooter.actor = this.player
         let finalData = this.player.data.FinalCommon
         this.ammoRecovery = finalData.AmmoRecovery
@@ -187,7 +186,7 @@ export default class PlayerWeapon extends cc.Component {
         }, 0.2)
         if (this.shooter) {
             this.shooter.remoteDamagePlayer = data.getFinalRemoteDamage()
-            this.shooter.fireBullet(Random.getRandomNum(-this.remoteAngleOffset, this.remoteAngleOffset), cc.v3(30, 0), bulletArcExNum, bulletLineExNum)
+            this.shooter.fireBullet(Random.getRandomNum(-this.remoteAngleOffset, this.remoteAngleOffset), cc.v3(24, 0), bulletArcExNum, bulletLineExNum)
         }
         if (data.currentAmmo <= 0 && cooldownNode) {
             this.isCooling = true

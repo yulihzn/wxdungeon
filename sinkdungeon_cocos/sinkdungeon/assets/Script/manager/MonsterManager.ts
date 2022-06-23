@@ -372,6 +372,7 @@ export default class MonsterManager extends BaseManager {
         data.resName = resName
         data.updateHA(maxHealth, maxHealth, attackPoint)
         boss.data = data
+        boss.defaultPos = indexPos.clone()
         boss.transportBoss(indexPos.x, indexPos.y)
         boss.healthBar = this.node.parent.getComponentInChildren(GameHud).bossHealthBar
         boss.node.active = true
@@ -471,10 +472,16 @@ export default class MonsterManager extends BaseManager {
         let indexmap = []
         let waterindexmap = []
         for (let i = 0; i < dungeon.floorIndexMap.length; i++) {
-            indexmap.push(dungeon.floorIndexMap[i])
+            let pos = dungeon.floorIndexMap[i]
+            if (dungeon.buildingManager.emptyMap.has(`x=${pos.x}y=${pos.y}`)) {
+                indexmap.push(pos)
+            }
         }
         for (let i = 0; i < dungeon.waterIndexMap.length; i++) {
-            waterindexmap.push(dungeon.waterIndexMap[i])
+            let pos = dungeon.waterIndexMap[i]
+            if (dungeon.buildingManager.emptyMap.has(`x=${pos.x}y=${pos.y}`)) {
+                waterindexmap.push(pos)
+            }
         }
         let groundmonstercount = 0
         //地上的

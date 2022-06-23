@@ -9,8 +9,9 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class JumpingAbility extends cc.Component {
-    static readonly UP = 0
-    static readonly DOWN = 1
+    static readonly CALLBACK_INIT = 0
+    static readonly CALLBACK_JUMP = 1
+    static readonly CALLBACK_AIR_PAUSE = 2
     actor: Actor
     isAcceleratedFall = false //是否加速下落，加速下落时无法取消
     currentJumpCount = 1 //当前多次跳跃次数
@@ -71,18 +72,18 @@ export default class JumpingAbility extends cc.Component {
         this.actor.sc.isJumping = true
     }
     /**短暂浮空 */
-    airPause(speed: number, duration: number, pauseCallback?: Function) {
+    airPause(speed: number, duration: number, callbackKey?: number, callback?: Function) {
         this.actor.entity.Move.gravity = 0
         this.actor.entity.Move.linearVelocityZ = speed
         this.actor.sc.isJumping = true
         this.isAirPause = true
+        if (callback) {
+            this.callbacks.set(callbackKey, callback)
+        }
         this.unscheduleAllCallbacks()
         this.scheduleOnce(() => {
             this.actor.entity.Move.gravity = MoveComponent.DEFAULT_GRAVITY
             this.isAirPause = false
-            if (pauseCallback) {
-                pauseCallback()
-            }
         }, duration)
     }
     acceleratedFall(gravityScale: number) {

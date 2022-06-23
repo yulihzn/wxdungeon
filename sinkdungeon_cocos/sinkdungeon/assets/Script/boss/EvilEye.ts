@@ -11,6 +11,8 @@ import Achievement from '../logic/Achievement'
 import ActorUtils from '../utils/ActorUtils'
 import Logic from '../logic/Logic'
 import CCollider from '../collider/CCollider'
+import { MoveComponent } from '../ecs/component/MoveComponent'
+import Utils from '../utils/Utils'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -149,7 +151,7 @@ export default class EvilEye extends Boss {
         }
         if (!pos.equals(cc.Vec3.ZERO) && playerDis > 100 && !this.shooter.isAiming && !this.dashSkill.IsExcuting) {
             pos = pos.normalizeSelf()
-            this.move(pos, 20)
+            this.move(pos, 1)
         }
     }
     getMovePos(): cc.Vec3 {
@@ -231,7 +233,7 @@ export default class EvilEye extends Boss {
                 let h = pos.x
                 let v = pos.y
                 let movement = cc.v2(h, v)
-                movement = movement.normalize().mul(2000)
+                movement = movement.normalize().mul(Utils.getDashSpeedByDistance(1500 / MoveComponent.PIXELS_PER_UNIT, this.entity.Move.damping))
                 this.entity.Move.linearVelocity = movement
                 this.scheduleOnce(() => {
                     this.dashSkill.IsExcuting = false

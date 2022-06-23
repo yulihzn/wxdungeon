@@ -727,12 +727,12 @@ export default class EquipmentManager extends BaseManager {
         if (data.Common.moveSpeed < 0) {
             price += -20
         } else {
-            price += data.Common.moveSpeed * 10 //移速
+            price += data.Common.moveSpeed * 50 //移速
         }
         if (data.Common.jumpSpeed < 0) {
             price += -20
         } else {
-            price += data.Common.jumpSpeed * 10 //跳速
+            price += data.Common.jumpSpeed * 20 //跳速
         }
         if (data.Common.attackSpeed < 0) {
             price += -10

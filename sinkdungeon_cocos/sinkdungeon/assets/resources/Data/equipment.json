@@ -177,7 +177,7 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": -0.5,
+            "moveSpeed": -1,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
@@ -234,7 +234,7 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.2,
+            "moveSpeed": 0.4,
             "attackSpeed": 50,
             "dodge": 0,
             "maxHealth": 0
@@ -1127,7 +1127,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#fff0c7",
         "img": "weapon037",
-        "exBeatBack": 3,
+        "exBeatBack": 6,
         "isReflect": 1,
         "price": 30,
         "common": {
@@ -2046,7 +2046,7 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.5,
+            "moveSpeed": 1,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
@@ -2473,7 +2473,7 @@
             "defence": 3,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.2,
+            "moveSpeed": 0.4,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
@@ -2859,7 +2859,7 @@
             "defence": 1,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.5,
+            "moveSpeed": 1,
             "attackSpeed": 0,
             "dodge": 10,
             "maxHealth": 1
@@ -3293,7 +3293,7 @@
             "defence": 1,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.2,
+            "moveSpeed": 0.4,
             "attackSpeed": 0,
             "maxDream": 0,
             "maxHealth": 1
@@ -3354,7 +3354,7 @@
             "defence": 1,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.2,
+            "moveSpeed": 0.4,
             "attackSpeed": 30,
             "maxDream": 0,
             "maxHealth": 1
@@ -3560,7 +3560,7 @@
             "defence": 1,
             "lifeDrain": 10,
             "damageBack": 0,
-            "moveSpeed": 0.4,
+            "moveSpeed": 0.8,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
@@ -3586,7 +3586,7 @@
             "defence": 2,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.2,
+            "moveSpeed": 0.4,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 1
@@ -3611,7 +3611,7 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.3,
+            "moveSpeed": 0.6,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 1
@@ -3838,7 +3838,7 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.2,
+            "moveSpeed": 0.4,
             "curseRate": 20,
             "attackSpeed": 0,
             "dodge": 10,
@@ -3965,7 +3965,7 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.3,
+            "moveSpeed": 0.6,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
@@ -3989,7 +3989,7 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.7,
+            "moveSpeed": 1.4,
             "attackSpeed": 0,
             "dodge": 20,
             "maxHealth": 0
@@ -4013,7 +4013,7 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.4,
+            "moveSpeed": 0.8,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
@@ -4076,7 +4076,7 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.4,
+            "moveSpeed": 0.8,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
@@ -4101,7 +4101,7 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.1,
+            "moveSpeed": 0.2,
             "attackSpeed": 0,
             "dodge": 10,
             "curseRate": 20,
@@ -4128,7 +4128,7 @@
             "defence": 4,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.1,
+            "moveSpeed": 0.2,
             "attackSpeed": 0,
             "magicDefence": 20,
             "dodge": 0,
@@ -4180,7 +4180,7 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.8,
+            "moveSpeed": 1.6,
             "attackSpeed": 0,
             "dodge": 10,
             "maxHealth": 0
@@ -4204,7 +4204,7 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.3,
+            "moveSpeed": 0.6,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
@@ -4228,7 +4228,7 @@
             "defence": 1,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.4,
+            "moveSpeed": 0.8,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
@@ -4252,7 +4252,7 @@
             "defence": 1,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.4,
+            "moveSpeed": 0.8,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0

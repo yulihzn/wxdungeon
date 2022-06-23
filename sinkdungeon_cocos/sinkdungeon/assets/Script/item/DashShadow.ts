@@ -65,9 +65,9 @@ export default class DashShadow extends BaseColliderComponent {
         let faceright = this.talentDash.player.isFaceRight
         this.sprite.scaleX = faceright ? 1 : -1
         this.node.setPosition(this.getPlayerPosition())
-        let speed = 12
+        let speed = 24
         if (this.talentDash.hashTalent(Talent.DASH_14)) {
-            speed = 20
+            speed = 40
         }
         let hs = this.hv.mul(speed)
         this.entity.Move.linearVelocity = cc.v2(hs.x, hs.y)

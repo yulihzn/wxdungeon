@@ -120,7 +120,7 @@ export default class Rah extends Boss {
         }
         if (!pos.equals(cc.Vec3.ZERO) && !this.meleeSkill.IsExcuting && !this.blinkSkill.IsExcuting && playerDis > 100) {
             pos = pos.normalizeSelf()
-            this.move(pos, 100)
+            this.move(pos, 2)
         }
     }
 

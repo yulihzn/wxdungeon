@@ -53,7 +53,7 @@ export default class Captain extends Boss {
         this.exshooter.from.valueCopy(FromData.getClone(this.actorName(), 'captain_head'))
         this.updatePlayerPos()
         this.entity.NodeRender.node = this.node
-        this.entity.Move.damping = 6
+        this.entity.Move.damping = 1
     }
 
     start() {
@@ -236,10 +236,10 @@ export default class Captain extends Boss {
         if (isPlayJump || isPlayFire) {
             return
         }
-        let speed = 2
+        let speed = 4
         if (!isPlayJump) {
             this.fireSkill.next(() => {
-                speed = 0.5
+                speed = 1
                 this.anim.play('CaptainFire')
             }, 5)
         }
@@ -278,9 +278,9 @@ export default class Captain extends Boss {
         let absv = Math.abs(v)
 
         let movement = cc.v2(h, v)
-        let speed = 2
+        let speed = 4
         if (this.data.currentHealth < this.data.Common.MaxHealth / 2) {
-            speed = 2.4
+            speed = 5
         }
         movement = movement.normalize().mul(speed)
         this.entity.Move.linearVelocity = movement

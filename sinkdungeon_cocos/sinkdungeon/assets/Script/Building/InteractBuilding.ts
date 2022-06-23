@@ -97,9 +97,9 @@ export default class InteractBuilding extends Building {
         } else {
             physicCollider.setSize(cc.size(height, width), width)
         }
-        this.entity.Move.damping = this.isThrowing ? 1 : 5
+        this.entity.Move.damping = this.isThrowing ? 1 : 2
         physicCollider.sensor = this.data.currentHealth <= 0 ? true : false
-        physicCollider.bounce = 1
+        physicCollider.bounce = 2
         this.entity.NodeRender.root = this.root
     }
     changeRes(resName: string, suffix?: string) {
@@ -264,7 +264,7 @@ export default class InteractBuilding extends Building {
         this.isAniming = true
         AudioPlayer.play(AudioPlayer.MELEE)
         this.updateCollider()
-        this.beatBack(this, this.player.Hv.clone(), this.isLift ? 5 : 10)
+        this.beatBack(this, this.player.Hv.clone(), this.isLift ? 10 : 20)
         this.scheduleOnce(
             () => {
                 cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } })

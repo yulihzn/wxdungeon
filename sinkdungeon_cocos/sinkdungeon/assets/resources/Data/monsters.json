@@ -430,7 +430,7 @@
         "specialAttack": 15,
         "remoteAudio": "SHOOT003",
         "shooterOffsetX": 50,
-        "shooterOffsetY": 45,
+        "shooterOffsetY": 40,
         "common": {
             "remoteAngle": 5,
             "moveSpeed": 3,

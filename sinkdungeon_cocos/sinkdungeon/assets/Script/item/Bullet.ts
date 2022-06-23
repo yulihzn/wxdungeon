@@ -172,7 +172,7 @@ export default class Bullet extends BaseColliderComponent {
         this.collider.sensor = data.isPhysical == 0
         if (this.shooter && this.shooter.actor) {
             this.entity.Transform.base = this.shooter.actor.entity.Transform.base
-            this.entity.Transform.z = this.shooter.actor.entity.Transform.z + zHeight
+            this.entity.Transform.z = this.shooter.actor.entity.Transform.z + zHeight / this.node.scale
         }
         this.entity.Move.gravity = 0
     }

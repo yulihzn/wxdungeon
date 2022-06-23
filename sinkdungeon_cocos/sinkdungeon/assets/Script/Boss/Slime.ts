@@ -312,7 +312,10 @@ export default class Slime extends Boss {
                 this.anim.play('SlimeAttack')
             }
         }
-        let speed = 3 - 0.5 * this.scaleSize
+        let speed = 6 - 1 * this.scaleSize
+        if (speed < 0) {
+            speed = 0.5
+        }
         //冲刺
         let dashRange = 128 + 35 * this.scaleSize
         if (playerDis > dashRange && !this.dungeon.player.sc.isDied && !this.isDashing && this.sc.isShow && Logic.getHalfChance()) {
