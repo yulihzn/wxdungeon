@@ -181,7 +181,7 @@ export default class Player extends Actor {
         })
         EventHelper.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL, detail => {
             if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
-                this.shield.cancel(this.isFaceRight)
+                this.shield.cancel()
             }
         })
         EventHelper.on(EventHelper.PLAYER_REMOTEATTACK, detail => {
@@ -189,7 +189,7 @@ export default class Player extends Actor {
                 return
             }
             if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
-                this.shield.use(this.isFaceRight)
+                this.shield.use()
             } else {
                 if (this.node) this.remoteAttack()
             }
@@ -462,7 +462,7 @@ export default class Player extends Actor {
                 break
         }
         this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, this.currentDir)
-        this.shield.changeZIndexByDir(this.avatar.node.zIndex, this.currentDir, this.isFaceRight)
+        this.shield.changeZIndexByDir(this.avatar.node.zIndex, this.currentDir)
         this.updateInfoUi()
     }
     private updateEquipment(sprite: cc.Sprite, color: string, spriteFrame: cc.SpriteFrame, size?: number): void {
@@ -589,15 +589,11 @@ export default class Player extends Actor {
             }, 0.15)
         }
         if (isAttackDo) {
-            let pos = this.weaponRight.meleeWeapon.Hv.clone()
-            if (!this.shield.isAniming && !this.shield.isDefendOrParrying) {
-                let facetemp = this.isFaceRight
-                this.isFaceRight = pos.x > 0
-                if (facetemp != this.isFaceRight) {
-                    this.shield.faceRightChange(this.isFaceRight)
-                }
-            }
-            this.isFaceUp = pos.y > 0
+            // let pos = this.weaponRight.meleeWeapon.Hv.clone()
+            // if (!this.shield.isAniming && !this.shield.isDefendOrParrying) {
+            //     this.isFaceRight = pos.x > 0
+            // }
+            // this.isFaceUp = pos.y > 0
             this.playerAnim(PlayerAvatar.STATE_ATTACK, this.currentDir)
             this.stopHiding()
         }
@@ -884,21 +880,17 @@ export default class Player extends Actor {
         this.sc.isMoving = h != 0 || v != 0
 
         //调整武器方向
-        if (this.weaponRight.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponRight.meleeWeapon.IsAttacking) {
+        if (this.weaponRight.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && this.weaponRight.meleeWeapon.CanMove) {
             this.weaponRight.meleeWeapon.Hv = cc.v2(pos.x, pos.y)
         }
-        if (this.weaponLeft.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponLeft.meleeWeapon.IsAttacking) {
+        if (this.weaponLeft.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && this.weaponLeft.meleeWeapon.CanMove) {
             this.weaponLeft.meleeWeapon.Hv = cc.v2(pos.x, pos.y)
         }
-        if (this.sc.isMoving && !this.weaponLeft.meleeWeapon.IsAttacking && !this.weaponRight.meleeWeapon.IsAttacking) {
+        if (this.sc.isMoving && this.weaponLeft.meleeWeapon.CanMove && this.weaponRight.meleeWeapon.CanMove) {
             if (!this.shield.isAniming && !this.shield.isDefendOrParrying) {
-                this.isFaceRight = this.weaponLeft.meleeWeapon.Hv.x > 0
-                let facetemp = this.isFaceRight
-                if (facetemp != this.isFaceRight) {
-                    this.shield.faceRightChange(this.isFaceRight)
-                }
+                this.isFaceRight = this.hv.x > 0
             }
-            this.isFaceUp = this.weaponLeft.meleeWeapon.Hv.y > 0
+            this.isFaceUp = this.hv.y > 0
         }
 
         if (this.sc.isMoving && !this.isStone) {
@@ -918,7 +910,7 @@ export default class Player extends Actor {
             }
             this.weaponLeft.changeZIndexByDir(this.avatar.node.zIndex, dir)
             this.weaponRight.changeZIndexByDir(this.avatar.node.zIndex, dir)
-            this.shield.changeZIndexByDir(this.avatar.node.zIndex, dir, this.isFaceRight)
+            this.shield.changeZIndexByDir(this.avatar.node.zIndex, dir)
             this.avatar.changeAvatarByDir(dir)
         }
     }

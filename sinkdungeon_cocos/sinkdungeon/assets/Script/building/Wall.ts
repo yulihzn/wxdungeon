@@ -70,6 +70,9 @@ export default class Wall extends Building {
         this.roofsprite = this.node.getChildByName('sprite').getChildByName('roofsprite').getComponent(cc.Sprite)
         this.shadowsprite = this.node.getChildByName('sprite').getChildByName('shadow').getComponent(cc.Sprite)
     }
+    isEmptyWall() {
+        return this.type == Wall.TYPE_EMPTY
+    }
     changeRes(wallName: string) {
         let rand4save = Logic.mapManager.getRandom4Save(this.seed)
         let spriteframe = Logic.spriteFrameRes(wallName)

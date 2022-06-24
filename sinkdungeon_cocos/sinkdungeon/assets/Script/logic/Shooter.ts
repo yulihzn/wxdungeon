@@ -69,6 +69,7 @@ export default class Shooter extends cc.Component {
     private sensorTargetMap = new Map<number, boolean>()
     private ignoreMap = new Map<number, boolean>()
     public defaultPos = cc.v3(0, 0)
+    ignoreEmptyWall = false
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics)
@@ -393,6 +394,9 @@ export default class Shooter extends cc.Component {
         }
         let pos = this.node.convertToWorldSpaceAR(p)
         let z = this.getParentNode().convertToNodeSpaceAR(pos).y
+        if (z < 0) {
+            z = 0
+        }
         pos = this.dungeon.node.convertToNodeSpaceAR(pos)
 
         bulletPrefab.parent = this.dungeon.node
@@ -426,6 +430,7 @@ export default class Shooter extends cc.Component {
         bullet.node.zIndex = IndexZ.OVERHEAD
         bullet.isFromPlayer = !this.isAI || this.isFromPlayer
         bullet.dungeon = this.dungeon
+        bullet.ignoreEmptyWall = this.ignoreEmptyWall
         let bd = new BulletData()
         bd.valueCopy(data)
         if (bullet.isFromPlayer && this.player && !this.isEx) {

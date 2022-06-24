@@ -298,6 +298,7 @@ export default class PlayerAvatar extends cc.Component {
         }, 3)
     }
     public drink() {
+        this.changeAvatarByDir(PlayerAvatar.DIR_RIGHT)
         this.anim.play('AvatarDrink')
         AudioPlayer.play(AudioPlayer.DRINK)
         this.isAniming = true

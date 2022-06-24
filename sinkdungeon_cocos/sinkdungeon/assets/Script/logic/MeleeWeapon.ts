@@ -26,6 +26,7 @@ import CCollider from '../collider/CCollider'
 import BaseColliderComponent from '../base/BaseColliderComponent'
 import Controller from './Controller'
 import TriggerData from '../data/TriggerData'
+import Emplacement from '../building/Emplacement'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -97,6 +98,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
     protected canMove = false
     protected playerData: PlayerData
 
+    get CanMove() {
+        return this.canMove || !this.isAttacking
+    }
     get IsSword() {
         return !this.isStab && !this.isFar && !this.isFist && !this.isBlunt
     }
@@ -632,6 +636,13 @@ export default class MeleeWeapon extends BaseColliderComponent {
             }
             if (!attackSuccess) {
                 let hitBuilding = attackTarget.node.getComponent(HitBuilding)
+                if (hitBuilding && hitBuilding.data.currentHealth > 0) {
+                    attackSuccess = true
+                    hitBuilding.takeDamage(damage)
+                }
+            }
+            if (!attackSuccess) {
+                let hitBuilding = attackTarget.node.getComponent(Emplacement)
                 if (hitBuilding && hitBuilding.data.currentHealth > 0) {
                     attackSuccess = true
                     hitBuilding.takeDamage(damage)

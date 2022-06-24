@@ -8,7 +8,7 @@
         "specialAttack": 15,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 4,
+            "moveSpeed": 8,
             "maxHealth": 100,
             "damageMin": 9
         },
@@ -32,7 +32,7 @@
         "specialAttack": 15,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 5,
+            "moveSpeed": 10,
             "maxHealth": 100,
             "damageMin": 9
         },
@@ -59,7 +59,7 @@
         "shooterOffsetY": 45,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 1,
+            "moveSpeed": 2,
             "maxHealth": 200,
             "curseRate": 100,
             "magicDamage": 6,
@@ -83,7 +83,7 @@
         "stageLevel": 0,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 2,
+            "moveSpeed": 4,
             "maxHealth": 150,
             "damageMin": 12
         },
@@ -105,7 +105,7 @@
         "stageLevel": 0,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 2,
+            "moveSpeed": 4,
             "maxHealth": 50,
             "damageMin": 6
         },
@@ -127,7 +127,7 @@
         "specialAttack": 15,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 4,
+            "moveSpeed": 8,
             "maxHealth": 50,
             "damageMin": 6
         },
@@ -152,7 +152,7 @@
         "shooterOffsetY": 42,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 2,
+            "moveSpeed": 4,
             "maxHealth": 60,
             "damageMin": 6
         },
@@ -177,7 +177,7 @@
         "shooterOffsetY": 45,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 3,
+            "moveSpeed": 6,
             "maxHealth": 15,
             "damageMin": 3
         },
@@ -201,7 +201,7 @@
         "specialDistance": 64,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 4,
+            "moveSpeed": 8,
             "maxHealth": 60,
             "damageMin": 7
         },
@@ -224,7 +224,7 @@
         "specialAttack": 15,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 3,
+            "moveSpeed": 6,
             "maxHealth": 50,
             "damageMin": 10
         },
@@ -248,7 +248,7 @@
         "specialAttack": 15,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 5,
+            "moveSpeed": 9,
             "maxHealth": 200,
             "damageMin": 15
         },
@@ -302,7 +302,7 @@
         "scale": 0.5,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 4,
+            "moveSpeed": 8,
             "maxHealth": 100,
             "damageMin": 3,
             "curseRate": 10
@@ -329,7 +329,7 @@
         "stageLevel": 0,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 2,
+            "moveSpeed": 4,
             "maxHealth": 100,
             "damageMin": 9
         },
@@ -351,7 +351,7 @@
         "specialAttack": 15,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 7,
+            "moveSpeed": 14,
             "maxHealth": 20,
             "damageMin": 3
         },
@@ -375,7 +375,7 @@
         "specialType": "special015",
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 3,
+            "moveSpeed": 6,
             "maxHealth": 120,
             "realRate": 50,
             "magicDamage": 1,
@@ -433,7 +433,7 @@
         "shooterOffsetY": 40,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 3,
+            "moveSpeed": 6,
             "maxHealth": 15,
             "damageMin": 3
         },
@@ -454,7 +454,7 @@
         "stageLevel": 0,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 3,
+            "moveSpeed": 6,
             "maxHealth": 20,
             "damageMin": 3
         },
@@ -485,7 +485,7 @@
         "specialAudio": "ZOMBIE_SPITTING",
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 2,
+            "moveSpeed": 4,
             "maxHealth": 15,
             "toxicRate": 5,
             "damageMin": 3
@@ -507,7 +507,7 @@
         "stageLevel": 0,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 2,
+            "moveSpeed": 4,
             "maxHealth": 20,
             "lighteningRate": 100,
             "magicDamage": 1,
@@ -539,7 +539,7 @@
         "stageLevel": 0,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 4,
+            "moveSpeed": 8,
             "maxHealth": 50,
             "damageMin": 6
         },
@@ -566,7 +566,7 @@
         "shooterOffsetY": 66,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 2,
+            "moveSpeed": 4,
             "maxHealth": 170,
             "damageMin": 13
         },
@@ -591,7 +591,7 @@
         "specialAttack": 15,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 2,
+            "moveSpeed": 4,
             "maxHealth": 120,
             "toxicRate": 100,
             "magicDamage": 1,
@@ -619,7 +619,7 @@
         "specialType": "special024",
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 1,
+            "moveSpeed": 2,
             "maxHealth": 200,
             "damageMin": 15
         },
@@ -647,7 +647,7 @@
         "shooterOffsetY": 45,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 2,
+            "moveSpeed": 4,
             "maxHealth": 200,
             "damageMin": 15
         },
@@ -673,7 +673,7 @@
         "shooterOffsetY": 43,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 3,
+            "moveSpeed": 6,
             "maxHealth": 200,
             "toxicRate": 100,
             "magicDamage": 9,
@@ -703,7 +703,7 @@
         "shooterOffsetY": 30,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 5,
+            "moveSpeed": 10,
             "maxHealth": 50,
             "damageMin": 6
         },
@@ -727,7 +727,7 @@
         "specialAttack": 15,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 3,
+            "moveSpeed": 6,
             "maxHealth": 160,
             "damageMin": 6,
             "curseRate": 100,
@@ -752,7 +752,7 @@
         "specialAttack": 15,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 3,
+            "moveSpeed": 6,
             "maxHealth": 130,
             "damageMin": 11
         },
@@ -779,7 +779,7 @@
         "specialAttack": 15,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 2,
+            "moveSpeed": 4,
             "maxHealth": 250,
             "damageMin": 18
         },
@@ -806,7 +806,7 @@
         "specialType": "special031",
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 4,
+            "moveSpeed": 8,
             "maxHealth": 20,
             "iceRate": 100,
             "magicDamage": 2,
@@ -838,7 +838,7 @@
         "specialAudio": "ZOMBIE_ATTACK",
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 3,
+            "moveSpeed": 6,
             "maxHealth": 20,
             "toxicRate": 5,
             "magicDamage": 0,
@@ -868,7 +868,7 @@
         "specialAttack": 15,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 2,
+            "moveSpeed": 4,
             "maxHealth": 100,
             "damageMin": 12
         },
@@ -894,7 +894,7 @@
         "isLineAim": 0,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 6,
+            "moveSpeed": 12,
             "maxHealth": 30,
             "defence": 5,
             "damageMin": 0
@@ -923,7 +923,7 @@
         "specialAttack": 20,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 4,
+            "moveSpeed": 8,
             "maxHealth": 30,
             "dodge": 100,
             "damageMin": 2
@@ -955,7 +955,7 @@
         "shooterOffsetY": 45,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 5,
+            "moveSpeed": 10,
             "maxHealth": 10,
             "damageMin": 3
         },
@@ -980,7 +980,7 @@
         "specialDash": 12,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 4,
+            "moveSpeed": 8,
             "maxHealth": 50,
             "dodge": 60,
             "curseRate": 100,
@@ -1013,7 +1013,7 @@
         "specialAttack": 15,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 4,
+            "moveSpeed": 8,
             "maxHealth": 60,
             "realRate": 30,
             "realDamage": 1,
@@ -1039,7 +1039,7 @@
         "specialAttack": 15,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 4,
+            "moveSpeed": 8,
             "maxHealth": 10,
             "damageMin": 1
         },

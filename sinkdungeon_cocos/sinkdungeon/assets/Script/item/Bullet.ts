@@ -28,6 +28,7 @@ import CCollider from '../collider/CCollider'
 import BaseColliderComponent from '../base/BaseColliderComponent'
 import TriggerData from '../data/TriggerData'
 import MeleeCollideHelper from '../logic/MeleeCollideHelper'
+import AirExit from '../building/AirExit'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -72,6 +73,7 @@ export default class Bullet extends BaseColliderComponent {
     aoeData = new AreaOfEffectData()
     shooter: Shooter
     private currentLinearVelocity = cc.v2(0, 0)
+    ignoreEmptyWall = false
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -194,7 +196,8 @@ export default class Bullet extends BaseColliderComponent {
             this.light.spriteFrame = s2
             let color = cc.color(255, 255, 255).fromHEX(lightColor)
             this.light.node.color = color
-            this.shadow.color = color
+            this.shadow.color = cc.color(255, 0, 0)
+            this.shadow.opacity = 60
         }
     }
     private getSpriteFrameByName(resName: string, suffix?: string, needDefaultSuffix?: boolean): cc.SpriteFrame {
@@ -307,11 +310,13 @@ export default class Bullet extends BaseColliderComponent {
                 other.tag == CCollider.TAG.PLAYER ||
                 other.tag == CCollider.TAG.NONPLAYER ||
                 other.tag == CCollider.TAG.BOSS ||
+                other.tag == CCollider.TAG.BOSS_HIT ||
                 other.tag == CCollider.TAG.BULLET ||
                 other.tag == CCollider.TAG.WARTER ||
                 other.sensor ||
                 this.data.isInvincible > 0 ||
-                other.tag == CCollider.TAG.WALL_TOP
+                other.tag == CCollider.TAG.WALL_TOP ||
+                other.tag == CCollider.TAG.WALL
             ) {
                 isDestory = false
             }
@@ -444,8 +449,14 @@ export default class Bullet extends BaseColliderComponent {
                 let wall = attackTarget.getComponent(Wall)
                 if (wall) {
                     isDestory = !sensor
+                    if (this.ignoreEmptyWall && wall.isEmptyWall()) {
+                        isDestory = false
+                    }
                 }
                 if (isDestory && attackTarget.getComponent(ExitDoor)) {
+                    isDestory = false
+                }
+                if (isDestory && this.ignoreEmptyWall && attackTarget.getComponent(AirExit)) {
                     isDestory = false
                 }
             }

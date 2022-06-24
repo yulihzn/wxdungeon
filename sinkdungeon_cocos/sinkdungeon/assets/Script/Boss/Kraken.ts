@@ -157,6 +157,7 @@ export default class Kraken extends Boss {
     }
     showBoss() {
         this.entity.NodeRender.node = this.node
+        this.changeZIndex()
         this.entity.Move.damping = 6
         if (this.healthBar) {
             this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.MaxHealth)
@@ -208,6 +209,7 @@ export default class Kraken extends Boss {
                     this.shooter.setHv(cc.v2(hv).normalize())
                     this.shooter.dungeon = this.dungeon
                     this.shooter.actor = this
+                    this.shooter.ignoreEmptyWall = true
                     this.shooter.data.bulletType = 'bullet004'
                     this.shooter.fireBullet()
                     this.shooter.fireBullet(30)

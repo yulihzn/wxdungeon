@@ -383,7 +383,7 @@ export default class IceDemon extends Boss {
                     let h = pos.x
                     let v = pos.y
                     let movement = cc.v2(h, v)
-                    movement = movement.normalize().mul(Utils.getDashSpeedByDistance(1000 / MoveComponent.PIXELS_PER_UNIT, this.entity.Move.damping))
+                    movement = movement.normalize().mul(Utils.getDashSpeedByDistance(1200 / MoveComponent.PIXELS_PER_UNIT, this.entity.Move.damping))
                     this.entity.Move.linearVelocity = movement
                 }, 2.4)
                 this.scheduleOnce(() => {

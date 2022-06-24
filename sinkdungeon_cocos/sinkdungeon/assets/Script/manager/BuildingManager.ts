@@ -186,6 +186,7 @@ export default class BuildingManager extends BaseManager {
         this.shelvesDrinkIndex = 0
         this.colliderCombineMap.clear()
         this.emptyMap.clear()
+        this.lastInteractBuilding = null
     }
 
     private hasThe(mapStr: string, typeStr: string): boolean {
@@ -395,7 +396,7 @@ export default class BuildingManager extends BaseManager {
                 Logic.getBuildings(BuildingManager.ROOMBED, (prefab: cc.Prefab) => {
                     let p = this.addBuilding(prefab, indexPos)
                     let rb = p.getComponent(RoomBed)
-                    p.zIndex -= 1
+                    p.zIndex -= 40
                     rb.init(dungeon, mapDataStr == 'Z1')
                 })
             } else {
@@ -776,7 +777,7 @@ export default class BuildingManager extends BaseManager {
             let door = this.addBuilding(prefab, indexPos).getComponent(Door)
             door.isDoor = true
             door.dir = dir % 4
-            door.isLock = type == 1
+            door.isLock = type == 1 && !Logic.isCheatMode
             door.isEmpty = type == 2
             door.isTransparent = type == 3
             door.isHidden = type == 4

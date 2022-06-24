@@ -119,17 +119,17 @@ export default class WarMachine extends Boss {
         }
         this.fireGatling(isHalf)
         if (isHalf) {
-            if (this.isMoveRight && this.pos.x - this.defaultPos.x > 3) {
+            if (this.isMoveRight && this.pos.x - this.defaultPos.x > 2) {
                 this.isMoveRight = false
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
-            } else if (!this.isMoveRight && this.defaultPos.x - this.pos.x > 3) {
+            } else if (!this.isMoveRight && this.defaultPos.x - this.pos.x > 2) {
                 this.isMoveRight = true
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
             }
             let pos = cc.v3(this.isMoveRight ? 1 : -1, 0)
             if (!pos.equals(cc.Vec3.ZERO)) {
                 pos = pos.normalizeSelf()
-                this.move(pos, 5)
+                this.move(pos, 8)
             }
         }
         this.shooter01.setHv(cc.v2(0, -1))

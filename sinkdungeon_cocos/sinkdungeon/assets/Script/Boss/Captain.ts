@@ -105,6 +105,7 @@ export default class Captain extends Boss {
             hv = hv.normalizeSelf()
             this.exshooter.setHv(cc.v2(hv))
             this.exshooter.dungeon = this.dungeon
+            this.exshooter.actor = this
             this.exshooter.data.bulletType = 'bullet033'
             this.exshooter.data.bulletArcOffsetX = 64
             this.exshooter.data.bulletArcExNum = 99

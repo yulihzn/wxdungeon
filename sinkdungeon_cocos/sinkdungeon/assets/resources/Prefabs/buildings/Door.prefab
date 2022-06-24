@@ -920,7 +920,7 @@
     "radius": 64,
     "w": 128,
     "h": 114,
-    "zHeight": 128,
+    "zHeight": 9999,
     "bounce": 0,
     "sensor": false,
     "isStatic": true,

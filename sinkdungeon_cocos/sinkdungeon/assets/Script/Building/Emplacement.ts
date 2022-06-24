@@ -4,6 +4,8 @@ import Logic from '../logic/Logic'
 import Building from './Building'
 import FromData from '../data/FromData'
 import IndexZ from '../utils/IndexZ'
+import DamageData from '../data/DamageData'
+import AudioPlayer from '../utils/AudioPlayer'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,13 +21,17 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class Emplacement extends Building {
-    @property(Shooter)
+    @property(cc.Node)
+    shooterTopNode: cc.Node = null
     shooterTop: Shooter = null
-    @property(Shooter)
+    @property(cc.Node)
+    shooterBottomNode: cc.Node = null
     shooterBottom: Shooter = null
-    @property(Shooter)
+    @property(cc.Node)
+    shooterLeftNode: cc.Node = null
     shooterLeft: Shooter = null
-    @property(Shooter)
+    @property(cc.Node)
+    shooterRightNode: cc.Node = null
     shooterRight: Shooter = null
     isOpen: boolean = false
     pos: cc.Vec3 = cc.v3(0, 0)
@@ -52,6 +58,10 @@ export default class Emplacement extends Building {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.shooterTop = this.shooterTopNode.getComponent(Shooter)
+        this.shooterBottom = this.shooterBottomNode.getComponent(Shooter)
+        this.shooterLeft = this.shooterLeftNode.getComponent(Shooter)
+        this.shooterRight = this.shooterRightNode.getComponent(Shooter)
         this.setShooterHv(this.shooterTop, cc.v2(0, 1))
         this.setShooterHv(this.shooterBottom, cc.v2(0, -1))
         this.setShooterHv(this.shooterLeft, cc.v2(-1, 0))
@@ -127,10 +137,10 @@ export default class Emplacement extends Building {
         }
     }
     hideOrShowShooter(top: number, bottom: number, left: number, right: number) {
-        this.shooterTop.node.active = top > 0
-        this.shooterBottom.node.active = bottom > 0
-        this.shooterLeft.node.active = left > 0
-        this.shooterRight.node.active = right > 0
+        this.shooterTopNode.active = top > 0
+        this.shooterBottomNode.active = bottom > 0
+        this.shooterLeftNode.active = left > 0
+        this.shooterRightNode.active = right > 0
     }
     start() {
         this.anim = this.getComponent(cc.Animation)
@@ -222,9 +232,25 @@ export default class Emplacement extends Building {
         }
     }
     fire() {
+        if ((this.dungeon && this.dungeon.isClear) || this.data.currentHealth <= 0) {
+            return
+        }
         if (this.anim) {
             this.anim.play()
         }
+    }
+    takeDamage(damage: DamageData): boolean {
+        if (this.data.currentHealth <= 0 || this.data.currentHealth >= 9999) {
+            return false
+        }
+        let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2]
+        AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)])
+        this.data.currentHealth--
+        cc.tween(this.shooterTopNode).to(0.2, { scale: 1.5 }).to(0.5, { scale: 0 }).start()
+        cc.tween(this.shooterBottomNode).to(0.2, { scale: 1.5 }).to(0.5, { scale: 0 }).start()
+        cc.tween(this.shooterLeftNode).to(0.2, { scale: 1.5 }).to(0.5, { scale: 0 }).start()
+        cc.tween(this.shooterRightNode).to(0.2, { scale: 1.5 }).to(0.5, { scale: 0 }).start()
+        return true
     }
     fireShooter(shooter: Shooter) {
         if (!shooter.dungeon) {

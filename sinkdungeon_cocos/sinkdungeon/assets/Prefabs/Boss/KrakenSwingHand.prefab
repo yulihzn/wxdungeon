@@ -236,8 +236,11 @@
     "radius": 1,
     "w": 128,
     "h": 128,
+    "zHeight": 32,
+    "bounce": 0,
     "sensor": false,
     "isStatic": true,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       9,
@@ -260,8 +263,11 @@
     "radius": 1,
     "w": 128,
     "h": 128,
+    "zHeight": 32,
+    "bounce": 0,
     "sensor": false,
     "isStatic": true,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       9,
@@ -284,8 +290,11 @@
     "radius": 1,
     "w": 128,
     "h": 128,
+    "zHeight": 32,
+    "bounce": 0,
     "sensor": false,
     "isStatic": true,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       9,
@@ -308,8 +317,11 @@
     "radius": 1,
     "w": 128,
     "h": 128,
+    "zHeight": 32,
+    "bounce": 0,
     "sensor": false,
     "isStatic": true,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       9,
@@ -323,7 +335,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "06397a40-1794-4b50-8d39-6f78961f26bf"
+      "__id__": 0
     },
     "fileId": "7c1hMKBRRHz5yvMW4rM1zY",
     "sync": false
@@ -353,7 +365,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "06397a40-1794-4b50-8d39-6f78961f26bf"
+      "__id__": 0
     },
     "fileId": "",
     "sync": false

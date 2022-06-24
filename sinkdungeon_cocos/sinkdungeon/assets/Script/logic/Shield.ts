@@ -30,9 +30,9 @@ export default class Shield extends cc.Component {
     static readonly STATUS_DEFEND = 2
     static readonly STATUS_PUTDOWN = 3
     private static readonly ZOFFSET = 2
-    private static readonly DEFAULT_POS = [cc.v3(0, 32), cc.v3(0, 48), cc.v3(-8, 48), cc.v3(-8, 48)]
-    private static readonly TRANSFORM_POS = [cc.v3(10, 40), cc.v3(10, 40), cc.v3(32, 44), cc.v3(32, 44)]
-    private static readonly DEFEND_POS = [cc.v3(0, 48), cc.v3(0, 32), cc.v3(24, 40), cc.v3(24, 40)]
+    private static readonly DEFAULT_POS = [cc.v3(0, 32), cc.v3(0, 48), cc.v3(8, 48), cc.v3(-8, 48)]
+    private static readonly TRANSFORM_POS = [cc.v3(10, 40), cc.v3(10, 40), cc.v3(-32, 44), cc.v3(32, 44)]
+    private static readonly DEFEND_POS = [cc.v3(0, 48), cc.v3(0, 32), cc.v3(-24, 40), cc.v3(24, 40)]
     data: EquipmentData = new EquipmentData()
     private isBehind = false
     private avatarZindex = 0
@@ -114,19 +114,15 @@ export default class Shield extends cc.Component {
         let idle = cc.tween().to(duration, { y: 2 }).to(duration, { y: -2 })
         cc.tween(this.sprite.node).repeatForever(idle).start()
     }
-    private playParry(isFaceRight: boolean) {
+    private playParry() {
         if (this.status == Shield.STATUS_PUTDOWN || this.status == Shield.STATUS_DEFEND || this.status == Shield.STATUS_PARRY) {
             return
         }
         this.status = Shield.STATUS_PARRY
         let duration = this.data.isHeavy == 1 ? 0.15 : 0.1
         let durationdelay = this.data.isHeavy == 1 ? 0.1 : 0.15
-        let dp = Shield.DEFAULT_POS[this.dir].clone()
+        let dp = Shield.DEFEND_POS[this.dir].clone()
         let tp = Shield.TRANSFORM_POS[this.dir].clone()
-        if (!isFaceRight) {
-            dp.x = -dp.x
-            tp.x = -tp.x
-        }
         cc.log(`举起 isBehind:${this.isBehind} zIndex:${this.node.zIndex}`)
         cc.tween(this.node)
             .to(duration, { position: tp })
@@ -140,7 +136,7 @@ export default class Shield extends cc.Component {
                 if (this.isButtonPressing) {
                     this.playDefend()
                 } else {
-                    this.playPutDown(isFaceRight)
+                    this.playPutDown()
                 }
             })
             .start()
@@ -152,7 +148,7 @@ export default class Shield extends cc.Component {
         this.status = Shield.STATUS_DEFEND
         cc.log(`防御 isBehind:${this.isBehind} zIndex:${this.node.zIndex}`)
     }
-    private playPutDown(isFaceRight: boolean) {
+    private playPutDown() {
         if (this.status == Shield.STATUS_PUTDOWN || this.status == Shield.STATUS_IDLE) {
             return
         }
@@ -161,10 +157,7 @@ export default class Shield extends cc.Component {
         let duration = this.data.isHeavy == 1 ? 0.2 : 0.1
         let dp = Shield.DEFAULT_POS[this.dir].clone()
         let tp = Shield.TRANSFORM_POS[this.dir].clone()
-        if (!isFaceRight) {
-            dp.x = -dp.x
-            tp.x = -tp.x
-        }
+
         cc.log(`放下 isBehind:${this.isBehind} isBehindTemp:${isBehindTemp} zIndex:${this.node.zIndex}`)
         cc.tween(this.node)
             .to(duration, { position: tp })
@@ -179,7 +172,7 @@ export default class Shield extends cc.Component {
             .start()
     }
 
-    public changeZIndexByDir(avatarZindex: number, dir: number, isFaceRight: boolean) {
+    public changeZIndexByDir(avatarZindex: number, dir: number) {
         if (this.isAniming) {
             return
         }
@@ -207,12 +200,9 @@ export default class Shield extends cc.Component {
         this.isBehindChange = this.isBehind != temp
         this.node.zIndex = currentIndex
         let p = isDefending ? Shield.DEFEND_POS[dir] : Shield.DEFAULT_POS[dir].clone()
-        if (!isFaceRight) {
-            p.x = -p.x
-        }
         this.node.position = p
     }
-    public use(isFaceRight: boolean) {
+    public use() {
         this.isButtonPressing = true
         if (this.data.equipmetType != InventoryManager.SHIELD) {
             return
@@ -223,14 +213,14 @@ export default class Shield extends cc.Component {
         if (this.isDefendOrParrying) {
             return
         }
-        this.playParry(isFaceRight)
+        this.playParry()
     }
-    public cancel(isFaceRight: boolean) {
+    public cancel() {
         this.isButtonPressing = false
         if (this.status != Shield.STATUS_DEFEND) {
             return
         }
-        this.playPutDown(isFaceRight)
+        this.playPutDown()
     }
     changeRes(resName: string) {
         if (!resName || resName.length < 1) {
@@ -243,15 +233,12 @@ export default class Shield extends cc.Component {
             this.playIdle()
         }
     }
-    public faceRightChange(isFaceRight: boolean) {
-        if (this.status == Shield.STATUS_PUTDOWN || this.status == Shield.STATUS_DEFEND || this.status == Shield.STATUS_PARRY) {
-            return
-        }
-        let duration = this.data.isHeavy == 1 ? 0.2 : 0.1
-        let dp = Shield.DEFAULT_POS[this.dir].clone()
-        if (!isFaceRight) {
-            dp.x = -dp.x
-        }
-        cc.tween(this.node).to(duration, { position: dp }).start()
-    }
+    // public faceRightChange() {
+    //     if (this.status == Shield.STATUS_PUTDOWN || this.status == Shield.STATUS_DEFEND || this.status == Shield.STATUS_PARRY) {
+    //         return
+    //     }
+    //     let duration = this.data.isHeavy == 1 ? 0.2 : 0.1
+    //     let dp = Shield.DEFAULT_POS[this.dir].clone()
+    //     cc.tween(this.node).to(duration, { position: dp }).start()
+    // }
 }

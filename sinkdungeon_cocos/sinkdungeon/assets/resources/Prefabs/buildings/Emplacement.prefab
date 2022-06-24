@@ -1232,17 +1232,17 @@
       "__id__": 1
     },
     "_enabled": true,
-    "shooterTop": {
-      "__id__": 23
+    "shooterTopNode": {
+      "__id__": 19
     },
-    "shooterBottom": {
-      "__id__": 30
+    "shooterBottomNode": {
+      "__id__": 26
     },
-    "shooterLeft": {
-      "__id__": 16
+    "shooterLeftNode": {
+      "__id__": 12
     },
-    "shooterRight": {
-      "__id__": 9
+    "shooterRightNode": {
+      "__id__": 5
     },
     "_id": ""
   },
