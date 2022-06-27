@@ -615,7 +615,7 @@ export default class EquipmentManager extends BaseManager {
         info += common.remoteInterval == 0 ? `` : `射击间隔${common.remoteInterval / 1000}s\n`
         info += common.remoteAngle == 0 ? `` : `误差角度${common.remoteAngle}\n`
         info += common.maxAmmo == 0 ? `` : `弹夹容量${common.maxAmmo > 0 ? common.maxAmmo : '∞'}\n`
-        info += common.ammoRecovery == 0 ? `` : `弹夹回复${common.ammoRecovery}/s\n`
+        info += common.ammoRecovery == 0 ? `` : `弹夹回复${common.ammoRecovery}\n`
         info += common.maxAmmoPercent == 0 ? `` : `弹夹容量${common.maxAmmoPercent > 0 ? '提升' : '降低'}${common.maxAmmoPercent}%\n`
         info += common.ammoRecoveryPercent == 0 ? `` : `弹夹回复${common.ammoRecoveryPercent > 0 ? '提升' : '降低'}${common.ammoRecoveryPercent}%\n`
         info += common.damageMin == 0 ? `` : `攻击${common.damageMin} ${common.damageMax != 0 ? '最大攻击力' + common.damageMax : ''}\n`

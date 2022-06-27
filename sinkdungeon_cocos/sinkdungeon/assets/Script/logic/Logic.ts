@@ -159,14 +159,13 @@ export default class Logic extends cc.Component {
         if (Logic.chapterIndex == this.CHAPTER099) {
             Logic.profileManager.data.playerEquipsReality = Logic.inventoryManager.equips
             Logic.profileManager.data.playerItemListReality = Logic.inventoryManager.itemList
-            Logic.profileManager.data.nonPlayerListReality = Logic.nonPlayerList
             Logic.profileManager.data.playerInventoryListReality = Logic.inventoryManager.inventoryList
         } else {
             Logic.profileManager.data.playerEquips = Logic.inventoryManager.equips
             Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList
-            Logic.profileManager.data.nonPlayerList = Logic.nonPlayerList
             Logic.profileManager.data.playerInventoryList = Logic.inventoryManager.inventoryList
         }
+        Logic.profileManager.data.nonPlayerList = Logic.nonPlayerList
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon
         Logic.profileManager.data.level = Logic.level
         Logic.profileManager.data.chapterIndex = Logic.chapterIndex
@@ -205,7 +204,14 @@ export default class Logic extends cc.Component {
         Logic.oilGolds = Logic.profileManager.data.oilGolds
         //加载玩家数据
         Logic.playerData = Logic.profileManager.data.playerData.clone()
-        //加载装备和跟随的npc
+        //加载保存的npc
+        Logic.nonPlayerList = []
+        for (let i = 0; i < Logic.profileManager.data.nonPlayerList.length; i++) {
+            let data = new NonPlayerData()
+            data.valueCopy(Logic.profileManager.data.nonPlayerList[i])
+            Logic.nonPlayerList.push(data)
+        }
+        //加载背包和装备
         Logic.resetInventoryAndOtherData()
         //设置地图重置状态在loading完成处理地图
         Logic.isMapReset = true
@@ -237,13 +243,6 @@ export default class Logic extends cc.Component {
                 data.valueCopy(Logic.profileManager.data.playerInventoryListReality[i])
                 Logic.inventoryManager.inventoryList.push(data)
             }
-            //加载保存的npc
-            Logic.nonPlayerList = []
-            for (let i = 0; i < Logic.profileManager.data.nonPlayerListReality.length; i++) {
-                let data = new NonPlayerData()
-                data.valueCopy(Logic.profileManager.data.nonPlayerListReality[i])
-                Logic.nonPlayerList.push(data)
-            }
         } else {
             for (let key in Logic.profileManager.data.playerEquips) {
                 Logic.inventoryManager.equips[key].valueCopy(Logic.profileManager.data.playerEquips[key])
@@ -255,13 +254,6 @@ export default class Logic extends cc.Component {
                 let data = new InventoryData()
                 data.valueCopy(Logic.profileManager.data.playerInventoryList[i])
                 Logic.inventoryManager.inventoryList.push(data)
-            }
-            //加载保存的npc
-            Logic.nonPlayerList = []
-            for (let i = 0; i < Logic.profileManager.data.nonPlayerList.length; i++) {
-                let data = new NonPlayerData()
-                data.valueCopy(Logic.profileManager.data.nonPlayerList[i])
-                Logic.nonPlayerList.push(data)
             }
         }
     }

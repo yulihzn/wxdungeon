@@ -931,69 +931,72 @@ export default class BuildingManager extends BaseManager {
             default:
                 break
         }
-
         let building: cc.Node
+        let script: Furniture
         if (mapDataStr == 'Z3') {
             Logic.getBuildings(BuildingManager.ROOMTV, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
-                let script = building.getComponent(Furniture)
+                script = building.getComponent(Furniture)
                 script.init(data, false)
             })
         } else if (mapDataStr == 'Z4') {
             Logic.getBuildings(BuildingManager.ROOMSOFA, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.zIndex = IndexZ.ACTOR
-                let script = building.getComponent(Furniture)
+                script = building.getComponent(Furniture)
                 script.init(data, false)
             })
         } else if (mapDataStr == 'Z9') {
             Logic.getBuildings(BuildingManager.ROOMSTOOL, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
-                building.getComponent(RoomStool).init(indexPos, dungeon)
-                let script = building.getComponent(Furniture)
+                building.getComponent(RoomStool).init(dungeon)
+                script = building.getComponent(Furniture)
                 script.init(data, false)
             })
         } else if (mapDataStr == 'Z10') {
             Logic.getBuildings(BuildingManager.ROOMKITCHEN, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
                 building.getComponent(RoomKitchen).init(indexPos)
-                let script = building.getComponent(Furniture)
+                script = building.getComponent(Furniture)
                 script.init(data, false)
             })
         } else if (mapDataStr == 'Z17') {
             Logic.getBuildings(BuildingManager.ROOMCLOCK, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
-                building.getComponent(RoomClock).init(indexPos)
-                let script = building.getComponent(Furniture)
+                script = building.getComponent(Furniture)
                 script.init(data, false)
             })
         } else if (mapDataStr == 'Z18') {
             Logic.getBuildings(BuildingManager.ROOMFISHTANK, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
-                building.getComponent(RoomFishtank).init(indexPos, dungeon)
-                let script = building.getComponent(Furniture)
+                building.getComponent(RoomFishtank).init(dungeon)
+                script = building.getComponent(Furniture)
                 script.init(data, false)
             })
         } else if (mapDataStr == 'Z20') {
             Logic.getBuildings(BuildingManager.ROOMWATERDISPENSER, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
-                building.getComponent(RoomWaterDispenser).init(indexPos)
-                let script = building.getComponent(Furniture)
+                script = building.getComponent(Furniture)
                 script.init(data, false)
             })
         } else if (mapDataStr == 'Z21') {
             Logic.getBuildings(BuildingManager.ROOMTRASHCAN, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
-                building.getComponent(RoomTrashCan).init(indexPos)
-                let script = building.getComponent(Furniture)
+                script = building.getComponent(Furniture)
                 script.init(data, false)
             })
         } else {
             Logic.getBuildings(BuildingManager.FURNITURE, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos)
-                let script = building.getComponent(Furniture)
+                script = building.getComponent(Furniture)
                 script.init(data, true)
             })
+        }
+        if (script) {
+            let save = Logic.mapManager.getCurrentMapBuilding(script.data.defaultPos)
+            if (save) {
+                script.data.isOpen = save.isOpen
+            }
         }
     }
     /**生成可打击建筑 */

@@ -728,9 +728,6 @@ export default class NonPlayer extends Actor {
         let dd = this.data.getDamage(damageData)
         let dodge = this.data.FinalCommon.dodge / 100
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0
-        if (!isDodge && this.sprite.opacity < 100) {
-            isDodge = Random.rand() <= 0.9
-        }
         dd = isDodge ? new DamageData() : dd
         if (isDodge) {
             this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false)
@@ -1283,7 +1280,8 @@ export default class NonPlayer extends Actor {
         }
         let scale = 1 - y / 64
         this.shadow.scale = scale < 0.5 ? 0.5 : scale
-        this.shadow.y = this.entity.Transform.base
+        this.shadow.y = this.bodySprite.node.y + this.entity.Transform.base
+        this.shadow.x = this.isFaceRight ? this.bodySprite.node.x : -this.bodySprite.node.x
         this.bottomDir.node.y = this.entity.Transform.base
         this.bottomDir.node.opacity = this.isInWater() ? 128 : 255
         this.setInWaterMat(this.bodySprite, this.data.water < 1 && this.isInWater())

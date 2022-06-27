@@ -19,6 +19,9 @@ import Player from '../logic/Player'
 import RoomTrashCan from './RoomTrashCan'
 import RoomKitchen from './RoomKitchen'
 import IndexZ from '../utils/IndexZ'
+import EquipmentManager from '../manager/EquipmentManager'
+import InventoryManager from '../manager/InventoryManager'
+import InventoryItem from '../ui/InventoryItem'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -102,14 +105,14 @@ export default class Furniture extends Building {
         this.tips.onEnter(() => {
             if (this.furnitureData) {
                 if (this.furnitureData.purchased && this.furnitureData.isOpen) {
-                    this.onEnter()
+                    this.onTipsEnter(true)
                 }
             }
         })
         this.tips.onExit(() => {
             if (this.furnitureData) {
                 if (this.furnitureData.purchased && this.furnitureData.isOpen) {
-                    this.onExit()
+                    this.onTipsExit(true)
                 }
             }
         })
@@ -146,12 +149,25 @@ export default class Furniture extends Building {
                 }
                 break
             case Furniture.CUPBOARD:
+                let equips = [
+                    EquipmentManager.getNewEquipData(EquipmentManager.CLOTHES_VEST),
+                    EquipmentManager.getNewEquipData(EquipmentManager.TROUSERS_LONG),
+                    EquipmentManager.getNewEquipData(EquipmentManager.TROUSERS_SHORT),
+                    EquipmentManager.getNewEquipData(EquipmentManager.CLOTHES_SHIRT),
+                    EquipmentManager.getNewEquipData(EquipmentManager.SHOES_SKATEBOARD)
+                ]
                 if (this.furnitureData.storageList.length < 1) {
                     for (let i = 0; i < this.furnitureData.storage; i++) {
-                        this.furnitureData.storageList.push(new InventoryData())
+                        let data = new InventoryData()
+                        if (i < equips.length && !this.data.isOpen) {
+                            data = InventoryManager.buildEquipInventoryData(equips[i])
+                        }
+                        this.furnitureData.storageList.push(data)
                     }
                     LocalStorage.saveFurnitureData(this.furnitureData)
                 }
+                this.data.isOpen = true
+                Logic.mapManager.setCurrentBuildingData(this.data.clone())
                 EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW, { id: this.furnitureData.id })
                 break
             case Furniture.LITTLE_TABLE_2:
@@ -183,7 +199,7 @@ export default class Furniture extends Building {
                 break
         }
     }
-    onEnter() {
+    onTipsEnter(isTips: boolean) {
         switch (this.furnitureData.id) {
             case Furniture.FISHTANK:
                 let fishtank = this.getComponent(RoomFishtank)
@@ -202,7 +218,7 @@ export default class Furniture extends Building {
                 break
         }
     }
-    onExit() {
+    onTipsExit(isTips: boolean) {
         switch (this.furnitureData.id) {
             case Furniture.FISHTANK:
                 let fishtank = this.getComponent(RoomFishtank)
@@ -234,8 +250,15 @@ export default class Furniture extends Building {
             furnitureData.isOpen = save.isOpen
             furnitureData.purchased = save.purchased
             furnitureData.storage = save.storage ? save.storage : furnitureData.storage
+            furnitureData.storageList = []
             if (save.storageList && save.storageList.length > 0) {
-                furnitureData.storageList = save.storageList
+                for (let s of save.storageList) {
+                    if (s.itemData) {
+                        furnitureData.storageList.push(InventoryManager.buildItemInventoryData(s.itemData))
+                    } else if (s.equipmentData) {
+                        furnitureData.storageList.push(InventoryManager.buildEquipInventoryData(s.equipmentData))
+                    }
+                }
             }
         }
         if (furnitureData.price <= 0) {
@@ -342,5 +365,8 @@ export default class Furniture extends Building {
         this.changeRes(this.furnitureData.resName, this.isNormal)
     }
 
-    // update (dt) {}
+    onColliderEnter(other: CCollider, self: CCollider): void {}
+    onColliderStay(other: CCollider, self: CCollider): void {}
+    onColliderExit(other: CCollider, self: CCollider): void {}
+    onColliderPreSolve(other: CCollider, self: CCollider): void {}
 }

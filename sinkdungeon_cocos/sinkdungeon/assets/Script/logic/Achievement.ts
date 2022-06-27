@@ -1,16 +1,17 @@
-import AchievementData from "../data/AchievementData";
-import EquipmentData from "../data/EquipmentData";
-import FurnitureData from "../data/FurnitureData";
-import ItemData from "../data/ItemData";
-import NonPlayerData from "../data/NonPlayerData";
-import Logic from "./Logic";
-import InventoryManager from "../manager/InventoryManager";
-import LoadingManager from "../manager/LoadingManager";
-import AchievementItem from "../ui/AchievementItem";
-import AchievementItemDialog from "../ui/dialog/AchievementItemDialog";
-import AudioPlayer from "../utils/AudioPlayer";
-import LocalStorage from "../utils/LocalStorage";
-import LoadingIcon from "../ui/LoadingIcon";
+import AchievementData from '../data/AchievementData'
+import EquipmentData from '../data/EquipmentData'
+import FurnitureData from '../data/FurnitureData'
+import ItemData from '../data/ItemData'
+import NonPlayerData from '../data/NonPlayerData'
+import Logic from './Logic'
+import InventoryManager from '../manager/InventoryManager'
+import LoadingManager from '../manager/LoadingManager'
+import AchievementItem from '../ui/AchievementItem'
+import AchievementItemDialog from '../ui/dialog/AchievementItemDialog'
+import AudioPlayer from '../utils/AudioPlayer'
+import LocalStorage from '../utils/LocalStorage'
+import LoadingIcon from '../ui/LoadingIcon'
+import { EventHelper } from './EventHelper'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -22,213 +23,229 @@ import LoadingIcon from "../ui/LoadingIcon";
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const { ccclass, property } = cc._decorator;
+const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class Achievement extends cc.Component {
+    static readonly MONSTER_SIZE = 33
+    static readonly BOSS_SIZE = 9
 
-    static readonly MONSTER_SIZE = 33;
-    static readonly BOSS_SIZE = 9;
-
-    static readonly TYPE_CHALLENGE = 0;
-    static readonly TYPE_MAP = 1;
-    static readonly TYPE_FURNITURE = 2;
-    static readonly TYPE_NPC = 3;
-    static readonly TYPE_BOSS = 4;
-    static readonly TYPE_MONSTER = 5;
-    static readonly TYPE_EQUIP = 6;
-    static readonly TYPE_ITEM = 7;
+    static readonly TYPE_CHALLENGE = 0
+    static readonly TYPE_MAP = 1
+    static readonly TYPE_FURNITURE = 2
+    static readonly TYPE_NPC = 3
+    static readonly TYPE_BOSS = 4
+    static readonly TYPE_MONSTER = 5
+    static readonly TYPE_EQUIP = 6
+    static readonly TYPE_ITEM = 7
     @property(cc.Node)
-    contentBg: cc.Node = null;
+    contentBg: cc.Node = null
     @property(cc.Node)
-    contentSprite: cc.Node = null;
+    contentSprite: cc.Node = null
     @property(cc.Node)
-    contentLabelBg: cc.Node = null;
+    contentLabelBg: cc.Node = null
     @property(cc.Node)
-    contentLabel: cc.Node = null;
+    contentLabel: cc.Node = null
     @property(cc.Prefab)
-    prefab: cc.Prefab = null;
+    prefab: cc.Prefab = null
     @property(cc.Label)
-    lifesLabel: cc.Label = null;
+    lifesLabel: cc.Label = null
     @property(cc.Label)
-    coinLabel: cc.Label = null;
+    coinLabel: cc.Label = null
     @property(cc.Label)
-    goldLabel: cc.Label = null;
+    goldLabel: cc.Label = null
     @property(cc.Node)
-    loadingBackground: cc.Node = null;
+    loadingBackground: cc.Node = null
     @property(AchievementItemDialog)
-    achievementItemDialog: AchievementItemDialog = null;
+    achievementItemDialog: AchievementItemDialog = null
     //图片资源
-    bossSpriteFrames: { [key: string]: cc.SpriteFrame } = null;
+    bossSpriteFrames: { [key: string]: cc.SpriteFrame } = null
     // LIFE-CYCLE CALLBACKS:
-    isBossLoaded = false;
-    currentListIndex = 0;
-    currentItemIndex = -1;
-    private loadingManager: LoadingManager = new LoadingManager();
-    data: AchievementData;
+    isBossLoaded = false
+    currentListIndex = 0
+    currentItemIndex = -1
+    private loadingManager: LoadingManager = new LoadingManager()
+    data: AchievementData
 
     onLoad() {
-        this.loadingManager.init();
-        this.removeContent();
-        this.data = LocalStorage.getAchievementData();
+        this.loadingManager.init()
+        this.removeContent()
+        this.data = LocalStorage.getAchievementData()
         if (this.lifesLabel && this.data.playerLifes) {
-            this.lifesLabel.string = `DIED ${this.data.playerLifes}`;
+            this.lifesLabel.string = `DIED ${this.data.playerLifes}`
         }
         if (this.coinLabel) {
-            let c = LocalStorage.getValueFromData(LocalStorage.KEY_COIN);
-            this.coinLabel.string = `${c ? parseInt(c) : 0}`;
+            let c = LocalStorage.getValueFromData(LocalStorage.KEY_COIN)
+            this.coinLabel.string = `${c ? parseInt(c) : 0}`
         }
         if (this.achievementItemDialog) {
-            this.achievementItemDialog.node.active = false;
+            this.achievementItemDialog.node.active = false
         }
+        EventHelper.on(EventHelper.HUD_CANCEL_OR_PAUSE, detail => {
+            if (this.node && this.node.isValid) {
+                this.cancelOrPause()
+            }
+        })
     }
     start() {
-        this.loadingManager.loadEquipment();
-        this.loadingManager.loadAutoSpriteFrames();
-        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor');
-        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_ITEM, 'ammo');
-        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_EQUIPMENT, 'emptyequipment');
-        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'npcshadow');
-        this.loadingManager.loadMonsters();
-        this.loadingManager.loadItems();
-        this.loadingManager.loadNonplayer();
-        this.loadingManager.loadSuits();
-        this.loadingManager.loadFurnitures();
-        this.loadBossSpriteFrames();
-        this.loadingBackground.active = true;
+        this.loadingManager.loadEquipment()
+        this.loadingManager.loadAutoSpriteFrames()
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor')
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_ITEM, 'ammo')
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_EQUIPMENT, 'emptyequipment')
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'npcshadow')
+        this.loadingManager.loadMonsters()
+        this.loadingManager.loadItems()
+        this.loadingManager.loadNonplayer()
+        this.loadingManager.loadSuits()
+        this.loadingManager.loadFurnitures()
+        this.loadBossSpriteFrames()
+        this.loadingBackground.active = true
     }
-    private removeContent(){
-        this.contentBg.removeAllChildren();
-        this.contentSprite.removeAllChildren();
-        this.contentLabelBg.removeAllChildren();
-        this.contentLabel.removeAllChildren();
+    private removeContent() {
+        this.contentBg.removeAllChildren()
+        this.contentSprite.removeAllChildren()
+        this.contentLabelBg.removeAllChildren()
+        this.contentLabel.removeAllChildren()
     }
-    private addItem(item:AchievementItem){
-        this.contentBg.addChild(item.node);
+    private addItem(item: AchievementItem) {
+        this.contentBg.addChild(item.node)
     }
     //toggle
     changeList(toggle: cc.Toggle, index: string) {
-        this.currentListIndex = parseInt(index);
-        this.unscheduleAllCallbacks();
+        this.currentListIndex = parseInt(index)
+        this.unscheduleAllCallbacks()
         switch (this.currentListIndex) {
-            case Achievement.TYPE_CHALLENGE: this.removeContent(); break;
-            case Achievement.TYPE_MAP: this.removeContent(); break;
-            case Achievement.TYPE_FURNITURE: this.showFurnitureList(); break;
-            case Achievement.TYPE_NPC: this.showNpcList(); break;
-            case Achievement.TYPE_BOSS: this.showBossList(); break;
-            case Achievement.TYPE_MONSTER: this.showMonsterList(); break;
-            case Achievement.TYPE_EQUIP: this.showEquipList(); break;
-            case Achievement.TYPE_ITEM: this.showItemList(); break;
+            case Achievement.TYPE_CHALLENGE:
+                this.removeContent()
+                break
+            case Achievement.TYPE_MAP:
+                this.removeContent()
+                break
+            case Achievement.TYPE_FURNITURE:
+                this.showFurnitureList()
+                break
+            case Achievement.TYPE_NPC:
+                this.showNpcList()
+                break
+            case Achievement.TYPE_BOSS:
+                this.showBossList()
+                break
+            case Achievement.TYPE_MONSTER:
+                this.showMonsterList()
+                break
+            case Achievement.TYPE_EQUIP:
+                this.showEquipList()
+                break
+            case Achievement.TYPE_ITEM:
+                this.showItemList()
+                break
         }
-        this.scheduleOnce(()=>{
-            for(let node of this.contentLabelBg.children){
-                let item = node.getComponent(AchievementItem);
-                let pos1 = this.contentSprite.convertToNodeSpaceAR(item.sprite.node.convertToWorldSpaceAR(cc.Vec3.ZERO));
-                let pos2 = this.contentLabelBg.convertToNodeSpaceAR(item.labelBg.convertToWorldSpaceAR(cc.Vec3.ZERO));
-                let pos3 = this.contentLabel.convertToNodeSpaceAR(item.label.node.convertToWorldSpaceAR(cc.Vec3.ZERO));
-                item.sprite.node.parent =this.contentSprite;
-                item.labelBg.parent = this.contentLabelBg;
-                item.label.node.parent = this.contentLabel;
-                item.sprite.node.position = pos1;
-                item.labelBg.position = pos2;
-                item.label.node.position = pos3;
+        this.scheduleOnce(() => {
+            for (let node of this.contentLabelBg.children) {
+                let item = node.getComponent(AchievementItem)
+                let pos1 = this.contentSprite.convertToNodeSpaceAR(item.sprite.node.convertToWorldSpaceAR(cc.Vec3.ZERO))
+                let pos2 = this.contentLabelBg.convertToNodeSpaceAR(item.labelBg.convertToWorldSpaceAR(cc.Vec3.ZERO))
+                let pos3 = this.contentLabel.convertToNodeSpaceAR(item.label.node.convertToWorldSpaceAR(cc.Vec3.ZERO))
+                item.sprite.node.parent = this.contentSprite
+                item.labelBg.parent = this.contentLabelBg
+                item.label.node.parent = this.contentLabel
+                item.sprite.node.position = pos1
+                item.labelBg.position = pos2
+                item.label.node.position = pos3
             }
-        },0.1)
+        }, 0.1)
     }
     private showMonsterList() {
-        this.removeContent();
-        let index = 0;
+        this.removeContent()
+        let index = 0
         for (let key in Logic.monsters) {
-            LoadingManager.loadNpcSpriteAtlas(key,()=>{
-                let data = new NonPlayerData();
-                data.valueCopy(Logic.monsters[key]);
-                let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-                icon.init(this, this.currentListIndex, index++, this.data.monsters[data.resName]
-                    , Logic.spriteFrameRes(data.resName + 'anim000'), data, null, null, null);
-                this.addItem(icon);
+            LoadingManager.loadNpcSpriteAtlas(key, () => {
+                let data = new NonPlayerData()
+                data.valueCopy(Logic.monsters[key])
+                let icon = cc.instantiate(this.prefab).getComponent(AchievementItem)
+                icon.init(this, this.currentListIndex, index++, this.data.monsters[data.resName], Logic.spriteFrameRes(data.resName + 'anim000'), data, null, null, null)
+                this.addItem(icon)
             })
         }
     }
     private showBossList() {
-        this.removeContent();
+        this.removeContent()
         for (let i = 0; i < Achievement.BOSS_SIZE; i++) {
-            let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-            icon.init(this, this.currentListIndex, i, this.data.monsters[`iconboss00${i}`]
-                , this.bossSpriteFrames[`iconboss00${i}`], null, null, null, null);
-                this.addItem(icon);
+            let icon = cc.instantiate(this.prefab).getComponent(AchievementItem)
+            icon.init(this, this.currentListIndex, i, this.data.monsters[`iconboss00${i}`], this.bossSpriteFrames[`iconboss00${i}`], null, null, null, null)
+            this.addItem(icon)
         }
     }
     private showNpcList() {
-        this.removeContent();
-        let index = 0;
+        this.removeContent()
+        let index = 0
         for (let key in Logic.nonplayers) {
-            let data = new NonPlayerData();
-            data.valueCopy(Logic.nonplayers[key]);
-            let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-            icon.init(this, this.currentListIndex, index++, this.data.npcs[data.resName]
-                , Logic.spriteFrameRes(data.resName + 'anim000'), data, null, null, null);
-                this.addItem(icon);
+            let data = new NonPlayerData()
+            data.valueCopy(Logic.nonplayers[key])
+            let icon = cc.instantiate(this.prefab).getComponent(AchievementItem)
+            icon.init(this, this.currentListIndex, index++, this.data.npcs[data.resName], Logic.spriteFrameRes(data.resName + 'anim000'), data, null, null, null)
+            this.addItem(icon)
         }
     }
     private showItemList() {
-        this.removeContent();
-        let index = 0;
+        this.removeContent()
+        let index = 0
         for (let key in Logic.items) {
-            let data = new ItemData();
-            data.valueCopy(Logic.items[key]);
-            let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-            icon.init(this, this.currentListIndex, index++, this.data.items[data.resName]
-                , Logic.spriteFrameRes(data.resName), null, data, null, null);
+            let data = new ItemData()
+            data.valueCopy(Logic.items[key])
+            let icon = cc.instantiate(this.prefab).getComponent(AchievementItem)
+            icon.init(this, this.currentListIndex, index++, this.data.items[data.resName], Logic.spriteFrameRes(data.resName), null, data, null, null)
             if (index > 5) {
-                this.addItem(icon);
-            };
+                this.addItem(icon)
+            }
         }
     }
     private showEquipList() {
-        this.removeContent();
-        let index = 0;
+        this.removeContent()
+        let index = 0
         for (let key in Logic.equipments) {
-            let data = new EquipmentData();
-            data.valueCopy(Logic.equipments[key]);
-            let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-            let spriteFrame = Logic.spriteFrameRes(data.img);
+            let data = new EquipmentData()
+            data.valueCopy(Logic.equipments[key])
+            let icon = cc.instantiate(this.prefab).getComponent(AchievementItem)
+            let spriteFrame = Logic.spriteFrameRes(data.img)
             if (data.equipmetType == InventoryManager.CLOTHES) {
-                spriteFrame = Logic.spriteFrameRes(data.img + 'anim0');
+                spriteFrame = Logic.spriteFrameRes(data.img + 'anim0')
             } else if (data.equipmetType == InventoryManager.HELMET) {
-                spriteFrame = Logic.spriteFrameRes(data.img + 'anim0');
+                spriteFrame = Logic.spriteFrameRes(data.img + 'anim0')
             } else if (data.equipmetType == InventoryManager.REMOTE) {
-                spriteFrame = Logic.spriteFrameRes(data.img + 'anim0');
+                spriteFrame = Logic.spriteFrameRes(data.img + 'anim0')
             }
-            icon.init(this, this.currentListIndex, index++, this.data.equips[data.img]
-                , spriteFrame, null, null, data, null);
+            icon.init(this, this.currentListIndex, index++, this.data.equips[data.img], spriteFrame, null, null, data, null)
             if (index > 1) {
-                this.addItem(icon);
-            };
+                this.addItem(icon)
+            }
         }
     }
     private showFurnitureList() {
-        this.removeContent();
-        let index = 0;
+        this.removeContent()
+        let index = 0
         for (let key in Logic.furnitures) {
-            let data = new FurnitureData();
-            data.valueCopy(Logic.furnitures[key]);
-            let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-            icon.init(this, this.currentListIndex, index++, this.data.furnitures[data.id]
-                , Logic.spriteFrameRes(data.resName), null, null, null, data);
-                this.addItem(icon);
-
+            let data = new FurnitureData()
+            data.valueCopy(Logic.furnitures[key])
+            let icon = cc.instantiate(this.prefab).getComponent(AchievementItem)
+            icon.init(this, this.currentListIndex, index++, this.data.furnitures[data.id], Logic.spriteFrameRes(data.resName), null, null, null, data)
+            this.addItem(icon)
         }
     }
     show() {
-        let loadingIcon = this.loadingBackground.getComponentInChildren(LoadingIcon);
-        if(loadingIcon&&loadingIcon.isFirst){
-            cc.tween(this.loadingBackground).to(0.5,{opacity:0}).call(()=>{
-                this.loadingBackground.active = false;
-            }).start();
-        }else{
-            this.loadingBackground.active = false;
+        let loadingIcon = this.loadingBackground.getComponentInChildren(LoadingIcon)
+        if (loadingIcon && loadingIcon.isFirst) {
+            cc.tween(this.loadingBackground)
+                .to(0.5, { opacity: 0 })
+                .call(() => {
+                    this.loadingBackground.active = false
+                })
+                .start()
+        } else {
+            this.loadingBackground.active = false
         }
-        this.changeList(null, '0');
+        this.changeList(null, '0')
     }
     // show() {
     //     if (!this.itemList) {
@@ -289,133 +306,141 @@ export default class Achievement extends cc.Component {
     // }
     loadBossSpriteFrames() {
         if (this.bossSpriteFrames) {
-            this.isBossLoaded = true;
-            return;
+            this.isBossLoaded = true
+            return
         }
         cc.resources.load('OtherTexture/bossicons', cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
-            this.bossSpriteFrames = {};
+            this.bossSpriteFrames = {}
             for (let frame of atlas.getSpriteFrames()) {
-                this.bossSpriteFrames[frame.name] = frame;
+                this.bossSpriteFrames[frame.name] = frame
             }
-            this.isBossLoaded = true;
-            cc.log('bossicons spriteatlas loaded');
+            this.isBossLoaded = true
+            cc.log('bossicons spriteatlas loaded')
         })
     }
 
-
     backToHome() {
-        cc.director.loadScene('start');
-        AudioPlayer.play(AudioPlayer.SELECT);
+        cc.director.loadScene('start')
+        AudioPlayer.play(AudioPlayer.SELECT)
     }
-
+    private cancelOrPause() {
+        if (this.achievementItemDialog && this.achievementItemDialog.isShow) {
+            AudioPlayer.play(AudioPlayer.SELECT)
+            this.achievementItemDialog.dismiss()
+            return
+        }
+        this.backToHome()
+    }
     static addMonsterKillAchievement(name: string) {
-        let data: AchievementData = LocalStorage.getAchievementData();
+        let data: AchievementData = LocalStorage.getAchievementData()
         if (data.monsters[name]) {
-            data.monsters[name] = data.monsters[name] + 1;
+            data.monsters[name] = data.monsters[name] + 1
             if (data.monsters[name] > 9999) {
-                data.monsters[name] = 9999;
+                data.monsters[name] = 9999
             }
         } else {
-            data.monsters[name] = 1;
+            data.monsters[name] = 1
         }
-        LocalStorage.saveAchievementData(data);
+        LocalStorage.saveAchievementData(data)
     }
     static addPlayerDiedLifesAchievement() {
-        let data: AchievementData = LocalStorage.getAchievementData();
+        let data: AchievementData = LocalStorage.getAchievementData()
         if (data.playerLifes) {
-            data.playerLifes = data.playerLifes + 1;
+            data.playerLifes = data.playerLifes + 1
             if (data.playerLifes > 9999) {
-                data.playerLifes = 9999;
+                data.playerLifes = 9999
             }
         } else {
-            data.playerLifes = 1;
+            data.playerLifes = 1
         }
-        LocalStorage.saveAchievementData(data);
+        LocalStorage.saveAchievementData(data)
     }
     static addItemAchievement(name: string) {
-        let data: AchievementData = LocalStorage.getAchievementData();
+        let data: AchievementData = LocalStorage.getAchievementData()
         if (data.items[name]) {
-            data.items[name] = data.items[name] + 1;
+            data.items[name] = data.items[name] + 1
             if (data.items[name] > 9999) {
-                data.items[name] = 9999;
+                data.items[name] = 9999
             }
         } else {
-            data.items[name] = 1;
+            data.items[name] = 1
         }
-        LocalStorage.saveAchievementData(data);
+        LocalStorage.saveAchievementData(data)
     }
     static addEquipsAchievement(name: string) {
-        let data: AchievementData = LocalStorage.getAchievementData();
+        let data: AchievementData = LocalStorage.getAchievementData()
         if (data.equips[name]) {
-            data.equips[name] = data.equips[name] + 1;
+            data.equips[name] = data.equips[name] + 1
             if (data.equips[name] > 9999) {
-                data.equips[name] = 9999;
+                data.equips[name] = 9999
             }
         } else {
-            data.equips[name] = 1;
+            data.equips[name] = 1
         }
-        LocalStorage.saveAchievementData(data);
+        LocalStorage.saveAchievementData(data)
     }
     static addNpcsAchievement(name: string) {
-        let data: AchievementData = LocalStorage.getAchievementData();
+        let data: AchievementData = LocalStorage.getAchievementData()
         if (data.npcs[name]) {
-            data.npcs[name] = data.npcs[name] + 1;
+            data.npcs[name] = data.npcs[name] + 1
             if (data.npcs[name] > 9999) {
-                data.npcs[name] = 9999;
+                data.npcs[name] = 9999
             }
         } else {
-            data.npcs[name] = 1;
+            data.npcs[name] = 1
         }
-        LocalStorage.saveAchievementData(data);
+        LocalStorage.saveAchievementData(data)
     }
     static addMapsAchievement(name: string) {
-        let data: AchievementData = LocalStorage.getAchievementData();
+        let data: AchievementData = LocalStorage.getAchievementData()
         if (data.maps[name]) {
-            data.maps[name] = data.maps[name] + 1;
+            data.maps[name] = data.maps[name] + 1
             if (data.maps[name] > 9999) {
-                data.maps[name] = 9999;
+                data.maps[name] = 9999
             }
         } else {
-            data.maps[name] = 1;
+            data.maps[name] = 1
         }
-        LocalStorage.saveAchievementData(data);
+        LocalStorage.saveAchievementData(data)
     }
     static addChallengesAchievement(name: string) {
-        let data: AchievementData = LocalStorage.getAchievementData();
+        let data: AchievementData = LocalStorage.getAchievementData()
         if (data.challenges[name]) {
-            data.challenges[name] = data.challenges[name] + 1;
+            data.challenges[name] = data.challenges[name] + 1
             if (data.challenges[name] > 9999) {
-                data.challenges[name] = 9999;
+                data.challenges[name] = 9999
             }
         } else {
-            data.challenges[name] = 1;
+            data.challenges[name] = 1
         }
-        LocalStorage.saveAchievementData(data);
+        LocalStorage.saveAchievementData(data)
     }
     static addFurnituresAchievement(name: string) {
-        let data: AchievementData = LocalStorage.getAchievementData();
+        let data: AchievementData = LocalStorage.getAchievementData()
         if (data.furnitures[name]) {
-            data.furnitures[name] = data.furnitures[name] + 1;
+            data.furnitures[name] = data.furnitures[name] + 1
             if (data.furnitures[name] > 9999) {
-                data.furnitures[name] = 9999;
+                data.furnitures[name] = 9999
             }
         } else {
-            data.furnitures[name] = 1;
+            data.furnitures[name] = 1
         }
-        LocalStorage.saveAchievementData(data);
+        LocalStorage.saveAchievementData(data)
     }
     update(dt) {
-        if (this.isBossLoaded
-            && this.loadingManager.isEquipmentLoaded
-            && this.loadingManager.isAllSpriteFramesLoaded()
-            && this.loadingManager.isMonsterLoaded
-            && this.loadingManager.isNonplayerLoaded
-            && this.loadingManager.isItemsLoaded
-            && this.loadingManager.isFurnituresLoaded
-            && this.loadingManager.isSuitsLoaded) {
-            this.isBossLoaded = true;
-            this.loadingManager.reset();
-            this.show();
+        if (
+            this.isBossLoaded &&
+            this.loadingManager.isEquipmentLoaded &&
+            this.loadingManager.isAllSpriteFramesLoaded() &&
+            this.loadingManager.isMonsterLoaded &&
+            this.loadingManager.isNonplayerLoaded &&
+            this.loadingManager.isItemsLoaded &&
+            this.loadingManager.isFurnituresLoaded &&
+            this.loadingManager.isSuitsLoaded
+        ) {
+            this.isBossLoaded = true
+            this.loadingManager.reset()
+            this.show()
         }
     }
 }

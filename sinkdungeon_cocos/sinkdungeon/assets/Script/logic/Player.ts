@@ -636,7 +636,7 @@ export default class Player extends Actor {
         }
         let arcEx = 0
         let lineEx = 0
-        if (this.professionTalent.hashTalent(Talent.TALENT_005) && this.professionTalent.IsExcuting) {
+        if (this.professionTalent && this.professionTalent.hashTalent(Talent.TALENT_005) && this.professionTalent.IsExcuting) {
             arcEx = 2
             lineEx = 1
         }

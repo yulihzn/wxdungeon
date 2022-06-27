@@ -8,9 +8,9 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import { EventHelper } from "../logic/EventHelper"
-import AudioPlayer from "../utils/AudioPlayer"
-import CellphoneDialog from "./dialog/CellphoneDialog"
+import { EventHelper } from '../logic/EventHelper'
+import AudioPlayer from '../utils/AudioPlayer'
+import CellphoneDialog from './dialog/CellphoneDialog'
 
 const { ccclass, property } = cc._decorator
 
@@ -22,11 +22,11 @@ export default class Cellphone extends cc.Component {
     isOpen = false
     onLoad() {
         this.anim = this.getComponent(cc.Animation)
-        EventHelper.on(EventHelper.HUD_CELLPHONE_SHOW, (detail) => {
+        EventHelper.on(EventHelper.HUD_CELLPHONE_SHOW, detail => {
             if (this.node && !this.dialog.isAniming) {
                 if (!this.dialog.isShow) {
                     AudioPlayer.play(AudioPlayer.SELECT)
-                    this.anim.play("CellphoneShow")
+                    this.anim.play('CellphoneShow')
                 } else {
                     this.dialog.close()
                 }
@@ -37,13 +37,18 @@ export default class Cellphone extends cc.Component {
             (event: cc.Event.EventTouch) => {
                 if (!this.dialog.isShow) {
                     AudioPlayer.play(AudioPlayer.SELECT)
-                    this.anim.play("CellphoneShow")
+                    this.anim.play('CellphoneShow')
                 }
             },
             this
         )
         this.dialog.onDismissListener(() => {
-            this.anim.play("CellphoneHide")
+            this.anim.play('CellphoneHide')
+        })
+        EventHelper.on(EventHelper.HUD_CANCEL_OR_PAUSE, detail => {
+            if (this.node && this.dialog.isShow) {
+                this.dialog.close()
+            }
         })
     }
     //anim

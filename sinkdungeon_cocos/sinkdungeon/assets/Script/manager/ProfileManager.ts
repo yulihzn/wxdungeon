@@ -107,11 +107,7 @@ export default class ProfileManager {
                 this.data.nonPlayerList[i] = data.nonPlayerList[i]
             }
         }
-        if (data.nonPlayerListReality) {
-            for (let i = 0; i < data.nonPlayerList.length; i++) {
-                this.data.nonPlayerListReality[i] = data.nonPlayerListReality[i]
-            }
-        }
+
         //加载地图数据
         for (let key in data.rectDungeons) {
             let rect = new RectDungeon()

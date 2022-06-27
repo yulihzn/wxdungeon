@@ -34,7 +34,6 @@ export default class ProfileData {
     playerInventoryListReality: InventoryData[] = new Array()
     //跟随的npc列表
     nonPlayerList: NonPlayerData[] = new Array()
-    nonPlayerListReality: NonPlayerData[] = new Array()
     level = 0 //当前层级
     //游玩时间
     time = '00:00:00'

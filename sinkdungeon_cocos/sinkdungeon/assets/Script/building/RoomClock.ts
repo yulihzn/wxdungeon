@@ -1,4 +1,3 @@
-import { EventHelper } from './../logic/EventHelper';
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
 // Learn Attribute:
@@ -6,36 +5,28 @@ import { EventHelper } from './../logic/EventHelper';
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import Logic from "../logic/Logic";
-import Utils from "../utils/Utils";
-import Building from "./Building";
+import Logic from '../logic/Logic'
+import Utils from '../utils/Utils'
 
-const { ccclass, property } = cc._decorator;
+const { ccclass, property } = cc._decorator
 
 @ccclass
-export default class RoomClock extends Building {
+export default class RoomClock extends cc.Component {
     @property(cc.Label)
-    timeLabel: cc.Label = null;
+    timeLabel: cc.Label = null
 
-    onLoad() {
-    }
-    init(indexPos: cc.Vec3) {
-        this.data.defaultPos = indexPos;
-    }
-   
-    checkTimeDelay = 0;
+    checkTimeDelay = 0
     isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt;
+        this.checkTimeDelay += dt
         if (this.checkTimeDelay > 1) {
-            this.checkTimeDelay = 0;
-            return true;
+            this.checkTimeDelay = 0
+            return true
         }
-        return false;
+        return false
     }
     update(dt: number) {
-        if(this.isCheckTimeDelay(dt)){
-            this.timeLabel.string = `${Utils.getHour(Logic.realTime)}`;
+        if (this.isCheckTimeDelay(dt)) {
+            this.timeLabel.string = `${Utils.getHour(Logic.realTime)}`
         }
     }
-
 }

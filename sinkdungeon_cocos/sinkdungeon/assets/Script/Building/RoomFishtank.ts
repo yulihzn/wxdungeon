@@ -5,20 +5,19 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import Dungeon from "../logic/Dungeon"
-import { EventHelper } from "../logic/EventHelper"
-import Logic from "../logic/Logic"
-import Player from "../logic/Player"
-import LoadingManager from "../manager/LoadingManager"
-import NonPlayerManager from "../manager/NonPlayerManager"
-import AudioPlayer from "../utils/AudioPlayer"
-import Utils from "../utils/Utils"
-import Building from "./Building"
+import Dungeon from '../logic/Dungeon'
+import { EventHelper } from '../logic/EventHelper'
+import Logic from '../logic/Logic'
+import Player from '../logic/Player'
+import LoadingManager from '../manager/LoadingManager'
+import NonPlayerManager from '../manager/NonPlayerManager'
+import AudioPlayer from '../utils/AudioPlayer'
+import Utils from '../utils/Utils'
 
 const { ccclass, property } = cc._decorator
 
 @ccclass
-export default class RoomFishtank extends Building {
+export default class RoomFishtank extends cc.Component {
     @property(cc.Node)
     fish: cc.Node = null
     @property(cc.Prefab)
@@ -33,14 +32,13 @@ export default class RoomFishtank extends Building {
     dungeon: Dungeon
 
     onLoad() {
-        this.fishSprite = this.fish.getChildByName("sprite").getComponent(cc.Sprite)
+        this.fishSprite = this.fish.getChildByName('sprite').getComponent(cc.Sprite)
         this.fishIdle()
         this.fishMove()
         LoadingManager.loadNpcSpriteAtlas(NonPlayerManager.FISH)
     }
-    init(indexPos: cc.Vec3, dungeon: Dungeon) {
+    init(dungeon: Dungeon) {
         this.dungeon = dungeon
-        this.data.defaultPos = indexPos
     }
     zoomCamera(zoomIn: boolean) {
         if (this.isFirst) {
@@ -65,7 +63,7 @@ export default class RoomFishtank extends Building {
             return
         }
         if (this.foodList.length > 50) {
-            Utils.toast("喂得太多了啊！")
+            Utils.toast('喂得太多了啊！')
             return
         }
         if (player) {
@@ -113,19 +111,19 @@ export default class RoomFishtank extends Building {
             .tween()
             .delay(0.2)
             .call(() => {
-                this.changeFishRes("nonplayer102anim002")
+                this.changeFishRes('nonplayer102anim002')
             })
             .delay(0.2)
             .call(() => {
-                this.changeFishRes("nonplayer102anim003")
+                this.changeFishRes('nonplayer102anim003')
             })
             .delay(0.2)
             .call(() => {
-                this.changeFishRes("nonplayer102anim004")
+                this.changeFishRes('nonplayer102anim004')
             })
             .delay(0.2)
             .call(() => {
-                this.changeFishRes("nonplayer102anim005")
+                this.changeFishRes('nonplayer102anim005')
             })
         this.fishSprite.node.stopAllActions()
         cc.tween(this.fishSprite.node).repeatForever(action).start()
@@ -135,7 +133,7 @@ export default class RoomFishtank extends Building {
         cc.tween(this.fishSprite.node)
             .delay(0.2)
             .call(() => {
-                this.changeFishRes("nonplayer102anim010")
+                this.changeFishRes('nonplayer102anim010')
                 if (index >= 0 && index < this.foodList.length && this.foodList[index].isValid) {
                     this.foodList[index].active = false
                     this.foodList[index].destroy()
@@ -144,7 +142,7 @@ export default class RoomFishtank extends Building {
             })
             .delay(0.2)
             .call(() => {
-                this.changeFishRes("nonplayer102anim009")
+                this.changeFishRes('nonplayer102anim009')
             })
             .delay(0.2)
             .call(() => {

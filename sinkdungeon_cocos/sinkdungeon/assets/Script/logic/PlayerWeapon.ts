@@ -197,6 +197,7 @@ export default class PlayerWeapon extends cc.Component {
                 .call(() => {
                     data.currentAmmo = finalData.MaxAmmo
                     this.isCooling = false
+                    EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.player.data.currentAmmo, y: this.maxAmmo })
                 })
                 .start()
         }
@@ -225,7 +226,13 @@ export default class PlayerWeapon extends cc.Component {
         if (this.shooter) {
             this.shooter.updateLogic(dt)
         }
-        if (this.shooter.data.equipmetType == InventoryManager.REMOTE && this.ammoRecovery > 0 && this.player.data.currentAmmo < this.maxAmmo && this.isCheckTimeDelay(dt)) {
+        if (
+            !this.isCooling &&
+            this.shooter.data.equipmetType == InventoryManager.REMOTE &&
+            this.ammoRecovery > 0 &&
+            this.player.data.currentAmmo < this.maxAmmo &&
+            this.isCheckTimeDelay(dt)
+        ) {
             this.player.data.currentAmmo += this.ammoRecovery
             if (this.player.data.currentAmmo > this.maxAmmo) {
                 this.player.data.currentAmmo = this.maxAmmo
@@ -237,7 +244,7 @@ export default class PlayerWeapon extends cc.Component {
     checkTimeDelay = 0
     isCheckTimeDelay(dt: number): boolean {
         this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 1) {
+        if (this.checkTimeDelay > 0.2) {
             this.checkTimeDelay = 0
             return true
         }

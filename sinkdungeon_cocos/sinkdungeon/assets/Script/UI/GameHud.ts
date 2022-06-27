@@ -1,14 +1,14 @@
-import { EventHelper } from './../logic/EventHelper';
-import PlayerInfoDialog from "./PlayerInfoDialog";
-import HealthBar from "../logic/HealthBar";
-import PlayerData from "../data/PlayerData";
-import Logic from "../logic/Logic";
-import SettingsDialog from "./dialog/SettingsDialog";
-import MartShelvesDialog from "./dialog/MartShelvesDialog";
-import InventoryDialog from "./dialog/InventoryDialog";
-import AudioPlayer from "../utils/AudioPlayer";
-import SatietyView from "./SatietyView";
-import DollMachineDialog from './dialog/DollMachineDialog';
+import { EventHelper } from './../logic/EventHelper'
+import PlayerInfoDialog from './PlayerInfoDialog'
+import HealthBar from '../logic/HealthBar'
+import PlayerData from '../data/PlayerData'
+import Logic from '../logic/Logic'
+import SettingsDialog from './dialog/SettingsDialog'
+import MartShelvesDialog from './dialog/MartShelvesDialog'
+import InventoryDialog from './dialog/InventoryDialog'
+import AudioPlayer from '../utils/AudioPlayer'
+import SatietyView from './SatietyView'
+import DollMachineDialog from './dialog/DollMachineDialog'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -20,378 +20,388 @@ import DollMachineDialog from './dialog/DollMachineDialog';
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const { ccclass, property } = cc._decorator;
+const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class GameHud extends cc.Component {
     @property(HealthBar)
-    healthBar: HealthBar = null;
+    healthBar: HealthBar = null
     @property(HealthBar)
-    dreamBar: HealthBar = null;
+    dreamBar: HealthBar = null
     @property(HealthBar)
-    bossHealthBar: HealthBar = null;
+    bossHealthBar: HealthBar = null
     @property(PlayerInfoDialog)
-    playerInfoDialog: PlayerInfoDialog = null;
+    playerInfoDialog: PlayerInfoDialog = null
     @property(cc.Label)
-    level: cc.Label = null;
+    level: cc.Label = null
     @property(cc.Label)
-    clock: cc.Label = null;
+    clock: cc.Label = null
     @property(cc.Node)
-    damageCorner: cc.Node = null;
+    damageCorner: cc.Node = null
     @property(cc.Node)
-    pasueButton: cc.Node = null;
+    pasueButton: cc.Node = null
     @property(cc.Node)
-    zoomButton: cc.Node = null;
+    zoomButton: cc.Node = null
     @property(SettingsDialog)
-    settingsDialog: SettingsDialog = null;
+    settingsDialog: SettingsDialog = null
     @property(MartShelvesDialog)
-    martShelvesDialog: MartShelvesDialog = null;
+    martShelvesDialog: MartShelvesDialog = null
     @property(cc.Label)
-    completeLabel: cc.Label = null;
+    completeLabel: cc.Label = null
     @property(cc.Label)
-    oilGoldLabel: cc.Label = null;
+    oilGoldLabel: cc.Label = null
     @property(InventoryDialog)
-    inventoryDialog: InventoryDialog = null;
+    inventoryDialog: InventoryDialog = null
     @property(cc.Node)
-    followArrows: cc.Node = null;
+    followArrows: cc.Node = null
     @property(SatietyView)
-    satietyView:SatietyView = null;
+    satietyView: SatietyView = null
     @property(DollMachineDialog)
-    dollMachineDialog:DollMachineDialog = null;
+    dollMachineDialog: DollMachineDialog = null
     @property(cc.Label)
-    AmmoLabel: cc.Label = null;
-    private arrowList: cc.Node[] = [];
-    private isCompleteShowed = false;
-    private checkTimeDelay = 0;
-    private startCountTime = true;
+    AmmoLabel: cc.Label = null
+    private arrowList: cc.Node[] = []
+    private isCompleteShowed = false
+    private checkTimeDelay = 0
+    private startCountTime = true
 
-    private hour = 0;
-    private minute = 0;
-    private second = 0;
+    private hour = 0
+    private minute = 0
+    private second = 0
 
     onLoad() {
-        EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, (detail) => {
-            let data = new PlayerData();
-            data.valueCopy(detail.data);
-            this.statusUpdate(data);
+        EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, detail => {
+            let data = new PlayerData()
+            data.valueCopy(detail.data)
+            this.statusUpdate(data)
         })
-        EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, (detail) => {
-            this.healthBarUpdate(detail.x, detail.y);
+        EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, detail => {
+            this.healthBarUpdate(detail.x, detail.y)
         })
-        EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, (detail) => {
-            this.dreamBarUpdate(detail.x, detail.y);
+        EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, detail => {
+            this.dreamBarUpdate(detail.x, detail.y)
         })
-        EventHelper.on(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR, (detail) => {
+        EventHelper.on(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR, detail => {
             if (this.dreamBar) {
-                this.dreamBar.shake();
+                this.dreamBar.shake()
             }
         })
-        EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_LIFE_BAR, (detail) => {
-            this.lifeBarUpdate(detail.sanity,detail.solid, detail.poo,detail.liquid,detail.pee);
+        EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_LIFE_BAR, detail => {
+            this.lifeBarUpdate(detail.sanity, detail.solid, detail.poo, detail.liquid, detail.pee)
         })
-        
-        EventHelper.on(EventHelper.HUD_DAMAGE_CORNER_SHOW, (detail) => {
-            this.showDamageCorner();
+
+        EventHelper.on(EventHelper.HUD_DAMAGE_CORNER_SHOW, detail => {
+            this.showDamageCorner()
             if (this.healthBar) {
-                this.healthBar.shake();
+                this.healthBar.shake()
             }
         })
-        EventHelper.on(EventHelper.HUD_MART_SHELVES_DIALOG, (detail) => {
-            this.showMartShelvesDialog(detail.type, detail.goodsNameList);
+        EventHelper.on(EventHelper.HUD_MART_SHELVES_DIALOG, detail => {
+            this.showMartShelvesDialog(detail.type, detail.goodsNameList)
         })
-        EventHelper.on(EventHelper.HUD_COMPLETE_SHOW, (detail) => {
-            this.showComplete(detail.map);
+        EventHelper.on(EventHelper.HUD_COMPLETE_SHOW, detail => {
+            this.showComplete(detail.map)
         })
-        EventHelper.on(EventHelper.HUD_OILGOLD_LOSE_SHOW, (detail) => {
-            this.showOilGoldInfo(true);
+        EventHelper.on(EventHelper.HUD_OILGOLD_LOSE_SHOW, detail => {
+            this.showOilGoldInfo(true)
         })
-        EventHelper.on(EventHelper.HUD_OILGOLD_RECOVERY_SHOW, (detail) => {
-            this.showOilGoldInfo(false);
+        EventHelper.on(EventHelper.HUD_OILGOLD_RECOVERY_SHOW, detail => {
+            this.showOilGoldInfo(false)
         })
-        EventHelper.on(EventHelper.HUD_INVENTORY_SHOW, (detail) => {
-            this.showInventoryDialog(detail.id);
+        EventHelper.on(EventHelper.HUD_INVENTORY_SHOW, detail => {
+            this.showInventoryDialog(detail.id)
         })
-        EventHelper.on(EventHelper.HUD_CANCEL_OR_PAUSE, (detail) => {
-            this.cancelOrPause();
+        EventHelper.on(EventHelper.HUD_CANCEL_OR_PAUSE, detail => {
+            this.cancelOrPause()
         })
-        EventHelper.on(EventHelper.HUD_STOP_COUNTTIME
-            , (detail) => { this.startCountTime = false; });
-        EventHelper.on(EventHelper.HUD_FADE_IN, (detail) => {
-            this.fadeIn();
+        EventHelper.on(EventHelper.HUD_STOP_COUNTTIME, detail => {
+            this.startCountTime = false
         })
-        EventHelper.on(EventHelper.HUD_FADE_OUT, (detail) => {
-            this.fadeOut();
+        EventHelper.on(EventHelper.HUD_FADE_IN, detail => {
+            this.fadeIn()
         })
-        EventHelper.on(EventHelper.HUD_DOLL_MACHINE_DIALOG, (detail) => {
-            this.showDollMachineDialog();
+        EventHelper.on(EventHelper.HUD_FADE_OUT, detail => {
+            this.fadeOut()
         })
-        EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_AMMO, (detail) => {
-            this.ammoUpdate(detail.x, detail.y);
+        EventHelper.on(EventHelper.HUD_DOLL_MACHINE_DIALOG, detail => {
+            this.showDollMachineDialog()
+        })
+        EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_AMMO, detail => {
+            this.ammoUpdate(detail.x, detail.y)
         })
         if (this.clock) {
-            this.clock.string = `${Logic.time}`;
+            this.clock.string = `${Logic.time}`
         }
         if (this.level) {
-            this.level.string = `${Logic.worldLoader.getCurrentLevelData().name}`;
+            this.level.string = `${Logic.worldLoader.getCurrentLevelData().name}`
         }
         if (this.damageCorner) {
-            this.damageCorner.opacity = 0;
+            this.damageCorner.opacity = 0
         }
         this.pasueButton.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
-            this.pauseGame();
-        });
+            this.pauseGame()
+        })
         this.zoomButton.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
-            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN, {});
-        });
+            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN, {})
+        })
         this.zoomButton.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
-            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_OUT, {});
-        });
+            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_OUT, {})
+        })
         this.zoomButton.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
-            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_OUT, {});
-            EventHelper.emit(EventHelper.TEST_SHOW_NODE_COUNT);
-        });
-        let finalData = Logic.playerData.FinalCommon;
-        this.healthBarUpdate(Logic.playerData.currentHealth, Logic.playerData.getHealth(finalData).y);
-        this.dreamBarUpdate(Logic.playerData.currentDream, Logic.playerData.getDream(finalData).y);
-        this.ammoUpdate(Logic.playerData.currentAmmo,finalData.MaxAmmo);
-        this.fadeIn();
-        this.initFollowArrows();
+            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_OUT, {})
+            EventHelper.emit(EventHelper.TEST_SHOW_NODE_COUNT)
+        })
+        let finalData = Logic.playerData.FinalCommon
+        this.healthBarUpdate(Logic.playerData.currentHealth, Logic.playerData.getHealth(finalData).y)
+        this.dreamBarUpdate(Logic.playerData.currentDream, Logic.playerData.getDream(finalData).y)
+        this.ammoUpdate(Logic.playerData.currentAmmo, finalData.MaxAmmo)
+        this.fadeIn()
+        this.initFollowArrows()
     }
     private initFollowArrows() {
-        this.arrowList.push(this.followArrows.getChildByName('arrow0'));
-        this.arrowList.push(this.followArrows.getChildByName('arrow1'));
-        this.arrowList.push(this.followArrows.getChildByName('arrow2'));
-        this.arrowList.push(this.followArrows.getChildByName('arrow3'));
+        this.arrowList.push(this.followArrows.getChildByName('arrow0'))
+        this.arrowList.push(this.followArrows.getChildByName('arrow1'))
+        this.arrowList.push(this.followArrows.getChildByName('arrow2'))
+        this.arrowList.push(this.followArrows.getChildByName('arrow3'))
         for (let arrow of this.arrowList) {
-            arrow.active = false;
+            arrow.active = false
         }
     }
     private showOilGoldInfo(isLose: boolean) {
         if (!this.oilGoldLabel) {
-            return;
+            return
         }
-        let arr0 = ['碎', '碎片', '碎片丢', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢', '碎片', '碎', ''];
-        let arr1 = ['碎', '碎片', '碎片找', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找', '碎片', '碎', ''];
-        if (!isLose) AudioPlayer.play(AudioPlayer.COMPLETE);
-        let arr = isLose ? arr0 : arr1;
-        let i = 0;
-        this.oilGoldLabel.string = '';
-        this.oilGoldLabel.unscheduleAllCallbacks();
-        this.oilGoldLabel.schedule(() => {
-            if (i < arr.length) {
-                this.oilGoldLabel.string = arr[i++];
-            }
-        }, 0.15, arr.length);
+        let arr0 = ['碎', '碎片', '碎片丢', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢', '碎片', '碎', '']
+        let arr1 = ['碎', '碎片', '碎片找', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找', '碎片', '碎', '']
+        if (!isLose) AudioPlayer.play(AudioPlayer.COMPLETE)
+        let arr = isLose ? arr0 : arr1
+        let i = 0
+        this.oilGoldLabel.string = ''
+        this.oilGoldLabel.unscheduleAllCallbacks()
+        this.oilGoldLabel.schedule(
+            () => {
+                if (i < arr.length) {
+                    this.oilGoldLabel.string = arr[i++]
+                }
+            },
+            0.15,
+            arr.length
+        )
     }
     private showComplete(map: Map<Number, Boolean>) {
         if (!this.completeLabel || this.isCompleteShowed) {
-            return;
+            return
         }
-        AudioPlayer.play(AudioPlayer.COMPLETE);
-        let arr = ['清', '清理', '清理完', '清理完成', '清理完成', '清理完成', '清理完成', '清理完成', '清理完成', '清理完成', '清理完', '清理', '清', ''];
-        let i = 0;
-        this.completeLabel.string = '';
-        this.completeLabel.unscheduleAllCallbacks();
-        this.isCompleteShowed = true;
-        this.completeLabel.schedule(() => {
-            if (i < arr.length) {
-                this.completeLabel.string = arr[i++];
-            }
-        }, 0.1, arr.length, 0.5);
+        AudioPlayer.play(AudioPlayer.COMPLETE)
+        let arr = ['清', '清理', '清理完', '清理完成', '清理完成', '清理完成', '清理完成', '清理完成', '清理完成', '清理完成', '清理完', '清理', '清', '']
+        let i = 0
+        this.completeLabel.string = ''
+        this.completeLabel.unscheduleAllCallbacks()
+        this.isCompleteShowed = true
+        this.completeLabel.schedule(
+            () => {
+                if (i < arr.length) {
+                    this.completeLabel.string = arr[i++]
+                }
+            },
+            0.1,
+            arr.length,
+            0.5
+        )
         if (map && map.size > 0) {
             for (let i = 0; i < 4; i++) {
                 if (map.has(i)) {
-                    this.arrowList[i].active = true;
-                    this.arrowList[i].getChildByName('sprite').color = map.get(i) ? cc.Color.WHITE : cc.color(55, 55, 55, 255);
+                    this.arrowList[i].active = true
+                    this.arrowList[i].getChildByName('sprite').color = map.get(i) ? cc.Color.WHITE : cc.color(55, 55, 55, 255)
                 } else {
-                    this.arrowList[i].active = false;
+                    this.arrowList[i].active = false
                 }
             }
         }
-
     }
     private fadeOut() {
         if (!this.node) {
-            return;
+            return
         }
-        this.node.opacity = 255;
-        cc.tween(this.node).to(0.5, { opacity: 0 }).start();
+        this.node.opacity = 255
+        cc.tween(this.node).to(0.5, { opacity: 0 }).start()
     }
     private fadeIn() {
         if (!this.node) {
-            return;
+            return
         }
-        this.node.opacity = 0;
-        cc.tween(this.node).to(3, { opacity: 255 }).start();
+        this.node.opacity = 0
+        cc.tween(this.node).to(3, { opacity: 255 }).start()
     }
     private statusUpdate(data: PlayerData) {
         if (!this.playerInfoDialog) {
-            return;
+            return
         }
-        this.playerInfoDialog.refreshDialog(data, data.EquipmentTotalData, data.StatusTotalData);
+        this.playerInfoDialog.refreshDialog(data, data.EquipmentTotalData, data.StatusTotalData)
     }
 
     private showDamageCorner() {
         if (!this.damageCorner) {
-            return;
+            return
         }
-        this.damageCorner.stopAllActions();
-        this.damageCorner.opacity = 255;
-        this.damageCorner.scale = 1;
-        cc.tween(this.damageCorner).parallel(cc.tween(this.damageCorner).to(0.5, { scale: 1.05 }), cc.tween(this.damageCorner).to(1, { opacity: 0 })).start();
+        this.damageCorner.stopAllActions()
+        this.damageCorner.opacity = 255
+        this.damageCorner.scale = 1
+        cc.tween(this.damageCorner)
+            .parallel(cc.tween(this.damageCorner).to(0.5, { scale: 1.05 }), cc.tween(this.damageCorner).to(1, { opacity: 0 }))
+            .start()
     }
-    private ammoUpdate(current:number, max:number): void {
+    private ammoUpdate(current: number, max: number): void {
         if (this.AmmoLabel) {
-            this.AmmoLabel.string = `${current<=0?'-':current}/${max<=0?'-':max}`
-            cc.tween(this.AmmoLabel.node).to(0.05,{scale:1.05}).to(0.05,{scale:0.95}).to(0.1,{scale:1.05}).to(0.05,{scale:1}).start();
+            this.AmmoLabel.string = `${current <= 0 ? '-' : current}/${max <= 0 ? '-' : max}`
+            cc.tween(this.AmmoLabel.node).to(0.05, { scale: 1.05 }).to(0.05, { scale: 0.95 }).to(0.1, { scale: 1.05 }).to(0.05, { scale: 1 }).start()
         }
     }
     private healthBarUpdate(currentHealth, maxHealth): void {
         if (this.healthBar) {
-            this.healthBar.refreshHealth(currentHealth, maxHealth);
+            this.healthBar.refreshHealth(currentHealth, maxHealth)
         }
     }
     private dreamBarUpdate(currentHealth, maxHealth): void {
         if (this.dreamBar) {
-            this.dreamBar.refreshHealth(currentHealth, maxHealth);
+            this.dreamBar.refreshHealth(currentHealth, maxHealth)
         }
     }
-    private lifeBarUpdate(sanity:number,solid:number,poo:number,liquid:number,pee:number): void {
+    private lifeBarUpdate(sanity: number, solid: number, poo: number, liquid: number, pee: number): void {
         if (this.satietyView) {
-            this.satietyView.refreshPercent(sanity,solid, poo,liquid,pee);
+            this.satietyView.refreshPercent(sanity, solid, poo, liquid, pee)
         }
     }
     start() {
-        let arr = Logic.time.split(':');
-        this.hour = parseInt(arr[0]);
-        this.minute = parseInt(arr[1]);
-        this.second = parseInt(arr[2]);
+        let arr = Logic.time.split(':')
+        this.hour = parseInt(arr[0])
+        this.minute = parseInt(arr[1])
+        this.second = parseInt(arr[2])
     }
 
     isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt;
+        this.checkTimeDelay += dt
         if (this.checkTimeDelay > 1) {
-            this.checkTimeDelay = 0;
-            return true;
+            this.checkTimeDelay = 0
+            return true
         }
-        return false;
+        return false
     }
 
     update(dt: number) {
         if (this.isCheckTimeDelay(dt)) {
             if (this.clock && this.startCountTime) {
-                this.changeTime();
-                this.clock.string = `${Logic.time}`;
+                this.changeTime()
+                this.clock.string = `${Logic.time}`
             }
         }
         if (this.settingsDialog.node.active || this.martShelvesDialog.node.active || this.dollMachineDialog.node.active) {
-            Logic.isGamePause = true;
+            Logic.isGamePause = true
         } else {
-            Logic.isGamePause = false;
+            Logic.isGamePause = false
         }
     }
-    useItem() {
-
-    }
+    useItem() {}
     changeTime() {
         if (Logic.isGamePause) {
-            return;
+            return
         }
-        this.second = this.second + 1;
+        this.second = this.second + 1
         if (this.second >= 60) {
-            this.second = 0;
-            this.minute = this.minute + 1;
+            this.second = 0
+            this.minute = this.minute + 1
         }
         if (this.minute >= 60) {
-            this.minute = 0;
-            this.hour = this.hour + 1;
+            this.minute = 0
+            this.hour = this.hour + 1
         }
-        let strHour = `${this.hour}`;
-        strHour = strHour.length > 1 ? strHour : '0' + strHour;
-        let strMinute = `${this.minute}`;
-        strMinute = strMinute.length > 1 ? strMinute : '0' + strMinute;
-        let strSecond = `${this.second}`;
-        strSecond = strSecond.length > 1 ? strSecond : '0' + strSecond;
-        Logic.time = strHour + ':' + strMinute + ':' + strSecond;
-        Logic.realTime = Logic.realTime + 10000;
-        EventHelper.emit(EventHelper.HUD_TIME_TICK);
-
+        let strHour = `${this.hour}`
+        strHour = strHour.length > 1 ? strHour : '0' + strHour
+        let strMinute = `${this.minute}`
+        strMinute = strMinute.length > 1 ? strMinute : '0' + strMinute
+        let strSecond = `${this.second}`
+        strSecond = strSecond.length > 1 ? strSecond : '0' + strSecond
+        Logic.time = strHour + ':' + strMinute + ':' + strSecond
+        Logic.realTime = Logic.realTime + 10000
+        EventHelper.emit(EventHelper.HUD_TIME_TICK)
     }
 
     private cancelOrPause() {
         if (!this.node) {
-            return;
+            return
         }
+        AudioPlayer.play(AudioPlayer.SELECT)
         if (this.inventoryDialog.isShow) {
-            this.inventoryDialog.dismiss();
-            return;
+            this.inventoryDialog.dismiss()
+            return
         }
         if (this.martShelvesDialog.isShow) {
-            this.martShelvesDialog.dismiss();
-            return;
+            this.martShelvesDialog.dismiss()
+            return
         }
         if (this.dollMachineDialog.isShow) {
-            this.dollMachineDialog.dismiss();
-            return;
+            this.dollMachineDialog.dismiss()
+            return
         }
-        this.showSettingsDialog();
+        this.showSettingsDialog()
     }
     //button
     pauseGame(): void {
-        AudioPlayer.play(AudioPlayer.SELECT);
-        this.showSettingsDialog();
+        AudioPlayer.play(AudioPlayer.SELECT)
+        this.showSettingsDialog()
     }
     //button
-    showInventoryDialog(id:string) {
+    showInventoryDialog(id: string) {
         if (!this.node) {
-            return;
+            return
         }
+        AudioPlayer.play(AudioPlayer.SELECT)
         if (this.inventoryDialog.isShow) {
-            this.inventoryDialog.dismiss();
-        } else if(id&&id.length>0){
-            this.inventoryDialog.showFurniture(id);
-        }else{
-            this.inventoryDialog.show();
+            this.inventoryDialog.dismiss()
+        } else if (id && id.length > 0) {
+            this.inventoryDialog.showFurniture(id)
+        } else {
+            this.inventoryDialog.show()
         }
     }
     showSettingsDialog() {
         if (!this.node) {
-            return;
+            return
         }
         if (this.settingsDialog.isShow) {
-            this.settingsDialog.dismiss();
-            cc.director.getScheduler().setTimeScale(1);
+            this.settingsDialog.dismiss()
+            cc.director.getScheduler().setTimeScale(1)
         } else {
             this.scheduleOnce(() => {
                 if (this.settingsDialog.isShow && !this.settingsDialog.isAniming) {
-                    cc.director.getScheduler().setTimeScale(0);
+                    cc.director.getScheduler().setTimeScale(0)
                 } else {
-                    cc.director.getScheduler().setTimeScale(1);
+                    cc.director.getScheduler().setTimeScale(1)
                 }
             }, 1)
 
-            this.settingsDialog.show();
+            this.settingsDialog.show()
         }
     }
     showMartShelvesDialog(type: string, goodsList: string[]) {
         if (!this.martShelvesDialog) {
-            return;
+            return
         }
         if (this.martShelvesDialog.isShow) {
-            this.martShelvesDialog.dismiss();
+            this.martShelvesDialog.dismiss()
         } else {
-            this.martShelvesDialog.updateUI(type, goodsList);
-            this.martShelvesDialog.show();
+            this.martShelvesDialog.updateUI(type, goodsList)
+            this.martShelvesDialog.show()
         }
     }
-    showDollMachineDialog(){
-        if(!this.dollMachineDialog){
-            return;
+    showDollMachineDialog() {
+        if (!this.dollMachineDialog) {
+            return
         }
-        if(this.dollMachineDialog.isShow){
-            this.dollMachineDialog.dismiss();
-        }else{
-            this.dollMachineDialog.show();
+        if (this.dollMachineDialog.isShow) {
+            this.dollMachineDialog.dismiss()
+        } else {
+            this.dollMachineDialog.show()
         }
     }
 }
