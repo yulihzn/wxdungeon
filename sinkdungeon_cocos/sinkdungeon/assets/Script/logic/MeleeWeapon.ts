@@ -239,7 +239,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
         this.anim.play(animname)
         this.anim.getAnimationState(animname).speed = this.getAnimSpeed(data.FinalCommon)
         if (this.player.sc.isJumping) {
-            this.player.airPause(2, 0.1)
+            // this.player.airPause(2, 0.1)
+            this.player.jumpAbility.acceleratedFall(2)
         }
         return true
     }
@@ -310,6 +311,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
             name = this.isBlunt ? 'MeleeAttackBluntFar' : 'MeleeAttackFar'
         } else {
             name = this.isBlunt ? 'MeleeAttackBlunt' : 'MeleeAttack'
+        }
+        if (this.player.sc.isJumping) {
+            return 'MeleeAttackKick1'
         }
         return name + this.getComboSuffix(comboType)
     }

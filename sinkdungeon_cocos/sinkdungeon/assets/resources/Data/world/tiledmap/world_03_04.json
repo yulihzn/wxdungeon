@@ -39,14 +39,14 @@
                  "value":"5,10,3,3,16,12#5,0,4,0,38,75"
                 }, 
                 {
-                 "name":"floorCoverRes",
-                 "type":"string",
-                 "value":"tile_pyramid"
-                }, 
-                {
                  "name":"floorRes",
                  "type":"string",
-                 "value":"tile_pyramid"
+                 "value":"tile_pyramid001"
+                }, 
+                {
+                 "name":"floorRes1",
+                 "type":"string",
+                 "value":"tile_pyramid004"
                 }, 
                 {
                  "name":"height",
@@ -84,22 +84,22 @@
                  "value":0
                 }, 
                 {
+                 "name":"wallRes0",
+                 "type":"string",
+                 "value":"wallpyramid00"
+                }, 
+                {
                  "name":"wallRes1",
                  "type":"string",
-                 "value":"pyramid00"
+                 "value":"walldungeon00"
                 }, 
                 {
-                 "name":"wallRes2",
-                 "type":"string",
-                 "value":"dungeon00"
-                }, 
-                {
-                 "name":"wallRes3",
+                 "name":"wallResOther0",
                  "type":"string",
                  "value":"wall03anim001"
                 }, 
                 {
-                 "name":"wallRes4",
+                 "name":"wallResOther1",
                  "type":"string",
                  "value":"wall03anim002"
                 }, 

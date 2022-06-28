@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "AvatarAttackVertical",
+  "_name": "AvatarAirKick",
   "_objFlags": 0,
   "_native": "",
   "_duration": 0.5,
@@ -14,19 +14,11 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": 30
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": -30
+              "value": 45
             },
             {
               "frame": 0.5,
-              "value": 0
+              "value": -45
             }
           ]
         }
@@ -37,24 +29,7 @@
             {
               "frame": 0,
               "value": [
-                2,
-                7,
-                0
-              ]
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": [
-                2,
-                6.5,
-                0
-              ],
-              "curve": "constant"
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": [
-                2,
+                3,
                 5,
                 0
               ],
@@ -63,8 +38,8 @@
             {
               "frame": 0.5,
               "value": [
-                2,
-                5,
+                2.926,
+                4.471,
                 0
               ]
             }
@@ -72,23 +47,12 @@
           "angle": [
             {
               "frame": 0,
-              "value": -5,
-              "curve": "constant"
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": -2.5,
-              "curve": "constant"
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": 0,
+              "value": 30,
               "curve": "constant"
             },
             {
               "frame": 0.5,
-              "value": -2.5,
-              "curve": "constant"
+              "value": 30
             }
           ]
         }
@@ -98,23 +62,12 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0,
-              "curve": "constant"
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": 2.5,
-              "curve": "constant"
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": 5,
+              "value": -15,
               "curve": "constant"
             },
             {
               "frame": 0.5,
-              "value": 2.5,
-              "curve": "constant"
+              "value": -45
             }
           ],
           "position": [
@@ -122,25 +75,7 @@
               "frame": 0,
               "value": [
                 -2,
-                5,
-                0
-              ],
-              "curve": "constant"
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": [
-                -2,
-                6.5,
-                0
-              ],
-              "curve": "constant"
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": [
-                -2,
-                8,
+                5.5,
                 0
               ],
               "curve": "constant"
@@ -149,10 +84,9 @@
               "frame": 0.5,
               "value": [
                 -2,
-                6.5,
+                5,
                 0
-              ],
-              "curve": "constant"
+              ]
             }
           ]
         }
@@ -205,8 +139,19 @@
           ]
         }
       },
-      "sprite/avatar/legright/foot": {
+      "sprite/avatar/legleft/foot": {
         "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.5,
+              "value": 0
+            }
+          ],
           "position": [
             {
               "frame": 0,
@@ -214,13 +159,50 @@
                 0,
                 -2,
                 0
+              ],
+              "curve": "constant"
+            },
+            {
+              "frame": 0.5,
+              "value": [
+                0.001,
+                -2.948,
+                0
               ]
             }
-          ],
+          ]
+        }
+      },
+      "sprite/avatar/legright/foot": {
+        "props": {
           "angle": [
             {
               "frame": 0,
-              "value": 0
+              "value": -30,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.5,
+              "value": 90
+            }
+          ],
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0.173,
+                -2.452,
+                0
+              ],
+              "curve": "constant"
+            },
+            {
+              "frame": 0.5,
+              "value": [
+                -0.158,
+                -2.475,
+                0
+              ]
             }
           ]
         }
