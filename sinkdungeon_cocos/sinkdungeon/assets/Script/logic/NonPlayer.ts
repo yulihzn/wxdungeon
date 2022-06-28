@@ -423,6 +423,11 @@ export default class NonPlayer extends Actor {
             this.shooter.fireBullet(this.data.Common.remoteAngle)
         }
     }
+    private bodyStopAllActions() {
+        this.bodySprite.node.stopAllActions()
+        this.sc.isBlinking = false
+        this.bodySprite.node.opacity = 255
+    }
     private showAttackAnim(before: Function, attacking: Function, finish: Function, target: Actor, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {
         let speedScale = 1 - this.data.FinalCommon.AttackSpeed / 10
         if (speedScale < 0.5) {
@@ -440,7 +445,7 @@ export default class NonPlayer extends Actor {
             pos.y = -pos.y
         }
         this.anim.pause()
-        this.bodySprite.node.stopAllActions()
+        this.bodyStopAllActions()
         this.sprite.stopAllActions()
         let stabDelay = 0
         if (((!isSpecial && this.data.meleeDash > 0) || (isSpecial && this.data.specialDash > 0)) && isMelee) {
@@ -567,14 +572,16 @@ export default class NonPlayer extends Actor {
             if (isSpecial) {
                 //延迟添加特殊物体
                 this.scheduleOnce(() => {
-                    this.specialManager.dungeon = this.dungeon
-                    this.specialManager.addPlacement(
-                        this.data.specialType,
-                        this.data.specialDistance,
-                        this.isFaceRight,
-                        FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed),
-                        this.IsVariation
-                    )
+                    if (this.sc.isDied) {
+                        this.specialManager.dungeon = this.dungeon
+                        this.specialManager.addPlacement(
+                            this.data.specialType,
+                            this.data.specialDistance,
+                            this.isFaceRight,
+                            FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed),
+                            this.IsVariation
+                        )
+                    }
                 }, this.data.specialDelay)
             }
             if (attacking) {
@@ -698,7 +705,7 @@ export default class NonPlayer extends Actor {
         this.sc.isFalling = true
         this.bodySprite.node.angle = ActorUtils.isBehindTarget(this.dungeon.player, this) ? -75 : 105
         if (this.jumpAbility) {
-            this.jumpAbility.airPause(4, 0.2, JumpingAbility.CALLBACK_AIR_PAUSE, (group: number, type: number) => {
+            this.jumpAbility.airPause(4, 0.3, JumpingAbility.CALLBACK_AIR_PAUSE, (group: number, type: number) => {
                 if (type == TriggerData.TYPE_JUMP_END) {
                     this.jumpAbility.removeCallback(JumpingAbility.CALLBACK_AIR_PAUSE)
                     this.fallFinish()
@@ -747,7 +754,7 @@ export default class NonPlayer extends Actor {
                 this.fall()
             }
             this.sprite.stopAllActions()
-            this.bodySprite.node.stopAllActions()
+            this.bodyStopAllActions()
             this.changeBodyRes(this.data.resName, Logic.getHalfChance() ? NonPlayer.RES_HIT001 : NonPlayer.RES_HIT002)
             if (this.anim.getAnimationState('MonsterIdle').isPlaying) {
                 this.anim.pause()
@@ -857,9 +864,8 @@ export default class NonPlayer extends Actor {
         this.sc.isDisguising = false
         this.dashStep.IsExcuting = false
         this.sprite.stopAllActions()
-        this.bodySprite.node.stopAllActions()
+        this.bodyStopAllActions()
         this.dangerBox.finish()
-        this.bodySprite.node.angle = 0
         this.anim.play('MonsterDie')
         this.changeBodyRes(this.data.resName, NonPlayer.RES_HIT003)
         let collider: CCollider = this.getComponent(CCollider)
@@ -1183,8 +1189,10 @@ export default class NonPlayer extends Actor {
                         if (this.data.flee > 0) {
                             pos = this.getMovePosFromTarget(target, true)
                             pos = cc.v3(-pos.x, -pos.y)
+                            this.move(pos, speed)
+                        } else {
+                            this.move(pos, speed * 0.5)
                         }
-                        this.move(pos, speed * 0.5)
                     },
                     0.2,
                     true
@@ -1392,7 +1400,7 @@ export default class NonPlayer extends Actor {
     /**出场动作 */
     public enterShow() {
         this.sprite.stopAllActions()
-        this.bodySprite.node.stopAllActions()
+        this.bodyStopAllActions()
         this.bodySprite.node.color = cc.Color.BLACK
         cc.tween(this.bodySprite.node)
             .to(1, { color: cc.color(255, 255, 255).fromHEX(this.data.bodyColor) })
@@ -1405,7 +1413,7 @@ export default class NonPlayer extends Actor {
     public enterDisguise() {
         this.sc.isShow = true
         this.sprite.stopAllActions()
-        this.bodySprite.node.stopAllActions()
+        this.bodyStopAllActions()
         if (this.anim.getAnimationState('MonsterIdle').isPlaying) {
             this.anim.pause()
         }
@@ -1468,7 +1476,7 @@ export default class NonPlayer extends Actor {
     /**眩晕 */
     public enterDizz() {
         this.sc.isAttacking = false
-        this.bodySprite.node.stopAllActions()
+        this.bodyStopAllActions()
         this.sprite.stopAllActions()
     }
     /**闪烁 */

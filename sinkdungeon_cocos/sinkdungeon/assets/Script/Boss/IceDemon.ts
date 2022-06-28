@@ -133,7 +133,7 @@ export default class IceDemon extends Boss {
             playerDis > 60
         ) {
             pos = pos.normalizeSelf()
-            this.move(pos, 10)
+            this.move(pos, 5)
         }
     }
     getMovePos(): cc.Vec3 {

@@ -508,11 +508,11 @@ export default class Player extends Actor {
         this.updatePlayerPos()
     }
     changeZIndex(pos: cc.Vec3) {
-        let offsetY = this.entity.Transform.z
+        let offsetY = this.entity.Transform.base
         if (offsetY > 0) {
             offsetY += 500
         }
-        this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.entity.Transform.position.x, this.entity.Transform.position.y - offsetY))
+        this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.node.position.x, this.node.position.y - offsetY))
     }
     addStatus(statusType: string, from: FromData, isFromSave?: boolean) {
         if (!this.node || this.sc.isDied) {

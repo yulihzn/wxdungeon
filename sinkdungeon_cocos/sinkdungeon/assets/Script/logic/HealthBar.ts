@@ -8,49 +8,47 @@
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const { ccclass, property } = cc._decorator;
+const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class HealthBar extends cc.Component {
-    static readonly ICON_SIZE = 17;
+    static readonly ICON_SIZE = 4
     @property(cc.Node)
-    backbar: cc.Node = null;
+    backbar: cc.Node = null
     @property(cc.Label)
-    label: cc.Label = null;
+    label: cc.Label = null
     @property
-    isPlayer = false;
+    isPlayer = false
 
-    progressBar: cc.ProgressBar;
-    private timeDelay = 0;
+    progressBar: cc.ProgressBar
+    private timeDelay = 0
     hideWhenFull = false
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.progressBar = this.getComponent(cc.ProgressBar);
-        this.progressBar.progress = 1;
+        this.progressBar = this.getComponent(cc.ProgressBar)
+        this.progressBar.progress = 1
     }
 
-    start() {
-
-    }
+    start() {}
     refreshHealth(currentHealth: number, maxHealth: number): void {
         if (this.progressBar) {
             if (this.isPlayer) {
-                this.progressBar.totalLength = maxHealth * HealthBar.ICON_SIZE;
-                this.node.width = this.progressBar.totalLength;
+                let length = maxHealth * HealthBar.ICON_SIZE
+                this.progressBar.totalLength = length < 200 ? length : 200
+                this.node.width = this.progressBar.totalLength
             }
-            this.progressBar.progress = currentHealth / maxHealth;
+            this.progressBar.progress = currentHealth / maxHealth
             if (this.label) {
-                this.label.string = `${parseFloat(currentHealth.toFixed(1))}/${maxHealth}`;
+                this.label.string = `${parseFloat(currentHealth.toFixed(1))}/${maxHealth}`
             }
-
         }
     }
     shake() {
-        cc.tween(this.node).to(0.05, { scale: 1.05 }).to(0.05, { scale: 0.95 }).to(0.1, { scale: 1.05 }).to(0.05, { scale: 1 }).start();
+        cc.tween(this.node).to(0.05, { scale: 1.05 }).to(0.05, { scale: 0.95 }).to(0.1, { scale: 1.05 }).to(0.05, { scale: 1 }).start()
     }
     update(dt) {
-        this.backbar.width = this.lerp(this.backbar.width, this.progressBar.barSprite.node.width, dt * 5);
+        this.backbar.width = this.lerp(this.backbar.width, this.progressBar.barSprite.node.width, dt * 5)
         if (this.hideWhenFull) {
             if (this.progressBar.progress == 1) {
                 this.node.opacity = 0
@@ -60,6 +58,6 @@ export default class HealthBar extends cc.Component {
         }
     }
     lerp(a: number, b: number, r: number) {
-        return a + (b - a) * r;
+        return a + (b - a) * r
     }
 }

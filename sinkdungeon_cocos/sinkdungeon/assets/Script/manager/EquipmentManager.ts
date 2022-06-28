@@ -266,15 +266,15 @@ export default class EquipmentManager extends BaseManager {
             desc.prefix += damageBack.y > 2 ? '阴冷' : ''
             desc.color = EquipmentManager.getMixColor(desc.color, damageBack.y > 2 ? EquipmentManager.COLOR_BACK : '#000000')
         }
-        //移动速度0-80减去装备自带移动速度
+        //移动速度0-10减去装备自带移动速度
         let moveSpeed = cc.v3(0, 0)
         if (
             EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.CLOAK, InventoryManager.TROUSERS, InventoryManager.SHOES, InventoryManager.CLOTHES]) &&
             data.Common.moveSpeed > 0
         ) {
-            let ms = 80 - data.Common.moveSpeed
-            if (ms < 10) {
-                ms = 10
+            let ms = 10 - data.Common.moveSpeed
+            if (ms < 1) {
+                ms = 1
             }
             moveSpeed = EquipmentManager.getRandomQuality(0, ms, chestQuality, rand4save)
             level = moveSpeed.y > level ? moveSpeed.y : level

@@ -91,6 +91,7 @@ export class EventHelper extends cc.Component {
     public static readonly POOL_DESTORY_BLOCKLIGHT = 'destoryblocklight'
     public static readonly TEST_SHOW_NODE_COUNT = 'TEST_SHOW_NODE_COUNT'
     public static readonly SETTINGS_LOW_POWER = 'SETTINGS_LOW_POWER'
+    public static readonly LOADING_ICON = 'LOADING_ICON'
     public static eventHandler: cc.Node = new cc.Node()
 
     /**

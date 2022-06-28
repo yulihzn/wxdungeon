@@ -1,6 +1,8 @@
 import ChapterData from '../data/ChapterData'
 import LevelData from '../data/LevelData'
+import { EventHelper } from '../logic/EventHelper'
 import Logic from '../logic/Logic'
+import LoadingIcon from '../ui/LoadingIcon'
 /**
  * 地图文件加载器
  * 保存大地图数据和房间数据
@@ -32,6 +34,7 @@ export default class WorldLoader {
         //判断是否加载过地图资源
         if (this.worldMap.length > 0) {
             this.isloaded = true
+            EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_MAP })
             return
         }
         this.worldMap = new Array()
@@ -177,6 +180,7 @@ export default class WorldLoader {
             }
             this.isloaded = true
             cc.log('加载世界完成')
+            EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_MAP })
         })
     }
     // private loadChapterLevel(data: ChapterData) {

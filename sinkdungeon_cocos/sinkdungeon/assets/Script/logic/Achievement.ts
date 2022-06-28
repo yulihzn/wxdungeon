@@ -58,6 +58,9 @@ export default class Achievement extends cc.Component {
     loadingBackground: cc.Node = null
     @property(AchievementItemDialog)
     achievementItemDialog: AchievementItemDialog = null
+    @property(cc.Prefab)
+    loadingIconPrefab: cc.Prefab = null
+    private loadingIcon: LoadingIcon
     //图片资源
     bossSpriteFrames: { [key: string]: cc.SpriteFrame } = null
     // LIFE-CYCLE CALLBACKS:
@@ -86,6 +89,9 @@ export default class Achievement extends cc.Component {
                 this.cancelOrPause()
             }
         })
+        this.loadingIcon = cc.instantiate(this.loadingIconPrefab).getComponent(LoadingIcon)
+        this.loadingIcon.node.parent = this.loadingBackground
+        this.loadingIcon.init([LoadingIcon.TYPE_TEXTURE_AUTO, LoadingIcon.TYPE_TEXTURE, LoadingIcon.TYPE_ITEM, LoadingIcon.TYPE_EQUIP, LoadingIcon.TYPE_NPC])
     }
     start() {
         this.loadingManager.loadEquipment()
@@ -234,8 +240,7 @@ export default class Achievement extends cc.Component {
         }
     }
     show() {
-        let loadingIcon = this.loadingBackground.getComponentInChildren(LoadingIcon)
-        if (loadingIcon && loadingIcon.isFirst) {
+        if (this.loadingIcon && this.loadingIcon.isFirst) {
             cc.tween(this.loadingBackground)
                 .to(0.5, { opacity: 0 })
                 .call(() => {

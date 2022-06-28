@@ -1,5 +1,7 @@
+import { EventHelper } from './../logic/EventHelper'
 import ProfessionData from '../data/ProfessionData'
 import Logic from '../logic/Logic'
+import LoadingIcon from '../ui/LoadingIcon'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -260,6 +262,7 @@ export default class LoadingManager {
     loadBuildings() {
         if (Logic.buildings && Logic.buildings['Door']) {
             this.isBuildingLoaded = true
+            EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_BUILDING })
             return
         }
         cc.resources.loadDir('Prefabs/buildings', cc.Prefab, (err: Error, assert: cc.Prefab[]) => {
@@ -268,6 +271,7 @@ export default class LoadingManager {
             }
             this.isBuildingLoaded = true
             cc.log('加载建筑完成')
+            EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_BUILDING })
         })
     }
 
@@ -305,6 +309,7 @@ export default class LoadingManager {
     loadAutoSpriteFrames() {
         if (Logic.spriteFrames && Logic.spriteFrameRes('auto')) {
             this.spriteFrameNames[LoadingManager.KEY_AUTO] = true
+            EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_TEXTURE_AUTO })
             return
         }
         cc.log('加载自动图集')
@@ -314,11 +319,28 @@ export default class LoadingManager {
             }
             this.spriteFrameNames[LoadingManager.KEY_AUTO] = true
             cc.log('加载自动图集完成')
+            EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_TEXTURE_AUTO })
         })
     }
     loadSpriteAtlas(typeKey: string, hasKey: string) {
+        let type = 0
+        switch (typeKey) {
+            case LoadingManager.KEY_EQUIPMENT:
+                type = LoadingIcon.TYPE_EQUIP
+                break
+            case LoadingManager.KEY_ITEM:
+                type = LoadingIcon.TYPE_ITEM
+                break
+            case LoadingManager.KEY_NPC:
+                type = LoadingIcon.TYPE_NPC
+                break
+            case LoadingManager.KEY_TEXTURES:
+                type = LoadingIcon.TYPE_TEXTURE
+                break
+        }
         if (Logic.spriteFrames && Logic.spriteFrames[hasKey]) {
             this.spriteFrameNames[typeKey] = true
+            EventHelper.emit(EventHelper.LOADING_ICON, { type: type })
             return
         }
         cc.log(`加载${typeKey}图集`)
@@ -328,6 +350,7 @@ export default class LoadingManager {
             }
             this.spriteFrameNames[typeKey] = true
             cc.log(`加载${typeKey}图集完成`)
+            EventHelper.emit(EventHelper.LOADING_ICON, { type: type })
         })
     }
     static loadNpcSpriteAtlas(name: string, callback?: Function) {

@@ -64,6 +64,8 @@ export default class PickAvatar extends cc.Component {
     brightnessBarPrefab: cc.Prefab = null
     @property(cc.Prefab)
     palettePrefab: cc.Prefab = null
+    @property(cc.Prefab)
+    loadingIconPrefab: cc.Prefab = null
 
     private bedSprite: cc.Sprite
     private coverSprite: cc.Sprite
@@ -104,6 +106,7 @@ export default class PickAvatar extends cc.Component {
     private randomTouched = false
     private isShow = false
     private loadingManager: LoadingManager = new LoadingManager()
+    private loadingIcon: LoadingIcon
 
     onLoad() {
         this.loadingManager.init()
@@ -132,6 +135,9 @@ export default class PickAvatar extends cc.Component {
         this.shoesSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'leg1', 'shoes'])
         this.shoesSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'leg2', 'shoes'])
         this.loadingBackground.active = true
+        this.loadingIcon = cc.instantiate(this.loadingIconPrefab).getComponent(LoadingIcon)
+        this.loadingIcon.node.parent = this.loadingBackground
+        this.loadingIcon.init([LoadingIcon.TYPE_TEXTURE, LoadingIcon.TYPE_EQUIP])
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor')
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_EQUIPMENT, 'emptyequipment')
         this.loadingManager.loadProfession()
@@ -173,8 +179,7 @@ export default class PickAvatar extends cc.Component {
 
     show() {
         this.isShow = true
-        let loadingIcon = this.loadingBackground.getComponentInChildren(LoadingIcon)
-        if (loadingIcon && loadingIcon.isFirst) {
+        if (this.loadingIcon && this.loadingIcon.isFirst) {
             cc.tween(this.loadingBackground)
                 .to(0.5, { opacity: 0 })
                 .call(() => {
