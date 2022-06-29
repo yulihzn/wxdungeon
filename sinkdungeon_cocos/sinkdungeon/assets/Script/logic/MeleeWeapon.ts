@@ -509,10 +509,10 @@ export default class MeleeWeapon extends BaseColliderComponent {
             let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.player.node.position))
             this.hv = Controller.mousePos.add(cc.v2(this.dungeon.mainCamera.node.position)).sub(p).normalize()
         } else {
-            // let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400)
-            // if (!pos.equals(cc.Vec3.ZERO)) {
-            //     this.hv = cc.v2(pos)
-            // }
+            let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400)
+            if (!pos.equals(cc.Vec3.ZERO)) {
+                this.hv = cc.v2(pos)
+            }
         }
         if (!this.isAttacking) {
             this.rotateCollider(this.hv)
