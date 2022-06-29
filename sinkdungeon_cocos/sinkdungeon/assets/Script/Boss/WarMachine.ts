@@ -121,10 +121,10 @@ export default class WarMachine extends Boss {
         if (isHalf) {
             if (this.isMoveRight && this.pos.x - this.defaultPos.x > 2) {
                 this.isMoveRight = false
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
+                AudioPlayer.play(AudioPlayer.MELEE)
             } else if (!this.isMoveRight && this.defaultPos.x - this.pos.x > 2) {
                 this.isMoveRight = true
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
+                AudioPlayer.play(AudioPlayer.MELEE)
             }
             let pos = cc.v3(this.isMoveRight ? 1 : -1, 0)
             if (!pos.equals(cc.Vec3.ZERO)) {

@@ -37,15 +37,7 @@ export default class Loading extends cc.Component {
         this.loadingManager.init()
         this.loadingIcon = cc.instantiate(this.loadingIconPrefab).getComponent(LoadingIcon)
         this.loadingIcon.node.parent = this.node
-        this.loadingIcon.init([
-            LoadingIcon.TYPE_TEXTURE_AUTO,
-            LoadingIcon.TYPE_TEXTURE,
-            LoadingIcon.TYPE_ITEM,
-            LoadingIcon.TYPE_EQUIP,
-            LoadingIcon.TYPE_NPC,
-            LoadingIcon.TYPE_MAP,
-            LoadingIcon.TYPE_BUILDING
-        ])
+        this.loadingIcon.init([LoadingIcon.TYPE_TEXTURE_AUTO, LoadingIcon.TYPE_TEXTURE, LoadingIcon.TYPE_ITEM, LoadingIcon.TYPE_EQUIP, LoadingIcon.TYPE_NPC, LoadingIcon.TYPE_MAP])
     }
 
     start() {

@@ -58,6 +58,17 @@
               "frame": 0,
               "value": 0
             }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
           ]
         }
       },
@@ -77,6 +88,17 @@
                 5,
                 0
               ]
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
             }
           ]
         }
@@ -171,6 +193,17 @@
               "frame": 0,
               "value": 0
             }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
           ]
         }
       },
@@ -192,10 +225,31 @@
               "frame": 0,
               "value": 0
             }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
           ]
         }
       },
       "sprite/cup": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/meleelight": {
         "props": {
           "opacity": [
             {

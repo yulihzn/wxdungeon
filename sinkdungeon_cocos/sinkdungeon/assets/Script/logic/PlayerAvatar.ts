@@ -24,6 +24,7 @@ export default class PlayerAvatar extends cc.Component {
     static readonly STATE_FALL = 3
     static readonly STATE_DIE = 4
     static readonly STATE_JUMP = 5
+    static readonly STATE_AIRKICK = 6
     status = PlayerAvatar.STATE_IDLE
     dir = PlayerAvatar.DIR_RIGHT
     anim: cc.Animation
@@ -150,13 +151,18 @@ export default class PlayerAvatar extends cc.Component {
                 }
                 break
             case PlayerAvatar.STATE_WALK:
-                if (this.status != status && PlayerAvatar.STATE_ATTACK != this.status && PlayerAvatar.STATE_DIE != this.status) {
+                if (this.status != status && PlayerAvatar.STATE_ATTACK != this.status && PlayerAvatar.STATE_AIRKICK != this.status && PlayerAvatar.STATE_DIE != this.status) {
                     this.playWalk()
                 }
                 break
             case PlayerAvatar.STATE_ATTACK:
                 if (PlayerAvatar.STATE_DIE != this.status) {
                     this.playAttack()
+                }
+                break
+            case PlayerAvatar.STATE_AIRKICK:
+                if (PlayerAvatar.STATE_DIE != this.status) {
+                    this.playAirKick()
                 }
                 break
             case PlayerAvatar.STATE_DIE:
@@ -286,6 +292,21 @@ export default class PlayerAvatar extends cc.Component {
             .to(0.1, { position: cc.v3(-offsetX, -offsetY) })
             .to(0.1, { position: cc.v3(0, 0) })
             .delay(0.1)
+            .call(() => {
+                this.playAnim(PlayerAvatar.STATE_IDLE, this.dir)
+            })
+            .start()
+    }
+    private playAirKick() {
+        this.anim.play('AvatarAirKick')
+        let offsetX = -16
+        let offsetY = 0
+        cc.tween(this.spriteNode).stop()
+        cc.tween(this.spriteNode)
+            .to(0.1, { position: cc.v3(offsetX, offsetY) })
+            .to(0.1, { position: cc.v3(-offsetX, -offsetY) })
+            .to(0.1, { position: cc.v3(0, 0) })
+            .delay(0.2)
             .call(() => {
                 this.playAnim(PlayerAvatar.STATE_IDLE, this.dir)
             })

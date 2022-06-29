@@ -139,10 +139,9 @@ export default class Dragon extends Boss {
             )
         }, 30)
     }
-    actionCount = 0
+    isMoveRight = false
     bossAction(): void {
         if (this.sc.isDied || !this.sc.isShow || !this.dungeon) {
-            this.actionCount = 0
             return
         }
         this.changeZIndex()
@@ -151,14 +150,12 @@ export default class Dragon extends Boss {
             this.fireFire()
         }
         if (!this.rainSkill.IsExcuting) {
-            this.actionCount++
-            let pos = cc.v3(1, 0)
-            if (this.actionCount > 10) {
-                pos = cc.v3(-1, 0)
+            if (this.isMoveRight && this.pos.x - this.defaultPos.x > 2) {
+                this.isMoveRight = false
+            } else if (!this.isMoveRight && this.defaultPos.x - this.pos.x > 2) {
+                this.isMoveRight = true
             }
-            if (this.actionCount > 20) {
-                this.actionCount = 0
-            }
+            let pos = cc.v3(this.isMoveRight ? 1 : -1, 0)
             if (!pos.equals(cc.Vec3.ZERO)) {
                 pos = pos.normalizeSelf()
                 this.move(pos, 16)

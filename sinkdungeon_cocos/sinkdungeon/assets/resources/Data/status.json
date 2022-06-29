@@ -839,11 +839,12 @@
         "nameEn": "insane",
         "spriteFrameName": "iconinsane",
         "id": 72,
-        "desc": "血量和梦境上限降到1,移动错乱",
+        "desc": "血量和梦境上限降到1,防御降低速度变快,攻击+50",
         "duration": -1,
         "unique": 2,
         "common": {
-            "moveSpeed": 2,
+            "damageMin": 50,
+            "moveSpeed": 10,
             "attackSpeed": 100,
             "defence": -100
         }

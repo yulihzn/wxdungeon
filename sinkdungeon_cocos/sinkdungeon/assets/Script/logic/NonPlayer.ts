@@ -131,6 +131,8 @@ export default class NonPlayer extends Actor {
     waterY = 0
     lastTimeInWater = false
     jumpAbility: JumpingAbility
+    statusPos: cc.Vec3 = cc.v3(0, 0)
+    floatPos: cc.Vec3 = cc.v3(0, 0)
     public stateMachine: StateMachine<NonPlayer, State<NonPlayer>>
     get IsVariation() {
         return this.isVariation || this.data.StatusTotalData.variation > 0
@@ -156,6 +158,8 @@ export default class NonPlayer extends Actor {
         this.attrNode = this.root.getChildByName('attr')
         this.areaDetector = this.getComponentInChildren(AreaDetector)
         this.resetBodyColor()
+        this.statusPos = this.statusManager.node.position.clone()
+        this.floatPos = this.floatinglabelManager.node.position.clone()
         if (this.data.isStatic > 0) {
             this.entity.Collider.colliders[0].isStatic = true
             this.node.width = this.entity.Collider.colliders[0].w
@@ -572,7 +576,7 @@ export default class NonPlayer extends Actor {
             if (isSpecial) {
                 //延迟添加特殊物体
                 this.scheduleOnce(() => {
-                    if (this.sc.isDied) {
+                    if (!this.sc.isDied) {
                         this.specialManager.dungeon = this.dungeon
                         this.specialManager.addPlacement(
                             this.data.specialType,
@@ -1299,6 +1303,8 @@ export default class NonPlayer extends Actor {
         if (this.jumpAbility) {
             this.jumpAbility.updateLogic()
         }
+        this.statusManager.node.position = this.statusPos.clone().add(cc.v3(0, this.root.y))
+        this.floatinglabelManager.node.position = this.floatPos.clone().add(cc.v3(0, this.root.y))
     }
     private setInWaterMat(sprite: cc.Sprite, inWater: boolean) {
         if (!sprite || !sprite.spriteFrame) {

@@ -54,6 +54,7 @@ import LifeData from '../data/LifeData'
 import TriggerData from '../data/TriggerData'
 import ActorBottomDir from '../actor/ActorBottomDir'
 import JumpingAbility from '../actor/JumpingAbility'
+import Controller from './Controller'
 @ccclass
 export default class Player extends Actor {
     @property(FloatinglabelManager)
@@ -128,6 +129,8 @@ export default class Player extends Actor {
     swimmingAudioStep: NextStep = new NextStep()
     lastLinearVelocityZ = 0 //上次向上的速度
     jumpAbility: JumpingAbility
+    statusPos: cc.Vec3 = cc.v3(0, 0)
+    floatPos: cc.Vec3 = cc.v3(0, 0)
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -136,6 +139,8 @@ export default class Player extends Actor {
         this.entity.Move.damping = 3
         this.entity.Move.linearVelocity = cc.v2(0, 0)
         this.statusManager.statusIconList = this.statusIconList
+        this.statusPos = this.statusManager.node.position.clone()
+        this.floatPos = this.floatinglabelManager.node.position.clone()
         this.inventoryManager = Logic.inventoryManager
         this.data = Logic.playerData.clone()
         this.updateStatus(this.data.StatusList, this.data.StatusTotalData)
@@ -594,7 +599,7 @@ export default class Player extends Actor {
             //     this.isFaceRight = pos.x > 0
             // }
             // this.isFaceUp = pos.y > 0
-            this.playerAnim(PlayerAvatar.STATE_ATTACK, this.currentDir)
+            this.playerAnim(this.sc.isJumping ? PlayerAvatar.STATE_AIRKICK : PlayerAvatar.STATE_ATTACK, this.currentDir)
             this.stopHiding()
         }
     }
@@ -621,6 +626,9 @@ export default class Player extends Actor {
             return false
         }
         if (!this.interactBuilding.isTaken) {
+            return false
+        }
+        if (this.sc.isJumping && isMelee) {
             return false
         }
         if (!this.interactBuilding.isAniming) {
@@ -928,12 +936,13 @@ export default class Player extends Actor {
                 }
                 break
             case PlayerAvatar.STATE_WALK:
-                if (this.avatar.status != PlayerAvatar.STATE_ATTACK) {
+                if (this.avatar.status != PlayerAvatar.STATE_ATTACK && this.avatar.status != PlayerAvatar.STATE_AIRKICK) {
                     this.weaponLeft.shooter.playWalk(true)
                     this.weaponRight.shooter.playWalk(true)
                 }
                 break
             case PlayerAvatar.STATE_ATTACK:
+            case PlayerAvatar.STATE_AIRKICK:
                 this.weaponLeft.shooter.playWalk(true)
                 this.weaponRight.shooter.playWalk(true)
                 break
@@ -1172,8 +1181,10 @@ export default class Player extends Actor {
         if (this.weaponLeft.meleeWeapon && !this.weaponLeft.meleeWeapon.dungeon) {
             this.weaponLeft.meleeWeapon.dungeon = dungeon
             this.weaponLeft.shooter.dungeon = dungeon
+            this.weaponLeft.shooter.actor = this
             this.weaponRight.meleeWeapon.dungeon = dungeon
             this.weaponRight.shooter.dungeon = dungeon
+            this.weaponRight.shooter.actor = this
             this.shooterEx.dungeon = dungeon
             this.shooterEx.actor = this
         }
@@ -1303,6 +1314,8 @@ export default class Player extends Actor {
         if (this.jumpAbility) {
             this.jumpAbility.updateLogic()
         }
+        this.statusManager.node.position = this.statusPos.clone().add(cc.v3(0, this.root.y))
+        this.floatinglabelManager.node.position = this.floatPos.clone().add(cc.v3(0, this.root.y))
     }
 
     showWaterSpark() {
@@ -1444,7 +1457,7 @@ export default class Player extends Actor {
                 this.pooStep.next(() => {
                     this.sanityChange(-1)
                     Utils.toast('你的肚子一阵翻腾。', false, true)
-                }, 30)
+                }, 120)
             }
         }
         if (canAddPee) {
@@ -1454,20 +1467,20 @@ export default class Player extends Actor {
                 this.peeStep.next(() => {
                     this.sanityChange(-1)
                     Utils.toast('你的膀胱快要炸了。', false, true)
-                }, 30)
+                }, 120)
             }
         }
         if (this.data.LifeData.solidSatiety <= 0) {
             this.solidStep.next(() => {
                 this.sanityChange(-1)
                 Utils.toast('你快要饿死了。', false, true)
-            }, 30)
+            }, 120)
         }
         if (this.data.LifeData.liquidSatiety <= 0) {
             this.liquidStep.next(() => {
                 this.sanityChange(-1)
                 Utils.toast('你快要渴死了。', false, true)
-            }, 30)
+            }, 120)
         }
         this.updateLife(0, -solidLoss, -liquidLoss)
     }

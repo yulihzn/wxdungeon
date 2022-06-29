@@ -6,23 +6,11 @@
   "_duration": 2,
   "sample": 60,
   "speed": 1,
-  "wrapMode": "2",
+  "wrapMode": 2,
   "curveData": {
     "paths": {
       "sprite/swingleft": {
         "props": {
-          "skewX": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ],
-          "skewY": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ],
           "angle": [
             {
               "frame": 0,
@@ -49,18 +37,6 @@
       },
       "sprite/swingright": {
         "props": {
-          "skewX": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ],
-          "skewY": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ],
           "angle": [
             {
               "frame": 0,

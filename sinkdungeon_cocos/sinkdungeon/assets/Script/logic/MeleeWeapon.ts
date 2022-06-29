@@ -157,12 +157,13 @@ export default class MeleeWeapon extends BaseColliderComponent {
             this.hv = Controller.mousePos.add(cc.v2(this.dungeon.mainCamera.node.position)).sub(p).normalize()
             return
         }
-        let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 300)
-        if (!pos.equals(cc.Vec3.ZERO)) {
-            this.hv = cc.v2(pos).normalize()
-        } else {
-            this.hv = hv.normalize()
-        }
+        // let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 300)
+        // if (!pos.equals(cc.Vec3.ZERO)) {
+        //     this.hv = cc.v2(pos).normalize()
+        // } else {
+        //     this.hv = hv.normalize()
+        // }
+        this.hv = hv.normalize()
     }
     get Hv(): cc.Vec2 {
         return this.hv
@@ -239,7 +240,6 @@ export default class MeleeWeapon extends BaseColliderComponent {
         this.anim.play(animname)
         this.anim.getAnimationState(animname).speed = this.getAnimSpeed(data.FinalCommon)
         if (this.player.sc.isJumping) {
-            // this.player.airPause(2, 0.1)
             this.player.jumpAbility.acceleratedFall(2)
         }
         return true
@@ -392,7 +392,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 this.player.showFloatFont(this.node.parent, 0, false, true, false, false, false)
             }
             this.attackDo(this.playerData, this.comboMiss, this.fistCombo)
-            this.player.playerAnim(PlayerAvatar.STATE_ATTACK, this.player.currentDir)
+            this.player.playerAnim(this.player.sc.isJumping ? PlayerAvatar.STATE_AIRKICK : PlayerAvatar.STATE_ATTACK, this.player.currentDir)
             this.player.stopHiding()
             this.isComboing = false
         }
@@ -447,6 +447,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
         AudioPlayer.play(AudioPlayer.DASH)
         if (!speed) {
             speed = 6
+        }
+        if (this.player.sc.isJumping) {
+            speed = 8 + this.player.entity.Transform.z / 20
         }
         this.schedule(
             () => {
@@ -506,10 +509,10 @@ export default class MeleeWeapon extends BaseColliderComponent {
             let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.player.node.position))
             this.hv = Controller.mousePos.add(cc.v2(this.dungeon.mainCamera.node.position)).sub(p).normalize()
         } else {
-            let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400)
-            if (!pos.equals(cc.Vec3.ZERO)) {
-                this.hv = cc.v2(pos)
-            }
+            // let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400)
+            // if (!pos.equals(cc.Vec3.ZERO)) {
+            //     this.hv = cc.v2(pos)
+            // }
         }
         if (!this.isAttacking) {
             this.rotateCollider(this.hv)
@@ -672,7 +675,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (damageSuccess || attackSuccess) {
             anim.pause()
             if (this.player.sc.isJumping) {
-                this.player.airPause(2, 0.2)
+                this.player.airPause(2, 0.3)
             }
             if (!isShadow) {
                 EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: this.comboType == MeleeWeapon.COMBO3 })

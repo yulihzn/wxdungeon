@@ -48,7 +48,7 @@ export default class HealthBar extends cc.Component {
         cc.tween(this.node).to(0.05, { scale: 1.05 }).to(0.05, { scale: 0.95 }).to(0.1, { scale: 1.05 }).to(0.05, { scale: 1 }).start()
     }
     update(dt) {
-        this.backbar.width = this.lerp(this.backbar.width, this.progressBar.barSprite.node.width, dt * 5)
+        this.backbar.width = this.lerp(this.backbar.width, this.progressBar.barSprite.node.width, dt * 1)
         if (this.hideWhenFull) {
             if (this.progressBar.progress == 1) {
                 this.node.opacity = 0

@@ -105,6 +105,17 @@
               "value": 45,
               "curve": "constant"
             }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
           ]
         }
       },
@@ -181,6 +192,17 @@
                 0
               ],
               "curve": "constant"
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
             }
           ]
         }
@@ -298,6 +320,17 @@
               "value": -15,
               "curve": "constant"
             }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
           ]
         },
         "comps": {}
@@ -342,9 +375,30 @@
               "frame": 1.3333333333333333,
               "value": -45
             }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
           ]
         },
         "comps": {}
+      },
+      "sprite/cup": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
       }
     }
   },

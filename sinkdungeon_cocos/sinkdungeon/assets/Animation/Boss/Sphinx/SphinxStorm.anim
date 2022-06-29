@@ -11,34 +11,6 @@
     "paths": {
       "sprite/swingleft": {
         "props": {
-          "skewX": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": 32
-            },
-            {
-              "frame": 2,
-              "value": 0
-            }
-          ],
-          "skewY": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": -32
-            },
-            {
-              "frame": 2,
-              "value": 0
-            }
-          ],
           "angle": [
             {
               "frame": 0,
@@ -65,34 +37,6 @@
       },
       "sprite/swingright": {
         "props": {
-          "skewX": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": 32
-            },
-            {
-              "frame": 2,
-              "value": 0
-            }
-          ],
-          "skewY": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": -32
-            },
-            {
-              "frame": 2,
-              "value": 0
-            }
-          ],
           "angle": [
             {
               "frame": 0,

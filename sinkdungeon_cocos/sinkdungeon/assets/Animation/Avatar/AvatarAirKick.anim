@@ -29,15 +29,6 @@
             {
               "frame": 0,
               "value": [
-                3,
-                5,
-                0
-              ],
-              "curve": "constant"
-            },
-            {
-              "frame": 0.5,
-              "value": [
                 2.926,
                 4.471,
                 0
@@ -47,12 +38,36 @@
           "angle": [
             {
               "frame": 0,
-              "value": 30,
-              "curve": "constant"
+              "value": 30
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 0.5,
+                "z": 1
+              }
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 2,
+                "y": 1.1,
+                "z": 1
+              }
             },
             {
               "frame": 0.5,
-              "value": 30
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
             }
           ]
         }
@@ -62,11 +77,6 @@
           "angle": [
             {
               "frame": 0,
-              "value": -15,
-              "curve": "constant"
-            },
-            {
-              "frame": 0.5,
               "value": -45
             }
           ],
@@ -75,18 +85,20 @@
               "frame": 0,
               "value": [
                 -2,
-                5.5,
-                0
-              ],
-              "curve": "constant"
-            },
-            {
-              "frame": 0.5,
-              "value": [
-                -2,
                 5,
                 0
               ]
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
             }
           ]
         }
@@ -144,11 +156,6 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0,
-              "curve": "constant"
-            },
-            {
-              "frame": 0.5,
               "value": 0
             }
           ],
@@ -156,19 +163,39 @@
             {
               "frame": 0,
               "value": [
-                0,
-                -2,
-                0
-              ],
-              "curve": "constant"
-            },
-            {
-              "frame": 0.5,
-              "value": [
                 0.001,
                 -2.948,
                 0
               ]
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1.5,
+                "y": 1,
+                "z": 1
+              }
+            },
+            {
+              "frame": 0.5,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
             }
           ]
         }
@@ -178,11 +205,6 @@
           "angle": [
             {
               "frame": 0,
-              "value": -30,
-              "curve": "constant"
-            },
-            {
-              "frame": 0.5,
               "value": 90
             }
           ],
@@ -190,19 +212,21 @@
             {
               "frame": 0,
               "value": [
-                0.173,
-                -2.452,
-                0
-              ],
-              "curve": "constant"
-            },
-            {
-              "frame": 0.5,
-              "value": [
                 -0.158,
                 -2.475,
                 0
               ]
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
             }
           ]
         }
