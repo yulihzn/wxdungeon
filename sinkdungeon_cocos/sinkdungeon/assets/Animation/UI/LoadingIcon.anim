@@ -29,6 +29,16 @@
               "frame": 1.5,
               "value": 255
             }
+          ],
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                440,
+                -270,
+                0
+              ]
+            }
           ]
         }
       },
@@ -96,6 +106,20 @@
             {
               "frame": 0,
               "value": 0
+            }
+          ]
+        }
+      },
+      "layout": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                -530,
+                -270,
+                0
+              ]
             }
           ]
         }

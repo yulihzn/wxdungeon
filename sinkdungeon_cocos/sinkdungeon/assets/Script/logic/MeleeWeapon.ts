@@ -152,18 +152,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
 
     set Hv(hv: cc.Vec2) {
-        if (Controller.isMouseMode() && Controller.mousePos && this.dungeon) {
-            let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.player.node.position))
-            this.hv = Controller.mousePos.add(cc.v2(this.dungeon.mainCamera.node.position)).sub(p).normalize()
-            return
-        }
-        // let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 300)
-        // if (!pos.equals(cc.Vec3.ZERO)) {
-        //     this.hv = cc.v2(pos).normalize()
-        // } else {
-        //     this.hv = hv.normalize()
-        // }
-        this.hv = hv.normalize()
+        this.hv = hv
     }
     get Hv(): cc.Vec2 {
         return this.hv
@@ -505,16 +494,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
         }
     }
     public updateLogic(dt: number) {
-        if (Controller.isMouseMode() && Controller.mousePos && this.dungeon) {
-            let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.player.node.position))
-            this.hv = Controller.mousePos.add(cc.v2(this.dungeon.mainCamera.node.position)).sub(p).normalize()
-        } else {
-            let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400)
-            if (!pos.equals(cc.Vec3.ZERO)) {
-                this.hv = cc.v2(pos)
-            }
-        }
-        if (!this.isAttacking) {
+        this.hv = this.player.Hv.clone()
+        if (this.CanMove) {
             this.rotateCollider(this.hv)
         }
         this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 5)
@@ -675,7 +656,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (damageSuccess || attackSuccess) {
             anim.pause()
             if (this.player.sc.isJumping) {
-                this.player.airPause(2, 0.3)
+                this.player.airPause(2, 0.2)
             }
             if (!isShadow) {
                 EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: this.comboType == MeleeWeapon.COMBO3 })

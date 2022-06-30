@@ -2122,7 +2122,7 @@
       "ctor": "Float64Array",
       "array": [
         -133.144,
-        -98.25,
+        -103.899,
         0,
         0,
         0,
@@ -5418,7 +5418,7 @@
   {
     "__type__": "cc.Node",
     "_name": "CursorArea",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 1
     },
@@ -6313,7 +6313,7 @@
       "ctor": "Float64Array",
       "array": [
         -523.485,
-        245.864,
+        239.006,
         0,
         0,
         0,
@@ -46705,7 +46705,7 @@
       "ctor": "Float64Array",
       "array": [
         -617,
-        230,
+        224,
         0,
         0,
         0,
@@ -46755,7 +46755,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 15,
-      "height": 22
+      "height": 18
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -59708,7 +59708,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1000,
+      "width": 1200,
       "height": 5
     },
     "_anchorPoint": {
@@ -59770,7 +59770,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 330,
+      "width": 0,
       "height": 4
     },
     "_anchorPoint": {
@@ -59879,12 +59879,12 @@
       "__id__": 1292
     },
     "_enabled": true,
-    "_N$totalLength": 1100,
+    "_N$totalLength": 1200,
     "_N$barSprite": {
       "__id__": 1294
     },
     "_N$mode": 0,
-    "_N$progress": 0.3,
+    "_N$progress": 0,
     "_N$reverse": false,
     "_id": "70Gd3Uu+NIpaETu/wjBl/A"
   },

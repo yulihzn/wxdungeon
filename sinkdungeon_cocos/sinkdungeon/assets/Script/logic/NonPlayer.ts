@@ -1189,13 +1189,13 @@ export default class NonPlayer extends Actor {
                 this.sc.isMoving = true
                 this.moveStep.next(
                     () => {
-                        let pos = this.getMovePosFromTarget(target, false, true)
+                        let pos = this.getMovePosFromTarget(target, false)
                         if (this.data.flee > 0) {
                             pos = this.getMovePosFromTarget(target, true)
                             pos = cc.v3(-pos.x, -pos.y)
-                            this.move(pos, speed)
+                            this.move(pos, speed * 2)
                         } else {
-                            this.move(pos, speed * 0.5)
+                            this.move(pos, speed)
                         }
                     },
                     0.2,

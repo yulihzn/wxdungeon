@@ -55,6 +55,7 @@ import TriggerData from '../data/TriggerData'
 import ActorBottomDir from '../actor/ActorBottomDir'
 import JumpingAbility from '../actor/JumpingAbility'
 import Controller from './Controller'
+import ActorUtils from '../utils/ActorUtils'
 @ccclass
 export default class Player extends Actor {
     @property(FloatinglabelManager)
@@ -839,45 +840,34 @@ export default class Player extends Actor {
 
         if (!pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(this.weaponRight.meleeWeapon.getMeleeSlowRatio())
-        }
-        if (!pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(this.weaponLeft.meleeWeapon.getMeleeSlowRatio())
-        }
-        if (this.weaponLeft.isHeavyRemotoAttacking && !pos.equals(cc.Vec3.ZERO)) {
-            pos = pos.mul(0.01)
-        }
-        if (this.shield.data.isHeavy == 1 && this.shield.Status > Shield.STATUS_IDLE) {
-            pos = pos.mul(0.5)
-        }
-        if (this.interactBuilding && this.interactBuilding.isTaken) {
-            pos = pos.mul(0.5)
-        }
-        if (this.professionTalent.IsExcuting && this.professionTalent.hashTalent(Talent.TALENT_007) && !pos.equals(cc.Vec3.ZERO)) {
-            pos = pos.mul(0.01)
-        }
-        if (this.isInWater()) {
-            pos = pos.mul(0.5)
-            this.swimmingAudioStep.next(() => {
-                AudioPlayer.play(AudioPlayer.SWIMMING)
-            }, 2.5)
-        }
-        if (!pos.equals(cc.Vec3.ZERO)) {
+            if (this.weaponLeft.isHeavyRemotoAttacking) {
+                pos = pos.mul(0.01)
+            }
+            if (this.shield.data.isHeavy == 1 && this.shield.Status > Shield.STATUS_IDLE) {
+                pos = pos.mul(0.5)
+            }
+            if (this.interactBuilding && this.interactBuilding.isTaken) {
+                pos = pos.mul(0.5)
+            }
+            if (this.professionTalent.IsExcuting && this.professionTalent.hashTalent(Talent.TALENT_007)) {
+                pos = pos.mul(0.01)
+            }
+            if (this.isInWater()) {
+                pos = pos.mul(0.5)
+                this.swimmingAudioStep.next(() => {
+                    AudioPlayer.play(AudioPlayer.SWIMMING)
+                }, 2.5)
+            }
             this.pos = Dungeon.getIndexInMap(this.entity.Transform.position)
             this.data.pos = this.pos.clone()
-        }
-        if (!pos.equals(cc.Vec3.ZERO)) {
-            this.hv = cc.v2(pos).normalize()
-            this.shooterEx.setHv(cc.v2(pos.x, pos.y))
-            this.weaponLeft.shooter.setHv(cc.v2(pos.x, pos.y))
-            this.weaponRight.shooter.setHv(cc.v2(pos.x, pos.y))
+            this.updateHv(cc.v2(pos).normalize())
+            this.shooterEx.setHv(this.Hv.clone())
+            this.weaponLeft.shooter.setHv(this.Hv.clone())
+            this.weaponRight.shooter.setHv(this.Hv.clone())
         }
         let h = pos.x
         let v = pos.y
-        let absh = Math.abs(h)
-        let absv = Math.abs(v)
-
-        let mul = absh > absv ? absh : absv
-        mul = mul == 0 ? 1 : mul
         let movement = cc.v2(h, v)
         let speed = this.data.getMoveSpeed()
         if (speed < 0) {
@@ -887,29 +877,21 @@ export default class Player extends Actor {
         this.entity.Move.linearVelocity = movement
         this.sc.isMoving = h != 0 || v != 0
 
-        //调整武器方向
-        if (this.weaponRight.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && this.weaponRight.meleeWeapon.CanMove) {
-            this.weaponRight.meleeWeapon.Hv = cc.v2(pos.x, pos.y)
-        }
-        if (this.weaponLeft.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && this.weaponLeft.meleeWeapon.CanMove) {
-            this.weaponLeft.meleeWeapon.Hv = cc.v2(pos.x, pos.y)
-        }
-        if (this.sc.isMoving && this.weaponLeft.meleeWeapon.CanMove && this.weaponRight.meleeWeapon.CanMove) {
-            if (!this.shield.isAniming && !this.shield.isDefendOrParrying) {
-                this.isFaceRight = this.hv.x > 0
-            }
-            this.isFaceUp = this.hv.y > 0
-        }
-
         if (this.sc.isMoving && !this.isStone) {
             this.playerAnim(PlayerAvatar.STATE_WALK, dir)
         } else {
             this.playerAnim(PlayerAvatar.STATE_IDLE, dir)
         }
-        if (dir != 4) {
-            this.changeZIndex(this.pos)
-        }
-        if (dir != 4 && !this.shield.isAniming && !this.shield.isDefendOrParrying && !this.avatar.isAniming) {
+        if (
+            dir != 4 &&
+            !this.shield.isAniming &&
+            !this.shield.isDefendOrParrying &&
+            !this.avatar.isAniming &&
+            this.weaponLeft.meleeWeapon.CanMove &&
+            this.weaponRight.meleeWeapon.CanMove
+        ) {
+            this.isFaceRight = this.hv.x > 0
+            this.isFaceUp = this.hv.y > 0
             this.currentDir = dir
             if (dir == PlayerAvatar.DIR_DOWN && this.isFaceUp) {
                 dir = PlayerAvatar.DIR_UP
@@ -920,6 +902,19 @@ export default class Player extends Actor {
             this.weaponRight.changeZIndexByDir(this.avatar.node.zIndex, dir)
             this.shield.changeZIndexByDir(this.avatar.node.zIndex, dir)
             this.avatar.changeAvatarByDir(dir)
+        }
+    }
+    updateHv(hv?: cc.Vec2) {
+        if (Controller.isMouseMode() && Controller.mousePos && this.dungeon) {
+            let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.node.position))
+            this.hv = Controller.mousePos.add(cc.v2(this.dungeon.mainCamera.node.position)).sub(p).normalize()
+            return
+        }
+        let pos = ActorUtils.getDirectionFromNearestEnemy(this.node.position, false, this.dungeon, false, 150)
+        if (!pos.equals(cc.Vec3.ZERO)) {
+            this.hv = cc.v2(pos).normalize()
+        } else if (hv && !hv.equals(cc.Vec2.ZERO)) {
+            this.hv = hv.normalize()
         }
     }
 
@@ -1279,7 +1274,7 @@ export default class Player extends Actor {
         if (this.sc.isVanishing) {
             this.node.opacity = 0
         }
-
+        this.updateHv()
         let showHands = this.interactBuilding && this.interactBuilding.isTaken && !this.interactBuilding.isThrowing
         let isLift = this.interactBuilding && this.interactBuilding.isTaken && this.interactBuilding.isLift
         if (this.weaponLeft) {

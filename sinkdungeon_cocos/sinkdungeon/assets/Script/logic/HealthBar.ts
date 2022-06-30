@@ -12,7 +12,7 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class HealthBar extends cc.Component {
-    static readonly ICON_SIZE = 4
+    static readonly ICON_SIZE = 10
     @property(cc.Node)
     backbar: cc.Node = null
     @property(cc.Label)
