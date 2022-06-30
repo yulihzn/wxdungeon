@@ -155,8 +155,8 @@ export default class PlayerWeapon extends cc.Component {
         this.maxAmmo = finalData.MaxAmmo
         let cooldown = finalData.remoteCooldown
         let remoteInterval = finalData.remoteInterval
-        if (cooldown < 100) {
-            cooldown = 100
+        if (cooldown < 500) {
+            cooldown = 500
         }
         if (remoteInterval < 0) {
             remoteInterval = 0
