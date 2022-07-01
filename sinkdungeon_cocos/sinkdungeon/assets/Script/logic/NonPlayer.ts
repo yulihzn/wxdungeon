@@ -203,7 +203,6 @@ export default class NonPlayer extends Actor {
         this.addSaveStatusList()
         this.entity.Move.damping = 3
         this.entity.Move.linearVelocity = cc.v2(0, 0)
-        let speedScale = 1 - this.data.FinalCommon.AttackSpeed / 10
         let attackArr = this.data.attackRect.split(',')
         let bodyArr = this.data.bodyRect.split(',')
         for (let num of attackArr) {
@@ -1195,7 +1194,7 @@ export default class NonPlayer extends Actor {
                             pos = cc.v3(-pos.x, -pos.y)
                             this.move(pos, speed * 2)
                         } else {
-                            this.move(pos, speed)
+                            this.move(pos, speed * 0.5)
                         }
                     },
                     0.2,

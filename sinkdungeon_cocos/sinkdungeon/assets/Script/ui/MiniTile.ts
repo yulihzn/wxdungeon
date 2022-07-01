@@ -111,6 +111,7 @@ export default class MiniTile extends cc.Component {
         }
         if (this.isCurrentRoom) {
             this.bg.color = this.getColor(MiniMap.ColorLevel.PLAYER)
+            this.bg.opacity = 200
         }
         // if (rectroom.isFound) {
         //     this.drawMap(-1, -1,this.baseGraphics,true);
@@ -141,10 +142,6 @@ export default class MiniTile extends cc.Component {
                     if (Utils.hasThe(mapDataStr, '##')) {
                         isTriangle = true
                     }
-                } else if (this.isFirstEqual(floarDataStr, '*')) {
-                    graphics.fillColor = cc.color(33, 33, 33, alpha) //灰色
-                } else if (this.isFirstEqual(floarDataStr, '~')) {
-                    graphics.fillColor = cc.color(0, 128, 128, alpha) //水鸭色
                 } else if (mapDataStr == '@S') {
                     graphics.fillColor = cc.color(60, 179, 113, alpha) //春天的绿色
                 } else if (this.isFirstEqual(mapDataStr, 'D')) {
@@ -154,19 +151,23 @@ export default class MiniTile extends cc.Component {
                     if (isLock) {
                         graphics.fillColor = cc.color(255, 69, 0, alpha) //橙红色
                     }
-                    if (dir == 2) {
+                    if (dir >= 2) {
                         graphics.fillColor = cc.color(33, 33, 33, alpha) //灰色
                     }
                 } else if (this.isFirstEqual(mapDataStr, 'E')) {
                     graphics.fillColor = cc.color(0, 255, 0, alpha) //酸橙色
                 } else if (this.isFirstEqual(mapDataStr, 'P')) {
-                    graphics.fillColor = cc.color(32, 178, 170, alpha) //浅海洋绿
+                    // graphics.fillColor = cc.color(32, 178, 170, alpha) //浅海洋绿
                 } else if (this.isFirstEqual(mapDataStr, 'C')) {
                     graphics.fillColor = cc.color(255, 215, 0, alpha) //黄金
                 } else if (this.isFirstEqual(mapDataStr, 'z')) {
                     this.sign.spriteFrame = Logic.spriteFrameRes('minimapboss')
+                } else if (this.isFirstEqual(floarDataStr, '*')) {
+                    graphics.fillColor = cc.color(33, 33, 33, alpha) //灰色
+                } else if (this.isFirstEqual(floarDataStr, '~')) {
+                    graphics.fillColor = cc.color(0, 128, 128, alpha) //水鸭色
                 }
-                if (!this.isFirstEqual(mapDataStr, '###')) {
+                if (!this.isFirstEqual(mapDataStr, '###') && !this.isFirstEqual(mapDataStr, '%%') && mapDataStr && mapDataStr.length > 0) {
                     if (isTriangle) {
                         graphics.moveTo(i * tileSize - this.node.width / 2, j * tileSize - this.node.width / 2)
                         graphics.lineTo(i * tileSize - this.node.width / 2 + tileSize, j * tileSize - this.node.width / 2)

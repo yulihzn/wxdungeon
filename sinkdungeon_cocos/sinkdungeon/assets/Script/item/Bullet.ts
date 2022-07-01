@@ -29,6 +29,8 @@ import BaseColliderComponent from '../base/BaseColliderComponent'
 import TriggerData from '../data/TriggerData'
 import MeleeCollideHelper from '../logic/MeleeCollideHelper'
 import AirExit from '../building/AirExit'
+import ShadowOfSight from '../effect/ShadowOfSight'
+import LightManager from '../manager/LightManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -87,6 +89,10 @@ export default class Bullet extends BaseColliderComponent {
         this.light = this.base.getChildByName('light').getComponent(cc.Sprite)
         this.light.node.opacity = 0
         this.entity.Move.gravity = 0
+        let lights = this.getComponentsInChildren(ShadowOfSight)
+        if (lights) {
+            LightManager.registerLight(lights, this.node)
+        }
     }
     onEnable() {
         this.tagetPos = cc.v3(0, 0)

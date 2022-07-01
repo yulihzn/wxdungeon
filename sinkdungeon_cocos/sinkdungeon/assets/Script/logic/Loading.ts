@@ -84,6 +84,7 @@ export default class Loading extends cc.Component {
         if (this.loadingManager.isAllSpriteFramesLoaded() && Logic.elevatorScene > 0) {
             this.isElevatorAnimFinished = false
             this.elevatorScene.active = true
+            this.loadingIcon.node.active = false
             if (Logic.elevatorScene == 1) {
                 this.elevatorScene.getComponent(cc.Animation).play('ElevatorSceneUp')
             } else if (Logic.elevatorScene == 2) {
@@ -98,6 +99,7 @@ export default class Loading extends cc.Component {
     showTransport() {
         if (this.loadingManager.isAllSpriteFramesLoaded() && Logic.shipTransportScene > 0) {
             this.isTransportAnimFinished = false
+            this.loadingIcon.node.active = false
             this.shipTransportScene.active = true
             if (Logic.shipTransportScene == 2) {
                 this.shipTransportScene.scaleX = -1
