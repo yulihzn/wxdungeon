@@ -214,7 +214,7 @@ export default class Player extends Actor {
             if (this.node && this.data.AvatarData.organizationIndex == AvatarData.HUNTER) this.updateDream(detail.value)
         })
         EventHelper.on(EventHelper.HUD_TIME_TICK, detail => {
-            if (this.node) {
+            if (this.node && Logic.chapterIndex == Logic.CHAPTER099) {
                 this.timeConsumeLife()
             }
         })

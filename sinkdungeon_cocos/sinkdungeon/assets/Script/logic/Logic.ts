@@ -123,14 +123,14 @@ export default class Logic extends cc.Component {
         //关闭调试
         Logic.settings.lowPower = LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_LOW_POWER)
         if (Logic.settings.lowPower) {
-            cc.game.setFrameRate(50)
+            cc.game.setFrameRate(45)
         } else {
             cc.game.setFrameRate(60)
         }
         cc.game.addPersistRootNode(this.node)
         EventHelper.on(EventHelper.SETTINGS_LOW_POWER, () => {
             if (Logic.settings.lowPower) {
-                cc.game.setFrameRate(50)
+                cc.game.setFrameRate(45)
             } else {
                 cc.game.setFrameRate(60)
             }

@@ -57,7 +57,7 @@
     "_is3DNode": true,
     "_groupIndex": 0,
     "groupIndex": 0,
-    "autoReleaseAssets": false,
+    "autoReleaseAssets": true,
     "_id": "433fd2f8-f510-487d-acaf-a86988939fd5"
   },
   {
@@ -756,7 +756,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 91.11,
+      "width": 53.33,
       "height": 40
     },
     "_anchorPoint": {
@@ -1887,9 +1887,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 109,
-      "g": 110,
-      "b": 109,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_contentSize": {

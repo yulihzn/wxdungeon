@@ -17098,9 +17098,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_labtop002.png": {
+    "tile_labtop001.png": {
       "ver": "1.0.6",
-      "uuid": "e33f02cf-73d4-4071-9804-bb699da5686b",
+      "uuid": "c1ee7bc2-78ea-418b-ab22-75556006f903",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17144,9 +17144,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_labtop003.png": {
+    "tile_labtop002.png": {
       "ver": "1.0.6",
-      "uuid": "7cf6b0e7-4e86-4dca-adb7-2b59e2fbfc74",
+      "uuid": "e33f02cf-73d4-4071-9804-bb699da5686b",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17213,9 +17213,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_mart001.png": {
+    "tile_labtop003.png": {
       "ver": "1.0.6",
-      "uuid": "896d553c-5452-4761-bb31-77366a72bb2c",
+      "uuid": "7cf6b0e7-4e86-4dca-adb7-2b59e2fbfc74",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17305,9 +17305,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_mart004.png": {
+    "tile_labtop004.png": {
       "ver": "1.0.6",
-      "uuid": "399a9548-97dc-41d6-8219-bd789b877c47",
+      "uuid": "f937c92b-9676-4539-9fb5-15b684ec988d",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17328,9 +17328,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_pyramid001.png": {
+    "tile_mart001.png": {
       "ver": "1.0.6",
-      "uuid": "65185771-cc93-4e33-8322-e39a0cd556ba",
+      "uuid": "896d553c-5452-4761-bb31-77366a72bb2c",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17489,9 +17489,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_pyramid002.png": {
+    "tile_mart004.png": {
       "ver": "1.0.6",
-      "uuid": "556389b2-8182-49ef-b27b-5dbe99279a8c",
+      "uuid": "399a9548-97dc-41d6-8219-bd789b877c47",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17512,9 +17512,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_pyramid003.png": {
+    "tile_pyramid001.png": {
       "ver": "1.0.6",
-      "uuid": "d59ee025-ddc3-491e-aba7-d09a99a514b4",
+      "uuid": "65185771-cc93-4e33-8322-e39a0cd556ba",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17535,9 +17535,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_pyramid004.png": {
+    "tile_pyramid002.png": {
       "ver": "1.0.6",
-      "uuid": "81a41931-4b4e-427b-97e5-0213fafa4e3c",
+      "uuid": "556389b2-8182-49ef-b27b-5dbe99279a8c",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17558,9 +17558,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_room001.png": {
+    "tile_pyramid003.png": {
       "ver": "1.0.6",
-      "uuid": "802674e3-dc81-4f7e-b850-4ca550e33102",
+      "uuid": "d59ee025-ddc3-491e-aba7-d09a99a514b4",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17604,9 +17604,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_room002.png": {
+    "tile_pyramid004.png": {
       "ver": "1.0.6",
-      "uuid": "84eb419a-dd10-4c56-b802-a3baa1d600bd",
+      "uuid": "81a41931-4b4e-427b-97e5-0213fafa4e3c",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17673,9 +17673,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_room003.png": {
+    "tile_room001.png": {
       "ver": "1.0.6",
-      "uuid": "345165fe-acb8-44d3-b921-47a1ed401697",
+      "uuid": "802674e3-dc81-4f7e-b850-4ca550e33102",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17696,9 +17696,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_room004.png": {
+    "tile_room002.png": {
       "ver": "1.0.6",
-      "uuid": "7d019d04-9b9b-4166-9d0a-b6051e36892c",
+      "uuid": "84eb419a-dd10-4c56-b802-a3baa1d600bd",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17765,9 +17765,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_shiphall001.png": {
+    "tile_room003.png": {
       "ver": "1.0.6",
-      "uuid": "f012f688-5490-415b-9030-fdb26bdea014",
+      "uuid": "345165fe-acb8-44d3-b921-47a1ed401697",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17811,9 +17811,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_shiphall002.png": {
+    "tile_room004.png": {
       "ver": "1.0.6",
-      "uuid": "cfb32912-9476-4fde-a2ea-a6224b5a7e64",
+      "uuid": "7d019d04-9b9b-4166-9d0a-b6051e36892c",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17834,9 +17834,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_shiphall003.png": {
+    "tile_shiphall001.png": {
       "ver": "1.0.6",
-      "uuid": "255664f0-6714-444c-b0bd-e6203c82c510",
+      "uuid": "f012f688-5490-415b-9030-fdb26bdea014",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17880,9 +17880,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_shiphall004.png": {
+    "tile_shiphall002.png": {
       "ver": "1.0.6",
-      "uuid": "491bf110-4cb7-45d0-8b14-c14d1fea03a5",
+      "uuid": "cfb32912-9476-4fde-a2ea-a6224b5a7e64",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17949,9 +17949,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_shiproom002.png": {
+    "tile_shiphall003.png": {
       "ver": "1.0.6",
-      "uuid": "6a926723-2d3c-45fd-ac38-af4da47e9f87",
+      "uuid": "255664f0-6714-444c-b0bd-e6203c82c510",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -17995,9 +17995,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_shiproom003.png": {
+    "tile_shiphall004.png": {
       "ver": "1.0.6",
-      "uuid": "63b6feb3-6645-4895-b621-c7ea516656e9",
+      "uuid": "491bf110-4cb7-45d0-8b14-c14d1fea03a5",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -18018,9 +18018,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tilewall.png": {
+    "tile_shiproom002.png": {
       "ver": "1.0.6",
-      "uuid": "80aa87bb-2f99-427c-a58e-06a26eb2f35c",
+      "uuid": "6a926723-2d3c-45fd-ac38-af4da47e9f87",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -18041,9 +18041,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "dangerbox.png": {
+    "tile_shiproom003.png": {
       "ver": "1.0.6",
-      "uuid": "6af3639b-4c06-408b-837a-e20ff082825c",
+      "uuid": "63b6feb3-6645-4895-b621-c7ea516656e9",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -18087,9 +18087,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "dialogbggray1.png": {
+    "tilewall.png": {
       "ver": "1.0.6",
-      "uuid": "a2226211-4f8d-47ed-bb67-99254b8d47bf",
+      "uuid": "80aa87bb-2f99-427c-a58e-06a26eb2f35c",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -18103,10 +18103,10 @@
       "height": 16,
       "rawWidth": 16,
       "rawHeight": 16,
-      "borderTop": 1,
-      "borderBottom": 1,
-      "borderLeft": 1,
-      "borderRight": 1,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
       "spriteType": "normal",
       "subMetas": {}
     },
@@ -18179,9 +18179,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "dialogbggray2.png": {
+    "dangerbox.png": {
       "ver": "1.0.6",
-      "uuid": "aadf98fd-e57b-4670-9382-a4950cff73a5",
+      "uuid": "6af3639b-4c06-408b-837a-e20ff082825c",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -18195,16 +18195,16 @@
       "height": 16,
       "rawWidth": 16,
       "rawHeight": 16,
-      "borderTop": 1,
-      "borderBottom": 1,
-      "borderLeft": 1,
-      "borderRight": 1,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
       "spriteType": "normal",
       "subMetas": {}
     },
-    "dialogbggray3.png": {
+    "dialogbggray1.png": {
       "ver": "1.0.6",
-      "uuid": "c7a9e3af-34ae-4b91-85dc-af1d65f1f265",
+      "uuid": "a2226211-4f8d-47ed-bb67-99254b8d47bf",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -18248,9 +18248,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "dialogbggray4.png": {
+    "dialogbggray2.png": {
       "ver": "1.0.6",
-      "uuid": "db94ceae-0144-4e53-b995-19143d089fdb",
+      "uuid": "aadf98fd-e57b-4670-9382-a4950cff73a5",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -18271,9 +18271,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "dialogbggray5.png": {
+    "dialogbggray3.png": {
       "ver": "1.0.6",
-      "uuid": "a854576b-08c9-4958-aeba-8acae5e34df8",
+      "uuid": "c7a9e3af-34ae-4b91-85dc-af1d65f1f265",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -18340,6 +18340,52 @@
       "spriteType": "normal",
       "subMetas": {}
     },
+    "dialogbggray4.png": {
+      "ver": "1.0.6",
+      "uuid": "db94ceae-0144-4e53-b995-19143d089fdb",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 591,
+      "trimY": 432,
+      "width": 16,
+      "height": 16,
+      "rawWidth": 16,
+      "rawHeight": 16,
+      "borderTop": 1,
+      "borderBottom": 1,
+      "borderLeft": 1,
+      "borderRight": 1,
+      "spriteType": "normal",
+      "subMetas": {}
+    },
+    "dialogbggray5.png": {
+      "ver": "1.0.6",
+      "uuid": "a854576b-08c9-4958-aeba-8acae5e34df8",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 591,
+      "trimY": 450,
+      "width": 16,
+      "height": 16,
+      "rawWidth": 16,
+      "rawHeight": 16,
+      "borderTop": 1,
+      "borderBottom": 1,
+      "borderLeft": 1,
+      "borderRight": 1,
+      "spriteType": "normal",
+      "subMetas": {}
+    },
     "dialogbggray6.png": {
       "ver": "1.0.6",
       "uuid": "751609cd-bdbf-4f61-b69d-30399ba7398e",
@@ -18351,7 +18397,7 @@
       "offsetX": 0,
       "offsetY": 0,
       "trimX": 591,
-      "trimY": 432,
+      "trimY": 468,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -18374,7 +18420,7 @@
       "offsetX": 0,
       "offsetY": 0,
       "trimX": 591,
-      "trimY": 450,
+      "trimY": 486,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -18396,8 +18442,8 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": 0,
-      "trimX": 591,
-      "trimY": 468,
+      "trimX": 728,
+      "trimY": 406,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -18419,52 +18465,6 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": -8,
-      "trimX": 591,
-      "trimY": 486,
-      "width": 16,
-      "height": 16,
-      "rawWidth": 16,
-      "rawHeight": 32,
-      "borderTop": 0,
-      "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
-      "spriteType": "normal",
-      "subMetas": {}
-    },
-    "fencedungeon00anim1.png": {
-      "ver": "1.0.6",
-      "uuid": "3e6a9dd1-d30a-46a8-a1f3-bb392bece50e",
-      "importer": "sprite-frame",
-      "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
-      "trimType": "auto",
-      "trimThreshold": 1,
-      "rotated": false,
-      "offsetX": 0,
-      "offsetY": 3,
-      "trimX": 728,
-      "trimY": 406,
-      "width": 16,
-      "height": 16,
-      "rawWidth": 16,
-      "rawHeight": 32,
-      "borderTop": 0,
-      "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
-      "spriteType": "normal",
-      "subMetas": {}
-    },
-    "fencedungeon00anim10.png": {
-      "ver": "1.0.6",
-      "uuid": "77bc4299-dea4-4836-a127-2de2d66189fe",
-      "importer": "sprite-frame",
-      "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
-      "trimType": "auto",
-      "trimThreshold": 1,
-      "rotated": false,
-      "offsetX": 0,
-      "offsetY": 3,
       "trimX": 710,
       "trimY": 412,
       "width": 16,
@@ -18501,9 +18501,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "fencedungeon00anim11.png": {
+    "fencedungeon00anim1.png": {
       "ver": "1.0.6",
-      "uuid": "c196f08a-1372-4560-b4c5-ec28633d4626",
+      "uuid": "3e6a9dd1-d30a-46a8-a1f3-bb392bece50e",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -18524,16 +18524,16 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "fencedungeon00anim8.png": {
+    "fencedungeon00anim10.png": {
       "ver": "1.0.6",
-      "uuid": "b0966d2e-c96e-4c51-98a1-a97276489c8f",
+      "uuid": "77bc4299-dea4-4836-a127-2de2d66189fe",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
       "offsetX": 0,
-      "offsetY": -8,
+      "offsetY": 3,
       "trimX": 658,
       "trimY": 435,
       "width": 16,
@@ -18570,16 +18570,16 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "fencedungeon00anim9.png": {
+    "fencedungeon00anim11.png": {
       "ver": "1.0.6",
-      "uuid": "20022cb0-ec3a-4417-8feb-5ba88132f172",
+      "uuid": "c196f08a-1372-4560-b4c5-ec28633d4626",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
       "offsetX": 0,
-      "offsetY": -8,
+      "offsetY": 3,
       "trimX": 625,
       "trimY": 453,
       "width": 16,
@@ -18639,9 +18639,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "fenceroom00anim0.png": {
+    "fencedungeon00anim8.png": {
       "ver": "1.0.6",
-      "uuid": "3c1042b1-48bd-492e-8575-e360d3f884e9",
+      "uuid": "b0966d2e-c96e-4c51-98a1-a97276489c8f",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -18662,16 +18662,16 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "fenceroom00anim1.png": {
+    "fencedungeon00anim9.png": {
       "ver": "1.0.6",
-      "uuid": "0884d941-5f09-4788-953e-3993fd5d8ee3",
+      "uuid": "20022cb0-ec3a-4417-8feb-5ba88132f172",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
       "offsetX": 0,
-      "offsetY": 3,
+      "offsetY": -8,
       "trimX": 710,
       "trimY": 431,
       "width": 16,
@@ -18708,16 +18708,16 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "fenceroom00anim10.png": {
+    "fenceroom00anim0.png": {
       "ver": "1.0.6",
-      "uuid": "c971543f-180b-4a71-9475-41bc527c2c96",
+      "uuid": "3c1042b1-48bd-492e-8575-e360d3f884e9",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
       "offsetX": 0,
-      "offsetY": 3,
+      "offsetY": -8,
       "trimX": 760,
       "trimY": 427,
       "width": 16,
@@ -18754,9 +18754,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "fenceroom00anim11.png": {
+    "fenceroom00anim1.png": {
       "ver": "1.0.6",
-      "uuid": "30fb56b9-2754-48ac-b580-0dfe2d0160cb",
+      "uuid": "0884d941-5f09-4788-953e-3993fd5d8ee3",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
@@ -18800,16 +18800,16 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "fenceroom00anim8.png": {
+    "fenceroom00anim10.png": {
       "ver": "1.0.6",
-      "uuid": "3cfd090e-6d23-4e50-a7b9-238a4eeeb9af",
+      "uuid": "c971543f-180b-4a71-9475-41bc527c2c96",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
       "offsetX": 0,
-      "offsetY": -8,
+      "offsetY": 3,
       "trimX": 676,
       "trimY": 440,
       "width": 16,
@@ -18823,16 +18823,16 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "fenceroom00anim9.png": {
+    "fenceroom00anim11.png": {
       "ver": "1.0.6",
-      "uuid": "a8be392d-979a-4886-83ad-0b39c5efcedd",
+      "uuid": "30fb56b9-2754-48ac-b580-0dfe2d0160cb",
       "importer": "sprite-frame",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
       "offsetX": 0,
-      "offsetY": -8,
+      "offsetY": 3,
       "trimX": 658,
       "trimY": 453,
       "width": 16,
@@ -18892,6 +18892,52 @@
       "spriteType": "normal",
       "subMetas": {}
     },
+    "fenceroom00anim8.png": {
+      "ver": "1.0.6",
+      "uuid": "3cfd090e-6d23-4e50-a7b9-238a4eeeb9af",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": -8,
+      "trimX": 625,
+      "trimY": 471,
+      "width": 16,
+      "height": 16,
+      "rawWidth": 16,
+      "rawHeight": 32,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "spriteType": "normal",
+      "subMetas": {}
+    },
+    "fenceroom00anim9.png": {
+      "ver": "1.0.6",
+      "uuid": "a8be392d-979a-4886-83ad-0b39c5efcedd",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": -8,
+      "trimX": 759,
+      "trimY": 445,
+      "width": 16,
+      "height": 16,
+      "rawWidth": 16,
+      "rawHeight": 32,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "spriteType": "normal",
+      "subMetas": {}
+    },
     "fenceship00anim0.png": {
       "ver": "1.0.6",
       "uuid": "919f946f-c89b-4eab-ad45-bd5c21d1ccdb",
@@ -18902,8 +18948,8 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": -8,
-      "trimX": 625,
-      "trimY": 471,
+      "trimX": 777,
+      "trimY": 448,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -18925,8 +18971,8 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": 3,
-      "trimX": 759,
-      "trimY": 445,
+      "trimX": 795,
+      "trimY": 459,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -18948,8 +18994,8 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": 3,
-      "trimX": 777,
-      "trimY": 448,
+      "trimX": 813,
+      "trimY": 470,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -18971,8 +19017,8 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": 3,
-      "trimX": 795,
-      "trimY": 459,
+      "trimX": 831,
+      "trimY": 485,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -18994,8 +19040,8 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": -8,
-      "trimX": 813,
-      "trimY": 470,
+      "trimX": 849,
+      "trimY": 498,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -19017,8 +19063,8 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": -8,
-      "trimX": 831,
-      "trimY": 485,
+      "trimX": 867,
+      "trimY": 512,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -19040,8 +19086,8 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": -8,
-      "trimX": 849,
-      "trimY": 498,
+      "trimX": 867,
+      "trimY": 530,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -19064,7 +19110,7 @@
       "offsetX": 0,
       "offsetY": -8,
       "trimX": 867,
-      "trimY": 512,
+      "trimY": 548,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -19086,8 +19132,8 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": -8,
-      "trimX": 867,
-      "trimY": 530,
+      "trimX": 885,
+      "trimY": 516,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -19109,8 +19155,8 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": -8,
-      "trimX": 867,
-      "trimY": 548,
+      "trimX": 462,
+      "trimY": 458,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -19132,8 +19178,8 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": -8,
-      "trimX": 885,
-      "trimY": 516,
+      "trimX": 444,
+      "trimY": 463,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -19743,52 +19789,6 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "tile_labtop004.png": {
-      "ver": "1.0.6",
-      "uuid": "f937c92b-9676-4539-9fb5-15b684ec988d",
-      "importer": "sprite-frame",
-      "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
-      "trimType": "auto",
-      "trimThreshold": 1,
-      "rotated": false,
-      "offsetX": 0,
-      "offsetY": 0,
-      "trimX": 850,
-      "trimY": 455,
-      "width": 16,
-      "height": 16,
-      "rawWidth": 16,
-      "rawHeight": 16,
-      "borderTop": 0,
-      "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
-      "spriteType": "normal",
-      "subMetas": {}
-    },
-    "tile_labtop001.png": {
-      "ver": "1.0.6",
-      "uuid": "c1ee7bc2-78ea-418b-ab22-75556006f903",
-      "importer": "sprite-frame",
-      "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
-      "trimType": "auto",
-      "trimThreshold": 1,
-      "rotated": false,
-      "offsetX": 0,
-      "offsetY": 0,
-      "trimX": 892,
-      "trimY": 480,
-      "width": 16,
-      "height": 16,
-      "rawWidth": 16,
-      "rawHeight": 16,
-      "borderTop": 0,
-      "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
-      "spriteType": "normal",
-      "subMetas": {}
-    },
     "tile_mart002.png": {
       "ver": "1.0.6",
       "uuid": "df543677-8256-471c-a067-6991b043e527",
@@ -19799,8 +19799,8 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": 0,
-      "trimX": 919,
-      "trimY": 518,
+      "trimX": 954,
+      "trimY": 532,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -19822,8 +19822,8 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": 0,
-      "trimX": 919,
-      "trimY": 518,
+      "trimX": 954,
+      "trimY": 532,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -20121,8 +20121,8 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": -8,
-      "trimX": 625,
-      "trimY": 471,
+      "trimX": 777,
+      "trimY": 448,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
@@ -20190,8 +20190,8 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": -8,
-      "trimX": 831,
-      "trimY": 485,
+      "trimX": 867,
+      "trimY": 512,
       "width": 16,
       "height": 16,
       "rawWidth": 16,
