@@ -1043,7 +1043,7 @@ export default class BuildingManager extends BaseManager {
             let stone = this.addBuilding(prefab, pos)
             let stoneScript = stone.getComponent(FallStone)
             stoneScript.isAuto = isAuto
-            stone.zIndex = IndexZ.FLOOR
+            stone.zIndex = IndexZ.ACTOR
             if (stoneScript.isAuto) {
                 stoneScript.fall(withFire)
             }

@@ -237,7 +237,7 @@ export default class NonPlayer extends Actor {
     private hitLightS(damage: DamageData) {
         let show = true
         let resName = 'hitlight1'
-        let scale = 8
+        let scale = 4
         let punchNames = [AudioPlayer.PUNCH, AudioPlayer.PUNCH1, AudioPlayer.PUNCH2]
         let swordhitNames = [AudioPlayer.SWORD_HIT, AudioPlayer.SWORD_HIT1, AudioPlayer.SWORD_HIT2]
         if (damage.isFist) {
@@ -247,16 +247,16 @@ export default class NonPlayer extends Actor {
             resName = Logic.getHalfChance() ? 'hitlight9' : 'hitlight10'
         } else if (damage.isBlunt) {
             resName = Logic.getHalfChance() ? 'hitlight3' : 'hitlight4'
-            scale = damage.isFar ? 10 : 8
+            scale = damage.isFar ? 5 : 4
             AudioPlayer.play(swordhitNames[Logic.getRandomNum(0, 2)])
         } else if (damage.isMelee) {
             AudioPlayer.play(swordhitNames[Logic.getRandomNum(0, 2)])
             if (damage.isStab) {
                 resName = Logic.getHalfChance() ? 'hitlight5' : 'hitlight6'
-                scale = damage.isFar ? 10 : 8
+                scale = damage.isFar ? 5 : 4
             } else {
                 resName = Logic.getHalfChance() ? 'hitlight7' : 'hitlight8'
-                scale = damage.isFar ? 10 : 8
+                scale = damage.isFar ? 5 : 4
             }
         } else {
             show = false
@@ -264,10 +264,10 @@ export default class NonPlayer extends Actor {
         if (show) {
             this.hitLightSprite.node.stopAllActions()
             this.hitLightSprite.spriteFrame = Logic.spriteFrameRes(resName)
-            this.hitLightSprite.node.opacity = 220
+            this.hitLightSprite.node.opacity = 255
             this.hitLightSprite.node.color = cc.Color.WHITE
-            this.hitLightSprite.node.scale = damage.isCriticalStrike ? scale : scale + 3
-            cc.tween(this.hitLightSprite.node).delay(0.2).to(0.3, { opacity: 0, color: cc.Color.BLACK }).to(0.3, { opacity: 0 }).start()
+            this.hitLightSprite.node.scale = damage.isCriticalStrike ? scale : scale + 2
+            cc.tween(this.hitLightSprite.node).delay(0.2).to(0.2, { opacity: 0, color: cc.Color.RED }).start()
         }
     }
     /**加载保存的状态 */
@@ -443,7 +443,7 @@ export default class NonPlayer extends Actor {
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0)
         }
-        pos = pos.normalize().mul(this.isFaceRight ? 32 : -32)
+        pos = pos.normalize().mul(this.isFaceRight ? 16 : -16)
         if (!this.isFaceRight) {
             pos.y = -pos.y
         }
@@ -452,7 +452,7 @@ export default class NonPlayer extends Actor {
         this.sprite.stopAllActions()
         let stabDelay = 0
         if (((!isSpecial && this.data.meleeDash > 0) || (isSpecial && this.data.specialDash > 0)) && isMelee) {
-            stabDelay = 0.8 * speedScale
+            stabDelay = 0.4 * speedScale
         }
         const beforetween = cc
             .tween()
@@ -466,14 +466,14 @@ export default class NonPlayer extends Actor {
         //摇晃
         const shaketween = cc
             .tween()
-            .by(0.05, { position: cc.v3(5, 0) })
-            .by(0.05, { position: cc.v3(-5, 0) })
-            .by(0.05, { position: cc.v3(5, 0) })
-            .by(0.05, { position: cc.v3(-5, 0) })
-            .by(0.05, { position: cc.v3(5, 0) })
-            .by(0.05, { position: cc.v3(-5, 0) })
-            .by(0.05, { position: cc.v3(5, 0) })
-            .by(0.05, { position: cc.v3(-5, 0) })
+            .by(0.02, { position: cc.v3(5, 0) })
+            .by(0.02, { position: cc.v3(-5, 0) })
+            .by(0.02, { position: cc.v3(5, 0) })
+            .by(0.02, { position: cc.v3(-5, 0) })
+            .by(0.02, { position: cc.v3(5, 0) })
+            .by(0.02, { position: cc.v3(-5, 0) })
+            .by(0.02, { position: cc.v3(5, 0) })
+            .by(0.02, { position: cc.v3(-5, 0) })
 
         const arrattack: string[] = [`anim009`]
         const arrspecial: string[] = []
@@ -496,6 +496,7 @@ export default class NonPlayer extends Actor {
                     .delay(0.2 * speedScale)
                     .call(() => {
                         this.changeBodyRes(this.data.resName, arr[i])
+                        AudioPlayer.play(AudioPlayer.MELEE)
                     })
             )
         }
@@ -528,7 +529,7 @@ export default class NonPlayer extends Actor {
         //退后
         const backofftween = cc
             .tween()
-            .to(0.5 * speedScale, { position: cc.v3(-pos.x, -pos.y) })
+            .to(0.2 * speedScale, { position: cc.v3(-pos.x, -pos.y) })
             .delay(stabDelay)
         //前进
         const forwardtween = cc
@@ -542,7 +543,7 @@ export default class NonPlayer extends Actor {
                 this.dangerBox.show(
                     this.data.attackRect,
                     isSpecial,
-                    ActorUtils.getDashDistance(this, isSpecial ? this.data.specialDash : this.data.meleeDash, 0.8 * speedScale),
+                    ActorUtils.getDashDistance(this, isSpecial ? this.data.specialDash : this.data.meleeDash, 0.4 * speedScale),
                     this.hv
                 )
             }
@@ -1039,7 +1040,6 @@ export default class NonPlayer extends Actor {
                 this.sc.isAttacking = true
                 this.sprite.opacity = 255
                 this.showAttackEffect(false)
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
                 let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate
                 if (isMiss) {
                     this.showFloatFont(this.dungeon.node, 0, false, true, false, false)

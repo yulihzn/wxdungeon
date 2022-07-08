@@ -1285,6 +1285,9 @@ export default class Player extends Actor {
             this.weaponRight.updateLogic(dt)
             this.weaponRight.handsUp(showHands, isLift, this.interactBuilding && this.interactBuilding.isAttacking)
         }
+        if (this.shooterEx) {
+            this.shooterEx.updateLogic(dt)
+        }
         if (this.avatar) {
             this.avatar.showLegsWithWater(this.isInWater(), this.isInWaterTile)
             this.shadow.opacity = this.isInWater() ? 0 : 128
@@ -1438,6 +1441,9 @@ export default class Player extends Actor {
 
     setLinearVelocity(movement: cc.Vec2) {}
     timeConsumeLife() {
+        if (Logic.chapterIndex != Logic.CHAPTER099) {
+            return
+        }
         let time = Logic.realTime - this.lastConsumeTime
         this.lastConsumeTime = Logic.realTime
         let life = this.data.LifeData

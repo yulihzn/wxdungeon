@@ -84,7 +84,12 @@ export default class Tile extends cc.Component {
         this.isAnimPlaying = true
     }
     containsRect(rect: cc.Rect) {
-        return this.rect.containsRect(rect)
+        if (this.rect.containsRect(rect)) {
+            return true
+        }
+        let inrect = cc.rect()
+        this.rect.intersection(inrect, rect)
+        return inrect.width > rect.width * 0.9 || inrect.height > rect.height * 0.9
     }
 
     changeRes(resName: string, width: number, height: number) {

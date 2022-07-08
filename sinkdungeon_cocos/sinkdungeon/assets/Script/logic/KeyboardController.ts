@@ -1,3 +1,4 @@
+import Controller from './Controller'
 import { EventHelper } from './EventHelper'
 import Logic from './Logic'
 
@@ -61,7 +62,11 @@ export default class KeyboardController extends cc.Component {
                 this.isA = true
                 break
             case cc.macro.KEY.space:
-                this.isB = true
+                if (!Controller.isMouseMode) {
+                    this.isB = true
+                } else {
+                    this.isJ = true
+                }
                 break
             case cc.macro.KEY.k:
                 this.isJ = true
@@ -140,8 +145,13 @@ export default class KeyboardController extends cc.Component {
                 this.isA = false
                 break
             case cc.macro.KEY.space:
-                this.isB = false
-                EventHelper.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL)
+                if (!Controller.isMouseMode) {
+                    this.isB = false
+                    EventHelper.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL)
+                } else {
+                    this.isJ = false
+                    EventHelper.emit(EventHelper.PLAYER_JUMP_CANCEL)
+                }
                 break
             case cc.macro.KEY.k:
                 this.isJ = false

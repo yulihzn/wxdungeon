@@ -439,31 +439,31 @@ export default class MonsterManager extends BaseManager {
         switch (Logic.chapterIndex) {
             case Logic.CHAPTER00:
                 arr = MonsterManager.MONSTERS_LAB
-                num = rand4save.getRandomNum(3, 12)
+                num = rand4save.getRandomNum(3, 6)
                 break
             case Logic.CHAPTER01:
                 arr = MonsterManager.MONSTERS_SHIP
-                num = rand4save.getRandomNum(4, 14)
+                num = rand4save.getRandomNum(4, 7)
                 break
             case Logic.CHAPTER02:
                 arr = MonsterManager.MONSTERS_FOREST
-                num = rand4save.getRandomNum(5, 16)
+                num = rand4save.getRandomNum(5, 8)
                 break
             case Logic.CHAPTER03:
                 arr = MonsterManager.MONSTERS_PYRAMID
-                num = rand4save.getRandomNum(6, 18)
+                num = rand4save.getRandomNum(6, 9)
                 break
             case Logic.CHAPTER04:
                 arr = MonsterManager.MONSTERS_DUNGEON
-                num = rand4save.getRandomNum(7, 20)
+                num = rand4save.getRandomNum(7, 10)
                 break
             case Logic.CHAPTER05:
                 arr = MonsterManager.MONSTERS_DUNGEON
-                num = rand4save.getRandomNum(8, 22)
+                num = rand4save.getRandomNum(8, 11)
                 break
             case Logic.CHAPTER099:
                 arr = MonsterManager.MONSTERS_LAB
-                num = rand4save.getRandomNum(3, 12)
+                num = rand4save.getRandomNum(3, 6)
                 break
         }
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.VERTICAL_ROOM) || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.HORIZONTAL_ROOM)) {

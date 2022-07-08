@@ -713,7 +713,7 @@ export default class Dungeon extends cc.Component {
         let tile = this.tilesmap[pos.x][pos.y]
         let pp = actor.node.position
         let w = actor.node.width
-        let h = actor.node.height
+        let h = actor.node.width
         return tile.isWater && tile.containsRect(cc.rect(pp.x - w / 2, pp.y - h / 2, w, h))
     }
     lerp(self: cc.Vec3, to: cc.Vec3, ratio: number): cc.Vec3 {

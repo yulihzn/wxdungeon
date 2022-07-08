@@ -72,7 +72,7 @@ export default class ActorAttackBox extends cc.Component {
         this.setHv(hv)
         this.collider.enabled = true
         this.isSpecial = isSpecial
-        this.sprite.opacity = 60
+        this.sprite.opacity = 40
         let rectArr = boxRect.split(',')
         this.sprite.position = cc.v3(parseInt(rectArr[0]), parseInt(rectArr[1]))
         let w = parseInt(rectArr[2])

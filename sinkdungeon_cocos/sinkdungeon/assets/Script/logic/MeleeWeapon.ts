@@ -245,11 +245,11 @@ export default class MeleeWeapon extends BaseColliderComponent {
         }
         //长枪
         if (this.isStab && this.isFar) {
-            speedScaleFix = 1.2
+            speedScaleFix = 1.5
         }
         //大剑
         if (!this.isStab && this.isFar) {
-            speedScaleFix = 1
+            speedScaleFix = 1.2
         }
         if (this.isFist) {
             speedScaleFix = 1
@@ -550,8 +550,10 @@ export default class MeleeWeapon extends BaseColliderComponent {
             power = 2
         } else if (this.isFar && this.isStab) {
             power = 8
+        } else if (this.isFar && !this.isStab) {
+            power = 6
         } else if (!this.isFar && !this.isStab) {
-            power = 5
+            power = 4
         } else {
             power = 2
         }
@@ -562,7 +564,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         pos = pos.normalize().mul(power)
         this.scheduleOnce(() => {
             // cc.log(`beat x=${pos.x},y=${pos.y}`);
-            actor.entity.Move.linearVelocity = cc.v2(pos.x, pos.y)
+            actor.entity.Move.linearVelocity = cc.v2(pos.x, pos.y).mul(actor.sc.isAttacking ? 0.2 : 1)
         }, 0.05)
     }
     public attacking(attackTarget: CCollider, anim: cc.Animation, isShadow: boolean): boolean {

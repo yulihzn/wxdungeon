@@ -232,7 +232,7 @@ export default class Wall extends Building {
         if (!this.wallsprite) {
             this.shadowsprite = this.node.getChildByName('sprite').getChildByName('shadow').getComponent(cc.Sprite)
         }
-        this.shadowsprite.node.opacity = isShowShadow ? 80 : 0
+        this.shadowsprite.node.opacity = isShowShadow ? 40 : 0
     }
 
     public static typeNeedTransparent(type: number): boolean {
