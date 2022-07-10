@@ -198,8 +198,8 @@ export default class Dungeon extends cc.Component {
         }
         let colliderdebug = this.node.getChildByName('colliderdebug')
         colliderdebug.zIndex = IndexZ.UI
-        let p0 = this.node.convertToWorldSpaceAR(cc.v3(0, 0))
-        let p1 = this.node.convertToWorldSpaceAR(cc.v3(Dungeon.WIDTH_SIZE * Dungeon.TILE_SIZE, Dungeon.WIDTH_SIZE * Dungeon.TILE_SIZE))
+        let p0 = this.node.convertToWorldSpaceAR(cc.v3(-5 * Dungeon.TILE_SIZE, -5 * Dungeon.TILE_SIZE))
+        let p1 = this.node.convertToWorldSpaceAR(cc.v3((Dungeon.WIDTH_SIZE + 10) * Dungeon.TILE_SIZE, (Dungeon.WIDTH_SIZE + 10) * Dungeon.TILE_SIZE))
         let rect = cc.rect(p0.x, p0.y, p1.x - p0.x, p1.y - p0.y)
         this.rootSystem = new GameWorldSystem(rect, colliderdebug.getComponent(cc.Graphics))
         this.rootSystem.init()
@@ -747,7 +747,6 @@ export default class Dungeon extends cc.Component {
         }
         return false
     }
-
     update(dt) {
         if (this.isInitFinish && !Logic.isGamePause && !this.isDisappeared && LoadingManager.allResourceDone()) {
             if (this.isTimeDelay(dt)) {
@@ -761,6 +760,10 @@ export default class Dungeon extends cc.Component {
             if (this.isCheckTimeDelay(dt)) {
                 this.checkRoomClear()
             }
+        }
+    }
+    protected lateUpdate(dt: number): void {
+        if (this.isInitFinish && !Logic.isGamePause && !this.isDisappeared && LoadingManager.allResourceDone()) {
             this.rootSystem.execute(dt)
         }
     }

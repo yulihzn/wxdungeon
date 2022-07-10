@@ -16,8 +16,8 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity> {
                 move.damping = 0
             }
             let temp = move.linearVelocity.mul(this.dt * MoveComponent.PIXELS_PER_UNIT)
-            transform.position.x += temp.x
-            transform.position.y += temp.y
+            let tp = cc.v3(transform.position.x + temp.x, transform.position.y + temp.y)
+            transform.position = tp
             transform.z += move.linearVelocityZ * this.dt * MoveComponent.PIXELS_PER_UNIT
             let damping = move.damping * this.dt
             let gravity = move.gravity * this.dt

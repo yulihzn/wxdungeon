@@ -349,7 +349,6 @@ export default class CCollider extends cc.Component {
                 this.entity.Transform.base = other.z + other.zHeight
                 this.baseChangedCount++
             }
-
             // if(isLeft||isRight){
             //     //如果左下角在目标左上角的下面且左上角在目标左上角的下面
             //     if(tps[0].y>ops[0].y&&tps[1].y<ops[1].y||tps[0].y<ops[0].y&&tps[1].y>ops[1].y){
@@ -368,7 +367,6 @@ export default class CCollider extends cc.Component {
             // }
         }
         this.entity.Move.linearVelocity = pos
-
         // if (this.entity.NodeRender.node) {
         //     if (isLeft) {
         //         this.entity.Transform.position.x -= offsetHorizonal;

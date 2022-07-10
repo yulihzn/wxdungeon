@@ -443,23 +443,23 @@ export default class MonsterManager extends BaseManager {
                 break
             case Logic.CHAPTER01:
                 arr = MonsterManager.MONSTERS_SHIP
-                num = rand4save.getRandomNum(4, 7)
+                num = rand4save.getRandomNum(3, 7)
                 break
             case Logic.CHAPTER02:
                 arr = MonsterManager.MONSTERS_FOREST
-                num = rand4save.getRandomNum(5, 8)
+                num = rand4save.getRandomNum(4, 8)
                 break
             case Logic.CHAPTER03:
                 arr = MonsterManager.MONSTERS_PYRAMID
-                num = rand4save.getRandomNum(6, 9)
+                num = rand4save.getRandomNum(4, 9)
                 break
             case Logic.CHAPTER04:
                 arr = MonsterManager.MONSTERS_DUNGEON
-                num = rand4save.getRandomNum(7, 10)
+                num = rand4save.getRandomNum(5, 10)
                 break
             case Logic.CHAPTER05:
                 arr = MonsterManager.MONSTERS_DUNGEON
-                num = rand4save.getRandomNum(8, 11)
+                num = rand4save.getRandomNum(5, 11)
                 break
             case Logic.CHAPTER099:
                 arr = MonsterManager.MONSTERS_LAB

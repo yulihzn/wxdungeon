@@ -443,7 +443,7 @@ export default class NonPlayer extends Actor {
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0)
         }
-        pos = pos.normalize().mul(this.isFaceRight ? 16 : -16)
+        pos = pos.normalize().mul(this.isFaceRight ? 32 : -32)
         if (!this.isFaceRight) {
             pos.y = -pos.y
         }

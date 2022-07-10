@@ -62,6 +62,7 @@ export default class Wall extends Building {
     combineWall: Wall
 
     isFence = false //是否是围栏，围栏和自定义墙体一样无屋顶，但是贴图需要按顺序读取
+    alpha = 255
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -305,11 +306,7 @@ export default class Wall extends Building {
                 EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER + this.node.uuid, { type: 0, other: other, self: self })
             }
             if (Wall.typeNeedTransparent(this.type)) {
-                if (this.type == Wall.TYPE_OTHER || this.isFence) {
-                    this.wallsprite.node.opacity = 120
-                } else {
-                    this.roofsprite.node.opacity = 120
-                }
+                this.alpha = 80
             }
         }
     }
@@ -322,11 +319,7 @@ export default class Wall extends Building {
                 EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER + this.node.uuid, { type: 1, other: other, self: self })
             }
             if (Wall.typeNeedTransparent(this.type)) {
-                if (this.type == Wall.TYPE_OTHER || this.isFence) {
-                    this.wallsprite.node.opacity = 120
-                } else {
-                    this.roofsprite.node.opacity = 120
-                }
+                this.alpha = 80
             }
         }
     }
@@ -340,13 +333,21 @@ export default class Wall extends Building {
             }
             if (Wall.typeNeedTransparent(this.type)) {
                 if (this.type == Wall.TYPE_OTHER || this.isFence) {
-                    this.wallsprite.node.opacity = 255
+                    this.alpha = 255
                 } else {
-                    this.roofsprite.node.opacity = 255
+                    this.alpha = 255
                 }
             }
         }
     }
 
-    // update (dt) {}
+    update(dt) {
+        if (Wall.typeNeedTransparent(this.type)) {
+            if (this.type == Wall.TYPE_OTHER || this.isFence) {
+                this.wallsprite.node.opacity = Logic.lerp(this.wallsprite.node.opacity, this.alpha, 3 * dt)
+            } else {
+                this.roofsprite.node.opacity = Logic.lerp(this.roofsprite.node.opacity, this.alpha, 5 * dt)
+            }
+        }
+    }
 }
