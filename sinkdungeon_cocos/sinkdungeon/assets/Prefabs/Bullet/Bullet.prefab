@@ -918,9 +918,9 @@
     "renderColor": {
       "__type__": "cc.Color",
       "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 80
+      "g": 0,
+      "b": 0,
+      "a": 255
     },
     "showLight": false,
     "showRayCast": false,
@@ -974,7 +974,7 @@
     "offsetX": 0,
     "offsetY": 0,
     "type": 0,
-    "radius": 24,
+    "radius": 32,
     "w": 128,
     "h": 256,
     "zHeight": 32,

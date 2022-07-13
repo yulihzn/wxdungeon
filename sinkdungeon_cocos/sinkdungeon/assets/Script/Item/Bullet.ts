@@ -76,6 +76,7 @@ export default class Bullet extends BaseColliderComponent {
     shooter: Shooter
     private currentLinearVelocity = cc.v2(0, 0)
     ignoreEmptyWall = false
+    lights: ShadowOfSight[] = []
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -89,10 +90,8 @@ export default class Bullet extends BaseColliderComponent {
         this.light = this.base.getChildByName('light').getComponent(cc.Sprite)
         this.light.node.opacity = 0
         this.entity.Move.gravity = 0
-        let lights = this.getComponentsInChildren(ShadowOfSight)
-        if (lights) {
-            LightManager.registerLight(lights, this.node)
-        }
+        this.lights = this.getComponentsInChildren(ShadowOfSight)
+        LightManager.registerLight(this.lights, this.node)
     }
     onEnable() {
         this.tagetPos = cc.v3(0, 0)
@@ -114,6 +113,8 @@ export default class Bullet extends BaseColliderComponent {
         this.isDecelerateDelay = false
         this.isHit = false
         this.isReserved = false
+        LightManager.unRegisterLight(this.lights)
+        LightManager.registerLight(this.lights, this.node)
     }
     timeDelay = 0
     checkTimeDelay = 0
@@ -184,7 +185,6 @@ export default class Bullet extends BaseColliderComponent {
         }
         this.entity.Move.gravity = 0
     }
-
     private changeRes(resName: string, lightName: string, lightColor: string, suffix?: string) {
         if (!this.sprite) {
             this.sprite = this.root.getChildByName('sprite').getComponent(cc.Sprite)
@@ -229,6 +229,7 @@ export default class Bullet extends BaseColliderComponent {
         if (this.sprite) {
             this.sprite.spriteFrame = null
         }
+        LightManager.unRegisterLight(this.lights)
         this.shooter.addDestroyBullet(this.node)
     }
     fire(hv: cc.Vec2) {
@@ -322,7 +323,8 @@ export default class Bullet extends BaseColliderComponent {
                 other.sensor ||
                 this.data.isInvincible > 0 ||
                 other.tag == CCollider.TAG.WALL_TOP ||
-                other.tag == CCollider.TAG.WALL
+                other.tag == CCollider.TAG.WALL ||
+                other.tag == CCollider.TAG.BUILDING
             ) {
                 isDestory = false
             }
@@ -462,8 +464,10 @@ export default class Bullet extends BaseColliderComponent {
                 if (isDestory && attackTarget.getComponent(ExitDoor)) {
                     isDestory = false
                 }
-                if (isDestory && this.ignoreEmptyWall && attackTarget.getComponent(AirExit)) {
-                    isDestory = false
+            }
+            if (!damageSuccess) {
+                if (attackTarget.getComponent(AirExit)) {
+                    isDestory = !this.ignoreEmptyWall
                 }
             }
         } else if (!this.isFromPlayer && tag == CCollider.TAG.ENERGY_SHIELD) {
