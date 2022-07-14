@@ -97,13 +97,13 @@ export default class Chest extends Building {
                     if (dungeon) {
                         let rand4save = Logic.mapManager.getRandom4Save(this.seed)
                         if (Logic.isCheatMode) {
-                            dungeon.addEquipment(EquipmentManager.SHIELD_CIRCLE, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            dungeon.addEquipment('helmet019', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            dungeon.addEquipment('clothes014', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            dungeon.addEquipment('trousers008', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            dungeon.addEquipment('gloves009', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            dungeon.addEquipment('shoes009', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            dungeon.addEquipment(EquipmentManager.REMOTE_WINCHESTER, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            // dungeon.addEquipment(EquipmentManager.SHIELD_CIRCLE, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            // dungeon.addEquipment('helmet019', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            // dungeon.addEquipment('clothes014', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            // dungeon.addEquipment('trousers008', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            // dungeon.addEquipment('gloves009', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            // dungeon.addEquipment('shoes009', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            dungeon.addEquipment(EquipmentManager.REMOTE_ALIENGUN, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment('shield007', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
                             // dungeon.addEquipment('helmet006', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
                             // dungeon.addEquipment('clothes010', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);

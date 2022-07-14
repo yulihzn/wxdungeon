@@ -15,47 +15,49 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity> {
             if (move.damping < 0) {
                 move.damping = 0
             }
+            //xy
             let temp = move.linearVelocity.mul(this.dt * MoveComponent.PIXELS_PER_UNIT)
-            let tp = cc.v3(transform.position.x + temp.x, transform.position.y + temp.y)
-            transform.position = tp
-            transform.z += move.linearVelocityZ * this.dt * MoveComponent.PIXELS_PER_UNIT
-            let damping = move.damping * this.dt
-            let gravity = move.gravity * this.dt
+            if (!temp.equals(cc.Vec2.ZERO)) {
+                let tp = cc.v3(transform.position.x + temp.x, transform.position.y + temp.y)
+                transform.position = tp
+                let damping = move.damping * this.dt
+                if (move.linearVelocity.x > 0) {
+                    move.linearVelocity.x -= damping
+                    if (move.linearVelocity.x < 0) {
+                        move.linearVelocity.x = 0
+                    }
+                } else if (move.linearVelocity.x < 0) {
+                    move.linearVelocity.x += damping
+                    if (move.linearVelocity.x > 0) {
+                        move.linearVelocity.x = 0
+                    }
+                }
+                if (move.linearVelocity.y > 0) {
+                    move.linearVelocity.y -= damping
+                    if (move.linearVelocity.y < 0) {
+                        move.linearVelocity.y = 0
+                    }
+                } else if (move.linearVelocity.y < 0) {
+                    move.linearVelocity.y += damping
+                    if (move.linearVelocity.y > 0) {
+                        move.linearVelocity.y = 0
+                    }
+                }
+            }
             let acceleration = move.acceleration * this.dt
+            move.linearVelocity.x += acceleration
+            move.linearVelocity.y += acceleration
+            if (e.NodeRender.node) {
+                e.NodeRender.node.setPosition(transform.position)
+            }
+            //z
+            transform.z += move.linearVelocityZ * this.dt * MoveComponent.PIXELS_PER_UNIT
+            let gravity = move.gravity * this.dt
             if (transform.z < transform.base) {
                 transform.z = transform.base
                 move.linearVelocityZ = 0
             } else if (transform.z > transform.base) {
                 move.linearVelocityZ -= gravity
-            }
-
-            if (move.linearVelocity.x > 0) {
-                move.linearVelocity.x -= damping
-                if (move.linearVelocity.x < 0) {
-                    move.linearVelocity.x = 0
-                }
-            } else if (move.linearVelocity.x < 0) {
-                move.linearVelocity.x += damping
-                if (move.linearVelocity.x > 0) {
-                    move.linearVelocity.x = 0
-                }
-            }
-            if (move.linearVelocity.y > 0) {
-                move.linearVelocity.y -= damping
-                if (move.linearVelocity.y < 0) {
-                    move.linearVelocity.y = 0
-                }
-            } else if (move.linearVelocity.y < 0) {
-                move.linearVelocity.y += damping
-                if (move.linearVelocity.y > 0) {
-                    move.linearVelocity.y = 0
-                }
-            }
-            move.linearVelocity.x += acceleration
-            move.linearVelocity.y += acceleration
-
-            if (e.NodeRender.node) {
-                e.NodeRender.node.setPosition(transform.position)
             }
             if (e.NodeRender.root) {
                 e.NodeRender.root.setPosition(cc.v3(0, transform.z))

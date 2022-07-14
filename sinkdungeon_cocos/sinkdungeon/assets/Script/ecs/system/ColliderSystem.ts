@@ -63,7 +63,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
             let colliders = e.Collider.colliders
             for (let collider of colliders) {
                 collider.entity = e
-                if (collider.enabled && collider.node.active) {
+                if (collider.enabled && collider.node.active && collider.entity.NodeRender.node && collider.entity.NodeRender.node.active) {
                     collider.fixCenterAndScale()
                     this.list.push(collider)
                     this.quadTree.insert(collider)

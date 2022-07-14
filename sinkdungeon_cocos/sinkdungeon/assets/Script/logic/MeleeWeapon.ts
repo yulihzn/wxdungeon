@@ -24,7 +24,6 @@ import InteractBuilding from '../building/InteractBuilding'
 import Utils from '../utils/Utils'
 import CCollider from '../collider/CCollider'
 import BaseColliderComponent from '../base/BaseColliderComponent'
-import Controller from './Controller'
 import TriggerData from '../data/TriggerData'
 import Emplacement from '../building/Emplacement'
 

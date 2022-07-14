@@ -95,8 +95,6 @@ export default class Bullet extends BaseColliderComponent {
     }
     onEnable() {
         this.tagetPos = cc.v3(0, 0)
-        this.entity.NodeRender.node = this.node
-        this.entity.NodeRender.root = this.root
         this.entity.Move.linearVelocity = cc.v2(0, 0)
         this.currentLinearVelocity = cc.v2(0, 0)
         if (!this.base) {
@@ -166,6 +164,8 @@ export default class Bullet extends BaseColliderComponent {
         }
     }
     changeBullet(data: BulletData, zHeight: number) {
+        this.entity.NodeRender.node = this.node
+        this.entity.NodeRender.root = this.root
         this.data = data
         this.changeRes(data.resName, data.lightName, data.lightColor)
         this.collider.type = CCollider.TYPE.RECT
