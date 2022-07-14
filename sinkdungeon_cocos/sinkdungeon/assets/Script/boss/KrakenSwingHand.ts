@@ -28,7 +28,7 @@ export default class KrakenSwingHand extends BaseColliderComponent {
         super.onLoad()
         this.anim = this.node.parent.getComponent(cc.Animation)
         if (this.entity && this.entity.Move) {
-            this.entity.Move.moveable = false
+            this.entity.Move.isStatic = true
         }
     }
     swing() {

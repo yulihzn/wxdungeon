@@ -26,7 +26,7 @@ export default class Tips extends BaseColliderComponent {
         super.onLoad()
         this.node.opacity = 0
         if (this.entity && this.entity.Move) {
-            this.entity.Move.moveable = false
+            this.entity.Move.isStatic = true
         }
     }
 

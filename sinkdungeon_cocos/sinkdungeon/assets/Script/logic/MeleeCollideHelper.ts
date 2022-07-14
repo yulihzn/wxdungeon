@@ -25,7 +25,7 @@ export default class MeleeCollideHelper extends BaseColliderComponent {
         super.onLoad()
         this.collider = this.entity.Collider.colliders[0]
         if (this.entity && this.entity.Move) {
-            this.entity.Move.moveable = false
+            this.entity.Move.isStatic = true
         }
     }
 

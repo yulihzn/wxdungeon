@@ -32,7 +32,7 @@ export default class IceThron extends BaseColliderComponent {
     onLoad() {
         super.onLoad()
         if (this.entity && this.entity.Move) {
-            this.entity.Move.moveable = false
+            this.entity.Move.isStatic = true
         }
     }
 

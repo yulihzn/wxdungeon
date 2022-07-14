@@ -1117,6 +1117,7 @@ export default class NonPlayer extends Actor {
         }
         this.stateMachine.update()
         //修正位置
+        this.entity.Move.isStatic = false
         this.entity.Transform.position = Dungeon.fixOuterMap(this.entity.Transform.position)
         this.pos = Dungeon.getIndexInMap(this.entity.Transform.position)
         this.isInWaterTile = this.dungeon.isActorPosInWater(this)

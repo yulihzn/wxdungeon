@@ -34,7 +34,7 @@ export default class IceDemonThron extends BaseColliderComponent {
         let mat: cc.MaterialVariant = this.node.getChildByName('thron').getComponent(cc.Sprite).getMaterial(0)
         mat.setProperty('addColor', cc.color(194, 255, 255))
         if (this.entity && this.entity.Move) {
-            this.entity.Move.moveable = false
+            this.entity.Move.isStatic = true
         }
     }
     fall() {

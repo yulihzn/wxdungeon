@@ -11,7 +11,7 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity> {
     update(entities: ActorEntity[]): void {
         for (let e of entities) {
             let move = e.Move
-            if (!move.moveable) {
+            if (move.isStatic || (e.NodeRender.node && !e.NodeRender.node.active)) {
                 continue
             }
             let transform = e.Transform
@@ -20,31 +20,29 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity> {
             }
             //xy
             let temp = move.linearVelocity.mul(this.dt * MoveComponent.PIXELS_PER_UNIT)
-            if (!temp.equals(cc.Vec2.ZERO)) {
-                let tp = cc.v3(transform.position.x + temp.x, transform.position.y + temp.y)
-                transform.position = tp
-                let damping = move.damping * this.dt
-                if (move.linearVelocity.x > 0) {
-                    move.linearVelocity.x -= damping
-                    if (move.linearVelocity.x < 0) {
-                        move.linearVelocity.x = 0
-                    }
-                } else if (move.linearVelocity.x < 0) {
-                    move.linearVelocity.x += damping
-                    if (move.linearVelocity.x > 0) {
-                        move.linearVelocity.x = 0
-                    }
+            let tp = cc.v3(transform.position.x + temp.x, transform.position.y + temp.y)
+            transform.position = tp
+            let damping = move.damping * this.dt
+            if (move.linearVelocity.x > 0) {
+                move.linearVelocity.x -= damping
+                if (move.linearVelocity.x < 0) {
+                    move.linearVelocity.x = 0
                 }
+            } else if (move.linearVelocity.x < 0) {
+                move.linearVelocity.x += damping
+                if (move.linearVelocity.x > 0) {
+                    move.linearVelocity.x = 0
+                }
+            }
+            if (move.linearVelocity.y > 0) {
+                move.linearVelocity.y -= damping
+                if (move.linearVelocity.y < 0) {
+                    move.linearVelocity.y = 0
+                }
+            } else if (move.linearVelocity.y < 0) {
+                move.linearVelocity.y += damping
                 if (move.linearVelocity.y > 0) {
-                    move.linearVelocity.y -= damping
-                    if (move.linearVelocity.y < 0) {
-                        move.linearVelocity.y = 0
-                    }
-                } else if (move.linearVelocity.y < 0) {
-                    move.linearVelocity.y += damping
-                    if (move.linearVelocity.y > 0) {
-                        move.linearVelocity.y = 0
-                    }
+                    move.linearVelocity.y = 0
                 }
             }
             let acceleration = move.acceleration * this.dt

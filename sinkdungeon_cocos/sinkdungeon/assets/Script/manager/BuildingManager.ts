@@ -210,7 +210,7 @@ export default class BuildingManager extends BaseManager {
             b.initCollider()
             b.entity.NodeRender.node = building
             b.entity.Transform.position = Dungeon.getPosInMap(indexPos)
-            b.entity.Move.moveable = moveable
+            b.entity.Move.isStatic = !moveable
             b.seed = Logic.mapManager.getSeedFromRoom()
             b.data.defaultPos = indexPos.clone()
             b.lights = b.getComponentsInChildren(ShadowOfSight)
