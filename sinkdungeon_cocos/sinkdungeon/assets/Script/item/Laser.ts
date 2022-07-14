@@ -21,6 +21,8 @@ import CCollider from '../collider/CCollider'
 import BaseColliderComponent from '../base/BaseColliderComponent'
 import GameWorldSystem from '../ecs/system/GameWorldSystem'
 import MeleeCollideHelper from '../logic/MeleeCollideHelper'
+import ShadowOfSight from '../effect/ShadowOfSight'
+import LightManager from '../manager/LightManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -36,12 +38,15 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class Laser extends BaseColliderComponent {
+    @property(cc.Node)
+    root: cc.Node = null
+    @property(cc.Node)
+    shadow: cc.Node = null
     data: BulletData = new BulletData()
     dir = 0
     tagetPos = cc.v3(0, 0)
     hv = cc.v2(0, 0)
     isFromPlayer = false
-    collider: CCollider
     private lineNode: cc.Node
     private lightSprite: cc.Sprite
     private lightCenterSprite: cc.Sprite
@@ -57,12 +62,11 @@ export default class Laser extends BaseColliderComponent {
     private startPos = cc.v2(0, 0)
     private angleOffset = 0
     private graphics: cc.Graphics
-
+    lights: ShadowOfSight[] = []
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         super.onLoad()
-        this.collider = this.getComponent(CCollider)
         this.initSpriteNode()
         let aimArr = [CCollider.TAG.BOSS, CCollider.TAG.BUILDING, CCollider.TAG.ENERGY_SHIELD, CCollider.TAG.WALL, CCollider.TAG.WALL_TOP]
         for (let key of aimArr) {
@@ -72,6 +76,8 @@ export default class Laser extends BaseColliderComponent {
         for (let key of sensorArr) {
             this.sensorTargetMap.set(key, true)
         }
+        this.lights = this.getComponentsInChildren(ShadowOfSight)
+        LightManager.registerLight(this.lights, this.node)
     }
     private initIgnoreMap(actor: Actor) {
         if (!actor) {
@@ -90,12 +96,12 @@ export default class Laser extends BaseColliderComponent {
         if (this.sprite) {
             return
         }
-        this.sprite = this.node.getChildByName('sprite')
+        this.sprite = this.root.getChildByName('sprite')
         this.lineNode = this.sprite.getChildByName('line')
         this.lightSprite = this.sprite.getChildByName('light').getComponent(cc.Sprite)
         this.lightCenterSprite = this.sprite.getChildByName('light').getChildByName('center').getComponent(cc.Sprite)
         this.headSprite = this.sprite.getChildByName('head').getComponent(cc.Sprite)
-        this.graphics = this.node.getComponent(cc.Graphics)
+        this.graphics = this.root.getComponent(cc.Graphics)
     }
     onEnable() {
         this.tagetPos = cc.v3(0, 0)
@@ -103,6 +109,8 @@ export default class Laser extends BaseColliderComponent {
         this.entity.Move.linearVelocity = cc.v2(0, 0)
         this.initSpriteNode()
         this.isReserved = false
+        LightManager.unRegisterLight(this.lights)
+        LightManager.registerLight(this.lights, this.node)
     }
     timeDelay = 0
     checkTimeDelay = 0
@@ -117,20 +125,30 @@ export default class Laser extends BaseColliderComponent {
             this.updateLaser()
             this.checkTimeDelay = 0
         }
+        let y = this.root.y - this.entity.Transform.base
+        if (y < 0) {
+            y = 0
+        }
+        let scale = 1 - y / 64
+        this.shadow.scaleY = scale < 0.5 ? 0.5 : scale
     }
 
-    changeBullet(data: BulletData) {
+    changeBullet(data: BulletData, zHeight: number) {
+        this.entity.NodeRender.node = this.node
+        this.entity.NodeRender.root = this.root
+        this.entity.Move.gravity = 0
         this.data = data
         this.node.scale = data.size > 0 ? data.size : 1
-        this.collider.h = 16
-        this.collider.w = 0
-        this.collider.offset = cc.v2(0, 0)
-        this.collider.sensor = data.isPhysical == 0
+        this.root.scale = 1
         this.node.stopAllActions()
         this.initSpriteNode()
         // this.lineNode.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser);
         // this.headSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'head');
         this.initIgnoreMap(this.shooter.getParentNode().getComponent(Actor))
+        if (this.shooter && this.shooter.actor) {
+            this.entity.Transform.base = this.shooter.actor.entity.Transform.base
+            this.entity.Transform.z = zHeight / this.node.scale
+        }
     }
     fire(hv: cc.Vec2, angleOffset: number) {
         this.hv = hv
@@ -205,21 +223,30 @@ export default class Laser extends BaseColliderComponent {
         AudioPlayer.play(AudioPlayer.REMOTE_LASER)
     }
     private updatePos() {
-        let p = this.shooter.defaultPos.clone()
-        let pos = this.shooter.node.convertToWorldSpaceAR(p)
-        this.startPos = cc.v2(pos.clone())
-        pos = this.dungeon.node.convertToNodeSpaceAR(pos)
-        this.entity.Transform.position = pos
-        this.node.position = pos
-        this.hv = cc.v2(this.shooter.Hv).rotateSelf((this.angleOffset * Math.PI) / 180)
-        this.rotateCollider(cc.v2(this.hv.x, this.hv.y))
+        if (this.shooter && this.shooter.actor) {
+            let p = this.shooter.getFireBasePos(this.shooter.defaultPos)
+            let z = p.z
+            let pos = cc.v3(p.x, p.y)
+            this.startPos = cc.v2(this.dungeon.node.convertToWorldSpaceAR(pos))
+            this.entity.Transform.position = pos
+            this.shadow.y = this.entity.Transform.base
+            this.node.position = pos
+            this.hv = cc.v2(this.shooter.Hv).rotateSelf((this.angleOffset * Math.PI) / 180)
+            this.rotateCollider(cc.v2(this.hv.x, this.hv.y))
+            this.entity.Transform.base = this.shooter.actor.entity.Transform.base
+            this.entity.Transform.z = z / this.node.scale
+        }
+    }
+    changeAngle(angle: number) {
+        this.root.angle = angle
+        this.shadow.angle = angle
     }
     private updateLaser() {
         if (!this.shooter || this.isStop) {
             return
         }
         //碰撞终点
-        let endPos = this.node.convertToWorldSpaceAR(cc.v2(this.data.laserRange > 0 ? this.data.laserRange : 3000, 0))
+        let endPos = this.shadow.convertToWorldSpaceAR(cc.v2(this.data.laserRange > 0 ? this.data.laserRange : 3000, 0))
         let result = GameWorldSystem.colliderSystem.nearestRayCast(
             this.startPos,
             endPos,
@@ -240,6 +267,7 @@ export default class Laser extends BaseColliderComponent {
         let finalwidth = distance
         this.lineNode.width = finalwidth / this.node.scaleY
         this.lightSprite.node.setPosition(this.lineNode.width, 0)
+        this.shadow.width = finalwidth / this.node.scaleY
         this.graphics.clear()
         let color = cc.color(255, 255, 255).fromHEX(this.data.lightColor)
         let lineWidth = 32
@@ -258,11 +286,14 @@ export default class Laser extends BaseColliderComponent {
         if (result) {
             this.attacking(result.collider.node, result.collider.tag)
         }
+        if (this.lights.length > 0) {
+            this.lights[0].setCustomColliderStyle(true, this.lineNode.width, lineWidth, 0)
+        }
     }
 
     stopLaser() {
         this.isStop = true
-        cc.tween(this.node)
+        cc.tween(this.root)
             .to(0.2, { scaleY: 0 })
             .to(0.1, { scaleX: 0 })
             .call(() => {
@@ -279,30 +310,6 @@ export default class Laser extends BaseColliderComponent {
         return spriteFrame
     }
 
-    // onColliderPreSolve(other: CCollider, self: CCollider) {
-    //     if (!this.isFromPlayer && (other.tag == CCollider.TAG.NONPLAYER || other.tag == CCollider.TAG.BOSS)) {
-    //         self.disabledOnce = true;
-    //     }
-    //     if (this.isFromPlayer && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.GOODNONPLAYER)) {
-    //         self.disabledOnce = true;
-    //     }
-    // }
-    // onColliderEnter(other: CCollider, self: CCollider) {
-    //     let isAttack = true;
-    //     if (!this.isFromPlayer && (other.tag == CCollider.TAG.NONPLAYER || other.tag == CCollider.TAG.BOSS)) {
-    //         isAttack = false;
-    //     }
-    //     if (this.isFromPlayer && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.GOODNONPLAYER)) {
-    //         isAttack = false;
-    //     }
-    //     if (other.tag == CCollider.TAG.BULLET) {
-    //         isAttack = false;
-    //     }
-
-    //     if (isAttack) {
-    //         this.attacking(other.node, other.tag, other.sensor);
-    //     }
-    // }
     private attacking(attackTarget: cc.Node, tag: number) {
         if (!attackTarget) {
             return
@@ -399,7 +406,7 @@ export default class Laser extends BaseColliderComponent {
             // this.node.angle-=cc.Vec2.angle(pos,reflect)*180/Math.PI;
             // this.rigidBody.linearVelocity = this.rigidBody.linearVelocity.rotate(cc.Vec2.angle(pos,reflect));
             let angle = -180 + Logic.getRandomNum(0, 10) - 20
-            this.node.angle += angle
+            this.changeAngle(this.root.angle + angle)
             this.isFromPlayer = true
             this.data.isTracking = 0
             return true
@@ -415,7 +422,7 @@ export default class Laser extends BaseColliderComponent {
             return
         }
         //设置旋转角度
-        this.node.angle = Utils.getRotateAngle(direction, this.node.scaleX < 0)
+        this.changeAngle(Utils.getRotateAngle(direction, false))
     }
 
     addTargetAllStatus(target: Actor, from: FromData) {

@@ -1,5 +1,5 @@
-import Building from "./Building"
-import Logic from "../logic/Logic"
+import Building from './Building'
+import Logic from '../logic/Logic'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -24,38 +24,39 @@ export default class WallPaint extends Building {
     mapStr: string
 
     init(mapStr: string) {
+        this.entity.destroy()
         this.mapStr = mapStr
         let letter = mapStr[1]
         let resName = `wallpaint24x32_000`
         switch (letter) {
-            case "0":
+            case '0':
                 resName = `wallpaint24x32_000`
                 break
-            case "1":
+            case '1':
                 resName = `wallpaint24x32_001`
                 break
-            case "2":
+            case '2':
                 resName = `wallpaint24x32_002`
                 break
-            case "3":
+            case '3':
                 resName = `wallpaint24x32_003`
                 break
-            case "4":
+            case '4':
                 resName = `wallpaint32x16_000`
                 break
-            case "5":
+            case '5':
                 resName = `wallpaint24x32_005`
                 break
-            case "6":
+            case '6':
                 resName = `wallpaint24x32_000`
                 break
-            case "7":
+            case '7':
                 resName = `wallpaint24x32_000`
                 break
-            case "8":
+            case '8':
                 resName = `wallpaint24x32_000`
                 break
-            case "9":
+            case '9':
                 resName = `wallpaint24x32_000`
                 break
         }

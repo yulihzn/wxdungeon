@@ -58,6 +58,8 @@ import Controller from './Controller'
 import ActorUtils from '../utils/ActorUtils'
 @ccclass
 export default class Player extends Actor {
+    @property(cc.Sprite)
+    sprite: cc.Sprite = null
     @property(FloatinglabelManager)
     floatinglabelManager: FloatinglabelManager = null
     @property(cc.Vec3)
@@ -117,8 +119,8 @@ export default class Player extends Actor {
     isAvoidDeathed = false
 
     public shadowList: ShadowPlayer[] = []
-    private shadowTexture: cc.RenderTexture
-    private shadowSpriteframe: cc.SpriteFrame
+    private playerSpriteTexture: cc.RenderTexture
+    private playerSpriteframe: cc.SpriteFrame
     isInWaterTile = false
     statusIconList: StatusIconList
     lastConsumeTime = 0
@@ -249,19 +251,19 @@ export default class Player extends Actor {
         this.jumpAbility.init(this, 2, 0, (group: number, type: number) => {
             this.exTrigger(group, type, null, null)
         })
+        if (!this.playerSpriteTexture) {
+            this.playerSpriteTexture = new cc.RenderTexture()
+            this.playerSpriteTexture.initWithSize(cc.visibleRect.width, cc.visibleRect.height)
+            this.playerSpriteTexture.setFilters(cc.Texture2D.Filter.NEAREST, cc.Texture2D.Filter.NEAREST)
+            this.shadowCamera.targetTexture = this.playerSpriteTexture
+            this.playerSpriteframe = new cc.SpriteFrame(this.playerSpriteTexture)
+            this.sprite.spriteFrame = this.playerSpriteframe
+        }
     }
 
     public initShadowList(isFromSave: boolean, count: number, lifeTime: number) {
         if (count > 5) {
             count = 5
-        }
-
-        if (!this.shadowTexture) {
-            this.shadowTexture = new cc.RenderTexture()
-            this.shadowTexture.initWithSize(this.shadowCamera.node.width, this.shadowCamera.node.height)
-            this.shadowTexture.setFilters(cc.Texture2D.Filter.NEAREST, cc.Texture2D.Filter.NEAREST)
-            this.shadowCamera.targetTexture = this.shadowTexture
-            this.shadowSpriteframe = new cc.SpriteFrame(this.shadowTexture)
         }
         for (let s of this.shadowList) {
             if (s.isValid || s.enabled) {
@@ -274,14 +276,14 @@ export default class Player extends Actor {
             for (let i = 0; i < count; i++) {
                 if (this.data.ShadowList[i] && currentTime - this.data.ShadowList[i] < lifeTime * 1000) {
                     let shadow = cc.instantiate(this.shadowPrefab).getComponent(ShadowPlayer)
-                    shadow.init(this, this.shadowSpriteframe, i, lifeTime)
+                    shadow.init(this, this.playerSpriteframe, i, lifeTime)
                     this.shadowList.push(shadow)
                 }
             }
         } else {
             for (let i = 0; i < count; i++) {
                 let shadow = cc.instantiate(this.shadowPrefab).getComponent(ShadowPlayer)
-                shadow.init(this, this.shadowSpriteframe, i, lifeTime)
+                shadow.init(this, this.playerSpriteframe, i, lifeTime)
                 this.shadowList.push(shadow)
             }
         }

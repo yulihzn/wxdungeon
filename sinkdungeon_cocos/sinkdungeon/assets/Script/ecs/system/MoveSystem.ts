@@ -11,6 +11,9 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity> {
     update(entities: ActorEntity[]): void {
         for (let e of entities) {
             let move = e.Move
+            if (!move.moveable) {
+                continue
+            }
             let transform = e.Transform
             if (move.damping < 0) {
                 move.damping = 0

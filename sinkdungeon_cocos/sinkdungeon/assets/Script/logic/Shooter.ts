@@ -385,11 +385,26 @@ export default class Shooter extends cc.Component {
         if (!bulletPrefab || bulletPrefab.active) {
             bulletPrefab = cc.instantiate(prefab)
         }
+
+        let pos = this.getFireBasePos(defaultPos, bulletArcOffsetX, angleOffset)
+        bulletPrefab.parent = this.dungeon.node
+        bulletPrefab.scaleX = 1
+        bulletPrefab.scaleY = 1
+        bulletPrefab.active = true
+        if (isLaser) {
+            bulletPrefab.position = pos
+            this.showLaser(angleOffset, hv, bulletPrefab, bulletData, cc.v3(pos.x, pos.y), pos.z)
+        } else {
+            bulletPrefab.position = pos
+            this.showBullet(angleOffset, hv, bulletPrefab, bulletData, cc.v3(pos.x, pos.y), pos.z, aoePrefab, aoeData)
+        }
+    }
+    getFireBasePos(defaultPos?: cc.Vec3, bulletArcOffsetX?: number, angleOffset?: number) {
         let p = cc.v3(0, 0)
         if (defaultPos) {
             p = defaultPos.clone()
-            if (bulletArcOffsetX != 0) {
-                p.addSelf(cc.v3(cc.v2(bulletArcOffsetX, 0).rotateSelf((angleOffset * Math.PI) / 180)))
+            if (bulletArcOffsetX && bulletArcOffsetX != 0) {
+                p.addSelf(cc.v3(cc.v2(bulletArcOffsetX, 0).rotateSelf((angleOffset ?? 0 * Math.PI) / 180)))
             }
         }
         let pos = this.node.convertToWorldSpaceAR(p)
@@ -398,19 +413,9 @@ export default class Shooter extends cc.Component {
             z = 0
         }
         pos = this.dungeon.node.convertToNodeSpaceAR(pos)
-
-        bulletPrefab.parent = this.dungeon.node
-        bulletPrefab.scaleX = 1
-        bulletPrefab.scaleY = 1
-        bulletPrefab.active = true
-        if (isLaser) {
-            bulletPrefab.position = pos
-            this.showLaser(angleOffset, hv, bulletPrefab, bulletData, pos)
-        } else {
-            pos.y = this.getParentNode().y
-            bulletPrefab.position = pos
-            this.showBullet(angleOffset, hv, bulletPrefab, bulletData, pos, z, aoePrefab, aoeData)
-        }
+        pos.y = this.getParentNode().y
+        pos.z = z
+        return pos
     }
 
     private showBullet(
@@ -450,7 +455,7 @@ export default class Shooter extends cc.Component {
         bullet.aoePrefab = aoePrefab
         bullet.showBullet(cc.v2(cc.v2(hv).rotateSelf((angleOffset * Math.PI) / 180)).normalize())
     }
-    private showLaser(angleOffset: number, hv: cc.Vec2, bulletPrefab: cc.Node, data: BulletData, startPos: cc.Vec3) {
+    private showLaser(angleOffset: number, hv: cc.Vec2, bulletPrefab: cc.Node, data: BulletData, startPos: cc.Vec3, zHeight: number) {
         let laser = bulletPrefab.getComponent(Laser)
         laser.entity.Transform.position = startPos
         laser.shooter = this
@@ -470,7 +475,7 @@ export default class Shooter extends cc.Component {
             bd.speed += this.data.bulletExSpeed
         }
         bd.from.valueCopy(this.from)
-        laser.changeBullet(bd)
+        laser.changeBullet(bd, zHeight)
         this.bulletName = laser.name + bd.resName
         laser.enabled = true
         laser.fire(cc.v2(hv).rotateSelf((angleOffset * Math.PI) / 180), angleOffset)

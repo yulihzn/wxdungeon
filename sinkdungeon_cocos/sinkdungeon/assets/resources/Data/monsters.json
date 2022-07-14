@@ -923,7 +923,7 @@
         "specialAttack": 20,
         "common": {
             "remoteAngle": 5,
-            "moveSpeed": 8,
+            "moveSpeed": 2,
             "maxHealth": 30,
             "dodge": 100,
             "damageMin": 2

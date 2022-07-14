@@ -10,6 +10,7 @@ export class MoveComponent extends ecs.IComponent {
     acceleration = 0 //加速度
     gravity = MoveComponent.DEFAULT_GRAVITY //重力加速度
     linearVelocityZ = 0
+    moveable = true //是否可以移动，主要针对不可以移动的物体，和附属碰撞
     reset(): void {
         this.linearVelocity = cc.Vec2.ZERO
         this.damping = 0

@@ -1,6 +1,6 @@
-import BaseColliderComponent from "../base/BaseColliderComponent";
-import CCollider from "../collider/CCollider";
-import Player from "../logic/Player";
+import BaseColliderComponent from '../base/BaseColliderComponent'
+import CCollider from '../collider/CCollider'
+import Player from '../logic/Player'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -13,50 +13,51 @@ import Player from "../logic/Player";
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 //交互作用的提示,依托于父组件不能独立放置
-const { ccclass, property } = cc._decorator;
+const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class Tips extends BaseColliderComponent {
-    private interactCallback: Function;
-    private enterCallback:Function;
-    private exitCallback:Function;
+    private interactCallback: Function
+    private enterCallback: Function
+    private exitCallback: Function
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        super.onLoad();
-        this.node.opacity = 0;
+        super.onLoad()
+        this.node.opacity = 0
+        if (this.entity && this.entity.Move) {
+            this.entity.Move.moveable = false
+        }
     }
 
-    start() {
-
-    }
+    start() {}
     next(isLongPress: boolean, player: Player): void {
         if (this.node && this.node.active && this.interactCallback) {
-            this.interactCallback(isLongPress, player);
+            this.interactCallback(isLongPress, player)
         }
     }
     onInteract(callback: Function) {
-        this.interactCallback = callback;
+        this.interactCallback = callback
     }
-    onEnter(callback:Function){
-        this.enterCallback = callback;
+    onEnter(callback: Function) {
+        this.enterCallback = callback
     }
-    onExit(callback:Function){
-        this.exitCallback = callback;
+    onExit(callback: Function) {
+        this.exitCallback = callback
     }
     onColliderEnter(other: CCollider, self: CCollider) {
         if (other.tag == CCollider.TAG.PLAYER_INTERACT) {
-            this.node.opacity = 255;
-            if(this.enterCallback){
-                this.enterCallback(other.node);
+            this.node.opacity = 255
+            if (this.enterCallback) {
+                this.enterCallback(other.node)
             }
         }
     }
     onColliderExit(other: CCollider, self: CCollider) {
         if (other.tag == CCollider.TAG.PLAYER_INTERACT) {
-            this.node.opacity = 0;
-            if(this.exitCallback){
-                this.exitCallback(other.node);
+            this.node.opacity = 0
+            if (this.exitCallback) {
+                this.exitCallback(other.node)
             }
         }
     }

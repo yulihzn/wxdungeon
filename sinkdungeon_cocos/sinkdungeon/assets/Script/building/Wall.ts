@@ -283,6 +283,9 @@ export default class Wall extends Building {
             }
         }
         if (this.combineWall) {
+            if (!onlyShow) {
+                this.entity.destroy()
+            }
             EventHelper.on(EventHelper.DUNGEON_WALL_COLLIDER + this.combineWall.node.uuid, detail => {
                 if (this.node) {
                     if (detail.type == 0) {

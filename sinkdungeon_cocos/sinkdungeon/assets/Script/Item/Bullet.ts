@@ -116,7 +116,7 @@ export default class Bullet extends BaseColliderComponent {
     }
     timeDelay = 0
     checkTimeDelay = 0
-    changeAngle(angle: number) {
+    private changeAngle(angle: number) {
         this.base.angle = angle
         this.shadow.angle = angle
     }

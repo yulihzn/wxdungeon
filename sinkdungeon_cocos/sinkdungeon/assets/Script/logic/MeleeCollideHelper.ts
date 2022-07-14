@@ -24,6 +24,9 @@ export default class MeleeCollideHelper extends BaseColliderComponent {
     onLoad() {
         super.onLoad()
         this.collider = this.entity.Collider.colliders[0]
+        if (this.entity && this.entity.Move) {
+            this.entity.Move.moveable = false
+        }
     }
 
     set Hv(hv: cc.Vec2) {

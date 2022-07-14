@@ -37,7 +37,6 @@ export default class ShadowPlayer extends cc.Component {
     movePos: cc.Vec3 = cc.v3(0, 0)
     playerLastPos: cc.Vec3 = cc.v3(0, 0)
     moveList: cc.Vec3[] = []
-    readonly SCALE = 3
     isVanishing = false
 
     init(player: Player, spriteframe: cc.SpriteFrame, index: number, lifeTime: number) {
@@ -53,9 +52,11 @@ export default class ShadowPlayer extends cc.Component {
         this.shooterEx.player = this.player
         this.shooterEx.isEx = true
         this.shooterEx.actor = this.player
+        this.weaponLeft.shooter.actor = this.player
+        this.weaponRight.shooter.actor = this.player
         this.mat = this.sprite.getMaterial(0)
-        this.sprite.node.scaleX = this.SCALE
-        this.sprite.node.scaleY = -this.SCALE
+        this.sprite.node.scaleX = 1
+        this.sprite.node.scaleY = -1
         this.sprite.spriteFrame = spriteframe
         this.node.zIndex = IndexZ.getActorZIndex(Dungeon.getIndexInMap(this.node.position))
         this.sprite.node.width = this.sprite.spriteFrame.getOriginalSize().width
@@ -121,6 +122,15 @@ export default class ShadowPlayer extends cc.Component {
     }
     updateLogic(dt: number) {
         if (this.player) {
+            if (this.weaponLeft) {
+                this.weaponLeft.updateLogic(dt)
+            }
+            if (this.weaponRight) {
+                this.weaponRight.updateLogic(dt)
+            }
+            if (this.shooterEx) {
+                this.shooterEx.updateLogic(dt)
+            }
             this.movePos.x += Math.abs(this.player.node.position.x - this.playerLastPos.x)
             this.movePos.y += Math.abs(this.player.node.position.y - this.playerLastPos.y)
             this.playerLastPos = this.player.node.position.clone()
@@ -148,8 +158,11 @@ export default class ShadowPlayer extends cc.Component {
                 this.sprite.node.opacity = 0
             }
             this.sprite.node.y = this.player.root.y
-            this.mat.setProperty('textureSizeWidth', this.sprite.spriteFrame.getTexture().width * this.SCALE)
-            this.mat.setProperty('textureSizeHeight', this.sprite.spriteFrame.getTexture().height * this.SCALE)
+            this.shooterEx.node.y = this.player.root.y
+            this.weaponLeft.shooter.node.y = this.player.root.y
+            this.weaponRight.shooter.node.y = this.player.root.y
+            this.mat.setProperty('textureSizeWidth', this.sprite.spriteFrame.getTexture().width)
+            this.mat.setProperty('textureSizeHeight', this.sprite.spriteFrame.getTexture().height)
             this.mat.setProperty('outlineColor', cc.color(200, 200, 200))
             this.mat.setProperty('outlineSize', 4)
             if (!this.weaponLeft.shadowWeapon.IsAttacking && !this.weaponRight.shadowWeapon.IsAttacking) {

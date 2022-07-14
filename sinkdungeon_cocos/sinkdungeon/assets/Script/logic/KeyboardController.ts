@@ -97,6 +97,15 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.num3:
                 this.useItem(2)
                 break
+            case cc.macro.KEY.num4:
+                this.useItem(3)
+                break
+            case cc.macro.KEY.num5:
+                this.useItem(4)
+                break
+            case cc.macro.KEY.num6:
+                this.useItem(5)
+                break
             case 49:
                 this.useItem(0)
                 break
@@ -105,6 +114,15 @@ export default class KeyboardController extends cc.Component {
                 break
             case 51:
                 this.useItem(2)
+                break
+            case 52:
+                this.useItem(3)
+                break
+            case 53:
+                this.useItem(4)
+                break
+            case 54:
+                this.useItem(5)
                 break
             case cc.macro.KEY.escape:
                 EventHelper.emit(EventHelper.HUD_CANCEL_OR_PAUSE)

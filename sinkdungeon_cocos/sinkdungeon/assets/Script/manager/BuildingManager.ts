@@ -42,9 +42,6 @@ import FurnitureData from '../data/FurnitureData'
 import RoomFishtank from '../building/RoomFishtank'
 import CCollider from '../collider/CCollider'
 import WallPaint from '../building/WallPaint'
-import RoomWaterDispenser from '../building/RoomWaterDispenser'
-import RoomClock from '../building/RoomClock'
-import RoomTrashCan from '../building/RoomTrashCan'
 import RoomKitchen from '../building/RoomKitchen'
 import AudioPlayer from '../utils/AudioPlayer'
 
@@ -203,7 +200,7 @@ export default class BuildingManager extends BaseManager {
         let isequal = mapStr[0] == typeStr
         return isequal
     }
-    private addBuilding(prefab: cc.Prefab, indexPos: cc.Vec3): cc.Node {
+    private addBuilding(prefab: cc.Prefab, indexPos: cc.Vec3, moveable?: boolean): cc.Node {
         let building = cc.instantiate(prefab)
         building.parent = this.node
         building.position = Dungeon.getPosInMap(indexPos)
@@ -213,6 +210,7 @@ export default class BuildingManager extends BaseManager {
             b.initCollider()
             b.entity.NodeRender.node = building
             b.entity.Transform.position = Dungeon.getPosInMap(indexPos)
+            b.entity.Move.moveable = moveable
             b.seed = Logic.mapManager.getSeedFromRoom()
             b.data.defaultPos = indexPos.clone()
             b.lights = b.getComponentsInChildren(ShadowOfSight)
@@ -438,7 +436,7 @@ export default class BuildingManager extends BaseManager {
             if (saveBox) {
                 //生命值大于0才生成
                 if (saveBox.currentHealth > 0 || isReborn) {
-                    let interactBuilding = this.addBuilding(prefab, indexPos)
+                    let interactBuilding = this.addBuilding(prefab, indexPos, true)
                     let d = interactBuilding.getComponent(InteractBuilding)
                     d.node.position = saveBox.position.clone()
                     d.data.valueCopy(saveBox)
@@ -450,7 +448,7 @@ export default class BuildingManager extends BaseManager {
                     this.interactBuildings.push(d)
                 }
             } else {
-                let interactBuilding = this.addBuilding(prefab, indexPos)
+                let interactBuilding = this.addBuilding(prefab, indexPos, true)
                 let d = interactBuilding.getComponent(InteractBuilding)
                 d.data.currentHealth = 5
                 Logic.mapManager.setCurrentBuildingData(d.data.clone())
@@ -461,7 +459,7 @@ export default class BuildingManager extends BaseManager {
     }
     private addBox(mapDataStr: string, indexPos: cc.Vec3) {
         Logic.getBuildings(BuildingManager.BOX, (prefab: cc.Prefab) => {
-            let box = this.addBuilding(prefab, indexPos)
+            let box = this.addBuilding(prefab, indexPos, true)
             let b = box.getComponent(Box)
             b.setDefaultPos(indexPos)
             //生成植物
@@ -838,14 +836,14 @@ export default class BuildingManager extends BaseManager {
                 for (let i = indexPos.x + 1; i < mapData.length; i++) {
                     let next = mapData[i][indexPos.y]
                     if (Utils.isFirstEqual(next, '#')) {
-                        let type = Wall.getType(next)
-                        if (Wall.typeNeedTransparent(type)) {
-                            //下一个相同元素记录下标并存储当前元素
-                            this.colliderCombineMap.set(`i${i}j${indexPos.y}`, wall)
-                            combineCountX++
-                        } else {
-                            break
-                        }
+                        this.colliderCombineMap.set(`i${i}j${indexPos.y}`, wall)
+                        combineCountX++
+                        // let type = Wall.getType(next)
+                        // if (Wall.typeNeedTransparent(type)) {
+                        //     //下一个相同元素记录下标并存储当前元素
+                        // } else {
+                        //     break
+                        // }
                     } else {
                         break
                     }

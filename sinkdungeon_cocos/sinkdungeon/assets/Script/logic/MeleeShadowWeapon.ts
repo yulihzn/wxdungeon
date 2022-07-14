@@ -43,6 +43,9 @@ export default class MeleeShadowWeapon extends BaseColliderComponent {
     }
     onLoad() {
         super.onLoad()
+        if (this.entity && this.entity.Move) {
+            this.entity.Move.moveable = false
+        }
     }
 
     init(player: Player, meleeWeapon: MeleeWeapon) {
