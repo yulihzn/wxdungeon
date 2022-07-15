@@ -859,5 +859,15 @@
         "common": {
             "jumpSpeed": 10
         }
+    },
+    "status074": {
+        "nameCn": "棒棒糖回复",
+        "nameEn": "lollipop recovery",
+        "spriteFrameName": "iconhealthrecovery",
+        "id": 74,
+        "desc": "",
+        "duration": 3,
+        "realDamageOvertime": -1,
+        "common": {}
     }
 }

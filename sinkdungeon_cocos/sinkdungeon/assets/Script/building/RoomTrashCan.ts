@@ -34,12 +34,12 @@ export default class RoomTrashCan extends cc.Component {
             this.anim.play('RoomTrashOut')
             AudioPlayer.play(AudioPlayer.TRASH)
             this.scheduleOnce(() => {
-                if (this.rand.rand() > 0.8) {
+                if (this.rand.rand() > 0.5) {
                     cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { res: Logic.getRandomTrashType(this.rand) } })
                 }
-                if (this.rand.rand() > 0.95) {
+                if (this.rand.rand() > 0.9) {
                     EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: EquipmentManager.WEAPON_BROKEN_GLASS })
-                } else if (this.rand.rand() > 0.98) {
+                } else if (this.rand.rand() > 0.95) {
                     EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: EquipmentManager.WEAPON_WINE_BOTTLE })
                 }
                 this.trash.active = false

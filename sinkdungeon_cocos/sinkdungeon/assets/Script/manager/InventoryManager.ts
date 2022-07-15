@@ -64,7 +64,7 @@ export default class InventoryManager {
         for (let name of InventoryManager.EQUIP_TAGS) {
             this.equips[name] = new EquipmentData()
         }
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < InventoryManager.MAX_ITEM; i++) {
             let data = new ItemData()
             data.count = -1
             this.itemList.push(data)

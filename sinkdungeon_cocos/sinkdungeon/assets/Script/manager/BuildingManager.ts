@@ -685,7 +685,7 @@ export default class BuildingManager extends BaseManager {
                 if (b.lights.length > 0) {
                     let index = parseInt(mapDataStr[4])
                     let range = Dungeon.TILE_SIZE * index
-                    b.lights[0].setCustomColliderStyle(isRect, range, range, range / 2)
+                    b.lights[0].setCustomColliderStyle(isRect, range, range, range / 2, 0, 0)
                 }
             }
         })

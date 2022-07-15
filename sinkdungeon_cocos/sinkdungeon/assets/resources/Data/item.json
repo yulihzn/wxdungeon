@@ -1294,21 +1294,21 @@
         "statusList": "",
         "solidSatiety": 0,
         "cooldown": 5,
-        "price": 0
+        "price": 20
     },
     "doll001": {
         "id": 20090001,
-        "nameCn": "玩具熊",
+        "nameCn": "菜狗",
         "nameEn": "",
-        "resName": "doll000",
+        "resName": "doll001",
         "canSave": 1,
         "count": -1,
         "info": "",
-        "desc": "一只玩具熊",
+        "desc": "一只菜狗",
         "statusList": "",
         "solidSatiety": 0,
         "cooldown": 5,
-        "price": 0
+        "price": 20
     },
     "doll002": {
         "id": 20090002,

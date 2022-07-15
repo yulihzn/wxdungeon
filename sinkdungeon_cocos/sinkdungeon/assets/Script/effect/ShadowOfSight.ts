@@ -124,13 +124,15 @@ export default class ShadowOfSight extends cc.Component {
     updateRender(showShadow: boolean) {
         this.showShadow = showShadow
     }
-    setCustomColliderStyle(isRect: boolean, w: number, h: number, r: number) {
+    setCustomColliderStyle(isRect: boolean, w: number, h: number, r: number, offsetX: number, offsetY: number) {
         if (!this.customCollider) {
             return
         }
         this.customCollider.w = w
         this.customCollider.h = h
         this.customCollider.radius = r
+        this.customCollider.offsetX = offsetX
+        this.customCollider.offsetY = offsetY
         this.customCollider.type = isRect ? CCollider.TYPE.RECT : CCollider.TYPE.CIRCLE
         this.customCollider.fixCenterAndScale()
     }

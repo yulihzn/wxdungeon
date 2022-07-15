@@ -946,9 +946,24 @@
             "physicalDamage": 5
         }
     },
+    "bullet044": {
+        "name": "小石子",
+        "resName": "bullet044",
+        "lightName": "bulletlight003",
+        "lightColor": "#ffffff",
+        "speed": 10,
+        "isRect": 0,
+        "isRotate": 0,
+        "lifeTime": 5,
+        "canBreakBuilding": 0,
+        "size": 7,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
     "laser001": {
         "name": "红色激光",
-        "laserRange": 5000,
+        "laserRange": 2000,
         "isLaser": 1,
         "lifeTime": 0.6,
         "lightColor": "#ff0000",
@@ -958,7 +973,7 @@
     },
     "laser002": {
         "name": "灰色激光",
-        "laserRange": 3000,
+        "laserRange": 2000,
         "isLaser": 1,
         "lifeTime": 1,
         "size": 2,
@@ -970,7 +985,7 @@
     },
     "laser003": {
         "name": "紫色激光",
-        "laserRange": 3000,
+        "laserRange": 2000,
         "isLaser": 1,
         "lifeTime": 2,
         "size": 2,

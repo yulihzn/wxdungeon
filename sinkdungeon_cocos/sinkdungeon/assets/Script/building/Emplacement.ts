@@ -157,7 +157,7 @@ export default class Emplacement extends Building {
     }
     //Animation
     OpenFire() {
-        if (!this.dungeon) {
+        if ((this.dungeon && this.dungeon.isClear) || this.data.currentHealth <= 0) {
             return
         }
         switch (this.dirType) {

@@ -246,7 +246,7 @@ export default class Laser extends BaseColliderComponent {
             return
         }
         //碰撞终点
-        let endPos = this.shadow.convertToWorldSpaceAR(cc.v2(this.data.laserRange > 0 ? this.data.laserRange : 3000, 0))
+        let endPos = this.shadow.convertToWorldSpaceAR(cc.v2(this.data.laserRange > 0 ? this.data.laserRange : 2000, 0))
         let result = GameWorldSystem.colliderSystem.nearestRayCast(
             this.startPos,
             endPos,
@@ -287,7 +287,7 @@ export default class Laser extends BaseColliderComponent {
             this.attacking(result.collider.node, result.collider.tag)
         }
         if (this.lights.length > 0) {
-            this.lights[0].setCustomColliderStyle(true, this.lineNode.width, lineWidth, 0)
+            this.lights[0].setCustomColliderStyle(true, this.lineNode.width, lineWidth * 2, 0, this.lineNode.width / 2, 0)
         }
     }
 
@@ -297,6 +297,7 @@ export default class Laser extends BaseColliderComponent {
             .to(0.2, { scaleY: 0 })
             .to(0.1, { scaleX: 0 })
             .call(() => {
+                LightManager.unRegisterLight(this.lights)
                 this.shooter.addDestroyBullet(this.node, true)
             })
             .start()
