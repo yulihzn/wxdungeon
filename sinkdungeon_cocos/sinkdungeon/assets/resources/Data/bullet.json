@@ -956,7 +956,7 @@
         "isRotate": 0,
         "lifeTime": 5,
         "canBreakBuilding": 0,
-        "size": 7,
+        "size": 1,
         "damage": {
             "physicalDamage": 1
         }

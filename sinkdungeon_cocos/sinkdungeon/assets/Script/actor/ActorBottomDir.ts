@@ -73,10 +73,10 @@ export default class ActorBottomDir extends cc.Component {
         if (this.currentAngle < 0) {
             this.currentAngle += 360
         }
-        if (this.currentAngle >= 0 && this.currentAngle <= 90 && this.node.angle >= 225 && this.node.angle <= 360) {
-            this.node.angle -= 360
-        } else if (this.node.angle >= 0 && this.node.angle <= 90 && this.currentAngle >= 225 && this.currentAngle <= 360) {
-            this.node.angle += 360
+        if (this.currentAngle >= 0 && this.currentAngle <= 90 && this.base.angle >= 225 && this.node.angle <= 360) {
+            this.base.angle -= 360
+        } else if (this.base.angle >= 0 && this.base.angle <= 90 && this.currentAngle >= 225 && this.currentAngle <= 360) {
+            this.base.angle += 360
         }
     }
 }

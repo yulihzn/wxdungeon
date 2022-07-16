@@ -199,7 +199,7 @@
     "radius": 16,
     "w": 24,
     "h": 12,
-    "zHeight": 32,
+    "zHeight": 64,
     "bounce": 0,
     "sensor": true,
     "isStatic": true,

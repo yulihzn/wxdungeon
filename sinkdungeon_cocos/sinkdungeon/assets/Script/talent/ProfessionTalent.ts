@@ -315,9 +315,9 @@ export default class ProfessionTalent extends Talent {
             .start()
     }
     private dash() {
-        let speed = 30
+        let speed = 10
         if (this.player.IsVariation) {
-            speed = 40
+            speed = 20
         }
         AudioPlayer.play(AudioPlayer.DASH)
         this.schedule(
@@ -340,6 +340,7 @@ export default class ProfessionTalent extends Talent {
         this.hv = posv2.clone()
         pos = pos.mul(speed)
         this.player.entity.Move.linearVelocity = pos
+        this.player.playerAnim(PlayerAvatar.STATE_WALK, this.player.currentDir)
         this.scheduleOnce(() => {
             this.player.entity.Move.linearVelocity = cc.Vec2.ZERO
             this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir)

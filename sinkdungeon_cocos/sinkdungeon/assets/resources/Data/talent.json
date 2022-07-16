@@ -125,7 +125,7 @@
         "nameEn": "",
         "resName": "talent015",
         "passive": 0,
-        "cooldown": 7,
+        "cooldown": 2,
         "desc": "快速冲刺一段距离躲避伤害"
     },
     "talent016": {

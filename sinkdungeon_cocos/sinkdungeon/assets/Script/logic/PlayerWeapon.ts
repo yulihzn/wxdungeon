@@ -186,7 +186,7 @@ export default class PlayerWeapon extends cc.Component {
         }, 0.2)
         if (this.shooter) {
             this.shooter.remoteDamagePlayer = data.getFinalRemoteDamage()
-            this.shooter.fireBullet(Random.getRandomNum(-this.remoteAngleOffset, this.remoteAngleOffset), cc.v3(24, 0), bulletArcExNum, bulletLineExNum)
+            this.shooter.fireBullet(Random.getRandomNum(-this.remoteAngleOffset, this.remoteAngleOffset), cc.v3(0, 0), bulletArcExNum, bulletLineExNum)
         }
         if (data.currentAmmo <= 0 && cooldownNode) {
             this.isCooling = true

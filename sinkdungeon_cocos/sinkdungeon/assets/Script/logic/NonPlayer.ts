@@ -544,7 +544,8 @@ export default class NonPlayer extends Actor {
                     this.data.attackRect,
                     isSpecial,
                     ActorUtils.getDashDistance(this, isSpecial ? this.data.specialDash : this.data.meleeDash, 0.4 * speedScale),
-                    this.hv
+                    this.hv,
+                    false
                 )
             }
             if (isSpecial) {
@@ -1148,7 +1149,7 @@ export default class NonPlayer extends Actor {
         if (this.data.dash > 0 && !this.isPassive && ActorUtils.isTargetAlive(target) && targetDis < 600 && targetDis > 100) {
             this.dashStep.next(() => {
                 this.sc.isDashing = true
-                this.dangerBox.show(this.data.attackRect, false, 500, this.hv)
+                this.dangerBox.show(this.data.attackRect, false, 500, this.hv, true)
                 this.dangerBox.hide(false)
                 this.enterWalk()
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
@@ -1226,7 +1227,7 @@ export default class NonPlayer extends Actor {
         }
 
         this.entity.Move.damping = this.sc.isDashing ? 0 : 3
-        this.dashlight.opacity = this.sc.isDashing ? 128 : 0
+        this.dashlight.opacity = this.sc.isDashing ? 200 : 0
 
         this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255
         if (this.shadow) {
@@ -1248,7 +1249,7 @@ export default class NonPlayer extends Actor {
         this.healthBar.progressBar.barSprite.node.color = this.IsVariation ? cc.color(128, 0, 128) : cc.color(194, 0, 0)
         this.healthBar.progressBar.barSprite.node.color = this.killPlayerCount > 0 ? cc.color(255, 215, 0) : this.healthBar.progressBar.barSprite.node.color
 
-        this.dashlight.color = this.IsVariation ? cc.color(0, 0, 0) : cc.color(255, 255, 255)
+        this.dashlight.color = this.IsVariation ? cc.color(255, 0, 0) : cc.color(255, 255, 255)
         if (this.attrNode) {
             this.attrNode.opacity = this.healthBar.node.opacity
         }

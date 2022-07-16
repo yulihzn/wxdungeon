@@ -186,7 +186,7 @@ export default class EvilEye extends Boss {
             } else {
                 this.fireViceBullet()
             }
-        }, 3)
+        }, 2)
     }
     fireViceBullet() {
         for (let i = 0; i < this.viceShooters.length; i++) {
@@ -249,6 +249,7 @@ export default class EvilEye extends Boss {
         shooter.data.bulletType = bulletType
         shooter.data.bulletArcExNum = bulletArcExNum
         shooter.data.bulletLineExNum = bulletLineExNum
+        shooter.shootBaseHeight = 32
         shooter.fireBullet(angle, defaultPos)
     }
     showBoss() {

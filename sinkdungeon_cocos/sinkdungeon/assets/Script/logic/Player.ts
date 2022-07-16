@@ -884,6 +884,8 @@ export default class Player extends Actor {
         } else {
             this.playerAnim(PlayerAvatar.STATE_IDLE, dir)
         }
+    }
+    private updateAvatarFace(dir: number) {
         if (
             dir != 4 &&
             !this.shield.isAniming &&
@@ -910,9 +912,11 @@ export default class Player extends Actor {
         if (Controller.isMouseMode() && Controller.mousePos && this.dungeon) {
             let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.node.position))
             this.hv = Controller.mousePos.add(cc.v2(this.dungeon.mainCamera.node.position)).sub(p).normalize()
+            let dir = Utils.getDirByHv(this.hv)
+            this.updateAvatarFace(dir)
             return
         }
-        let pos = ActorUtils.getDirectionFromNearestEnemy(this.node.position, false, this.dungeon, false, 150)
+        let pos = ActorUtils.getDirectionFromNearestEnemy(this.node.position, false, this.dungeon, false, 200)
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.hv = cc.v2(pos).normalize()
         } else if (hv && !hv.equals(cc.Vec2.ZERO)) {
@@ -1272,6 +1276,8 @@ export default class Player extends Actor {
         this.node.scaleX = this.getScaleSize()
         this.avatar.node.scaleX = this.isFaceRight ? 1 : -1
         this.node.scaleY = this.getScaleSize()
+        this.sprite.node.scaleX = 1 / this.getScaleSize()
+        this.sprite.node.scaleY = -1 / this.getScaleSize()
         this.node.opacity = this.invisible ? 80 : 255
         if (this.sc.isVanishing) {
             this.node.opacity = 0

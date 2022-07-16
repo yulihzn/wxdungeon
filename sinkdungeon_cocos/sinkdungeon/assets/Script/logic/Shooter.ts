@@ -70,6 +70,7 @@ export default class Shooter extends cc.Component {
     private ignoreMap = new Map<number, boolean>()
     public defaultPos = cc.v3(0, 0)
     ignoreEmptyWall = false
+    shootBaseHeight = 0
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics)
@@ -386,20 +387,20 @@ export default class Shooter extends cc.Component {
             bulletPrefab = cc.instantiate(prefab)
         }
 
-        let pos = this.getFireBasePos(defaultPos, bulletArcOffsetX, angleOffset)
+        let pos = this.getFireBasePos(defaultPos, bulletArcOffsetX, angleOffset, this.shootBaseHeight)
         bulletPrefab.parent = this.dungeon.node
         bulletPrefab.scaleX = 1
         bulletPrefab.scaleY = 1
         bulletPrefab.active = true
         if (isLaser) {
-            bulletPrefab.position = pos
-            this.showLaser(angleOffset, hv, bulletPrefab, bulletData, cc.v3(pos.x, pos.y), pos.z)
+            bulletPrefab.position = cc.v3(pos.x, pos.y + this.shootBaseHeight)
+            this.showLaser(angleOffset, hv, bulletPrefab, bulletData, cc.v3(pos.x, pos.y + this.shootBaseHeight), pos.z + this.shootBaseHeight)
         } else {
-            bulletPrefab.position = pos
-            this.showBullet(angleOffset, hv, bulletPrefab, bulletData, cc.v3(pos.x, pos.y), pos.z, aoePrefab, aoeData)
+            bulletPrefab.position = cc.v3(pos.x, pos.y + this.shootBaseHeight)
+            this.showBullet(angleOffset, hv, bulletPrefab, bulletData, cc.v3(pos.x, pos.y + this.shootBaseHeight), pos.z + this.shootBaseHeight, aoePrefab, aoeData)
         }
     }
-    getFireBasePos(defaultPos?: cc.Vec3, bulletArcOffsetX?: number, angleOffset?: number) {
+    getFireBasePos(defaultPos?: cc.Vec3, bulletArcOffsetX?: number, angleOffset?: number, shootBaseHeight?: number) {
         let p = cc.v3(0, 0)
         if (defaultPos) {
             p = defaultPos.clone()
@@ -413,7 +414,12 @@ export default class Shooter extends cc.Component {
             z = 0
         }
         pos = this.dungeon.node.convertToNodeSpaceAR(pos)
-        pos.y = this.getParentNode().y
+        if (shootBaseHeight && shootBaseHeight < z) {
+            z = shootBaseHeight
+            pos.y -= z
+        } else {
+            pos.y = this.getParentNode().y
+        }
         pos.z = z
         return pos
     }

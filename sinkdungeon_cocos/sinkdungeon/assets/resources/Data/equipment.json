@@ -1309,22 +1309,25 @@
             {
                 "id": 0,
                 "type": 0,
-                "group": 0,
+                "group": 1,
                 "count": 1,
+                "target": 1,
                 "res": "status074"
             },
             {
                 "id": 0,
                 "type": 1,
-                "group": 0,
+                "group": 1,
                 "count": 1,
+                "target": 1,
                 "res": "status074"
             },
             {
                 "id": 0,
                 "type": 2,
-                "group": 0,
+                "group": 1,
                 "count": 1,
+                "target": 1,
                 "res": "status074"
             }
         ],
@@ -1455,7 +1458,7 @@
         "far": 1
     },
     "weapon051": {
-        "nameCn": "竹笋",
+        "nameCn": "夺笋",
         "nameEn": "Bamboo Shoots",
         "equipmetType": "weapon",
         "id": 10010000,
@@ -1478,7 +1481,7 @@
             "maxHealth": 0
         },
         "stab": 0,
-        "desc": "一根竹笋"
+        "desc": "夺笋呐~"
     },
     "remote001": {
         "nameCn": "十字弩",

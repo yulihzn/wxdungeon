@@ -64,7 +64,7 @@ export default class ActorAttackBox extends cc.Component {
      * @param hv
      * @returns
      */
-    show(boxRect: string, isSpecial: boolean, dashLength: number, hv: cc.Vec2) {
+    show(boxRect: string, isSpecial: boolean, dashLength: number, hv: cc.Vec2, isHalf: boolean) {
         if (!this.actor) {
             cc.log('attackBox not init')
             return
@@ -76,6 +76,9 @@ export default class ActorAttackBox extends cc.Component {
         let rectArr = boxRect.split(',')
         this.sprite.position = cc.v3(parseInt(rectArr[0]), parseInt(rectArr[1]))
         let w = parseInt(rectArr[2])
+        if (isHalf) {
+            w = w / 2
+        }
         let h = parseInt(rectArr[3])
         let len = dashLength - w
         if (len < 0) {

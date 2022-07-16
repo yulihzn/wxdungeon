@@ -116,11 +116,12 @@ export default class Chest extends Building {
                             // dungeon.addEquipment('trousers005', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
                             // dungeon.addEquipment('gloves006', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
                             // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_DREAM);
-                            // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_HEALING);
-                            // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_MOVESPEED);
-                            // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_REMOTE);
-                            // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_ATTACK);
-                            // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.GOLDFINGER);
+                            dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_HEALING)
+                            dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_JUMP)
+                            dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_MOVESPEED)
+                            dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_REMOTE)
+                            dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_ATTACK)
+                            dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_DREAM)
                         }
                         dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                     }

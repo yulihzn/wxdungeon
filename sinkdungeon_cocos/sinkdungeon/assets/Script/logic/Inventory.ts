@@ -587,8 +587,8 @@ export default class Inventory extends cc.Component {
         this.refreshItemRes()
     }
     private refreshItemRes() {
-        let itemSpriteList = [this.itemsprite1, this.itemsprite2, this.itemsprite3, this.itemsprite4, this.itemsprite5]
-        let itemLabelList = [this.itemlabel1, this.itemlabel2, this.itemlabel3, this.itemlabel4, this.itemlabel5]
+        let itemSpriteList = [this.itemsprite1, this.itemsprite2, this.itemsprite3, this.itemsprite4, this.itemsprite5, this.itemsprite6]
+        let itemLabelList = [this.itemlabel1, this.itemlabel2, this.itemlabel3, this.itemlabel4, this.itemlabel5, this.itemlabel6]
         for (let i = 0; i < itemSpriteList.length; i++) {
             let item = this.inventoryManager.itemList[i]
             itemSpriteList[i].spriteFrame = Logic.spriteFrameRes(item.resName)

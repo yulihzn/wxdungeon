@@ -192,4 +192,27 @@ export default class Utils {
         }
         return 0
     }
+    static getDirByHv(hv: cc.Vec2) {
+        let dir = 4
+        if (!hv || hv.equals(cc.Vec2.ZERO)) {
+            return dir
+        }
+        if (Math.abs(hv.x) < Math.abs(hv.y)) {
+            if (hv.y > 0.3) {
+                dir = 0
+            }
+            if (hv.y < -0.3) {
+                dir = 1
+            }
+        }
+        if (Math.abs(hv.x) > Math.abs(hv.y)) {
+            if (hv.x < -0.3) {
+                dir = 2
+            }
+            if (hv.x > 0.3) {
+                dir = 3
+            }
+        }
+        return dir
+    }
 }

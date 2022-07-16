@@ -84,11 +84,11 @@ export default class Emplacement extends Building {
                 break
             case 'G2':
                 this.dirType = Emplacement.RIGHT
-                this.hideOrShowShooter(0, 0, 1, 0)
+                this.hideOrShowShooter(0, 0, 0, 1)
                 break
             case 'G3':
                 this.dirType = Emplacement.LEFT
-                this.hideOrShowShooter(0, 0, 0, 1)
+                this.hideOrShowShooter(0, 0, 1, 0)
                 break
             case 'G4':
                 this.dirType = Emplacement.TOPBOTTOM
