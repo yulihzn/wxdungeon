@@ -8,7 +8,7 @@ import Logic from '../../logic/Logic'
 
 export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
     private quadTree: Quadtree
-    private tempColliders: Map<number, boolean> = new Map()
+    private tempColliders: Map<string, boolean> = new Map()
     private list: CCollider[] = []
     private graphics: cc.Graphics
     private isDebug = false
@@ -63,7 +63,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
             let colliders = e.Collider.colliders
             for (let collider of colliders) {
                 collider.entity = e
-                if (collider.enabled && collider.node.active && collider.entity.NodeRender.node && collider.entity.NodeRender.node.active) {
+                if (collider.enabled && collider.node.active && collider.entity.NodeRender.node && collider.entity.NodeRender.node.active && !collider.isEmpty) {
                     collider.fixCenterAndScale()
                     this.list.push(collider)
                     this.quadTree.insert(collider)
@@ -80,9 +80,16 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
             if (!collider.enabled) {
                 continue
             }
+
             let colliders = this.quadTree.retrieve(collider)
             for (let other of colliders) {
                 allCount++
+                if (
+                    (collider.tag == CCollider.TAG.PLAYER_HIT && other.tag == CCollider.TAG.BOSS) ||
+                    (other.tag == CCollider.TAG.PLAYER_HIT && collider.tag == CCollider.TAG.BOSS)
+                ) {
+                    collider
+                }
                 if (!other.enabled) {
                     continue
                 }
@@ -93,7 +100,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
                     continue
                 }
 
-                if (this.tempColliders.has(collider.id * 100000000 + other.id) || this.tempColliders.has(other.id * 100000000 + collider.id)) {
+                if (this.tempColliders.has(`${collider.id}${other.id}`) || this.tempColliders.has(`${other.id}${collider.id}`)) {
                     continue
                 }
 
@@ -153,7 +160,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
                     other.exit(collider)
                 }
                 //标记当前循环已经碰撞过的物体对
-                this.tempColliders.set(collider.id * 100000000 + other.id, true)
+                this.tempColliders.set(`${collider.id}${other.id}`, true)
             }
             if (!collider.sensor && collider.baseChangedCount < 1) {
                 collider.entity.Transform.base = 0

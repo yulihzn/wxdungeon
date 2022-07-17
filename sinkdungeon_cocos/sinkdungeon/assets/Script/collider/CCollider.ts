@@ -149,6 +149,9 @@ export default class CCollider extends cc.Component {
     get z() {
         return this.entity.Transform.z
     }
+    get isEmpty() {
+        return (this.type == CCollider.TYPE.CIRCLE && this.radius == 0) || (this.type == CCollider.TYPE.RECT && (this.w == 0 || this.h == 0))
+    }
     private onContactListener: OnContactListener
     public setOnContactListener(onContactListener: OnContactListener) {
         this.onContactListener = onContactListener

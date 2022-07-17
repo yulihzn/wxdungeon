@@ -884,6 +884,7 @@ export default class Player extends Actor {
         } else {
             this.playerAnim(PlayerAvatar.STATE_IDLE, dir)
         }
+        this.updateAvatarFace(dir)
     }
     private updateAvatarFace(dir: number) {
         if (
