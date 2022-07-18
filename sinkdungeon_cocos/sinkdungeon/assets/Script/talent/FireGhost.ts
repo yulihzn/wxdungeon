@@ -9,6 +9,7 @@ import CCollider from '../collider/CCollider'
 import Actor from '../base/Actor'
 import StatusData from '../data/StatusData'
 import BaseColliderComponent from '../base/BaseColliderComponent'
+import { EventHelper } from '../logic/EventHelper'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -81,7 +82,7 @@ export default class FireGhost extends BaseColliderComponent {
             target.addStatus(status, new FromData())
         }
         this.isDied = true
-        cc.director.emit('destoryfireghost', { detail: { coinNode: this.node } })
+        EventHelper.emit(EventHelper.POOL_DESTORY_FIREGHLOST, { targetNode: this.node })
     }
     checkTimeDelay = 0
     isCheckTimeDelay(dt: number): boolean {

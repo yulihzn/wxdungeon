@@ -96,11 +96,7 @@ export default class Player extends Actor {
     waterSpark: cc.Prefab = null
     professionTalent: ProfessionTalent = null
     organizationTalent: OrganizationTalent = null
-
-    isStone = false //是否石化
-
     baseAttackPoint: number = 1
-
     //触碰到的提示
     touchedTips: Tips
     private touchDelay = false
@@ -149,7 +145,6 @@ export default class Player extends Actor {
         this.updateStatus(this.data.StatusList, this.data.StatusTotalData)
         this.pos = cc.v3(0, 0)
         this.sc.isDied = false
-        this.isStone = false
         this.sc.isShow = false
         this.scheduleOnce(() => {
             this.sc.isShow = true
@@ -197,7 +192,7 @@ export default class Player extends Actor {
                 return
             }
             if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
-                this.shield.use()
+                this.shield.use(this.sprite)
             } else {
                 if (this.node) this.remoteAttack()
             }
@@ -252,10 +247,12 @@ export default class Player extends Actor {
             this.exTrigger(group, type, null, null)
         })
         if (!this.playerSpriteTexture) {
+            let width = 512
             this.playerSpriteTexture = new cc.RenderTexture()
-            this.playerSpriteTexture.initWithSize(cc.visibleRect.width, cc.visibleRect.height)
+            this.playerSpriteTexture.initWithSize(width, width)
             this.playerSpriteTexture.setFilters(cc.Texture2D.Filter.NEAREST, cc.Texture2D.Filter.NEAREST)
             this.shadowCamera.targetTexture = this.playerSpriteTexture
+            this.shadowCamera.zoomRatio = cc.winSize.height / width
             this.playerSpriteframe = new cc.SpriteFrame(this.playerSpriteTexture)
             this.sprite.spriteFrame = this.playerSpriteframe
         }
@@ -317,13 +314,9 @@ export default class Player extends Actor {
     actorName(): string {
         return 'Player'
     }
-    /**
-     *
-     * @param isStone 是否是石头
-     * @param stoneLevel 石头等级：0：全身，1：身子和脚，2：脚
-     */
-    private turnStone(isStone: boolean, stoneLevel?: number) {
-        this.avatar.hitLight(isStone)
+
+    public changeLight(color: cc.Color) {
+        this.sprite.node.color = color
     }
     private updateFistCombo() {
         if (!this.weaponRight.meleeWeapon.IsFist) {
@@ -879,7 +872,7 @@ export default class Player extends Actor {
         this.entity.Move.linearVelocity = movement
         this.sc.isMoving = h != 0 || v != 0
 
-        if (this.sc.isMoving && !this.isStone) {
+        if (this.sc.isMoving) {
             this.playerAnim(PlayerAvatar.STATE_WALK, dir)
         } else {
             this.playerAnim(PlayerAvatar.STATE_IDLE, dir)
@@ -1042,6 +1035,7 @@ export default class Player extends Actor {
         if (!this.data || this.sc.isDied || this.sc.isVanishing) {
             return false
         }
+
         let finalData = this.data.FinalCommon
         //盾牌
         let blockLevel = this.shield.blockDamage(this, damageData, from, actor)
@@ -1099,6 +1093,10 @@ export default class Player extends Actor {
         let valid = !isDodge && dd.getTotalDamage() > 0
         if (valid) {
             this.exTrigger(TriggerData.GROUP_HURT, TriggerData.TYPE_HURT, from, actor)
+            this.changeLight(cc.color(255, 0, 0))
+            this.scheduleOnce(() => {
+                this.changeLight(cc.Color.WHITE)
+            }, 0.2)
         }
         if (valid || blockLevel == Shield.BLOCK_PARRY) {
             this.showDamageEffect(blockLevel, from, actor)
@@ -1269,19 +1267,14 @@ export default class Player extends Actor {
             }
         }
 
-        let stone = this.isStone
-        this.isStone = this.statusManager.hasStatus(StatusManager.STONE)
-        if (stone == !this.isStone) {
-            this.turnStone(this.isStone)
-        }
         this.node.scaleX = this.getScaleSize()
         this.avatar.node.scaleX = this.isFaceRight ? 1 : -1
         this.node.scaleY = this.getScaleSize()
         this.sprite.node.scaleX = 1 / this.getScaleSize()
         this.sprite.node.scaleY = -1 / this.getScaleSize()
-        this.node.opacity = this.invisible ? 80 : 255
+        this.sprite.node.opacity = this.invisible ? 80 : 255
         if (this.sc.isVanishing) {
-            this.node.opacity = 0
+            this.sprite.node.opacity = 0
         }
         this.updateHv()
         let showHands = this.interactBuilding && this.interactBuilding.isTaken && !this.interactBuilding.isThrowing

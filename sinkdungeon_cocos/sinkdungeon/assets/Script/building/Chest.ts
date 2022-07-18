@@ -97,24 +97,10 @@ export default class Chest extends Building {
                     if (dungeon) {
                         let rand4save = Logic.mapManager.getRandom4Save(this.seed)
                         if (Logic.isCheatMode) {
-                            // dungeon.addEquipment(EquipmentManager.SHIELD_CIRCLE, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            dungeon.addEquipment(EquipmentManager.SHIELD_CARDOOR, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment('weapon046', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            // dungeon.addEquipment('weapon047', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            // dungeon.addEquipment('weapon048', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            // dungeon.addEquipment('weapon049', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            // dungeon.addEquipment('weapon050', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            // dungeon.addEquipment('weapon051', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment('shoes009', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment(EquipmentManager.REMOTE_ALIENGUN, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            // dungeon.addEquipment('shield007', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
-                            // dungeon.addEquipment('helmet006', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
-                            // dungeon.addEquipment('clothes010', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
-                            // dungeon.addEquipment('clothes025', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
-                            // dungeon.addEquipment('shoes003', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
-                            // dungeon.addEquipment('shoes006', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
-                            // dungeon.addEquipment('clothes011', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
-                            // dungeon.addEquipment('trousers005', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
-                            // dungeon.addEquipment('gloves006', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
                             // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_DREAM);
                             // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_HEALING)
                             // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_JUMP)

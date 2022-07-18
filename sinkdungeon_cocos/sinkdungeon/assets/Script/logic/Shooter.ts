@@ -206,6 +206,72 @@ export default class Shooter extends cc.Component {
         }
         return aoe
     }
+    /**
+     * 更新通用aoe效果
+     * @param aoe
+     * @param spriteFrames
+     * @param repeatForever
+     * @param isFaceRight
+     * @param scale
+     * @param color
+     * @param isFade
+     * @returns
+     */
+    public updateCustomAoe(
+        aoe: AreaOfEffect,
+        spriteFrames: cc.SpriteFrame[],
+        repeatForever: boolean,
+        isFaceRight: boolean,
+        scale: number,
+        color?: cc.Color,
+        isFade?: boolean,
+        isFilpY?: boolean
+    ) {
+        if (!aoe.node.getChildByName('sprite') || !aoe.node.getChildByName('sprite').getComponent(cc.Sprite)) {
+            return
+        }
+        aoe.node.position.y -= 32
+        aoe.entity.Transform.position.y += 32
+        let sprite = aoe.node.getChildByName('sprite').getComponent(cc.Sprite)
+        let collider = aoe.getComponent(CCollider)
+        if (spriteFrames.length > 0) {
+            let spriteframe = spriteFrames[0]
+            sprite.node.width = spriteframe.getOriginalSize().width
+            sprite.node.height = spriteframe.getOriginalSize().height
+            sprite.node.opacity = 255
+            sprite.node.stopAllActions()
+            if (color) {
+                sprite.node.color = color
+            }
+            sprite.node.scaleX = isFaceRight ? scale : -scale
+            sprite.node.scaleY = isFilpY ? -scale : scale
+            collider.w = sprite.node.width * scale * 0.75
+            collider.h = sprite.node.height * scale * 0.75
+        }
+        let tween = cc.tween()
+        for (let spriteFrame of spriteFrames) {
+            tween.then(
+                cc
+                    .tween()
+                    .delay(0.2)
+                    .call(() => {
+                        sprite.spriteFrame = spriteFrame
+                    })
+            )
+        }
+        if (repeatForever) {
+            cc.tween(sprite.node).repeatForever(tween).start()
+        } else {
+            let fade = cc.tween().to(0.2, { opacity: isFade ? 0 : 255 })
+            cc.tween(sprite.node)
+                .then(tween)
+                .then(fade)
+                .call(() => {
+                    sprite.spriteFrame = null
+                })
+                .start()
+        }
+    }
 
     /**
      * 发射子弹

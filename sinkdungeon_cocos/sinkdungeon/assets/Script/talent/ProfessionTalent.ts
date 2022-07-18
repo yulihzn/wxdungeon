@@ -20,6 +20,7 @@ import TalentData from '../data/TalentData'
 import InventoryManager from '../manager/InventoryManager'
 import ShadowPlayer from '../actor/ShadowPlayer'
 import Utils from '../utils/Utils'
+import DashGhost from '../effect/DashGhost'
 
 /**
  * 技能管理器
@@ -77,11 +78,16 @@ export default class ProfessionTalent extends Talent {
     daggerLightPrefab: cc.Prefab = null
     fireGhostNum = 0
     ghostPool: cc.NodePool
+    dashGhostPool: cc.NodePool
     hv: cc.Vec2
     onLoad() {
         this.ghostPool = new cc.NodePool(FireGhost)
-        cc.director.on('destoryfireghost', event => {
-            this.destroyGhost(event.detail.coinNode)
+        this.dashGhostPool = new cc.NodePool(DashGhost)
+        EventHelper.on(EventHelper.POOL_DESTORY_FIREGHLOST, detail => {
+            this.destroyGhost(detail.targetNode)
+        })
+        EventHelper.on(EventHelper.POOL_DESTORY_DASHGHLOST, detail => {
+            this.destroyDashGhost(detail.targetNode)
         })
     }
     destroyGhost(ghostNode: cc.Node) {
@@ -93,6 +99,15 @@ export default class ProfessionTalent extends Talent {
             this.ghostPool.put(ghostNode)
             this.fireGhostNum--
             cc.log('destroyGhost')
+        }
+    }
+    destroyDashGhost(ghostNode: cc.Node) {
+        if (!ghostNode) {
+            return
+        }
+        ghostNode.active = false
+        if (this.dashGhostPool) {
+            this.dashGhostPool.put(ghostNode)
         }
     }
     init(data: TalentData) {
@@ -180,11 +195,15 @@ export default class ProfessionTalent extends Talent {
                 break
             case Talent.TALENT_015:
                 if (!shadowPlayer) {
-                    this.dash()
+                    this.dash(shooterEx)
                 }
                 break
             case Talent.TALENT_016:
-                this.addClearCircle(shadowPlayer)
+                if (shadowPlayer) {
+                    this.addClearCircle(shadowPlayer.shooterEx)
+                } else {
+                    this.addClearCircle(shooterEx)
+                }
                 break
             case Talent.TALENT_017:
                 this.showSmoke(shooterEx)
@@ -197,14 +216,13 @@ export default class ProfessionTalent extends Talent {
                 break
         }
     }
-    private addClearCircle(shadowPlayer: ShadowPlayer) {
+    private addClearCircle(shooterEx: Shooter) {
         this.player.stopAllDebuffs()
         if (this.player.dungeon.nonPlayerManager.isPetAlive()) {
             this.player.dungeon.nonPlayerManager.pet.stopAllDebuffs()
         }
-        this.addAoe(
+        let aoe = shooterEx.fireAoe(
             this.aoe,
-            shadowPlayer ? shadowPlayer.getCenterPosition() : this.player.getCenterPosition(),
             new AreaOfEffectData().init(
                 2,
                 0.2,
@@ -220,9 +238,17 @@ export default class ProfessionTalent extends Talent {
                 new FromData(),
                 []
             ),
-            ['clearcircle1', 'clearcircle2', 'clearcircle3', 'clearcircle4'],
-            false,
+            cc.v3(0, 32),
+            0,
+            null,
             true
+        )
+        shooterEx.updateCustomAoe(
+            aoe,
+            [Logic.spriteFrameRes('clearcircle1'), Logic.spriteFrameRes('clearcircle2'), Logic.spriteFrameRes('clearcircle3'), Logic.spriteFrameRes('clearcircle4')],
+            false,
+            true,
+            4
         )
     }
     private addShadowFighter(shadowPlayer: ShadowPlayer) {
@@ -314,7 +340,7 @@ export default class ProfessionTalent extends Talent {
             })
             .start()
     }
-    private dash() {
+    private dash(shooterEx: Shooter) {
         let speed = 10
         if (this.player.IsVariation) {
             speed = 20
@@ -322,10 +348,10 @@ export default class ProfessionTalent extends Talent {
         AudioPlayer.play(AudioPlayer.DASH)
         this.schedule(
             () => {
-                this.player.getWalkSmoke(this.node.parent, this.node.position)
+                this.addDashGhost(shooterEx)
             },
-            0.05,
-            4,
+            0.1,
+            10,
             0
         )
         let pos = this.player.entity.Move.linearVelocity.clone()
@@ -341,10 +367,12 @@ export default class ProfessionTalent extends Talent {
         pos = pos.mul(speed)
         this.player.entity.Move.linearVelocity = pos
         this.player.playerAnim(PlayerAvatar.STATE_WALK, this.player.currentDir)
+        this.player.changeLight(cc.Color.GREEN)
         this.scheduleOnce(() => {
             this.player.entity.Move.linearVelocity = cc.Vec2.ZERO
             this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir)
             this.IsExcuting = false
+            this.player.changeLight(cc.Color.WHITE)
         }, 0.5)
     }
     private jump(shooterEx: Shooter) {
@@ -640,5 +668,16 @@ export default class ProfessionTalent extends Talent {
             this.player.node.parent.addChild(fg.node)
             fg.init(this.player, i * 72)
         }
+    }
+    private addDashGhost(shooterEx: Shooter) {
+        let aoe = shooterEx.fireAoe(
+            this.aoe,
+            new AreaOfEffectData().init(3, 1, 0, 1, IndexZ.getActorZIndex(this.player.node.position), false, false, false, false, false, new DamageData(0), new FromData(), []),
+            cc.Vec3.ZERO,
+            0,
+            null,
+            true
+        )
+        shooterEx.updateCustomAoe(aoe, [this.player.sprite.spriteFrame], false, true, 1, cc.Color.GREEN, true, true)
     }
 }

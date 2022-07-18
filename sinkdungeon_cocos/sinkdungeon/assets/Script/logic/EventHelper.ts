@@ -89,6 +89,8 @@ export class EventHelper extends cc.Component {
     public static readonly CHUNK_LOAD = 'CHUNK_LOAD'
     public static readonly POOL_DESTORY_WALKSMOKE = 'destorysmoke'
     public static readonly POOL_DESTORY_BLOCKLIGHT = 'destoryblocklight'
+    public static readonly POOL_DESTORY_DASHGHLOST = 'destorydashghost'
+    public static readonly POOL_DESTORY_FIREGHLOST = 'destoryfireghost'
     public static readonly TEST_SHOW_NODE_COUNT = 'TEST_SHOW_NODE_COUNT'
     public static readonly SETTINGS_LOW_POWER = 'SETTINGS_LOW_POWER'
     public static readonly LOADING_ICON = 'LOADING_ICON'

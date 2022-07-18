@@ -139,11 +139,7 @@ export default class OrganizationTalent extends Talent {
                 data.Common.defence += Logic.playerData.OilGoldData.level
                 this.player.dungeon.nonPlayerManager.addPetFromData(data, this.player.node.position, this.player.dungeon)
                 AudioPlayer.play(data.specialAudio)
-                Utils.toast(
-                    `你召唤了宠物${data.nameCn}：血量上限为${this.player.dungeon.nonPlayerManager.pet.data.Common.maxHealth}，攻击力为${data.getAttackPoint().getTotalDamage()}`,
-                    false,
-                    true
-                )
+                Utils.toast(`你召唤了宠物${data.nameCn}：血量上限为${data.Common.maxHealth}，攻击力为${data.getAttackPoint().getTotalDamage()}`, false, true)
             }
         } else if (this.player.data.AvatarData.organizationIndex == AvatarData.TECH) {
             AudioPlayer.play(AudioPlayer.PICK_ITEM)

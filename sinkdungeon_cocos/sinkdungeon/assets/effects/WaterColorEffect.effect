@@ -16,6 +16,8 @@ CCEffect %{
         addColor: { value: [0.0, 0.0, 0.0, 0.0], inspector: { type: color } }
         hidebottom: { value: 0.0}
         isRotated: { value: 0.0}
+        isFlipY: {value: 0.0}
+        waterPercent: {value: 0.02}
         amplitude: { value: 0.004}
         angularVelocity: { value: 50.0}
         frequency: { value: 10.0}
@@ -77,6 +79,8 @@ CCProgram fs %{
     vec4 rect;
     float hidebottom;
     float isRotated;
+    float isFlipY;
+    float waterPercent;
     float amplitude;		// 振幅
     float angularVelocity;	// 角速度
     float frequency;		// 频率
@@ -109,21 +113,31 @@ CCProgram fs %{
             if(o.a != 0.0){
               o.a = 0.1;
             }
-          }else if(v_uv0.x < rect.x+(rect.z+x)*0.52){
-              o = vec4(1, 1, 1, 1);
+          }else if(v_uv0.x < rect.x+(rect.z+x)*(0.5+waterPercent)){
+              o = vec4(1, 1, 1, o.a);
           }
         
       }else{
         float y = amplitude * sin(angularVelocity * v_uv0.x + initiaPhase) + offset;
-        //如果y大于当前rect的一半
+        if(isFlipY>0.9){
+          //如果y小于当前rect的一半
+          if(v_uv0.y -rect.y< (rect.w+y)*0.5){
+            if(o.a != 0.0){
+                o.a = 0.1;
+                }
+          }else if(v_uv0.y -rect.y< (rect.w+y)*(0.5+waterPercent)){
+            o = vec4(1, 1, 1, o.a);
+          }
+        }else{
+          //如果y大于当前rect的一半
           if(v_uv0.y -rect.y> (rect.w+y)*0.5){
             if(o.a != 0.0){
-              o.a = 0.1;
-            }
-          }else if(v_uv0.y -rect.y> (rect.w+y)*0.48){
-            o = vec4(1, 1, 1, 1);
+                o.a = 0.1;
+                }
+          }else if(v_uv0.y -rect.y> (rect.w+y)*(0.5-waterPercent)){
+            o = vec4(1, 1, 1, o.a);
           }
-        
+        }
       }
        
     }
