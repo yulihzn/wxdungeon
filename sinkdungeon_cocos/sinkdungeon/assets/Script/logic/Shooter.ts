@@ -226,7 +226,9 @@ export default class Shooter extends cc.Component {
         color?: cc.Color,
         opacity?: number,
         isFade?: boolean,
-        isFilpY?: boolean
+        isFilpY?: boolean,
+        w?: number,
+        h?: number
     ) {
         if (!aoe.node.getChildByName('sprite') || !aoe.node.getChildByName('sprite').getComponent(cc.Sprite)) {
             return
@@ -247,6 +249,10 @@ export default class Shooter extends cc.Component {
             sprite.node.scaleY = isFilpY ? -scale : scale
             collider.w = sprite.node.width * scale * 0.75
             collider.h = sprite.node.height * scale * 0.75
+            if (w != 0 && h != 0) {
+                collider.w = w
+                collider.h = h
+            }
         }
         let tween = cc.tween()
         for (let spriteFrame of spriteFrames) {

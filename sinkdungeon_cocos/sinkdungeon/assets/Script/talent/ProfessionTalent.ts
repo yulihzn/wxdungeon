@@ -683,12 +683,12 @@ export default class ProfessionTalent extends Talent {
     private addDashGhost(shooterEx: Shooter) {
         let aoe = shooterEx.fireAoe(
             this.aoe,
-            new AreaOfEffectData().init(2, 2, 0, 1, IndexZ.ACTOR, false, false, false, false, false, new DamageData(0.2), new FromData(), []),
+            new AreaOfEffectData().init(0.4, 2, 0, 1, IndexZ.ACTOR, false, false, false, false, false, new DamageData(0.2), new FromData(), []),
             shooterEx.node.convertToNodeSpaceAR(this.player.node.convertToWorldSpaceAR(cc.v3(0, this.player.entity.Transform.z))),
             0,
             null,
             true
         )
-        shooterEx.updateCustomAoe(aoe, [this.player.sprite.spriteFrame], false, true, 1, cc.color(189, 183, 107), 200, true, true)
+        shooterEx.updateCustomAoe(aoe, [this.player.sprite.spriteFrame], false, true, 1, cc.color(189, 183, 107), 200, true, true, 48, 32)
     }
 }
