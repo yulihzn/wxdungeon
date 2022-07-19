@@ -29,7 +29,7 @@
         "nameEn": "",
         "resName": "talent003",
         "passive": 0,
-        "cooldown": 10,
+        "cooldown": 5,
         "desc": "掏出勺子造成1点真实伤害，被干掉的怪物会变成食物"
     },
     "talent004": {

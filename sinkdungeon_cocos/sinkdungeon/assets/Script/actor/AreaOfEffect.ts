@@ -162,7 +162,7 @@ export default class AreaOfEffect extends BaseColliderComponent {
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0)
         }
-        let power = 2
+        let power = 20
         pos = pos.normalizeSelf().mul(power)
         this.scheduleOnce(() => {
             actor.entity.Move.linearVelocity = cc.v2(pos.x, pos.y)

@@ -1,7 +1,5 @@
 import { EventHelper } from '../logic/EventHelper'
-import Random from './Random'
 import Logic from '../logic/Logic'
-import RoomType from '../rect/RoomType'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -26,6 +24,8 @@ export default class AudioPlayer extends cc.Component {
     public static readonly SHOOT = 'SHOOT'
     public static readonly BOOM = 'BOOM'
     public static readonly COIN = 'COIN'
+    public static readonly COIN1 = 'COIN1'
+    public static readonly COIN2 = 'COIN2'
     public static readonly MELEE = 'MELEE'
     public static readonly WALK = 'WALK'
     public static readonly DASH = 'DASH'
@@ -120,6 +120,10 @@ export default class AudioPlayer extends cc.Component {
     shoot: cc.AudioClip = null
     @property({ type: cc.AudioClip })
     coin: cc.AudioClip = null
+    @property({ type: cc.AudioClip })
+    coin1: cc.AudioClip = null
+    @property({ type: cc.AudioClip })
+    coin2: cc.AudioClip = null
     @property({ type: cc.AudioClip })
     boom: cc.AudioClip = null
     @property({ type: cc.AudioClip })
@@ -302,6 +306,8 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.SHOOT] = this.shoot
         this.audioList[AudioPlayer.BOOM] = this.boom
         this.audioList[AudioPlayer.COIN] = this.coin
+        this.audioList[AudioPlayer.COIN1] = this.coin1
+        this.audioList[AudioPlayer.COIN2] = this.coin2
         this.audioList[AudioPlayer.MELEE] = this.melee
         this.audioList[AudioPlayer.WALK] = this.walk
         this.audioList[AudioPlayer.EXIT] = this.exit

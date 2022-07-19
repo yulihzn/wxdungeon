@@ -554,10 +554,20 @@ export default class ProfessionTalent extends Talent {
         if (this.player.IsVariation) {
             scale += 1
         }
-        shooterEx.fireAoe(
+
+        let aoe = shooterEx.fireAoe(
             this.broomPrefab,
             new AreaOfEffectData().init(0, 0.5, 0.2, scale, IndexZ.OVERHEAD, false, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]),
             cc.v3(0, 32 * this.player.node.scaleY)
+        )
+        this.schedule(
+            () => {
+                if (aoe && aoe.entity && aoe.isValid) {
+                    aoe.entity.Transform.position = this.player.node.position.clone()
+                }
+            },
+            0.02,
+            100
         )
     }
 

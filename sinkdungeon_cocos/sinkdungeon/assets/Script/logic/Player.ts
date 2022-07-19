@@ -1190,7 +1190,7 @@ export default class Player extends Actor {
     }
     isDreamLongTimeDelay(dt: number): boolean {
         this.dreamLongTimeDelay += dt
-        if (this.dreamLongTimeDelay > 20) {
+        if (this.dreamLongTimeDelay > 10) {
             this.dreamLongTimeDelay = 0
             return true
         }
@@ -1207,13 +1207,16 @@ export default class Player extends Actor {
         if (this.dungeon && this.dungeon.isClear && this.isDreamShortTimeDelay(dt)) {
             this.updateDream(-1)
         }
+        //守护派10s恢复一点梦境
+        if (this.dungeon && !this.dungeon.isClear && this.isDreamLongTimeDelay(dt)) {
+            this.updateDream(-1)
+        }
         //科技派5s失去一点梦境
-        if (this.isDreamTimeDelay(dt)) {
+        if (this.dungeon && !this.dungeon.isClear && this.isDreamTimeDelay(dt)) {
             if (this.data.AvatarData.organizationIndex == AvatarData.TECH) {
                 this.updateDream(1)
             }
         }
-
         this.node.scaleX = this.getScaleSize()
         this.avatar.node.scaleX = this.isFaceRight ? 1 : -1
         this.node.scaleY = this.getScaleSize()

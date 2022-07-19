@@ -6873,6 +6873,12 @@
     "coin": {
       "__uuid__": "fc0e26d9-47f5-487e-9d8d-6d714316eccf"
     },
+    "coin1": {
+      "__uuid__": "f944a424-3b1d-4fd5-aedb-669b80fd94de"
+    },
+    "coin2": {
+      "__uuid__": "e523147a-81d4-402f-86dc-27fa596c7d01"
+    },
     "boom": {
       "__uuid__": "30808f4a-fb97-426e-aca5-ab949a60abbb"
     },

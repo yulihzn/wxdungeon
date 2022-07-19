@@ -759,7 +759,7 @@
         "desc": "",
         "duration": -1,
         "unique": 1,
-        "clearHealth": 1,
+        "clearHealth": 3,
         "common": {}
     },
     "status065": {

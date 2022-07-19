@@ -34,7 +34,7 @@ export default class Coin extends BaseColliderComponent {
     }
     onEnable() {
         this.anim = this.getComponent(cc.Animation)
-        let speed = 6
+        let speed = Logic.getRandomNum(6, 12)
         let x = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed
         let y = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed
 
@@ -94,7 +94,8 @@ export default class Coin extends BaseColliderComponent {
             this.isReady = false
             if (!this.soundPlaying) {
                 this.soundPlaying = true
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } })
+                let arr = [AudioPlayer.COIN, AudioPlayer.COIN1, AudioPlayer.COIN2]
+                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: arr[Logic.getRandomNum(0, arr.length - 1)] } })
             }
             cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: this.value } })
             cc.director.emit('destorycoin', { detail: { coinNode: this.node } })

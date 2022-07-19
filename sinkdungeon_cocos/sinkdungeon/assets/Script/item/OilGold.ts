@@ -34,7 +34,7 @@ export default class OilGold extends BaseColliderComponent {
         let x = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed
         let y = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed
         this.entity.Move.linearVelocity = cc.v2(x, y)
-        this.entity.Move.damping = 3
+        this.entity.Move.damping = Logic.getRandomNum(2, 6)
         this.isReady = false
         this.scheduleOnce(() => {
             this.isReady = true
