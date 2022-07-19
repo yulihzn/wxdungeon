@@ -69,23 +69,23 @@ export default class CameraControl extends cc.Component {
         if (!this.dungeon || !this.dungeon.cameraTargetNode) {
             return
         }
-        let xmax = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE - 4, 0)).x
-        let xmin = Dungeon.getPosInMap(cc.v3(3, 0)).x
-        let ymax = Dungeon.getPosInMap(cc.v3(0, Dungeon.HEIGHT_SIZE - 3)).y
-        let ymin = Dungeon.getPosInMap(cc.v3(0, 2)).y
+        // let xmax = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE - 4, 0)).x
+        // let xmin = Dungeon.getPosInMap(cc.v3(3, 0)).x
+        // let ymax = Dungeon.getPosInMap(cc.v3(0, Dungeon.HEIGHT_SIZE - 3)).y
+        // let ymin = Dungeon.getPosInMap(cc.v3(0, 2)).y
         let offset = cc.v3(0, 0)
-        if (this.dungeon.cameraTargetNode.x < xmin) {
-            offset.x = xmin - this.dungeon.cameraTargetNode.x
-        }
-        if (this.dungeon.cameraTargetNode.x > xmax) {
-            offset.x = xmax - this.dungeon.cameraTargetNode.x
-        }
-        if (this.dungeon.cameraTargetNode.y < ymin) {
-            offset.y = ymin - this.dungeon.cameraTargetNode.y
-        }
-        if (this.dungeon.cameraTargetNode.y > ymax) {
-            offset.y = ymax - this.dungeon.cameraTargetNode.y
-        }
+        // if (this.dungeon.cameraTargetNode.x < xmin) {
+        //     offset.x = xmin - this.dungeon.cameraTargetNode.x
+        // }
+        // if (this.dungeon.cameraTargetNode.x > xmax) {
+        //     offset.x = xmax - this.dungeon.cameraTargetNode.x
+        // }
+        // if (this.dungeon.cameraTargetNode.y < ymin) {
+        //     offset.y = ymin - this.dungeon.cameraTargetNode.y
+        // }
+        // if (this.dungeon.cameraTargetNode.y > ymax) {
+        //     offset.y = ymax - this.dungeon.cameraTargetNode.y
+        // }
         let targetPos = this.dungeon.node.convertToWorldSpaceAR(this.dungeon.cameraTargetNode.position.clone().addSelf(offset))
         if (isDirect) {
             this.node.position = this.node.parent.convertToNodeSpaceAR(targetPos)

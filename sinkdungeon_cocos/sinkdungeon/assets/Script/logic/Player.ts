@@ -318,6 +318,11 @@ export default class Player extends Actor {
     public changeLight(color: cc.Color) {
         this.sprite.node.color = color
     }
+    highLight(isHigh: boolean) {
+        this.sprite.getMaterial(0).setProperty('openOutline', isHigh ? 1 : 0)
+        this.sprite.getMaterial(0).setProperty('outlineSize', 0.5)
+        this.sprite.getMaterial(0).setProperty('outlineColor', cc.color(255, 215, 0))
+    }
     private updateFistCombo() {
         if (!this.weaponRight.meleeWeapon.IsFist) {
             this.fistCombo = MeleeWeapon.COMBO1
@@ -772,61 +777,6 @@ export default class Player extends Actor {
             }
         }
     }
-    //特效受击
-    //@deprecated
-    // private remoteOrStatusExHurt(blockLevel: number, from: FromData, actor: Actor): void {
-    //     for (let key in this.inventoryManager.equips) {
-    //         let data = this.inventoryManager.equips[key];
-    //         this.remoteOrStatusExHurtDo(data, blockLevel, from, actor);
-    //     }
-    //     for (let key in this.inventoryManager.suitMap) {
-    //         let suit = this.inventoryManager.suitMap[key];
-    //         if (suit) {
-    //             for (let i = 0; i < suit.count - 1; i++) {
-    //                 if (i < suit.EquipList.length) {
-    //                     this.remoteOrStatusExHurtDo(suit.EquipList[i], blockLevel, from, actor);
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-    //@deprecated
-    // private remoteOrStatusExHurtDo(data: EquipmentData, blockLevel: number, from: FromData, actor: Actor) {
-    //     let needFire = false;
-    //     if (data.exBulletTypeHurt.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
-    //         needFire = true;
-    //         this.shooterEx.data.bulletType = data.exBulletTypeHurt;
-    //     }
-    //     if (blockLevel == Shield.BLOCK_PARRY && data.exBulletTypeParry.length > 0
-    //         && Random.getRandomNum(0, 100) < data.exBulletRate) {
-    //         needFire = true;
-    //         this.shooterEx.data.bulletType = data.exBulletTypeParry;
-    //     }
-    //     if (blockLevel == Shield.BLOCK_NORMAL && data.exBulletTypeBlock.length > 0
-    //         && Random.getRandomNum(0, 100) < data.exBulletRate) {
-    //         needFire = true;
-    //         this.shooterEx.data.bulletType = data.exBulletTypeBlock;
-    //     }
-    //     if (needFire) {
-    //         this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
-    //         this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
-    //         this.shooterEx.data.bulletSize = data.bulletSize;
-    //         this.shooterEx.fireBullet(0);
-    //         for (let s of this.shadowList) {
-    //             if (s.node) {
-    //                 s.shooterEx.setHv(this.shooterEx.Hv);
-    //                 s.shooterEx.data = this.shooterEx.data.clone();
-    //                 s.shooterEx.fireBullet(0);
-    //             }
-    //         }
-    //     }
-    //     if (actor && data.statusNameHurtOther.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
-    //         actor.addStatus(data.statusNameHurtOther, new FromData());
-    //     }
-    //     if (data.statusNameHurtSelf.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
-    //         this.addStatus(data.statusNameHurtSelf, new FromData());
-    //     }
-    // }
 
     move(dir: number, pos: cc.Vec3, dt: number) {
         if (this.sc.isDied || this.sc.isFalling || this.sc.isDizzing || !this.sc.isShow || this.sc.isVanishing) {
@@ -1253,14 +1203,11 @@ export default class Player extends Actor {
         if (this.isSmokeTimeDelay(dt) && this.sc.isMoving && !this.sc.isJumping) {
             this.getWalkSmoke(this.node.parent, this.entity.Transform.position)
         }
-        if (this.isDreamLongTimeDelay(dt)) {
+        //房间清理状态每秒回复1点梦境
+        if (this.dungeon && this.dungeon.isClear && this.isDreamShortTimeDelay(dt)) {
             this.updateDream(-1)
         }
-        if (this.dungeon && this.dungeon.isClear && this.isDreamShortTimeDelay(dt)) {
-            if (this.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
-                this.updateDream(-1)
-            }
-        }
+        //科技派5s失去一点梦境
         if (this.isDreamTimeDelay(dt)) {
             if (this.data.AvatarData.organizationIndex == AvatarData.TECH) {
                 this.updateDream(1)
@@ -1335,12 +1282,12 @@ export default class Player extends Actor {
         return sn
     }
     private useSkill(): void {
-        if (this.professionTalent && !this.sc.isJumping && !this.sc.isAttacking && !this.sc.isVanishing) {
+        if (this.professionTalent && !this.sc.isAttacking && !this.sc.isVanishing) {
             this.professionTalent.useSKill()
         }
     }
     private useSkill1(): void {
-        if (this.organizationTalent && !this.sc.isJumping && !this.sc.isAttacking && !this.sc.isVanishing) {
+        if (this.organizationTalent && !this.sc.isAttacking && !this.sc.isVanishing) {
             this.organizationTalent.useSKill()
         }
     }

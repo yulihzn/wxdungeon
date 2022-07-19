@@ -341,18 +341,17 @@ export default class ProfessionTalent extends Talent {
             .start()
     }
     private dash(shooterEx: Shooter) {
-        let speed = 10
+        let speed = 20
         if (this.player.IsVariation) {
-            speed = 20
+            speed = 40
         }
         AudioPlayer.play(AudioPlayer.DASH)
         this.schedule(
             () => {
                 this.addDashGhost(shooterEx)
             },
-            0.1,
-            10,
-            0
+            0.05,
+            10
         )
         let pos = this.player.entity.Move.linearVelocity.clone()
         this.player.sc.isMoving = false
@@ -366,13 +365,15 @@ export default class ProfessionTalent extends Talent {
         this.hv = posv2.clone()
         pos = pos.mul(speed)
         this.player.entity.Move.linearVelocity = pos
+        this.player.entity.Move.damping = 50
         this.player.playerAnim(PlayerAvatar.STATE_WALK, this.player.currentDir)
-        this.player.changeLight(cc.Color.GREEN)
+        this.player.highLight(true)
         this.scheduleOnce(() => {
+            this.player.entity.Move.damping = 3
             this.player.entity.Move.linearVelocity = cc.Vec2.ZERO
             this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir)
             this.IsExcuting = false
-            this.player.changeLight(cc.Color.WHITE)
+            this.player.highLight(false)
         }, 0.5)
     }
     private jump(shooterEx: Shooter) {
@@ -672,12 +673,12 @@ export default class ProfessionTalent extends Talent {
     private addDashGhost(shooterEx: Shooter) {
         let aoe = shooterEx.fireAoe(
             this.aoe,
-            new AreaOfEffectData().init(3, 1, 0, 1, IndexZ.getActorZIndex(this.player.node.position), false, false, false, false, false, new DamageData(0), new FromData(), []),
-            cc.Vec3.ZERO,
+            new AreaOfEffectData().init(2, 2, 0, 1, IndexZ.ACTOR, false, false, false, false, false, new DamageData(0.2), new FromData(), []),
+            shooterEx.node.convertToNodeSpaceAR(this.player.node.convertToWorldSpaceAR(cc.v3(0, this.player.entity.Transform.z))),
             0,
             null,
             true
         )
-        shooterEx.updateCustomAoe(aoe, [this.player.sprite.spriteFrame], false, true, 1, cc.Color.GREEN, true, true)
+        shooterEx.updateCustomAoe(aoe, [this.player.sprite.spriteFrame], false, true, 1, cc.color(189, 183, 107), 200, true, true)
     }
 }

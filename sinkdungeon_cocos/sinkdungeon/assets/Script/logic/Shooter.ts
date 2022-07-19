@@ -224,21 +224,21 @@ export default class Shooter extends cc.Component {
         isFaceRight: boolean,
         scale: number,
         color?: cc.Color,
+        opacity?: number,
         isFade?: boolean,
         isFilpY?: boolean
     ) {
         if (!aoe.node.getChildByName('sprite') || !aoe.node.getChildByName('sprite').getComponent(cc.Sprite)) {
             return
         }
-        aoe.node.position.y -= 32
-        aoe.entity.Transform.position.y += 32
+
         let sprite = aoe.node.getChildByName('sprite').getComponent(cc.Sprite)
         let collider = aoe.getComponent(CCollider)
         if (spriteFrames.length > 0) {
             let spriteframe = spriteFrames[0]
             sprite.node.width = spriteframe.getOriginalSize().width
             sprite.node.height = spriteframe.getOriginalSize().height
-            sprite.node.opacity = 255
+            sprite.node.opacity = opacity ?? 255
             sprite.node.stopAllActions()
             if (color) {
                 sprite.node.color = color
@@ -253,10 +253,10 @@ export default class Shooter extends cc.Component {
             tween.then(
                 cc
                     .tween()
-                    .delay(0.2)
                     .call(() => {
                         sprite.spriteFrame = spriteFrame
                     })
+                    .delay(0.2)
             )
         }
         if (repeatForever) {
