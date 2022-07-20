@@ -114,7 +114,7 @@ export default class Shield extends cc.Component {
         let idle = cc.tween().to(duration, { y: 2 }).to(duration, { y: -2 })
         cc.tween(this.sprite.node).repeatForever(idle).start()
     }
-    private playParry(bodySprite: cc.Sprite) {
+    private playParry(player: Player) {
         if (this.status == Shield.STATUS_PUTDOWN || this.status == Shield.STATUS_DEFEND || this.status == Shield.STATUS_PARRY) {
             return
         }
@@ -124,8 +124,8 @@ export default class Shield extends cc.Component {
         let dp = Shield.DEFEND_POS[this.dir].clone()
         let tp = Shield.TRANSFORM_POS[this.dir].clone()
         cc.log(`举起 isBehind:${this.isBehind} zIndex:${this.node.zIndex}`)
-        if (bodySprite) {
-            bodySprite.node.color = cc.Color.ORANGE
+        if (player) {
+            player.highLight(true)
         }
         cc.tween(this.node)
             .to(duration, { position: tp })
@@ -136,8 +136,8 @@ export default class Shield extends cc.Component {
             .to(duration, { position: dp })
             .delay(durationdelay)
             .call(() => {
-                if (bodySprite) {
-                    bodySprite.node.color = cc.Color.WHITE
+                if (player) {
+                    player.highLight(false)
                 }
 
                 if (this.isButtonPressing) {
@@ -209,7 +209,7 @@ export default class Shield extends cc.Component {
         let p = isDefending ? Shield.DEFEND_POS[dir] : Shield.DEFAULT_POS[dir].clone()
         this.node.position = p
     }
-    public use(bodySprite: cc.Sprite) {
+    public use(player: Player) {
         this.isButtonPressing = true
         if (this.data.equipmetType != InventoryManager.SHIELD) {
             return
@@ -220,7 +220,7 @@ export default class Shield extends cc.Component {
         if (this.isDefendOrParrying) {
             return
         }
-        this.playParry(bodySprite)
+        this.playParry(player)
     }
     public cancel() {
         this.isButtonPressing = false

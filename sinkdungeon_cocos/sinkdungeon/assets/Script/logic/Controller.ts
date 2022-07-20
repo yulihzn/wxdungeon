@@ -448,7 +448,6 @@ export default class Controller extends cc.Component {
                 EventHelper.emit(EventHelper.PLAYER_JUMP)
             }
             if (this.dashActionTouched) {
-                this.dashActionTouched = false
                 EventHelper.emit(EventHelper.PLAYER_DASH)
             }
             if (this.skillActionTouched) {

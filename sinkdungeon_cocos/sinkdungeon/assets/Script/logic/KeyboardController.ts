@@ -270,7 +270,6 @@ export default class KeyboardController extends cc.Component {
             EventHelper.emit(EventHelper.PLAYER_JUMP)
         }
         if (this.isD) {
-            this.isD = false
             EventHelper.emit(EventHelper.PLAYER_DASH)
         }
     }

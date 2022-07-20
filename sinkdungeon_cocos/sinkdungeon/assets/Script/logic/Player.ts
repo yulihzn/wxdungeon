@@ -195,7 +195,7 @@ export default class Player extends Actor {
                 return
             }
             if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
-                this.shield.use(this.sprite)
+                this.shield.use(this)
             } else {
                 if (this.node) this.remoteAttack()
             }
@@ -874,6 +874,8 @@ export default class Player extends Actor {
         } else if (hv && !hv.equals(cc.Vec2.ZERO)) {
             this.hv = hv.normalize()
         }
+        let dir = Utils.getDirByHv(this.hv)
+        this.updateAvatarFace(dir)
     }
 
     playerAnim(status: number, dir: number): void {
@@ -971,8 +973,8 @@ export default class Player extends Actor {
             () => {
                 this.addDashGhost(this.shooterEx)
             },
-            0.1,
-            5
+            0.05,
+            6
         )
         let pos = this.entity.Move.linearVelocity.clone()
         this.sc.isMoving = false
