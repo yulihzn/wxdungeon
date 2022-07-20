@@ -26,6 +26,9 @@ export default class Controller extends cc.Component {
     jumpAction: cc.Node = null
     jumpActionTouched = false
     @property(cc.Node)
+    dashAction: cc.Node = null
+    dashActionTouched = false
+    @property(cc.Node)
     interactAction: cc.Node = null
     interactActionTouched = false
     @property(cc.Node)
@@ -89,7 +92,7 @@ export default class Controller extends cc.Component {
             cc.Node.EventType.TOUCH_END,
             (event: cc.Event.EventTouch) => {
                 this.shootActionTouched = false
-                cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL)
+                EventHelper.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL)
             },
             this
         )
@@ -98,7 +101,7 @@ export default class Controller extends cc.Component {
             cc.Node.EventType.TOUCH_CANCEL,
             (event: cc.Event.EventTouch) => {
                 this.shootActionTouched = false
-                cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL)
+                EventHelper.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL)
             },
             this
         )
@@ -115,7 +118,7 @@ export default class Controller extends cc.Component {
             cc.Node.EventType.TOUCH_END,
             (event: cc.Event.EventTouch) => {
                 this.jumpActionTouched = false
-                cc.director.emit(EventHelper.PLAYER_JUMP_CANCEL)
+                EventHelper.emit(EventHelper.PLAYER_JUMP_CANCEL)
             },
             this
         )
@@ -124,11 +127,31 @@ export default class Controller extends cc.Component {
             cc.Node.EventType.TOUCH_CANCEL,
             (event: cc.Event.EventTouch) => {
                 this.jumpActionTouched = false
-                cc.director.emit(EventHelper.PLAYER_JUMP_CANCEL)
+                EventHelper.emit(EventHelper.PLAYER_JUMP_CANCEL)
             },
             this
         )
-
+        this.dashAction.on(
+            cc.Node.EventType.TOUCH_START,
+            (event: cc.Event.EventTouch) => {
+                this.dashActionTouched = true
+            },
+            this
+        )
+        this.dashAction.on(
+            cc.Node.EventType.TOUCH_END,
+            (event: cc.Event.EventTouch) => {
+                this.dashActionTouched = false
+            },
+            this
+        )
+        this.dashAction.on(
+            cc.Node.EventType.TOUCH_CANCEL,
+            (event: cc.Event.EventTouch) => {
+                this.dashActionTouched = false
+            },
+            this
+        )
         this.skillAction.on(
             cc.Node.EventType.TOUCH_START,
             (event: cc.Event.EventTouch) => {
@@ -271,6 +294,7 @@ export default class Controller extends cc.Component {
             this.attackAction.active = false
             this.shootAction.active = false
             this.jumpAction.active = false
+            this.dashAction.active = false
             this.skillAction.active = false
             this.skillAction1.active = false
             this.coolDown.node.position = cc.v3(-100, -80)
@@ -281,6 +305,7 @@ export default class Controller extends cc.Component {
             this.attackAction.active = true
             this.shootAction.active = true
             this.jumpAction.active = true
+            this.dashAction.active = true
             this.skillAction.active = true
             this.skillAction1.active = true
             this.coolDown.node.position = this.skillAction.position.clone()
@@ -414,19 +439,25 @@ export default class Controller extends cc.Component {
     update(dt) {
         if (this.isTimeDelay(dt) && !Logic.isGamePause) {
             if (this.attackActionTouched) {
-                cc.director.emit(EventHelper.PLAYER_ATTACK)
+                EventHelper.emit(EventHelper.PLAYER_ATTACK)
             }
             if (this.shootActionTouched) {
-                cc.director.emit(EventHelper.PLAYER_REMOTEATTACK)
+                EventHelper.emit(EventHelper.PLAYER_REMOTEATTACK)
             }
             if (this.jumpActionTouched) {
-                cc.director.emit(EventHelper.PLAYER_JUMP)
+                EventHelper.emit(EventHelper.PLAYER_JUMP)
+            }
+            if (this.dashActionTouched) {
+                this.dashActionTouched = false
+                EventHelper.emit(EventHelper.PLAYER_DASH)
             }
             if (this.skillActionTouched) {
-                cc.director.emit(EventHelper.PLAYER_SKILL)
+                this.skillActionTouched = false
+                EventHelper.emit(EventHelper.PLAYER_SKILL)
             }
             if (this.skillActionTouched1) {
-                cc.director.emit(EventHelper.PLAYER_SKILL1)
+                this.skillActionTouched1 = false
+                EventHelper.emit(EventHelper.PLAYER_SKILL1)
             }
         }
     }

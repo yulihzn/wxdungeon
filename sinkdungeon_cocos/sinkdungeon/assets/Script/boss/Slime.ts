@@ -273,15 +273,15 @@ export default class Slime extends Boss {
                 let rand4save = Logic.mapManager.getRandom4Save(this.seed)
                 Achievement.addMonsterKillAchievement(this.data.resName)
                 EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.entity.Transform.position, count: 100 })
-                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.entity.Transform.position, res: Item.HEART } })
-                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.entity.Transform.position, res: Item.DREAM } })
+                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.entity.Transform.position, res: Item.HEART })
+                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.entity.Transform.position, res: Item.DREAM })
                 this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, 3)
             }
             if (this.slimeType < Slime.DIVIDE_COUNT) {
-                cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.entity.Transform.position, count: 5 } })
+                EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: this.entity.Transform.position, count: 5 })
 
-                cc.director.emit(EventHelper.BOSS_ADDSLIME, { detail: { posIndex: this.pos.clone(), slimeType: this.slimeType + 1 } })
-                cc.director.emit(EventHelper.BOSS_ADDSLIME, { detail: { posIndex: this.pos.clone(), slimeType: this.slimeType + 1 } })
+                EventHelper.emit(EventHelper.BOSS_ADDSLIME, { posIndex: this.pos.clone(), slimeType: this.slimeType + 1 })
+                EventHelper.emit(EventHelper.BOSS_ADDSLIME, { posIndex: this.pos.clone(), slimeType: this.slimeType + 1 })
             }
         }
     }
@@ -301,7 +301,6 @@ export default class Slime extends Boss {
         //近战
         let attackRange = 64 + 50 * this.scaleSize
         if (playerDis < attackRange && !this.dungeon.player.sc.isDied && !this.isDashing && this.sc.isShow && this.scaleSize >= 1) {
-            // cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
             pos = this.dungeon.player.getCenterPosition().sub(this.entity.Transform.position)
             if (!pos.equals(cc.Vec3.ZERO)) {
                 pos = pos.normalizeSelf()
@@ -319,7 +318,7 @@ export default class Slime extends Boss {
         //冲刺
         let dashRange = 128 + 35 * this.scaleSize
         if (playerDis > dashRange && !this.dungeon.player.sc.isDied && !this.isDashing && this.sc.isShow && Logic.getHalfChance()) {
-            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
+            AudioPlayer.play(AudioPlayer.MELEE)
             if (Logic.getHalfChance()) {
                 pos = this.dungeon.player.getCenterPosition().sub(this.entity.Transform.position)
             }

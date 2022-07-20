@@ -1,12 +1,10 @@
 import Boss from './Boss'
 import DamageData from '../data/DamageData'
 import Shooter from '../logic/Shooter'
-import Dungeon from '../logic/Dungeon'
 import Logic from '../logic/Logic'
 import StatusManager from '../manager/StatusManager'
 import NextStep from '../utils/NextStep'
 import BossAttackCollider from './BossAttackCollider'
-import { EventHelper } from '../logic/EventHelper'
 import AudioPlayer from '../utils/AudioPlayer'
 import FromData from '../data/FromData'
 import Achievement from '../logic/Achievement'
@@ -114,7 +112,7 @@ export default class Dryad extends Boss {
     attack() {
         this.meleeSkill.next(
             () => {
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
+                AudioPlayer.play(AudioPlayer.MELEE)
                 this.meleeSkill.IsExcuting = true
                 if (!this.anim) {
                     this.anim = this.getComponent(cc.Animation)

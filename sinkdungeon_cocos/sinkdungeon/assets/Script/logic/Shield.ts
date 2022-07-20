@@ -50,8 +50,8 @@ export default class Shield extends cc.Component {
         return this.status
     }
     onLoad() {
-        cc.director.on(EventHelper.POOL_DESTORY_BLOCKLIGHT, event => {
-            this.destroySmoke(event.detail.targetNode)
+        EventHelper.on(EventHelper.POOL_DESTORY_BLOCKLIGHT, detail => {
+            this.destroySmoke(detail.targetNode)
         })
         this.blocklightPool = new cc.NodePool()
     }

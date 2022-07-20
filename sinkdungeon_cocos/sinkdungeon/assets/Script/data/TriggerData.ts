@@ -48,6 +48,7 @@ export default class TriggerData extends BaseData {
     static readonly TARGET_ALL = 3 //触发目标 范围内所有人 √
     static readonly TARGET_ALL_ENEMY = 4 //触发目标 范围内敌对 √
     static readonly TARGET_ALL_ALLY = 5 //触发目标 范围内友方 √
+    name: string = '' //触发器名字
     uuid: string = '' //唯一标识，用来存档
     res: string = '' //状态名
     id: number = 0 //资源id 0状态 1子弹 2技能

@@ -15,6 +15,7 @@ export class EventHelper extends cc.Component {
     public static readonly PLAYER_REMOTEATTACK_CANCEL = 'PLAYER_REMOTEATTACK_CANCEL'
     public static readonly PLAYER_JUMP = 'PLAYER_JUMP'
     public static readonly PLAYER_JUMP_CANCEL = 'PLAYER_JUMP_CANCEL'
+    public static readonly PLAYER_DASH = 'PLAYER_DASH'
     public static readonly PLAYER_GETITEM = 'PLAYER_GETITEM'
     public static readonly PLAYER_USEDREAM = 'PLAYER_USEDREAM'
     public static readonly PLAYER_CHANGEITEM = 'PLAYER_CHANGEITEM'

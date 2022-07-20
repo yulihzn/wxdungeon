@@ -1,6 +1,6 @@
-import Logic from "./Logic";
-import { EventHelper } from "./EventHelper";
-import AudioPlayer from "../utils/AudioPlayer";
+import Logic from './Logic'
+import { EventHelper } from './EventHelper'
+import AudioPlayer from '../utils/AudioPlayer'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -12,65 +12,64 @@ import AudioPlayer from "../utils/AudioPlayer";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const { ccclass, property } = cc._decorator;
+const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class OilGoldCount extends cc.Component {
-    
-    
-    anim: cc.Animation;
+    anim: cc.Animation
     @property(cc.Label)
-    fragmentLabel: cc.Label = null;
+    fragmentLabel: cc.Label = null
     @property(cc.Label)
-    gemLabel: cc.Label = null;
-    gemCountLerp = 0;
-    fragmentCountLerp = 0;
+    gemLabel: cc.Label = null
+    gemCountLerp = 0
+    fragmentCountLerp = 0
     @property(cc.ProgressBar)
-    progreesBar:cc.ProgressBar = null;
+    progreesBar: cc.ProgressBar = null
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.anim = this.getComponent(cc.Animation);
-        cc.director.on(EventHelper.HUD_ADD_OILGOLD, (event) => {
-            this.addCount(event.detail.count);
+        this.anim = this.getComponent(cc.Animation)
+        EventHelper.on(EventHelper.HUD_ADD_OILGOLD, detail => {
+            this.addCount(detail.count)
         })
-        cc.director.on(EventHelper.HUD_LOSE_OILGOLD, (event) => {
-            if(this.node){
-                let count = Logic.playerData.OilGoldData.fragments;
-                this.addCount(`${-count}`);
-                Logic.saveGroundOilGold(count);
+        EventHelper.on(EventHelper.HUD_LOSE_OILGOLD, detail => {
+            if (this.node) {
+                let count = Logic.playerData.OilGoldData.fragments
+                this.addCount(`${-count}`)
+                Logic.saveGroundOilGold(count)
             }
         })
     }
 
-    start() {
-    }
+    start() {}
     addCount(value: string) {
         if (!this.anim) {
-            return;
+            return
         }
-        Logic.oilGolds += parseInt(value);
-        let gemIndex = Logic.playerData.OilGoldData.index;
-        Logic.updateOilGoldCount();
-        if(gemIndex<Logic.playerData.OilGoldData.index){
-            AudioPlayer.play(AudioPlayer.LEVELUP);
+        Logic.oilGolds += parseInt(value)
+        let gemIndex = Logic.playerData.OilGoldData.index
+        Logic.updateOilGoldCount()
+        if (gemIndex < Logic.playerData.OilGoldData.index) {
+            AudioPlayer.play(AudioPlayer.LEVELUP)
         }
-        EventHelper.emit(EventHelper.PLAYER_UPDATE_OILGOLD_DATA);
+        EventHelper.emit(EventHelper.PLAYER_UPDATE_OILGOLD_DATA)
     }
-    
 
     update(dt) {
-        this.gemCountLerp = Logic.lerp(this.gemCountLerp, Logic.playerData.OilGoldData.level,dt * 5);
-        this.fragmentCountLerp = Logic.lerp(this.fragmentCountLerp, Logic.playerData.OilGoldData.fragments,dt * 5);
+        this.gemCountLerp = Logic.lerp(this.gemCountLerp, Logic.playerData.OilGoldData.level, dt * 5)
+        this.fragmentCountLerp = Logic.lerp(this.fragmentCountLerp, Logic.playerData.OilGoldData.fragments, dt * 5)
         if (this.gemLabel) {
-            this.gemLabel.string = `${this.gemCountLerp.toFixed(0)}`;
+            this.gemLabel.string = `${this.gemCountLerp.toFixed(0)}`
         }
         if (this.fragmentLabel) {
-            this.fragmentLabel.string = `${this.fragmentCountLerp.toFixed(0)}/${Logic.OIL_GOLD_LIST[Logic.playerData.OilGoldData.index]}`;
+            this.fragmentLabel.string = `${this.fragmentCountLerp.toFixed(0)}/${Logic.OIL_GOLD_LIST[Logic.playerData.OilGoldData.index]}`
         }
-        if(this.progreesBar){
-            this.progreesBar.progress = Logic.lerp(this.progreesBar.progress, Logic.playerData.OilGoldData.fragments/Logic.OIL_GOLD_LIST[Logic.playerData.OilGoldData.index], dt * 5);
+        if (this.progreesBar) {
+            this.progreesBar.progress = Logic.lerp(
+                this.progreesBar.progress,
+                Logic.playerData.OilGoldData.fragments / Logic.OIL_GOLD_LIST[Logic.playerData.OilGoldData.index],
+                dt * 5
+            )
         }
-
     }
 }

@@ -539,8 +539,8 @@ export default class Bullet extends BaseColliderComponent {
                         []
                     )
                 )
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BOOM } })
-                cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: true } })
+                AudioPlayer.play(AudioPlayer.BOOM)
+                EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: true })
             }
         }
         if (this.aoePrefab) {

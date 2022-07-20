@@ -92,6 +92,7 @@ export default abstract class Talent extends cc.Component {
     public static readonly TALENT_101 = 'talent101'
     public static readonly TALENT_102 = 'talent102'
     public static readonly TALENT_103 = 'talent103'
+    public static readonly TALENT_200 = 'talent200'
 
     talentSkill = new NextStep()
     player: Player
@@ -142,7 +143,7 @@ export default abstract class Talent extends cc.Component {
             AudioPlayer.play(AudioPlayer.SELECT_FAIL)
         } else {
             AudioPlayer.play(AudioPlayer.SELECT_FAIL)
-            cc.director.emit(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR)
+            EventHelper.emit(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR)
             Utils.toast(`能量不足。`)
         }
     }

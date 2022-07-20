@@ -1,7 +1,6 @@
 import CaptainSword from './CaptainSword'
 import HealthBar from '../logic/HealthBar'
 import Dungeon from '../logic/Dungeon'
-import { EventHelper } from '../logic/EventHelper'
 import Shooter from '../logic/Shooter'
 import DamageData from '../data/DamageData'
 import Boss from './Boss'
@@ -70,7 +69,7 @@ export default class Captain extends Boss {
     //Animation
     AttackStart() {
         this.attackSkill.IsExcuting = true
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
+        AudioPlayer.play(AudioPlayer.MELEE)
     }
     //Animation
     AttackFinish() {

@@ -8,19 +8,20 @@
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import { EventHelper } from "./EventHelper";
+import { EventHelper } from './EventHelper'
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class WalkSmoke extends cc.Component {
-
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
 
-    start () {
-        this.scheduleOnce(()=>{cc.director.emit(EventHelper.POOL_DESTORY_WALKSMOKE,{detail:{coinNode:this.node}});},0.3);
+    start() {
+        this.scheduleOnce(() => {
+            EventHelper.emit(EventHelper.POOL_DESTORY_WALKSMOKE, { coinNode: this.node })
+        }, 0.3)
     }
 
     // update (dt) {}

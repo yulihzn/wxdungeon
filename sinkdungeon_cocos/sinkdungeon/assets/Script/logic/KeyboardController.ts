@@ -24,9 +24,10 @@ export default class KeyboardController extends cc.Component {
     isRight = false
     isA = false
     isB = false
-    isC = false
     isD = false
     isE = false
+    isR = false
+    isF = false
     isJ = false
 
     isLongPress = false
@@ -51,7 +52,6 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.d:
                 this.isRight = true
                 break
-
             case cc.macro.KEY.i:
                 this.openInventory()
                 break
@@ -68,11 +68,14 @@ export default class KeyboardController extends cc.Component {
                     this.isJ = true
                 }
                 break
+            case cc.macro.KEY.shift:
+                this.isD = true
+                break
             case cc.macro.KEY.k:
                 this.isJ = true
                 break
             case cc.macro.KEY.e:
-                this.isC = true
+                this.isE = true
                 this.touchStart = true
                 this.scheduleOnce(() => {
                     if (!this.touchStart) {
@@ -82,11 +85,11 @@ export default class KeyboardController extends cc.Component {
                     this.trigger(true)
                 }, 0.3)
                 break
-            case cc.macro.KEY.shift:
-                this.isD = true
+            case cc.macro.KEY.r:
+                this.isR = true
                 break
             case cc.macro.KEY.f:
-                this.isE = true
+                this.isF = true
                 break
             case cc.macro.KEY.num1:
                 this.useItem(0)
@@ -158,7 +161,6 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.d:
                 this.isRight = false
                 break
-
             case cc.macro.KEY.j:
                 this.isA = false
                 break
@@ -171,23 +173,26 @@ export default class KeyboardController extends cc.Component {
                     EventHelper.emit(EventHelper.PLAYER_JUMP_CANCEL)
                 }
                 break
+            case cc.macro.KEY.shift:
+                this.isD = false
+                break
             case cc.macro.KEY.k:
                 this.isJ = false
                 EventHelper.emit(EventHelper.PLAYER_JUMP_CANCEL)
                 break
             case cc.macro.KEY.e:
-                this.isC = false
+                this.isE = false
                 if (!this.isLongPress) {
                     this.trigger()
                 }
                 this.touchStart = false
                 this.isLongPress = false
                 break
-            case cc.macro.KEY.shift:
-                this.isD = false
+            case cc.macro.KEY.r:
+                this.isR = false
                 break
             case cc.macro.KEY.f:
-                this.isE = false
+                this.isF = false
                 break
         }
     }
@@ -237,30 +242,36 @@ export default class KeyboardController extends cc.Component {
         }
         if (Logic.isGamePause) {
             if (this.isA) {
-                cc.director.emit(EventHelper.KEYBOARD_INTERACT)
+                EventHelper.emit(EventHelper.KEYBOARD_INTERACT)
             }
             if (this.stopCount < 2) {
-                cc.director.emit(EventHelper.KEYBOARD_MOVE, { detail: { dir: dir, pos: pos, dt: dt } })
+                EventHelper.emit(EventHelper.KEYBOARD_MOVE, { dir: dir, pos: pos, dt: dt })
             }
             return
         }
         if (this.stopCount < 2) {
-            cc.director.emit(EventHelper.PLAYER_MOVE, { detail: { dir: dir, pos: pos, dt: dt } })
+            EventHelper.emit(EventHelper.PLAYER_MOVE, { dir: dir, pos: pos, dt: dt })
         }
         if (this.isA) {
-            cc.director.emit(EventHelper.PLAYER_ATTACK)
+            EventHelper.emit(EventHelper.PLAYER_ATTACK)
         }
         if (this.isB) {
-            cc.director.emit(EventHelper.PLAYER_REMOTEATTACK)
+            EventHelper.emit(EventHelper.PLAYER_REMOTEATTACK)
         }
-        if (this.isD) {
-            cc.director.emit(EventHelper.PLAYER_SKILL)
+        if (this.isR) {
+            this.isR = false
+            EventHelper.emit(EventHelper.PLAYER_SKILL)
         }
-        if (this.isE) {
-            cc.director.emit(EventHelper.PLAYER_SKILL1)
+        if (this.isF) {
+            this.isF = false
+            EventHelper.emit(EventHelper.PLAYER_SKILL1)
         }
         if (this.isJ) {
-            cc.director.emit(EventHelper.PLAYER_JUMP)
+            EventHelper.emit(EventHelper.PLAYER_JUMP)
+        }
+        if (this.isD) {
+            this.isD = false
+            EventHelper.emit(EventHelper.PLAYER_DASH)
         }
     }
     timeDelay = 0

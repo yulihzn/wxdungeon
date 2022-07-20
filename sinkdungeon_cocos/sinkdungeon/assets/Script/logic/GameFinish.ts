@@ -41,7 +41,7 @@ export default class NewClass extends cc.Component {
     }
     retry() {
         Logic.resetData()
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } })
+        AudioPlayer.play(AudioPlayer.SELECT)
         let bg = this.getComponentInChildren(StartBackground)
         if (bg) {
             bg.startPressed()
@@ -54,7 +54,7 @@ export default class NewClass extends cc.Component {
         if (this.wxhelper) {
             this.wxhelper.CloseDialog()
         }
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } })
+        AudioPlayer.play(AudioPlayer.SELECT)
         let bg = this.getComponentInChildren(StartBackground)
         if (bg) {
             bg.startPressed()

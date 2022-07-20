@@ -1,5 +1,4 @@
 import Dungeon from '../logic/Dungeon'
-import { EventHelper } from '../logic/EventHelper'
 import Shooter from '../logic/Shooter'
 import DamageData from '../data/DamageData'
 import StatusManager from '../manager/StatusManager'
@@ -223,7 +222,7 @@ export default class EvilEye extends Boss {
     dash() {
         this.dashSkill.next(
             () => {
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
+                AudioPlayer.play(AudioPlayer.MELEE)
                 this.dashSkill.IsExcuting = true
                 if (!this.anim) {
                     this.anim = this.getComponent(cc.Animation)

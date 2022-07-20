@@ -97,8 +97,9 @@ export default class Item extends cc.Component {
         if (this.data.canSave) {
             if (this.shopTable) {
                 if (Logic.coins >= this.data.price) {
-                    cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.data.price } })
-                    cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } })
+                    EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: -this.data.price })
+                    let arr = [AudioPlayer.COIN, AudioPlayer.COIN1, AudioPlayer.COIN2]
+                    AudioPlayer.play(arr[Logic.getRandomNum(0, arr.length - 1)])
                     this._taken(player, isReplace)
                     this.shopTable.sale(true)
                     return true
@@ -122,7 +123,7 @@ export default class Item extends cc.Component {
             if (this.data.canSave < 1) {
                 Item.userIt(this.data, player)
             } else {
-                cc.director.emit(EventHelper.PLAYER_CHANGEITEM, { detail: { itemData: this.data, isReplace: isReplace } })
+                EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemData: this.data, isReplace: isReplace })
             }
             this.scheduleOnce(() => {
                 if (this.node) {
@@ -140,7 +141,7 @@ export default class Item extends cc.Component {
             }
         }
         Logic.mapManager.setCurrentItemsArr(newlist)
-        cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_HIDE)
+        EventHelper.emit(EventHelper.HUD_GROUND_ITEM_INFO_HIDE)
     }
     static userIt(data: ItemData, player: Player) {
         let from = FromData.getClone(data.nameCn, data.resName)

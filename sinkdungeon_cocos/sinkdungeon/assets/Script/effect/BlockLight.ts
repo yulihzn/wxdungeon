@@ -5,23 +5,24 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import { EventHelper } from "../logic/EventHelper";
+import { EventHelper } from '../logic/EventHelper'
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class BlockLight extends cc.Component {
-
-    anim:cc.Animation;
+    anim: cc.Animation
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
-    show(){
-        if(!this.anim){
-            this.anim = this.getComponent(cc.Animation);
+    show() {
+        if (!this.anim) {
+            this.anim = this.getComponent(cc.Animation)
         }
-        this.anim.play();
-        this.scheduleOnce(()=>{cc.director.emit(EventHelper.POOL_DESTORY_WALKSMOKE,{detail:{targetNode:this.node}});},0.5);
+        this.anim.play()
+        this.scheduleOnce(() => {
+            EventHelper.emit(EventHelper.POOL_DESTORY_WALKSMOKE, { targetNode: this.node })
+        }, 0.5)
     }
 
     // update (dt) {}

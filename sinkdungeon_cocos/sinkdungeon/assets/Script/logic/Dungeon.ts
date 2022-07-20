@@ -495,7 +495,7 @@ export default class Dungeon extends cc.Component {
             ) {
                 EventHelper.emit(EventHelper.HUD_ADD_OILGOLD, { count: data.value })
                 Logic.saveGroundOilGold(0)
-                cc.director.emit(EventHelper.HUD_OILGOLD_RECOVERY_SHOW)
+                EventHelper.emit(EventHelper.HUD_OILGOLD_RECOVERY_SHOW)
             }
         }, 1)
     }
@@ -598,7 +598,7 @@ export default class Dungeon extends cc.Component {
 
     start() {
         this.scheduleOnce(() => {
-            cc.director.emit(EventHelper.CHANGE_MINIMAP, { detail: { x: this.currentPos.x, y: this.currentPos.y } })
+            EventHelper.emit(EventHelper.CHANGE_MINIMAP, { x: this.currentPos.x, y: this.currentPos.y })
             if (this.isInitFinish && !Logic.isGamePause && !this.isDisappeared && LoadingManager.allResourceDone()) {
                 this.checkRoomClear()
             }

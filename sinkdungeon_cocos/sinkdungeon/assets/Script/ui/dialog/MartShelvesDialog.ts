@@ -53,8 +53,8 @@ export default class MartShelvesDialog extends BaseDialog {
     anim: cc.Animation
     goodsData: GoodsData
     onLoad() {
-        cc.director.on(EventHelper.HUD_MART_SHELVES_DIALOG_PAY, event => {
-            if (this.node) this.showPay(event.detail.data)
+        EventHelper.on(EventHelper.HUD_MART_SHELVES_DIALOG_PAY, detail => {
+            if (this.node) this.showPay(detail.data)
         })
     }
     showPay(data: GoodsData) {
@@ -71,9 +71,9 @@ export default class MartShelvesDialog extends BaseDialog {
     //button
     Pay() {
         if (Logic.coins >= this.goodsData.item.price) {
-            cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.goodsData.item.price } })
+            EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: -this.goodsData.item.price })
             AudioPlayer.play(AudioPlayer.CASHIERING)
-            cc.director.emit(EventHelper.PLAYER_CHANGEITEM, { detail: { itemData: this.goodsData.item } })
+            EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemData: this.goodsData.item })
             this.close()
         } else {
             AudioPlayer.play(AudioPlayer.SELECT_FAIL)

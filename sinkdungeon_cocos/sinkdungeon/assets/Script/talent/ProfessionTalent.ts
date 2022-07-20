@@ -179,9 +179,9 @@ export default class ProfessionTalent extends Talent {
                 }, 0.1)
                 break
             case Talent.TALENT_015:
-                if (!shadowPlayer) {
-                    this.dash(shooterEx)
-                }
+                // if (!shadowPlayer) {
+                //     this.dash(shooterEx)
+                // }
                 break
             case Talent.TALENT_016:
                 if (shadowPlayer) {

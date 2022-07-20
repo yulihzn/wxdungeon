@@ -1,13 +1,13 @@
-import Player from "../logic/Player"
-import { EventHelper } from "../logic/EventHelper"
-import Logic from "../logic/Logic"
-import Building from "./Building"
-import AudioPlayer from "../utils/AudioPlayer"
-import IndexZ from "../utils/IndexZ"
-import ExitData from "../data/ExitData"
-import Dungeon from "../logic/Dungeon"
-import CCollider from "../collider/CCollider"
-import Random from "../utils/Random"
+import Player from '../logic/Player'
+import { EventHelper } from '../logic/EventHelper'
+import Logic from '../logic/Logic'
+import Building from './Building'
+import AudioPlayer from '../utils/AudioPlayer'
+import IndexZ from '../utils/IndexZ'
+import ExitData from '../data/ExitData'
+import Dungeon from '../logic/Dungeon'
+import CCollider from '../collider/CCollider'
+import Random from '../utils/Random'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -67,11 +67,11 @@ export default class ExitDoor extends Building {
         label.string = `-${Logic.worldLoader.getLevelData(this.exitData.toChapter, this.exitData.toLevel).name}`
     }
     onLoad() {
-        this.spriteNode = this.node.getChildByName("sprite")
-        this.bgSprite = this.node.getChildByName("sprite").getChildByName("exitbg").getComponent(cc.Sprite)
-        this.closeSprite = this.node.getChildByName("sprite").getChildByName("exitopen").getComponent(cc.Sprite)
-        this.openSprite = this.node.getChildByName("sprite").getChildByName("exitclose").getComponent(cc.Sprite)
-        this.roof = this.node.getChildByName("roof").getComponent(cc.Sprite)
+        this.spriteNode = this.node.getChildByName('sprite')
+        this.bgSprite = this.node.getChildByName('sprite').getChildByName('exitbg').getComponent(cc.Sprite)
+        this.closeSprite = this.node.getChildByName('sprite').getChildByName('exitopen').getComponent(cc.Sprite)
+        this.openSprite = this.node.getChildByName('sprite').getChildByName('exitclose').getComponent(cc.Sprite)
+        this.roof = this.node.getChildByName('roof').getComponent(cc.Sprite)
         this.openSprite.node.zIndex = IndexZ.FLOOR
         this.closeSprite.node.zIndex = IndexZ.ACTOR
     }
@@ -79,28 +79,28 @@ export default class ExitDoor extends Building {
     start() {
         switch (Logic.chapterIndex) {
             case Logic.CHAPTER00:
-                this.changeRes("exit000")
+                this.changeRes('exit000')
                 break
             case Logic.CHAPTER01:
-                this.changeRes("exit001")
+                this.changeRes('exit001')
                 break
             case Logic.CHAPTER02:
-                this.changeRes("exit002")
+                this.changeRes('exit002')
                 break
             case Logic.CHAPTER03:
-                this.changeRes("exit003")
+                this.changeRes('exit003')
                 break
             case Logic.CHAPTER04:
-                this.changeRes("exit004")
+                this.changeRes('exit004')
                 break
             case Logic.CHAPTER05:
-                this.changeRes("exit004")
+                this.changeRes('exit004')
                 break
             case Logic.CHAPTER099:
-                this.changeRes("exit000")
+                this.changeRes('exit000')
                 break
         }
-        let subfix = "anim000"
+        let subfix = 'anim000'
         let spriteframe = Logic.spriteFrameRes(`roof${Logic.worldLoader.getCurrentLevelData().wallRes1}${subfix}`)
         if (this.dir % 4 > 1 || this.dir > 7) {
             spriteframe = null
@@ -117,7 +117,7 @@ export default class ExitDoor extends Building {
             case 1:
                 this.roof.node.angle = 180
                 this.roof.node.opacity = 128
-                this.roof.node.getChildByName("info").angle = 180
+                this.roof.node.getChildByName('info').angle = 180
                 break
             case 2:
                 break
@@ -152,7 +152,7 @@ export default class ExitDoor extends Building {
             let player = other.node.getComponent(Player)
             if (player && this.isOpen) {
                 this.isOpen = false
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } })
+                AudioPlayer.play(AudioPlayer.EXIT)
                 Logic.playerData = player.data.clone()
                 Logic.loadingNextLevel(this.exitData)
             }
@@ -160,9 +160,9 @@ export default class ExitDoor extends Building {
     }
     // update (dt) {}
     changeRes(resName: string) {
-        this.bgSprite.spriteFrame = Logic.spriteFrameRes(resName + "bg")
-        this.openSprite.spriteFrame = Logic.spriteFrameRes(resName + "open")
-        this.closeSprite.spriteFrame = Logic.spriteFrameRes(resName + "close")
+        this.bgSprite.spriteFrame = Logic.spriteFrameRes(resName + 'bg')
+        this.openSprite.spriteFrame = Logic.spriteFrameRes(resName + 'open')
+        this.closeSprite.spriteFrame = Logic.spriteFrameRes(resName + 'close')
     }
     disappear(): void {
         super.disappear()

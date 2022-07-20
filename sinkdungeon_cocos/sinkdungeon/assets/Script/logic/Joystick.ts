@@ -274,7 +274,7 @@ export default class NewClass extends cc.Component {
             this.stopCount++
         }
         if (this.stopCount < 2) {
-            cc.director.emit(EventHelper.PLAYER_MOVE, { detail: { dir: dir, pos: pos, dt: dt } })
+            EventHelper.emit(EventHelper.PLAYER_MOVE, { dir: dir, pos: pos, dt: dt })
         }
     }
     timeDelay = 0

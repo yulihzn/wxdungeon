@@ -56,6 +56,7 @@ import ActorBottomDir from '../actor/ActorBottomDir'
 import JumpingAbility from '../actor/JumpingAbility'
 import Controller from './Controller'
 import ActorUtils from '../utils/ActorUtils'
+import AreaOfEffectData from '../data/AreaOfEffectData'
 @ccclass
 export default class Player extends Actor {
     @property(cc.Sprite)
@@ -94,6 +95,8 @@ export default class Player extends Actor {
     bottomDir: ActorBottomDir = null
     @property(cc.Prefab)
     waterSpark: cc.Prefab = null
+    @property(cc.Prefab)
+    aoe: cc.Prefab = null
     professionTalent: ProfessionTalent = null
     organizationTalent: OrganizationTalent = null
     baseAttackPoint: number = 1
@@ -200,6 +203,11 @@ export default class Player extends Actor {
         EventHelper.on(EventHelper.PLAYER_JUMP, detail => {
             if (this.node) {
                 this.jump()
+            }
+        })
+        EventHelper.on(EventHelper.PLAYER_DASH, detail => {
+            if (this.node) {
+                this.dash()
             }
         })
         EventHelper.on(EventHelper.PLAYER_JUMP_CANCEL, detail => {
@@ -490,7 +498,7 @@ export default class Player extends Actor {
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_LIFE_BAR, { sanity: life.sanity, solid: life.solidSatiety, poo: life.poo, liquid: life.liquidSatiety, pee: life.pee })
         this.inventoryManager.updateTotalEquipData()
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.TotalEquipData)
-        cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } })
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { data: this.data })
     }
     /**获取中心位置 */
     getCenterPosition(): cc.Vec3 {
@@ -942,6 +950,63 @@ export default class Player extends Actor {
             this.sc.isVanishing = false
         }, duration)
     }
+    dash() {
+        if (this.sc.isDashing) {
+            return
+        }
+        if (this.data.currentDream <= 0) {
+            AudioPlayer.play(AudioPlayer.SELECT_FAIL)
+            EventHelper.emit(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR)
+            Utils.toast(`能量不足`)
+            return
+        }
+        this.updateDream(1)
+        this.sc.isDashing = true
+        let speed = 20
+        if (this.IsVariation) {
+            speed = 40
+        }
+        AudioPlayer.play(AudioPlayer.DASH)
+        this.schedule(
+            () => {
+                this.addDashGhost(this.shooterEx)
+            },
+            0.1,
+            5
+        )
+        let pos = this.entity.Move.linearVelocity.clone()
+        this.sc.isMoving = false
+        if (pos.equals(cc.Vec2.ZERO)) {
+            pos = cc.v2(this.Hv.clone())
+        } else {
+            pos = pos.normalizeSelf()
+        }
+        let posv2 = cc.v2(pos.x, pos.y)
+        this.hv = posv2.clone()
+        pos = pos.mul(speed)
+        this.entity.Move.linearVelocity = pos
+        this.entity.Move.damping = 50
+        this.playerAnim(PlayerAvatar.STATE_WALK, this.currentDir)
+        this.highLight(true)
+        this.scheduleOnce(() => {
+            this.entity.Move.damping = 3
+            this.entity.Move.linearVelocity = cc.Vec2.ZERO
+            this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
+            this.sc.isDashing = false
+            this.highLight(false)
+        }, 0.5)
+    }
+    private addDashGhost(shooterEx: Shooter) {
+        let aoe = shooterEx.fireAoe(
+            this.aoe,
+            new AreaOfEffectData().init(0.4, 2, 0, 1, IndexZ.ACTOR, false, false, false, false, false, new DamageData(1), new FromData(), []),
+            shooterEx.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v3(0, this.entity.Transform.z))),
+            0,
+            null,
+            true
+        )
+        shooterEx.updateCustomAoe(aoe, [this.sprite.spriteFrame], false, true, 1, cc.color(189, 183, 107), 200, true, true, 48, 32)
+    }
     jump() {
         if (!this.CanJump) {
             return
@@ -993,7 +1058,7 @@ export default class Player extends Actor {
         let dodge = finalData.dodge / 100
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0
         //无敌冲刺
-        if (this.professionTalent.hashTalent(Talent.TALENT_015) && this.professionTalent.IsExcuting && dd.getTotalDamage() > 0) {
+        if (this.sc.isDashing && dd.getTotalDamage() > 0) {
             isDodge = true
         }
         //幽光护盾
@@ -1068,15 +1133,15 @@ export default class Player extends Actor {
         return overflow < 0 ? 0 : overflow
     }
     private showDamageEffect(blockLevel: number, from: FromData, actor: Actor) {
-        cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } })
+        EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: false })
         if (blockLevel == Shield.BLOCK_NORMAL) {
             AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_HIT)
-            cc.director.emit(EventHelper.HUD_DAMAGE_CORNER_SHOW)
+            EventHelper.emit(EventHelper.HUD_DAMAGE_CORNER_SHOW)
         } else if (blockLevel == Shield.BLOCK_PARRY) {
             AudioPlayer.play(AudioPlayer.MELEE_PARRY)
         } else {
             AudioPlayer.play(AudioPlayer.PLAYER_HIT)
-            cc.director.emit(EventHelper.HUD_DAMAGE_CORNER_SHOW)
+            EventHelper.emit(EventHelper.HUD_DAMAGE_CORNER_SHOW)
         }
     }
 
@@ -1153,9 +1218,7 @@ export default class Player extends Actor {
         if (!this.sc.isShow) {
             return
         }
-        let isDashing = this.professionTalent.hashTalent(Talent.TALENT_015) && this.professionTalent.IsExcuting
-
-        if (this.professionTalent && !isDashing && !this.isWeaponDashing && !this.avatar.isAniming) {
+        if (this.professionTalent && !this.isWeaponDashing && !this.avatar.isAniming && !this.sc.isDashing) {
             this.move(dir, pos, dt)
         }
     }

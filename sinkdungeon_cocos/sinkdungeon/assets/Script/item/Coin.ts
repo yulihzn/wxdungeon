@@ -95,10 +95,10 @@ export default class Coin extends BaseColliderComponent {
             if (!this.soundPlaying) {
                 this.soundPlaying = true
                 let arr = [AudioPlayer.COIN, AudioPlayer.COIN1, AudioPlayer.COIN2]
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: arr[Logic.getRandomNum(0, arr.length - 1)] } })
+                AudioPlayer.play(arr[Logic.getRandomNum(0, arr.length - 1)])
             }
-            cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: this.value } })
-            cc.director.emit('destorycoin', { detail: { coinNode: this.node } })
+            EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: this.value })
+            EventHelper.emit('destorycoin', { coinNode: this.node })
         }
     }
 }

@@ -805,12 +805,12 @@ export default class EquipmentManager extends BaseManager {
                 }
                 if (!this.lastGroundEquip || this.lastGroundEquip.uuid != equip.uuid) {
                     cc.tween(equip.taketips).to(0.2, { opacity: 255 }).delay(1).to(0.2, { opacity: 0 }).start()
-                    cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW, { detail: { worldPos: equip.node.convertToWorldSpaceAR(cc.v3(0, 32)), equipData: equip.data } })
+                    EventHelper.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW, { worldPos: equip.node.convertToWorldSpaceAR(cc.v3(0, 32)), equipData: equip.data })
                 }
                 this.lastGroundEquip = equip
             } else {
                 this.lastGroundEquip = null
-                cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE)
+                EventHelper.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE)
             }
         }
     }

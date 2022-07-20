@@ -143,14 +143,14 @@ export default class Kraken extends Boss {
             let rand4save = Logic.mapManager.getRandom4Save(this.seed)
             let p = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2))
             let pos = Dungeon.getPosInMap(p)
-            cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: pos, count: 19 } })
+            EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: pos, count: 19 })
             if (!isSteal) {
                 EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.entity.Transform.position, count: 100 })
             }
             let chance = (Logic.getHalfChance() && isSteal) || !isSteal
             if (chance) {
-                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.entity.Transform.position, res: Item.HEART } })
-                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.entity.Transform.position, res: Item.DREAM } })
+                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.entity.Transform.position, res: Item.HEART })
+                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.entity.Transform.position, res: Item.DREAM })
             }
             this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(p), null, 3)
         }

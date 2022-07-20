@@ -38,11 +38,11 @@ export default class ItemManager extends BaseManager {
     onLoad() {
         this.coinPool = new cc.NodePool()
         this.oilPool = new cc.NodePool()
-        cc.director.on('destorycoin', event => {
-            this.destroyCoin(event.detail.coinNode)
+        EventHelper.on('destorycoin', detail => {
+            this.destroyCoin(detail.coinNode)
         })
-        cc.director.on('destoryoilgold', event => {
-            this.destroyOilGold(event.detail.oilGoldNode)
+        EventHelper.on('destoryoilgold', detail => {
+            this.destroyOilGold(detail.oilGoldNode)
         })
     }
     clear(): void {
@@ -226,7 +226,7 @@ export default class ItemManager extends BaseManager {
                 if (item.data.canSave) {
                     if (!this.lastGroundItem || this.lastGroundItem.uuid != item.uuid) {
                         cc.tween(item.taketips).to(0.2, { opacity: 255 }).delay(1).to(0.2, { opacity: 0 }).start()
-                        cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_SHOW, { detail: { worldPos: item.node.convertToWorldSpaceAR(cc.v3(0, 32)), itemData: item.data } })
+                        EventHelper.emit(EventHelper.HUD_GROUND_ITEM_INFO_SHOW, { worldPos: item.node.convertToWorldSpaceAR(cc.v3(0, 32)), itemData: item.data })
                     }
                     this.lastGroundItem = item
                 } else if (player && player.canEatOrDrink(item.data)) {
@@ -235,7 +235,7 @@ export default class ItemManager extends BaseManager {
                 }
             } else {
                 this.lastGroundItem = null
-                cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_HIDE)
+                EventHelper.emit(EventHelper.HUD_GROUND_ITEM_INFO_HIDE)
             }
         }
     }

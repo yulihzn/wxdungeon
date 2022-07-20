@@ -126,7 +126,7 @@ export default class Rah extends Boss {
 
     blink(): void {
         this.blinkSkill.next(() => {
-            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } })
+            AudioPlayer.play(AudioPlayer.BLINK)
             this.blinkSkill.IsExcuting = true
             this.entity.Move.linearVelocity = cc.Vec2.ZERO
             cc.tween(this.node)
@@ -154,7 +154,7 @@ export default class Rah extends Boss {
     attack() {
         this.meleeSkill.next(
             () => {
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
+                AudioPlayer.play(AudioPlayer.MELEE)
                 this.meleeSkill.IsExcuting = true
                 if (!this.anim) {
                     this.anim = this.getComponent(cc.Animation)

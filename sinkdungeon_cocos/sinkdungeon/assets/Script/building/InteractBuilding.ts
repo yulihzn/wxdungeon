@@ -171,11 +171,11 @@ export default class InteractBuilding extends Building {
                 let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed))
                 let rand = rand4save.rand()
                 if (rand > 0.6 && rand < 0.8) {
-                    cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.entity.Transform.position, count: rand4save.getRandomNum(1, 3) } })
+                    EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: this.entity.Transform.position, count: rand4save.getRandomNum(1, 3) })
                 } else if (rand >= 0.8 && rand < 0.85) {
-                    cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.entity.Transform.position, res: Item.HEART } })
+                    EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.entity.Transform.position, res: Item.HEART })
                 } else if (rand >= 0.85 && rand < 0.9) {
-                    cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.entity.Transform.position, res: Item.DREAM } })
+                    EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.entity.Transform.position, res: Item.DREAM })
                 }
             })
             .delay(10)
@@ -267,7 +267,7 @@ export default class InteractBuilding extends Building {
         this.beatBack(this, this.player.Hv.clone(), this.isLift ? 10 : 20)
         this.scheduleOnce(
             () => {
-                cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } })
+                EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: false })
             },
             this.isLift ? 0.5 : 0
         )
@@ -486,7 +486,7 @@ export default class InteractBuilding extends Building {
             }
         }
         if (damageSuccess || attackSuccess) {
-            cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } })
+            EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: false })
         }
         if (damageSuccess && this.player.data.AvatarData.organizationIndex == AvatarData.TECH) {
             this.player.updateDream(-1)

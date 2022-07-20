@@ -531,7 +531,7 @@ export default class Inventory extends cc.Component {
             }
             this.refreshItemRes()
             if (item.resName != Item.EMPTY) {
-                cc.director.emit(EventHelper.PLAYER_USEITEM, { detail: { itemData: item } })
+                EventHelper.emit(EventHelper.PLAYER_USEITEM, { itemData: item })
             }
         }
     }

@@ -1,6 +1,5 @@
 import { MoveComponent } from './../ecs/component/MoveComponent'
 import Dungeon from '../logic/Dungeon'
-import { EventHelper } from '../logic/EventHelper'
 import Shooter from '../logic/Shooter'
 import DamageData from '../data/DamageData'
 import StatusManager from '../manager/StatusManager'
@@ -345,7 +344,7 @@ export default class IceDemon extends Boss {
         this.meleeSkill.next(
             () => {
                 this.meleeSkill.IsExcuting = true
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
+                AudioPlayer.play(AudioPlayer.MELEE)
                 if (!this.anim) {
                     this.anim = this.getComponent(cc.Animation)
                 }

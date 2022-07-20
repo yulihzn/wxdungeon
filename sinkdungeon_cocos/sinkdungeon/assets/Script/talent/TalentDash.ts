@@ -51,7 +51,7 @@ export default class TalentDash extends Talent {
         this.talentSkill.next(
             () => {
                 this.talentSkill.IsExcuting = true
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.DASH } })
+                EventHelper.emit(EventHelper.PLAY_AUDIO, { name: AudioPlayer.DASH })
                 this.schedule(
                     () => {
                         this.player.getWalkSmoke(this.node.parent, this.node.position)
@@ -80,7 +80,6 @@ export default class TalentDash extends Talent {
                     this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir)
                     this.IsExcuting = false
                 }, 0.5)
-                // cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 1,currentCooldown:0 } });
             },
             cooldown,
             true

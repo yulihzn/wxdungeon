@@ -1,5 +1,5 @@
-import Logic from "./Logic";
-import { EventHelper } from "./EventHelper";
+import Logic from './Logic'
+import { EventHelper } from './EventHelper'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -11,45 +11,41 @@ import { EventHelper } from "./EventHelper";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const { ccclass, property } = cc._decorator;
+const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class CoinCount extends cc.Component {
-
-    anim: cc.Animation;
+    anim: cc.Animation
     @property(cc.Label)
-    label: cc.Label = null;
+    label: cc.Label = null
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.anim = this.getComponent(cc.Animation);
-        cc.director.on(EventHelper.HUD_ADD_COIN, (event) => {
-            this.addCount(event.detail.count);
+        this.anim = this.getComponent(cc.Animation)
+        EventHelper.on(EventHelper.HUD_ADD_COIN, detail => {
+            this.addCount(detail.count)
         })
     }
 
-    start() {
-    }
-    addCount(value:string) {
+    start() {}
+    addCount(value: string) {
         if (!this.anim) {
-            return;
+            return
         }
-        let c = parseInt(value);
-        Logic.coins += c;
-        if(c>0){
-            Logic.coinDreamCount+=c;
-            if(Logic.coinDreamCount>=1){
-                Logic.coinDreamCount = 0;
-                EventHelper.emit(EventHelper.PLAYER_USEDREAM,{value:-1});
+        let c = parseInt(value)
+        Logic.coins += c
+        if (c > 0) {
+            Logic.coinDreamCount += c
+            if (Logic.coinDreamCount >= 1) {
+                Logic.coinDreamCount = 0
+                EventHelper.emit(EventHelper.PLAYER_USEDREAM, { value: -1 })
             }
         }
-        
     }
 
     update(dt) {
         if (this.label) {
-            this.label.string = `${Logic.coins}`;
+            this.label.string = `${Logic.coins}`
         }
-
     }
 }

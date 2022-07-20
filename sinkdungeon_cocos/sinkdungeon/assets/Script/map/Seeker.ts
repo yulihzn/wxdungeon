@@ -20,8 +20,8 @@ export default class Seeker extends cc.Component {
     onLoad() {
         this.rigidbody = this.getComponent(cc.RigidBody)
         this.node.zIndex = 1000
-        cc.director.on(EventHelper.PLAYER_MOVE, event => {
-            this.move(event.detail.dir, event.detail.pos, event.detail.dt)
+        EventHelper.on(EventHelper.PLAYER_MOVE, detail => {
+            this.move(detail.dir, detail.pos, detail.dt)
         })
     }
     move(dir: number, pos: cc.Vec3, dt: number) {
@@ -53,7 +53,7 @@ export default class Seeker extends cc.Component {
 
     update(dt) {
         if (this.isCheckTimeDelay(dt) && this.isMoving) {
-            cc.director.emit(EventHelper.CHUNK_LOAD, { detail: { pos: this.node.position.clone() } })
+            EventHelper.emit(EventHelper.CHUNK_LOAD, { pos: this.node.position.clone() })
         }
     }
 }

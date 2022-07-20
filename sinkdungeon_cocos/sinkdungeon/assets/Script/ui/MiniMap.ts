@@ -62,9 +62,9 @@ export default class MiniMap extends cc.Component {
 
     onLoad() {
         this.closeButton.active = false
-        cc.director.on(EventHelper.CHANGE_MINIMAP, event => {
+        EventHelper.on(EventHelper.CHANGE_MINIMAP, detail => {
             if (this.node) {
-                this.changeMap(event.detail.x, event.detail.y)
+                this.changeMap(detail.x, detail.y)
             }
         })
         EventHelper.on(EventHelper.OPEN_MINIMAP, detail => {

@@ -83,7 +83,7 @@ export default class Chest extends Building {
             return
         }
         this.data.isOpen = true
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PICK_UP } })
+        AudioPlayer.play(AudioPlayer.PICK_UP)
         cc.tween(this.sprite)
             .to(0.1, { position: cc.v3(5, 16) })
             .to(0.1, { position: cc.v3(-5, 0) })
@@ -97,7 +97,7 @@ export default class Chest extends Building {
                     if (dungeon) {
                         let rand4save = Logic.mapManager.getRandom4Save(this.seed)
                         if (Logic.isCheatMode) {
-                            dungeon.addEquipment(EquipmentManager.SHIELD_CARDOOR, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            // dungeon.addEquipment(EquipmentManager.SHIELD_CARDOOR, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment('weapon046', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment('shoes009', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment(EquipmentManager.REMOTE_ALIENGUN, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)

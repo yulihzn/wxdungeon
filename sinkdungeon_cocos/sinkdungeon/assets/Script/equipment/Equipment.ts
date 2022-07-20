@@ -87,8 +87,9 @@ export default class Equipment extends cc.Component {
         }
         if (this.shopTable) {
             if (Logic.coins >= this.data.price) {
-                cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.data.price } })
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } })
+                EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: -this.data.price })
+                let arr = [AudioPlayer.COIN, AudioPlayer.COIN1, AudioPlayer.COIN2]
+                AudioPlayer.play(arr[Logic.getRandomNum(0, arr.length - 1)])
                 this.shopTable.sale(true)
                 this._taken(isReplace)
                 return true
@@ -103,9 +104,9 @@ export default class Equipment extends cc.Component {
         this.isTaken = true
         this.anim.play('EquipmentTaken')
         Achievement.addEquipsAchievement(this.data.img)
-        cc.director.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { detail: { equipmetType: this.data.equipmetType, equipData: this.data, isReplace: isReplace } })
+        EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: this.data.equipmetType, equipData: this.data, isReplace: isReplace })
         this.node.getChildByName('shadow').active = false
-        cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE)
+        EventHelper.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE)
         this.scheduleOnce(() => {
             if (this.node) {
                 this.destroy()
@@ -121,6 +122,6 @@ export default class Equipment extends cc.Component {
             }
         }
         Logic.mapManager.setCurrentEquipmentsArr(newlist)
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PICK_UP } })
+        AudioPlayer.play(AudioPlayer.PICK_UP)
     }
 }

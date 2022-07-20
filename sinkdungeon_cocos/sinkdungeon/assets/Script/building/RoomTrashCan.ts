@@ -35,7 +35,7 @@ export default class RoomTrashCan extends cc.Component {
             AudioPlayer.play(AudioPlayer.TRASH)
             this.scheduleOnce(() => {
                 if (this.rand.rand() > 0.5) {
-                    cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { res: Logic.getRandomTrashType(this.rand) } })
+                    EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: Logic.getRandomTrashType(this.rand) })
                 }
                 if (this.rand.rand() > 0.9) {
                     EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: EquipmentManager.WEAPON_BROKEN_GLASS })

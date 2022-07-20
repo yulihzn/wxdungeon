@@ -908,7 +908,7 @@ export default class NonPlayer extends Actor {
                             )
                         )
                         AudioPlayer.play(AudioPlayer.BOOM)
-                        cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: true } })
+                        EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: true })
                     }
                 }
                 this.scheduleOnce(
@@ -1152,7 +1152,7 @@ export default class NonPlayer extends Actor {
                 this.dangerBox.show(this.data.attackRect, false, 500, this.hv, true)
                 this.dangerBox.hide(false)
                 this.enterWalk()
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } })
+                AudioPlayer.play(AudioPlayer.MELEE)
                 this.showAttackEffect(true)
                 this.move(this.getMovePosFromTarget(target), speed)
                 this.scheduleOnce(() => {
@@ -1490,7 +1490,7 @@ export default class NonPlayer extends Actor {
     public enterBlink() {
         this.setLinearVelocity(cc.Vec2.ZERO)
         this.sc.isMoving = false
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } })
+        AudioPlayer.play(AudioPlayer.BLINK)
         let body = this.bodySprite.node
         cc.tween(body)
             .to(0.2, { opacity: 0 })
