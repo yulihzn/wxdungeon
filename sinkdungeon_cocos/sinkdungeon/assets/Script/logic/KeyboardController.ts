@@ -82,7 +82,7 @@ export default class KeyboardController extends cc.Component {
                     this.trigger(true)
                 }, 0.3)
                 break
-            case cc.macro.KEY.r:
+            case cc.macro.KEY.shift:
                 this.isD = true
                 break
             case cc.macro.KEY.f:
@@ -183,7 +183,7 @@ export default class KeyboardController extends cc.Component {
                 this.touchStart = false
                 this.isLongPress = false
                 break
-            case cc.macro.KEY.r:
+            case cc.macro.KEY.shift:
                 this.isD = false
                 break
             case cc.macro.KEY.f:

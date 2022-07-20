@@ -3,6 +3,7 @@ import CutScene from '../ui/CutScene'
 import LoadingManager from '../manager/LoadingManager'
 import AudioPlayer from '../utils/AudioPlayer'
 import LoadingIcon from '../ui/LoadingIcon'
+import CursorArea from '../ui/CursorArea'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -27,6 +28,8 @@ export default class Loading extends cc.Component {
     elevatorScene: cc.Node = null
     @property(cc.Prefab)
     loadingIconPrefab: cc.Prefab = null
+    @property(cc.Prefab)
+    cursorAreaPrefab: cc.Prefab = null
     private timeDelay = 0
     private isTransportAnimFinished = true
     private isElevatorAnimFinished = true
@@ -34,6 +37,7 @@ export default class Loading extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        CursorArea.init(this.cursorAreaPrefab)
         this.loadingManager.init()
         this.loadingIcon = cc.instantiate(this.loadingIconPrefab).getComponent(LoadingIcon)
         this.loadingIcon.node.parent = this.node

@@ -1,8 +1,9 @@
-import Logic from "./Logic";
-import WxHelper from "./WxHelper";
-import { EventHelper } from "./EventHelper";
-import AudioPlayer from "../utils/AudioPlayer";
-import StartBackground from "../ui/StartBackground";
+import Logic from './Logic'
+import WxHelper from './WxHelper'
+import { EventHelper } from './EventHelper'
+import AudioPlayer from '../utils/AudioPlayer'
+import StartBackground from '../ui/StartBackground'
+import CursorArea from '../ui/CursorArea'
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -13,43 +14,54 @@ import StartBackground from "../ui/StartBackground";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const { ccclass, property } = cc._decorator;
+const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class NewClass extends cc.Component {
-
     // LIFE-CYCLE CALLBACKS:
     @property(WxHelper)
-    wxhelper: WxHelper = null;
+    wxhelper: WxHelper = null
     @property(cc.Label)
-    level: cc.Label = null;
+    level: cc.Label = null
     @property(cc.Label)
-    clock: cc.Label = null;
-    // onLoad () {}
+    clock: cc.Label = null
+    @property(cc.Prefab)
+    cursorAreaPrefab: cc.Prefab = null
+    onLoad() {
+        CursorArea.init(this.cursorAreaPrefab)
+    }
 
     start() {
         if (this.clock) {
-            this.clock.string = `${Logic.time}`;
+            this.clock.string = `${Logic.time}`
         }
         if (this.level) {
-            this.level.string = `Level ${Logic.chapterIndex + 1}-${Logic.level}`;
+            this.level.string = `Level ${Logic.chapterIndex + 1}-${Logic.level}`
         }
     }
     retry() {
-        Logic.resetData();
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
-        let bg = this.getComponentInChildren(StartBackground);
-        if (bg) { bg.startPressed(); }
-        this.scheduleOnce(() => { cc.director.loadScene('loading'); }, 1);
+        Logic.resetData()
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } })
+        let bg = this.getComponentInChildren(StartBackground)
+        if (bg) {
+            bg.startPressed()
+        }
+        this.scheduleOnce(() => {
+            cc.director.loadScene('loading')
+        }, 1)
     }
     home() {
         if (this.wxhelper) {
-            this.wxhelper.CloseDialog();
+            this.wxhelper.CloseDialog()
         }
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
-        let bg = this.getComponentInChildren(StartBackground);
-        if (bg) { bg.startPressed(); }
-        this.scheduleOnce(() => { cc.director.loadScene('start'); }, 1);
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } })
+        let bg = this.getComponentInChildren(StartBackground)
+        if (bg) {
+            bg.startPressed()
+        }
+        this.scheduleOnce(() => {
+            cc.director.loadScene('start')
+        }, 1)
     }
 
     // update (dt) {}

@@ -22,6 +22,7 @@ import LoadingManager from '../manager/LoadingManager'
 import LoadingIcon from './LoadingIcon'
 import Utils from '../utils/Utils'
 import EquipmentData from '../data/EquipmentData'
+import CursorArea from './CursorArea'
 
 const { ccclass, property } = cc._decorator
 
@@ -66,6 +67,8 @@ export default class PickAvatar extends cc.Component {
     palettePrefab: cc.Prefab = null
     @property(cc.Prefab)
     loadingIconPrefab: cc.Prefab = null
+    @property(cc.Prefab)
+    cursorAreaPrefab: cc.Prefab = null
 
     private bedSprite: cc.Sprite
     private coverSprite: cc.Sprite
@@ -109,6 +112,7 @@ export default class PickAvatar extends cc.Component {
     private loadingIcon: LoadingIcon
 
     onLoad() {
+        CursorArea.init(this.cursorAreaPrefab)
         this.loadingManager.init()
         this.data = new AvatarData()
         this.bedSprite = this.getSpriteChildSprite(this.avatarTable, ['bed'])

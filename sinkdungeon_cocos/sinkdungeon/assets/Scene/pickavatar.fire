@@ -6417,6 +6417,9 @@
     "loadingIconPrefab": {
       "__uuid__": "61c3a210-0bfe-4625-98f9-995b4bb16e4c"
     },
+    "cursorAreaPrefab": {
+      "__uuid__": "c8f878a9-bca7-42c7-a27c-d51bd16a824d"
+    },
     "_id": "4cyoIqJ9NHfKC2XxgRWJIq"
   },
   {

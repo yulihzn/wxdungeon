@@ -12,6 +12,7 @@ import AudioPlayer from '../utils/AudioPlayer'
 import LocalStorage from '../utils/LocalStorage'
 import LoadingIcon from '../ui/LoadingIcon'
 import { EventHelper } from './EventHelper'
+import CursorArea from '../ui/CursorArea'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -60,6 +61,8 @@ export default class Achievement extends cc.Component {
     achievementItemDialog: AchievementItemDialog = null
     @property(cc.Prefab)
     loadingIconPrefab: cc.Prefab = null
+    @property(cc.Prefab)
+    cursorAreaPrefab: cc.Prefab = null
     private loadingIcon: LoadingIcon
     //图片资源
     bossSpriteFrames: { [key: string]: cc.SpriteFrame } = null
@@ -71,6 +74,7 @@ export default class Achievement extends cc.Component {
     data: AchievementData
 
     onLoad() {
+        CursorArea.init(this.cursorAreaPrefab)
         this.loadingManager.init()
         this.removeContent()
         this.data = LocalStorage.getAchievementData()

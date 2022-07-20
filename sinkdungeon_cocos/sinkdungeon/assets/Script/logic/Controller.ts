@@ -12,6 +12,7 @@ const { ccclass, property } = cc._decorator
 import { EventHelper } from './EventHelper'
 import Logic from './Logic'
 import CoolDownView from '../ui/CoolDownView'
+import CursorArea from '../ui/CursorArea'
 
 @ccclass
 export default class Controller extends cc.Component {
@@ -41,18 +42,16 @@ export default class Controller extends cc.Component {
     coolDown1: CoolDownView = null
     skillActionTouched = false
     skillActionTouched1 = false
-    @property(cc.Node)
-    mouseArea: cc.Node = null
-    @property(cc.Node)
-    curseArea: cc.Node = null
-    @property(cc.Node)
-    cursor: cc.Node = null
+    @property(cc.Prefab)
+    cursorAreaPrefab: cc.Prefab = null
+    cursorArea: CursorArea
     static mousePos: cc.Vec2
     mouseInArea = false
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.cursorArea = CursorArea.init(this.cursorAreaPrefab)
         this.coolDown.init(CoolDownView.PROFESSION)
         this.coolDown1.init(CoolDownView.ORGANIZATION)
         this.attackAction.on(
@@ -235,45 +234,33 @@ export default class Controller extends cc.Component {
                 this.shootAction.active = detail.isShow && !Controller.isMouseMode()
             }
         })
-        this.mouseArea.on(
-            cc.Node.EventType.MOUSE_DOWN,
-            (event: cc.Event.EventMouse) => {
-                if (event.getButton() == cc.Event.EventMouse.BUTTON_LEFT) {
+        this.cursorArea.callback = (type: number, pos: cc.Vec2) => {
+            if (!Controller.isMouseMode()) {
+                return
+            }
+            switch (type) {
+                case CursorArea.CLICK_LEFT_DOWN:
                     this.attackActionTouched = true
-                } else if (event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT) {
+                    break
+                case CursorArea.CLICK_RIGHT_DOWN:
                     this.shootActionTouched = true
-                }
-            },
-            this
-        )
-        this.curseArea.on(
-            cc.Node.EventType.MOUSE_UP,
-            (event: cc.Event.EventMouse) => {
-                if (event.getButton() == cc.Event.EventMouse.BUTTON_LEFT) {
+                    break
+                case CursorArea.CLICK_LEFT_UP:
                     this.attackActionTouched = false
-                } else if (event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT) {
+                    break
+                case CursorArea.CLICK_RIGHT_UP:
                     this.shootActionTouched = false
-                    cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL)
-                }
-            },
-            this
-        )
-        this.curseArea.on(
-            cc.Node.EventType.MOUSE_LEAVE,
-            (event: cc.Event.EventMouse) => {
-                this.attackActionTouched = false
-                this.shootActionTouched = false
-            },
-            this
-        )
-        this.curseArea.on(
-            cc.Node.EventType.MOUSE_MOVE,
-            (event: cc.Event.EventMouse) => {
-                this.cursor.position = cc.v3(this.curseArea.convertToNodeSpaceAR(event.getLocation()))
-                Controller.mousePos = event.getLocation()
-            },
-            this
-        )
+                    EventHelper.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL)
+                    break
+                case CursorArea.MOUSE_MOVE:
+                    Controller.mousePos = pos
+                    break
+                case CursorArea.MOUSE_LEAVE:
+                    this.attackActionTouched = false
+                    this.shootActionTouched = false
+                    break
+            }
+        }
         this.updateGamepad()
     }
     static isMouseMode() {
@@ -290,8 +277,6 @@ export default class Controller extends cc.Component {
             this.coolDown1.node.position = cc.v3(60, -80)
             this.coolDown.changeKeyShow(true)
             this.coolDown1.changeKeyShow(true)
-            this.mouseArea.active = true
-            this.curseArea.active = true
         } else {
             this.attackAction.active = true
             this.shootAction.active = true
@@ -302,8 +287,6 @@ export default class Controller extends cc.Component {
             this.coolDown1.node.position = this.skillAction1.position.clone()
             this.coolDown.changeKeyShow(false)
             this.coolDown1.changeKeyShow(false)
-            this.mouseArea.active = false
-            this.curseArea.active = false
         }
     }
 

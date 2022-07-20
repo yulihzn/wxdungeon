@@ -6,6 +6,7 @@ body, canvas, div {
   display: block;
   outline: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  cursor: none;
 
   user-select: none;
   -moz-user-select: none;

@@ -1226,7 +1226,7 @@ export default class NonPlayer extends Actor {
             this.sprite.opacity = this.lerp(this.sprite.opacity, 19, dt * 3)
         }
 
-        this.entity.Move.damping = this.sc.isDashing ? 0 : 3
+        this.entity.Move.damping = this.sc.isDashing ? 0 : 10
         this.dashlight.opacity = this.sc.isDashing ? 200 : 0
 
         this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255

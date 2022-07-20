@@ -20,8 +20,6 @@ import TalentData from '../data/TalentData'
 import InventoryManager from '../manager/InventoryManager'
 import ShadowPlayer from '../actor/ShadowPlayer'
 import Utils from '../utils/Utils'
-import DashGhost from '../effect/DashGhost'
-
 /**
  * 技能管理器
  * 通用技能点：cd减短 范围变大 持续时间增加 伤害增加 数量变多
@@ -78,16 +76,11 @@ export default class ProfessionTalent extends Talent {
     daggerLightPrefab: cc.Prefab = null
     fireGhostNum = 0
     ghostPool: cc.NodePool
-    dashGhostPool: cc.NodePool
     hv: cc.Vec2
     onLoad() {
         this.ghostPool = new cc.NodePool(FireGhost)
-        this.dashGhostPool = new cc.NodePool(DashGhost)
         EventHelper.on(EventHelper.POOL_DESTORY_FIREGHLOST, detail => {
             this.destroyGhost(detail.targetNode)
-        })
-        EventHelper.on(EventHelper.POOL_DESTORY_DASHGHLOST, detail => {
-            this.destroyDashGhost(detail.targetNode)
         })
     }
     destroyGhost(ghostNode: cc.Node) {
@@ -101,15 +94,7 @@ export default class ProfessionTalent extends Talent {
             cc.log('destroyGhost')
         }
     }
-    destroyDashGhost(ghostNode: cc.Node) {
-        if (!ghostNode) {
-            return
-        }
-        ghostNode.active = false
-        if (this.dashGhostPool) {
-            this.dashGhostPool.put(ghostNode)
-        }
-    }
+
     init(data: TalentData) {
         super.init(data)
         this.coolDownId = CoolDownView.PROFESSION

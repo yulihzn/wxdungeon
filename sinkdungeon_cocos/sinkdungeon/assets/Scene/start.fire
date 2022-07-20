@@ -6734,6 +6734,9 @@
     "startBg": {
       "__id__": 52
     },
+    "cursorAreaPrefab": {
+      "__uuid__": "c8f878a9-bca7-42c7-a27c-d51bd16a824d"
+    },
     "_id": "a5SetemlVGpKUWV9vptuQ6"
   },
   {
