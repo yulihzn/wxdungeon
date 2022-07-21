@@ -65,6 +65,13 @@ export default class AudioPlayer extends cc.Component {
     public static readonly SWORD_ATTACK = 'SWORD_ATTACK'
     public static readonly SWORD_ATTACK1 = 'SWORD_ATTACK1'
     public static readonly SWORD_ATTACK2 = 'SWORD_ATTACK2'
+    public static readonly DAGGER_ATTACK = 'DAGGER_ATTACK'
+    public static readonly DAGGER_ATTACK1 = 'DAGGER_ATTACK1'
+    public static readonly DAGGER_ATTACK2 = 'DAGGER_ATTACK2'
+    public static readonly STICK_ATTACK = 'STICK_ATTACK'
+    public static readonly STICK_ATTACK1 = 'STICK_ATTACK1'
+    public static readonly STICK_ATTACK2 = 'STICK_ATTACK2'
+    public static readonly STICK_ATTACK3 = 'STICK_ATTACK3'
     public static readonly SWORD_HIT = 'SWORD_HIT'
     public static readonly SWORD_HIT1 = 'SWORD_HIT1'
     public static readonly SWORD_HIT2 = 'SWORD_HIT2'
@@ -80,6 +87,7 @@ export default class AudioPlayer extends cc.Component {
     public static readonly SHOOT002 = 'SHOOT002'
     public static readonly SHOOT003 = 'SHOOT003'
     public static readonly SHOOT004 = 'SHOOT004'
+    public static readonly SHOOT_SENBON = 'SHOOT_SENBON'
     public static readonly TAKEPHOTO = 'TAKEPHOTO '
     public static readonly TRANSPORTSHIP = 'TRANSPORTSHIP'
     public static readonly TVCOLOR = 'TVCOLOR'
@@ -201,6 +209,20 @@ export default class AudioPlayer extends cc.Component {
     @property(cc.AudioClip)
     swordattack2: cc.AudioClip = null
     @property(cc.AudioClip)
+    dagger: cc.AudioClip = null
+    @property(cc.AudioClip)
+    dagger1: cc.AudioClip = null
+    @property(cc.AudioClip)
+    dagger2: cc.AudioClip = null
+    @property(cc.AudioClip)
+    stick: cc.AudioClip = null
+    @property(cc.AudioClip)
+    stick1: cc.AudioClip = null
+    @property(cc.AudioClip)
+    stick2: cc.AudioClip = null
+    @property(cc.AudioClip)
+    stick3: cc.AudioClip = null
+    @property(cc.AudioClip)
     swordhit: cc.AudioClip = null
     @property(cc.AudioClip)
     swordhit1: cc.AudioClip = null
@@ -230,6 +252,8 @@ export default class AudioPlayer extends cc.Component {
     shoot003: cc.AudioClip = null
     @property(cc.AudioClip)
     shoot004: cc.AudioClip = null
+    @property(cc.AudioClip)
+    shootsenbon: cc.AudioClip = null
     @property(cc.AudioClip)
     takephoto: cc.AudioClip = null
     @property(cc.AudioClip)
@@ -342,6 +366,13 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.SWORD_ATTACK] = this.swordattack
         this.audioList[AudioPlayer.SWORD_ATTACK1] = this.swordattack1
         this.audioList[AudioPlayer.SWORD_ATTACK2] = this.swordattack2
+        this.audioList[AudioPlayer.DAGGER_ATTACK] = this.dagger
+        this.audioList[AudioPlayer.DAGGER_ATTACK1] = this.dagger1
+        this.audioList[AudioPlayer.DAGGER_ATTACK2] = this.dagger2
+        this.audioList[AudioPlayer.STICK_ATTACK] = this.stick
+        this.audioList[AudioPlayer.STICK_ATTACK1] = this.stick1
+        this.audioList[AudioPlayer.STICK_ATTACK2] = this.stick2
+        this.audioList[AudioPlayer.STICK_ATTACK3] = this.stick3
         this.audioList[AudioPlayer.SWORD_HIT] = this.swordhit
         this.audioList[AudioPlayer.SWORD_HIT1] = this.swordhit1
         this.audioList[AudioPlayer.SWORD_HIT2] = this.swordhit2
@@ -360,6 +391,7 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.SHOOT002] = this.shoot002
         this.audioList[AudioPlayer.SHOOT003] = this.shoot003
         this.audioList[AudioPlayer.SHOOT004] = this.shoot004
+        this.audioList[AudioPlayer.SHOOT_SENBON] = this.shootsenbon
         this.audioList[AudioPlayer.TAKEPHOTO] = this.takephoto
         this.audioList[AudioPlayer.TRANSPORTSHIP] = this.transportship
         this.audioList[AudioPlayer.TVCOLOR] = this.tvcolor

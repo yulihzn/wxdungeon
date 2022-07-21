@@ -242,6 +242,7 @@ export default class Shooter extends cc.Component {
             sprite.node.height = spriteframe.getOriginalSize().height
             sprite.node.opacity = opacity ?? 255
             sprite.node.stopAllActions()
+            sprite.node.color = cc.Color.WHITE
             if (color) {
                 sprite.node.color = color
             }

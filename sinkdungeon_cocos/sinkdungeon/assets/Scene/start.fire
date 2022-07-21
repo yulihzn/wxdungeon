@@ -6996,6 +6996,27 @@
     "swordattack2": {
       "__uuid__": "6dd79ebc-851d-410b-9f0c-93e12dc16895"
     },
+    "dagger": {
+      "__uuid__": "07e45c4a-113b-44c4-aff2-6ee970c75678"
+    },
+    "dagger1": {
+      "__uuid__": "eadcff32-c86c-4676-9882-6d27a5651015"
+    },
+    "dagger2": {
+      "__uuid__": "393c64be-d469-4392-8b3f-3906e137e6fc"
+    },
+    "stick": {
+      "__uuid__": "22914113-c4de-4904-8a0f-49973b9fe00f"
+    },
+    "stick1": {
+      "__uuid__": "262bad8c-8a0c-4bdf-a69a-cef1dd5524e5"
+    },
+    "stick2": {
+      "__uuid__": "0cec39f3-d2cd-4084-a453-7e79b266b7ca"
+    },
+    "stick3": {
+      "__uuid__": "8081e2cc-0b10-487a-a7ee-1c878e45a18e"
+    },
     "swordhit": {
       "__uuid__": "5c620cb0-3846-4586-9e0b-f8cfb2ec9e44"
     },
@@ -7040,6 +7061,9 @@
     },
     "shoot004": {
       "__uuid__": "31513b79-02ed-4d65-9194-f1bbbb402838"
+    },
+    "shootsenbon": {
+      "__uuid__": "4004ecf6-2de9-48f7-ac5a-de63bd7e0a2d"
     },
     "takephoto": {
       "__uuid__": "7fa407c1-3823-49f6-8ab1-440e6abad1cb"

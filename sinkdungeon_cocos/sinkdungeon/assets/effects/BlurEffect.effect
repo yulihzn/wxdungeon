@@ -66,49 +66,29 @@ CCProgram fs %{
   uniform Properties {
     vec2 size;
   };
-  
-  float getA(vec2 pos){
-    vec4 color = texture2D(texture, pos);
-    float a = 0.0;
-    if(color.r == 1.0&&color.g == 1.0&&color.b == 1.0){
-      a = 0.0;
-    }else{
-      a = 1.0;
-    }
-    return a;
+  vec4 getC(vec2 pos){
+    return texture2D(texture, pos);
   }
-  float blur13(vec2 pos){
-    float alpha = 0.0;
-    vec2 off1 = vec2(1.411764705882353);
-    vec2 off2 = vec2(3.2941176470588234);
-    vec2 off3 = vec2(5.176470588235294);
-    vec2 off4 = vec2(-1.411764705882353,1.411764705882353);
-    vec2 off5 = vec2(-3.2941176470588234,3.2941176470588234);
-    vec2 off6 = vec2(-5.176470588235294,5.176470588235294);
-    alpha += getA(pos) * 0.1964825501511404;
-    alpha += getA(pos + (off1 / size)) * 0.1484534823364172;
-    alpha += getA(pos - (off1 / size)) * 0.1484534823364172;
-    alpha += getA(pos + (off2 / size)) * 0.04723519892522366;
-    alpha += getA(pos - (off2 / size)) * 0.04723519892522366;
-    alpha += getA(pos + (off3 / size)) * 0.00519068120057402;
-    alpha += getA(pos - (off3 / size)) * 0.00519068120057402;
-    alpha += getA(pos + (off4 / size)) * 0.1484534823364172;
-    alpha += getA(pos - (off4 / size)) * 0.1484534823364172;
-    alpha += getA(pos + (off5 / size)) * 0.04723519892522366;
-    alpha += getA(pos - (off5 / size)) * 0.04723519892522366;
-    alpha += getA(pos + (off6 / size)) * 0.00519068120057402;
-    alpha += getA(pos - (off6 / size)) * 0.00519068120057402;
-    return alpha;
+
+  vec4 blur13color(vec2 pos, vec2 direction){
+    vec4 color = vec4(0.0);
+    vec2 off1 = vec2(1.411764705882353) * direction;
+    vec2 off2 = vec2(3.2941176470588234) * direction;
+    vec2 off3 = vec2(5.176470588235294) * direction;
+    color += getC(pos) * 0.1964825501511404;
+    color += getC(pos + (off1 / size)) * 0.2969069646728344;
+    color += getC(pos - (off1 / size)) * 0.2969069646728344;
+    color += getC(pos + (off2 / size)) * 0.09447039785044732;
+    color += getC(pos - (off2 / size)) * 0.09447039785044732;
+    color += getC(pos + (off3 / size)) * 0.010381362401148057;
+    color += getC(pos - (off3 / size)) * 0.010381362401148057;
+    return color;
   }
+
   void main () {
-    vec4 o = vec4(1, 1, 1, 0.8);
-    o *= v_color;
-    o.a = o.a*blur13(v_uv0);
-    // if(o.r == 1.0&&o.g == 1.0&&o.b == 1.0){
-    //   o.a = 0.0;
-    // }
+    vec4 o = blur13color(v_uv0,vec2(0.0,1.0));
+    // vec4 o = getC(v_uv0);
     ALPHA_TEST(o);
     gl_FragColor = o;
-    
   }
 }%

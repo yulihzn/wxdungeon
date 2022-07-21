@@ -277,7 +277,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
-        "lightcolor": "#ffa474",
+        "lightcolor": "#ffdbc7",
         "img": "weapon009",
         "price": 30,
         "common": {
@@ -304,7 +304,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
-        "lightcolor": "#e0f0ec",
+        "lightcolor": "#d5fff5",
         "img": "weapon010",
         "price": 30,
         "common": {
@@ -331,7 +331,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
-        "lightcolor": "#ffde53",
+        "lightcolor": "#fff5cc",
         "img": "weapon011",
         "price": 30,
         "common": {
@@ -361,7 +361,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
-        "lightcolor": "#cec9a5",
+        "lightcolor": "#c6f8be",
         "img": "weapon012",
         "price": 30,
         "common": {
@@ -391,7 +391,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
-        "lightcolor": "#e6b7ac",
+        "lightcolor": "#ffd2c7",
         "img": "weapon013",
         "price": 30,
         "common": {
@@ -476,7 +476,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
-        "lightcolor": "#ffad6f",
+        "lightcolor": "#ffcfac",
         "img": "weapon016",
         "exTriggers": [
             {
@@ -636,7 +636,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
-        "lightcolor": "#ff6161",
+        "lightcolor": "#ffacac",
         "img": "weapon020",
         "price": 30,
         "common": {
@@ -693,7 +693,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
-        "lightcolor": "#ffba6f",
+        "lightcolor": "#ffd7ac",
         "img": "weapon022",
         "price": 30,
         "common": {
@@ -722,7 +722,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
-        "lightcolor": "#f0ff58",
+        "lightcolor": "#f7ffa7",
         "img": "weapon023",
         "price": 30,
         "common": {
@@ -783,7 +783,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
-        "lightcolor": "#dce66d",
+        "lightcolor": "#f8ffac",
         "img": "weapon025",
         "price": 30,
         "common": {
@@ -841,7 +841,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
-        "lightcolor": "#ffc89e",
+        "lightcolor": "#ffd8b9",
         "img": "weapon027",
         "price": 30,
         "common": {
@@ -1001,6 +1001,7 @@
         "nameCn": "千本",
         "nameEn": "Senbon",
         "equipmetType": "weapon",
+        "remoteAudio": "SHOOT_SENBON",
         "id": 10010000,
         "equipmetTypeCn": "",
         "prefix": "",
@@ -1046,7 +1047,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
-        "lightcolor": "#ffe674",
+        "lightcolor": "#fff2b9",
         "img": "weapon034",
         "price": 30,
         "common": {
@@ -1302,7 +1303,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
-        "lightcolor": "#a8a8a8",
+        "lightcolor": "#c9c9c9",
         "img": "weapon046",
         "price": 60,
         "exTriggers": [

@@ -240,11 +240,13 @@ export default class NonPlayer extends Actor {
         let scale = 4
         let punchNames = [AudioPlayer.PUNCH, AudioPlayer.PUNCH1, AudioPlayer.PUNCH2]
         let swordhitNames = [AudioPlayer.SWORD_HIT, AudioPlayer.SWORD_HIT1, AudioPlayer.SWORD_HIT2]
+        let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2]
         if (damage.isFist) {
             resName = Logic.getHalfChance() ? 'hitlight1' : 'hitlight2'
             AudioPlayer.play(punchNames[Logic.getRandomNum(0, 2)])
         } else if (damage.isRemote) {
             resName = Logic.getHalfChance() ? 'hitlight9' : 'hitlight10'
+            AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)])
         } else if (damage.isBlunt) {
             resName = Logic.getHalfChance() ? 'hitlight3' : 'hitlight4'
             scale = damage.isFar ? 5 : 4
@@ -259,6 +261,7 @@ export default class NonPlayer extends Actor {
                 scale = damage.isFar ? 5 : 4
             }
         } else {
+            AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)])
             show = false
         }
         if (show) {
@@ -768,8 +771,6 @@ export default class NonPlayer extends Actor {
         }
         //展示受伤动画
         if (isHurting) {
-            let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2]
-            AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)])
             this.hitLight(true)
             this.hitLightS(damageData)
             if (damageData.isBackAttack) {

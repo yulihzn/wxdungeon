@@ -36,8 +36,7 @@ export default class RoomTrashCan extends cc.Component {
             this.scheduleOnce(() => {
                 if (this.rand.rand() > 0.5) {
                     EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: Logic.getRandomTrashType(this.rand) })
-                }
-                if (this.rand.rand() > 0.9) {
+                } else if (this.rand.rand() > 0.9) {
                     EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: EquipmentManager.WEAPON_BROKEN_GLASS })
                 } else if (this.rand.rand() > 0.95) {
                     EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: EquipmentManager.WEAPON_WINE_BOTTLE })

@@ -13,10 +13,10 @@ CCEffect %{
       properties:
         texture: { value: white }
         alphaThreshold: { value: 0.5 }
-        outlineSize: {value: 20}
+        outlineSize: {value: 20.0}
         openOutline: {value: 1.0}
-        textureSizeWidth: {value: 1}
-        textureSizeHeight: {value: 1}
+        textureSizeWidth: {value: 1.0}
+        textureSizeHeight: {value: 1.0}
         outlineColor: {value: [0,0,0,0], inspector: { type: color } }
 }%
 
@@ -76,13 +76,13 @@ CCProgram fs %{
     float openOutline;
   };
   // 判断在这个角度上距离为outlineSize那一点是不是透明
-  float getIsStrokeWithAngel(float angel)
+  float getIsStrokeWithAngel(float angel,float range)
   {
     float stroke = 0.0;
     vec2 textureSize = vec2(textureSizeWidth,textureSizeHeight);
     float rad = angel * 0.01745329252; // 这个浮点数是 pi / 180，角度转弧度
     vec2 unit = 1.0 / textureSize.xy;//单位坐标
-    vec2 offset = vec2(outlineSize * cos(rad) * unit.x, outlineSize * sin(rad) * unit.y); //偏移量
+    vec2 offset = vec2(range * cos(rad) * unit.x, range * sin(rad) * unit.y); //偏移量
     vec2 v = v_uv0 + offset;
     float a = texture2D(texture, v).a;
     if (a < 0.5 )// 我把alpha值大于0.5都视为不透明，小于0.5都视为透明, 返回1代表透明
@@ -109,24 +109,30 @@ CCProgram fs %{
       gl_FragColor = v_color*curr_color;
       return;
     }
-    // OpenGL es并不是很支持循环，while和for都不要用
+    float a = 0.0;
     float strokeCount = 0.0;
-    strokeCount += getIsStrokeWithAngel(0.0);
-    strokeCount += getIsStrokeWithAngel(30.0);
-    strokeCount += getIsStrokeWithAngel(60.0);
-    strokeCount += getIsStrokeWithAngel(90.0);
-    strokeCount += getIsStrokeWithAngel(120.0);
-    strokeCount += getIsStrokeWithAngel(150.0);
-    strokeCount += getIsStrokeWithAngel(180.0);
-    strokeCount += getIsStrokeWithAngel(210.0);
-    strokeCount += getIsStrokeWithAngel(240.0);
-    strokeCount += getIsStrokeWithAngel(270.0);
-    strokeCount += getIsStrokeWithAngel(300.0);
-    strokeCount += getIsStrokeWithAngel(330.0);
+    for(float i=0.0;i<100.0;i+=1.0){
+      float range = outlineSize*i*0.01;
+      strokeCount += getIsStrokeWithAngel(0.0,range);
+      strokeCount += getIsStrokeWithAngel(30.0,range);
+      strokeCount += getIsStrokeWithAngel(60.0,range);
+      strokeCount += getIsStrokeWithAngel(90.0,range);
+      strokeCount += getIsStrokeWithAngel(120.0,range);
+      strokeCount += getIsStrokeWithAngel(150.0,range);
+      strokeCount += getIsStrokeWithAngel(180.0,range);
+      strokeCount += getIsStrokeWithAngel(210.0,range);
+      strokeCount += getIsStrokeWithAngel(240.0,range);
+      strokeCount += getIsStrokeWithAngel(270.0,range);
+      strokeCount += getIsStrokeWithAngel(300.0,range);
+      strokeCount += getIsStrokeWithAngel(330.0,range);
+      if(strokeCount>0.0){
+        a+= 0.01;
+      }
+    }
     if (strokeCount > 0.0) // 四周围至少有一个点是透明的，这个点要设成描边颜色
     {
         curr_color = outlineColor;
-        curr_color.a = strokeCount/12.0;
+        curr_color.a = 1.0-a;
     }
     gl_FragColor = v_color * curr_color;
   }

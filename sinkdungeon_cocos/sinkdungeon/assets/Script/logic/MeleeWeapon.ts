@@ -392,15 +392,19 @@ export default class MeleeWeapon extends BaseColliderComponent {
     //Anim
     AudioTime() {
         let audioName = AudioPlayer.MELEE
+        let daggerNames = [AudioPlayer.DAGGER_ATTACK1, AudioPlayer.DAGGER_ATTACK2]
+        let daggerName = daggerNames[Logic.getRandomNum(0, daggerNames.length - 1)]
         let swordNames = [AudioPlayer.SWORD_ATTACK, AudioPlayer.SWORD_ATTACK1, AudioPlayer.SWORD_ATTACK2]
-        let swordName = swordNames[Logic.getRandomNum(0, 2)]
+        let swordName = swordNames[Logic.getRandomNum(0, swordNames.length - 1)]
         let fistNames = [AudioPlayer.FIST, AudioPlayer.FIST1, AudioPlayer.FIST2]
-        let fistName = fistNames[Logic.getRandomNum(0, 2)]
+        let fistName = fistNames[Logic.getRandomNum(0, fistNames.length - 1)]
+        let stickNames = [AudioPlayer.STICK_ATTACK1, AudioPlayer.STICK_ATTACK2, AudioPlayer.STICK_ATTACK3]
+        let stickName = fistNames[Logic.getRandomNum(0, stickNames.length - 1)]
         //匕首
         if (this.isStab && !this.isFar) {
-            audioName = fistName
+            audioName = daggerName
             if (this.comboType == MeleeWeapon.COMBO3) {
-                audioName = swordName
+                audioName = AudioPlayer.DAGGER_ATTACK
             }
         }
         //长剑
@@ -412,14 +416,17 @@ export default class MeleeWeapon extends BaseColliderComponent {
         }
         //长枪
         if (this.isStab && this.isFar) {
-            audioName = swordName
+            audioName = stickName
+            if (this.comboType == MeleeWeapon.COMBO3) {
+                audioName = swordName
+            }
         }
         //大剑
         if (!this.isStab && this.isFar) {
-            audioName = swordName
-            // if (this.comboType == MeleeWeapon.COMBO3) {
-            //     audioName = AudioPlayer.MELEE;
-            // }
+            audioName = stickName
+            if (this.comboType == MeleeWeapon.COMBO3) {
+                audioName = AudioPlayer.STICK_ATTACK
+            }
         }
         if (this.isFist) {
             audioName = fistName
