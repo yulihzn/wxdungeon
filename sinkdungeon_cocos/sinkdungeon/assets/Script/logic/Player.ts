@@ -133,6 +133,7 @@ export default class Player extends Actor {
     jumpAbility: JumpingAbility
     statusPos: cc.Vec3 = cc.v3(0, 0)
     floatPos: cc.Vec3 = cc.v3(0, 0)
+    dashCooling = false
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -953,17 +954,18 @@ export default class Player extends Actor {
         }, duration)
     }
     dash() {
-        if (this.sc.isDashing) {
+        if (this.dashCooling) {
             return
         }
-        if (this.data.currentDream <= 0) {
-            AudioPlayer.play(AudioPlayer.SELECT_FAIL)
-            EventHelper.emit(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR)
-            Utils.toast(`能量不足`)
-            return
-        }
-        this.updateDream(1)
+        // if (this.data.currentDream <= 0) {
+        //     AudioPlayer.play(AudioPlayer.SELECT_FAIL)
+        //     EventHelper.emit(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR)
+        //     Utils.toast(`能量不足`)
+        //     return
+        // }
+        // this.updateDream(1)
         this.sc.isDashing = true
+        this.dashCooling = true
         let speed = 20
         if (this.IsVariation) {
             speed = 40
@@ -996,6 +998,9 @@ export default class Player extends Actor {
             this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
             this.sc.isDashing = false
             this.highLight(false)
+            this.scheduleOnce(() => {
+                this.dashCooling = false
+            }, 0.5)
         }, 0.5)
     }
     private addDashGhost(shooterEx: Shooter) {
@@ -1272,7 +1277,7 @@ export default class Player extends Actor {
         if (this.dungeon && this.dungeon.isClear && this.isDreamShortTimeDelay(dt)) {
             this.updateDream(-1)
         }
-        //守护派10s恢复一点梦境
+        //战斗时10s恢复一点梦境
         if (this.dungeon && !this.dungeon.isClear && this.isDreamLongTimeDelay(dt)) {
             this.updateDream(-1)
         }
