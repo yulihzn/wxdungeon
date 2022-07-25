@@ -350,7 +350,7 @@ export default class IceDemon extends Boss {
                 }
                 this.anim.play('IceDemonAttack001')
                 this.scheduleOnce(() => {
-                    AudioPlayer.play(AudioPlayer.BOOS_ICEDEMON_ATTACK)
+                    AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_ATTACK)
                     let pos = this.getMovePos()
                     let h = pos.x
                     let v = pos.y

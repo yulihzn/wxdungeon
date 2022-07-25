@@ -17,7 +17,7 @@ export default class LoadingIcon extends cc.Component {
     public static readonly TYPE_NPC = 1
     public static readonly TYPE_EQUIP = 2
     public static readonly TYPE_ITEM = 3
-    public static readonly TYPE_BUILDING = 4
+    public static readonly TYPE_AUDIO = 4
     public static readonly TYPE_TEXTURE = 5
     public static readonly TYPE_TEXTURE_AUTO = 6
 
@@ -71,9 +71,9 @@ export default class LoadingIcon extends cc.Component {
     @property(cc.Node)
     item1: cc.Node = null
     @property(cc.Node)
-    building0: cc.Node = null
+    audio0: cc.Node = null
     @property(cc.Node)
-    building1: cc.Node = null
+    audio1: cc.Node = null
     @property(cc.Node)
     texture0: cc.Node = null
     @property(cc.Node)
@@ -102,8 +102,8 @@ export default class LoadingIcon extends cc.Component {
                     case LoadingIcon.TYPE_ITEM:
                         this.itemLoaded()
                         break
-                    case LoadingIcon.TYPE_BUILDING:
-                        this.buildingLoaded()
+                    case LoadingIcon.TYPE_AUDIO:
+                        this.audioLoaded()
                         break
                     case LoadingIcon.TYPE_TEXTURE:
                         this.textureLoaded()
@@ -119,36 +119,36 @@ export default class LoadingIcon extends cc.Component {
         cc.tween(node0).to(0.1, { scale: 2 }).to(0.1, { scale: 0.8 }).to(0.1, { scale: 1 }).start()
         cc.tween(node1).to(0.3, { opacity: 255 }).start()
     }
-    init(excludeArr: number[]) {
-        let arr = [this.map0, this.npc0, this.equip0, this.item0, this.building0, this.texture0, this.textureauto0]
+    init(includeArr: number[]) {
+        let arr = [this.map0, this.npc0, this.equip0, this.item0, this.audio0, this.texture0, this.textureauto0, this.audio0]
         for (let icon of arr) {
             icon.active = false
         }
-        for (let index of excludeArr) {
+        for (let index of includeArr) {
             if (index >= 0 && index < arr.length) {
                 arr[index].active = true
             }
         }
     }
-    mapLoaded() {
+    private mapLoaded() {
         this.iconShow(this.map0, this.map1)
     }
-    npcLoaded() {
+    private npcLoaded() {
         this.iconShow(this.npc0, this.npc1)
     }
-    equipLoaded() {
+    private equipLoaded() {
         this.iconShow(this.equip0, this.equip1)
     }
-    itemLoaded() {
+    private itemLoaded() {
         this.iconShow(this.item0, this.item1)
     }
-    buildingLoaded() {
-        this.iconShow(this.building0, this.building1)
+    private audioLoaded() {
+        this.iconShow(this.audio0, this.audio1)
     }
-    textureLoaded() {
+    private textureLoaded() {
         this.iconShow(this.texture0, this.texture1)
     }
-    textureautoLoaded() {
+    private textureautoLoaded() {
         this.iconShow(this.textureauto0, this.textureauto1)
     }
 

@@ -41,7 +41,15 @@ export default class Loading extends cc.Component {
         this.loadingManager.init()
         this.loadingIcon = cc.instantiate(this.loadingIconPrefab).getComponent(LoadingIcon)
         this.loadingIcon.node.parent = this.node
-        this.loadingIcon.init([LoadingIcon.TYPE_TEXTURE_AUTO, LoadingIcon.TYPE_TEXTURE, LoadingIcon.TYPE_ITEM, LoadingIcon.TYPE_EQUIP, LoadingIcon.TYPE_NPC, LoadingIcon.TYPE_MAP])
+        this.loadingIcon.init([
+            LoadingIcon.TYPE_TEXTURE_AUTO,
+            LoadingIcon.TYPE_TEXTURE,
+            LoadingIcon.TYPE_ITEM,
+            LoadingIcon.TYPE_EQUIP,
+            LoadingIcon.TYPE_NPC,
+            LoadingIcon.TYPE_MAP,
+            LoadingIcon.TYPE_AUDIO
+        ])
     }
 
     start() {
@@ -60,7 +68,7 @@ export default class Loading extends cc.Component {
         this.loadingManager.loadTalents()
         this.loadingManager.loadProfession()
         this.loadingManager.loadNonplayer()
-        // this.loadingManager.loadBuildings();
+        this.loadingManager.loadAudio()
         this.loadingManager.loadSuits()
         this.loadingManager.loadFurnitures()
         this.showLoadingLabel()
@@ -135,6 +143,7 @@ export default class Loading extends cc.Component {
             this.loadingManager.isWorldLoaded &&
             this.loadingManager.isSuitsLoaded &&
             this.loadingManager.isFurnituresLoaded &&
+            this.loadingManager.isAudioLoaded &&
             this.cutScene.isSkip &&
             this.isTransportAnimFinished &&
             this.isElevatorAnimFinished

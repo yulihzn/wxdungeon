@@ -83,6 +83,8 @@ export default class Logic extends cc.Component {
     static professionList: ProfessionData[] = []
     //建筑资源
     static buildings: { [key: string]: cc.Prefab } = null
+    //音频资源
+    static audioClips: { [key: string]: cc.AudioClip } = {}
 
     static level = 0
     static chapterIndex = 0

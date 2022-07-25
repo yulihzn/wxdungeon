@@ -1814,7 +1814,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "building",
+    "_name": "audio",
     "_objFlags": 0,
     "_parent": {
       "__id__": 11
@@ -1882,7 +1882,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "building",
+    "_name": "audio",
     "_objFlags": 0,
     "_parent": {
       "__id__": 48
@@ -2198,10 +2198,10 @@
     "item1": {
       "__id__": 19
     },
-    "building0": {
+    "audio0": {
       "__id__": 48
     },
-    "building1": {
+    "audio1": {
       "__id__": 49
     },
     "texture0": {

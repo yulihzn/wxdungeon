@@ -40,6 +40,7 @@ export default class LoadingManager {
     public isBuildingLoaded = false
     public isFurnituresLoaded = false
     public isTransportAnimFinished = true
+    public isAudioLoaded = false
     // LIFE-CYCLE CALLBACKS:
     init() {
         this.setAllSpriteFramesUnload()
@@ -56,6 +57,7 @@ export default class LoadingManager {
         this.isNonplayerLoaded = false
         this.isBuildingLoaded = false
         this.isFurnituresLoaded = false
+        this.isAudioLoaded = false
     }
     reset() {
         this.isWorldLoaded = false
@@ -72,6 +74,7 @@ export default class LoadingManager {
         this.isTransportAnimFinished = false
         this.isSuitsLoaded = false
         this.isFurnituresLoaded = false
+        this.isAudioLoaded = false
     }
 
     isSpriteFramesLoaded(loadedName: string) {
@@ -101,7 +104,21 @@ export default class LoadingManager {
         Logic.worldLoader.isloaded = false
         Logic.worldLoader.loadWorld()
     }
-
+    loadAudio() {
+        if (Logic.audioClips && Logic.audioClips['silence']) {
+            this.isAudioLoaded = true
+            EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_AUDIO })
+            return
+        }
+        cc.resources.loadDir('Audio', cc.AudioClip, (err: Error, assert: cc.AudioClip[]) => {
+            for (let clip of assert) {
+                Logic.audioClips[clip.name] = clip
+            }
+            this.isAudioLoaded = true
+            cc.log('加载音效完成')
+            EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_AUDIO })
+        })
+    }
     loadEquipment() {
         if (Logic.equipments) {
             this.isEquipmentLoaded = true
@@ -262,7 +279,6 @@ export default class LoadingManager {
     loadBuildings() {
         if (Logic.buildings && Logic.buildings['Door']) {
             this.isBuildingLoaded = true
-            EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_BUILDING })
             return
         }
         cc.resources.loadDir('Prefabs/buildings', cc.Prefab, (err: Error, assert: cc.Prefab[]) => {
@@ -271,7 +287,6 @@ export default class LoadingManager {
             }
             this.isBuildingLoaded = true
             cc.log('加载建筑完成')
-            EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_BUILDING })
         })
     }
 

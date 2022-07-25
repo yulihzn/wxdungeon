@@ -1001,7 +1001,7 @@
         "nameCn": "千本",
         "nameEn": "Senbon",
         "equipmetType": "weapon",
-        "remoteAudio": "SHOOT_SENBON",
+        "remoteAudio": "senbon",
         "id": 10010000,
         "equipmetTypeCn": "",
         "prefix": "",
@@ -1631,7 +1631,7 @@
         "img": "remote005",
         "bulletType": "bullet011",
         "bulletArcExNum": 2,
-        "remoteAudio": "SHOOT003",
+        "remoteAudio": "shoot003",
         "isHeavy": 0,
         "price": 30,
         "common": {

@@ -220,7 +220,7 @@ export default class Laser extends BaseColliderComponent {
         }
         this.updatePos()
         this.updateLaser()
-        AudioPlayer.play(AudioPlayer.REMOTE_LASER)
+        AudioPlayer.play(AudioPlayer.LASER)
     }
     private updatePos() {
         if (this.shooter && this.shooter.actor) {
