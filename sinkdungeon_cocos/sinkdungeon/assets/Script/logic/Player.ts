@@ -1,3 +1,4 @@
+import { MoveComponent } from './../ecs/component/MoveComponent'
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -1019,7 +1020,7 @@ export default class Player extends Actor {
             return
         }
         if (this.jumpAbility) {
-            this.jumpAbility.jump(this.data.getJumpSpeed(), PlayerData.DEFAULT_JUMP_HEIGHT)
+            this.jumpAbility.jump(this.data.getJumpSpeed(), this.data.getJumpHeight())
         }
     }
     jumpCancel() {
@@ -1324,7 +1325,7 @@ export default class Player extends Actor {
         if (y < 0) {
             y = 0
         }
-        let scale = 1 - y / PlayerData.DEFAULT_JUMP_HEIGHT / 2
+        let scale = 1 - ((y / PlayerData.DEFAULT_JUMP_HEIGHT) * MoveComponent.PIXELS_PER_UNIT) / 2
         this.shadow.scale = scale < 0.5 ? 0.5 : scale
         this.shadow.y = this.entity.Transform.base
         this.bottomDir.node.y = this.entity.Transform.base

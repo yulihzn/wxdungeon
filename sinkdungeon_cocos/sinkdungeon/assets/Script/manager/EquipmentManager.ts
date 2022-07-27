@@ -734,6 +734,11 @@ export default class EquipmentManager extends BaseManager {
         } else {
             price += data.Common.jumpSpeed * 20 //跳速
         }
+        if (data.Common.jumpHeight < 0) {
+            price += -20
+        } else {
+            price += data.Common.jumpHeight * 20 //跳跃高度
+        }
         if (data.Common.attackSpeed < 0) {
             price += -10
         } else {
@@ -773,6 +778,7 @@ export default class EquipmentManager extends BaseManager {
         price += data.Common.defencePercent * 10 //物理防御%
         price += data.Common.moveSpeedPercent * 10 //移速%
         price += data.Common.jumpSpeedPercent * 10 //跳速%
+        price += data.Common.jumpHeightPercent * 10 //跳跃高度%
         price += data.Common.attackSpeedPercent * 10 //攻速%
         price += data.Common.remoteDamagePercent * 10 //远程攻击%
         price += data.Common.realDamagePercent * 10 //真实伤害%

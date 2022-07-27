@@ -850,14 +850,15 @@
         }
     },
     "status073": {
-        "nameCn": "跳跃速度",
+        "nameCn": "跳跃增强",
         "nameEn": "jump higher",
         "spriteFrameName": "iconmovespeed",
         "id": 73,
         "desc": "",
         "duration": 30,
         "common": {
-            "jumpSpeed": 10
+            "jumpSpeed": 10,
+            "jumpHeight": 1
         }
     },
     "status074": {

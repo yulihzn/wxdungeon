@@ -51,21 +51,26 @@ export default class JumpingAbility extends cc.Component {
         if (callback) {
             this.callbacks.set(callbackKey, callback)
         }
+        let ajustSpeed = speed
         if (maxJumpHeightUnit && maxJumpHeightUnit > 0) {
             this.maxJumpHeight = maxJumpHeightUnit * MoveComponent.PIXELS_PER_UNIT + this.actor.entity.Transform.z
+            let tempSpeed = Utils.getDashSpeedByDistance(this.maxJumpHeight, this.actor.entity.Move.gravity)
+            if (ajustSpeed > tempSpeed) {
+                ajustSpeed = tempSpeed
+            }
         }
         //跳跃按下，跳跃次数减少,播放音效，获取按键失效时间并重新倒计时，设置传入速度，修改重力为0，回调
         this.currentJumpCount--
         this.isJumpPressed = true
         this.isAirPause = false
         AudioPlayer.play(AudioPlayer.DASH)
-        let second = Utils.getJumpTimeBySpeedDistance(maxJumpHeightUnit, speed, this.actor.entity.Move.gravity)
+        let second = Utils.getJumpTimeBySpeedDistance(maxJumpHeightUnit, ajustSpeed, this.actor.entity.Move.gravity)
         this.unscheduleAllCallbacks()
         this.scheduleOnce(() => {
             this.actor.entity.Move.gravity = MoveComponent.DEFAULT_GRAVITY
         }, second)
         this.actor.entity.Move.gravity = 0
-        this.actor.entity.Move.linearVelocityZ = speed
+        this.actor.entity.Move.linearVelocityZ = ajustSpeed
         this.callbacks.forEach((callback, key) => {
             callback(TriggerData.GROUP_JUMP, TriggerData.TYPE_JUMP_START)
         })

@@ -29,6 +29,7 @@ export default class EquipmentStringData {
     moveSpeed: number = 0 //移速
     attackSpeed: number = 0 //攻速
     jumpSpeed: number = 0 //跳速
+    jumpHeight: number = 0 //跳跃高度
     dodge: number = 0 //闪避
     remoteCooldown: number = 0 //远程冷却或者充能时间
     remoteDamage: number = 0 //远程攻击

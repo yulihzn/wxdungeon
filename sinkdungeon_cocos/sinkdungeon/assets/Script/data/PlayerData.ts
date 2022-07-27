@@ -23,7 +23,7 @@ import DataUtils from '../utils/DataUtils'
 export default class PlayerData {
     static DEFAULT_HEALTH = 10
     static DEFAULT_SPEED = 6
-    static DEFAULT_JUMP_SPEED = 8
+    static DEFAULT_JUMP_SPEED = 6
     static DEFAULT_JUMP_HEIGHT = 2
     static DEFAULT_ATTACK = 1
     static DEFAULT_BACK_ATTACK = 0
@@ -59,6 +59,7 @@ export default class PlayerData {
         this.common.maxHealth = PlayerData.DEFAULT_HEALTH
         this.common.moveSpeed = PlayerData.DEFAULT_SPEED
         this.common.jumpSpeed = PlayerData.DEFAULT_JUMP_SPEED
+        this.common.jumpHeight = PlayerData.DEFAULT_JUMP_HEIGHT
         this.common.damageMin = PlayerData.DEFAULT_ATTACK
         this.common.damageBack = PlayerData.DEFAULT_BACK_ATTACK
         this.common.maxDream = PlayerData.DEFAULT_DREAM
@@ -242,6 +243,14 @@ export default class PlayerData {
     public getJumpSpeed(): number {
         let data = this.FinalCommon
         let speed = data.JumpSpeed
+        if (speed < 0) {
+            speed = 0
+        }
+        return speed
+    }
+    public getJumpHeight(): number {
+        let data = this.FinalCommon
+        let speed = data.JumpHeight
         if (speed < 0) {
             speed = 0
         }
