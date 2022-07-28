@@ -6,7 +6,6 @@ import { EventHelper } from './EventHelper'
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import Player from './Player'
 import MeleeWeapon from './MeleeWeapon'
 import Shooter from './Shooter'
 import EquipmentData from '../data/EquipmentData'
@@ -17,6 +16,7 @@ import Logic from './Logic'
 import Random from '../utils/Random'
 import MeleeCollideHelper from './MeleeCollideHelper'
 import PlayerAvatar from './PlayerAvatar'
+import PlayActor from '../base/PlayActor'
 
 const { ccclass, property } = cc._decorator
 /**
@@ -26,7 +26,7 @@ const { ccclass, property } = cc._decorator
 export default class PlayerWeapon extends cc.Component {
     @property(MeleeCollideHelper)
     meleeCollideHelper: MeleeCollideHelper = null
-    player: Player = null
+    player: PlayActor = null
     meleeWeapon: MeleeWeapon = null
     shadowWeapon: MeleeShadowWeapon = null
     shooter: Shooter = null
@@ -50,7 +50,7 @@ export default class PlayerWeapon extends cc.Component {
 
     // onLoad () {}
 
-    init(player: Player, isLeftHand: boolean, isShadow: boolean) {
+    init(player: PlayActor, isLeftHand: boolean, isShadow: boolean) {
         this.isShadow = isShadow
         this.isLeftHand = isLeftHand
         this.player = player
@@ -67,7 +67,7 @@ export default class PlayerWeapon extends cc.Component {
     private initMelee() {
         if (this.isShadow) {
             this.shadowWeapon = this.getComponentInChildren(MeleeShadowWeapon)
-            this.shadowWeapon.init(this.player, this.isLeftHand ? this.player.weaponLeft.meleeWeapon : this.player.weaponRight.meleeWeapon)
+            this.shadowWeapon.init(this.player, this.isLeftHand ? this.player.handLeft.meleeWeapon : this.player.handRight.meleeWeapon)
         } else {
             this.meleeWeapon = this.getComponentInChildren(MeleeWeapon)
             this.meleeWeapon.IsSecond = this.isLeftHand
@@ -77,7 +77,7 @@ export default class PlayerWeapon extends cc.Component {
         this.shooter = this.getComponentInChildren(Shooter)
         this.shooter.player = this.player
         this.shooter.actor = this.player
-        let finalData = this.player.data.FinalCommon
+        let finalData = this.player.playerData.FinalCommon
         this.ammoRecovery = finalData.AmmoRecovery
         this.maxAmmo = finalData.MaxAmmo
     }
@@ -197,7 +197,7 @@ export default class PlayerWeapon extends cc.Component {
                 .call(() => {
                     data.currentAmmo = finalData.MaxAmmo
                     this.isCooling = false
-                    EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.player.data.currentAmmo, y: this.maxAmmo })
+                    EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.player.playerData.currentAmmo, y: this.maxAmmo })
                 })
                 .start()
         }
@@ -230,14 +230,14 @@ export default class PlayerWeapon extends cc.Component {
             !this.isCooling &&
             this.shooter.data.equipmetType == InventoryManager.REMOTE &&
             this.ammoRecovery > 0 &&
-            this.player.data.currentAmmo < this.maxAmmo &&
+            this.player.playerData.currentAmmo < this.maxAmmo &&
             this.isCheckTimeDelay(dt)
         ) {
-            this.player.data.currentAmmo += this.ammoRecovery
-            if (this.player.data.currentAmmo > this.maxAmmo) {
-                this.player.data.currentAmmo = this.maxAmmo
+            this.player.playerData.currentAmmo += this.ammoRecovery
+            if (this.player.playerData.currentAmmo > this.maxAmmo) {
+                this.player.playerData.currentAmmo = this.maxAmmo
             }
-            EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.player.data.currentAmmo, y: this.maxAmmo })
+            EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.player.playerData.currentAmmo, y: this.maxAmmo })
         }
     }
 

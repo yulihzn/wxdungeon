@@ -26,6 +26,7 @@ import CCollider from '../collider/CCollider'
 import BaseColliderComponent from '../base/BaseColliderComponent'
 import TriggerData from '../data/TriggerData'
 import Emplacement from '../building/Emplacement'
+import PlayActor from '../base/PlayActor'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -52,7 +53,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
 
     @property(cc.Node)
     playerNode: cc.Node = null
-    player: Player = null
+    player: PlayActor = null
     @property(cc.Prefab)
     iceLight: cc.Prefab = null
     @property(cc.Prefab)
@@ -131,7 +132,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     onLoad() {
         super.onLoad()
         this.anim = this.getComponent(cc.Animation)
-        this.player = this.playerNode.getComponent(Player)
+        this.player = this.playerNode.getComponent(PlayActor)
         this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos))
         this.meleeLightRightPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightRightPos))
         this.initSprite()

@@ -1,5 +1,4 @@
 import Dungeon from './Dungeon'
-import Player from './Player'
 import PlayerData from '../data/PlayerData'
 import AudioPlayer from '../utils/AudioPlayer'
 import MeleeWeapon from './MeleeWeapon'
@@ -7,6 +6,7 @@ import Utils from '../utils/Utils'
 import CCollider from '../collider/CCollider'
 import BaseColliderComponent from '../base/BaseColliderComponent'
 import TriggerData from '../data/TriggerData'
+import PlayActor from '../base/PlayActor'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -22,7 +22,7 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class MeleeShadowWeapon extends BaseColliderComponent {
-    player: Player = null
+    player: PlayActor = null
     meleeWeapon: MeleeWeapon
     private anim: cc.Animation
     private isAttacking: boolean = false
@@ -48,7 +48,7 @@ export default class MeleeShadowWeapon extends BaseColliderComponent {
         }
     }
 
-    init(player: Player, meleeWeapon: MeleeWeapon) {
+    init(player: PlayActor, meleeWeapon: MeleeWeapon) {
         this.anim = this.getComponent(cc.Animation)
         this.player = player
         this.meleeWeapon = meleeWeapon

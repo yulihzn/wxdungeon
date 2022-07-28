@@ -58,8 +58,11 @@ import JumpingAbility from '../actor/JumpingAbility'
 import Controller from './Controller'
 import ActorUtils from '../utils/ActorUtils'
 import AreaOfEffectData from '../data/AreaOfEffectData'
+import StateMachine from '../base/fsm/StateMachine'
+import State from '../base/fsm/State'
+import PlayActor from '../base/PlayActor'
 @ccclass
-export default class Player extends Actor {
+export default class Player extends PlayActor {
     @property(cc.Sprite)
     sprite: cc.Sprite = null
     @property(FloatinglabelManager)
@@ -81,8 +84,8 @@ export default class Player extends Actor {
     shooterEx: Shooter = null
     @property(StatusManager)
     statusManager: StatusManager = null
-    @property(PlayerAvatar)
-    avatar: PlayerAvatar = null
+    @property(cc.Prefab)
+    avatarPrefab: cc.Prefab = null
     @property(cc.Node)
     remoteCooldown: cc.Node = null
     @property(cc.Node)
@@ -104,16 +107,13 @@ export default class Player extends Actor {
     //触碰到的提示
     touchedTips: Tips
     private touchDelay = false
-    inventoryManager: InventoryManager = null
     data: PlayerData
-    currentDir = 3
     attackTarget: CCollider
 
     defaultPos = cc.v3(0, 0)
 
     isWeaponDashing = false
     fistCombo = 0
-    dungeon: Dungeon
     interactBuilding: InteractBuilding
 
     isAvoidDeathed = false
@@ -131,12 +131,27 @@ export default class Player extends Actor {
     lastTimeInWater = false
     swimmingAudioStep: NextStep = new NextStep()
     lastLinearVelocityZ = 0 //上次向上的速度
-    jumpAbility: JumpingAbility
     statusPos: cc.Vec3 = cc.v3(0, 0)
     floatPos: cc.Vec3 = cc.v3(0, 0)
     dashCooling = false
+    stateMachine: StateMachine<Player, State<Player>>
     // LIFE-CYCLE CALLBACKS:
-
+    init(): void {
+        this.triggerShooter = this.shooterEx
+        this.handLeft = this.weaponLeft
+        this.handRight = this.weaponRight
+        this.playerData = this.data
+        this.floatinglabelMgr = this.floatinglabelManager
+        this.statusMgr = this.statusManager
+        this.jumpAbility = this.addComponent(JumpingAbility)
+        this.jumpAbility.init(this, 2, 0, (group: number, type: number) => {
+            this.exTrigger(group, type, null, null)
+        })
+        this.avatar = cc.instantiate(this.avatarPrefab).getComponent(PlayerAvatar)
+        this.avatar.node.parent = this.root
+        this.avatar.node.zIndex = 0
+        this.avatar.init(Logic.playerData.AvatarData.clone(), this.node.group)
+    }
     onLoad() {
         this.shield = this.shieldNode.getComponent(Shield)
         this.lastConsumeTime = Logic.realTime
@@ -144,7 +159,7 @@ export default class Player extends Actor {
         this.entity.Move.linearVelocity = cc.v2(0, 0)
         this.statusManager.statusIconList = this.statusIconList
         this.statusPos = this.statusManager.node.position.clone()
-        this.floatPos = this.floatinglabelManager.node.position.clone()
+        this.floatPos = this.floatinglabelMgr.node.position.clone()
         this.inventoryManager = Logic.inventoryManager
         this.data = Logic.playerData.clone()
         this.updateStatus(this.data.StatusList, this.data.StatusTotalData)
@@ -252,10 +267,7 @@ export default class Player extends Actor {
         if (this.bottomDir) {
             this.bottomDir.init(this)
         }
-        this.jumpAbility = this.addComponent(JumpingAbility)
-        this.jumpAbility.init(this, 2, 0, (group: number, type: number) => {
-            this.exTrigger(group, type, null, null)
-        })
+
         if (!this.playerSpriteTexture) {
             let width = 512
             this.playerSpriteTexture = new cc.RenderTexture()
@@ -266,6 +278,7 @@ export default class Player extends Actor {
             this.playerSpriteframe = new cc.SpriteFrame(this.playerSpriteTexture)
             this.sprite.spriteFrame = this.playerSpriteframe
         }
+        this.init()
     }
 
     public initShadowList(isFromSave: boolean, count: number, lifeTime: number) {
@@ -361,18 +374,7 @@ export default class Player extends Actor {
             }, dizzDuration)
         }
     }
-    hideSelf(hideDuration: number) {
-        if (hideDuration > 0) {
-            this.invisible = true
-            this.scheduleOnce(() => {
-                this.stopHiding()
-            }, hideDuration)
-        }
-    }
-    stopHiding() {
-        this.invisible = false
-        this.statusManager.stopStatus(StatusManager.TALENT_INVISIBLE)
-    }
+
     public updateStatus(statusList: StatusData[], totalStatusData: StatusData) {
         if (!this.inventoryManager) {
             return
@@ -667,124 +669,6 @@ export default class Player extends Actor {
             }
             this.stopHiding()
             this.exTrigger(TriggerData.GROUP_ATTACK, TriggerData.TYPE_ATTTACK_REMOTE, null, null)
-        }
-    }
-    /**
-     * 额外物品装备效果触发
-     * @param group 触发类别
-     * @param type 触发类型
-     * @param from 来源
-     * @param actor 目标
-     * @param onlyItem 仅物品
-     */
-    exTrigger(group: number, type: number, from?: FromData, actor?: Actor, onlyItem?: boolean): void {
-        if (!onlyItem) {
-            let data = this.inventoryManager.TotalEquipData
-            for (let d of data.exTriggers) {
-                this.exTriggerDo(d, group, type, from, actor)
-            }
-        }
-        for (let data of this.inventoryManager.itemList) {
-            for (let d of data.exTriggers) {
-                this.exTriggerDo(d, group, type, from, actor)
-            }
-        }
-    }
-    exTriggerDo(data: TriggerData, group: number, type: number, from: FromData, actor: Actor) {
-        if (data.group != group || data.type != type) {
-            return
-        }
-        switch (data.id) {
-            case TriggerData.ID_STATUS:
-                this.exTriggerStatus(data, from, actor)
-                break
-            case TriggerData.ID_BULLET:
-                this.exTriggerBullet(data)
-                break
-            case TriggerData.ID_TALENT:
-                break
-        }
-    }
-    private exTriggerBullet(data: TriggerData) {
-        let count = data.count
-        let canShoot = true
-        if (count < 1) {
-            canShoot = Random.rand() < count
-            count = 1
-        } else {
-            count = Math.floor(count)
-        }
-        if (canShoot) {
-            if (count > 1) {
-                for (let i = 0; i < count; i++) {
-                    this.exTriggerBulletDo(data)
-                }
-            } else {
-                this.exTriggerBulletDo(data)
-            }
-        }
-    }
-    private exTriggerBulletDo(data: TriggerData) {
-        let bulletInterval = data.bulletInterval ? data.bulletInterval : 100
-        let maxAmmo = data.maxAmmo ? data.maxAmmo : 0
-        if (maxAmmo > 1) {
-            this.schedule(
-                () => {
-                    this.exTriggerBulletFire(data)
-                },
-                bulletInterval,
-                maxAmmo - 1
-            )
-        } else {
-            this.exTriggerBulletFire(data)
-        }
-    }
-    private exTriggerBulletFire(data: TriggerData) {
-        let remoteAngleOffset = data.bulletAngle ? data.bulletAngle : 0
-        this.shooterEx.data.bulletType = data.res
-        this.shooterEx.data.bulletArcExNum = data.bulletArcExNum
-        this.shooterEx.data.bulletLineExNum = data.bulletLineExNum
-        this.shooterEx.data.bulletSize = data.bulletSize
-        this.shooterEx.data.bulletSize += this.IsVariation ? 0.5 : 0
-        this.shooterEx.data.bulletExSpeed = data.bulletSpeed
-        let angle = Random.getRandomNum(-remoteAngleOffset, remoteAngleOffset)
-        this.shooterEx.fireBullet(angle, cc.v3(data.bulletOffsetX, 24))
-        for (let s of this.shadowList) {
-            if (s.node) {
-                s.shooterEx.setHv(this.shooterEx.Hv)
-                s.shooterEx.data = this.shooterEx.data.clone()
-                s.shooterEx.fireBullet(angle, cc.v3(data.bulletOffsetX, 24))
-            }
-        }
-    }
-    private exTriggerStatus(data: TriggerData, from: FromData, actor: Actor) {
-        let count = data.count
-        let canAdd = true
-        if (count < 1) {
-            canAdd = Random.rand() < count
-            count = 1
-        } else {
-            count = Math.floor(count)
-        }
-        if (canAdd) {
-            for (let i = 0; i < count; i++) {
-                if (TriggerData.TARGET_OTHER == data.target && actor) {
-                    actor.addStatus(data.res, new FromData())
-                }
-                if (TriggerData.TARGET_OTHER_NEAREST == data.target) {
-                    StatusManager.addStatus2NearEnemy(this, data.res, from)
-                } else if (TriggerData.TARGET_SELF == data.target) {
-                    this.addStatus(data.res, new FromData())
-                } else if (TriggerData.TARGET_ALL_ALLY == data.target) {
-                    StatusManager.addStatus2NearAllies(this, this.node, data.res, data.range, from)
-                } else if (TriggerData.TARGET_ALL_ENEMY == data.target) {
-                    StatusManager.addStatus2NearEnemies(this, this.node, data.res, data.range, from)
-                } else if (TriggerData.TARGET_ALL == data.target) {
-                    this.addStatus(data.res, new FromData())
-                    StatusManager.addStatus2NearEnemies(this, this.node, data.res, data.range, from)
-                    StatusManager.addStatus2NearAllies(this, this.node, data.res, data.range, from)
-                }
-            }
         }
     }
 
@@ -1154,10 +1038,10 @@ export default class Player extends Actor {
     }
 
     showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean, isBlock: boolean, isAvoidDeath: boolean) {
-        if (!this.floatinglabelManager) {
+        if (!this.floatinglabelMgr) {
             return
         }
-        let flabel = this.floatinglabelManager.getFloaingLabel(dungeonNode)
+        let flabel = this.floatinglabelMgr.getFloaingLabel(dungeonNode)
         if (isDodge) {
             flabel.showDoge()
         } else if (isMiss) {
@@ -1336,7 +1220,7 @@ export default class Player extends Actor {
             this.jumpAbility.updateLogic()
         }
         this.statusManager.node.position = this.statusPos.clone().add(cc.v3(0, this.root.y))
-        this.floatinglabelManager.node.position = this.floatPos.clone().add(cc.v3(0, this.root.y))
+        this.floatinglabelMgr.node.position = this.floatPos.clone().add(cc.v3(0, this.root.y))
     }
 
     showWaterSpark() {

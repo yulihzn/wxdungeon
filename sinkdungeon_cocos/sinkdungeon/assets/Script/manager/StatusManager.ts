@@ -7,6 +7,7 @@ import StatusIcon from '../ui/StatusIcon'
 import StatusIconList from '../ui/StatusIconList'
 import Player from '../logic/Player'
 import ActorUtils from '../utils/ActorUtils'
+import PlayActor from '../base/PlayActor'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -250,7 +251,7 @@ export default class StatusManager extends cc.Component {
         })
         return dataList
     }
-    static addStatus2NearEnemy(player: Player, statusName: string, from: FromData) {
+    static addStatus2NearEnemy(player: PlayActor, statusName: string, from: FromData) {
         if (!player) {
             return
         }
@@ -260,7 +261,7 @@ export default class StatusManager extends cc.Component {
         }
     }
 
-    static addStatus2NearEnemies(player: Player, targetNode: cc.Node, statusName: string, range: number, from: FromData) {
+    static addStatus2NearEnemies(player: PlayActor, targetNode: cc.Node, statusName: string, range: number, from: FromData) {
         if (!player) {
             return
         }
@@ -277,7 +278,7 @@ export default class StatusManager extends cc.Component {
             }
         }
     }
-    static addStatus2NearAllies(player: Player, targetNode: cc.Node, statusName: string, range: number, from: FromData) {
+    static addStatus2NearAllies(player: PlayActor, targetNode: cc.Node, statusName: string, range: number, from: FromData) {
         if (!player) {
             return
         }

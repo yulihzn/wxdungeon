@@ -1,5 +1,6 @@
 import AreaOfEffect from '../actor/AreaOfEffect'
 import Actor from '../base/Actor'
+import PlayActor from '../base/PlayActor'
 import CCollider from '../collider/CCollider'
 import AreaOfEffectData from '../data/AreaOfEffectData'
 import BulletData from '../data/BulletData'
@@ -47,7 +48,7 @@ export default class Shooter extends cc.Component {
     isFromPlayer = false
     dungeon: Dungeon = null
     //只有赋值才代表是玩家真正的shooter
-    player: Player = null
+    player: PlayActor = null
     isEx = false //是否是额外shooter，额外shooter不耗子弹，伤害也按子弹来
     private graphics: cc.Graphics
 

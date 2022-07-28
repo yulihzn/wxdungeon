@@ -215,4 +215,15 @@ export default class Utils {
         }
         return dir
     }
+
+    static changeNodeGroups(node: cc.Node, group: string) {
+        if (node) {
+            node.group = group
+            if (node.childrenCount > 0) {
+                for (let child of node.children) {
+                    this.changeNodeGroups(child, group)
+                }
+            }
+        }
+    }
 }

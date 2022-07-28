@@ -9,6 +9,7 @@ import Logic from './Logic'
 import InventoryManager from '../manager/InventoryManager'
 import AvatarData from '../data/AvatarData'
 import AudioPlayer from '../utils/AudioPlayer'
+import Utils from '../utils/Utils'
 
 const { ccclass, property } = cc._decorator
 
@@ -55,15 +56,14 @@ export default class PlayerAvatar extends cc.Component {
     waterY = 0
     isInit = false
 
-    onLoad() {
-        this.init()
-    }
-    private init() {
+    public init(data: AvatarData, group: string) {
         if (this.isInit) {
             return
         }
+        Utils.changeNodeGroups(this.node, group)
         this.isInit = true
-        this.data = Logic.playerData.AvatarData.clone()
+        this.data = new AvatarData()
+        this.data.valueCopy(data)
         this.anim = this.getComponent(cc.Animation)
         this.avatarNode = this.getSpriteChildNode(['sprite', 'avatar'])
         this.spriteNode = this.getSpriteChildNode(['sprite'])
@@ -138,10 +138,7 @@ export default class PlayerAvatar extends cc.Component {
         }
     }
     playAnim(status: number, dir: number) {
-        if (!this.anim) {
-            this.init()
-        }
-        if (this.isAniming) {
+        if (!this.isInit || this.isAniming) {
             return
         }
         switch (status) {
