@@ -1,6 +1,5 @@
 import { MoveComponent } from './../ecs/component/MoveComponent'
 import Actor from '../base/Actor'
-import PlayerData from '../data/PlayerData'
 import TriggerData from '../data/TriggerData'
 import AudioPlayer from '../utils/AudioPlayer'
 import Utils from '../utils/Utils'

@@ -112,7 +112,6 @@ export default class Player extends PlayActor {
 
     defaultPos = cc.v3(0, 0)
 
-    isWeaponDashing = false
     fistCombo = 0
     interactBuilding: InteractBuilding
 
@@ -136,15 +135,25 @@ export default class Player extends PlayActor {
     dashCooling = false
     stateMachine: StateMachine<Player, State<Player>>
     // LIFE-CYCLE CALLBACKS:
+    get Root(): cc.Node {
+        return this.root
+    }
     init(): void {
         this.triggerShooter = this.shooterEx
         this.handLeft = this.weaponLeft
         this.handRight = this.weaponRight
-        this.playerData = this.data
         this.floatinglabelMgr = this.floatinglabelManager
         this.statusMgr = this.statusManager
+        this.playerData = this.data
         this.jumpAbility = this.addComponent(JumpingAbility)
         this.jumpAbility.init(this, 2, 0, (group: number, type: number) => {
+            if (TriggerData.TYPE_JUMP_END == type) {
+                if (this.sc.isMoving) {
+                    this.playerAnim(PlayerAvatar.STATE_WALK, this.currentDir)
+                } else {
+                    this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
+                }
+            }
             this.exTrigger(group, type, null, null)
         })
         this.avatar = cc.instantiate(this.avatarPrefab).getComponent(PlayerAvatar)
@@ -153,15 +162,16 @@ export default class Player extends PlayActor {
         this.avatar.init(Logic.playerData.AvatarData.clone(), this.node.group)
     }
     onLoad() {
+        this.data = Logic.playerData.clone()
+        this.init()
         this.shield = this.shieldNode.getComponent(Shield)
         this.lastConsumeTime = Logic.realTime
         this.entity.Move.damping = 3
         this.entity.Move.linearVelocity = cc.v2(0, 0)
         this.statusManager.statusIconList = this.statusIconList
         this.statusPos = this.statusManager.node.position.clone()
-        this.floatPos = this.floatinglabelMgr.node.position.clone()
+        this.floatPos = this.floatinglabelManager.node.position.clone()
         this.inventoryManager = Logic.inventoryManager
-        this.data = Logic.playerData.clone()
         this.updateStatus(this.data.StatusList, this.data.StatusTotalData)
         this.pos = cc.v3(0, 0)
         this.sc.isDied = false
@@ -278,7 +288,6 @@ export default class Player extends PlayActor {
             this.playerSpriteframe = new cc.SpriteFrame(this.playerSpriteTexture)
             this.sprite.spriteFrame = this.playerSpriteframe
         }
-        this.init()
     }
 
     public initShadowList(isFromSave: boolean, count: number, lifeTime: number) {
@@ -1038,10 +1047,10 @@ export default class Player extends PlayActor {
     }
 
     showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean, isBlock: boolean, isAvoidDeath: boolean) {
-        if (!this.floatinglabelMgr) {
+        if (!this.floatinglabelManager) {
             return
         }
-        let flabel = this.floatinglabelMgr.getFloaingLabel(dungeonNode)
+        let flabel = this.floatinglabelManager.getFloaingLabel(dungeonNode)
         if (isDodge) {
             flabel.showDoge()
         } else if (isMiss) {
@@ -1209,7 +1218,7 @@ export default class Player extends PlayActor {
         if (y < 0) {
             y = 0
         }
-        let scale = 1 - ((y / PlayerData.DEFAULT_JUMP_HEIGHT) * MoveComponent.PIXELS_PER_UNIT) / 2
+        let scale = 1 - y / (PlayerData.DEFAULT_JUMP_HEIGHT * MoveComponent.PIXELS_PER_UNIT) / 2
         this.shadow.scale = scale < 0.5 ? 0.5 : scale
         this.shadow.y = this.entity.Transform.base
         this.bottomDir.node.y = this.entity.Transform.base
@@ -1220,7 +1229,10 @@ export default class Player extends PlayActor {
             this.jumpAbility.updateLogic()
         }
         this.statusManager.node.position = this.statusPos.clone().add(cc.v3(0, this.root.y))
-        this.floatinglabelMgr.node.position = this.floatPos.clone().add(cc.v3(0, this.root.y))
+        this.floatinglabelManager.node.position = this.floatPos.clone().add(cc.v3(0, this.root.y))
+        if (this.sc.isJumping && this.CanJump) {
+            this.playerAnim(this.entity.Move.linearVelocityZ > 0 ? PlayerAvatar.STATE_JUMP_UP : PlayerAvatar.STATE_JUMP_DOWN, this.currentDir)
+        }
     }
 
     showWaterSpark() {
@@ -1338,9 +1350,6 @@ export default class Player extends PlayActor {
         }
     }
 
-    get Hv(): cc.Vec2 {
-        return this.hv
-    }
     useItem(data: ItemData) {
         Item.userIt(data, this)
         this.exTrigger(TriggerData.GROUP_USE, TriggerData.TYPE_USE_ITEM, null, null, true)

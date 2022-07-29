@@ -1,17 +1,4 @@
-import { ColliderComponent } from '../ecs/component/ColliderComponent'
-import CCollider from '../collider/CCollider'
-import DamageData from '../data/DamageData'
 import FromData from '../data/FromData'
-import StatusData from '../data/StatusData'
-import { MoveComponent } from '../ecs/component/MoveComponent'
-import { NodeRenderComponent } from '../ecs/component/NodeRenderComponent'
-import { TransformComponent } from '../ecs/component/TransformComponent'
-import { ecs } from '../ecs/ECS'
-import ActorEntity from '../ecs/entity/ActorEntity'
-import ShadowOfSight from '../effect/ShadowOfSight'
-import StateContext from './StateContext'
-import OnContactListener from '../collider/OnContactListener'
-import BaseColliderComponent from './BaseColliderComponent'
 import TriggerData from '../data/TriggerData'
 import Random from '../utils/Random'
 import StatusManager from '../manager/StatusManager'
@@ -52,10 +39,13 @@ export default abstract class PlayActor extends Actor {
     jumpAbility: JumpingAbility
     avatar: PlayerAvatar
     currentDir = 3
+    isWeaponDashing = false
     abstract init(): void
     abstract get IsVariation(): boolean
+    abstract get Root(): cc.Node
     abstract isInWater(): boolean
     abstract playerAnim(status: number, dir: number): void
+    abstract getWalkSmoke(parentNode: cc.Node, pos: cc.Vec3): void
     hideSelf(hideDuration: number) {
         if (hideDuration > 0) {
             this.invisible = true
@@ -87,7 +77,9 @@ export default abstract class PlayActor extends Actor {
             flabel.hideLabel()
         }
     }
-
+    get Hv(): cc.Vec2 {
+        return this.hv
+    }
     playerData: PlayerData
     nonPlayerData: NonPlayerData
     protected onLoad(): void {

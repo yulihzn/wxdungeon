@@ -24,8 +24,9 @@ export default class PlayerAvatar extends cc.Component {
     static readonly STATE_ATTACK = 2
     static readonly STATE_FALL = 3
     static readonly STATE_DIE = 4
-    static readonly STATE_JUMP = 5
-    static readonly STATE_AIRKICK = 6
+    static readonly STATE_JUMP_UP = 5
+    static readonly STATE_JUMP_DOWN = 6
+    static readonly STATE_AIRKICK = 7
     status = PlayerAvatar.STATE_IDLE
     dir = PlayerAvatar.DIR_RIGHT
     anim: cc.Animation
@@ -172,9 +173,14 @@ export default class PlayerAvatar extends cc.Component {
                     this.anim.play('AvatarFall')
                 }
                 break
-            case PlayerAvatar.STATE_JUMP:
-                if (PlayerAvatar.STATE_DIE != this.status) {
-                    this.anim.play('AvatarJump')
+            case PlayerAvatar.STATE_JUMP_UP:
+                if (this.status != status && PlayerAvatar.STATE_DIE != this.status) {
+                    this.anim.play('AvatarJumpUp')
+                }
+                break
+            case PlayerAvatar.STATE_JUMP_DOWN:
+                if (this.status != status && PlayerAvatar.STATE_DIE != this.status) {
+                    this.anim.play('AvatarJumpDown')
                 }
                 break
         }

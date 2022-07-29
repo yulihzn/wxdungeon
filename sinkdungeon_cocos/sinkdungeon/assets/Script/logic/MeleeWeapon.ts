@@ -432,6 +432,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (this.isFist) {
             audioName = fistName
         }
+        if (this.player.sc.isJumping) {
+            audioName = AudioPlayer.MELEE
+        }
         AudioPlayer.play(audioName)
     }
     /**Anim 清空攻击列表*/
@@ -506,7 +509,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
             this.rotateCollider(this.hv)
         }
         this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 5)
-        let z = this.player.root.y
+        let z = this.player.Root.y
         this.node.y = -z
         if (this.spriteNode) {
             let zpos = this.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO)
@@ -581,8 +584,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
         let damage = new DamageData()
         let common = new CommonData()
         if (this.player) {
-            damage = this.player.data.getFinalAttackPoint()
-            common = this.player.data.FinalCommon
+            damage = this.player.playerData.getFinalAttackPoint()
+            common = this.player.playerData.FinalCommon
         }
         damage.isStab = this.isStab
         damage.isFist = this.isFist
@@ -650,7 +653,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (damageSuccess) {
             this.drainSkill.next(
                 () => {
-                    let drain = this.player.data.getLifeDrain()
+                    let drain = this.player.playerData.getLifeDrain()
                     if (drain > 0) {
                         this.player.takeDamage(new DamageData(-drain))
                     }
@@ -664,8 +667,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
         //停顿
         if (damageSuccess || attackSuccess) {
             anim.pause()
-            if (this.player.sc.isJumping) {
-                this.player.airPause(2, 0.2)
+            if (this.player.jumpAbility && this.player.sc.isJumping) {
+                this.player.jumpAbility.airPause(2, 0.2)
             }
             if (!isShadow) {
                 EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: this.comboType == MeleeWeapon.COMBO3 })
@@ -674,7 +677,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 anim.resume()
             }, 0.1)
         }
-        if (damageSuccess && this.player.data.AvatarData.organizationIndex == AvatarData.TECH) {
+        if (damageSuccess && this.player.playerData.AvatarData.organizationIndex == AvatarData.TECH) {
             this.player.updateDream(-1)
         }
         return damageSuccess || attackSuccess
