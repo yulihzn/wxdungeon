@@ -41,9 +41,11 @@ import AreaDetector from '../actor/AreaDetector'
 import ActorBottomDir from '../actor/ActorBottomDir'
 import JumpingAbility from '../actor/JumpingAbility'
 import TriggerData from '../data/TriggerData'
+import PlayActor from '../base/PlayActor'
+import PlayerAvatar from './PlayerAvatar'
 
 @ccclass
-export default class NonPlayer extends Actor {
+export default class NonPlayer extends PlayActor {
     public static readonly RES_DISGUISE = 'disguise' //图片资源 伪装
     public static readonly RES_IDLE000 = 'anim000' //图片资源 等待0
     public static readonly RES_IDLE001 = 'anim001' //图片资源 等待1
@@ -91,6 +93,8 @@ export default class NonPlayer extends Actor {
     bottomDir: ActorBottomDir = null
     @property(cc.Prefab)
     waterSpark: cc.Prefab = null
+    @property(cc.Prefab)
+    avatarPrefab: cc.Prefab = null
     private attrNode: cc.Node
     private sprite: cc.Node
     private bodySprite: cc.Sprite
@@ -137,6 +141,35 @@ export default class NonPlayer extends Actor {
     get IsVariation() {
         return this.isVariation || this.data.StatusTotalData.variation > 0
     }
+    init(): void {
+        this.triggerShooter = this.shooter
+        // this.handLeft = this.weaponLeft
+        // this.handRight = this.weaponRight
+        this.floatinglabelMgr = this.floatinglabelManager
+        this.statusMgr = this.statusManager
+        this.nonPlayerData = this.data
+        this.jumpAbility = this.addComponent(JumpingAbility)
+        this.jumpAbility.init(this, 2, 0, (group: number, type: number) => {
+            if (TriggerData.TYPE_JUMP_END == type) {
+                if (this.sc.isMoving) {
+                    this.playerAnim(PlayerAvatar.STATE_WALK, this.currentDir)
+                } else {
+                    this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
+                }
+            }
+            this.exTrigger(group, type, null, null)
+        })
+
+        // this.avatar = cc.instantiate(this.avatarPrefab).getComponent(PlayerAvatar)
+        // this.avatar.node.parent = this.root
+        // this.avatar.node.zIndex = 0
+        // this.avatar.init(Logic.playerData.AvatarData.clone(), this.node.group)
+    }
+    get Root(): cc.Node {
+        return this.root
+    }
+    playerAnim(status: number, dir: number): void {}
+    getWalkSmoke(parentNode: cc.Node, pos: cc.Vec3): void {}
     onLoad() {
         this.initCollider()
         this.dangerBox = this.dangerBoxNode.getComponent(ActorAttackBox)
@@ -172,11 +205,7 @@ export default class NonPlayer extends Actor {
         this.dangerBox.init(this, this.data)
         this.dangerTips.opacity = 0
         this.specialStep.init()
-        this.jumpAbility = this.addComponent(JumpingAbility)
-        this.jumpAbility.init(this, 1, 0, (group: number, type: number) => {
-            if (TriggerData.TYPE_JUMP_START == type) {
-            }
-        })
+
         this.stateMachine = new DefaultStateMachine(this, NonPlayerActorState.PRPARE, NonPlayerActorState.GLOBAL)
     }
 
@@ -385,21 +414,6 @@ export default class NonPlayer extends Actor {
     }
     private changeZIndex() {
         this.node.zIndex = IndexZ.getActorZIndex(this.node.position)
-    }
-    private showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean, isBackStab: boolean) {
-        if (!this.floatinglabelManager) {
-            return
-        }
-        let flabel = this.floatinglabelManager.getFloaingLabel(dungeonNode)
-        if (isDodge) {
-            flabel.showDoge()
-        } else if (isMiss) {
-            flabel.showMiss()
-        } else if (d != 0) {
-            flabel.showDamage(-d, isCritical, isBackStab)
-        } else {
-            flabel.hideLabel()
-        }
     }
 
     private remoteAttack(target: Actor, isSpecial: boolean) {
@@ -732,12 +746,12 @@ export default class NonPlayer extends Actor {
         }
         //隐身中
         if (this.data.invisible > 0 && Logic.getRandomNum(1, 10) > 4) {
-            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false)
+            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false, false, false)
             return false
         }
         //闪烁中
         if (this.sc.isBlinking) {
-            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false)
+            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false, false, false)
             return false
         }
         let dd = this.data.getDamage(damageData)
@@ -745,7 +759,7 @@ export default class NonPlayer extends Actor {
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0
         dd = isDodge ? new DamageData() : dd
         if (isDodge) {
-            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false)
+            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false, false, false)
             return false
         }
         let isHurting = dd.getTotalDamage() > 0
@@ -788,7 +802,7 @@ export default class NonPlayer extends Actor {
             this.data.currentHealth = this.data.getHealth().y
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.getHealth().y)
-        this.showFloatFont(this.dungeon.node, dd.getTotalDamage(), false, false, damageData.isCriticalStrike, damageData.isBackAttack)
+        this.showFloatFont(this.dungeon.node, dd.getTotalDamage(), false, false, damageData.isCriticalStrike, false, damageData.isBackAttack, false)
         //挨打回血
         if (this.data.isRecovery > 0 && isHurting) {
             this.addStatus(StatusManager.RECOVERY, new FromData())
@@ -1044,7 +1058,7 @@ export default class NonPlayer extends Actor {
                 this.showAttackEffect(false)
                 let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate
                 if (isMiss) {
-                    this.showFloatFont(this.dungeon.node, 0, false, true, false, false)
+                    this.showFloatFont(this.dungeon.node, 0, false, true, false, false, false, false)
                 }
                 this.showAttackAnim(
                     () => {},

@@ -54,7 +54,7 @@ export default class FloatingLabel extends cc.Component {
         this.showLabel('格挡致命伤', cc.color(255, 0, 0), 5)
     }
 
-    showDamage(damage: number, isCritical: boolean, isBackStab?: boolean) {
+    showDamage(damage: number, isCritical: boolean, isBackStab: boolean) {
         let color = damage < 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0)
 
         let baseScale = 1

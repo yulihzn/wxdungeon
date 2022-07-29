@@ -58,7 +58,7 @@ export default abstract class PlayActor extends Actor {
         this.invisible = false
         this.statusMgr.stopStatus(StatusManager.TALENT_INVISIBLE)
     }
-    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean, isBlock: boolean, isAvoidDeath: boolean) {
+    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean, isBlock: boolean, isBackStab: boolean, isAvoidDeath: boolean) {
         if (!this.floatinglabelMgr) {
             return
         }
@@ -72,7 +72,7 @@ export default abstract class PlayActor extends Actor {
         } else if (isAvoidDeath) {
             flabel.showAvoidDeath()
         } else if (d != 0 && d) {
-            flabel.showDamage(-d, isCritical)
+            flabel.showDamage(-d, isCritical, isBackStab)
         } else {
             flabel.hideLabel()
         }

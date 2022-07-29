@@ -213,7 +213,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         }
 
         if (isMiss) {
-            this.player.showFloatFont(this.node.parent, 0, false, true, false, false, false)
+            this.player.showFloatFont(this.node.parent, 0, false, true, false, false, false, false)
         }
         return this.attackDo(data, isMiss, fistCombo)
     }
@@ -378,7 +378,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
             this.isAttackPressed = false
             this.anim.pause()
             if (this.comboMiss) {
-                this.player.showFloatFont(this.node.parent, 0, false, true, false, false, false)
+                this.player.showFloatFont(this.node.parent, 0, false, true, false, false, false, false)
             }
             this.attackDo(this.playerData, this.comboMiss, this.fistCombo)
             this.player.playerAnim(this.player.sc.isJumping ? PlayerAvatar.STATE_AIRKICK : PlayerAvatar.STATE_ATTACK, this.player.currentDir)

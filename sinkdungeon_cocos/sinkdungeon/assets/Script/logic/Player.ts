@@ -159,7 +159,7 @@ export default class Player extends PlayActor {
         this.avatar = cc.instantiate(this.avatarPrefab).getComponent(PlayerAvatar)
         this.avatar.node.parent = this.root
         this.avatar.node.zIndex = 0
-        this.avatar.init(Logic.playerData.AvatarData.clone(), this.node.group)
+        this.avatar.init(Logic.playerData.AvatarData.clone(), this.node.group, false, '')
     }
     onLoad() {
         this.data = Logic.playerData.clone()
@@ -1002,7 +1002,7 @@ export default class Player extends PlayActor {
             }
         }
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y })
-        this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false, false, isBlock, isAvoidDeath)
+        this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false, false, isBlock, damageData.isBackAttack, isAvoidDeath)
         if (isDodge) {
             this.exTrigger(TriggerData.GROUP_HURT, TriggerData.TYPE_HURT_DODGE, from, actor)
         }
@@ -1046,25 +1046,6 @@ export default class Player extends PlayActor {
         }
     }
 
-    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean, isBlock: boolean, isAvoidDeath: boolean) {
-        if (!this.floatinglabelManager) {
-            return
-        }
-        let flabel = this.floatinglabelManager.getFloaingLabel(dungeonNode)
-        if (isDodge) {
-            flabel.showDoge()
-        } else if (isMiss) {
-            flabel.showMiss()
-        } else if (isBlock) {
-            flabel.showBlock()
-        } else if (isAvoidDeath) {
-            flabel.showAvoidDeath()
-        } else if (d != 0 && d) {
-            flabel.showDamage(-d, isCritical)
-        } else {
-            flabel.hideLabel()
-        }
-    }
     killed(from?: FromData) {
         if (this.sc.isDied) {
             return

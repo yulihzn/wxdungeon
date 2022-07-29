@@ -27,6 +27,9 @@ export default class PlayerAvatar extends cc.Component {
     static readonly STATE_JUMP_UP = 5
     static readonly STATE_JUMP_DOWN = 6
     static readonly STATE_AIRKICK = 7
+    static readonly STATE_HIT = 8
+    static readonly STATE_SPECIAL = 9
+    static readonly STATE_DISGUISE = 10
     status = PlayerAvatar.STATE_IDLE
     dir = PlayerAvatar.DIR_RIGHT
     anim: cc.Animation
@@ -51,23 +54,36 @@ export default class PlayerAvatar extends cc.Component {
     clothesSprite: cc.Sprite = null
     avatarNode: cc.Node = null
     spriteNode: cc.Node = null
+    animFrameSprite: cc.Sprite = null
     data: AvatarData
     isAniming = false
     idlehair = [0, 1]
     waterY = 0
     isInit = false
+    isAnimFrame = false
+    idleFrames = [0, 1]
+    walkFrames = [2, 5]
+    hitFrames = [6, 7]
+    dieFrames = [8]
+    attackFrames = [9, 10]
+    specialFrames = [12, 13]
+    disguiseFrames = [14]
+    resName = ''
 
-    public init(data: AvatarData, group: string) {
+    public init(data: AvatarData, group: string, isAnimFrame: boolean, resName: string) {
         if (this.isInit) {
             return
         }
         Utils.changeNodeGroups(this.node, group)
         this.isInit = true
+        this.isAnimFrame = isAnimFrame
+        this.resName = resName
         this.data = new AvatarData()
         this.data.valueCopy(data)
         this.anim = this.getComponent(cc.Animation)
         this.avatarNode = this.getSpriteChildNode(['sprite', 'avatar'])
         this.spriteNode = this.getSpriteChildNode(['sprite'])
+        this.animFrameSprite = this.getSpriteChildSprite(['sprite', 'animframe'])
         this.cloakSprite = this.getSpriteChildSprite(['sprite', 'cloak'])
         this.legLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legleft'])
         this.legRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legright'])
@@ -138,50 +154,52 @@ export default class PlayerAvatar extends cc.Component {
             }
         }
     }
-    playAnim(status: number, dir: number) {
-        if (!this.isInit || this.isAniming) {
+    playAnim(status: number, dir: number, speedScale?: number) {
+        if (!this.isInit || this.isAniming || PlayerAvatar.STATE_DIE == this.status) {
             return
         }
+        let scale = speedScale ?? 1
         switch (status) {
             case PlayerAvatar.STATE_IDLE:
-                if (this.status != status && PlayerAvatar.STATE_DIE != this.status) {
-                    this.playIdle()
+                if (this.status != status) {
+                    this.playIdle(scale)
                 }
                 break
             case PlayerAvatar.STATE_WALK:
-                if (this.status != status && PlayerAvatar.STATE_ATTACK != this.status && PlayerAvatar.STATE_AIRKICK != this.status && PlayerAvatar.STATE_DIE != this.status) {
-                    this.playWalk()
+                if (this.status != status && PlayerAvatar.STATE_ATTACK != this.status && PlayerAvatar.STATE_AIRKICK != this.status) {
+                    this.playWalk(scale)
                 }
                 break
             case PlayerAvatar.STATE_ATTACK:
-                if (PlayerAvatar.STATE_DIE != this.status) {
-                    this.playAttack()
-                }
+                this.playAttack(scale)
                 break
             case PlayerAvatar.STATE_AIRKICK:
-                if (PlayerAvatar.STATE_DIE != this.status) {
-                    this.playAirKick()
-                }
+                this.playAirKick(scale)
                 break
             case PlayerAvatar.STATE_DIE:
-                if (PlayerAvatar.STATE_DIE != this.status) {
-                    this.playDie()
-                }
+                this.playDie(scale)
                 break
             case PlayerAvatar.STATE_FALL:
-                if (PlayerAvatar.STATE_DIE != this.status) {
-                    this.anim.play('AvatarFall')
-                }
+                this.playFall(scale)
                 break
             case PlayerAvatar.STATE_JUMP_UP:
-                if (this.status != status && PlayerAvatar.STATE_DIE != this.status) {
-                    this.anim.play('AvatarJumpUp')
+                if (this.status != status) {
+                    this.playJumpUp(scale)
                 }
                 break
             case PlayerAvatar.STATE_JUMP_DOWN:
-                if (this.status != status && PlayerAvatar.STATE_DIE != this.status) {
-                    this.anim.play('AvatarJumpDown')
+                if (this.status != status) {
+                    this.playJumpDown(scale)
                 }
+                break
+            case PlayerAvatar.STATE_DISGUISE:
+                this.playDisguise(scale)
+                break
+            case PlayerAvatar.STATE_HIT:
+                this.playHit(scale)
+                break
+            case PlayerAvatar.STATE_SPECIAL:
+                this.playSpecial(scale)
                 break
         }
         this.status = status
@@ -217,19 +235,109 @@ export default class PlayerAvatar extends cc.Component {
     //     this.footLeftSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT)
     // }
 
-    changeEquipDirSpriteFrame(inventoryManager: InventoryManager, dir: number) {
+    public changeEquipDirSpriteFrame(inventoryManager: InventoryManager, dir: number) {
         let helmet = inventoryManager.equips[InventoryManager.HELMET]
         let clothes = inventoryManager.equips[InventoryManager.CLOTHES]
         this.updateSpriteFrameAnim(this.helmetSprite, helmet.img, helmet.anim)
         this.updateSpriteFrameAnim(this.clothesSprite, clothes.img, clothes.anim)
     }
-    private playDie() {
+    private playJumpDown(speedScale: number) {
+        if (this.isAnimFrame) {
+            this.playAnimFrames([], speedScale, false)
+            return
+        }
+        this.anim.play('AvatarJumpDown')
+    }
+    private playJumpUp(speedScale: number) {
+        if (this.isAnimFrame) {
+            this.playAnimFrames([], speedScale, false)
+            return
+        }
+        this.anim.play('AvatarJumpUp')
+    }
+    private playDisguise(speedScale: number) {
+        if (this.isAnimFrame) {
+            this.playAnimFrames(this.disguiseFrames, speedScale, false)
+            return
+        }
+    }
+    private playHit(speedScale: number) {
+        if (this.isAnimFrame) {
+            let arr = [this.hitFrames[Logic.getRandomNum(0, this.hitFrames.length - 1)]]
+            this.playAnimFrames(arr, speedScale, false)
+            return
+        }
+    }
+    private playSpecial(speedScale: number) {
+        if (this.isAnimFrame) {
+            this.playAnimFrames(this.specialFrames, speedScale, false)
+            return
+        }
+    }
+    private playFall(speedScale: number) {
+        if (this.isAnimFrame) {
+            this.playAnimFrames(this.hitFrames, speedScale, false)
+            return
+        }
+        this.anim.play('AvatarFall')
+    }
+    private playDie(speedScale: number) {
+        if (this.isAnimFrame) {
+            this.playAnimFrames(this.dieFrames, speedScale, false)
+            return
+        }
         this.anim.play('AvatarDie')
     }
-    private playIdle() {
+    private playIdle(speedScale: number) {
+        if (this.isAnimFrame) {
+            this.playAnimFrames(this.idleFrames, speedScale, true)
+            return
+        }
         this.anim.play('AvatarIdle')
     }
-    changeAvatarByDir(dir: number) {
+    private playAnimFrames(frames: number[], speedScale: number, loop: boolean) {
+        if (frames.length < 1) {
+            return
+        }
+        const _tween = cc.tween()
+        for (let i = frames[0]; i <= frames[1]; i++) {
+            _tween.then(
+                cc
+                    .tween()
+                    .call(() => {
+                        this.changeAnimFrames(this.resName, `anim${Utils.getNumberStr3(i)}`)
+                    })
+                    .delay(0.2 * speedScale)
+            )
+        }
+        this.animFrameSprite.node.stopAllActions()
+        if (loop && frames[1] > frames[0]) {
+            cc.tween(this.animFrameSprite.node).repeatForever(_tween).start()
+        } else {
+            cc.tween(this.animFrameSprite.node).then(_tween).start()
+        }
+    }
+    private changeAnimFrames(resName: string, suffix?: string) {
+        if (!this.animFrameSprite) {
+            this.getSpriteChildSprite(['sprite', 'animframe'])
+        }
+        let spriteFrame = this.getSpriteFrameByName(resName, suffix)
+        if (spriteFrame) {
+            this.bodySprite.spriteFrame = spriteFrame
+            this.bodySprite.node.width = spriteFrame.getOriginalSize().width
+            this.bodySprite.node.height = spriteFrame.getOriginalSize().height
+        } else {
+            this.bodySprite.spriteFrame = null
+        }
+    }
+    private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
+        let spriteFrame = Logic.spriteFrameRes(resName + suffix)
+        if (!spriteFrame) {
+            spriteFrame = Logic.spriteFrameRes(resName)
+        }
+        return spriteFrame
+    }
+    public changeAvatarByDir(dir: number) {
         if (this.isAniming) {
             return
         }
@@ -251,8 +359,10 @@ export default class PlayerAvatar extends cc.Component {
         this.setInWaterMat(this.cloakSprite, inWater)
         this.waterY = inWaterTile ? -32 : 0
         this.node.y = Logic.lerp(this.node.y, this.waterY, 0.2)
+        if (this.isAnimFrame) {
+            this.setInWaterMat(this.animFrameSprite, inWater)
+        }
     }
-
     private setInWaterMat(sprite: cc.Sprite, inWater: boolean) {
         if (!sprite || !sprite.spriteFrame) {
             return
@@ -262,8 +372,10 @@ export default class PlayerAvatar extends cc.Component {
         let texture = sprite.spriteFrame.getTexture()
         sprite.getMaterial(0).setProperty('rect', [rect.x / texture.width, rect.y / texture.height, rect.width / texture.width, rect.height / texture.height])
         sprite.getMaterial(0).setProperty('hidebottom', inWater ? 1 : 0)
-        sprite.getMaterial(0).setProperty('angularVelocity', 300)
-        sprite.getMaterial(0).setProperty('amplitude', 0.001)
+        if (!this.isAnimFrame) {
+            sprite.getMaterial(0).setProperty('angularVelocity', 300)
+            sprite.getMaterial(0).setProperty('amplitude', 0.001)
+        }
         sprite.getMaterial(0).setProperty('isRotated', sprite.spriteFrame.isRotated() ? 1.0 : 0.0)
     }
     private updateSpriteFrameAnim(sprite: cc.Sprite, resName: string, animCount: number) {
@@ -283,10 +395,16 @@ export default class PlayerAvatar extends cc.Component {
             0.1
         )
     }
-    private playWalk() {
+    private playWalk(speedScale: number) {
+        if (this.isAnimFrame) {
+            return
+        }
         this.anim.play('AvatarWalkHorizontal')
     }
-    private playAttack() {
+    private playAttack(speedScale: number) {
+        if (this.isAnimFrame) {
+            return
+        }
         this.anim.play('AvatarAttackHorizontal')
         let offsetX = -16
         let offsetY = 0
@@ -301,7 +419,10 @@ export default class PlayerAvatar extends cc.Component {
             })
             .start()
     }
-    private playAirKick() {
+    private playAirKick(speedScale: number) {
+        if (this.isAnimFrame) {
+            return
+        }
         this.anim.play('AvatarAirKick')
         let offsetX = -16
         let offsetY = 0
