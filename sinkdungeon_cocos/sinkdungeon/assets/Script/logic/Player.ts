@@ -61,6 +61,7 @@ import AreaOfEffectData from '../data/AreaOfEffectData'
 import StateMachine from '../base/fsm/StateMachine'
 import State from '../base/fsm/State'
 import PlayActor from '../base/PlayActor'
+import BaseAvatar from '../base/BaseAvatar'
 @ccclass
 export default class Player extends PlayActor {
     @property(cc.Sprite)
@@ -149,17 +150,14 @@ export default class Player extends PlayActor {
         this.jumpAbility.init(this, 2, 0, (group: number, type: number) => {
             if (TriggerData.TYPE_JUMP_END == type) {
                 if (this.sc.isMoving) {
-                    this.playerAnim(PlayerAvatar.STATE_WALK, this.currentDir)
+                    this.playerAnim(BaseAvatar.STATE_WALK, this.currentDir)
                 } else {
-                    this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
+                    this.playerAnim(BaseAvatar.STATE_IDLE, this.currentDir)
                 }
             }
             this.exTrigger(group, type, null, null)
         })
-        this.avatar = cc.instantiate(this.avatarPrefab).getComponent(PlayerAvatar)
-        this.avatar.node.parent = this.root
-        this.avatar.node.zIndex = 0
-        this.avatar.init(Logic.playerData.AvatarData.clone(), this.node.group, false, '')
+        this.avatar = PlayerAvatar.create(this.avatarPrefab, this.root, Logic.playerData.AvatarData.clone(), this.node.group)
     }
     onLoad() {
         this.data = Logic.playerData.clone()
@@ -266,7 +264,7 @@ export default class Player extends PlayActor {
         EventHelper.on(EventHelper.POOL_DESTORY_WALKSMOKE, detail => {
             this.destroySmoke(detail.coinNode)
         })
-        this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
+        this.playerAnim(BaseAvatar.STATE_IDLE, this.currentDir)
         if (Logic.isCheatMode) {
             this.scheduleOnce(() => {
                 this.addStatus(StatusManager.PERFECTDEFENCE, new FromData())
@@ -377,7 +375,7 @@ export default class Player extends PlayActor {
         if (dizzDuration > 0 && !this.sc.isJumping) {
             this.sc.isDizzing = true
             this.entity.Move.linearVelocity = cc.Vec2.ZERO
-            this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
+            this.playerAnim(BaseAvatar.STATE_IDLE, this.currentDir)
             this.scheduleOnce(() => {
                 this.sc.isDizzing = false
             }, dizzDuration)
@@ -621,7 +619,7 @@ export default class Player extends PlayActor {
             //     this.isFaceRight = pos.x > 0
             // }
             // this.isFaceUp = pos.y > 0
-            this.playerAnim(this.sc.isJumping ? PlayerAvatar.STATE_AIRKICK : PlayerAvatar.STATE_ATTACK, this.currentDir)
+            this.playerAnim(this.sc.isJumping ? BaseAvatar.STATE_AIRKICK : BaseAvatar.STATE_ATTACK, this.currentDir)
             this.stopHiding()
         }
     }
@@ -655,7 +653,7 @@ export default class Player extends PlayActor {
         }
         if (!this.interactBuilding.isAniming) {
             this.stopHiding()
-            this.playerAnim(PlayerAvatar.STATE_ATTACK, this.currentDir)
+            this.playerAnim(BaseAvatar.STATE_ATTACK, this.currentDir)
             return this.interactBuilding.interact(this, false, isMelee, !isMelee)
         }
         return true
@@ -726,9 +724,9 @@ export default class Player extends PlayActor {
         this.sc.isMoving = h != 0 || v != 0
 
         if (this.sc.isMoving) {
-            this.playerAnim(PlayerAvatar.STATE_WALK, dir)
+            this.playerAnim(BaseAvatar.STATE_WALK, dir)
         } else {
-            this.playerAnim(PlayerAvatar.STATE_IDLE, dir)
+            this.playerAnim(BaseAvatar.STATE_IDLE, dir)
         }
         this.updateAvatarFace(dir)
     }
@@ -744,10 +742,10 @@ export default class Player extends PlayActor {
             this.isFaceRight = this.hv.x > 0
             this.isFaceUp = this.hv.y > 0
             this.currentDir = dir
-            if (dir == PlayerAvatar.DIR_DOWN && this.isFaceUp) {
-                dir = PlayerAvatar.DIR_UP
-            } else if (dir == PlayerAvatar.DIR_UP && !this.isFaceUp) {
-                dir = PlayerAvatar.DIR_DOWN
+            if (dir == BaseAvatar.DIR_DOWN && this.isFaceUp) {
+                dir = BaseAvatar.DIR_UP
+            } else if (dir == BaseAvatar.DIR_UP && !this.isFaceUp) {
+                dir = BaseAvatar.DIR_DOWN
             }
             this.weaponLeft.changeZIndexByDir(this.avatar.node.zIndex, dir)
             this.weaponRight.changeZIndexByDir(this.avatar.node.zIndex, dir)
@@ -774,31 +772,31 @@ export default class Player extends PlayActor {
     }
 
     playerAnim(status: number, dir: number): void {
-        if (status == PlayerAvatar.STATE_IDLE && this.avatar.status != PlayerAvatar.STATE_IDLE) {
+        if (status == BaseAvatar.STATE_IDLE && this.avatar.status != BaseAvatar.STATE_IDLE) {
             this.weaponLeft.shooter.playWalk(false)
             this.weaponRight.shooter.playWalk(false)
         }
         switch (status) {
-            case PlayerAvatar.STATE_IDLE:
-                if (this.avatar.status != PlayerAvatar.STATE_IDLE) {
+            case BaseAvatar.STATE_IDLE:
+                if (this.avatar.status != BaseAvatar.STATE_IDLE) {
                     this.weaponLeft.shooter.playWalk(false)
                     this.weaponRight.shooter.playWalk(false)
                 }
                 break
-            case PlayerAvatar.STATE_WALK:
-                if (this.avatar.status != PlayerAvatar.STATE_ATTACK && this.avatar.status != PlayerAvatar.STATE_AIRKICK) {
+            case BaseAvatar.STATE_WALK:
+                if (this.avatar.status != BaseAvatar.STATE_ATTACK && this.avatar.status != BaseAvatar.STATE_AIRKICK) {
                     this.weaponLeft.shooter.playWalk(true)
                     this.weaponRight.shooter.playWalk(true)
                 }
                 break
-            case PlayerAvatar.STATE_ATTACK:
-            case PlayerAvatar.STATE_AIRKICK:
+            case BaseAvatar.STATE_ATTACK:
+            case BaseAvatar.STATE_AIRKICK:
                 this.weaponLeft.shooter.playWalk(true)
                 this.weaponRight.shooter.playWalk(true)
                 break
-            case PlayerAvatar.STATE_FALL:
+            case BaseAvatar.STATE_FALL:
                 break
-            case PlayerAvatar.STATE_DIE:
+            case BaseAvatar.STATE_DIE:
                 break
         }
         this.avatar.playAnim(status, dir)
@@ -816,10 +814,10 @@ export default class Player extends PlayActor {
             return
         }
         this.sc.isFalling = true
-        this.avatar.playAnim(PlayerAvatar.STATE_FALL, this.currentDir)
+        this.avatar.playAnim(BaseAvatar.STATE_FALL, this.currentDir)
         this.scheduleOnce(() => {
             this.transportPlayer(this.defaultPos)
-            this.playerAnim(PlayerAvatar.STATE_IDLE, 1)
+            this.playerAnim(BaseAvatar.STATE_IDLE, 1)
             let dd = new DamageData()
             dd.realDamage = 1
             this.takeDamage(dd, FromData.getClone('跌落', ''))
@@ -884,12 +882,12 @@ export default class Player extends PlayActor {
         pos = pos.mul(speed)
         this.entity.Move.linearVelocity = pos
         this.entity.Move.damping = 50
-        this.playerAnim(PlayerAvatar.STATE_WALK, this.currentDir)
+        this.playerAnim(BaseAvatar.STATE_WALK, this.currentDir)
         this.highLight(true)
         this.scheduleOnce(() => {
             this.entity.Move.damping = 3
             this.entity.Move.linearVelocity = cc.Vec2.ZERO
-            this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
+            this.playerAnim(BaseAvatar.STATE_IDLE, this.currentDir)
             this.sc.isDashing = false
             this.highLight(false)
             this.scheduleOnce(() => {
@@ -1051,7 +1049,7 @@ export default class Player extends PlayActor {
             return
         }
         this.sc.isDied = true
-        this.avatar.playAnim(PlayerAvatar.STATE_DIE, this.currentDir)
+        this.avatar.playAnim(BaseAvatar.STATE_DIE, this.currentDir)
         EventHelper.emit(EventHelper.HUD_STOP_COUNTTIME)
         this.scheduleOnce(() => {
             EventHelper.emit(EventHelper.HUD_FADE_OUT)
@@ -1212,7 +1210,7 @@ export default class Player extends PlayActor {
         this.statusManager.node.position = this.statusPos.clone().add(cc.v3(0, this.root.y))
         this.floatinglabelManager.node.position = this.floatPos.clone().add(cc.v3(0, this.root.y))
         if (this.sc.isJumping && this.CanJump) {
-            this.playerAnim(this.entity.Move.linearVelocityZ > 0 ? PlayerAvatar.STATE_JUMP_UP : PlayerAvatar.STATE_JUMP_DOWN, this.currentDir)
+            this.playerAnim(this.entity.Move.linearVelocityZ > 0 ? BaseAvatar.STATE_JUMP_UP : BaseAvatar.STATE_JUMP_DOWN, this.currentDir)
         }
     }
 
@@ -1426,10 +1424,10 @@ export default class Player extends PlayActor {
         this.addCustomStatus(data, new FromData())
     }
     sleep() {
-        this.avatar.sleep()
+        this.avatar.playSleep()
     }
     toilet() {
-        this.avatar.toilet()
+        this.avatar.playToilet()
         cc.tween(this.data.LifeData)
             .to(3, { poo: 0, pee: 0 })
             .call(() => {
@@ -1444,7 +1442,7 @@ export default class Player extends PlayActor {
         }
     }
     read() {
-        this.avatar.read()
+        this.avatar.playRead()
         if (Random.getRandomNum(0, 100) > 90) {
             Utils.toast('你用量子波动速读看完了一本书,书里的内容让你不寒而栗。', false, true)
             this.sanityChange(-10)
@@ -1454,14 +1452,14 @@ export default class Player extends PlayActor {
         }
     }
     cooking() {
-        this.avatar.cooking()
+        this.avatar.playCooking()
         Utils.toast(`你炒了两个鸡蛋又用昨晚剩下的米饭拌了拌。`, false, true)
     }
     drink() {
-        this.avatar.drink()
+        this.avatar.playDrink()
         this.addStatus(StatusManager.HEALING, new FromData())
         this.addStatus(StatusManager.DRINK, new FromData())
-        this.avatar.changeAvatarByDir(PlayerAvatar.DIR_RIGHT)
+        this.avatar.changeAvatarByDir(BaseAvatar.DIR_RIGHT)
     }
     canEatOrDrink(data: ItemData): boolean {
         let life = this.data.LifeData

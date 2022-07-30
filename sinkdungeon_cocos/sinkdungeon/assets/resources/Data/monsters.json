@@ -12,6 +12,11 @@
             "maxHealth": 100,
             "damageMin": 9
         },
+        "avatar": {
+            "isAnimFrame": true,
+            "attackFrames": [9, 11],
+            "specialFrames": [12, 14]
+        },
         "currentHealth": 100,
         "invisible": 0,
         "remote": 0,
@@ -35,6 +40,12 @@
             "moveSpeed": 10,
             "maxHealth": 100,
             "damageMin": 9
+        },
+        "avatar": {
+            "isAnimFrame": true,
+            "attackFrames": [9, 10],
+            "specialFrames": [11, 12],
+            "disguiseFrames": []
         },
         "currentHealth": 100,
         "isBoom": 0,
@@ -65,6 +76,9 @@
             "magicDamage": 6,
             "damageMin": 9
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 80,
         "invisible": 0,
         "remote": 4,
@@ -86,6 +100,9 @@
             "moveSpeed": 4,
             "maxHealth": 150,
             "damageMin": 12
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 150,
         "invisible": 1,
@@ -109,6 +126,9 @@
             "maxHealth": 50,
             "damageMin": 6
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 50,
         "invisible": 0,
         "remote": 0,
@@ -130,6 +150,9 @@
             "moveSpeed": 8,
             "maxHealth": 50,
             "damageMin": 6
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 50,
         "invisible": 0,
@@ -156,6 +179,9 @@
             "maxHealth": 60,
             "damageMin": 6
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 60,
         "invisible": 0,
         "remote": 3,
@@ -181,6 +207,9 @@
             "maxHealth": 15,
             "damageMin": 3
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 15,
         "invisible": 0,
         "remote": 4,
@@ -205,6 +234,9 @@
             "maxHealth": 60,
             "damageMin": 7
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 60,
         "invisible": 0,
         "remote": 0,
@@ -227,6 +259,9 @@
             "moveSpeed": 6,
             "maxHealth": 50,
             "damageMin": 10
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 50,
         "invisible": 0,
@@ -251,6 +286,9 @@
             "moveSpeed": 9,
             "maxHealth": 200,
             "damageMin": 15
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 200,
         "isHeavy": 1,
@@ -282,6 +320,9 @@
             "maxHealth": 100,
             "damageMin": 9
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 100,
         "invisible": 0,
         "remote": 3,
@@ -306,6 +347,9 @@
             "maxHealth": 100,
             "damageMin": 3,
             "curseRate": 10
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 100,
         "invisible": 0,
@@ -333,6 +377,9 @@
             "maxHealth": 100,
             "damageMin": 9
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 100,
         "invisible": 0,
         "remote": 5,
@@ -354,6 +401,9 @@
             "moveSpeed": 14,
             "maxHealth": 20,
             "damageMin": 3
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 20,
         "isLineAim": 0,
@@ -381,6 +431,9 @@
             "magicDamage": 1,
             "damageMin": 10
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 120,
         "isHeavy": 1,
         "invisible": 0,
@@ -407,6 +460,9 @@
             "maxHealth": 99999,
             "defence": 0,
             "damageMin": 0.1
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 99999,
         "invisible": 0,
@@ -437,6 +493,9 @@
             "maxHealth": 15,
             "damageMin": 3
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 15,
         "invisible": 0,
         "remote": 4,
@@ -457,6 +516,9 @@
             "moveSpeed": 6,
             "maxHealth": 20,
             "damageMin": 3
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "bulletType": "bullet039",
         "shooterOffsetX": 56,
@@ -490,6 +552,9 @@
             "toxicRate": 5,
             "damageMin": 3
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 15,
         "invisible": 0,
         "remote": 0,
@@ -512,6 +577,9 @@
             "lighteningRate": 100,
             "magicDamage": 1,
             "damageMin": 3
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "bulletArcExNum": 2,
         "bulletLineExNum": 0,
@@ -543,6 +611,9 @@
             "maxHealth": 50,
             "damageMin": 6
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 50,
         "invisible": 0,
         "remote": 0,
@@ -569,6 +640,9 @@
             "moveSpeed": 4,
             "maxHealth": 170,
             "damageMin": 13
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "isHeavy": 1,
         "currentHealth": 170,
@@ -597,6 +671,9 @@
             "magicDamage": 1,
             "damageMin": 9
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "isHeavy": 1,
         "currentHealth": 120,
         "invisible": 0,
@@ -622,6 +699,9 @@
             "moveSpeed": 2,
             "maxHealth": 200,
             "damageMin": 15
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 200,
         "invisible": 0,
@@ -651,6 +731,9 @@
             "maxHealth": 200,
             "damageMin": 15
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 200,
         "invisible": 0,
         "remote": 4,
@@ -678,6 +761,9 @@
             "toxicRate": 100,
             "magicDamage": 9,
             "damageMin": 9
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 200,
         "invisible": 0,
@@ -707,6 +793,9 @@
             "maxHealth": 50,
             "damageMin": 6
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "isBoom": 1,
         "currentHealth": 50,
         "invisible": 0,
@@ -733,6 +822,9 @@
             "curseRate": 100,
             "magicDamage": 6
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 160,
         "invisible": 0,
         "remote": 0,
@@ -755,6 +847,9 @@
             "moveSpeed": 6,
             "maxHealth": 130,
             "damageMin": 11
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 130,
         "invisible": 0,
@@ -782,6 +877,11 @@
             "moveSpeed": 4,
             "maxHealth": 250,
             "damageMin": 18
+        },
+        "avatar": {
+            "isAnimFrame": true,
+            "attackFrames": [9, 11],
+            "specialFrames": [12, 14]
         },
         "currentHealth": 250,
         "invisible": 0,
@@ -811,6 +911,11 @@
             "iceRate": 100,
             "magicDamage": 2,
             "damageMin": 1
+        },
+        "avatar": {
+            "isAnimFrame": true,
+            "attackFrames": [9, 11],
+            "specialFrames": [12, 15]
         },
         "currentHealth": 20,
         "invisible": 0,
@@ -844,6 +949,11 @@
             "magicDamage": 0,
             "damageMin": 3
         },
+        "avatar": {
+            "isAnimFrame": true,
+            "attackFrames": [9, 10],
+            "specialFrames": [11, 15]
+        },
         "currentHealth": 20,
         "invisible": 0,
         "remote": 0,
@@ -872,6 +982,11 @@
             "maxHealth": 100,
             "damageMin": 12
         },
+        "avatar": {
+            "isAnimFrame": true,
+            "attackFrames": [9, 10, 11, 19],
+            "specialFrames": [20, 27]
+        },
         "currentHealth": 100,
         "isHeavy": 1,
         "invisible": 0,
@@ -898,6 +1013,9 @@
             "maxHealth": 30,
             "defence": 5,
             "damageMin": 0
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 30,
         "isHeavy": 1,
@@ -927,6 +1045,9 @@
             "maxHealth": 30,
             "dodge": 100,
             "damageMin": 2
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 30,
         "isHeavy": 1,
@@ -959,6 +1080,9 @@
             "maxHealth": 10,
             "damageMin": 3
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 10,
         "isLineAim": 1,
         "invisible": 0,
@@ -985,6 +1109,11 @@
             "dodge": 60,
             "curseRate": 100,
             "damageMin": 6
+        },
+        "avatar": {
+            "isAnimFrame": true,
+            "attackFrames": [9, 11],
+            "specialFrames": [12, 16, 17, 19]
         },
         "attackFrames": 3,
         "specialFrames": 8,
@@ -1019,6 +1148,11 @@
             "realDamage": 1,
             "damageMin": 6
         },
+        "avatar": {
+            "isAnimFrame": true,
+            "attackFrames": [9, 11],
+            "specialFrames": [12, 14]
+        },
         "currentHealth": 60,
         "invisible": 0,
         "remote": 0,
@@ -1042,6 +1176,9 @@
             "moveSpeed": 8,
             "maxHealth": 10,
             "damageMin": 1
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 10,
         "isBoom": 0,

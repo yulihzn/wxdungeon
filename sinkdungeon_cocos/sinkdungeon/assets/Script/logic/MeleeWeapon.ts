@@ -12,7 +12,6 @@ import NextStep from '../utils/NextStep'
 import FromData from '../data/FromData'
 import AudioPlayer from '../utils/AudioPlayer'
 import IndexZ from '../utils/IndexZ'
-import PlayerAvatar from './PlayerAvatar'
 import EquipmentData from '../data/EquipmentData'
 import InventoryManager from '../manager/InventoryManager'
 import HitBuilding from '../building/HitBuilding'
@@ -27,6 +26,7 @@ import BaseColliderComponent from '../base/BaseColliderComponent'
 import TriggerData from '../data/TriggerData'
 import Emplacement from '../building/Emplacement'
 import PlayActor from '../base/PlayActor'
+import BaseAvatar from '../base/BaseAvatar'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -381,7 +381,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 this.player.showFloatFont(this.node.parent, 0, false, true, false, false, false, false)
             }
             this.attackDo(this.playerData, this.comboMiss, this.fistCombo)
-            this.player.playerAnim(this.player.sc.isJumping ? PlayerAvatar.STATE_AIRKICK : PlayerAvatar.STATE_ATTACK, this.player.currentDir)
+            this.player.playerAnim(this.player.sc.isJumping ? BaseAvatar.STATE_AIRKICK : BaseAvatar.STATE_ATTACK, this.player.currentDir)
             this.player.stopHiding()
             this.isComboing = false
         }
@@ -472,7 +472,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         this.scheduleOnce(() => {
             this.player.isWeaponDashing = false
             this.player.entity.Move.linearVelocity = cc.Vec2.ZERO
-            this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir)
+            this.player.playerAnim(BaseAvatar.STATE_IDLE, this.player.currentDir)
         }, 0.2)
     }
     //Anim

@@ -2,6 +2,7 @@ import DamageData from './DamageData'
 import StatusData from './StatusData'
 import CommonData from './CommonData'
 import DataUtils from '../utils/DataUtils'
+import AvatarData from './AvatarData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -84,10 +85,12 @@ export default class NonPlayerData {
     private statusTotalData: StatusData
     private common: CommonData
     private statusList: StatusData[]
+    private avatar: AvatarData
     constructor() {
         this.statusTotalData = new StatusData()
         this.common = new CommonData()
         this.statusList = new Array()
+        this.avatar = new AvatarData()
     }
 
     get StatusTotalData() {
@@ -114,6 +117,12 @@ export default class NonPlayerData {
             this.statusList.push(data)
         }
     }
+    get AvatarData() {
+        return this.avatar
+    }
+    set AvatarData(data: AvatarData) {
+        this.avatar = data
+    }
     public updateHA(currentHealth: number, maxHealth: number, attackPoint: number) {
         this.currentHealth = currentHealth
         this.common.maxHealth = maxHealth
@@ -125,6 +134,7 @@ export default class NonPlayerData {
         }
         DataUtils.baseCopy(this, data)
         this.common.valueCopy(data.common)
+        this.avatar.valueCopy(data.avatar)
         this.StatusList = data.statusList
         this.pos = data.pos ? cc.v3(data.pos.x, data.pos.y) : cc.v3(0, 0)
         this.attackFrames = data.attackFrames ? data.attackFrames : 2

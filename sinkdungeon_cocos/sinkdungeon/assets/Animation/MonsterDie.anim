@@ -9,7 +9,7 @@
   "wrapMode": 1,
   "curveData": {
     "paths": {
-      "root/sprite": {
+      "sprite": {
         "comps": {},
         "props": {
           "angle": [
@@ -39,9 +39,6 @@
             }
           ]
         }
-      },
-      "shadow": {
-        "comps": {}
       }
     }
   },

@@ -1,4 +1,5 @@
 import Actor from '../base/Actor'
+import BaseAvatar from '../base/BaseAvatar'
 import DamageData from '../data/DamageData'
 import EquipmentData from '../data/EquipmentData'
 import FromData from '../data/FromData'
@@ -10,7 +11,6 @@ import IndexZ from '../utils/IndexZ'
 import { EventHelper } from './EventHelper'
 import Logic from './Logic'
 import Player from './Player'
-import PlayerAvatar from './PlayerAvatar'
 
 const { ccclass, property } = cc._decorator
 
@@ -188,22 +188,22 @@ export default class Shield extends cc.Component {
         let isDefending = this.status == Shield.STATUS_DEFEND
         let currentIndex = avatarZindex - Shield.ZOFFSET
         switch (dir) {
-            case PlayerAvatar.DIR_UP:
+            case BaseAvatar.DIR_UP:
                 currentIndex = avatarZindex + (isDefending ? -Shield.ZOFFSET : Shield.ZOFFSET)
                 this.sprite.node.color = isDefending ? cc.color(32, 32, 32) : cc.Color.WHITE
                 break
-            case PlayerAvatar.DIR_DOWN:
+            case BaseAvatar.DIR_DOWN:
                 currentIndex = avatarZindex + (isDefending ? Shield.ZOFFSET : -Shield.ZOFFSET)
                 this.sprite.node.color = isDefending ? cc.Color.WHITE : cc.color(32, 32, 32)
                 break
-            case PlayerAvatar.DIR_LEFT:
-            case PlayerAvatar.DIR_RIGHT:
+            case BaseAvatar.DIR_LEFT:
+            case BaseAvatar.DIR_RIGHT:
                 currentIndex = avatarZindex + (isDefending ? Shield.ZOFFSET : -Shield.ZOFFSET)
                 this.sprite.node.color = isDefending ? cc.Color.WHITE : cc.color(32, 32, 32)
                 break
         }
         let temp = this.isBehind
-        this.isBehind = dir != PlayerAvatar.DIR_UP
+        this.isBehind = dir != BaseAvatar.DIR_UP
         this.isBehindChange = this.isBehind != temp
         this.node.zIndex = currentIndex
         let p = isDefending ? Shield.DEFEND_POS[dir] : Shield.DEFAULT_POS[dir].clone()

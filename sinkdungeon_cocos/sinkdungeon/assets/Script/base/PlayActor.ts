@@ -13,6 +13,7 @@ import NonPlayerData from '../data/NonPlayerData'
 import FloatinglabelManager from '../manager/FloatingLabelManager'
 import JumpingAbility from '../actor/JumpingAbility'
 import PlayerAvatar from '../logic/PlayerAvatar'
+import FrameAvatar from '../logic/FrameAvatar'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,6 +39,7 @@ export default abstract class PlayActor extends Actor {
     handRight: PlayerWeapon
     jumpAbility: JumpingAbility
     avatar: PlayerAvatar
+    frameAvatar: FrameAvatar
     currentDir = 3
     isWeaponDashing = false
     abstract init(): void

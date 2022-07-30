@@ -9,7 +9,6 @@ import Talent from './Talent'
 import AudioPlayer from '../utils/AudioPlayer'
 import IndexZ from '../utils/IndexZ'
 import StatusManager from '../manager/StatusManager'
-import PlayerAvatar from '../logic/PlayerAvatar'
 import NonPlayer from '../logic/NonPlayer'
 import Boss from '../boss/Boss'
 import AreaOfEffectData from '../data/AreaOfEffectData'
@@ -20,6 +19,7 @@ import TalentData from '../data/TalentData'
 import InventoryManager from '../manager/InventoryManager'
 import ShadowPlayer from '../actor/ShadowPlayer'
 import Utils from '../utils/Utils'
+import BaseAvatar from '../base/BaseAvatar'
 /**
  * 技能管理器
  * 通用技能点：cd减短 范围变大 持续时间增加 伤害增加 数量变多
@@ -351,12 +351,12 @@ export default class ProfessionTalent extends Talent {
         pos = pos.mul(speed)
         this.player.entity.Move.linearVelocity = pos
         this.player.entity.Move.damping = 50
-        this.player.playerAnim(PlayerAvatar.STATE_WALK, this.player.currentDir)
+        this.player.playerAnim(BaseAvatar.STATE_WALK, this.player.currentDir)
         this.player.highLight(true)
         this.scheduleOnce(() => {
             this.player.entity.Move.damping = 3
             this.player.entity.Move.linearVelocity = cc.Vec2.ZERO
-            this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir)
+            this.player.playerAnim(BaseAvatar.STATE_IDLE, this.player.currentDir)
             this.IsExcuting = false
             this.player.highLight(false)
         }, 0.5)

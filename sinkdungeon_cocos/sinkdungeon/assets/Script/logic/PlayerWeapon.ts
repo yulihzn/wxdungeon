@@ -15,8 +15,8 @@ import MeleeShadowWeapon from './MeleeShadowWeapon'
 import Logic from './Logic'
 import Random from '../utils/Random'
 import MeleeCollideHelper from './MeleeCollideHelper'
-import PlayerAvatar from './PlayerAvatar'
 import PlayActor from '../base/PlayActor'
+import BaseAvatar from '../base/BaseAvatar'
 
 const { ccclass, property } = cc._decorator
 /**
@@ -108,16 +108,16 @@ export default class PlayerWeapon extends cc.Component {
     }
     changeZIndexByDir(avatarZindex: number, dir: number) {
         switch (dir) {
-            case PlayerAvatar.DIR_UP:
+            case BaseAvatar.DIR_UP:
                 this.node.zIndex = avatarZindex - 1
                 break
-            case PlayerAvatar.DIR_DOWN:
+            case BaseAvatar.DIR_DOWN:
                 this.node.zIndex = avatarZindex + 1
                 break
-            case PlayerAvatar.DIR_LEFT:
+            case BaseAvatar.DIR_LEFT:
                 this.node.zIndex = this.isLeftHand ? avatarZindex + 1 : avatarZindex - 1
                 break
-            case PlayerAvatar.DIR_RIGHT:
+            case BaseAvatar.DIR_RIGHT:
                 this.node.zIndex = this.isLeftHand ? avatarZindex - 1 : avatarZindex + 1
                 break
         }

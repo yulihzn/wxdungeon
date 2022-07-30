@@ -5,11 +5,11 @@ import DamageData from '../data/DamageData'
 import StatusManager from '../manager/StatusManager'
 import AudioPlayer from '../utils/AudioPlayer'
 import FromData from '../data/FromData'
-import PlayerAvatar from '../logic/PlayerAvatar'
 import Actor from '../base/Actor'
 import ActorUtils from '../utils/ActorUtils'
 import TalentData from '../data/TalentData'
 import CCollider from '../collider/CCollider'
+import BaseAvatar from '../base/BaseAvatar'
 
 const { ccclass, property } = cc._decorator
 
@@ -77,7 +77,7 @@ export default class TalentDash extends Talent {
                 this.player.entity.Move.linearVelocity = pos
                 this.scheduleOnce(() => {
                     this.player.entity.Move.linearVelocity = cc.Vec2.ZERO
-                    this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir)
+                    this.player.playerAnim(BaseAvatar.STATE_IDLE, this.player.currentDir)
                     this.IsExcuting = false
                 }, 0.5)
             },

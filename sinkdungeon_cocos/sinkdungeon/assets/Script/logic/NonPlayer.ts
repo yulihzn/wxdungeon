@@ -43,6 +43,8 @@ import JumpingAbility from '../actor/JumpingAbility'
 import TriggerData from '../data/TriggerData'
 import PlayActor from '../base/PlayActor'
 import PlayerAvatar from './PlayerAvatar'
+import BaseAvatar from '../base/BaseAvatar'
+import FrameAvatar from './FrameAvatar'
 
 @ccclass
 export default class NonPlayer extends PlayActor {
@@ -95,6 +97,8 @@ export default class NonPlayer extends PlayActor {
     waterSpark: cc.Prefab = null
     @property(cc.Prefab)
     avatarPrefab: cc.Prefab = null
+    @property(cc.Prefab)
+    frameAvatarPrefab: cc.Prefab = null
     private attrNode: cc.Node
     private sprite: cc.Node
     private bodySprite: cc.Sprite
@@ -152,18 +156,18 @@ export default class NonPlayer extends PlayActor {
         this.jumpAbility.init(this, 2, 0, (group: number, type: number) => {
             if (TriggerData.TYPE_JUMP_END == type) {
                 if (this.sc.isMoving) {
-                    this.playerAnim(PlayerAvatar.STATE_WALK, this.currentDir)
+                    this.playerAnim(BaseAvatar.STATE_WALK, this.currentDir)
                 } else {
-                    this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir)
+                    this.playerAnim(BaseAvatar.STATE_IDLE, this.currentDir)
                 }
             }
             this.exTrigger(group, type, null, null)
         })
-
-        // this.avatar = cc.instantiate(this.avatarPrefab).getComponent(PlayerAvatar)
-        // this.avatar.node.parent = this.root
-        // this.avatar.node.zIndex = 0
-        // this.avatar.init(Logic.playerData.AvatarData.clone(), this.node.group)
+        if (this.data.AvatarData.isAnimFrame) {
+            this.frameAvatar = FrameAvatar.create(this.frameAvatarPrefab, this.root, Logic.playerData.AvatarData.clone(), this.data.resName)
+        } else {
+            this.avatar = PlayerAvatar.create(this.avatarPrefab, this.root, Logic.playerData.AvatarData.clone(), this.node.group)
+        }
     }
     get Root(): cc.Node {
         return this.root
@@ -171,6 +175,7 @@ export default class NonPlayer extends PlayActor {
     playerAnim(status: number, dir: number): void {}
     getWalkSmoke(parentNode: cc.Node, pos: cc.Vec3): void {}
     onLoad() {
+        this.init()
         this.initCollider()
         this.dangerBox = this.dangerBoxNode.getComponent(ActorAttackBox)
         this.graphics = this.getComponent(cc.Graphics)
