@@ -9,7 +9,7 @@
   "wrapMode": 2,
   "curveData": {
     "paths": {
-      "sprite/animframe": {
+      "root/sprite/body": {
         "comps": {},
         "props": {
           "y": [

@@ -34,8 +34,8 @@ export default class LightManager extends BaseManager {
     mat1: cc.MaterialVariant
     private shadowTexture: cc.RenderTexture
     private shadowTexture1: cc.RenderTexture
-    static readonly ALPHA_START = 10
-    static readonly ALPHA_END = 200
+    static readonly ALPHA_START = 20
+    static readonly ALPHA_END = 240
     static readonly ROOM_LIGHT = 50
     private shadowAlpha = LightManager.ALPHA_START
 
