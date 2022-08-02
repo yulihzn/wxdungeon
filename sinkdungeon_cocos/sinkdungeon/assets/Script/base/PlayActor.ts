@@ -96,15 +96,17 @@ export default abstract class PlayActor extends Actor {
      * @param onlyItem 仅物品
      */
     exTrigger(group: number, type: number, from?: FromData, actor?: Actor, onlyItem?: boolean): void {
-        if (!onlyItem) {
-            let data = this.inventoryManager.TotalEquipData
-            for (let d of data.exTriggers) {
-                this.exTriggerDo(d, group, type, from, actor)
+        if (this.inventoryManager) {
+            if (!onlyItem) {
+                let data = this.inventoryManager.TotalEquipData
+                for (let d of data.exTriggers) {
+                    this.exTriggerDo(d, group, type, from, actor)
+                }
             }
-        }
-        for (let data of this.inventoryManager.itemList) {
-            for (let d of data.exTriggers) {
-                this.exTriggerDo(d, group, type, from, actor)
+            for (let data of this.inventoryManager.itemList) {
+                for (let d of data.exTriggers) {
+                    this.exTriggerDo(d, group, type, from, actor)
+                }
             }
         }
     }
