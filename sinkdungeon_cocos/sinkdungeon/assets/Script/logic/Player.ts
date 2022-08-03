@@ -529,10 +529,10 @@ export default class Player extends PlayActor {
         this.avatar.spriteNode.x = 0
         this.avatar.spriteNode.y = 0
         this.pos = pos
-        this.changeZIndex(this.pos)
+        this.changeZIndex()
         this.updatePlayerPos()
     }
-    changeZIndex(pos: cc.Vec3) {
+    changeZIndex() {
         let offsetY = this.entity.Transform.base
         if (offsetY > 0) {
             offsetY += 500
@@ -806,7 +806,7 @@ export default class Player extends PlayActor {
         if (!this.node) {
             return
         }
-        this.changeZIndex(this.pos)
+        this.changeZIndex()
         this.updateInfoUi()
     }
     fall() {
@@ -1202,7 +1202,7 @@ export default class Player extends PlayActor {
         this.shadow.y = this.entity.Transform.base
         this.bottomDir.node.y = this.entity.Transform.base
         this.bottomDir.node.opacity = this.isInWater() ? 128 : 255
-        this.changeZIndex(this.pos)
+        this.changeZIndex()
         this.showWaterSpark()
         if (this.jumpAbility) {
             this.jumpAbility.updateLogic()

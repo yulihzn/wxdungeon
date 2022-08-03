@@ -39,6 +39,7 @@ export default class LoadingManager {
     public isSkillsLoaded = false
     public isBuildingLoaded = false
     public isFurnituresLoaded = false
+    public isPlatformLoaded = false
     public isTransportAnimFinished = true
     public isAudioLoaded = false
     // LIFE-CYCLE CALLBACKS:
@@ -58,6 +59,7 @@ export default class LoadingManager {
         this.isBuildingLoaded = false
         this.isFurnituresLoaded = false
         this.isAudioLoaded = false
+        this.isPlatformLoaded = false
     }
     reset() {
         this.isWorldLoaded = false
@@ -75,6 +77,7 @@ export default class LoadingManager {
         this.isSuitsLoaded = false
         this.isFurnituresLoaded = false
         this.isAudioLoaded = false
+        this.isPlatformLoaded = false
     }
 
     isSpriteFramesLoaded(loadedName: string) {
@@ -227,6 +230,21 @@ export default class LoadingManager {
                 Logic.furnitures = resource.json
                 this.isFurnituresLoaded = true
                 cc.log('加载家具完成')
+            }
+        })
+    }
+    loadPlatforms() {
+        if (Logic.platforms) {
+            this.isPlatformLoaded = true
+            return
+        }
+        cc.resources.load('Data/platforms', (err: Error, resource: cc.JsonAsset) => {
+            if (err) {
+                cc.error(err)
+            } else {
+                Logic.platforms = resource.json
+                this.isPlatformLoaded = true
+                cc.log('加载平台完成')
             }
         })
     }

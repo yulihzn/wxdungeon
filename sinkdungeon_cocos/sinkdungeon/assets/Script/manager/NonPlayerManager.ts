@@ -1,11 +1,11 @@
-import Dungeon from "../logic/Dungeon"
-import Logic from "../logic/Logic"
-import BaseManager from "./BaseManager"
-import Utils from "../utils/Utils"
-import NonPlayer from "../logic/NonPlayer"
-import NonPlayerData from "../data/NonPlayerData"
-import Achievement from "../logic/Achievement"
-import LoadingManager from "./LoadingManager"
+import Dungeon from '../logic/Dungeon'
+import Logic from '../logic/Logic'
+import BaseManager from './BaseManager'
+import Utils from '../utils/Utils'
+import NonPlayer from '../logic/NonPlayer'
+import NonPlayerData from '../data/NonPlayerData'
+import Achievement from '../logic/Achievement'
+import LoadingManager from './LoadingManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -21,11 +21,11 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class NonPlayerManager extends BaseManager {
-    public static readonly NON_SHADOW = "nonplayer001"
-    public static readonly SHOP_KEEPER = "nonplayer002"
-    public static readonly DOG = "nonplayer100"
-    public static readonly CAT = "nonplayer101"
-    public static readonly FISH = "nonplayer102"
+    public static readonly NON_SHADOW = 'nonplayer001'
+    public static readonly SHOP_KEEPER = 'nonplayer002'
+    public static readonly DOG = 'nonplayer100'
+    public static readonly CAT = 'nonplayer101'
+    public static readonly FISH = 'nonplayer102'
     // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}
@@ -85,7 +85,7 @@ export default class NonPlayerManager extends BaseManager {
     }
 
     public addNonPlayerFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
-        if (Dungeon.isFirstEqual(mapDataStr, "n")) {
+        if (Dungeon.isFirstEqual(mapDataStr, 'n')) {
             this.addNonPlayerFromData(`nonplayer${mapDataStr.substring(1)}`, Dungeon.getPosInMap(indexPos), dungeon)
         }
     }
@@ -98,6 +98,7 @@ export default class NonPlayerManager extends BaseManager {
             let nonPlayer = nonPlayerPrefab.getComponent(NonPlayer)
             let data = new NonPlayerData()
             nonPlayer.dungeon = dungeon
+            data.valueCopy(Logic.nonplayers[nonPlayerData.resName])
             data.valueCopy(nonPlayerData)
             data.isEnemy = 0
             nonPlayer.data = data

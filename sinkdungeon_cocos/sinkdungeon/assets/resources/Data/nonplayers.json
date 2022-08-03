@@ -10,6 +10,9 @@
             "maxHealth": 5,
             "damageMin": 2
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 5,
         "invisible": 0,
         "remote": 0,
@@ -31,6 +34,9 @@
             "moveSpeed": 0,
             "maxHealth": 999,
             "damageMin": 999
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 999,
         "invisible": 0,
@@ -58,6 +64,9 @@
             "maxHealth": 50,
             "damageMin": 5
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 50,
         "invisible": 0,
         "remote": 0,
@@ -84,6 +93,9 @@
             "maxHealth": 50,
             "damageMin": 5
         },
+        "avatar": {
+            "isAnimFrame": true
+        },
         "currentHealth": 50,
         "invisible": 0,
         "remote": 0,
@@ -109,6 +121,9 @@
             "moveSpeed": 4,
             "maxHealth": 50,
             "damageMin": 5
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 50,
         "invisible": 0,
@@ -138,6 +153,9 @@
             "maxHealth": 50,
             "remoteDamage": 5,
             "damageMin": 5
+        },
+        "avatar": {
+            "isAnimFrame": true
         },
         "currentHealth": 50,
         "invisible": 0,

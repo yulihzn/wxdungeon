@@ -7,7 +7,7 @@
         "info": "",
         "desc": "",
         "scale": 8,
-        "collider": "232,107,238,104",
+        "collider": "232,107,238,104,64",
         "price": 800,
         "height": 8
     },
@@ -32,7 +32,7 @@
         "info": "",
         "desc": "",
         "scale": 8,
-        "collider": "185,64,330,155",
+        "collider": "185,64,330,155,64",
         "price": 400,
         "height": 8
     },
@@ -69,7 +69,7 @@
         "info": "",
         "desc": "一元一次，每次一元",
         "scale": 6,
-        "collider": "0,0,128,128",
+        "collider": "0,0,128,128,168",
         "price": 0,
         "height": 28
     },
@@ -81,7 +81,7 @@
         "info": "",
         "desc": "",
         "scale": 4,
-        "collider": "0,0,128,128",
+        "collider": "0,0,128,128,32",
         "price": 0,
         "height": 8
     },
@@ -93,7 +93,7 @@
         "info": "",
         "desc": "",
         "scale": 4,
-        "collider": "0,0,128,128",
+        "collider": "0,0,128,128,32",
         "price": 0,
         "height": 8
     },
@@ -232,7 +232,7 @@
         "info": "喝水必备",
         "desc": "",
         "scale": 5,
-        "collider": "12,24,64,128",
+        "collider": "12,24,64,128,128",
         "price": 0,
         "height": 28
     },

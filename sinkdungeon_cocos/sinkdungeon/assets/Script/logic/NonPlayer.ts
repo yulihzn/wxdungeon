@@ -153,7 +153,7 @@ export default class NonPlayer extends PlayActor {
         this.statusMgr = this.statusManager
         this.nonPlayerData = this.data
         this.jumpAbility = this.addComponent(JumpingAbility)
-        this.jumpAbility.init(this, 2, 0, (group: number, type: number) => {
+        this.jumpAbility.init(this, 1, 0, (group: number, type: number) => {
             if (TriggerData.TYPE_JUMP_END == type) {
                 if (this.sc.isMoving) {
                     this.playerAnim(BaseAvatar.STATE_WALK, this.currentDir)
@@ -249,7 +249,7 @@ export default class NonPlayer extends PlayActor {
 
     jump() {
         if (this.jumpAbility) {
-            this.jumpAbility.jump(2, 4)
+            this.jumpAbility.jump(6, 3)
         }
     }
     jumpCancel() {
@@ -417,8 +417,12 @@ export default class NonPlayer extends PlayActor {
         this.changeZIndex()
         this.updatePlayerPos()
     }
-    private changeZIndex() {
-        this.node.zIndex = IndexZ.getActorZIndex(this.node.position)
+    changeZIndex() {
+        let offsetY = this.entity.Transform.base
+        if (offsetY > 0) {
+            offsetY += 500
+        }
+        this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.node.position.x, this.node.position.y - offsetY))
     }
 
     private remoteAttack(target: Actor, isSpecial: boolean) {
@@ -1395,6 +1399,9 @@ export default class NonPlayer extends PlayActor {
             if (this.dungeon && this.sc.isDashing && !other.sensor) {
                 this.sc.isDashing = false
                 this.dangerBox.finish()
+            }
+            if (!other.sensor && other.z < 9999 && self.z < other.z + other.zHeight) {
+                this.jump()
             }
         } else if (self.tag == CCollider.TAG.DEFAULT) {
             this.areaDetector.onColliderEnter(other, self)

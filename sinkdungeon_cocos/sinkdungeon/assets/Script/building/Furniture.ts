@@ -292,7 +292,7 @@ export default class Furniture extends Building {
             if (this.furnitureData.collider.length > 0) {
                 let arr = this.furnitureData.collider.split(',')
                 pcollider.offset = cc.v2(parseInt(arr[0]), parseInt(arr[1]))
-                pcollider.setSize(cc.size(parseInt(arr[2]), parseInt(arr[3])), this.furnitureData.height * this.furnitureData.scale)
+                pcollider.setSize(cc.size(parseInt(arr[2]), parseInt(arr[3])), parseInt(arr[4]))
             }
             if (this.furnitureData.spritePos.length > 0) {
                 let arr = this.furnitureData.spritePos.split(',')

@@ -44,6 +44,7 @@ import CCollider from '../collider/CCollider'
 import WallPaint from '../building/WallPaint'
 import RoomKitchen from '../building/RoomKitchen'
 import AudioPlayer from '../utils/AudioPlayer'
+import PlatformBuilding from '../building/PlatformBuilding'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -128,6 +129,7 @@ export default class BuildingManager extends BaseManager {
     static readonly ENERGYSHIELD = 'EnergyShield'
     static readonly FURNITURE = 'Furniture'
     static readonly WALLPAINT = 'WallPaint'
+    static readonly PLATFORM = 'Platform'
 
     // LIFE-CYCLE CALLBACKS:
     footboards: FootBoard[] = new Array()
@@ -298,6 +300,7 @@ export default class BuildingManager extends BaseManager {
                 this.monsterGeneratorList.push(p)
             })
         } else if (this.isFirstEqual(mapDataStr, 'J')) {
+            this.addPlatform(mapDataStr, indexPos)
         } else if (this.isFirstEqual(mapDataStr, 'K')) {
         } else if (this.isFirstEqual(mapDataStr, 'L')) {
             //生成灯
@@ -428,6 +431,12 @@ export default class BuildingManager extends BaseManager {
             //生成门
             this.addDoor(mapDataStr, indexPos, true)
         }
+    }
+    private addPlatform(mapDataStr: string, indexPos: cc.Vec3) {
+        Logic.getBuildings(BuildingManager.PLATFORM, (prefab: cc.Prefab) => {
+            let platmform = this.addBuilding(prefab, indexPos).getComponent(PlatformBuilding)
+            platmform.init(mapDataStr)
+        })
     }
     private addInteractBuilding(mapDataStr: string, indexPos: cc.Vec3) {
         Logic.getBuildings(BuildingManager.INTERACTBUILDING, (prefab: cc.Prefab) => {

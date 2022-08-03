@@ -243,9 +243,6 @@ export default class CCollider extends cc.Component {
         }
     }
 
-    isOnOtherSurface(other: CCollider) {
-        return this.z == other.z + other.zHeight
-    }
     isBelowOther(other: CCollider) {
         return this.z + this.zHeight < other.z
     }
@@ -326,65 +323,33 @@ export default class CCollider extends cc.Component {
         let lenHorizonal = Math.abs(center1.x - center2.x) //两者中心位置的横向距离
         let offsetVertical = (h1 + h2) / 2 - lenVertical //两者纵向重合部分的长度
         let offsetHorizonal = (w1 + w2) / 2 - lenHorizonal //两者横向重合部分的长度
-        //两者包围盒互相包含对方中点的时候添加一个反向斥力
-        if (rect1.contains(center2) || rect2.contains(center1)) {
-            if (this.isAboveOther(other)) {
-                //上方和表面
-                this.entity.Transform.base = other.z + other.zHeight
-                this.baseChangedCount++
-            } else if (this.isBelowOther(other)) {
-                //下方
-            } else {
-                pos = center1.sub(center2).normalizeSelf().mul(offset)
-            }
-        } else {
-            if (!this.isHeightNotCollid(other)) {
-                if (isLeft && pos.x >= 0 && offsetHorizonal > 0 && offsetHorizonal < offsetVertical) {
-                    pos.x = -offset
-                } else if (isRight && pos.x <= 0 && offsetHorizonal > 0 && offsetHorizonal < offsetVertical) {
-                    pos.x = offset
-                } else if (isTop && pos.y <= 0 && offsetVertical > 0 && offsetHorizonal > offsetVertical) {
-                    pos.y = offset
-                } else if (isBottom && pos.y >= 0 && offsetVertical > 0 && offsetHorizonal > offsetVertical) {
-                    pos.y = -offset
+        if (this.isAboveOther(other)) {
+            //在对方上方和表面时修改base为对方的表面
+            this.entity.Transform.base = other.z + other.zHeight
+            this.baseChangedCount++
+        } else if (this.z < other.z) {
+            //在对面下方时，如果头部穿过对面底部修改当前的z为对方底部，且向上的速度置0
+            if (this.z + this.zHeight >= other.z) {
+                this.entity.Transform.z = other.z - this.zHeight
+                if (this.entity.Move.linearVelocityZ > 0) {
+                    this.entity.Move.linearVelocityZ = 0
                 }
-            } else if (this.isAboveOther(other) && this.entity.Transform.base <= other.z + other.zHeight) {
-                this.entity.Transform.base = other.z + other.zHeight
-                this.baseChangedCount++
             }
-            // if(isLeft||isRight){
-            //     //如果左下角在目标左上角的下面且左上角在目标左上角的下面
-            //     if(tps[0].y>ops[0].y&&tps[1].y<ops[1].y||tps[0].y<ops[0].y&&tps[1].y>ops[1].y){
-            //         pos = cc.v2(isLeft?-offset:offset,pos.y);
-            //         //如果重合的横向长度大于0且横向小于纵向
-            //     }else if(offsetHorizonal>0&&offsetHorizonal<offsetVertical){
-            //         pos = cc.v2(isLeft?-offset:offset,0);
-            //     }
-            // }
-            // if(isTop||isBottom){
-            //     if(tps[0].x>ops[0].x&&tps[3].x<ops[3].x||tps[0].x<ops[0].x&&tps[3].x>ops[3].x){
-            //         pos = cc.v2(0,isTop?offset:-offset);
-            //     }else if(offsetVertical>0&&offsetHorizonal>offsetVertical){
-            //         pos = cc.v2(0,isTop?offset:-offset);
-            //     }
-            // }
+        } else if (rect1.contains(center2) || rect2.contains(center1)) {
+            //两者包围盒互相包含对方中点的时候添加一个反向斥力
+            pos = center1.sub(center2).normalizeSelf().mul(offset)
+        } else {
+            if (isLeft && pos.x >= 0 && offsetHorizonal > 0 && offsetHorizonal < offsetVertical) {
+                pos.x = -offset
+            } else if (isRight && pos.x <= 0 && offsetHorizonal > 0 && offsetHorizonal < offsetVertical) {
+                pos.x = offset
+            } else if (isTop && pos.y <= 0 && offsetVertical > 0 && offsetHorizonal > offsetVertical) {
+                pos.y = offset
+            } else if (isBottom && pos.y >= 0 && offsetVertical > 0 && offsetHorizonal > offsetVertical) {
+                pos.y = -offset
+            }
         }
         this.entity.Move.linearVelocity = pos
-        // if (this.entity.NodeRender.node) {
-        //     if (isLeft) {
-        //         this.entity.Transform.position.x -= offsetHorizonal;
-        //         this.entity.NodeRender.node.setPosition(this.entity.Transform.position);
-        //     } else if (isRight) {
-        //         this.entity.Transform.position.x += offsetHorizonal;
-        //         this.entity.NodeRender.node.setPosition(this.entity.Transform.position);
-        //     } else if (isTop) {
-        //         this.entity.Transform.position.y += offsetVertical;
-        //         this.entity.NodeRender.node.setPosition(this.entity.Transform.position);
-        //     } else if (isBottom) {
-        //         this.entity.Transform.position.y -= offsetVertical;
-        //         this.entity.NodeRender.node.setPosition(this.entity.Transform.position);
-        //     }
-        // }
     }
     exit(other: CCollider) {
         if (this.inColliders.has(other.id)) {

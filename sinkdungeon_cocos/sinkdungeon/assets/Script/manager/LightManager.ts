@@ -35,7 +35,7 @@ export default class LightManager extends BaseManager {
     private shadowTexture: cc.RenderTexture
     private shadowTexture1: cc.RenderTexture
     static readonly ALPHA_START = 20
-    static readonly ALPHA_END = 240
+    static readonly ALPHA_END = 220
     static readonly ROOM_LIGHT = 50
     private shadowAlpha = LightManager.ALPHA_START
 
@@ -219,7 +219,7 @@ export default class LightManager extends BaseManager {
         if (this.shadowAlpha < LightManager.ALPHA_START) {
             this.shadowAlpha = LightManager.ALPHA_START
         }
-        this.mat.setProperty('lightColor', cc.color(0, 0, 50, this.shadowAlpha))
+        this.mat.setProperty('lightColor', cc.color(0, 0, 20, this.shadowAlpha))
     }
     private getShadowAlphaByTime() {
         let date = new Date(Logic.realTime)
