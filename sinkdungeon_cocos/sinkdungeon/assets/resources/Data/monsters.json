@@ -313,7 +313,7 @@
         "specialAttack": 15,
         "scale": 0.5,
         "bulletType": "bullet020",
-        "specialAudio": "CHICKEN",
+        "specialAudio": "chicken",
         "common": {
             "remoteAngle": 5,
             "moveSpeed": 1,
@@ -484,7 +484,7 @@
         "bulletType": "bullet038",
         "specialBulletArcExNum": 2,
         "specialAttack": 15,
-        "remoteAudio": "SHOOT003",
+        "remoteAudio": "shoot003",
         "shooterOffsetX": 50,
         "shooterOffsetY": 40,
         "common": {
@@ -544,7 +544,7 @@
         "specialAttack": 30,
         "specialType": "special019",
         "specialDistance": 64,
-        "specialAudio": "ZOMBIE_SPITTING",
+        "specialAudio": "zombiespitting",
         "common": {
             "remoteAngle": 5,
             "moveSpeed": 4,
@@ -940,7 +940,7 @@
         "specialDelay": 0.8,
         "specialDash": 6,
         "dashJump": 6,
-        "specialAudio": "ZOMBIE_ATTACK",
+        "specialAudio": "zombieattack",
         "common": {
             "remoteAngle": 5,
             "moveSpeed": 6,
@@ -1186,7 +1186,7 @@
         "remote": 0,
         "melee": 3,
         "boxType": 1,
-        "specialAudio": "MOUSE",
+        "specialAudio": "mouse",
         "bodyRect": "0,0,80,40,90",
         "attackRect": "-32,0,112,40,80",
         "dash": 0

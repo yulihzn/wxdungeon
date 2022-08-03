@@ -58,7 +58,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "specialAttack": 10,
-        "specialAudio": "DOG",
+        "specialAudio": "dog",
         "common": {
             "moveSpeed": 4,
             "maxHealth": 50,
@@ -87,7 +87,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "specialAttack": 10,
-        "specialAudio": "DOG",
+        "specialAudio": "dog",
         "common": {
             "moveSpeed": 4,
             "maxHealth": 50,
@@ -116,7 +116,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "specialAttack": 10,
-        "specialAudio": "CAT",
+        "specialAudio": "cat",
         "common": {
             "moveSpeed": 4,
             "maxHealth": 50,
@@ -147,7 +147,7 @@
         "specialAttack": 10,
         "bulletType": "bullet104",
         "specialBulletArcExNum": 2,
-        "specialAudio": "FISHTANK",
+        "specialAudio": "fishtank",
         "common": {
             "moveSpeed": 3,
             "maxHealth": 50,
