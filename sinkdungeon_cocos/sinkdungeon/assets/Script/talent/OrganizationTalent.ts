@@ -113,11 +113,12 @@ export default class OrganizationTalent extends Talent {
                 data.Common.remoteCritRate = 100
                 data.Common.realDamage += Logic.playerData.OilGoldData.level
                 data.realDamageOvertime -= Logic.playerData.OilGoldData.level / 5
+                let lastMaxHealth = this.player.dungeon.nonPlayerManager.pet.data.Common.maxHealth
                 this.player.dungeon.nonPlayerManager.pet.data.Common.maxHealth = d.Common.maxHealth + Logic.playerData.OilGoldData.level * 5 + this.data.useCount * 3
                 this.player.dungeon.nonPlayerManager.pet.addCustomStatus(data, new FromData())
                 AudioPlayer.play(d.specialAudio)
                 Utils.toast(
-                    `宠物获得${Logic.playerData.OilGoldData.level * 5 + this.data.useCount * 5}点血量上限，当前为${
+                    `宠物获得${this.player.dungeon.nonPlayerManager.pet.data.Common.maxHealth - lastMaxHealth}点血量上限，当前为${
                         this.player.dungeon.nonPlayerManager.pet.data.Common.maxHealth
                     }，攻击力为${d.getAttackPoint().getTotalDamage()}`,
                     false,

@@ -1,33 +1,53 @@
 {
-    "platform000": {
+    "platform00000": {
         "nameCn": "实验室桌子0",
         "scale": 4,
         "spritePos": "0,64",
         "collider": "0,32,128,64,64"
     },
-    "platform001": {
+    "platform00001": {
         "nameCn": "实验室桌子1",
         "scale": 4,
         "spritePos": "0,64",
         "collider": "0,32,128,64,64"
     },
-    "platform002": {
+    "platform00002": {
         "nameCn": "实验室柜子",
         "scale": 4,
         "spritePos": "0,96",
         "collider": "0,32,128,64,128"
     },
-    "platform003": {
-        "nameCn": "实验室桌子2",
+    "platform00003": {
+        "nameCn": "实验室长桌子2",
         "scale": 4,
         "spritePos": "0,32",
         "collider": "0,0,128,128,64"
     },
-    "platform004": {
+    "platform00004": {
         "nameCn": "实验室通风管0",
         "scale": 4,
         "spritePos": "0,64",
-        "collider": "0,32,128,64,128",
+        "collider": "0,32,128,64,64",
         "z": 128
+    },
+    "platform00005": {
+        "nameCn": "实验室通风管1",
+        "scale": 4,
+        "spritePos": "0,64",
+        "collider": "0,32,128,64,64",
+        "z": 128
+    },
+    "platform00006": {
+        "nameCn": "实验室通风管2",
+        "scale": 4,
+        "spritePos": "0,64",
+        "collider": "0,32,128,64,64",
+        "z": 128
+    },
+    "platform00007": {
+        "nameCn": "实验室柜子（打开）",
+        "scale": 4,
+        "spritePos": "0,96",
+        "collider": "0,32,128,64,128"
     }
 }

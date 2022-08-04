@@ -7,7 +7,6 @@
 
 import CCollider from '../collider/CCollider'
 import GameWorldSystem from '../ecs/system/GameWorldSystem'
-import Logic from '../logic/Logic'
 import Actor from '../base/Actor'
 
 const { ccclass, property } = cc._decorator

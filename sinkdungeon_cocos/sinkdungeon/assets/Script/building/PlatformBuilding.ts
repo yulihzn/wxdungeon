@@ -48,13 +48,8 @@ export default class PlatformBuilding extends Building {
             this.sprite.node.height = spriteFrame.getOriginalSize().height
             this.sprite.node.scale = this.platformData.scale
 
-            if (this.platformData.z != 0) {
-                this.root.y = this.platformData.z
-                this.entity.Transform.z = this.platformData.z - pcollider.offsetY
-            } else {
-                this.root.y = 0
-                this.entity.Transform.z = 0
-            }
+            this.root.y = this.platformData.z
+            this.entity.Transform.z = this.platformData.z
             this.entity.Move.gravity = 0
         }
     }
