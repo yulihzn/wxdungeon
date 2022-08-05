@@ -6,7 +6,6 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import Logic from '../logic/Logic'
-import BuildingManager from '../manager/BuildingManager'
 import RectRoom from '../rect/RectRoom'
 import RoomType from '../rect/RoomType'
 import Utils from '../utils/Utils'
@@ -74,11 +73,6 @@ export default class MiniTile extends cc.Component {
         this.node.opacity = 255
         let state = rectroom.state
         let roomType = rectroom.roomType
-        if (levelData.minimap[this.x][this.y]) {
-            // this.lock.spriteFrame = Logic.spriteFrameRes(`minimaplock${levelData.minimaplock[this.x][this.y]}`)
-        } else {
-            // this.lock.spriteFrame = null;
-        }
         if (
             groundOilGoldData.chapter == Logic.chapterIndex &&
             groundOilGoldData.level == Logic.level &&

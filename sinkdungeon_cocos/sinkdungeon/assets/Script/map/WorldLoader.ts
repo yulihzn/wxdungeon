@@ -148,20 +148,20 @@ export default class WorldLoader {
                 temp.map = turnMap
                 temp.floormap = turnfloorMap
                 let flagMap = new Array()
-                let miniMap = new Array()
+                let shadowMap = new Array()
                 let miniLockMap = new Array()
                 for (let i = 0; i < temp.width; i++) {
                     flagMap[i] = new Array()
-                    miniMap[i] = new Array()
+                    shadowMap[i] = new Array()
                     miniLockMap[i] = new Array()
                     for (let j = 0; j < temp.height; j++) {
                         flagMap[i][j] = turnRooms[i * temp.roomWidth][j * temp.roomHeight]
-                        miniMap[i][j] = turnRooms[i * temp.roomWidth + 1][j * temp.roomHeight]
+                        shadowMap[i][j] = turnRooms[i * temp.roomWidth + 1][j * temp.roomHeight]
                         miniLockMap[i][j] = turnRooms[i * temp.roomWidth + 2][j * temp.roomHeight]
                     }
                 }
                 temp.roomTypes = flagMap
-                temp.minimap = miniMap
+                temp.shadowMap = shadowMap
                 temp.minimaplock = miniLockMap
                 if (tiledmap.json.layers[3] && tiledmap.json.layers[3].objects) {
                     temp.lights = tiledmap.json.layers[3].objects

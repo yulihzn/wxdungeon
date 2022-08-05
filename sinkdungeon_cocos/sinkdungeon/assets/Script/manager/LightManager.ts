@@ -210,16 +210,28 @@ export default class LightManager extends BaseManager {
      * 每个室内的房间都有一个固定的环境光
      */
     private timeChange() {
-        let time = this.getShadowAlphaByTime()
+        let alpha = this.getShadowAlphaByTime()
         // cc.log(time);
-        this.shadowAlpha = LightManager.ALPHA_START + time
+        this.shadowAlpha = LightManager.ALPHA_START + alpha
         if (this.shadowAlpha > LightManager.ALPHA_END) {
             this.shadowAlpha = LightManager.ALPHA_END
         }
         if (this.shadowAlpha < LightManager.ALPHA_START) {
             this.shadowAlpha = LightManager.ALPHA_START
         }
+        this.shadowAlpha += this.getShadowAlphaByRoom()
+        if (this.shadowAlpha > 255) {
+            this.shadowAlpha = 255
+        }
         this.mat.setProperty('lightColor', cc.color(0, 0, 20, this.shadowAlpha))
+    }
+    private getShadowAlphaByRoom() {
+        let shadowLevel = Logic.mapManager.getCurrentRoom().shadowLevel
+        if (!shadowLevel || isNaN(parseInt(shadowLevel))) {
+            return 0
+        } else {
+            return parseInt(shadowLevel) * 25.5
+        }
     }
     private getShadowAlphaByTime() {
         let date = new Date(Logic.realTime)
