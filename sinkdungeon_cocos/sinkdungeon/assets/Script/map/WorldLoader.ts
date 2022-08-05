@@ -2,6 +2,7 @@ import ChapterData from '../data/ChapterData'
 import LevelData from '../data/LevelData'
 import { EventHelper } from '../logic/EventHelper'
 import Logic from '../logic/Logic'
+import LoadingManager from '../manager/LoadingManager'
 import LoadingIcon from '../ui/LoadingIcon'
 /**
  * 地图文件加载器

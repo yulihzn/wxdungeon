@@ -42,7 +42,6 @@ export default class Start extends cc.Component {
 
     start() {
         // init logic
-        AudioPlayer.play(AudioPlayer.PLAY_BG, true)
         if (this.continueButton) {
             this.continueButton.active = Logic.profileManager.hasSaveData
             if (this.continueButton.active) {

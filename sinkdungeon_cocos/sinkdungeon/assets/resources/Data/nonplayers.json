@@ -60,7 +60,7 @@
         "specialAttack": 10,
         "specialAudio": "dog",
         "common": {
-            "moveSpeed": 4,
+            "moveSpeed": 5,
             "maxHealth": 50,
             "damageMin": 5
         },
@@ -89,7 +89,7 @@
         "specialAttack": 10,
         "specialAudio": "dog",
         "common": {
-            "moveSpeed": 4,
+            "moveSpeed": 5,
             "maxHealth": 50,
             "damageMin": 5
         },
@@ -118,7 +118,7 @@
         "specialAttack": 10,
         "specialAudio": "cat",
         "common": {
-            "moveSpeed": 4,
+            "moveSpeed": 5,
             "maxHealth": 50,
             "damageMin": 5
         },

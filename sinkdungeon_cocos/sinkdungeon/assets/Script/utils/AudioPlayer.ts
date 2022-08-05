@@ -1,5 +1,6 @@
 import { EventHelper } from '../logic/EventHelper'
 import Logic from '../logic/Logic'
+import LoadingManager from '../manager/LoadingManager'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -124,10 +125,6 @@ export default class AudioPlayer extends cc.Component {
     selectfail: cc.AudioClip = null
     @property(cc.AudioClip)
     transportship: cc.AudioClip = null
-    @property(cc.AudioClip)
-    bg01: cc.AudioClip = null
-    @property(cc.AudioClip)
-    bg02: cc.AudioClip = null
     lastName = ''
     isSoundNeedPause = false
     lastBgmIndex = -1
@@ -147,13 +144,15 @@ export default class AudioPlayer extends cc.Component {
         Logic.audioClips[AudioPlayer.TRANSPORTSHIP] = this.transportship
     }
     playbg() {
-        let bgms = [this.bg01, this.bg02]
-        let clip = bgms[Logic.lastBgmIndex]
-        if (clip && (!cc.audioEngine.isMusicPlaying() || this.lastBgmIndex != Logic.lastBgmIndex)) {
-            cc.audioEngine.stopMusic()
-            cc.audioEngine.playMusic(clip, true)
-            this.lastBgmIndex = Logic.lastBgmIndex
-        }
+        LoadingManager.loadAllBundle([LoadingManager.AB_BGM], () => {
+            let bgms = [Logic.bgmClips[AudioPlayer.BGM001], Logic.bgmClips[AudioPlayer.BGM002]]
+            let clip = bgms[Logic.lastBgmIndex]
+            if (clip && (!cc.audioEngine.isMusicPlaying() || this.lastBgmIndex != Logic.lastBgmIndex)) {
+                cc.audioEngine.stopMusic()
+                cc.audioEngine.playMusic(clip, true)
+                this.lastBgmIndex = Logic.lastBgmIndex
+            }
+        })
     }
     private stopAllEffect() {
         cc.audioEngine.stopAllEffects()

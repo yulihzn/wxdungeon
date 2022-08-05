@@ -54,25 +54,28 @@ export default class Loading extends cc.Component {
 
     start() {
         //加载地图，装备，贴图，敌人，状态，子弹，物品资源,建筑预制
-        this.loadingManager.loadWorld()
-        this.loadingManager.loadEquipment()
-        this.loadingManager.loadAutoSpriteFrames()
-        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor')
-        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'npcshadow')
-        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_EQUIPMENT, 'emptyequipment')
-        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_ITEM, 'ammo')
-        this.loadingManager.loadMonsters()
-        this.loadingManager.loadStatus()
-        this.loadingManager.loadBullets()
-        this.loadingManager.loadItems()
-        this.loadingManager.loadTalents()
-        this.loadingManager.loadProfession()
-        this.loadingManager.loadNonplayer()
-        this.loadingManager.loadAudio()
-        this.loadingManager.loadSuits()
-        this.loadingManager.loadFurnitures()
-        this.loadingManager.loadPlatforms()
-        this.showLoadingLabel()
+        LoadingManager.loadAllBundle(LoadingManager.ALL_BUNDLES, () => {
+            this.loadingManager.loadWorld()
+            this.loadingManager.loadEquipment()
+            this.loadingManager.loadAutoSpriteFrames()
+            this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor')
+            this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'npcshadow')
+            this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_EQUIPMENT, 'emptyequipment')
+            this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_ITEM, 'ammo')
+            this.loadingManager.loadMonsters()
+            this.loadingManager.loadStatus()
+            this.loadingManager.loadBullets()
+            this.loadingManager.loadItems()
+            this.loadingManager.loadTalents()
+            this.loadingManager.loadProfession()
+            this.loadingManager.loadNonplayer()
+            this.loadingManager.loadSound()
+            this.loadingManager.loadBgm()
+            this.loadingManager.loadSuits()
+            this.loadingManager.loadFurnitures()
+            this.loadingManager.loadPlatforms()
+            this.showLoadingLabel()
+        })
         //显示过场
         if (Logic.isFirst == 1) {
             this.cutScene.isSkip = true
@@ -144,7 +147,8 @@ export default class Loading extends cc.Component {
             this.loadingManager.isWorldLoaded &&
             this.loadingManager.isSuitsLoaded &&
             this.loadingManager.isFurnituresLoaded &&
-            this.loadingManager.isAudioLoaded &&
+            this.loadingManager.isSoundLoaded &&
+            this.loadingManager.isBgmLoaded &&
             this.loadingManager.isPlatformLoaded &&
             this.cutScene.isSkip &&
             this.isTransportAnimFinished &&

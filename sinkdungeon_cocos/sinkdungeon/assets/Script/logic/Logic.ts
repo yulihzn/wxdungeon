@@ -88,6 +88,7 @@ export default class Logic extends cc.Component {
     static buildings: { [key: string]: cc.Prefab } = null
     //音频资源
     static audioClips: { [key: string]: cc.AudioClip } = {}
+    static bgmClips: { [key: string]: cc.AudioClip } = {}
 
     static level = 0
     static chapterIndex = 0

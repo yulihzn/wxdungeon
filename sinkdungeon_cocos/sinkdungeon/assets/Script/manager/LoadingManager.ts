@@ -25,6 +25,9 @@ export default class LoadingManager {
     public static readonly LOAD_CACHE = 0
     public static readonly LOAD_SUCCESS = 1
     public static readonly LOAD_FAIL = 2
+    public static readonly AB_BGM = 'ab_bgm'
+    public static readonly AB_SOUND = 'ab_sound'
+    public static readonly ALL_BUNDLES = [LoadingManager.AB_BGM, LoadingManager.AB_SOUND]
     private static resourceLoadMap = new Map<string, Array<Function>>()
     private spriteFrameNames: { [key: number]: boolean } = null
     public isEquipmentLoaded = false
@@ -41,7 +44,8 @@ export default class LoadingManager {
     public isFurnituresLoaded = false
     public isPlatformLoaded = false
     public isTransportAnimFinished = true
-    public isAudioLoaded = false
+    public isSoundLoaded = false
+    public isBgmLoaded = false
     // LIFE-CYCLE CALLBACKS:
     init() {
         this.setAllSpriteFramesUnload()
@@ -58,7 +62,8 @@ export default class LoadingManager {
         this.isNonplayerLoaded = false
         this.isBuildingLoaded = false
         this.isFurnituresLoaded = false
-        this.isAudioLoaded = false
+        this.isSoundLoaded = false
+        this.isBgmLoaded = false
         this.isPlatformLoaded = false
     }
     reset() {
@@ -76,7 +81,8 @@ export default class LoadingManager {
         this.isTransportAnimFinished = false
         this.isSuitsLoaded = false
         this.isFurnituresLoaded = false
-        this.isAudioLoaded = false
+        this.isSoundLoaded = false
+        this.isBgmLoaded = false
         this.isPlatformLoaded = false
     }
 
@@ -107,19 +113,34 @@ export default class LoadingManager {
         Logic.worldLoader.isloaded = false
         Logic.worldLoader.loadWorld()
     }
-    loadAudio() {
+    loadSound() {
         if (Logic.audioClips && Logic.audioClips['silence']) {
-            this.isAudioLoaded = true
+            this.isSoundLoaded = true
             EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_AUDIO })
             return
         }
-        cc.resources.loadDir('Audio', cc.AudioClip, (err: Error, assert: cc.AudioClip[]) => {
+        cc.assetManager.getBundle(LoadingManager.AB_SOUND).loadDir('', cc.AudioClip, (err: Error, assert: cc.AudioClip[]) => {
             for (let clip of assert) {
                 Logic.audioClips[clip.name] = clip
             }
-            this.isAudioLoaded = true
+            this.isSoundLoaded = true
             cc.log('加载音效完成')
             EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_AUDIO })
+        })
+    }
+    loadBgm() {
+        if (Logic.audioClips && Logic.audioClips['silence']) {
+            this.isBgmLoaded = true
+            // EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_AUDIO })
+            return
+        }
+        cc.assetManager.getBundle(LoadingManager.AB_BGM).loadDir('', cc.AudioClip, (err: Error, assert: cc.AudioClip[]) => {
+            for (let clip of assert) {
+                Logic.bgmClips[clip.name] = clip
+            }
+            this.isBgmLoaded = true
+            cc.log('加载背景音乐完成')
+            // EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_AUDIO })
         })
     }
     loadEquipment() {
@@ -386,6 +407,38 @@ export default class LoadingManager {
             EventHelper.emit(EventHelper.LOADING_ICON, { type: type })
         })
     }
+    static loadAllBundle(names: string[], callback: Function) {
+        let count = 0
+        for (let name of names) {
+            let b = cc.assetManager.getBundle(name)
+            if (b) {
+                count++
+                if (count >= names.length) {
+                    callback()
+                }
+            } else {
+                LoadingManager.loadBundle(name, (bundle: cc.AssetManager.Bundle) => {
+                    if (bundle) {
+                        count++
+                    }
+                    if (count >= names.length) {
+                        callback()
+                    }
+                })
+            }
+        }
+    }
+    static loadBundle(name: string, callback: Function) {
+        let bundle = cc.assetManager.getBundle(name)
+        if (bundle) {
+            callback(bundle)
+        } else {
+            cc.assetManager.loadBundle(name, (err: Error, bundle: cc.AssetManager.Bundle) => {
+                callback(bundle, bundle)
+                cc.log(`加载bundle:${name}${bundle ? '完成' : '失败'}`)
+            })
+        }
+    }
     static loadNpcSpriteAtlas(name: string, callback?: Function) {
         if (Logic.spriteFrames && Logic.spriteFrames[name + 'anim000']) {
             if (callback) {
@@ -393,14 +446,13 @@ export default class LoadingManager {
             }
             return
         }
-
         //判断是否有相同的资源正在加载，如果有等待加载完毕再执行
         if (LoadingManager.resourceLoadMap.has(name)) {
             LoadingManager.resourceLoadMap.get(name).push(callback)
         } else {
             LoadingManager.resourceLoadMap.set(name, new Array())
             cc.log(`加载${name}图集`)
-            cc.resources.load(`Texture/npc/${name}`, cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
+            cc.resources.load(`npc/${name}`, cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
                 if (atlas) {
                     for (let frame of atlas.getSpriteFrames()) {
                         Logic.spriteFrames[frame.name] = frame
