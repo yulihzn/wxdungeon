@@ -322,7 +322,7 @@ export default class GameHud extends cc.Component {
         let strSecond = `${this.second}`
         strSecond = strSecond.length > 1 ? strSecond : '0' + strSecond
         Logic.time = strHour + ':' + strMinute + ':' + strSecond
-        Logic.realTime = Logic.realTime + (Logic.chapterIndex == Logic.CHAPTER099 ? 10000 : 1800000)
+        Logic.realTime = Logic.realTime + (Logic.chapterIndex == Logic.CHAPTER099 ? 10000 : 60000)
         EventHelper.emit(EventHelper.HUD_TIME_TICK)
     }
 

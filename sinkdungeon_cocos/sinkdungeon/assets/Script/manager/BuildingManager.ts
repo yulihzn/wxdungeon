@@ -107,6 +107,7 @@ export default class BuildingManager extends BaseManager {
     static readonly WALL = 'Wall'
     static readonly WATER = 'Water'
     static readonly LAMPLIGHT = 'LampLight'
+    static readonly LAMPOVALLIGHT = 'LampOvalLight'
     static readonly LAMPSUN = 'LampSun'
     static readonly LAMPSHIP = 'LampShip'
     static readonly LAMPSEARCH = 'LampSearch'
@@ -611,7 +612,7 @@ export default class BuildingManager extends BaseManager {
         let isCustom = false
         switch (mapDataStr) {
             case 'L0':
-                prefabName = BuildingManager.LAMPLIGHT
+                prefabName = BuildingManager.LAMPOVALLIGHT
                 break
             case 'L1':
                 prefabName = BuildingManager.LAMPSUN
