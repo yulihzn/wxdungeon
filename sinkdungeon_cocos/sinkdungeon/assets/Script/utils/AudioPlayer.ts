@@ -59,6 +59,7 @@ export default class AudioPlayer extends cc.Component {
     public static readonly LEVELUP = 'levelup'
     public static readonly MELEE = 'melee'
     public static readonly MELEE_PARRY = 'meleeparry'
+    public static readonly MELEE_REFLECT_WALL = 'meleereflectwall'
     public static readonly MONSTER_HIT = 'monsterhit'
     public static readonly MONSTER_HIT1 = 'monsterhit1'
     public static readonly MONSTER_HIT2 = 'monsterhit2'

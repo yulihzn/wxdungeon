@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "11761566-a43b-47d9-857d-34e4b52d3377",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 48,
+  "height": 48,
+  "platformSettings": {},
+  "subMetas": {
+    "weaponreflectlightstabanim003": {
+      "ver": "1.0.6",
+      "uuid": "d0e7337a-833a-4381-b848-812679b952df",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "11761566-a43b-47d9-857d-34e4b52d3377",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 48,
+      "height": 48,
+      "rawWidth": 48,
+      "rawHeight": 48,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

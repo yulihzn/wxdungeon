@@ -21,7 +21,7 @@ export default class BlockLight extends cc.Component {
         }
         this.anim.play()
         this.scheduleOnce(() => {
-            EventHelper.emit(EventHelper.POOL_DESTORY_WALKSMOKE, { targetNode: this.node })
+            EventHelper.emit(EventHelper.POOL_DESTORY_BLOCKLIGHT, { targetNode: this.node })
         }, 0.5)
     }
 
