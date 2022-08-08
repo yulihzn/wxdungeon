@@ -336,6 +336,24 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (isWall && this.player.sc.isJumping) {
             return
         }
+        if (isWall) {
+            let pos = this.player.hv.clone()
+            this.player.sc.isMoving = false
+            this.player.isWeaponDashing = true
+            if (pos.equals(cc.Vec2.ZERO)) {
+                pos = this.player.isFaceRight ? cc.v2(1, 0) : cc.v2(-1, 0)
+            } else {
+                pos = pos.normalizeSelf()
+            }
+            this.hv = pos.clone()
+            pos = pos.mul(-2)
+            this.player.entity.Move.linearVelocity = pos
+            this.scheduleOnce(() => {
+                this.player.isWeaponDashing = false
+                this.player.entity.Move.linearVelocity = cc.Vec2.ZERO
+                this.player.playerAnim(BaseAvatar.STATE_IDLE, this.player.currentDir)
+            }, 0.2)
+        }
         let p = this.weaponReflectPoint.position.clone()
         let pos = this.dungeon.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(p))
         if (this.reflectLight) {
