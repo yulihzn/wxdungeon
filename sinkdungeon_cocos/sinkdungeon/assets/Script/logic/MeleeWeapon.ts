@@ -658,7 +658,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 }
             }
             if (!attackSuccess) {
-                this.getReflectLight(this.dungeon, attackTarget.node.position, this.isFar, this.isStab, true, this.hv, this.node.parent.y)
+                let pos = this.dungeon.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v3(64, 0)))
+                this.getReflectLight(this.dungeon, pos, this.isFar, this.isStab, true, this.hv, this.node.parent.y)
             }
         }
         //生命汲取,内置1s cd
