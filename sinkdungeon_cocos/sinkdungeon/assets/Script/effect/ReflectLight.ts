@@ -5,7 +5,12 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import Dungeon from '../logic/Dungeon'
 import { EventHelper } from '../logic/EventHelper'
+import Logic from '../logic/Logic'
+import AudioPlayer from '../utils/AudioPlayer'
+import IndexZ from '../utils/IndexZ'
+import Utils from '../utils/Utils'
 
 const { ccclass, property } = cc._decorator
 
@@ -18,20 +23,48 @@ export default class ReflectLight extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
-    show(isFar: boolean, isStab: boolean, isWall: boolean, hv: cc.Vec2) {
+    show(dungeon: Dungeon, position: cc.Vec3, isFar: boolean, isStab: boolean, isWall: boolean, hv: cc.Vec2, zHeight: number) {
+        this.node.parent = dungeon.node
+        this.node.position = position.clone()
+        this.node.zIndex = IndexZ.OVERHEAD
         let fix = ''
         if (isWall) {
             fix = 'wall'
+            AudioPlayer.play(AudioPlayer.MELEE_REFLECT_WALL)
         } else if (isFar) {
             fix = 'far'
         } else if (isStab) {
             fix = 'stab'
         }
-        let name = `weaponreflectlight${fix}anim000`
-        cc.tween(this.sprite.node).call(() => {})
-        this.scheduleOnce(() => {
-            EventHelper.emit(EventHelper.POOL_DESTORY_REFLECTLIGHT, { targetNode: this.node })
-        }, 0.5)
+        let direction = hv.clone()
+        if (isWall) {
+            direction = cc.v2(-hv.x, -hv.y)
+        }
+        this.root.y = zHeight
+        this.root.angle = Utils.getRotateAngle(direction)
+        this.sprite.spriteFrame = null
+        let name = `weaponreflectlight${fix}anim00`
+        cc.tween(this.sprite.node)
+            .call(() => {
+                this.sprite.spriteFrame = Logic.spriteFrameRes(`${name}0`)
+            })
+            .delay(0.1)
+            .call(() => {
+                this.sprite.spriteFrame = Logic.spriteFrameRes(`${name}1`)
+            })
+            .delay(0.1)
+            .call(() => {
+                this.sprite.spriteFrame = Logic.spriteFrameRes(`${name}2`)
+            })
+            .delay(0.1)
+            .call(() => {
+                this.sprite.spriteFrame = Logic.spriteFrameRes(`${name}3`)
+            })
+            .delay(0.1)
+            .call(() => {
+                this.node.destroy()
+            })
+            .start()
     }
 
     // update (dt) {}

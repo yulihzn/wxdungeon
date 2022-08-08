@@ -27,6 +27,7 @@ import TriggerData from '../data/TriggerData'
 import Emplacement from '../building/Emplacement'
 import PlayActor from '../base/PlayActor'
 import BaseAvatar from '../base/BaseAvatar'
+import ReflectLight from '../effect/ReflectLight'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -64,6 +65,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
     toxicLight: cc.Prefab = null
     @property(cc.Prefab)
     curseLight: cc.Prefab = null
+    @property(cc.Prefab)
+    reflectLight: cc.Prefab = null
 
     protected meleeLightLeftPos = cc.v3(8, 0)
     protected meleeLightRightPos = cc.v3(-8, 0)
@@ -322,6 +325,12 @@ export default class MeleeWeapon extends BaseColliderComponent {
             return '3'
         } else {
             return '1'
+        }
+    }
+    protected getReflectLight(dungeon: Dungeon, position: cc.Vec3, isFar: boolean, isStab: boolean, isWall: boolean, hv: cc.Vec2, zHeight: number) {
+        if (this.reflectLight) {
+            let light = cc.instantiate(this.reflectLight).getComponent(ReflectLight)
+            light.show(dungeon, position, isFar, isStab, isWall, hv, zHeight)
         }
     }
     protected getWaveLight(dungeonNode: cc.Node, p: cc.Vec3, elementType: number, isStab: boolean, isFar: boolean) {
@@ -647,6 +656,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
                     attackSuccess = true
                     hitBuilding.takeDamage(damage)
                 }
+            }
+            if (!attackSuccess) {
+                this.getReflectLight(this.dungeon, attackTarget.node.position, this.isFar, this.isStab, true, this.hv, this.node.parent.y)
             }
         }
         //生命汲取,内置1s cd
