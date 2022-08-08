@@ -290,6 +290,20 @@
             }
           ]
         }
+      },
+      "reflectpoint": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                193,
+                0,
+                0
+              ]
+            }
+          ]
+        }
       }
     },
     "comps": {

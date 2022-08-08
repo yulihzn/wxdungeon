@@ -262,7 +262,15 @@ export default class Wall extends Building {
         }
         this.changeRes(this.wallName)
 
-        this.setTargetTags(CCollider.TAG.PLAYER, CCollider.TAG.NONPLAYER, CCollider.TAG.GOODNONPLAYER, CCollider.TAG.BOSS, CCollider.TAG.BUILDING, CCollider.TAG.BULLET)
+        this.setTargetTags(
+            CCollider.TAG.PLAYER,
+            CCollider.TAG.NONPLAYER,
+            CCollider.TAG.GOODNONPLAYER,
+            CCollider.TAG.BOSS,
+            CCollider.TAG.BUILDING,
+            CCollider.TAG.BULLET,
+            CCollider.TAG.PLAYER_HIT
+        )
         if (onlyShow) {
             this.entity.destroy()
         } else if (combineCountX > 0) {

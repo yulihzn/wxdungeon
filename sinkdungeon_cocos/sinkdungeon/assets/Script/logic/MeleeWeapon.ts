@@ -79,6 +79,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     protected isFist = true //空手
     protected isBlunt = false //钝器
     dungeon: Dungeon
+    protected weaponReflectPoint: cc.Node //反弹
     protected weaponFirePoint: cc.Node //剑尖
     protected weaponFirePoints: cc.Node[] = []
     protected isMiss = false
@@ -143,6 +144,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
     protected initSprite() {
         this.weaponFirePoint = this.node.getChildByName('firepoint')
+        this.weaponReflectPoint = this.node.getChildByName('reflectpoint')
         this.spriteNode = this.node.getChildByName('sprite')
         this.weaponSprite = this.getSpriteChildSprite(['sprite', InventoryManager.WEAPON])
         this.weaponLightSprite = this.getSpriteChildSprite(['sprite', 'meleelight'])
@@ -327,10 +329,18 @@ export default class MeleeWeapon extends BaseColliderComponent {
             return '1'
         }
     }
-    protected getReflectLight(dungeon: Dungeon, position: cc.Vec3, isFar: boolean, isStab: boolean, isWall: boolean, hv: cc.Vec2, zHeight: number) {
+    protected getReflectLight(dungeon: Dungeon, isFar: boolean, isStab: boolean, isWall: boolean, hv: cc.Vec2, color: cc.Color) {
+        if (!this.weaponReflectPoint) {
+            return
+        }
+        if (isWall && this.player.sc.isJumping) {
+            return
+        }
+        let p = this.weaponReflectPoint.position.clone()
+        let pos = this.dungeon.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(p))
         if (this.reflectLight) {
             let light = cc.instantiate(this.reflectLight).getComponent(ReflectLight)
-            light.show(dungeon, position, isFar, isStab, isWall, hv, zHeight)
+            light.show(dungeon, pos, isFar, isStab, isWall, hv, color)
         }
     }
     protected getWaveLight(dungeonNode: cc.Node, p: cc.Vec3, elementType: number, isStab: boolean, isFar: boolean) {
@@ -616,6 +626,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 }
                 damageSuccess = monster.takeDamage(damage)
                 if (damageSuccess) {
+                    this.getReflectLight(this.dungeon, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
                     this.beatBack(monster)
                     this.addTargetAllStatus(common, monster)
                     this.addHitExTrigger(damage, monster)
@@ -626,6 +637,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
             if (boss && !boss.sc.isDied && !this.isMiss) {
                 damageSuccess = boss.takeDamage(damage)
                 if (damageSuccess) {
+                    this.getReflectLight(this.dungeon, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
                     this.addTargetAllStatus(common, boss)
                     this.addHitExTrigger(damage, boss)
                 }
@@ -658,8 +670,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 }
             }
             if (!attackSuccess) {
-                let pos = this.dungeon.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v3(64, 0)))
-                this.getReflectLight(this.dungeon, pos, this.isFar, this.isStab, true, this.hv, this.node.parent.y)
+                this.getReflectLight(this.dungeon, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)
             }
         }
         //生命汲取,内置1s cd

@@ -23,7 +23,7 @@ export default class ReflectLight extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
-    show(dungeon: Dungeon, position: cc.Vec3, isFar: boolean, isStab: boolean, isWall: boolean, hv: cc.Vec2, zHeight: number) {
+    show(dungeon: Dungeon, position: cc.Vec3, isFar: boolean, isStab: boolean, isWall: boolean, hv: cc.Vec2, color: cc.Color) {
         this.node.parent = dungeon.node
         this.node.position = position.clone()
         this.node.zIndex = IndexZ.OVERHEAD
@@ -40,7 +40,7 @@ export default class ReflectLight extends cc.Component {
         if (isWall) {
             direction = cc.v2(-hv.x, -hv.y)
         }
-        this.root.y = zHeight
+        this.sprite.node.color = color
         this.root.angle = Utils.getRotateAngle(direction)
         this.sprite.spriteFrame = null
         let name = `weaponreflectlight${fix}anim00`

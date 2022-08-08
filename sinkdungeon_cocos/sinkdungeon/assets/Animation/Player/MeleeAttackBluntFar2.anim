@@ -256,6 +256,20 @@
             }
           ]
         }
+      },
+      "reflectpoint": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                180.478,
+                0,
+                0
+              ]
+            }
+          ]
+        }
       }
     },
     "comps": {
