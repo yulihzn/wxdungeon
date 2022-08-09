@@ -494,6 +494,9 @@ export default class IceDemon extends Boss {
     }
     onColliderEnter(other: CCollider, self: CCollider) {
         if (self.tag == CCollider.TAG.BOSS_HIT) {
+            if (other.tag == CCollider.TAG.PLAYER_HIT) {
+                return
+            }
             let target = ActorUtils.getEnemyCollisionTarget(other)
             if (target && (this.meleeSkill.IsExcuting || this.dashSkill.IsExcuting) && !this.sc.isDied) {
                 let d = new DamageData()

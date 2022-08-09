@@ -277,7 +277,7 @@ export default class Player extends PlayActor {
         }
 
         if (!this.playerSpriteTexture) {
-            let width = 512
+            let width = 800
             this.playerSpriteTexture = new cc.RenderTexture()
             this.playerSpriteTexture.initWithSize(width, width)
             this.playerSpriteTexture.setFilters(cc.Texture2D.Filter.NEAREST, cc.Texture2D.Filter.NEAREST)

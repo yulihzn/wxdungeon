@@ -30,7 +30,7 @@ export default class ReflectLight extends cc.Component {
         let fix = ''
         if (isWall) {
             fix = 'wall'
-            AudioPlayer.play(AudioPlayer.MELEE_REFLECT_WALL)
+            AudioPlayer.play(Logic.getHalfChance() ? AudioPlayer.MELEE_REFLECT_WALL : AudioPlayer.MELEE_REFLECT_WALL1)
         } else if (isFar) {
             fix = 'far'
         } else if (isStab) {
@@ -39,6 +39,8 @@ export default class ReflectLight extends cc.Component {
         let direction = hv.clone()
         if (isWall) {
             direction = cc.v2(-hv.x, -hv.y)
+        } else {
+            AudioPlayer.play(Logic.getHalfChance() ? AudioPlayer.MELEE_REFLECT : AudioPlayer.MELEE_REFLECT1)
         }
         this.sprite.node.color = color
         this.root.angle = Utils.getRotateAngle(direction)

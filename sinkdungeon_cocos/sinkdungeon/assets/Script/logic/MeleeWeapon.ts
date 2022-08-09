@@ -346,7 +346,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 pos = pos.normalizeSelf()
             }
             this.hv = pos.clone()
-            pos = pos.mul(-2)
+            pos = pos.mul(-3)
             this.player.entity.Move.linearVelocity = pos
             this.scheduleOnce(() => {
                 this.player.isWeaponDashing = false
@@ -687,9 +687,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
                     hitBuilding.takeDamage(damage)
                 }
             }
-            if (!attackSuccess) {
-                this.getReflectLight(this.dungeon, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)
-            }
+            this.getReflectLight(this.dungeon, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)
+        } else if (attackTarget.tag == CCollider.TAG.BOSS_HIT || attackTarget.tag == CCollider.TAG.NONPLAYER_HIT) {
+            this.getReflectLight(this.dungeon, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)
         }
         //生命汲取,内置1s cd
         if (damageSuccess) {

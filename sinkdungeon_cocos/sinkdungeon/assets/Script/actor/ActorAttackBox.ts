@@ -50,7 +50,7 @@ export default class ActorAttackBox extends cc.Component {
         this.actor = actor
         this.data = data
         if (this.isEnemy) {
-            this.collider.setTargetTags([CCollider.TAG.GOODNONPLAYER, CCollider.TAG.PLAYER])
+            this.collider.setTargetTags([CCollider.TAG.GOODNONPLAYER, CCollider.TAG.PLAYER, CCollider.TAG.PLAYER_HIT])
         } else {
             this.collider.setTargetTags([CCollider.TAG.NONPLAYER, CCollider.TAG.BOSS])
         }
@@ -111,6 +111,10 @@ export default class ActorAttackBox extends cc.Component {
     }
     onColliderStay(other: CCollider, self: CCollider) {
         if (this.isAttacking && this.actor) {
+            if (other.tag == CCollider.TAG.PLAYER_HIT) {
+                this.isAttacking = false
+                return
+            }
             let a = other.getComponent(Actor)
             let m = this.actor
             let target = ActorUtils.getEnemyCollisionTarget(other, !this.isEnemy)

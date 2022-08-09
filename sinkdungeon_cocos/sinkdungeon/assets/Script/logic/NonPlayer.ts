@@ -796,7 +796,7 @@ export default class NonPlayer extends PlayActor {
         if (isHurting) {
             this.hitLight(true)
             this.hitLightS(damageData)
-            if (damageData.isBackAttack) {
+            if (damageData.isBackAttack || damageData.isCriticalStrike) {
                 this.showBloodEffect()
             }
             //150ms后恢复状态
