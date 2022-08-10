@@ -1321,6 +1321,9 @@ export default class NonPlayer extends PlayActor {
         this.shadow.x = this.isFaceRight ? this.bodySprite.node.x : -this.bodySprite.node.x
         this.bottomDir.node.y = this.entity.Transform.base
         this.bottomDir.node.opacity = this.isInWater() ? 128 : 255
+        if (this.sc.isDied || this.sc.isDisguising) {
+            this.bottomDir.node.opacity = 0
+        }
         this.setInWaterMat(this.bodySprite, this.data.water < 1 && this.isInWater())
         this.waterY = this.isInWaterTile && this.data.water < 1 ? -32 : 0
         this.sprite.y = Logic.lerp(this.sprite.y, this.waterY, 0.2)
