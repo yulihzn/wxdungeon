@@ -27,6 +27,7 @@ import OilGoldData from '../data/OilGoldData'
 import FurnitureData from '../data/FurnitureData'
 import LoadingManager from '../manager/LoadingManager'
 import PlatformData from '../data/PlatformData'
+import DialogueData from '../data/DialogueData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -89,7 +90,8 @@ export default class Logic extends cc.Component {
     //音频资源
     static audioClips: { [key: string]: cc.AudioClip } = {}
     static bgmClips: { [key: string]: cc.AudioClip } = {}
-
+    //对话资源
+    static dialogues: { [key: string]: DialogueData } = null
     static level = 0
     static chapterIndex = 0
     static chapterMaxIndex = 0
@@ -371,6 +373,7 @@ export default class Logic extends cc.Component {
                     Logic.profileManager.data.rectDungeons[rd].changeAllClearRoomsReborn()
                 }
             }
+            Logic.playerData.isWakeUp = exitData.toChapter == Logic.CHAPTER099
         }
         Logic.saveData()
         /**************加载exitData关卡数据***************** */

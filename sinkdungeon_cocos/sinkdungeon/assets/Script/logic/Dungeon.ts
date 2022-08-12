@@ -22,6 +22,7 @@ import Random from '../utils/Random'
 import LoadingManager from '../manager/LoadingManager'
 import StatusIconList from '../ui/StatusIconList'
 import Actor from '../base/Actor'
+import Dialogue from '../ui/Dialogue'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -260,7 +261,16 @@ export default class Dungeon extends cc.Component {
                         this.isInitFinish = true
                         cc.tween(this.fog).to(3, { scale: 5 }).start()
                         let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter')
-                        cc.tween(blackcenter).delay(0.1).to(0.5, { opacity: 0 }).start()
+                        cc.tween(blackcenter)
+                            .delay(0.1)
+                            .to(0.5, { opacity: 0 })
+                            .call(() => {
+                                this.player.playWakeUpInit()
+                                if (!Logic.profileManager.hasSaveData && Logic.CHAPTER00 == Logic.chapterIndex) {
+                                    Dialogue.play('course000')
+                                }
+                            })
+                            .start()
                         this.logNodeCount()
                         this.addOilGoldOnGround()
                     }, 0.3)

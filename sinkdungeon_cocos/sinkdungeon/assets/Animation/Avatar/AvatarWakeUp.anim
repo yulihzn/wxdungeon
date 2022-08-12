@@ -1,9 +1,9 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "AvatarDrink",
+  "_name": "AvatarWakeUp",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 2,
+  "_duration": 1,
   "sample": 60,
   "speed": 1,
   "wrapMode": 0,
@@ -14,18 +14,6 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.5,
-              "value": 15
-            },
-            {
-              "frame": 1.5,
-              "value": -15
-            },
-            {
-              "frame": 2,
               "value": 0
             }
           ],
@@ -51,11 +39,27 @@
                 5,
                 0
               ]
+            },
+            {
+              "frame": 0.5,
+              "value": [
+                2,
+                5,
+                0
+              ]
             }
           ],
           "angle": [
             {
               "frame": 0,
+              "value": 60
+            },
+            {
+              "frame": 0.5,
+              "value": 60
+            },
+            {
+              "frame": 1,
               "value": 0
             }
           ]
@@ -66,12 +70,28 @@
           "angle": [
             {
               "frame": 0,
+              "value": -15
+            },
+            {
+              "frame": 0.5,
+              "value": -15
+            },
+            {
+              "frame": 1,
               "value": 0
             }
           ],
           "position": [
             {
               "frame": 0,
+              "value": [
+                -2,
+                5,
+                0
+              ]
+            },
+            {
+              "frame": 0.5,
               "value": [
                 -2,
                 5,
@@ -87,33 +107,28 @@
             {
               "frame": 0,
               "value": {
-                "__type__": "cc.Vec2",
+                "__type__": "cc.Vec3",
                 "x": 1,
-                "y": 1
+                "y": 0.1,
+                "z": 0
               }
             },
             {
-              "frame": 1,
+              "frame": 0.5,
               "value": {
-                "__type__": "cc.Vec2",
+                "__type__": "cc.Vec3",
                 "x": 1,
-                "y": 1
+                "y": 0.1,
+                "z": 0
               }
             },
             {
-              "frame": 1.0833333333333333,
+              "frame": 0.6666666666666666,
               "value": {
-                "__type__": "cc.Vec2",
+                "__type__": "cc.Vec3",
                 "x": 1,
-                "y": 0
-              }
-            },
-            {
-              "frame": 1.1666666666666667,
-              "value": {
-                "__type__": "cc.Vec2",
-                "x": 1,
-                "y": 1
+                "y": 1,
+                "z": 0
               }
             }
           ]
@@ -161,6 +176,22 @@
               "frame": 0,
               "value": [
                 0,
+                -2.5,
+                0
+              ]
+            },
+            {
+              "frame": 0.5,
+              "value": [
+                0,
+                -2.5,
+                0
+              ]
+            },
+            {
+              "frame": 1,
+              "value": [
+                0,
                 -2,
                 0
               ]
@@ -169,6 +200,14 @@
           "angle": [
             {
               "frame": 0,
+              "value": -60
+            },
+            {
+              "frame": 0.5,
+              "value": -60
+            },
+            {
+              "frame": 1,
               "value": 0
             }
           ]
@@ -182,6 +221,22 @@
               "frame": 0,
               "value": [
                 0,
+                -2.5,
+                0
+              ]
+            },
+            {
+              "frame": 0.5,
+              "value": [
+                0,
+                -2.5,
+                0
+              ]
+            },
+            {
+              "frame": 1,
+              "value": [
+                0,
                 -2,
                 0
               ]
@@ -190,89 +245,30 @@
           "angle": [
             {
               "frame": 0,
+              "value": -45
+            },
+            {
+              "frame": 0.5,
+              "value": -45
+            },
+            {
+              "frame": 1,
               "value": 0
             }
           ]
         }
       },
-      "sprite/cup": {
+      "sprite/avatar/handleft": {
+        "props": {
+          "position": []
+        }
+      },
+      "sprite/bubble0": {
         "props": {
           "opacity": [
             {
               "frame": 0,
               "value": 255
-            },
-            {
-              "frame": 1.6666666666666667,
-              "value": 255
-            },
-            {
-              "frame": 1.8333333333333333,
-              "value": 0
-            }
-          ],
-          "angle": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.5,
-              "value": 0
-            },
-            {
-              "frame": 1,
-              "value": 80
-            },
-            {
-              "frame": 1.5,
-              "value": 80
-            },
-            {
-              "frame": 1.8333333333333333,
-              "value": 0
-            }
-          ],
-          "position": [
-            {
-              "frame": 0,
-              "value": [
-                4,
-                8,
-                0
-              ]
-            },
-            {
-              "frame": 0.5,
-              "value": [
-                3,
-                12,
-                0
-              ]
-            },
-            {
-              "frame": 1,
-              "value": [
-                1.463,
-                11.139,
-                0
-              ]
-            },
-            {
-              "frame": 1.5,
-              "value": [
-                1.408,
-                11.149,
-                0
-              ]
-            },
-            {
-              "frame": 1.8333333333333333,
-              "value": [
-                4,
-                8,
-                0
-              ]
             }
           ]
         },
@@ -282,40 +278,23 @@
               {
                 "frame": 0,
                 "value": {
-                  "__uuid__": "203b5c76-a18a-4089-b2f6-6ac642421f32"
+                  "__uuid__": "aa97b06d-76b2-47ad-94bb-6da7c8680177"
+                }
+              },
+              {
+                "frame": 0.3333333333333333,
+                "value": {
+                  "__uuid__": "5b39eace-ad30-46cf-9f11-57da3e2472d3"
                 }
               },
               {
                 "frame": 0.6666666666666666,
                 "value": {
-                  "__uuid__": "5e12f485-73a6-474e-a8c2-a5b5789031ee"
-                }
-              },
-              {
-                "frame": 1,
-                "value": {
-                  "__uuid__": "d86b1613-7bf1-4b3e-b56f-0b8347a2ead6"
-                }
-              },
-              {
-                "frame": 1.3333333333333333,
-                "value": {
-                  "__uuid__": "33dbcef5-87a5-4c5e-884a-98454ca56107"
-                }
-              },
-              {
-                "frame": 1.6666666666666667,
-                "value": {
-                  "__uuid__": "ae2de14e-d9a0-445e-b4e0-3cef91af564c"
+                  "__uuid__": "d3e9a006-3e14-432c-96c4-beff64d04fb7"
                 }
               }
             ]
           }
-        }
-      },
-      "sprite/avatar/handleft": {
-        "props": {
-          "position": []
         }
       },
       "sprite/avatar/head/mouth": {
@@ -324,6 +303,10 @@
             {
               "frame": 0,
               "value": 255
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
             }
           ],
           "scale": [
@@ -337,20 +320,11 @@
               }
             },
             {
-              "frame": 0.5,
+              "frame": 0.6666666666666666,
               "value": {
                 "__type__": "cc.Vec3",
-                "x": 2,
-                "y": 2,
-                "z": 1
-              }
-            },
-            {
-              "frame": 2,
-              "value": {
-                "__type__": "cc.Vec3",
-                "x": 2,
-                "y": 0.1,
+                "x": 1,
+                "y": 0.5,
                 "z": 1
               }
             }

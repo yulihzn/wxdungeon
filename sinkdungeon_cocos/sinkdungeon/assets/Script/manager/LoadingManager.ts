@@ -2,6 +2,7 @@ import { EventHelper } from './../logic/EventHelper'
 import ProfessionData from '../data/ProfessionData'
 import Logic from '../logic/Logic'
 import LoadingIcon from '../ui/LoadingIcon'
+import DialogueData from '../data/DialogueData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -46,6 +47,7 @@ export default class LoadingManager {
     public isTransportAnimFinished = true
     public isSoundLoaded = false
     public isBgmLoaded = false
+    public isDialogueLoaded = false
     // LIFE-CYCLE CALLBACKS:
     init() {
         this.setAllSpriteFramesUnload()
@@ -84,6 +86,7 @@ export default class LoadingManager {
         this.isSoundLoaded = false
         this.isBgmLoaded = false
         this.isPlatformLoaded = false
+        this.isDialogueLoaded = false
     }
 
     isSpriteFramesLoaded(loadedName: string) {
@@ -129,9 +132,8 @@ export default class LoadingManager {
         })
     }
     loadBgm() {
-        if (Logic.audioClips && Logic.audioClips['silence']) {
+        if (Logic.bgmClips && Logic.bgmClips['bgm001']) {
             this.isBgmLoaded = true
-            // EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_AUDIO })
             return
         }
         cc.assetManager.getBundle(LoadingManager.AB_BGM).loadDir('', cc.AudioClip, (err: Error, assert: cc.AudioClip[]) => {
@@ -140,7 +142,26 @@ export default class LoadingManager {
             }
             this.isBgmLoaded = true
             cc.log('加载背景音乐完成')
-            // EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_AUDIO })
+        })
+    }
+    loadDialogue() {
+        if (Logic.dialogues) {
+            this.isDialogueLoaded = true
+            return
+        }
+        cc.resources.loadDir('Data/dialogue', cc.JsonAsset, (err: Error, assert: cc.JsonAsset[]) => {
+            if (err) {
+                cc.error(err)
+            } else {
+                Logic.dialogues = {}
+                for (let resource of assert) {
+                    for (let key in resource.json) {
+                        Logic.dialogues[key] = resource.json[key]
+                    }
+                }
+                this.isDialogueLoaded = true
+                cc.log(`加载对话完成`)
+            }
         })
     }
     loadEquipment() {

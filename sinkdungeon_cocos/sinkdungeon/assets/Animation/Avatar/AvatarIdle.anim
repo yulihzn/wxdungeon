@@ -249,7 +249,17 @@
           ]
         }
       },
-      "sprite/meleelight": {
+      "sprite/bubble0": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/avatar/head/mouth": {
         "props": {
           "opacity": [
             {

@@ -1,12 +1,12 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "AvatarDrink",
+  "_name": "AvatarSleep",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 2,
+  "_duration": 1.35,
   "sample": 60,
   "speed": 1,
-  "wrapMode": 0,
+  "wrapMode": 2,
   "curveData": {
     "paths": {
       "sprite/cloak": {
@@ -14,18 +14,6 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.5,
-              "value": 15
-            },
-            {
-              "frame": 1.5,
-              "value": -15
-            },
-            {
-              "frame": 2,
               "value": 0
             }
           ],
@@ -56,7 +44,7 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0
+              "value": 60
             }
           ]
         }
@@ -66,7 +54,7 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0
+              "value": -15
             }
           ],
           "position": [
@@ -87,33 +75,10 @@
             {
               "frame": 0,
               "value": {
-                "__type__": "cc.Vec2",
+                "__type__": "cc.Vec3",
                 "x": 1,
-                "y": 1
-              }
-            },
-            {
-              "frame": 1,
-              "value": {
-                "__type__": "cc.Vec2",
-                "x": 1,
-                "y": 1
-              }
-            },
-            {
-              "frame": 1.0833333333333333,
-              "value": {
-                "__type__": "cc.Vec2",
-                "x": 1,
-                "y": 0
-              }
-            },
-            {
-              "frame": 1.1666666666666667,
-              "value": {
-                "__type__": "cc.Vec2",
-                "x": 1,
-                "y": 1
+                "y": 0.1,
+                "z": 0
               }
             }
           ]
@@ -161,7 +126,7 @@
               "frame": 0,
               "value": [
                 0,
-                -2,
+                -2.5,
                 0
               ]
             }
@@ -169,7 +134,7 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0
+              "value": -60
             }
           ]
         }
@@ -182,7 +147,7 @@
               "frame": 0,
               "value": [
                 0,
-                -2,
+                -2.5,
                 0
               ]
             }
@@ -190,89 +155,22 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0
+              "value": -45
             }
           ]
         }
       },
-      "sprite/cup": {
+      "sprite/avatar/handleft": {
+        "props": {
+          "position": []
+        }
+      },
+      "sprite/bubble0": {
         "props": {
           "opacity": [
             {
               "frame": 0,
               "value": 255
-            },
-            {
-              "frame": 1.6666666666666667,
-              "value": 255
-            },
-            {
-              "frame": 1.8333333333333333,
-              "value": 0
-            }
-          ],
-          "angle": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.5,
-              "value": 0
-            },
-            {
-              "frame": 1,
-              "value": 80
-            },
-            {
-              "frame": 1.5,
-              "value": 80
-            },
-            {
-              "frame": 1.8333333333333333,
-              "value": 0
-            }
-          ],
-          "position": [
-            {
-              "frame": 0,
-              "value": [
-                4,
-                8,
-                0
-              ]
-            },
-            {
-              "frame": 0.5,
-              "value": [
-                3,
-                12,
-                0
-              ]
-            },
-            {
-              "frame": 1,
-              "value": [
-                1.463,
-                11.139,
-                0
-              ]
-            },
-            {
-              "frame": 1.5,
-              "value": [
-                1.408,
-                11.149,
-                0
-              ]
-            },
-            {
-              "frame": 1.8333333333333333,
-              "value": [
-                4,
-                8,
-                0
-              ]
             }
           ]
         },
@@ -282,40 +180,35 @@
               {
                 "frame": 0,
                 "value": {
-                  "__uuid__": "203b5c76-a18a-4089-b2f6-6ac642421f32"
+                  "__uuid__": "b743ef61-dac7-4b92-be6c-5adb7e70e24c"
+                }
+              },
+              {
+                "frame": 0.3333333333333333,
+                "value": {
+                  "__uuid__": "cfe9ad82-f37f-48a0-8f8a-092823028f85"
                 }
               },
               {
                 "frame": 0.6666666666666666,
                 "value": {
-                  "__uuid__": "5e12f485-73a6-474e-a8c2-a5b5789031ee"
+                  "__uuid__": "5b0ee281-99fc-4c33-90d2-d2bb46e3d5fc"
                 }
               },
               {
                 "frame": 1,
                 "value": {
-                  "__uuid__": "d86b1613-7bf1-4b3e-b56f-0b8347a2ead6"
+                  "__uuid__": "895322b3-e353-4723-8a27-57b44b7fc46c"
                 }
               },
               {
                 "frame": 1.3333333333333333,
                 "value": {
-                  "__uuid__": "33dbcef5-87a5-4c5e-884a-98454ca56107"
-                }
-              },
-              {
-                "frame": 1.6666666666666667,
-                "value": {
-                  "__uuid__": "ae2de14e-d9a0-445e-b4e0-3cef91af564c"
+                  "__uuid__": "ae5e22bc-c591-4aca-bf2f-2745ba018cdd"
                 }
               }
             ]
           }
-        }
-      },
-      "sprite/avatar/handleft": {
-        "props": {
-          "position": []
         }
       },
       "sprite/avatar/head/mouth": {
@@ -337,20 +230,20 @@
               }
             },
             {
-              "frame": 0.5,
+              "frame": 0.6666666666666666,
               "value": {
                 "__type__": "cc.Vec3",
-                "x": 2,
-                "y": 2,
+                "x": 1,
+                "y": 0.5,
                 "z": 1
               }
             },
             {
-              "frame": 2,
+              "frame": 1.3333333333333333,
               "value": {
                 "__type__": "cc.Vec3",
                 "x": 2,
-                "y": 0.1,
+                "y": 1,
                 "z": 1
               }
             }

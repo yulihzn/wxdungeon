@@ -62,6 +62,8 @@ import StateMachine from '../base/fsm/StateMachine'
 import State from '../base/fsm/State'
 import PlayActor from '../base/PlayActor'
 import BaseAvatar from '../base/BaseAvatar'
+import DialogueData from '../data/DialogueData'
+import Dialogue from '../ui/Dialogue'
 @ccclass
 export default class Player extends PlayActor {
     @property(cc.Sprite)
@@ -1454,6 +1456,13 @@ export default class Player extends PlayActor {
     cooking() {
         this.avatar.playCooking()
         Utils.toast(`你炒了两个鸡蛋又用昨晚剩下的米饭拌了拌。`, false, true)
+    }
+    playWakeUpInit() {
+        if (this.data.isWakeUp) {
+            this.data.isWakeUp = false
+            this.avatar.playWakeUp()
+            Dialogue.play('daily000')
+        }
     }
     drink() {
         this.avatar.playDrink()

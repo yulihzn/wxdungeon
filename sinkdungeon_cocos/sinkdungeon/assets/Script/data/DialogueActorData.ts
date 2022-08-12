@@ -1,9 +1,4 @@
 import DataUtils from '../utils/DataUtils'
-import IndexZ from '../utils/IndexZ'
-import DamageData from './DamageData'
-import DialogueActorData from './DialogueActorData'
-import DialogueTextData from './DialogueTextData'
-import FromData from './FromData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -15,21 +10,18 @@ import FromData from './FromData'
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-export default class DialogueData {
+export default class DialogueActorData {
     id = 0
-    list: DialogueTextData[] = []
-    actors: DialogueActorData[] = []
-
-    valueCopy(data: DialogueData) {
+    resName = ''
+    name = ''
+    valueCopy(data: DialogueActorData) {
         if (!data) {
             return
         }
         DataUtils.baseCopy(this, data)
-        this.list = data.list ?? []
-        this.actors = data.actors ?? []
     }
-    clone(): DialogueData {
-        let e = new DialogueData()
+    clone(): DialogueActorData {
+        let e = new DialogueActorData()
         e.valueCopy(this)
         return e
     }

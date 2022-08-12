@@ -20,6 +20,7 @@ export default class AudioPlayer extends cc.Component {
     public static readonly BGM001 = 'bgm001'
     public static readonly BGM002 = 'bgm002'
     public static readonly BLEEDING = 'bleeding'
+    public static readonly BUBBLE = 'bubble'
     public static readonly BLINK = 'blink'
     public static readonly BOOM = 'boom'
     public static readonly BOSS_ICEDEMON_ATTACK = 'bossicedemonattack'

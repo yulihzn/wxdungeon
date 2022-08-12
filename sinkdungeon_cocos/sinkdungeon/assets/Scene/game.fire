@@ -61578,22 +61578,22 @@
         "__id__": 1346
       },
       {
-        "__id__": 1376
+        "__id__": 1380
+      },
+      {
+        "__id__": 1382
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 1378
+        "__id__": 1384
       },
       {
-        "__id__": 1379
+        "__id__": 1385
       },
       {
-        "__id__": 1380
-      },
-      {
-        "__id__": 1381
+        "__id__": 1386
       }
     ],
     "_prefab": null,
@@ -61640,8 +61640,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "f0eIOaA91MhoHaDbkU8Tku"
   },
   {
@@ -61702,8 +61702,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "c5w7ZEtCJCkIK0OleUmIoH"
   },
   {
@@ -61799,8 +61799,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "05CiuiCa9CqY0b7aUiVxJm"
   },
   {
@@ -61920,8 +61920,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "8d0MCeRfpPCqfIlCDjj5Ax"
   },
   {
@@ -61942,7 +61942,7 @@
     "_string": "",
     "_N$string": "",
     "_fontSize": 48,
-    "_lineHeight": 40,
+    "_lineHeight": 50,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -62015,8 +62015,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "1dgWNk14VJ+KLse9K5FhLr"
   },
   {
@@ -62063,19 +62063,19 @@
         "__id__": 1347
       },
       {
-        "__id__": 1354
+        "__id__": 1355
       },
       {
-        "__id__": 1361
+        "__id__": 1363
       },
       {
-        "__id__": 1368
+        "__id__": 1371
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 1375
+        "__id__": 1379
       }
     ],
     "_prefab": null,
@@ -62122,8 +62122,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "87DfxzNzRGkYmIsgKxcvmz"
   },
   {
@@ -62188,8 +62188,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "1f/Ptu8PBJXIgDUxVWwb8G"
   },
   {
@@ -62257,8 +62257,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "7dlZPf67xJV4rmXZzIeFqj"
   },
   {
@@ -62319,8 +62319,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "aeHoV+EpRKoo9381PeQI4o"
   },
   {
@@ -62427,7 +62427,11 @@
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.2,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 1354
+      }
+    ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$transition": 3,
@@ -62498,6 +62502,16 @@
     "_id": "74vhYQm9VE04f/U+MAq1bT"
   },
   {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1336
+    },
+    "component": "",
+    "_componentId": "631f6Hdi4dH9rqEJFMGhsDk",
+    "handler": "buttonTap",
+    "customEventData": "0"
+  },
+  {
     "__type__": "cc.Node",
     "_name": "button1",
     "_objFlags": 0,
@@ -62506,13 +62520,13 @@
     },
     "_children": [
       {
-        "__id__": 1355
+        "__id__": 1356
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 1360
+        "__id__": 1361
       }
     ],
     "_prefab": null,
@@ -62559,8 +62573,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "aco++STGRKA56lg2sz9bz3"
   },
   {
@@ -62568,20 +62582,20 @@
     "_name": "Background",
     "_objFlags": 512,
     "_parent": {
-      "__id__": 1354
+      "__id__": 1355
     },
     "_children": [
       {
-        "__id__": 1356
+        "__id__": 1357
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 1358
+        "__id__": 1359
       },
       {
-        "__id__": 1359
+        "__id__": 1360
       }
     ],
     "_prefab": null,
@@ -62628,8 +62642,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "82ZaXPHkBCd462Ph1HIhEv"
   },
   {
@@ -62637,13 +62651,13 @@
     "_name": "Label",
     "_objFlags": 512,
     "_parent": {
-      "__id__": 1355
+      "__id__": 1356
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 1357
+        "__id__": 1358
       }
     ],
     "_prefab": null,
@@ -62690,8 +62704,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "69QDPAkmNKBL4wB5rljxIK"
   },
   {
@@ -62699,7 +62713,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1356
+      "__id__": 1357
     },
     "_enabled": true,
     "_materials": [
@@ -62732,7 +62746,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1355
+      "__id__": 1356
     },
     "_enabled": true,
     "_materials": [
@@ -62764,7 +62778,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1355
+      "__id__": 1356
     },
     "_enabled": true,
     "alignMode": 0,
@@ -62791,14 +62805,18 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1354
+      "__id__": 1355
     },
     "_enabled": true,
     "_normalMaterial": null,
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.2,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 1362
+      }
+    ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$transition": 3,
@@ -62864,9 +62882,19 @@
       "__uuid__": "29158224-f8dd-4661-a796-1ffab537140e"
     },
     "_N$target": {
-      "__id__": 1355
+      "__id__": 1356
     },
     "_id": "a7y5j52slA249H4Tw7lZ1h"
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1336
+    },
+    "component": "",
+    "_componentId": "631f6Hdi4dH9rqEJFMGhsDk",
+    "handler": "buttonTap",
+    "customEventData": "1"
   },
   {
     "__type__": "cc.Node",
@@ -62877,13 +62905,13 @@
     },
     "_children": [
       {
-        "__id__": 1362
+        "__id__": 1364
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 1367
+        "__id__": 1369
       }
     ],
     "_prefab": null,
@@ -62930,8 +62958,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "d9r00Liq1J74R6PY573p3T"
   },
   {
@@ -62939,20 +62967,20 @@
     "_name": "Background",
     "_objFlags": 512,
     "_parent": {
-      "__id__": 1361
+      "__id__": 1363
     },
     "_children": [
       {
-        "__id__": 1363
+        "__id__": 1365
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 1365
+        "__id__": 1367
       },
       {
-        "__id__": 1366
+        "__id__": 1368
       }
     ],
     "_prefab": null,
@@ -62999,8 +63027,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "70JdkW/2VNapkW0EAUtZHk"
   },
   {
@@ -63008,13 +63036,13 @@
     "_name": "Label",
     "_objFlags": 512,
     "_parent": {
-      "__id__": 1362
+      "__id__": 1364
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 1364
+        "__id__": 1366
       }
     ],
     "_prefab": null,
@@ -63061,8 +63089,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "3dvpHX3F1KCakzSbTHPQmR"
   },
   {
@@ -63070,7 +63098,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1363
+      "__id__": 1365
     },
     "_enabled": true,
     "_materials": [
@@ -63103,7 +63131,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1362
+      "__id__": 1364
     },
     "_enabled": true,
     "_materials": [
@@ -63135,7 +63163,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1362
+      "__id__": 1364
     },
     "_enabled": true,
     "alignMode": 0,
@@ -63162,14 +63190,18 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1361
+      "__id__": 1363
     },
     "_enabled": true,
     "_normalMaterial": null,
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.2,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 1370
+      }
+    ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$transition": 3,
@@ -63235,9 +63267,19 @@
       "__uuid__": "29158224-f8dd-4661-a796-1ffab537140e"
     },
     "_N$target": {
-      "__id__": 1362
+      "__id__": 1364
     },
     "_id": "9fpmMpTQdKFb0C1ROsbyId"
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1336
+    },
+    "component": "",
+    "_componentId": "631f6Hdi4dH9rqEJFMGhsDk",
+    "handler": "buttonTap",
+    "customEventData": "2"
   },
   {
     "__type__": "cc.Node",
@@ -63248,13 +63290,13 @@
     },
     "_children": [
       {
-        "__id__": 1369
+        "__id__": 1372
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 1374
+        "__id__": 1377
       }
     ],
     "_prefab": null,
@@ -63301,8 +63343,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "25FNM1eGxN8KA/ZpxzFNLM"
   },
   {
@@ -63310,20 +63352,20 @@
     "_name": "Background",
     "_objFlags": 512,
     "_parent": {
-      "__id__": 1368
+      "__id__": 1371
     },
     "_children": [
       {
-        "__id__": 1370
+        "__id__": 1373
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 1372
+        "__id__": 1375
       },
       {
-        "__id__": 1373
+        "__id__": 1376
       }
     ],
     "_prefab": null,
@@ -63370,8 +63412,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "f3NLrXf4dId6ABarpE2Tjw"
   },
   {
@@ -63379,13 +63421,13 @@
     "_name": "Label",
     "_objFlags": 512,
     "_parent": {
-      "__id__": 1369
+      "__id__": 1372
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 1371
+        "__id__": 1374
       }
     ],
     "_prefab": null,
@@ -63432,8 +63474,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "fb4QDhN3lJc5WvZjEfMCYX"
   },
   {
@@ -63441,7 +63483,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1370
+      "__id__": 1373
     },
     "_enabled": true,
     "_materials": [
@@ -63474,7 +63516,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1369
+      "__id__": 1372
     },
     "_enabled": true,
     "_materials": [
@@ -63506,7 +63548,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1369
+      "__id__": 1372
     },
     "_enabled": true,
     "alignMode": 0,
@@ -63533,14 +63575,18 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1368
+      "__id__": 1371
     },
     "_enabled": true,
     "_normalMaterial": null,
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.2,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 1378
+      }
+    ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$transition": 3,
@@ -63606,9 +63652,19 @@
       "__uuid__": "29158224-f8dd-4661-a796-1ffab537140e"
     },
     "_N$target": {
-      "__id__": 1369
+      "__id__": 1372
     },
     "_id": "8fUX4ThkNKdaPTMJazBy4s"
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1336
+    },
+    "component": "",
+    "_componentId": "631f6Hdi4dH9rqEJFMGhsDk",
+    "handler": "buttonTap",
+    "customEventData": "3"
   },
   {
     "__type__": "cc.Layout",
@@ -63653,7 +63709,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 1377
+        "__id__": 1381
       }
     ],
     "_prefab": null,
@@ -63700,8 +63756,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 4,
+    "groupIndex": 4,
     "_id": "4bozwh4MBOYYqV7SQQyz4g"
   },
   {
@@ -63709,7 +63765,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1376
+      "__id__": 1380
     },
     "_enabled": true,
     "_materials": [
@@ -63739,31 +63795,99 @@
     "_id": "05bvoJ5alBiZZfPMJhjoLH"
   },
   {
-    "__type__": "cc.Widget",
+    "__type__": "cc.Node",
+    "_name": "name",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1336
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 1383
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 0,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 200,
+      "height": 50
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0.5
+    },
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        -626.22,
+        -321.957,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 4,
+    "groupIndex": 4,
+    "_id": "8dYQnSONNETKvYdPi0+Onh"
+  },
+  {
+    "__type__": "cc.Label",
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1336
+      "__id__": 1382
     },
     "_enabled": true,
-    "alignMode": 1,
-    "_target": null,
-    "_alignFlags": 45,
-    "_left": 0,
-    "_right": 0,
-    "_top": 0,
-    "_bottom": 0,
-    "_verticalCenter": 0,
-    "_horizontalCenter": 0,
-    "_isAbsLeft": true,
-    "_isAbsRight": true,
-    "_isAbsTop": true,
-    "_isAbsBottom": true,
-    "_isAbsHorizontalCenter": true,
-    "_isAbsVerticalCenter": true,
-    "_originalWidth": 100,
-    "_originalHeight": 100,
-    "_id": "79qIBAoghBKoV5yvDtQDeF"
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_string": "",
+    "_N$string": "",
+    "_fontSize": 32,
+    "_lineHeight": 40,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_batchAsBitmap": false,
+    "_styleFlags": 0,
+    "_underlineHeight": 0,
+    "_N$horizontalAlign": 0,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Arial",
+    "_N$overflow": 2,
+    "_N$cacheMode": 0,
+    "_id": "77eRNE6qJKvZLFFBrRxjnZ"
   },
   {
     "__type__": "cc.BlockInputEvents",
@@ -63796,7 +63920,7 @@
       "__id__": 1339
     },
     "avatarSprite": {
-      "__id__": 1377
+      "__id__": 1381
     },
     "buttonLayout": {
       "__id__": 1346
@@ -63805,13 +63929,16 @@
       "__id__": 1353
     },
     "button1": {
-      "__id__": 1360
+      "__id__": 1361
     },
     "button2": {
-      "__id__": 1367
+      "__id__": 1369
     },
     "button3": {
-      "__id__": 1374
+      "__id__": 1377
+    },
+    "nameLabel": {
+      "__id__": 1383
     },
     "_id": "9cyOcUrvpMJ4t8RUiIj/x3"
   },

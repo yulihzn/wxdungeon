@@ -595,7 +595,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        116.69,
+        150.955,
         0,
         0,
         0,
@@ -883,7 +883,7 @@
     "offsetX": 0,
     "offsetY": -48,
     "type": 0,
-    "radius": 50,
+    "radius": 15,
     "w": 50,
     "h": 50,
     "zHeight": 32,

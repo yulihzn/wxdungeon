@@ -69,11 +69,11 @@ export default class RoomBed extends Building {
             this.scheduleOnce(() => {
                 Logic.playerData = player.data.clone()
                 if (Logic.playerData.pos.equals(this.data.defaultPos)) {
-                    Logic.playerData.pos.y = this.data.defaultPos.y - 1
+                    Logic.playerData.pos.y = this.data.defaultPos.y
                 }
                 AudioPlayer.play(AudioPlayer.EXIT)
                 Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal())
-            }, 0.5)
+            }, 1)
         }
     }
     onColliderExit(other: CCollider, self: CCollider) {

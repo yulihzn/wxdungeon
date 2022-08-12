@@ -30,6 +30,7 @@ export default class PlayerData {
     static DEFAULT_DREAM = 5
     name: string = ''
     pos: cc.Vec3 = cc.v3(5, 5)
+    isWakeUp = false
 
     currentHealth: number = PlayerData.DEFAULT_HEALTH
     currentDream: number = PlayerData.DEFAULT_DREAM

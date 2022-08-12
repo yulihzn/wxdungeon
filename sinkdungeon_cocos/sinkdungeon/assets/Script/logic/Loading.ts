@@ -74,6 +74,7 @@ export default class Loading extends cc.Component {
             this.loadingManager.loadSuits()
             this.loadingManager.loadFurnitures()
             this.loadingManager.loadPlatforms()
+            this.loadingManager.loadDialogue()
             this.showLoadingLabel()
         })
         //显示过场
@@ -150,6 +151,7 @@ export default class Loading extends cc.Component {
             this.loadingManager.isSoundLoaded &&
             this.loadingManager.isBgmLoaded &&
             this.loadingManager.isPlatformLoaded &&
+            this.loadingManager.isDialogueLoaded &&
             this.cutScene.isSkip &&
             this.isTransportAnimFinished &&
             this.isElevatorAnimFinished
