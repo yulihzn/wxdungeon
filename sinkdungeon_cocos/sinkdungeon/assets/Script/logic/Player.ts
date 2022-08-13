@@ -207,7 +207,7 @@ export default class Player extends PlayActor {
             }
         })
         EventHelper.on(EventHelper.PLAYER_ATTACK, detail => {
-            if (this.useInteractBuilding(true)) {
+            if (this.useInteractBuilding(true) || this.avatar?.isAniming) {
                 return
             }
             if (this.node) this.meleeAttack()
@@ -218,7 +218,7 @@ export default class Player extends PlayActor {
             }
         })
         EventHelper.on(EventHelper.PLAYER_REMOTEATTACK, detail => {
-            if (this.useInteractBuilding(false)) {
+            if (this.useInteractBuilding(false) || this.avatar?.isAniming) {
                 return
             }
             if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
@@ -572,7 +572,7 @@ export default class Player extends PlayActor {
             this.sc.isDied ||
             this.sc.isFalling ||
             this.sc.isVanishing ||
-            this.avatar.isAniming ||
+            this.avatar?.isAniming ||
             this.isInteractBuildingAniming ||
             (this.weaponLeft.meleeWeapon.IsAttacking && this.weaponLeft.meleeWeapon.IsFist) ||
             (this.weaponRight.meleeWeapon.IsAttacking && this.weaponRight.meleeWeapon.IsFist) ||
@@ -631,7 +631,7 @@ export default class Player extends PlayActor {
             this.sc.isDizzing ||
             this.sc.isDied ||
             this.sc.isFalling ||
-            this.avatar.isAniming ||
+            this.avatar?.isAniming ||
             this.sc.isVanishing ||
             this.weaponRight.meleeWeapon.IsAttacking ||
             this.weaponLeft.meleeWeapon.IsAttacking ||
@@ -737,7 +737,7 @@ export default class Player extends PlayActor {
             dir != 4 &&
             !this.shield.isAniming &&
             !this.shield.isDefendOrParrying &&
-            !this.avatar.isAniming &&
+            !this.avatar?.isAniming &&
             this.weaponLeft.meleeWeapon.CanMove &&
             this.weaponRight.meleeWeapon.CanMove
         ) {
@@ -810,6 +810,7 @@ export default class Player extends PlayActor {
         }
         this.changeZIndex()
         this.updateInfoUi()
+        this.playWakeUpInit()
     }
     fall() {
         if (this.sc.isFalling || this.sc.isJumping || this.sc.isVanishing) {
@@ -833,6 +834,7 @@ export default class Player extends PlayActor {
             this.sc.isDizzing ||
             !this.sc.isShow ||
             this.sc.isVanishing ||
+            this.avatar?.isAniming ||
             this.weaponRight.meleeWeapon.IsAttacking ||
             this.weaponLeft.meleeWeapon.IsAttacking ||
             this.isInteractBuildingAniming
@@ -848,7 +850,7 @@ export default class Player extends PlayActor {
         }, duration)
     }
     dash() {
-        if (this.dashCooling) {
+        if (this.dashCooling || this.avatar?.isAniming) {
             return
         }
         // if (this.data.currentDream <= 0) {
@@ -1100,7 +1102,7 @@ export default class Player extends PlayActor {
         if (!this.sc.isShow) {
             return
         }
-        if (this.professionTalent && !this.isWeaponDashing && !this.avatar.isAniming && !this.sc.isDashing) {
+        if (this.professionTalent && !this.isWeaponDashing && !this.avatar?.isAniming && !this.sc.isDashing) {
             this.move(dir, pos, dt)
         }
     }
@@ -1233,18 +1235,18 @@ export default class Player extends PlayActor {
         return sn
     }
     private useSkill(): void {
-        if (this.professionTalent && !this.sc.isAttacking && !this.sc.isVanishing) {
+        if (this.professionTalent && !this.sc.isAttacking && !this.sc.isVanishing && !this.avatar?.isAniming) {
             this.professionTalent.useSKill()
         }
     }
     private useSkill1(): void {
-        if (this.organizationTalent && !this.sc.isAttacking && !this.sc.isVanishing) {
+        if (this.organizationTalent && !this.sc.isAttacking && !this.sc.isVanishing && !this.avatar?.isAniming) {
             this.organizationTalent.useSKill()
         }
     }
 
     triggerThings(isLongPress: boolean) {
-        if (this.sc.isJumping || !this.dungeon) {
+        if (this.sc.isJumping || !this.dungeon || this.avatar.isAniming) {
             return
         }
         if (this.dungeon.equipmentManager.lastGroundEquip && this.dungeon.equipmentManager.lastGroundEquip.taken(isLongPress)) {
@@ -1332,6 +1334,9 @@ export default class Player extends PlayActor {
     }
 
     useItem(data: ItemData) {
+        if (this.avatar?.isAniming) {
+            return
+        }
         Item.userIt(data, this)
         this.exTrigger(TriggerData.GROUP_USE, TriggerData.TYPE_USE_ITEM, null, null, true)
     }
@@ -1460,8 +1465,10 @@ export default class Player extends PlayActor {
     playWakeUpInit() {
         if (this.data.isWakeUp) {
             this.data.isWakeUp = false
-            this.avatar.playWakeUp()
-            Dialogue.play('daily000')
+            this.avatar.playSleep()
+            Dialogue.play('daily000', () => {
+                this.avatar.playWakeUp()
+            })
         }
     }
     drink() {

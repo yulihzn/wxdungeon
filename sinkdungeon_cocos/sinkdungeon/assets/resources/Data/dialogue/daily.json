@@ -1,13 +1,11 @@
 {
-    
-    "daily000":{
+    "daily000": {
         "id": "daily000",
+        "isTalk": true,
         "actors": [
             { "id": "aside", "name": "旁白" },
             { "id": "player", "name": "查内姆" }
         ],
-        "list": [
-            { "id": 0, "actor": 0, "text": "你醒了", "next": [{"id":1,"text":"醒来"}] }
-        ]
+        "list": [{ "id": 0, "actor": 0, "text": "你醒了", "next": [{ "id": 1, "text": "醒来" }] }]
     }
 }

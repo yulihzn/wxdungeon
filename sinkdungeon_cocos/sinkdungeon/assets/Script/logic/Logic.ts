@@ -373,7 +373,6 @@ export default class Logic extends cc.Component {
                     Logic.profileManager.data.rectDungeons[rd].changeAllClearRoomsReborn()
                 }
             }
-            Logic.playerData.isWakeUp = exitData.toChapter == Logic.CHAPTER099
         }
         Logic.saveData()
         /**************加载exitData关卡数据***************** */
@@ -403,6 +402,7 @@ export default class Logic extends cc.Component {
                 Logic.elevatorScene = exitData.fromLevel > Logic.level ? 1 : 2
             }
         }
+        Logic.playerData.isWakeUp = exitData.fromChapter != Logic.CHAPTER099 && exitData.toChapter == Logic.CHAPTER099
         //重置装备和跟随的npc
         Logic.resetInventoryAndOtherData()
         cc.director.loadScene('loading')

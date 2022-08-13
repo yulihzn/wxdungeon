@@ -12,6 +12,7 @@ import DialogueData from '../data/DialogueData'
 import DialogueTextData from '../data/DialogueTextData'
 import { EventHelper } from '../logic/EventHelper'
 import Logic from '../logic/Logic'
+import AudioPlayer from '../utils/AudioPlayer'
 
 const { ccclass, property } = cc._decorator
 
@@ -44,19 +45,44 @@ export default class Dialogue extends cc.Component {
     currentTextIndex: number = 0
     isShow = false
     isAniming = false
+    isTalking = false
+    buttons = []
+    static callbacks: Map<String, Function> = new Map()
     onLoad() {
+        this.buttons = [this.button0, this.button1, this.button2, this.button3]
         EventHelper.on(EventHelper.HUD_DIALOGUE_SHOW, detail => {
             if (this.node) {
                 this.show(detail.data)
             }
         })
+        EventHelper.on(EventHelper.HUD_DIALOGUE_SKIP, detail => {
+            if (this.node) {
+                this.tap()
+            }
+        })
+        EventHelper.on(EventHelper.HUD_DIALOGUE_BUTTON, detail => {
+            if (this.node) {
+                this.buttonTap(null, detail.index)
+            }
+        })
         this.node.active = false
         this.anim = this.getComponent(cc.Animation)
-        this.addTapListener(this.next)
-        this.addTapListener(this.label.node)
+        this.addTapListener(this.node)
+        let pos = this.next.position.clone()
+        cc.tween(this.next)
+            .repeatForever(
+                cc
+                    .tween(this.next)
+                    .to(0.5, { y: pos.y - 10 })
+                    .to(0.5, { y: pos.y })
+            )
+            .start()
     }
-    static play(id: string) {
+    static play(id: string, callback?: Function) {
         EventHelper.emit(EventHelper.HUD_DIALOGUE_SHOW, { data: Logic.dialogues[id] })
+        if (callback) {
+            Dialogue.callbacks.set(id, callback)
+        }
     }
     private addTapListener(node: cc.Node) {
         node.on(
@@ -79,10 +105,15 @@ export default class Dialogue extends cc.Component {
     private hide() {
         this.isShow = false
         this.isAniming = true
+        this.label.node.opacity = 0
         this.anim.play('DialogueHide')
     }
     //Event
     buttonTap(event, index: string) {
+        if (!this.buttons[parseInt(index)].node.active) {
+            return
+        }
+        AudioPlayer.play(AudioPlayer.SELECT)
         this.goNext(parseInt(index))
     }
     //Anim
@@ -105,12 +136,24 @@ export default class Dialogue extends cc.Component {
         }
         if (this.currentTextIndex > this.data.list.length - 1) {
             this.hide()
+            let callback = Dialogue.callbacks.get(this.data.id)
+            if (callback) {
+                callback()
+                Dialogue.callbacks.delete(this.data.id)
+            }
             return
         }
         this.updateUi()
     }
     private tap() {
         if (!this.isShow || this.isAniming || this.hasButton()) {
+            return
+        }
+        if (this.isTalking) {
+            this.isTalking = false
+            this.label.node.stopAllActions()
+            let current = this.data.list[this.currentTextIndex]
+            this.label.string = current.text
             return
         }
         this.goNext(0)
@@ -128,11 +171,10 @@ export default class Dialogue extends cc.Component {
         this.nameLabel.string = ''
         this.avatarSprite.spriteFrame = null
         this.label.string = ''
-        this.next.active = false
-        this.updateButton(this.button0, 0)
-        this.updateButton(this.button1, 1)
-        this.updateButton(this.button2, 2)
-        this.updateButton(this.button3, 3)
+        this.next.opacity = 0
+        for (let i = 0; i < this.buttons.length; i++) {
+            this.updateButton(this.buttons[i], i)
+        }
     }
     private updateUi() {
         if (this.currentTextIndex > this.data.list.length - 1) {
@@ -145,18 +187,11 @@ export default class Dialogue extends cc.Component {
         this.nameLabel.string = this.data.actors[current.actor].name
         this.avatarSprite.spriteFrame = Logic.spriteFrameRes(this.data.actors[current.actor].resName)
 
-        this.next.active = current.next.length == 1 && (!current.next[0].text || current.next[0].text.length == 0)
-        this.updateButton(this.button0, 0, current)
-        this.updateButton(this.button1, 1, current)
-        this.updateButton(this.button2, 2, current)
-        this.updateButton(this.button3, 3, current)
-        cc.tween(this.label.node)
-            .to(0.2, { opacity: 0 })
-            .call(() => {
-                this.label.string = current.text
-            })
-            .to(0.2, { opacity: 255 })
-            .start()
+        this.next.opacity = current.next.length == 1 && (!current.next[0].text || current.next[0].text.length == 0) ? 255 : 0
+        for (let i = 0; i < this.buttons.length; i++) {
+            this.updateButton(this.buttons[i], i, current)
+        }
+        this.updateLabel(current.text, this.data.isTalk)
     }
     private updateButton(button: cc.Button, index: number, current?: DialogueTextData) {
         if (!current || current.next.length - 1 < index) {
@@ -166,60 +201,35 @@ export default class Dialogue extends cc.Component {
         button.node.active = current.next[index].text && current.next[index].text.length > 0
         button.getComponentInChildren(cc.Label).string = current.next[index].text
     }
-    showToast(msg: string, isCenter: boolean, isTap: boolean) {
-        if (msg.length < 1) {
-            return
-        }
-        this.label.node.width = isCenter ? 300 : 600
-        let node = this.node
-        node.stopAllActions()
-        let delay = 3
-        if (isTap) {
-            delay = 0.07 * msg.length
-            if (delay < 3) {
-                delay = 3
-            }
-            let count = 0
-            this.schedule(
-                () => {
-                    this.label.string = `${msg.substr(0, count++)}`
-                    node.width = this.label.node.width + 10
-                    node.height = this.label.node.height + 10
-                    node.opacity = 255
-                    node.active = true
-                },
-                0.05,
-                msg.length,
-                0.3
-            )
+    private updateLabel(text: string, isTalk: boolean) {
+        if (!isTalk) {
+            cc.tween(this.label.node)
+                .to(0.2, { opacity: 0 })
+                .call(() => {
+                    this.label.string = text
+                })
+                .to(0.2, { opacity: 255 })
+                .start()
         } else {
-            this.scheduleOnce(() => {
-                this.label.string = `${msg}`
-                node.width = this.label.node.width + 10
-                node.height = this.label.node.height + 10
-                node.opacity = 255
-                node.active = true
-            }, 0.05)
+            this.isTalking = true
+            let index = 0
+            let talktween = cc
+                .tween()
+                .delay(0.04)
+                .call(() => {
+                    this.label.string = text.substring(0, ++index)
+                })
+            cc.tween(this.label.node)
+                .to(0.2, { opacity: 0 })
+                .call(() => {
+                    this.label.string = ''
+                })
+                .to(0.2, { opacity: 255 })
+                .repeat(text.length, talktween)
+                .call(() => {
+                    this.isTalking = false
+                })
+                .start()
         }
-
-        let y = isCenter ? 360 : 100
-        node.y = y - 100
-        node.scale = 0
-        cc.tween(node)
-            .to(0.1, { scaleX: 1 })
-            .to(0.1, { scaleY: 1 })
-            .to(0.2, { y: y })
-            .delay(delay)
-            .call(() => {
-                cc.tween(node)
-                    .to(0.1, { scaleY: 0.1 })
-                    .to(0.1, { scaleX: 0 })
-                    .to(0.1, { opacity: 0 })
-                    .call(() => {
-                        node.active = false
-                    })
-                    .start()
-            })
-            .start()
     }
 }

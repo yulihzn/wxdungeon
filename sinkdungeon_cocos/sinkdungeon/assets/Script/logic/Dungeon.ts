@@ -265,7 +265,6 @@ export default class Dungeon extends cc.Component {
                             .delay(0.1)
                             .to(0.5, { opacity: 0 })
                             .call(() => {
-                                this.player.playWakeUpInit()
                                 if (!Logic.profileManager.hasSaveData && Logic.CHAPTER00 == Logic.chapterIndex) {
                                     Dialogue.play('course000')
                                 }

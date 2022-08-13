@@ -111,15 +111,27 @@ export default class KeyboardController extends cc.Component {
                 break
             case 49:
                 this.useItem(0)
+                if (Logic.isGamePause) {
+                    EventHelper.emit(EventHelper.HUD_DIALOGUE_BUTTON, { index: 0 })
+                }
                 break
             case 50:
                 this.useItem(1)
+                if (Logic.isGamePause) {
+                    EventHelper.emit(EventHelper.HUD_DIALOGUE_BUTTON, { index: 1 })
+                }
                 break
             case 51:
                 this.useItem(2)
+                if (Logic.isGamePause) {
+                    EventHelper.emit(EventHelper.HUD_DIALOGUE_BUTTON, { index: 2 })
+                }
                 break
             case 52:
                 this.useItem(3)
+                if (Logic.isGamePause) {
+                    EventHelper.emit(EventHelper.HUD_DIALOGUE_BUTTON, { index: 3 })
+                }
                 break
             case 53:
                 this.useItem(4)
@@ -171,6 +183,9 @@ export default class KeyboardController extends cc.Component {
                 } else {
                     this.isJ = false
                     EventHelper.emit(EventHelper.PLAYER_JUMP_CANCEL)
+                }
+                if (Logic.isGamePause) {
+                    EventHelper.emit(EventHelper.HUD_DIALOGUE_SKIP)
                 }
                 break
             case cc.macro.KEY.shift:

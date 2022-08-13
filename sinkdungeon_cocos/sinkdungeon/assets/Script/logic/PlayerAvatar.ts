@@ -331,21 +331,14 @@ export default class PlayerAvatar extends BaseAvatar {
         this.changeAvatarByDir(BaseAvatar.DIR_RIGHT)
         this.anim.play('AvatarSleep')
         this.isAniming = true
-        this.scheduleOnce(() => {
-            this.isAniming = false
-        }, 5)
     }
     public playWakeUp() {
         this.changeAvatarByDir(BaseAvatar.DIR_RIGHT)
-        this.anim.play('AvatarSleep')
+        this.anim.play('AvatarWakeUp')
         this.isAniming = true
         this.scheduleOnce(() => {
-            AudioPlayer.play(AudioPlayer.BUBBLE)
-            this.anim.play('AvatarWakeUp')
-        }, 1)
-        this.scheduleOnce(() => {
             this.isAniming = false
-        }, 2)
+        }, 1)
     }
     public playRead() {
         this.isAniming = true

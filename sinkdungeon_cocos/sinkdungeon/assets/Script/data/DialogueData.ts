@@ -1,9 +1,6 @@
 import DataUtils from '../utils/DataUtils'
-import IndexZ from '../utils/IndexZ'
-import DamageData from './DamageData'
 import DialogueActorData from './DialogueActorData'
 import DialogueTextData from './DialogueTextData'
-import FromData from './FromData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -16,9 +13,10 @@ import FromData from './FromData'
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 export default class DialogueData {
-    id = 0
+    id = ''
     list: DialogueTextData[] = []
     actors: DialogueActorData[] = []
+    isTalk = false
 
     valueCopy(data: DialogueData) {
         if (!data) {

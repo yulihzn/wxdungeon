@@ -9,6 +9,7 @@ import InventoryDialog from './dialog/InventoryDialog'
 import AudioPlayer from '../utils/AudioPlayer'
 import SatietyView from './SatietyView'
 import DollMachineDialog from './dialog/DollMachineDialog'
+import Dialogue from './Dialogue'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -60,6 +61,8 @@ export default class GameHud extends cc.Component {
     dollMachineDialog: DollMachineDialog = null
     @property(cc.Label)
     AmmoLabel: cc.Label = null
+    @property(Dialogue)
+    dialogue: Dialogue = null
     private arrowList: cc.Node[] = []
     private isCompleteShowed = false
     private checkTimeDelay = 0
@@ -295,7 +298,7 @@ export default class GameHud extends cc.Component {
                 this.clock.string = `${Logic.time}`
             }
         }
-        if (this.settingsDialog.node.active || this.martShelvesDialog.node.active || this.dollMachineDialog.node.active) {
+        if (this.settingsDialog.node.active || this.martShelvesDialog.node.active || this.dollMachineDialog.node.active || this.dialogue.isShow) {
             Logic.isGamePause = true
         } else {
             Logic.isGamePause = false
