@@ -275,7 +275,7 @@ export default class Slime extends Boss {
                 EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.entity.Transform.position, count: 100 })
                 EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.entity.Transform.position, res: Item.HEART })
                 EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.entity.Transform.position, res: Item.DREAM })
-                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, 3)
+                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, 4)
             }
             if (this.slimeType < Slime.DIVIDE_COUNT) {
                 EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: this.entity.Transform.position, count: 5 })

@@ -625,7 +625,7 @@ export default class EquipmentManager extends BaseManager {
         info += DataUtils.getinfoNum2String(common.damageMaxPercent == 0, `最大攻击力${common.damageMaxPercent > 0 ? '提升' : '降低'}`, common.damageMaxPercent, '%\n')
         info += DataUtils.getinfoNum2String(common.defence == 0, '防御', common.defence, '\n')
         info += DataUtils.getinfoNum2String(common.defencePercent == 0, `防御${common.defencePercent > 0 ? '提升' : '降低'}`, common.defencePercent, '%\n')
-        info += DataUtils.getinfoNum2String(common.maxHealth == 0, '生命${common.maxHealth}\n')
+        info += DataUtils.getinfoNum2String(common.maxHealth == 0, '生命', common.maxHealth, '\n')
         info += DataUtils.getinfoNum2String(common.maxHealthPercent == 0, `生命${common.maxHealthPercent > 0 ? '提升' : '降低'}`, common.maxHealthPercent, '%\n')
         info += DataUtils.getinfoNum2String(common.maxDream == 0, '梦境', common.maxDream, '\n')
         info += DataUtils.getinfoNum2String(common.maxDreamPercent == 0, `梦境${common.maxDreamPercent > 0 ? '提升' : '降低'}`, common.maxDreamPercent, '%\n')
@@ -643,7 +643,7 @@ export default class EquipmentManager extends BaseManager {
         info += DataUtils.getinfoNum2String(common.damageBackPercent == 0, `背刺${common.damageBackPercent > 0 ? '提升' : '降低'}`, common.damageBackPercent, '%\n')
         info += DataUtils.getinfoNum2String(common.moveSpeed == 0, '移速', common.moveSpeed, '\n')
         info += DataUtils.getinfoNum2String(common.moveSpeedPercent == 0, `移速${common.moveSpeedPercent > 0 ? '提升' : '降低'}`, common.moveSpeedPercent, '%\n')
-        info += DataUtils.getinfoNum2String(common.attackSpeed == 0, '攻速`common.attackSpeed}\n')
+        info += DataUtils.getinfoNum2String(common.attackSpeed == 0, `攻速${common.attackSpeed}\n`)
         info += DataUtils.getinfoNum2String(common.attackSpeedPercent == 0, `攻速${common.attackSpeedPercent > 0 ? '提升' : '降低'}`, common.attackSpeedPercent, '%\n')
         info += DataUtils.getinfoNum2String(common.dodge == 0, '闪避', common.dodge, '%\n')
         info += DataUtils.getinfoNum2String(common.blockDamage == 0, '弹反伤害', common.blockDamage, '\n')
@@ -657,7 +657,7 @@ export default class EquipmentManager extends BaseManager {
     }
     static getInfo2(common: CommonData, data: EquipmentData): string {
         let info = ``
-        info += DataUtils.getinfoNum2String(data && data.isReflect > 0, '反弹子弹\n')
+        info += `${data && data.isReflect > 0 ? '反弹子弹\n' : ''}`
         info += DataUtils.getinfoNum2String(common.realDamage == 0, '攻击附加', common.realDamage, '点流血伤害\n')
         info += DataUtils.getinfoNum2String(common.realDamagePercent == 0, `流血伤害${common.realDamagePercent > 0 ? '提升' : '降低'}`, common.realDamagePercent, '%\n')
         info += DataUtils.getinfoNum2String(common.realRate == 0, '攻击有', common.realRate, '%几率释放流血\n')

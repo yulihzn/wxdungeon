@@ -108,7 +108,9 @@ export default class StatusManager extends cc.Component {
                 let sd = new StatusData()
                 sd.valueCopy(s)
                 sd.From.valueCopy(new FromData())
-                this.showStatus(sd, true)
+                if (this.stopOtherUniqueStatus(sd.unique)) {
+                    this.showStatus(sd, true)
+                }
             }
         }
     }
@@ -146,19 +148,20 @@ export default class StatusManager extends cc.Component {
         if (unique < 1) {
             return true
         }
+        let flag = true
         this.statusMap.forEach(ss => {
             for (let s of ss) {
                 if (s && s.data && s.data.unique == unique) {
                     if (s.data.duration < 0) {
-                        return false
+                        flag = false
                     } else {
                         s.stopStatus()
-                        return true
+                        flag = true
                     }
                 }
             }
         })
-        return true
+        return flag
     }
     stopAllStatus(): void {
         this.statusMap.forEach(ss => {

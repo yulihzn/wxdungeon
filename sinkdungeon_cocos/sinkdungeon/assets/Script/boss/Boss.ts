@@ -110,7 +110,7 @@ export default abstract class Boss extends Actor {
                 EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: Item.HEART })
                 EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: Item.DREAM })
             }
-            this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), null, null, isSteal ? 0 : 3)
+            this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), null, null, isSteal ? 0 : 4)
         }
     }
     showBoss() {}

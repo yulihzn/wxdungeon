@@ -92,9 +92,6 @@ export default class DataUtils {
             return `${prefix}${num}${suffix}`
         }
         let str = `${num.toFixed(2).replace('.00', '')}`
-        if (str.length > 1 && str.endsWith('0')) {
-            str = str.substring(0, str.length - 1)
-        }
         if (str.indexOf('.') > -1) {
             let arr = str.split('.')
             let end = arr[1]

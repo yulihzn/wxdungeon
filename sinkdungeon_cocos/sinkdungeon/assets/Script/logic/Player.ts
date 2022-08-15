@@ -171,13 +171,12 @@ export default class Player extends PlayActor {
         this.statusPos = this.statusManager.node.position.clone()
         this.floatPos = this.floatinglabelManager.node.position.clone()
         this.inventoryManager = Logic.inventoryManager
-        this.updateStatus(this.data.StatusList, this.data.StatusTotalData)
+
         this.pos = cc.v3(0, 0)
         this.sc.isDied = false
         this.sc.isShow = false
         this.scheduleOnce(() => {
             this.sc.isShow = true
-            this.addSaveStatusList()
             if (Logic.isCheatMode) {
                 this.scheduleOnce(() => {
                     this.addStatus(StatusManager.PERFECTDEFENCE, new FromData())
@@ -808,6 +807,8 @@ export default class Player extends PlayActor {
         if (!this.node) {
             return
         }
+        this.updateStatus(this.data.StatusList, this.data.StatusTotalData)
+        this.addSaveStatusList()
         this.changeZIndex()
         this.updateInfoUi()
         this.playWakeUpInit()
