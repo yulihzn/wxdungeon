@@ -53,9 +53,7 @@ export default class NonPlayerManager extends BaseManager {
         }
     }
     /**添加npc */
-    public addNonPlayerFromData(resName: string, pos: cc.Vec3, dungeon: Dungeon) {
-        let data = new NonPlayerData()
-        data.valueCopy(Logic.nonplayers[resName])
+    public addNonPlayerFromData(data: NonPlayerData, pos: cc.Vec3, dungeon: Dungeon) {
         Achievement.addNpcsAchievement(data.resName)
         this.getNonPlayer(data, dungeon, (npc: NonPlayer) => {
             this.addNonPlayer(npc, pos)
@@ -86,7 +84,9 @@ export default class NonPlayerManager extends BaseManager {
 
     public addNonPlayerFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
         if (Dungeon.isFirstEqual(mapDataStr, 'n')) {
-            this.addNonPlayerFromData(`nonplayer${mapDataStr.substring(1)}`, Dungeon.getPosInMap(indexPos), dungeon)
+            let data = new NonPlayerData()
+            data.valueCopy(Logic.nonplayers[`nonplayer${mapDataStr.substring(1)}`])
+            this.addNonPlayerFromData(data, Dungeon.getPosInMap(indexPos), dungeon)
         }
     }
     private getNonPlayer(nonPlayerData: NonPlayerData, dungeon: Dungeon, callback: Function): void {

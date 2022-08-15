@@ -43,8 +43,8 @@
         },
         "avatar": {
             "isAnimFrame": true,
-            "attackFrames": [9, 10],
-            "specialFrames": [11, 12],
+            "attackFrames": [9, 11],
+            "specialFrames": [12, 13],
             "disguiseFrames": []
         },
         "currentHealth": 100,
@@ -64,10 +64,11 @@
         "chapter": 3,
         "stageLevel": 0,
         "bulletType": "bullet017",
-        "bulletArcExNum": 1,
+        "bulletArcExNum": 4,
         "specialAttack": 15,
         "shooterOffsetX": 0,
         "shooterOffsetY": 45,
+        "specialBulletArcExNum": 80,
         "common": {
             "remoteAngle": 5,
             "moveSpeed": 2,
@@ -104,6 +105,8 @@
         "avatar": {
             "isAnimFrame": true
         },
+        "attackFrames": 3,
+        "specialFrames": 3,
         "currentHealth": 150,
         "invisible": 1,
         "remote": 0,

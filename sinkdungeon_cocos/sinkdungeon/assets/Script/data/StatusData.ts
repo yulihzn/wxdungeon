@@ -66,7 +66,7 @@ export default class StatusData {
     solidOvertime: number = 0 //持续饱腹增加
     liquidDirect: number = 0 //瞬间解渴增加
     liquidOvertime: number = 0 //持续解渴值增加
-
+    stackable: number = 0 //可堆叠层数，超过层数会移除掉第一条，如果为0
     private from: FromData //来源
 
     constructor() {

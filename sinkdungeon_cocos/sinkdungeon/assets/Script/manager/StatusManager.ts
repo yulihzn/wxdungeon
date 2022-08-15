@@ -3,9 +3,7 @@ import Logic from '../logic/Logic'
 import FromData from '../data/FromData'
 import Status from '../status/Status'
 import Actor from '../base/Actor'
-import StatusIcon from '../ui/StatusIcon'
 import StatusIconList from '../ui/StatusIconList'
-import Player from '../logic/Player'
 import ActorUtils from '../utils/ActorUtils'
 import PlayActor from '../base/PlayActor'
 
@@ -70,14 +68,14 @@ export default class StatusManager extends cc.Component {
 
     @property(cc.Prefab)
     statusPrefab: cc.Prefab = null
-    private statusMap: Map<number, Status>
+    private statusMap: Map<number, Status[]>
     public statusIconList: StatusIconList
     private totalStatusData: StatusData = new StatusData()
     private actor: Actor
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.statusMap = new Map<number, Status>()
+        this.statusMap = new Map<number, Status[]>()
         this.actor = this.node.parent.getComponent(Actor)
     }
 
@@ -118,21 +116,29 @@ export default class StatusManager extends cc.Component {
         let sd = new StatusData()
         sd.valueCopy(Logic.status[resName])
         if (this.statusMap.has(sd.id)) {
-            let s = this.statusMap.get(sd.id)
-            if (s && s.node && s.isValid && s.isStatusRunning() && s.data.id == sd.id) {
-                return true
+            let ss = this.statusMap.get(sd.id)
+            for (let s of ss) {
+                if (s && s.node && s.isValid && s.isStatusRunning()) {
+                    return true
+                }
             }
         }
 
         return false
     }
+    /**
+     * 停止指定类型的所有状态
+     * @param resName
+     */
     stopStatus(resName: string): void {
         let sd = new StatusData()
         sd.valueCopy(Logic.status[resName])
         if (this.statusMap.has(sd.id)) {
-            let s = this.statusMap.get(sd.id)
-            if (s && s.node && s.isValid && s.isStatusRunning() && s.data.id == sd.id) {
-                s.stopStatus()
+            let ss = this.statusMap.get(sd.id)
+            for (let s of ss) {
+                if (s && s.node && s.isValid && s.isStatusRunning() && s.data.id == sd.id) {
+                    s.stopStatus()
+                }
             }
         }
     }
@@ -140,66 +146,79 @@ export default class StatusManager extends cc.Component {
         if (unique < 1) {
             return true
         }
-        this.statusMap.forEach(s => {
-            if (s && s.data && s.data.unique == unique) {
-                if (s.data.duration < 0) {
-                    return false
-                } else {
-                    s.stopStatus()
-                    return true
+        this.statusMap.forEach(ss => {
+            for (let s of ss) {
+                if (s && s.data && s.data.unique == unique) {
+                    if (s.data.duration < 0) {
+                        return false
+                    } else {
+                        s.stopStatus()
+                        return true
+                    }
                 }
             }
         })
         return true
     }
     stopAllStatus(): void {
-        this.statusMap.forEach(s => {
-            s.stopStatus()
-        })
-    }
-    stopAllBuffs(): void {
-        this.statusMap.forEach(s => {
-            if (s && s.data && s.data.type == Status.BUFF) {
+        this.statusMap.forEach(ss => {
+            for (let s of ss) {
                 s.stopStatus()
             }
         })
     }
+    stopAllBuffs(): void {
+        this.statusMap.forEach(ss => {
+            for (let s of ss) {
+                if (s && s.data && s.data.type == Status.BUFF) {
+                    s.stopStatus()
+                }
+            }
+        })
+    }
     stopAllDebuffs(): void {
-        this.statusMap.forEach(s => {
-            if (s && s.data && s.data.type == Status.DEBUFF) {
-                s.stopStatus()
+        this.statusMap.forEach(ss => {
+            for (let s of ss) {
+                if (s && s.data && s.data.type == Status.DEBUFF) {
+                    s.stopStatus()
+                }
             }
         })
     }
     private showStatus(data: StatusData, isFromSave: boolean) {
         //去除已经失效的状态
-        this.statusMap.forEach((s, key) => {
-            if (!s || !s.node || !s.isValid) {
+        this.statusMap.forEach((ss, key) => {
+            for (let i = ss.length - 1; i >= 0; i--) {
+                let s = ss[i]
+                if (!s || !s.node || !s.isValid) {
+                    ss.splice(i, 1)
+                }
+            }
+            if (ss.length < 1) {
                 this.statusMap.delete(key)
             }
         })
-        //新的状态如果存在则叠加时效且重新触发
+        //新的状态如果存在，根据叠加数量来移除旧的状态,如果不存在创建一个数组
         if (this.statusMap.has(data.id)) {
-            let s = this.statusMap.get(data.id)
-            if (s && s.node && s.isValid && s.isStatusRunning() && s.data.id == data.id) {
-                // s.data.duration = data.duration;
-                if (s.data.duration > 0 && data.duration > 0) {
-                    data.duration += s.data.duration
+            let ss = this.statusMap.get(data.id)
+            let aliveCount = 0
+            for (let s of ss) {
+                if (s && s.node && s.isValid && s.isStatusRunning() && s.data.id == data.id) {
+                    aliveCount++
                 }
-                s.showStatus(data, this.actor, isFromSave)
-                return
             }
+            if (aliveCount > data.stackable) {
+                ss.pop().stopStatus()
+            }
+        } else {
+            this.statusMap.set(data.id, [])
         }
 
         let statusNode: cc.Node = cc.instantiate(this.statusPrefab)
         statusNode.parent = this.node
         statusNode.active = true
         let status = statusNode.getComponent(Status)
-        if (this.statusMap.has(data.id)) {
-            let s = this.statusMap.get(data.id)
-            this.statusMap.set(9999 + s.data.id, s)
-        }
-        this.statusMap.set(data.id, status)
+        this.statusMap.get(data.id).unshift(status)
         if (this.statusIconList) {
             let icon = this.statusIconList.getIcon()
             status.icon = icon
@@ -233,19 +252,21 @@ export default class StatusManager extends cc.Component {
     private updateStatus(): StatusData[] {
         this.totalStatusData = new StatusData()
         let dataList: StatusData[] = new Array()
-        this.statusMap.forEach(s => {
-            if (s && s.node && s.isValid) {
-                s.updateLogic()
-                if (s.data.duration == 0) {
-                    this.addStatus(s.data.finishStatus, s.data.From)
-                } else {
-                    this.totalStatusData.missRate += s.data.missRate ? s.data.missRate : 0
-                    this.totalStatusData.variation += s.data.variation ? s.data.variation : 0
-                    this.totalStatusData.exOilGold += s.data.exOilGold ? s.data.exOilGold : 0
-                    this.totalStatusData.clearHealth += s.data.clearHealth ? s.data.clearHealth : 0
-                    this.totalStatusData.avoidDeath += s.data.avoidDeath ? s.data.avoidDeath : 0
-                    this.totalStatusData.Common.add(s.data.Common)
-                    dataList.push(s.data.clone())
+        this.statusMap.forEach(ss => {
+            for (let s of ss) {
+                if (s && s.node && s.isValid) {
+                    s.updateLogic()
+                    if (s.data.duration == 0) {
+                        this.addStatus(s.data.finishStatus, s.data.From)
+                    } else {
+                        this.totalStatusData.missRate += s.data.missRate ? s.data.missRate : 0
+                        this.totalStatusData.variation += s.data.variation ? s.data.variation : 0
+                        this.totalStatusData.exOilGold += s.data.exOilGold ? s.data.exOilGold : 0
+                        this.totalStatusData.clearHealth += s.data.clearHealth ? s.data.clearHealth : 0
+                        this.totalStatusData.avoidDeath += s.data.avoidDeath ? s.data.avoidDeath : 0
+                        this.totalStatusData.Common.add(s.data.Common)
+                        dataList.push(s.data.clone())
+                    }
                 }
             }
         })

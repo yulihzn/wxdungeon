@@ -4,7 +4,7 @@
         "nameEn": "",
         "resName": "talent000",
         "passive": 0,
-        "cooldown": 5,
+        "cooldown": 1,
         "target": 0,
         "desc": "？？？"
     },
@@ -30,14 +30,14 @@
         "resName": "talent003",
         "passive": 0,
         "cooldown": 5,
-        "desc": "掏出勺子造成1点真实伤害，被干掉的怪物会变成食物"
+        "desc": "掏出勺子造成当前攻击力的真实伤害，被干掉的怪物会变成食物"
     },
     "talent004": {
         "nameCn": "？？？",
         "nameEn": "",
         "resName": "talent004",
         "passive": 0,
-        "cooldown": 10,
+        "cooldown": 1,
         "desc": "？？？"
     },
     "talent005": {
@@ -81,12 +81,12 @@
         "desc": "伸出手偷取对方一件物品或者金币并造成伤害"
     },
     "talent010": {
-        "nameCn": "？？？",
+        "nameCn": "舌灿莲花",
         "nameEn": "",
         "resName": "talent010",
         "passive": 0,
-        "cooldown": 10,
-        "desc": "？？？"
+        "cooldown": 1,
+        "desc": "商人在卖东西的时候获利更多"
     },
     "talent011": {
         "nameCn": "精准点射",
@@ -121,12 +121,12 @@
         "desc": "发射多个追踪的飞弹进行攻击"
     },
     "talent015": {
-        "nameCn": "？？？",
+        "nameCn": "冲刺增强",
         "nameEn": "",
         "resName": "talent015",
         "passive": 0,
-        "cooldown": 2,
-        "desc": "？？？"
+        "cooldown": 1,
+        "desc": "冲刺距离变远，影子数量变多"
     },
     "talent016": {
         "nameCn": "金手指",
@@ -150,7 +150,7 @@
         "resName": "talent018",
         "passive": 0,
         "cooldown": 20,
-        "desc": "召唤3个影子，影子拥有2点伤害5点血"
+        "desc": "召唤3个影子，影子拥有本体一样的伤害和血量，持续30s"
     },
     "talent019": {
         "nameCn": "如来神掌",
@@ -167,7 +167,7 @@
         "passive": 0,
         "cooldown": 30,
         "cost": 2,
-        "desc": "影子分身，分身可以同步攻击"
+        "desc": "影子分身，分身拥有本体100%攻击力可以同步攻击"
     },
     "talent101": {
         "nameCn": "宠物召唤",

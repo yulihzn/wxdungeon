@@ -7,6 +7,7 @@
         "desc": "",
         "duration": 5,
         "type": 1,
+        "stackable": 5,
         "common": {
             "moveSpeed": -1.5,
             "attackSpeed": -150
@@ -21,6 +22,7 @@
         "magicDamageOvertime": 0.4,
         "duration": 5,
         "type": 1,
+        "stackable": 5,
         "common": {
             "damgeMin": -3
         }
@@ -33,6 +35,7 @@
         "desc": "",
         "duration": 5,
         "type": 1,
+        "stackable": 5,
         "dizzDurationDirect": 1,
         "missRate": 80,
         "common": {}
@@ -43,8 +46,9 @@
         "spriteFrameName": "status004",
         "id": 4,
         "desc": "",
+        "stackable": 5,
         "magicDamageOvertime": 1,
-        "duration": 5,
+        "duration": 3,
         "type": 1,
         "common": {}
     },
@@ -56,6 +60,7 @@
         "desc": "",
         "duration": 5,
         "type": 1,
+        "stackable": 3,
         "common": {
             "defence": -50
         }
@@ -68,6 +73,7 @@
         "desc": "",
         "duration": 3,
         "type": 1,
+        "stackable": 5,
         "realDamageOvertime": 1,
         "common": {}
     },
@@ -78,6 +84,7 @@
         "id": 7,
         "desc": "",
         "duration": 60,
+        "stackable": 3,
         "common": {
             "damageMin": 5
         }
@@ -110,7 +117,7 @@
         "spriteFrameName": "icondefence",
         "id": 10,
         "desc": "",
-        "duration": 30,
+        "duration": 60,
         "common": {
             "defence": 9999,
             "dodge": 100,
@@ -126,6 +133,7 @@
         "id": 11,
         "desc": "",
         "duration": 0,
+        "stackable": 99,
         "realDamageDirect": -1,
         "common": {}
     },
@@ -194,6 +202,7 @@
         "id": 17,
         "desc": "",
         "duration": 3,
+        "stackable": 99,
         "realDamageOvertime": -1,
         "common": {}
     },
@@ -227,7 +236,7 @@
         "id": 20,
         "desc": "",
         "duration": 10,
-        "realDamageOvertime": -0.01,
+        "realDamageOvertime": -0.1,
         "common": {}
     },
     "status021": {
@@ -258,7 +267,8 @@
         "spriteFrameName": "status024",
         "id": 23,
         "desc": "",
-        "duration": 999,
+        "stackable": 3,
+        "duration": -1,
         "common": {
             "realDamage": 3
         }
@@ -269,7 +279,8 @@
         "spriteFrameName": "status024",
         "id": 24,
         "desc": "",
-        "duration": 999,
+        "stackable": 3,
+        "duration": -1,
         "common": {
             "realDamage": 5,
             "realRate": 100
@@ -283,6 +294,7 @@
         "desc": "",
         "duration": 15,
         "type": 1,
+        "stackable": 3,
         "common": {
             "moveSpeed": -5
         }
@@ -348,6 +360,7 @@
         "spriteFrameName": "bottle004",
         "id": 30,
         "desc": "",
+        "stackable": 3,
         "duration": 10,
         "common": {
             "remoteDamage": 2
@@ -360,6 +373,7 @@
         "id": 31,
         "desc": "",
         "duration": 0,
+        "stackable": 99,
         "dreamDirect": -1,
         "common": {}
     },
@@ -370,6 +384,7 @@
         "id": 32,
         "desc": "",
         "duration": 3,
+        "stackable": 99,
         "dreamOvertime": -1,
         "common": {}
     },
@@ -416,7 +431,7 @@
         "id": 36,
         "desc": "",
         "duration": 10,
-        "realDamageOvertime": -0.03,
+        "realDamageOvertime": -0.3,
         "common": {}
     },
     "status037": {
@@ -844,9 +859,9 @@
         "unique": 2,
         "common": {
             "damageMin": 50,
-            "moveSpeed": 10,
+            "moveSpeed": 5,
             "attackSpeed": 100,
-            "defence": -100
+            "defence": -200
         }
     },
     "status073": {
@@ -868,6 +883,7 @@
         "id": 74,
         "desc": "",
         "duration": 3,
+        "stackable": 99,
         "realDamageOvertime": -1,
         "common": {}
     }

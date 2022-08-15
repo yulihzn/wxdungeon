@@ -45,6 +45,7 @@ import WallPaint from '../building/WallPaint'
 import RoomKitchen from '../building/RoomKitchen'
 import AudioPlayer from '../utils/AudioPlayer'
 import PlatformBuilding from '../building/PlatformBuilding'
+import NonPlayerData from '../data/NonPlayerData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -366,7 +367,9 @@ export default class BuildingManager extends BaseManager {
             Logic.getBuildings(BuildingManager.MARTCASHIER, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
                 let pos = Dungeon.getPosInMap(indexPos)
-                dungeon.nonPlayerManager.addNonPlayerFromData(NonPlayerManager.SHOP_KEEPER, cc.v3(pos.x - 60, pos.y + 180), dungeon)
+                let data = new NonPlayerData()
+                data.valueCopy(Logic.nonplayers[NonPlayerManager.SHOP_KEEPER])
+                dungeon.nonPlayerManager.addNonPlayerFromData(data, cc.v3(pos.x - 60, pos.y + 180), dungeon)
             })
         } else if (mapDataStr == 'S7') {
             //生成餐桌
@@ -573,6 +576,8 @@ export default class BuildingManager extends BaseManager {
                 let df = fd.getComponent(DecorationFloor)
                 if (mapDataStr == '+1') {
                     df.init(dungeon, 'exitarrow', 4, 0)
+                } else if (mapDataStr == '+5') {
+                    df.init(dungeon, 'floor_final', 4, 0)
                 } else if (mapDataStr == '++0') {
                     df.init(dungeon, 'roomoutside0', 32, 1, cc.v3(0.7, 0.5), 255, IndexZ.BASE)
                 } else if (mapDataStr == '++1') {

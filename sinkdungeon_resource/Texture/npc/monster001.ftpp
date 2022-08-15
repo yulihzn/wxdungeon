@@ -2,7 +2,7 @@
   "meta": {
     "version": "0.6.7"
   },
-  "savePath": "D:\\wxcx\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\Texture\\npc",
+  "savePath": "D:\\wxcx\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\npc",
   "images": [],
   "folders": [
     "D:/wxcx/wxdungeon/sinkdungeon_resource/Texture/npc/monster001"
@@ -19,9 +19,9 @@
     "filter": "none",
     "exporter": "cocos2d",
     "fileName": "pack-result",
-    "savePath": "D:\\wxcx\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\Texture\\npc",
+    "savePath": "D:\\wxcx\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\npc",
     "width": 64,
-    "height": 64,
+    "height": 0,
     "fixedSize": false,
     "powerOfTwo": false,
     "padding": 1,

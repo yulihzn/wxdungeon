@@ -62,7 +62,6 @@ import StateMachine from '../base/fsm/StateMachine'
 import State from '../base/fsm/State'
 import PlayActor from '../base/PlayActor'
 import BaseAvatar from '../base/BaseAvatar'
-import DialogueData from '../data/DialogueData'
 import Dialogue from '../ui/Dialogue'
 @ccclass
 export default class Player extends PlayActor {
@@ -179,6 +178,11 @@ export default class Player extends PlayActor {
         this.scheduleOnce(() => {
             this.sc.isShow = true
             this.addSaveStatusList()
+            if (Logic.isCheatMode) {
+                this.scheduleOnce(() => {
+                    this.addStatus(StatusManager.PERFECTDEFENCE, new FromData())
+                }, 0.2)
+            }
         }, 0.5)
         this.initTalent()
         this.initCollider()
@@ -267,11 +271,7 @@ export default class Player extends PlayActor {
             this.destroySmoke(detail.coinNode)
         })
         this.playerAnim(BaseAvatar.STATE_IDLE, this.currentDir)
-        if (Logic.isCheatMode) {
-            this.scheduleOnce(() => {
-                this.addStatus(StatusManager.PERFECTDEFENCE, new FromData())
-            }, 0.2)
-        }
+
         this.lights = this.getComponentsInChildren(ShadowOfSight)
         LightManager.registerLight(this.lights, this.node)
         if (this.bottomDir) {
@@ -865,6 +865,9 @@ export default class Player extends PlayActor {
         let speed = 20
         if (this.IsVariation) {
             speed = 40
+        }
+        if (this.professionTalent && this.professionTalent.hashTalent(Talent.TALENT_015)) {
+            speed += 10
         }
         AudioPlayer.play(AudioPlayer.DASH)
         this.schedule(
@@ -1482,26 +1485,26 @@ export default class Player extends PlayActor {
         let str = '你觉得'
         let can = true
         if (data.solidSatiety > 0) {
-            if (life.solidSatiety > 90) {
+            if (life.solidSatiety > 99) {
                 can = false
                 str += '太饱了'
                 if (life.poo > 90) {
                     str += '，而且要憋不住'
                 }
                 str += '，完全吃不下了。'
-            } else if (life.poo > 90) {
+            } else if (life.poo > 99) {
                 can = false
                 str += '要憋不住了,完全吃不下了。'
             }
         } else if (data.liquidSatiety > 0) {
-            if (life.liquidSatiety > 90) {
+            if (life.liquidSatiety > 99) {
                 can = false
                 str += '太胀了'
-                if (life.pee > 90) {
+                if (life.pee > 99) {
                     str += '，而且要憋不住'
                 }
                 str += '，完全喝不下了。'
-            } else if (life.poo > 90) {
+            } else if (life.poo > 99) {
                 can = false
                 str += '要憋不住了,完全喝不下了。'
             }

@@ -76,4 +76,33 @@ export default class DataUtils {
         rate = rate > max ? max : rate
         return rate
     }
+    /**
+     * 获取信息里的数字字符串
+     * @param num
+     * @returns 不足0的保留2位小数
+     */
+    public static getinfoNum2String(isSkip: boolean, prefix: string, num?: number, suffix?: string): string {
+        if (isSkip) {
+            return ''
+        }
+        if (isNaN(num)) {
+            return `${prefix}`
+        }
+        if (num == 0) {
+            return `${prefix}${num}${suffix}`
+        }
+        let str = `${num.toFixed(2).replace('.00', '')}`
+        if (str.length > 1 && str.endsWith('0')) {
+            str = str.substring(0, str.length - 1)
+        }
+        if (str.indexOf('.') > -1) {
+            let arr = str.split('.')
+            let end = arr[1]
+            if (end.length > 1 && end.endsWith('0')) {
+                end = end.substring(0, end.length - 1)
+            }
+            str = `${arr[0]}.${end}`
+        }
+        return `${prefix}${str}${suffix}`
+    }
 }

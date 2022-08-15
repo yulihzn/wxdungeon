@@ -36,7 +36,7 @@
                 {
                  "name":"exits",
                  "type":"string",
-                 "value":"8,16,5,0,5,1"
+                 "value":"8,16,5,0,5,1#8,0,5,2,5,9"
                 }, 
                 {
                  "name":"floorRes",

@@ -20,6 +20,7 @@ import InventoryManager from '../manager/InventoryManager'
 import ShadowPlayer from '../actor/ShadowPlayer'
 import Utils from '../utils/Utils'
 import BaseAvatar from '../base/BaseAvatar'
+import NonPlayerData from '../data/NonPlayerData'
 /**
  * 技能管理器
  * 通用技能点：cd减短 范围变大 持续时间增加 伤害增加 数量变多
@@ -106,6 +107,10 @@ export default class ProfessionTalent extends Talent {
     }
     protected skillCanUse() {
         switch (this.data.resName) {
+            case Talent.TALENT_000:
+            case Talent.TALENT_010:
+            case Talent.TALENT_015:
+                return false
             case Talent.TALENT_009:
                 return this.canSteal()
             case Talent.TALENT_019:
@@ -158,7 +163,6 @@ export default class ProfessionTalent extends Talent {
                 this.steal(shadowPlayer)
                 break
             case Talent.TALENT_010:
-                Utils.toast('梦境开发中,无法使用。')
                 break
             case Talent.TALENT_011:
                 if (!shadowPlayer) {
@@ -179,9 +183,6 @@ export default class ProfessionTalent extends Talent {
                 }, 0.1)
                 break
             case Talent.TALENT_015:
-                // if (!shadowPlayer) {
-                //     this.dash(shooterEx)
-                // }
                 break
             case Talent.TALENT_016:
                 if (shadowPlayer) {
@@ -238,8 +239,13 @@ export default class ProfessionTalent extends Talent {
     }
     private addShadowFighter(shadowPlayer: ShadowPlayer) {
         for (let i = 0; i < 3; i++) {
+            let data = new NonPlayerData()
+            data.valueCopy(Logic.nonplayers[NonPlayerManager.NON_SHADOW])
+            let fc = this.player.data.FinalCommon
+            data.Common.damageMin = this.player.data.getFinalAttackPoint().getTotalDamage()
+            data.Common.maxHealth = fc.MaxHealth
             this.player.weaponRight.meleeWeapon.dungeon.nonPlayerManager.addNonPlayerFromData(
-                NonPlayerManager.NON_SHADOW,
+                data,
                 shadowPlayer ? shadowPlayer.node.position : this.player.node.position,
                 this.player.weaponRight.meleeWeapon.dungeon
             )
@@ -325,42 +331,7 @@ export default class ProfessionTalent extends Talent {
             })
             .start()
     }
-    private dash(shooterEx: Shooter) {
-        let speed = 20
-        if (this.player.IsVariation) {
-            speed = 40
-        }
-        AudioPlayer.play(AudioPlayer.DASH)
-        this.schedule(
-            () => {
-                this.addDashGhost(shooterEx)
-            },
-            0.05,
-            10
-        )
-        let pos = this.player.entity.Move.linearVelocity.clone()
-        this.player.sc.isMoving = false
-        if (pos.equals(cc.Vec2.ZERO)) {
-            // pos = this.player.isFaceRight ? cc.v2(1, 0) : cc.v2(-1, 0);
-            pos = cc.v2(this.player.Hv.clone())
-        } else {
-            pos = pos.normalizeSelf()
-        }
-        let posv2 = cc.v2(pos.x, pos.y)
-        this.hv = posv2.clone()
-        pos = pos.mul(speed)
-        this.player.entity.Move.linearVelocity = pos
-        this.player.entity.Move.damping = 50
-        this.player.playerAnim(BaseAvatar.STATE_WALK, this.player.currentDir)
-        this.player.highLight(true)
-        this.scheduleOnce(() => {
-            this.player.entity.Move.damping = 3
-            this.player.entity.Move.linearVelocity = cc.Vec2.ZERO
-            this.player.playerAnim(BaseAvatar.STATE_IDLE, this.player.currentDir)
-            this.IsExcuting = false
-            this.player.highLight(false)
-        }, 0.5)
-    }
+
     private jump(shooterEx: Shooter) {
         AudioPlayer.play(AudioPlayer.JUMP)
         this.player.talentJump(() => {

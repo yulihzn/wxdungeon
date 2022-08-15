@@ -373,6 +373,12 @@ export default class NonPlayer extends PlayActor {
             this.sprite = this.root.getChildByName('sprite')
             this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite)
         }
+        if (this.hv.y > 0 && suffix && suffix.indexOf('anim0') > -1) {
+            let temp = suffix.replace('anim0', 'anim1')
+            if (this.getSpriteFrameByName(resName, temp)) {
+                suffix = temp
+            }
+        }
         let spriteFrame = this.getSpriteFrameByName(resName, suffix)
         if (spriteFrame) {
             this.bodySprite.spriteFrame = spriteFrame
@@ -895,6 +901,7 @@ export default class NonPlayer extends PlayActor {
         this.sprite.stopAllActions()
         this.bodyStopAllActions()
         this.dangerBox.finish()
+        this.statusManager.stopAllBuffs()
         this.anim.play('MonsterDie')
         this.changeBodyRes(this.data.resName, NonPlayer.RES_HIT003)
         let collider: CCollider = this.getComponent(CCollider)
