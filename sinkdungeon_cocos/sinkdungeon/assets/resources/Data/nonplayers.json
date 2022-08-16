@@ -52,33 +52,39 @@
         "lifeTime": 0
     },
     "nonplayer003": {
-        "nameCn": "柯基",
-        "nameEn": "dog",
+        "nameCn": "桃子炸弹猴",
+        "nameEn": "Peach Boomer",
         "resName": "nonplayer003",
         "chapter": 0,
         "stageLevel": 0,
-        "specialAttack": 10,
-        "specialAudio": "dog",
+        "scale": 0.75,
+        "bulletType": "bullet028",
+        "specialAttack": 15,
+        "specialBulletArcExNum": 2,
+        "shooterOffsetX": 23,
+        "shooterOffsetY": 30,
         "common": {
-            "moveSpeed": 5,
-            "maxHealth": 50,
-            "damageMin": 5
+            "remoteAngle": 5,
+            "moveSpeed": 10,
+            "maxHealth": 20,
+            "damageMin": 6
         },
         "avatar": {
             "isAnimFrame": true
         },
+        "isBoom": 1,
         "currentHealth": 50,
         "invisible": 0,
-        "remote": 0,
-        "melee": 1,
-        "isPet": 1,
+        "remote": 3,
+        "melee": 0,
+        "dash": 0,
         "boxType": 1,
-        "scale": 0.75,
         "isEnemy": 0,
         "isFollow": 1,
-        "bodyRect": "0,0,80,40,90",
-        "attackRect": "-32,0,112,40,80",
-        "lifeTime": 0
+        "bodyRect": "0,0,48,32,105",
+        "attackRect": "-32,0,112,32,80",
+        "disguise": 0,
+        "lifeTime": 30
     },
     "nonplayer100": {
         "nameCn": "柯基",

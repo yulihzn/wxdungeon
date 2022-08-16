@@ -99,12 +99,15 @@ export default class Chest extends Building {
                         if (Logic.isCheatMode) {
                             // dungeon.addEquipment(EquipmentManager.CLOTHES_JUNGLE, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment(EquipmentManager.SHOES_JUNGLE, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            // dungeon.addEquipment('weapon046', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment('shoes009', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            // dungeon.addEquipment('clothes029', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            // dungeon.addEquipment('trousers013', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            // dungeon.addEquipment('helmet031', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            // dungeon.addEquipment('weapon052', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment(EquipmentManager.REMOTE_ALIENGUN, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_DREAM);
                             // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_HEALING)
-                            dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_JUMP)
+                            // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_JUMP)
                             // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_MOVESPEED)
                             // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_REMOTE)
                             // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_ATTACK)

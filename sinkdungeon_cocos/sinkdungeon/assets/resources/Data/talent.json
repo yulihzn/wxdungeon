@@ -195,5 +195,14 @@
         "cooldown": 60,
         "cost": 2,
         "desc": "注射翠金提炼的试剂变狂化"
+    },
+    "talent200": {
+        "nameCn": "召唤桃子猴赛雷",
+        "nameEn": "",
+        "resName": "talent200",
+        "passive": 0,
+        "cooldown": 3,
+        "cost": 1,
+        "desc": "召唤一只桃子猴赛雷"
     }
 }

@@ -346,6 +346,7 @@ export default class PlayerAvatar extends BaseAvatar {
             this.isAniming = false
         }, 5)
     }
+
     start() {}
     checkTimeDelay = 0
     isAnimTimeDelay(dt: number): boolean {

@@ -11,7 +11,7 @@
   "subMetas": {
     "nonplayer002anim010.png": {
       "ver": "1.0.6",
-      "uuid": "efd53ee0-1ced-42e0-b6f9-3d26800d5fb9",
+      "uuid": "49dd5812-1f8f-4a36-9848-989657d73f31",
       "importer": "sprite-frame",
       "rawTextureUuid": "a3a96ffb-0cbf-4e37-8658-dd4cc3496ca7",
       "trimType": "auto",
@@ -34,7 +34,7 @@
     },
     "nonplayer002anim012.png": {
       "ver": "1.0.6",
-      "uuid": "7a8dcb2d-398e-488d-bf01-510123febb0f",
+      "uuid": "8b397d79-823a-4efb-93c8-feeb2d14c925",
       "importer": "sprite-frame",
       "rawTextureUuid": "a3a96ffb-0cbf-4e37-8658-dd4cc3496ca7",
       "trimType": "auto",
@@ -57,7 +57,7 @@
     },
     "nonplayer002anim007.png": {
       "ver": "1.0.6",
-      "uuid": "4d59b71d-e155-4416-963a-e26ad5eb47d1",
+      "uuid": "83a9195e-7f67-4dd8-9aa0-aeb3ceb06ac7",
       "importer": "sprite-frame",
       "rawTextureUuid": "a3a96ffb-0cbf-4e37-8658-dd4cc3496ca7",
       "trimType": "auto",
@@ -80,7 +80,7 @@
     },
     "nonplayer002anim011.png": {
       "ver": "1.0.6",
-      "uuid": "34e9e7c2-1744-4a88-b5fe-66577796eafc",
+      "uuid": "f3a63e5a-b951-4de7-84ac-58c68792780e",
       "importer": "sprite-frame",
       "rawTextureUuid": "a3a96ffb-0cbf-4e37-8658-dd4cc3496ca7",
       "trimType": "auto",
@@ -103,7 +103,7 @@
     },
     "nonplayer002anim009.png": {
       "ver": "1.0.6",
-      "uuid": "777eb65e-281a-4f04-84b8-8c9375f0b1f9",
+      "uuid": "2a032acb-2b43-490d-9400-8a32e2a7cc87",
       "importer": "sprite-frame",
       "rawTextureUuid": "a3a96ffb-0cbf-4e37-8658-dd4cc3496ca7",
       "trimType": "auto",
@@ -126,7 +126,7 @@
     },
     "nonplayer002anim000.png": {
       "ver": "1.0.6",
-      "uuid": "71264960-b89e-44c3-b931-47aa3f986bcd",
+      "uuid": "35737edf-e7ac-4a97-a1bd-41fb76bee760",
       "importer": "sprite-frame",
       "rawTextureUuid": "a3a96ffb-0cbf-4e37-8658-dd4cc3496ca7",
       "trimType": "auto",
@@ -149,7 +149,7 @@
     },
     "nonplayer002anim005.png": {
       "ver": "1.0.6",
-      "uuid": "53b5b47b-c97d-472c-9e8e-4c9fa6377c38",
+      "uuid": "4c377570-6896-40d2-b60f-c5511c3dd0a0",
       "importer": "sprite-frame",
       "rawTextureUuid": "a3a96ffb-0cbf-4e37-8658-dd4cc3496ca7",
       "trimType": "auto",
@@ -172,7 +172,7 @@
     },
     "nonplayer002anim002.png": {
       "ver": "1.0.6",
-      "uuid": "83c879ff-cefb-4711-8769-b347673addb3",
+      "uuid": "1b9cf170-678e-481c-87ad-d3f5151de8e7",
       "importer": "sprite-frame",
       "rawTextureUuid": "a3a96ffb-0cbf-4e37-8658-dd4cc3496ca7",
       "trimType": "auto",
@@ -195,7 +195,7 @@
     },
     "nonplayer002anim003.png": {
       "ver": "1.0.6",
-      "uuid": "4559aeaf-d305-43b5-b027-95badec71357",
+      "uuid": "74558cc1-722a-4ade-aac5-82bc54745cf0",
       "importer": "sprite-frame",
       "rawTextureUuid": "a3a96ffb-0cbf-4e37-8658-dd4cc3496ca7",
       "trimType": "auto",
@@ -218,7 +218,7 @@
     },
     "nonplayer002anim006.png": {
       "ver": "1.0.6",
-      "uuid": "d51d2ba4-4b2c-4623-a6df-ddfc179b309b",
+      "uuid": "3e648b13-6b74-48bc-b291-a6c9a397480a",
       "importer": "sprite-frame",
       "rawTextureUuid": "a3a96ffb-0cbf-4e37-8658-dd4cc3496ca7",
       "trimType": "auto",
@@ -241,7 +241,7 @@
     },
     "nonplayer002anim004.png": {
       "ver": "1.0.6",
-      "uuid": "dd10f5cf-7e0c-487d-abed-b977fb67bd6e",
+      "uuid": "9bc37356-63f1-4515-b42a-e61ec42c4d95",
       "importer": "sprite-frame",
       "rawTextureUuid": "a3a96ffb-0cbf-4e37-8658-dd4cc3496ca7",
       "trimType": "auto",
@@ -264,7 +264,7 @@
     },
     "nonplayer002anim008.png": {
       "ver": "1.0.6",
-      "uuid": "ec8a030c-5574-46e6-8967-6e23fc42c08a",
+      "uuid": "d9f5e429-3eff-47f4-8833-c0e0773e0c94",
       "importer": "sprite-frame",
       "rawTextureUuid": "a3a96ffb-0cbf-4e37-8658-dd4cc3496ca7",
       "trimType": "auto",
@@ -287,7 +287,7 @@
     },
     "nonplayer002anim001.png": {
       "ver": "1.0.6",
-      "uuid": "7d292197-5956-4c6a-acf6-f05a8b1976e9",
+      "uuid": "57b34399-8b4d-4b63-9eae-fa89c801f341",
       "importer": "sprite-frame",
       "rawTextureUuid": "a3a96ffb-0cbf-4e37-8658-dd4cc3496ca7",
       "trimType": "auto",

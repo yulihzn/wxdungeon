@@ -1,3 +1,4 @@
+import CellphoneDialog from '../ui/dialog/CellphoneDialog'
 import Controller from './Controller'
 import { EventHelper } from './EventHelper'
 import Logic from './Logic'
@@ -57,6 +58,9 @@ export default class KeyboardController extends cc.Component {
                 break
             case cc.macro.KEY.u:
                 this.openCellphone()
+                break
+            case cc.macro.KEY.t:
+                CellphoneDialog.changeFlashLight()
                 break
             case cc.macro.KEY.j:
                 this.isA = true

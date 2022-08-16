@@ -620,7 +620,9 @@ export default class EquipmentManager extends BaseManager {
         info += DataUtils.getinfoNum2String(common.maxAmmoPercent == 0, `弹夹容量${common.maxAmmoPercent > 0 ? '提升' : '降低'}`, common.maxAmmoPercent, '%\n')
         info += DataUtils.getinfoNum2String(common.ammoRecoveryPercent == 0, `弹夹回复${common.ammoRecoveryPercent > 0 ? '提升' : '降低'}`, common.ammoRecoveryPercent, '%\n')
         info += DataUtils.getinfoNum2String(common.damageMin == 0, `攻击${common.damageMin} ${common.damageMax != 0 ? '最大攻击力' + common.damageMax : ''}\n`)
-        info += DataUtils.getinfoNum2String(common.damageMin == 0 && common.damageMax != 0, '最大攻击力', common.damageMax, '\n')
+        if (common.damageMin == 0) {
+            info += DataUtils.getinfoNum2String(common.damageMax == 0, '最大攻击力', common.damageMax, '\n')
+        }
         info += DataUtils.getinfoNum2String(common.damageMinPercent == 0, `攻击${common.damageMin > 0 ? '提升' : '降低'}`, common.damageMin, '%\n')
         info += DataUtils.getinfoNum2String(common.damageMaxPercent == 0, `最大攻击力${common.damageMaxPercent > 0 ? '提升' : '降低'}`, common.damageMaxPercent, '%\n')
         info += DataUtils.getinfoNum2String(common.defence == 0, '防御', common.defence, '\n')

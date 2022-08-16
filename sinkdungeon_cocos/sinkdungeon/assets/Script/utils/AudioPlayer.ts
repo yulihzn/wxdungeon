@@ -53,6 +53,7 @@ export default class AudioPlayer extends cc.Component {
     public static readonly FIST = 'fist'
     public static readonly FIST1 = 'fist1'
     public static readonly FIST2 = 'fist2'
+    public static readonly FLASHLIGHT = 'flashlight'
     public static readonly ICEBOOM = 'iceboom'
     public static readonly JUMP = 'jump'
     public static readonly JUMP_WATER = 'jumpwater'
@@ -133,6 +134,7 @@ export default class AudioPlayer extends cc.Component {
     lastName = ''
     isSoundNeedPause = false
     lastBgmIndex = -1
+    private effectMap: Map<string, number> = new Map()
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -141,6 +143,9 @@ export default class AudioPlayer extends cc.Component {
         })
         EventHelper.on(EventHelper.STOP_ALL_AUDIO_EFFECT, detail => {
             this.stopAllEffect()
+        })
+        EventHelper.on(EventHelper.STOP_AUDIO_EFFECT, detail => {
+            this.stopEffect(detail.name)
         })
         cc.audioEngine.setMusicVolume(0.1)
         cc.audioEngine.setEffectsVolume(0.4)
@@ -154,13 +159,19 @@ export default class AudioPlayer extends cc.Component {
             let clip = bgms[Logic.lastBgmIndex]
             if (clip && (!cc.audioEngine.isMusicPlaying() || this.lastBgmIndex != Logic.lastBgmIndex)) {
                 cc.audioEngine.stopMusic()
-                cc.audioEngine.playMusic(clip, true)
+                let audioId = cc.audioEngine.playMusic(clip, true)
+                this.effectMap.set(clip.name, audioId)
                 this.lastBgmIndex = Logic.lastBgmIndex
             }
         })
     }
     private stopAllEffect() {
         cc.audioEngine.stopAllEffects()
+    }
+    private stopEffect(name: string) {
+        if (this.effectMap.has(name)) {
+            cc.audioEngine.stopEffect(this.effectMap.get(name))
+        }
     }
     private playSound(name: string, isBgm: boolean, loop: boolean) {
         if (name == this.lastName && name == AudioPlayer.COIN && this.isSoundNeedPause) {
@@ -176,7 +187,8 @@ export default class AudioPlayer extends cc.Component {
                     break
             }
         } else if (Logic.audioClips[name]) {
-            cc.audioEngine.playEffect(Logic.audioClips[name], loop)
+            let audioId = cc.audioEngine.playEffect(Logic.audioClips[name], loop)
+            this.effectMap.set(name, audioId)
         }
         this.lastName = name
         this.isSoundNeedPause = false
@@ -193,5 +205,8 @@ export default class AudioPlayer extends cc.Component {
     }
     static stopAllEffect() {
         EventHelper.emit(EventHelper.STOP_ALL_AUDIO_EFFECT, {})
+    }
+    static stopEffect(name: string) {
+        EventHelper.emit(EventHelper.STOP_AUDIO_EFFECT, { name: name })
     }
 }

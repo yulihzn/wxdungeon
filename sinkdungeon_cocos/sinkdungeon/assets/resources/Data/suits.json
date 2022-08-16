@@ -335,5 +335,57 @@
             }
         ],
         "desc": ""
+    },
+    "suit009": {
+        "nameCn": "猴子猴孙",
+        "nameEn": "",
+        "suitType": "suit008",
+        "suitNames": "shoes009,clothes029,trousers013,helmet031,weapon052",
+        "statusList": [],
+        "equipList": [
+            {
+                "exTriggers": [
+                    {
+                        "id": 2,
+                        "type": 1,
+                        "group": 1,
+                        "target": 1,
+                        "count": 0.1,
+                        "res": "talent200"
+                    }
+                ],
+                "extraInfo": "猴子猴孙",
+                "common": {}
+            },
+            {
+                "exTriggers": [
+                    {
+                        "id": 2,
+                        "type": 1,
+                        "group": 1,
+                        "target": 1,
+                        "count": 0.5,
+                        "res": "talent200"
+                    }
+                ],
+                "extraInfo": "猴子猴孙",
+                "common": {}
+            },
+            {
+                "exTriggers": [
+                    {
+                        "id": 2,
+                        "type": 1,
+                        "group": 1,
+                        "target": 4,
+                        "count": 1,
+                        "res": "talent200"
+                    }
+                ],
+                "extraInfo": "猴子猴孙",
+                "common": {}
+            }
+        ],
+        "desc": ""
     }
 }

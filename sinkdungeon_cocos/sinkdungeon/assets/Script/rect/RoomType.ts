@@ -66,6 +66,7 @@ export default class RoomType {
     static isMonsterGenerateRoom(roomType: RoomType) {
         // RoomType.BOSS_ROOM.isEqual(roomType) ||
         return (
+            RoomType.BOSS_ROOM.isEqual(roomType) ||
             RoomType.DANGER_ROOM.isEqual(roomType) ||
             RoomType.INSANE_ROOM.isEqual(roomType) ||
             RoomType.KEY_ROOM.isEqual(roomType) ||

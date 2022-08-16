@@ -63,6 +63,7 @@ import State from '../base/fsm/State'
 import PlayActor from '../base/PlayActor'
 import BaseAvatar from '../base/BaseAvatar'
 import Dialogue from '../ui/Dialogue'
+import EquipItemTalent from '../talent/EquipItemTalent'
 @ccclass
 export default class Player extends PlayActor {
     @property(cc.Sprite)
@@ -104,6 +105,7 @@ export default class Player extends PlayActor {
     @property(cc.Prefab)
     aoe: cc.Prefab = null
     professionTalent: ProfessionTalent = null
+    equipmentTalent: EquipItemTalent = null
     organizationTalent: OrganizationTalent = null
     baseAttackPoint: number = 1
     //触碰到的提示
@@ -340,6 +342,15 @@ export default class Player extends PlayActor {
             this.professionTalent.init(this.data.ProfessionTalentData)
             this.organizationTalent.init(this.data.OrganizationTalentData)
         }, 0.1)
+        this.equipmentTalent = this.getComponent(EquipItemTalent)
+        this.equipmentTalent.init(new TalentData())
+    }
+    private updateFlashLight() {
+        if (this.lights) {
+            for (let light of this.lights) {
+                light.updateRender(Logic.settings.isFlashLightOpen)
+            }
+        }
     }
 
     actorName(): string {
@@ -1220,6 +1231,7 @@ export default class Player extends PlayActor {
         if (this.sc.isJumping && this.CanJump) {
             this.playerAnim(this.entity.Move.linearVelocityZ > 0 ? BaseAvatar.STATE_JUMP_UP : BaseAvatar.STATE_JUMP_DOWN, this.currentDir)
         }
+        this.updateFlashLight()
     }
 
     showWaterSpark() {
@@ -1246,6 +1258,12 @@ export default class Player extends PlayActor {
     private useSkill1(): void {
         if (this.organizationTalent && !this.sc.isAttacking && !this.sc.isVanishing && !this.avatar?.isAniming) {
             this.organizationTalent.useSKill()
+        }
+    }
+    protected exTriggerTalent(data: TriggerData, from: FromData, actor: Actor) {
+        if (this.equipmentTalent) {
+            this.equipmentTalent.data = Logic.talents[data.res]
+            this.equipmentTalent.useSKill()
         }
     }
 

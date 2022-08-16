@@ -54,6 +54,7 @@ export default class RoomTv extends cc.Component {
         this.unscheduleAllCallbacks()
         this.anim.stop()
         AudioPlayer.stopAllEffect()
+        AudioPlayer.play(AudioPlayer.SELECT)
         this.channel++
         if (this.channel > 5) {
             this.channel = 0
@@ -85,12 +86,11 @@ export default class RoomTv extends cc.Component {
         if (this.channel > 1) {
             this.schedule(
                 () => {
-                    AudioPlayer.play(AudioPlayer.VOICE, false, true)
-                    this.scheduleOnce(() => {
-                        AudioPlayer.stopAllEffect()
-                    }, 0.2 + Random.rand())
+                    if (Random.rand() < 0.3) {
+                        AudioPlayer.play(AudioPlayer.VOICE)
+                    }
                 },
-                2,
+                0.05,
                 cc.macro.REPEAT_FOREVER
             )
         }

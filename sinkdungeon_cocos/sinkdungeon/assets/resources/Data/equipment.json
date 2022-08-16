@@ -1484,6 +1484,33 @@
         "stab": 0,
         "desc": "夺笋呐~"
     },
+    "weapon052": {
+        "nameCn": "金箍棒",
+        "nameEn": "Wukong Stick",
+        "equipmetType": "weapon",
+        "id": 10010000,
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#ffe59e",
+        "img": "weapon052",
+        "price": 30,
+        "suitType": "suit009",
+        "common": {
+            "damageMin": 5,
+            "damageMax": 0,
+            "criticalStrikeRate": 20,
+            "defence": 0,
+            "lifeDrain": 0,
+            "attackSpeed": 60,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "stab": 0,
+        "desc": "齐天大圣~",
+        "far": 1
+    },
     "remote001": {
         "nameCn": "十字弩",
         "nameEn": "Cross Bow",
@@ -2991,6 +3018,34 @@
         "extraInfo": "受伤50%几率回复1点生命",
         "desc": "只会心疼giegie~"
     },
+    "helmet031": {
+        "nameCn": "悟空脸谱",
+        "nameEn": "Wukong Face",
+        "equipmetType": "helmet",
+        "id": 10040000,
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "helmet031",
+        "hideHair": 0,
+        "price": 100,
+        "suitType": "suit009",
+        "common": {
+            "remoteDamage": 0,
+            "remoteCritRate": 0,
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 10,
+            "defence": 1,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "maxDream": 1,
+            "maxHealth": 1
+        },
+        "desc": "齐天大圣~"
+    },
     "clothes001": {
         "nameCn": "背心",
         "nameEn": "Vest",
@@ -3703,6 +3758,31 @@
         },
         "desc": "银鳞胸甲五金一件~"
     },
+    "clothes029": {
+        "nameCn": "悟空上衣",
+        "nameEn": "Wukong Clothes",
+        "equipmetType": "clothes",
+        "id": 10050000,
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "clothes029",
+        "price": 60,
+        "suitType": "suit009",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 10,
+            "defence": 4,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "maxDream": 1,
+            "maxHealth": 1
+        },
+        "desc": "银鳞胸甲五金一件~"
+    },
     "trousers001": {
         "nameCn": "裤子",
         "nameEn": "Long Trousers",
@@ -4012,6 +4092,33 @@
         "desc": "普通的牛仔裤",
         "trouserslong": 1
     },
+    "trousers013": {
+        "nameCn": "悟空皮裤",
+        "nameEn": "Wukong Trousers",
+        "equipmetType": "trousers",
+        "id": 10060000,
+        "prefix": "",
+        "color": "#ae1300",
+        "titlecolor": "#ffffff",
+        "img": "trousers013",
+        "price": 30,
+        "suitType": "suit009",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 10,
+            "defence": 1,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxDream": 1,
+            "maxHealth": 0
+        },
+        "desc": "齐天大圣~",
+        "trouserslong": 1
+    },
     "gloves001": {
         "nameCn": "战士手套",
         "nameEn": "Warrior Gloves",
@@ -4115,7 +4222,7 @@
     },
     "gloves005": {
         "nameCn": "丛林手套",
-        "nameEn": "Jungle Shoes",
+        "nameEn": "Jungle Gloves",
         "equipmetType": "gloves",
         "id": 10070000,
         "prefix": "",
@@ -4528,6 +4635,31 @@
             "maxHealth": 0
         },
         "desc": "看着眼熟"
+    },
+    "shoes011": {
+        "nameCn": "悟空长靴",
+        "nameEn": "Wukong Shoes",
+        "equipmetType": "shoes",
+        "id": 10080000,
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "shoes011",
+        "price": 60,
+        "suitType": "suit009",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0.6,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "desc": "齐天大圣~"
     },
     "cloak001": {
         "nameCn": "战袍",

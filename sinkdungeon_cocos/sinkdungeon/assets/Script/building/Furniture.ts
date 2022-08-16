@@ -21,7 +21,6 @@ import RoomKitchen from './RoomKitchen'
 import IndexZ from '../utils/IndexZ'
 import EquipmentManager from '../manager/EquipmentManager'
 import InventoryManager from '../manager/InventoryManager'
-import InventoryItem from '../ui/InventoryItem'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

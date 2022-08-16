@@ -10,6 +10,7 @@ import AudioPlayer from '../utils/AudioPlayer'
 import SatietyView from './SatietyView'
 import DollMachineDialog from './dialog/DollMachineDialog'
 import Dialogue from './Dialogue'
+import CellphoneDialog from './dialog/CellphoneDialog'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -63,6 +64,8 @@ export default class GameHud extends cc.Component {
     AmmoLabel: cc.Label = null
     @property(Dialogue)
     dialogue: Dialogue = null
+    @property(CellphoneDialog)
+    cellphoneDialog: CellphoneDialog = null
     private arrowList: cc.Node[] = []
     private isCompleteShowed = false
     private checkTimeDelay = 0
@@ -131,6 +134,9 @@ export default class GameHud extends cc.Component {
         })
         EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_AMMO, detail => {
             this.ammoUpdate(detail.x, detail.y)
+        })
+        EventHelper.on(EventHelper.HUD_CELLPHONE_SHOW, detail => {
+            this.showCellphoneDialog()
         })
         if (this.clock) {
             this.clock.string = `${Logic.time}`
@@ -298,7 +304,13 @@ export default class GameHud extends cc.Component {
                 this.clock.string = `${Logic.time}`
             }
         }
-        if (this.settingsDialog.node.active || this.martShelvesDialog.node.active || this.dollMachineDialog.node.active || this.dialogue.isShow) {
+        if (
+            this.settingsDialog.node.active ||
+            this.martShelvesDialog.node.active ||
+            this.cellphoneDialog.node.active ||
+            this.dollMachineDialog.node.active ||
+            this.dialogue.isShow
+        ) {
             Logic.isGamePause = true
         } else {
             Logic.isGamePause = false
@@ -347,6 +359,17 @@ export default class GameHud extends cc.Component {
             return
         }
         this.showSettingsDialog()
+    }
+    //button
+    showCellphoneDialog(): void {
+        if (!this.cellphoneDialog) {
+            return
+        }
+        if (this.cellphoneDialog.isShow) {
+            this.cellphoneDialog.dismiss()
+        } else {
+            this.cellphoneDialog.show()
+        }
     }
     //button
     pauseGame(): void {

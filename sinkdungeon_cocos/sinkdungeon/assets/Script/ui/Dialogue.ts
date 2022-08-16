@@ -13,6 +13,7 @@ import DialogueTextData from '../data/DialogueTextData'
 import { EventHelper } from '../logic/EventHelper'
 import Logic from '../logic/Logic'
 import AudioPlayer from '../utils/AudioPlayer'
+import Random from '../utils/Random'
 
 const { ccclass, property } = cc._decorator
 
@@ -47,6 +48,7 @@ export default class Dialogue extends cc.Component {
     isAniming = false
     isTalking = false
     buttons = []
+    private nextPos = cc.v3(0, 0)
     static callbacks: Map<String, Function> = new Map()
     onLoad() {
         this.buttons = [this.button0, this.button1, this.button2, this.button3]
@@ -68,15 +70,6 @@ export default class Dialogue extends cc.Component {
         this.node.active = false
         this.anim = this.getComponent(cc.Animation)
         this.addTapListener(this.node)
-        let pos = this.next.position.clone()
-        cc.tween(this.next)
-            .repeatForever(
-                cc
-                    .tween(this.next)
-                    .to(0.5, { y: pos.y - 10 })
-                    .to(0.5, { y: pos.y })
-            )
-            .start()
     }
     static play(id: string, callback?: Function) {
         EventHelper.emit(EventHelper.HUD_DIALOGUE_SHOW, { data: Logic.dialogues[id] })
@@ -211,6 +204,16 @@ export default class Dialogue extends cc.Component {
                 .to(0.2, { opacity: 255 })
                 .start()
         } else {
+            this.nextPos = this.next.position.clone()
+            this.next.stopAllActions()
+            cc.tween(this.next)
+                .repeatForever(
+                    cc
+                        .tween(this.next)
+                        .to(0.5, { y: this.nextPos.y - 10 })
+                        .to(0.5, { y: this.nextPos.y })
+                )
+                .start()
             this.isTalking = true
             let index = 0
             let talktween = cc
@@ -218,6 +221,7 @@ export default class Dialogue extends cc.Component {
                 .delay(0.04)
                 .call(() => {
                     this.label.string = text.substring(0, ++index)
+                    AudioPlayer.play(AudioPlayer.VOICE)
                 })
             cc.tween(this.label.node)
                 .to(0.2, { opacity: 0 })
@@ -228,6 +232,8 @@ export default class Dialogue extends cc.Component {
                 .repeat(text.length, talktween)
                 .call(() => {
                     this.isTalking = false
+                    this.next.stopAllActions()
+                    AudioPlayer.stopAllEffect()
                 })
                 .start()
         }

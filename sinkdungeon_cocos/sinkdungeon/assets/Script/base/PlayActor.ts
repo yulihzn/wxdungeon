@@ -122,6 +122,7 @@ export default abstract class PlayActor extends Actor {
                 this.exTriggerBullet(data)
                 break
             case TriggerData.ID_TALENT:
+                this.exTriggerTalent(data, from, actor)
                 break
         }
     }
@@ -177,6 +178,7 @@ export default abstract class PlayActor extends Actor {
             }
         }
     }
+    protected exTriggerTalent(data: TriggerData, from: FromData, actor: Actor) {}
     private exTriggerStatus(data: TriggerData, from: FromData, actor: Actor) {
         let count = data.count
         let canAdd = true
