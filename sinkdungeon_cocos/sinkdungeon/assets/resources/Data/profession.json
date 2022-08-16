@@ -449,17 +449,17 @@
         "desc": "梦中我才是真正的魔术师，元素伤害+2，元素抗性30%"
     },
     {
-        "nameCn": "运动员",
+        "nameCn": "孙",
         "nameEn": "",
         "equips": {
-            "weapon": "",
+            "weapon": "weapon052",
             "remote": "",
             "shield": "",
-            "helmet": "",
-            "clothes": "",
+            "helmet": "helmet031",
+            "clothes": "clothes029",
             "cloak": "",
-            "trousers": "trousers002",
-            "shoes": "",
+            "trousers": "trousers013",
+            "shoes": "shoes009",
             "gloves": ""
         },
         "items": [],
@@ -467,16 +467,18 @@
         "common": {
             "damageMin": 0,
             "damageMax": 0,
-            "criticalStrikeRate": 0,
+            "criticalStrikeRate": 10,
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0.5,
+            "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
-            "maxHealth": 1
+            "jumpHeight": 1,
+            "jumpSpeed": 1,
+            "maxHealth": 0
         },
-        "desc": "跑完马拉松后决定休息几天"
+        "desc": "这是孙悟空？"
     },
     {
         "nameCn": "程序员",

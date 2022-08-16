@@ -58,7 +58,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "scale": 0.75,
-        "bulletType": "bullet028",
+        "bulletType": "bullet045",
         "specialAttack": 15,
         "specialBulletArcExNum": 2,
         "shooterOffsetX": 23,
@@ -84,7 +84,7 @@
         "bodyRect": "0,0,48,32,105",
         "attackRect": "-32,0,112,32,80",
         "disguise": 0,
-        "lifeTime": 30
+        "lifeTime": 10
     },
     "nonplayer100": {
         "nameCn": "柯基",

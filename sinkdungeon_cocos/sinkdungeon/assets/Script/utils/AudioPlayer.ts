@@ -105,6 +105,7 @@ export default class AudioPlayer extends cc.Component {
     public static readonly SWORD_HIT1 = 'swordhit1'
     public static readonly SWORD_HIT2 = 'swordhit2'
     public static readonly SWORD_SHOW = 'swordshow'
+    public static readonly SMOKE_BALL = 'smokeball'
     public static readonly TAKEPHOTO = 'takephoto'
     public static readonly TRANSPORTSHIP = 'transportship'
     public static readonly TRASH = 'trash'

@@ -133,6 +133,7 @@ export default class EquipItemTalent extends Talent {
     private addMonkey(shadowPlayer: ShadowPlayer) {
         for (let i = 0; i < 3; i++) {
             let data = new NonPlayerData()
+            AudioPlayer.play(AudioPlayer.SMOKE_BALL)
             data.valueCopy(Logic.nonplayers[NonPlayerManager.SHOP_MONKEY])
             let fc = this.player.data.FinalCommon
             data.Common.remoteDamage = this.player.data.getFinalRemoteDamage().getTotalDamage()
