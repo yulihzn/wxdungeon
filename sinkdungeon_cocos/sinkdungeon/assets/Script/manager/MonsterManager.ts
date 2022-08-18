@@ -9,6 +9,8 @@ import MonsterRandomAttr from './MonsterRandomAttr'
 import Random4Save from '../utils/Random4Save'
 import NonPlayerData from '../data/NonPlayerData'
 import LoadingManager from './LoadingManager'
+import Utils from '../utils/Utils'
+import AudioPlayer from '../utils/AudioPlayer'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -194,6 +196,11 @@ export default class MonsterManager extends BaseManager {
         if (Dungeon.isFirstEqual(mapDataStr, 'm')) {
             this.addMonsterFromData(`monster${mapDataStr.substring(1)}`, indexPos, dungeon, false)
             return
+        }
+        if (Utils.isFirstEqual(mapDataStr, 'z')) {
+            Logic.lastBgmIndex = 2
+            AudioPlayer.stopAllEffect()
+            AudioPlayer.play(AudioPlayer.PLAY_BG, true)
         }
         if (mapDataStr == 'z0') {
             this.addBoss(this.iceDemon, 'iconboss000', this.maxHealth00, 0, 2, indexPos, dungeon)

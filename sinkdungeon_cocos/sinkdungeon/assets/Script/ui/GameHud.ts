@@ -296,6 +296,36 @@ export default class GameHud extends cc.Component {
         }
         return false
     }
+    get HasModalDialogShow() {
+        return (
+            this.settingsDialog.node.active || this.martShelvesDialog.node.active || this.cellphoneDialog.node.active || this.dollMachineDialog.node.active || this.dialogue.isShow
+        )
+    }
+    get IsTimeCountDialogShow() {
+        return this.cellphoneDialog.node.active
+    }
+    closeCurrentOtherDialog() {
+        if (this.martShelvesDialog.isShow) {
+            this.martShelvesDialog.dismiss()
+            return true
+        }
+        if (this.cellphoneDialog.isShow) {
+            this.cellphoneDialog.dismiss()
+            return true
+        }
+        if (this.dollMachineDialog.isShow) {
+            this.dollMachineDialog.dismiss()
+            return true
+        }
+        if (this.inventoryDialog.isShow) {
+            this.inventoryDialog.dismiss()
+            return true
+        }
+        if (this.dialogue.isShow) {
+            return true
+        }
+        return false
+    }
 
     update(dt: number) {
         if (this.isCheckTimeDelay(dt)) {
@@ -304,13 +334,7 @@ export default class GameHud extends cc.Component {
                 this.clock.string = `${Logic.time}`
             }
         }
-        if (
-            this.settingsDialog.node.active ||
-            this.martShelvesDialog.node.active ||
-            this.cellphoneDialog.node.active ||
-            this.dollMachineDialog.node.active ||
-            this.dialogue.isShow
-        ) {
+        if (this.HasModalDialogShow) {
             Logic.isGamePause = true
         } else {
             Logic.isGamePause = false
@@ -318,7 +342,7 @@ export default class GameHud extends cc.Component {
     }
     useItem() {}
     changeTime() {
-        if (Logic.isGamePause) {
+        if (Logic.isGamePause && !this.IsTimeCountDialogShow) {
             return
         }
         this.second = this.second + 1
@@ -346,16 +370,7 @@ export default class GameHud extends cc.Component {
             return
         }
         AudioPlayer.play(AudioPlayer.SELECT)
-        if (this.inventoryDialog.isShow) {
-            this.inventoryDialog.dismiss()
-            return
-        }
-        if (this.martShelvesDialog.isShow) {
-            this.martShelvesDialog.dismiss()
-            return
-        }
-        if (this.dollMachineDialog.isShow) {
-            this.dollMachineDialog.dismiss()
+        if (this.closeCurrentOtherDialog()) {
             return
         }
         this.showSettingsDialog()

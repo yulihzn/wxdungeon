@@ -145,6 +145,9 @@ export default class KeyboardController extends cc.Component {
                 break
             case cc.macro.KEY.escape:
                 EventHelper.emit(EventHelper.HUD_CANCEL_OR_PAUSE)
+                if (Logic.isGamePause) {
+                    EventHelper.emit(EventHelper.HUD_DIALOGUE_SKIP)
+                }
                 break
             case cc.macro.KEY.m:
                 EventHelper.emit(EventHelper.OPEN_MINIMAP)

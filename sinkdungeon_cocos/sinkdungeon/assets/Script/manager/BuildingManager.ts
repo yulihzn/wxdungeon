@@ -1093,17 +1093,22 @@ export default class BuildingManager extends BaseManager {
         })
     }
     /**幽光护盾 */
-    public addEnergyShield(player: Player): EnergyShield {
+    public addEnergyShield(player: Player, callback: (arg0: EnergyShield) => void): void {
         if (!this.node) {
-            return null
+            if (callback) {
+                callback(null)
+            }
         }
         Logic.getBuildings(BuildingManager.ENERGYSHIELD, (prefab: cc.Prefab) => {
             let shield = this.addBuilding(prefab, player.pos)
             shield.position = player.node.position.clone()
             let script = shield.getComponent(EnergyShield)
+            script.entity.Transform.position = shield.position.clone()
             let scale = 8 + Math.floor(Logic.playerData.OilGoldData.level / 5)
             script.init(player, 20 + Logic.playerData.OilGoldData.level * 5, scale)
-            return script
+            if (callback) {
+                callback(script)
+            }
         })
     }
     private addPracticeEquipItem(dungeon: Dungeon, indexPos: cc.Vec3) {

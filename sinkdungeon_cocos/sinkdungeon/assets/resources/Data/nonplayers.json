@@ -73,7 +73,7 @@
             "isAnimFrame": true
         },
         "isBoom": 1,
-        "currentHealth": 50,
+        "currentHealth": 20,
         "invisible": 0,
         "remote": 3,
         "melee": 0,

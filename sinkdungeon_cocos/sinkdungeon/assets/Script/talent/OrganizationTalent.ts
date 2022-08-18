@@ -96,13 +96,14 @@ export default class OrganizationTalent extends Talent {
                     s.destroyEntityNode()
                 }
             }
-            let shield = this.player.dungeon.buildingManager.addEnergyShield(this.player)
-            if (shield) {
-                this.energyShieldList.push(shield)
-                this.scheduleOnce(() => {
-                    this.talentSkill.IsExcuting = false
-                }, 1)
-            }
+            this.player.dungeon.buildingManager.addEnergyShield(this.player, (shield: EnergyShield) => {
+                if (shield) {
+                    this.energyShieldList.push(shield)
+                    this.scheduleOnce(() => {
+                        this.talentSkill.IsExcuting = false
+                    }, 1)
+                }
+            })
         } else if (this.player.data.AvatarData.organizationIndex == AvatarData.HUNTER) {
             if (this.player.dungeon.nonPlayerManager.isPetAlive()) {
                 let d = new NonPlayerData()
@@ -169,7 +170,10 @@ export default class OrganizationTalent extends Talent {
         for (let i = this.energyShieldList.length - 1; i >= 0; i--) {
             let shield = this.energyShieldList[i]
             if (shield.node && shield.node.isValid) {
-                return shield.isShow && shield.checkTargetIn(this.player.node) && shield.takeDamage(damageData)
+                let isSuccess = shield.isShow && shield.checkTargetIn(this.player.node) && shield.takeDamage(damageData)
+                if (isSuccess) {
+                    return true
+                }
             } else {
                 this.energyShieldList.splice(i, 1)
             }

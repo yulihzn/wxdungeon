@@ -47,7 +47,7 @@ export default class EnergyShield extends Building {
         this.base.parent = this.node.parent
         this.base.position = this.entity.Transform.position
         cc.tween(this.base).to(1, { scale: scale, opacity: 255 }).start()
-        this.base.zIndex = IndexZ.FLOOR
+        this.base.zIndex = this.node.zIndex - 1
     }
     private hitLight(isHit: boolean) {
         if (!this.mat) {

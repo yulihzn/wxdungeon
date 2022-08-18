@@ -19,6 +19,7 @@ export default class AudioPlayer extends cc.Component {
     public static readonly BATHING = 'bathing'
     public static readonly BGM001 = 'bgm001'
     public static readonly BGM002 = 'bgm002'
+    public static readonly BGM003 = 'bgm003'
     public static readonly BLEEDING = 'bleeding'
     public static readonly BUBBLE = 'bubble'
     public static readonly BLINK = 'blink'
@@ -156,7 +157,7 @@ export default class AudioPlayer extends cc.Component {
     }
     playbg() {
         LoadingManager.loadAllBundle([LoadingManager.AB_BGM], () => {
-            let bgms = [Logic.bgmClips[AudioPlayer.BGM001], Logic.bgmClips[AudioPlayer.BGM002]]
+            let bgms = [Logic.bgmClips[AudioPlayer.BGM001], Logic.bgmClips[AudioPlayer.BGM002], Logic.bgmClips[AudioPlayer.BGM003]]
             let clip = bgms[Logic.lastBgmIndex]
             if (clip && (!cc.audioEngine.isMusicPlaying() || this.lastBgmIndex != Logic.lastBgmIndex)) {
                 cc.audioEngine.stopMusic()
