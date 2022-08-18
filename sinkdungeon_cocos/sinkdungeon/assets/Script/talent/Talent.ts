@@ -93,6 +93,7 @@ export default abstract class Talent extends cc.Component {
     public static readonly TALENT_102 = 'talent102'
     public static readonly TALENT_103 = 'talent103'
     public static readonly TALENT_200 = 'talent200'
+    public static readonly TALENT_201 = 'talent201'
 
     talentSkill = new NextStep()
     player: Player

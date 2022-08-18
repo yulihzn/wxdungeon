@@ -133,8 +133,8 @@
         0,
         0,
         1,
-        4,
-        4,
+        2,
+        2,
         1
       ]
     },
@@ -346,10 +346,10 @@
     "offsetX": 0,
     "offsetY": 0,
     "type": 0,
-    "radius": 30,
+    "radius": 15,
     "w": 128,
     "h": 128,
-    "zHeight": 32,
+    "zHeight": 9999,
     "bounce": 0,
     "sensor": false,
     "isStatic": true,

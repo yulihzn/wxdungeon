@@ -178,7 +178,17 @@ export default abstract class PlayActor extends Actor {
             }
         }
     }
-    protected exTriggerTalent(data: TriggerData, from: FromData, actor: Actor) {}
+    protected exTriggerTalent(data: TriggerData, from: FromData, actor: Actor) {
+        let count = data.count
+        let canAdd = true
+        if (count < 1) {
+            canAdd = Random.rand() < count
+            count = 1
+        } else {
+            count = Math.floor(count)
+        }
+        return canAdd
+    }
     private exTriggerStatus(data: TriggerData, from: FromData, actor: Actor) {
         let count = data.count
         let canAdd = true

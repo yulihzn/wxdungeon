@@ -34,6 +34,7 @@
         "id": 3,
         "desc": "",
         "duration": 5,
+        "magicDamageDirect": 1,
         "type": 1,
         "stackable": 5,
         "dizzDurationDirect": 1,

@@ -1,4 +1,5 @@
 import { EventHelper } from '../logic/EventHelper'
+import Logic from '../logic/Logic'
 import FloatingLabel from '../ui/FloatingLabel'
 import IndexZ from '../utils/IndexZ'
 

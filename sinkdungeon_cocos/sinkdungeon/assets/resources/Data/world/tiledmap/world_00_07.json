@@ -1,16 +1,11 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "target":"."
-        }
-    },
  "height":3,
  "infinite":false,
  "layers":[
         {
-         "data":[193, 193, 193, 193, 193, 193, 193, 193, 193],
+         "data":[193, 193, 193,
+            193, 193, 193,
+            193, 193, 193],
          "height":3,
          "id":5,
          "name":"floor",
@@ -22,7 +17,9 @@
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "data":[0, 0, 0,
+            0, 0, 0,
+            0, 0, 0],
          "height":3,
          "id":6,
          "name":"map",
@@ -42,7 +39,8 @@
                  "name":"floorRes",
                  "type":"string",
                  "value":"tile_labtop001"
-                }, 
+                },
+            
                 {
                  "name":"floorRes1",
                  "type":"string",
@@ -57,7 +55,8 @@
                  "name":"index",
                  "type":"int",
                  "value":7
-                }, 
+                },
+            
                 {
                  "name":"name",
                  "type":"string",
@@ -72,7 +71,8 @@
                  "name":"roomHeight",
                  "type":"int",
                  "value":3
-                }, 
+                },
+            
                 {
                  "name":"roomWidth",
                  "type":"int",
@@ -87,7 +87,8 @@
                  "name":"wallRes0",
                  "type":"string",
                  "value":"wallroom02"
-                }, 
+                },
+            
                 {
                  "name":"wallRes1",
                  "type":"string",
@@ -102,7 +103,8 @@
                  "name":"wallResOther1",
                  "type":"string",
                  "value":"wall00anim003"
-                }, 
+                },
+            
                 {
                  "name":"wallResOther2",
                  "type":"string",
@@ -120,7 +122,9 @@
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 0, 0, 0, 1171, 0, 0],
+         "data":[0, 0, 0,
+            0, 0, 0,
+            1171, 0, 0],
          "height":3,
          "id":2,
          "name":"flag",
@@ -135,7 +139,7 @@
  "nextobjectid":9,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.4.2",
+ "tiledversion":"1.8.4",
  "tileheight":8,
  "tilesets":[
         {
@@ -144,6 +148,6 @@
         }],
  "tilewidth":8,
  "type":"map",
- "version":1.4,
+ "version":"1.8",
  "width":3
 }

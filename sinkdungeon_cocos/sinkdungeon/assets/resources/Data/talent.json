@@ -204,5 +204,14 @@
         "cooldown": 3,
         "cost": 1,
         "desc": "召唤一只桃子猴赛雷"
+    },
+    "talent201": {
+        "nameCn": "召唤闪电",
+        "nameEn": "",
+        "resName": "talent201",
+        "passive": 0,
+        "cooldown": 3,
+        "cost": 1,
+        "desc": "召唤闪电"
     }
 }

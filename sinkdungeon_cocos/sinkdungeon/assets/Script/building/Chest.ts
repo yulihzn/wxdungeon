@@ -100,10 +100,10 @@ export default class Chest extends Building {
                             // dungeon.addEquipment(EquipmentManager.CLOTHES_JUNGLE, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment(EquipmentManager.SHOES_JUNGLE, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment('shoes011', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            // dungeon.addEquipment('clothes029', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            // dungeon.addEquipment('clothes028', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment('trousers013', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment('helmet031', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            // dungeon.addEquipment('weapon052', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            // dungeon.addEquipment('weapon015', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment(EquipmentManager.REMOTE_ALIENGUN, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_DREAM);
                             // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_HEALING)

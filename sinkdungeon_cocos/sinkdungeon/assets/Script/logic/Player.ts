@@ -981,7 +981,7 @@ export default class Player extends PlayActor {
         }
         //幽光护盾
         let isBlock = false
-        if (this.organizationTalent.takeDamage(dd, actor)) {
+        if (dd.getTotalDamage() > 0 && this.organizationTalent.takeDamage(dd, actor)) {
             dd = new DamageData()
             isBlock = true
         }
@@ -1261,10 +1261,13 @@ export default class Player extends PlayActor {
         }
     }
     protected exTriggerTalent(data: TriggerData, from: FromData, actor: Actor) {
-        if (this.equipmentTalent) {
-            this.equipmentTalent.data = Logic.talents[data.res]
-            this.equipmentTalent.useSKill()
+        if (super.exTriggerTalent(data, from, actor)) {
+            if (this.equipmentTalent) {
+                this.equipmentTalent.data = Logic.talents[data.res]
+                this.equipmentTalent.useSKill()
+            }
         }
+        return true
     }
 
     triggerThings(isLongPress: boolean) {

@@ -93,9 +93,10 @@ export default class ItemManager extends BaseManager {
             itemPrefab = cc.instantiate(prefab)
         }
         itemPrefab.parent = parentNode
-        itemPrefab.position = pos
+        let p = cc.v3(pos.x + Logic.getRandomNum(-50, 50), pos.y + Logic.getRandomNum(-50, 50))
+        itemPrefab.position = p
         let item = isCoin ? itemPrefab.getComponent(Coin) : itemPrefab.getComponent(OilGold)
-        item.entity.Transform.position = pos
+        item.entity.Transform.position = p
         item.player = player
         item.changeValue(value)
         item.node.zIndex = IndexZ.OVERHEAD

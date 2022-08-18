@@ -59,7 +59,7 @@ export default class EquipItemTalent extends Talent {
 
     init(data: TalentData) {
         super.init(data)
-        this.coolDownId = CoolDownView.PROFESSION
+        this.coolDownId = CoolDownView.EQUIPITEM
         let storePointMax = 1
         // if (this.data.resName == Talent.TALENT_014) {
         //     storePointMax = 3
@@ -92,6 +92,9 @@ export default class EquipItemTalent extends Talent {
         switch (this.data.resName) {
             case Talent.TALENT_200:
                 this.addMonkey(shadowPlayer)
+                break
+            case Talent.TALENT_201:
+                this.addLighteningFall(true, this.player.data.getFinalAttackPoint().getTotalDamage() * 5)
                 break
         }
     }

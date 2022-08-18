@@ -23,7 +23,7 @@ export default class EnergyShield extends Building {
     isShow = false
     private cover: cc.Node
     private element: cc.Node
-    private base: cc.Node
+    base: cc.Node
     private player: Player
     private collider: CCollider
     private mat: cc.MaterialVariant
@@ -47,7 +47,7 @@ export default class EnergyShield extends Building {
         this.base.parent = this.node.parent
         this.base.position = this.entity.Transform.position
         cc.tween(this.base).to(1, { scale: scale, opacity: 255 }).start()
-        this.base.zIndex = this.node.zIndex - 1
+        this.base.zIndex = IndexZ.ACTOR
     }
     private hitLight(isHit: boolean) {
         if (!this.mat) {

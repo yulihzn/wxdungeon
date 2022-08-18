@@ -1070,7 +1070,7 @@ export default class BuildingManager extends BaseManager {
         Logic.getBuildings(BuildingManager.LIGHTENINGFALL, (prefab: cc.Prefab) => {
             let fall = this.addBuilding(prefab, pos)
             let fallScript = fall.getComponent(MagicLightening)
-            fall.zIndex = IndexZ.FLOOR
+            fall.zIndex = IndexZ.ACTOR
             fallScript.isTrigger = isTrigger
             if (!fallScript.isTrigger) {
                 fallScript.fall(needPrepare, showArea, damagePoint)

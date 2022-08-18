@@ -465,7 +465,37 @@
             "lighteningRate": 20,
             "maxHealth": 0
         },
-        "desc": "雷刀"
+        "exTriggers": [
+            {
+                "id": 2,
+                "type": 1,
+                "group": 0,
+                "count": 0.3,
+                "res": "talent201",
+                "range": 800,
+                "target": 2
+            },
+            {
+                "id": 2,
+                "type": 2,
+                "group": 0,
+                "count": 0.3,
+                "res": "talent201",
+                "range": 800,
+                "target": 2
+            },
+            {
+                "id": 2,
+                "type": 3,
+                "group": 0,
+                "count": 0.3,
+                "res": "talent201",
+                "range": 800,
+                "target": 2
+            }
+        ],
+        "extraInfo": "雷刃",
+        "desc": "攻击的时候30%概率出现一道惊雷"
     },
     "weapon016": {
         "nameCn": "枯木逢春",
