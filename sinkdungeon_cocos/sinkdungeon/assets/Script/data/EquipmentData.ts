@@ -17,6 +17,7 @@ export default class EquipmentData extends BaseData {
     uuid: string = '' //唯一标识，用来存档
     id: number = 10000000 //装备类型id，用来排序前四位为大类别后四位为装备贴图id
     pos: cc.Vec3 = cc.v3(0, 0) //下标
+    mapKeyPos: string = '' //地图下标，该值只有地图放置的装备才有 '0,0'用来匹配是否加载装备
     nameCn: string = ''
     nameEn: string = ''
     equipmetType: string = 'empty'

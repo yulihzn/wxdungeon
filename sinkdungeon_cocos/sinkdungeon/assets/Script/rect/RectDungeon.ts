@@ -4,6 +4,7 @@ import RoomType from './RoomType'
 import BuildingData from '../data/BuildingData'
 import EquipmentData from '../data/EquipmentData'
 import ItemData from '../data/ItemData'
+import EquipItemMapData from '../data/EquipItemMapData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -26,7 +27,7 @@ export default class RectDungeon {
     public buildings: { [key: string]: { [key: string]: BuildingData } } = {} //根据下标保存建筑信息
     //根据下标+uuid保存地上的装备
     equipments: { [key: string]: EquipmentData[] } = {}
-    //根据下标+uuid报错地上的物品
+    //根据下标+uuid保存地上的物品
     items: { [key: string]: ItemData[] } = {}
     public startIndex: cc.Vec2 = cc.Vec2.ZERO
     public endIndex: cc.Vec2 = cc.v2(-1, -1)

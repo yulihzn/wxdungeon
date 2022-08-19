@@ -37,20 +37,6 @@
           ]
         }
       },
-      "avatar": {
-        "props": {
-          "opacity": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.5,
-              "value": 255
-            }
-          ]
-        }
-      },
       "buttonlayout": {
         "props": {
           "opacity": [
@@ -66,6 +52,20 @@
         }
       },
       "name": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": 255
+            }
+          ]
+        }
+      },
+      "avatarbg": {
         "props": {
           "opacity": [
             {

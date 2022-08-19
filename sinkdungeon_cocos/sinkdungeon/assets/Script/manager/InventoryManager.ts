@@ -48,6 +48,18 @@ export default class InventoryManager {
         ITEM: 2, //物品区
         CUPBOARD: 3 //衣柜
     })
+    static isEquipTag(str: string) {
+        if (!str || str.length < 1) {
+            return false
+        }
+        for (let name of InventoryManager.EQUIP_TAGS) {
+            if (str.indexOf(name) > -1) {
+                return true
+            }
+        }
+        return false
+    }
+
     //buffer效果
     buffer: EquipmentData = new EquipmentData()
     itemList: ItemData[] = []

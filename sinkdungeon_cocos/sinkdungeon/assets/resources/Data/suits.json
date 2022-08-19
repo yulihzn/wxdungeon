@@ -354,7 +354,7 @@
                         "res": "talent200"
                     }
                 ],
-                "extraInfo": "猴子猴孙",
+                "extraInfo": "暴击10%几率召唤猴赛雷",
                 "common": {}
             },
             {
@@ -368,7 +368,7 @@
                         "res": "talent200"
                     }
                 ],
-                "extraInfo": "猴子猴孙",
+                "extraInfo": "暴击50%几率召唤猴赛雷",
                 "common": {}
             },
             {
@@ -382,7 +382,7 @@
                         "res": "talent200"
                     }
                 ],
-                "extraInfo": "猴子猴孙",
+                "extraInfo": "暴击召唤猴赛雷",
                 "common": {}
             }
         ],

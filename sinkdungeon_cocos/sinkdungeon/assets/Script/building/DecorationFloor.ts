@@ -1,6 +1,6 @@
-import Dungeon from "../logic/Dungeon"
-import Logic from "../logic/Logic"
-import Building from "./Building"
+import Dungeon from '../logic/Dungeon'
+import Logic from '../logic/Logic'
+import Building from './Building'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -20,9 +20,9 @@ export default class DecorationFloor extends Building {
     readonly RANGE = 300
     dungeon: Dungeon
     originPos: cc.Vec3
-    init(dungeon: Dungeon, resName: string, scale: number, parallexLevel: number, anchor?: cc.Vec3, opacity?: number, zIndex?: number) {
+    init(dungeon: Dungeon, resName: string, scale: number, angle?: number, parallexLevel?: number, anchor?: cc.Vec3, opacity?: number, zIndex?: number) {
         this.dungeon = dungeon
-        this.parallexLevel = parallexLevel
+        this.parallexLevel = parallexLevel ?? 0
         if (zIndex) {
             this.node.zIndex = zIndex
         }
@@ -33,6 +33,7 @@ export default class DecorationFloor extends Building {
         }
         let sprite = this.getComponent(cc.Sprite)
         sprite.spriteFrame = Logic.spriteFrameRes(resName)
+        this.node.angle = angle ?? 0
         this.node.width = sprite.spriteFrame.getOriginalSize().width
         this.node.height = sprite.spriteFrame.getOriginalSize().height
         this.node.opacity = opacity ? opacity : 255

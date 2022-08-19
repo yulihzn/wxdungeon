@@ -1320,7 +1320,9 @@
         "lightcolor": "#ffffff",
         "img": "weapon045",
         "price": 0,
-        "common": {},
+        "common": {
+            "damageMin": 1
+        },
         "stab": 1,
         "desc": "小心翼翼地拿布包起来"
     },
@@ -1540,6 +1542,86 @@
         "stab": 0,
         "desc": "齐天大圣~",
         "far": 1
+    },
+    "weapon053": {
+        "nameCn": "钢筋",
+        "nameEn": "Steel Bar",
+        "equipmetType": "weapon",
+        "id": 10010000,
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
+        "img": "weapon053",
+        "price": 0,
+        "common": {
+            "damageMin": 3,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "attackSpeed": -60,
+            "dodge": 0,
+            "moveSpeed": -1,
+            "maxHealth": 0
+        },
+        "stab": 0,
+        "desc": "一把笨重的破旧钢筋",
+        "far": 1
+    },
+    "weapon054": {
+        "nameCn": "生锈水管",
+        "nameEn": "Rusty Pipe",
+        "equipmetType": "weapon",
+        "id": 10010000,
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#ffd3c7",
+        "img": "weapon054",
+        "price": 0,
+        "common": {
+            "damageMin": 1,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "maxHealth": 0
+        },
+        "blunt": 1,
+        "stab": 0,
+        "desc": "一根生锈的水管，可以用来防身"
+    },
+    "weapon055": {
+        "nameCn": "破旧木板",
+        "nameEn": "Wooden Board",
+        "equipmetType": "weapon",
+        "id": 10010000,
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#fff294",
+        "img": "weapon055",
+        "price": 0,
+        "common": {
+            "damageMin": 1,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "maxHealth": 0
+        },
+        "stab": 0,
+        "desc": "破旧木板，上面稀稀拉拉有几根钉子"
     },
     "remote001": {
         "nameCn": "十字弩",

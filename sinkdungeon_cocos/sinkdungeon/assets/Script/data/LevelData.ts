@@ -1,4 +1,5 @@
 import DataUtils from '../utils/DataUtils'
+import EquipItemMapData from './EquipItemMapData'
 import ExitData from './ExitData'
 import MapLightData from './MapLightData'
 
@@ -51,15 +52,14 @@ export default class LevelData {
     wallResOther7 = '' //墙壁资源名7(##7独立矮墙体)
     wallResOther8 = '' //墙壁资源名8(##8独立矮墙体)
     wallResOther9 = '' //墙壁资源名9(##9独立矮墙体)
-    doorRes = '' //门资源名
-    exitRes = '' //出入口资源名
+    equipitems = '' //装备和道具16,4,weapon001#27,1,0,bottle000 井号隔开，坐标（y轴向下）资源名
     needRadomDecorate = false
     map: string[][] = []
     floormap: string[][] = []
     roomTypes: string[][] = []
     shadowMap: string[][] = []
     minimaplock: string[][] = []
-    exits: string = '' //16,4,0,1,27,1;27,1,0,0,16,4;分号隔开，出口坐标，章节，入口坐标（y轴向下）
+    exits: string = '' //16,4,0,1,27,1#27,1,0,0,16,4 井号隔开，出口坐标，章节，层数，入口坐标（y轴向下）
     lights: MapLightData[]
 
     getWallRes(index: number, isOther?: boolean) {
@@ -206,6 +206,25 @@ export default class LevelData {
                 data.toChapter = parseInt(temps[2])
                 data.toLevel = parseInt(temps[3])
                 data.toPos = cc.v3(tx, ty)
+                list.push(data)
+            }
+        }
+        return list
+    }
+    getEquipItemList(): EquipItemMapData[] {
+        let list = new Array()
+        if (this.equipitems && this.equipitems.length > 0) {
+            let arr = this.equipitems.split('#')
+            for (let str of arr) {
+                let data = new EquipItemMapData()
+                let temps = str.split(',')
+                let fx = parseInt(temps[0])
+                let fy = this.roomHeight * this.height - parseInt(temps[1]) - 1 //这里y是反过来的
+                let roomX = Math.floor(fx / this.roomWidth)
+                let roomY = Math.floor(fy / this.roomHeight)
+                data.fromRoomPos = cc.v3(roomX, roomY)
+                data.fromPos = cc.v3(fx % this.roomWidth, fy % this.roomHeight)
+                data.resName = temps[2]
                 list.push(data)
             }
         }

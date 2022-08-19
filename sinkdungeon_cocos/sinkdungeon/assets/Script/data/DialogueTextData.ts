@@ -15,13 +15,21 @@ export default class DialogueTextData {
     id = 0 //下标
     actor = 0 //所属对象下标
     text = '' //内容
-    next: DialogueButtonData[] = []
+    next: DialogueButtonData[] = [] //如果不填写，默认读取下一条
     valueCopy(data: DialogueTextData) {
         if (!data) {
             return
         }
         DataUtils.baseCopy(this, data)
         this.next = data.next ?? []
+        if (data.next) {
+            this.next = []
+            for (let d of data.next) {
+                let data = new DialogueButtonData()
+                data.valueCopy(d)
+                this.next.push(data)
+            }
+        }
     }
     clone(): DialogueTextData {
         let e = new DialogueTextData()

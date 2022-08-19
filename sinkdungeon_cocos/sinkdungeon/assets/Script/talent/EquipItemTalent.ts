@@ -394,7 +394,7 @@ export default class EquipItemTalent extends Talent {
     }
     private addLighteningFall(isArea: boolean, damagePoint: number) {
         EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, {
-            pos: ActorUtils.getNearestEnemyPosition(this.player.node.position, false, this.player.weaponRight.meleeWeapon.dungeon, true),
+            pos: ActorUtils.getNearestEnemyPosition(this.player.node.position, false, this.player.weaponRight.meleeWeapon.dungeon, false),
             showArea: isArea,
             damage: damagePoint
         })

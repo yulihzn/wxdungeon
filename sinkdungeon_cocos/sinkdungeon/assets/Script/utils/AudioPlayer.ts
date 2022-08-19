@@ -149,7 +149,7 @@ export default class AudioPlayer extends cc.Component {
         EventHelper.on(EventHelper.STOP_AUDIO_EFFECT, detail => {
             this.stopEffect(detail.name)
         })
-        cc.audioEngine.setMusicVolume(0.1)
+        cc.audioEngine.setMusicVolume(0.2)
         cc.audioEngine.setEffectsVolume(0.4)
         Logic.audioClips[AudioPlayer.SELECT] = this.select
         Logic.audioClips[AudioPlayer.SELECT_FAIL] = this.selectfail

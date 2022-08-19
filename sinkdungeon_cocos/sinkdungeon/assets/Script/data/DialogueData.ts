@@ -23,8 +23,22 @@ export default class DialogueData {
             return
         }
         DataUtils.baseCopy(this, data)
-        this.list = data.list ?? []
-        this.actors = data.actors ?? []
+        if (data.list) {
+            this.list = []
+            for (let d of data.list) {
+                let data = new DialogueTextData()
+                data.valueCopy(d)
+                this.list.push(data)
+            }
+        }
+        if (data.actors) {
+            this.actors = []
+            for (let d of data.actors) {
+                let data = new DialogueActorData()
+                data.valueCopy(d)
+                this.actors.push(data)
+            }
+        }
     }
     clone(): DialogueData {
         let e = new DialogueData()

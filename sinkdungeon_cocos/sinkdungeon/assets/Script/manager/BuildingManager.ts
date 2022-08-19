@@ -46,6 +46,9 @@ import RoomKitchen from '../building/RoomKitchen'
 import AudioPlayer from '../utils/AudioPlayer'
 import PlatformBuilding from '../building/PlatformBuilding'
 import NonPlayerData from '../data/NonPlayerData'
+import BuildingData from '../data/BuildingData'
+import EquipItemMapData from '../data/EquipItemMapData'
+import InventoryManager from './InventoryManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -225,7 +228,15 @@ export default class BuildingManager extends BaseManager {
         this.buildingList.push(b)
         return building
     }
-    public addBuildingsFromMap(dungeon: Dungeon, mapData: string[][], mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData, exits: ExitData[]) {
+    public addBuildingsFromMap(
+        dungeon: Dungeon,
+        mapData: string[][],
+        mapDataStr: string,
+        indexPos: cc.Vec3,
+        levelData: LevelData,
+        exits: ExitData[],
+        equipitems: EquipItemMapData[]
+    ) {
         if (!mapDataStr || mapDataStr.length < 1 || mapDataStr == 'undefined') {
             this.emptyMap.set(`x=${indexPos.x}y=${indexPos.y}`, indexPos)
         } else if (mapDataStr == '==') {
@@ -259,6 +270,10 @@ export default class BuildingManager extends BaseManager {
                 let save = this.addBuilding(prefab, indexPos)
                 this.savePointS = save.getComponent(SavePoint)
             })
+        } else if (mapDataStr == '@a') {
+            this.addEquipItemBuildings(dungeon, mapDataStr, indexPos, equipitems)
+        } else if (mapDataStr == '@b') {
+            this.addEquipItemBuildings(dungeon, mapDataStr, indexPos, equipitems)
         } else if (this.isFirstEqual(mapDataStr, 'B')) {
             //生成木盒子 并且根据之前记录的位置放置
             this.addBox(mapDataStr, indexPos)
@@ -272,11 +287,20 @@ export default class BuildingManager extends BaseManager {
             //生成出口
             this.addExitDoor(mapDataStr, indexPos, exits)
         } else if (mapDataStr == 'F0') {
-            //生成落石
-            this.addFallStone(indexPos, false)
+            //生成营火
+            Logic.getBuildings(BuildingManager.CAMPFIRE, (prefab: cc.Prefab) => {
+                let camp = this.addBuilding(prefab, indexPos)
+                let fallentree = camp.getChildByName('sprite').getChildByName('fallentree')
+                fallentree.position = Dungeon.getPosInMap(indexPos)
+                fallentree.position = cc.v3(fallentree.position.x, fallentree.position.y + 40)
+                fallentree.parent = this.node
+                fallentree.zIndex = IndexZ.getActorZIndex(fallentree.position)
+                fallentree.setScale(6, 4)
+            })
         } else if (mapDataStr == 'F1') {
-            //生成落雷
-            this.addLighteningFall(indexPos, true, true, true)
+            Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL, (prefab: cc.Prefab) => {
+                this.addBuilding(prefab, indexPos)
+            })
         } else if (this.isFirstEqual(mapDataStr, 'G')) {
             //生成炮台
             Logic.getBuildings(BuildingManager.EMPLACEMENT, (prefab: cc.Prefab) => {
@@ -387,6 +411,12 @@ export default class BuildingManager extends BaseManager {
                 let saw = this.addBuilding(prefab, indexPos)
                 saw.getComponent(Saw).setPos(indexPos)
             })
+        } else if (mapDataStr == 'T003') {
+            //生成落石
+            this.addFallStone(indexPos, false)
+        } else if (mapDataStr == 'T004') {
+            //生成落雷
+            this.addLighteningFall(Dungeon.getPosInMap(indexPos), true, true, true)
         } else if (this.isFirstEqual(mapDataStr, 'U')) {
             Logic.getBuildings(BuildingManager.WALLPAINT, (prefab: cc.Prefab) => {
                 let wallpaint = this.addBuilding(prefab, indexPos).getComponent(WallPaint)
@@ -536,25 +566,31 @@ export default class BuildingManager extends BaseManager {
             }
         })
     }
+    private addEquipItemBuildings(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3, equipitems: EquipItemMapData[]) {
+        let data = new BuildingData()
+        let repetitive = mapDataStr == '@b'
+        data.defaultPos = indexPos.clone()
+        data.isOpen = true
+        if (!repetitive) {
+            let savedata = Logic.mapManager.getCurrentMapBuilding(data.defaultPos)
+            if (savedata && savedata.isOpen) {
+                return
+            }
+            Logic.mapManager.setCurrentBuildingData(data.clone())
+        }
+        for (let d of equipitems) {
+            if (d.fromPos.equals(indexPos) && d.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
+                if (InventoryManager.isEquipTag(d.resName)) {
+                    dungeon.addEquipment(d.resName, Dungeon.getPosInMap(indexPos))
+                } else {
+                    dungeon.addItem(Dungeon.getPosInMap(indexPos), d.resName)
+                }
+                break
+            }
+        }
+    }
     private addDecorate(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
-        if (mapDataStr == '+2') {
-            //生成营火
-            Logic.getBuildings(BuildingManager.CAMPFIRE, (prefab: cc.Prefab) => {
-                let camp = this.addBuilding(prefab, indexPos)
-                let fallentree = camp.getChildByName('sprite').getChildByName('fallentree')
-                fallentree.position = Dungeon.getPosInMap(indexPos)
-                fallentree.position = cc.v3(fallentree.position.x, fallentree.position.y + 40)
-                fallentree.parent = this.node
-                fallentree.zIndex = IndexZ.getActorZIndex(fallentree.position)
-                fallentree.setScale(6, 4)
-            })
-        } else if (mapDataStr == '+3') {
-            Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL, (prefab: cc.Prefab) => {
-                this.addBuilding(prefab, indexPos)
-            })
-        } else if (mapDataStr == '+4') {
-            this.addPracticeEquipItem(dungeon, indexPos)
-        } else if (mapDataStr == '+++0') {
+        if (mapDataStr == '+++0') {
             Logic.getBuildings(BuildingManager.GRASS01, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
             })
@@ -576,16 +612,22 @@ export default class BuildingManager extends BaseManager {
                 let df = fd.getComponent(DecorationFloor)
                 if (mapDataStr == '+1') {
                     df.init(dungeon, 'exitarrow', 4, 0)
+                } else if (mapDataStr == '+2') {
+                    df.init(dungeon, 'exitarrow', 4, 45)
+                } else if (mapDataStr == '+3') {
+                    df.init(dungeon, 'exitarrow', 4, 90)
+                } else if (mapDataStr == '+4') {
+                    df.init(dungeon, 'exitarrow', 4, -45)
                 } else if (mapDataStr == '+5') {
-                    df.init(dungeon, 'floor_final', 4, 0)
+                    df.init(dungeon, 'floor_final', 4)
                 } else if (mapDataStr == '++0') {
-                    df.init(dungeon, 'roomoutside0', 32, 1, cc.v3(0.7, 0.5), 255, IndexZ.BASE)
+                    df.init(dungeon, 'roomoutside0', 32, 0, 1, cc.v3(0.7, 0.5), 255, IndexZ.BASE)
                 } else if (mapDataStr == '++1') {
-                    df.init(dungeon, 'roomoutside1', 32, 1, cc.v3(0.7, 0.5), 255, IndexZ.BASE)
+                    df.init(dungeon, 'roomoutside1', 32, 0, 1, cc.v3(0.7, 0.5), 255, IndexZ.BASE)
                 } else if (mapDataStr == '++2') {
-                    df.init(dungeon, 'roomoutside2', 32, 1, cc.v3(0, 0.5), 255, IndexZ.BASE)
+                    df.init(dungeon, 'roomoutside2', 32, 0, 1, cc.v3(0, 0.5), 255, IndexZ.BASE)
                 } else {
-                    df.init(dungeon, 'dev', 4, 0)
+                    df.init(dungeon, 'dev', 4)
                 }
             })
         }
@@ -1068,7 +1110,7 @@ export default class BuildingManager extends BaseManager {
             return
         }
         Logic.getBuildings(BuildingManager.LIGHTENINGFALL, (prefab: cc.Prefab) => {
-            let fall = this.addBuilding(prefab, pos)
+            let fall = this.addBuilding(prefab, Dungeon.getIndexInMap(pos))
             let fallScript = fall.getComponent(MagicLightening)
             fall.zIndex = IndexZ.ACTOR
             fallScript.isTrigger = isTrigger

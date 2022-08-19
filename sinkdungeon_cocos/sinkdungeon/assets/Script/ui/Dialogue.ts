@@ -13,7 +13,6 @@ import DialogueTextData from '../data/DialogueTextData'
 import { EventHelper } from '../logic/EventHelper'
 import Logic from '../logic/Logic'
 import AudioPlayer from '../utils/AudioPlayer'
-import Random from '../utils/Random'
 
 const { ccclass, property } = cc._decorator
 
@@ -43,7 +42,9 @@ export default class Dialogue extends cc.Component {
     nameLabel: cc.Label = null
     anim: cc.Animation = null
     data: DialogueData = new DialogueData()
-    currentTextIndex: number = 0
+    currentTextIndex: number = 0 //当前对话数据下标
+    currentTextSplitIndex: number = 0 //当前对话数据内容拆分数组下标
+    splitArr = []
     isShow = false
     isAniming = false
     isTalking = false
@@ -124,9 +125,16 @@ export default class Dialogue extends cc.Component {
     }
     private goNext(index: number) {
         let current = this.data.list[this.currentTextIndex]
-        if (current.next.length > index) {
-            this.currentTextIndex = current.next[index].id
+        //如果存在未播完的对话继续播完
+        if (this.splitArr.length < 1) {
+            //如果跳转的位置不存在默认选中下一条
+            if (current.next.length > index) {
+                this.currentTextIndex = current.next[index].id
+            } else {
+                this.currentTextIndex++
+            }
         }
+        //如果下标超出对话列表长度则关闭并回调
         if (this.currentTextIndex > this.data.list.length - 1) {
             this.hide()
             let callback = Dialogue.callbacks.get(this.data.id)
@@ -177,14 +185,33 @@ export default class Dialogue extends cc.Component {
             this.hide()
         }
         let current = this.data.list[this.currentTextIndex]
+        if (this.splitArr.length < 1) {
+            let count = 0
+            let start = 0
+            for (let i = 0; i < current.text.length; i++) {
+                let code = current.text.charCodeAt(i)
+                if ((code >= 0x0001 && code <= 0x007e) || (0xff60 <= code && code <= 0xff9f)) {
+                    count += 1
+                } else {
+                    count += 2
+                }
+                if (count > 100 || i == current.text.length - 1) {
+                    count = 0
+                    this.splitArr.unshift(current.text.substring(start, start + i + 1))
+                    start = i + 1
+                    if (start > current.text.length - 1) {
+                        start = current.text.length - 1
+                    }
+                }
+            }
+        }
         this.nameLabel.string = this.data.actors[current.actor].name
         this.avatarSprite.spriteFrame = Logic.spriteFrameRes(this.data.actors[current.actor].resName)
-
-        this.next.opacity = current.next.length == 1 && (!current.next[0].text || current.next[0].text.length == 0) ? 255 : 0
+        this.updateLabel(this.splitArr.pop(), this.data.isTalk)
         for (let i = 0; i < this.buttons.length; i++) {
-            this.updateButton(this.buttons[i], i, current)
+            this.updateButton(this.buttons[i], i, this.splitArr.length > 0 ? undefined : current)
         }
-        this.updateLabel(current.text, this.data.isTalk)
+        this.next.opacity = this.hasButton() ? 0 : 255
     }
     private updateButton(button: cc.Button, index: number, current?: DialogueTextData) {
         if (!current || current.next.length - 1 < index) {

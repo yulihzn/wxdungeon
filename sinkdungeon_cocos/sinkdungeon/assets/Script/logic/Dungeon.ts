@@ -23,6 +23,7 @@ import LoadingManager from '../manager/LoadingManager'
 import StatusIconList from '../ui/StatusIconList'
 import Actor from '../base/Actor'
 import Dialogue from '../ui/Dialogue'
+import Controller from './Controller'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -192,6 +193,7 @@ export default class Dungeon extends cc.Component {
         this.mapData = mapData
         let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData()
         let exits = leveldata.getExitList()
+        let equipitems = leveldata.getEquipItemList()
         Logic.changeDungeonSize()
         this.dungeonStyleManager.addDecorations()
         for (let arr of this.tilesmap) {
@@ -220,7 +222,7 @@ export default class Dungeon extends cc.Component {
                             //越往下层级越高，j是行，i是列
                             this.addTiles(floorData, cc.v3(i, j), cc.v3(i, j), leveldata, false)
                             //加载建筑
-                            this.buildingManager.addBuildingsFromMap(this, mapData, mapData[i][j], cc.v3(i, j), leveldata, exits)
+                            this.buildingManager.addBuildingsFromMap(this, mapData, mapData[i][j], cc.v3(i, j), leveldata, exits, equipitems)
                             //房间未清理时加载物品
                             if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
                                 this.itemManager.addItemFromMap(mapData[i][j], cc.v3(i, j))
@@ -266,7 +268,7 @@ export default class Dungeon extends cc.Component {
                             .to(0.5, { opacity: 0 })
                             .call(() => {
                                 if (!Logic.profileManager.hasSaveData && Logic.CHAPTER00 == Logic.chapterIndex) {
-                                    Dialogue.play('course000')
+                                    Dialogue.play(Controller.isMouseMode() ? 'course000' : 'course001')
                                 }
                             })
                             .start()
@@ -450,7 +452,7 @@ export default class Dungeon extends cc.Component {
         if (!this.buildingManager) {
             return
         }
-        this.buildingManager.addLighteningFall(Dungeon.getIndexInMap(pos), isTrigger, needPrepare, showArea, damagePoint)
+        this.buildingManager.addLighteningFall(pos, isTrigger, needPrepare, showArea, damagePoint)
     }
 
     /**掉落金币 */
@@ -470,9 +472,6 @@ export default class Dungeon extends cc.Component {
         let currequipments = Logic.mapManager.getCurrentMapEquipments()
         if (currequipments) {
             for (let tempequip of currequipments) {
-                if (tempequip.test > 0 && (Logic.chapterIndex == Logic.CHAPTER099 || (Logic.chapterIndex == Logic.CHAPTER00 && Logic.level == 0))) {
-                    continue
-                }
                 if (this.equipmentManager) {
                     this.equipmentManager.getEquipment(tempequip.img, Dungeon.getPosInMap(tempequip.pos), this.node, tempequip, null, null).data
                 }
@@ -518,13 +517,16 @@ export default class Dungeon extends cc.Component {
             if (shopTable) {
                 return
             }
-            let currequipments = Logic.mapManager.getCurrentMapEquipments()
-            if (currequipments) {
-                currequipments.push(data)
-            } else {
-                currequipments = new Array()
-                currequipments.push(data)
-                Logic.mapManager.setCurrentEquipmentsArr(currequipments)
+            let isOnlyTest = data.test > 0 && (Logic.chapterIndex == Logic.CHAPTER099 || (Logic.chapterIndex == Logic.CHAPTER00 && Logic.level == 0))
+            if (!isOnlyTest) {
+                let currequipments = Logic.mapManager.getCurrentMapEquipments()
+                if (currequipments) {
+                    currequipments.push(data)
+                } else {
+                    currequipments = new Array()
+                    currequipments.push(data)
+                    Logic.mapManager.setCurrentEquipmentsArr(currequipments)
+                }
             }
         }
     }
