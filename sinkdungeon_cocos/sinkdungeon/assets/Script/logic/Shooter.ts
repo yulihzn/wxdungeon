@@ -488,7 +488,7 @@ export default class Shooter extends cc.Component {
             z = 0
         }
         pos = this.dungeon.node.convertToNodeSpaceAR(pos)
-        if (shootBaseHeight && shootBaseHeight < z) {
+        if (shootBaseHeight && shootBaseHeight <= z) {
             z = shootBaseHeight
             pos.y -= z
         } else {

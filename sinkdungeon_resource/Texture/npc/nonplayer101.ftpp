@@ -2,10 +2,10 @@
   "meta": {
     "version": "0.6.7"
   },
-  "savePath": "D:\\wxcx\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\Texture\\npc",
+  "savePath": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\npc",
   "images": [],
   "folders": [
-    "D:/wxcx/wxdungeon/sinkdungeon_resource/Texture/npc/nonplayer101"
+    "E:/cocosproject/wxdungeon/sinkdungeon_resource/Texture/npc/nonplayer101"
   ],
   "packOptions": {
     "textureName": "nonplayer101",
@@ -19,8 +19,8 @@
     "filter": "none",
     "exporter": "cocos2d",
     "fileName": "pack-result",
-    "savePath": "D:\\wxcx\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\Texture\\npc",
-    "width": 64,
+    "savePath": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\npc",
+    "width": 128,
     "height": 0,
     "fixedSize": false,
     "powerOfTwo": false,

@@ -189,7 +189,7 @@ export default abstract class Talent extends cc.Component {
         return node.getComponent(cc.Sprite)
     }
     hashTalent(resName: string): boolean {
-        return this.data.resName == resName
+        return this.data?.resName == resName
     }
 
     abstract takeDamage(damageData: DamageData, actor?: Actor): boolean

@@ -209,7 +209,6 @@ export default class Rah extends Boss {
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number): void {
         shooter.dungeon = this.dungeon
         shooter.actor = this
-        // shooter.setHv(cc.v3(0, -1))
         shooter.data.bulletType = bulletType
         shooter.data.bulletArcExNum = bulletArcExNum
         shooter.data.bulletLineExNum = bulletLineExNum

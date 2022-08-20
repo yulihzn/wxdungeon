@@ -1227,7 +1227,7 @@ export default class NonPlayer extends PlayActor {
                             pos = cc.v3(-pos.x, -pos.y)
                             this.move(pos, speed * 2)
                         } else {
-                            this.move(pos, speed * 0.75)
+                            this.move(pos, speed)
                         }
                     },
                     0.2,
