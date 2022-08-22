@@ -29,7 +29,16 @@ export default class BuildingData {
     generatorInterval = 0
     interact = 0 //是否可以互动拾取
     rollover = 0 //是否翻倒
-
+    nameCn: string = ''
+    nameEn: string = ''
+    resName: string = '' //资源名
+    scale = 1 //贴图缩放
+    collider = '' //碰撞 x,y,w,h,z
+    spritePos = '' //贴图位置 x,y
+    z = 0 //浮空高度
+    custom = false //自定义,为true不读取预设参数
+    info = ''
+    desc = ''
     valueCopy(data: BuildingData) {
         if (!data) {
             return

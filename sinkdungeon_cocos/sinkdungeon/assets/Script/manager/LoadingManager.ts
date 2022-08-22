@@ -43,7 +43,7 @@ export default class LoadingManager {
     public isSkillsLoaded = false
     public isBuildingLoaded = false
     public isFurnituresLoaded = false
-    public isPlatformLoaded = false
+    public isNormalBuildingLoaded = false
     public isTransportAnimFinished = true
     public isSoundLoaded = false
     public isBgmLoaded = false
@@ -66,7 +66,7 @@ export default class LoadingManager {
         this.isFurnituresLoaded = false
         this.isSoundLoaded = false
         this.isBgmLoaded = false
-        this.isPlatformLoaded = false
+        this.isNormalBuildingLoaded = false
     }
     reset() {
         this.isWorldLoaded = false
@@ -85,7 +85,7 @@ export default class LoadingManager {
         this.isFurnituresLoaded = false
         this.isSoundLoaded = false
         this.isBgmLoaded = false
-        this.isPlatformLoaded = false
+        this.isNormalBuildingLoaded = false
         this.isDialogueLoaded = false
     }
 
@@ -275,18 +275,21 @@ export default class LoadingManager {
             }
         })
     }
-    loadPlatforms() {
-        if (Logic.platforms) {
-            this.isPlatformLoaded = true
+    loadNormalBuildings() {
+        if (Logic.normalBuildings) {
+            this.isNormalBuildingLoaded = true
             return
         }
-        cc.resources.load('Data/platforms', (err: Error, resource: cc.JsonAsset) => {
+        cc.resources.load('Data/buildings', (err: Error, resource: cc.JsonAsset) => {
             if (err) {
                 cc.error(err)
             } else {
-                Logic.platforms = resource.json
-                this.isPlatformLoaded = true
-                cc.log('加载平台完成')
+                Logic.normalBuildings = resource.json
+                for (let key in resource.json) {
+                    Logic.normalBuildings[key].resName = key
+                }
+                this.isNormalBuildingLoaded = true
+                cc.log('加载建筑完成')
             }
         })
     }

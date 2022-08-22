@@ -73,7 +73,7 @@ export default class Loading extends cc.Component {
             this.loadingManager.loadBgm()
             this.loadingManager.loadSuits()
             this.loadingManager.loadFurnitures()
-            this.loadingManager.loadPlatforms()
+            this.loadingManager.loadNormalBuildings()
             this.loadingManager.loadDialogue()
             this.showLoadingLabel()
         })
@@ -150,7 +150,7 @@ export default class Loading extends cc.Component {
             this.loadingManager.isFurnituresLoaded &&
             this.loadingManager.isSoundLoaded &&
             this.loadingManager.isBgmLoaded &&
-            this.loadingManager.isPlatformLoaded &&
+            this.loadingManager.isNormalBuildingLoaded &&
             this.loadingManager.isDialogueLoaded &&
             this.cutScene.isSkip &&
             this.isTransportAnimFinished &&

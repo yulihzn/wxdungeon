@@ -44,11 +44,11 @@ import CCollider from '../collider/CCollider'
 import WallPaint from '../building/WallPaint'
 import RoomKitchen from '../building/RoomKitchen'
 import AudioPlayer from '../utils/AudioPlayer'
-import PlatformBuilding from '../building/PlatformBuilding'
 import NonPlayerData from '../data/NonPlayerData'
 import BuildingData from '../data/BuildingData'
 import EquipItemMapData from '../data/EquipItemMapData'
 import InventoryManager from './InventoryManager'
+import NormalBuilding from '../building/NormalBuilding'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -134,7 +134,7 @@ export default class BuildingManager extends BaseManager {
     static readonly ENERGYSHIELD = 'EnergyShield'
     static readonly FURNITURE = 'Furniture'
     static readonly WALLPAINT = 'WallPaint'
-    static readonly PLATFORM = 'Platform'
+    static readonly NORMAL_BUILDING = 'NormalBuilding'
 
     // LIFE-CYCLE CALLBACKS:
     footboards: FootBoard[] = new Array()
@@ -207,7 +207,7 @@ export default class BuildingManager extends BaseManager {
         let isequal = mapStr[0] == typeStr
         return isequal
     }
-    private addBuilding(prefab: cc.Prefab, indexPos: cc.Vec3, moveable?: boolean): cc.Node {
+    private addBuilding(prefab: cc.Prefab, indexPos: cc.Vec3, resName?: string, moveable?: boolean): cc.Node {
         let building = cc.instantiate(prefab)
         building.parent = this.node
         building.position = Dungeon.getPosInMap(indexPos)
@@ -219,6 +219,11 @@ export default class BuildingManager extends BaseManager {
             b.entity.Transform.position = Dungeon.getPosInMap(indexPos)
             b.entity.Move.isStatic = !moveable
             b.seed = Logic.mapManager.getSeedFromRoom()
+            if (resName && resName.length > 0) {
+                b.data.valueCopy(Logic.normalBuildings[resName])
+            } else {
+                b.data.custom = true
+            }
             b.data.defaultPos = indexPos.clone()
             b.lights = b.getComponentsInChildren(ShadowOfSight)
             if (b.lights) {
@@ -467,9 +472,9 @@ export default class BuildingManager extends BaseManager {
         }
     }
     private addPlatform(mapDataStr: string, indexPos: cc.Vec3) {
-        Logic.getBuildings(BuildingManager.PLATFORM, (prefab: cc.Prefab) => {
-            let platmform = this.addBuilding(prefab, indexPos).getComponent(PlatformBuilding)
-            platmform.init(mapDataStr)
+        Logic.getBuildings(BuildingManager.NORMAL_BUILDING, (prefab: cc.Prefab) => {
+            let platmform = this.addBuilding(prefab, indexPos, `platform${mapDataStr.substring(1)}`).getComponent(NormalBuilding)
+            platmform.init()
         })
     }
     private addInteractBuilding(mapDataStr: string, indexPos: cc.Vec3) {
@@ -479,7 +484,7 @@ export default class BuildingManager extends BaseManager {
             if (saveBox) {
                 //生命值大于0才生成
                 if (saveBox.currentHealth > 0 || isReborn) {
-                    let interactBuilding = this.addBuilding(prefab, indexPos, true)
+                    let interactBuilding = this.addBuilding(prefab, indexPos, '', true)
                     let d = interactBuilding.getComponent(InteractBuilding)
                     d.node.position = saveBox.position.clone()
                     d.data.valueCopy(saveBox)
@@ -491,7 +496,7 @@ export default class BuildingManager extends BaseManager {
                     this.interactBuildings.push(d)
                 }
             } else {
-                let interactBuilding = this.addBuilding(prefab, indexPos, true)
+                let interactBuilding = this.addBuilding(prefab, indexPos, '', true)
                 let d = interactBuilding.getComponent(InteractBuilding)
                 d.data.currentHealth = 5
                 Logic.mapManager.setCurrentBuildingData(d.data.clone())
@@ -502,7 +507,7 @@ export default class BuildingManager extends BaseManager {
     }
     private addBox(mapDataStr: string, indexPos: cc.Vec3) {
         Logic.getBuildings(BuildingManager.BOX, (prefab: cc.Prefab) => {
-            let box = this.addBuilding(prefab, indexPos, true)
+            let box = this.addBuilding(prefab, indexPos, '', true)
             let b = box.getComponent(Box)
             b.setDefaultPos(indexPos)
             //生成植物

@@ -26,8 +26,8 @@ import GroundOilGoldData from '../data/GroundOilGoldData'
 import OilGoldData from '../data/OilGoldData'
 import FurnitureData from '../data/FurnitureData'
 import LoadingManager from '../manager/LoadingManager'
-import PlatformData from '../data/PlatformData'
 import DialogueData from '../data/DialogueData'
+import BuildingData from '../data/BuildingData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -82,7 +82,7 @@ export default class Logic extends cc.Component {
     //家具json
     static furnitures: { [key: string]: FurnitureData } = null
     //平台json
-    static platforms: { [key: string]: PlatformData } = null
+    static normalBuildings: { [key: string]: BuildingData } = null
     //职业json
     static professionList: ProfessionData[] = []
     //建筑资源
