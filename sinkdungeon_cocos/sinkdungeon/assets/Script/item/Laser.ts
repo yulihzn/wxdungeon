@@ -8,7 +8,6 @@ import Dungeon from '../logic/Dungeon'
 import StatusManager from '../manager/StatusManager'
 import AudioPlayer from '../utils/AudioPlayer'
 import FromData from '../data/FromData'
-import HitBuilding from '../building/HitBuilding'
 import Actor from '../base/Actor'
 import Shooter from '../logic/Shooter'
 import InteractBuilding from '../building/InteractBuilding'
@@ -23,6 +22,7 @@ import GameWorldSystem from '../ecs/system/GameWorldSystem'
 import MeleeCollideHelper from '../logic/MeleeCollideHelper'
 import ShadowOfSight from '../effect/ShadowOfSight'
 import LightManager from '../manager/LightManager'
+import NormalBuilding from '../building/NormalBuilding'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -378,7 +378,7 @@ export default class Laser extends BaseColliderComponent {
                 interactBuilding.takeDamage(damage)
             }
             if (!damageSuccess) {
-                let hitBuilding = attackTarget.getComponent(HitBuilding)
+                let hitBuilding = attackTarget.getComponent(NormalBuilding)
                 if (this.data.canBreakBuilding == 1 && hitBuilding) {
                     damageSuccess = true
                     hitBuilding.takeDamage(damage)

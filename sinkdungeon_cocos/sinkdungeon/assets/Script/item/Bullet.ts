@@ -9,7 +9,6 @@ import Dungeon from '../logic/Dungeon'
 import StatusManager from '../manager/StatusManager'
 import AudioPlayer from '../utils/AudioPlayer'
 import FromData from '../data/FromData'
-import HitBuilding from '../building/HitBuilding'
 import Wall from '../building/Wall'
 import AreaOfEffect from '../actor/AreaOfEffect'
 import AreaOfEffectData from '../data/AreaOfEffectData'
@@ -31,6 +30,7 @@ import MeleeCollideHelper from '../logic/MeleeCollideHelper'
 import AirExit from '../building/AirExit'
 import ShadowOfSight from '../effect/ShadowOfSight'
 import LightManager from '../manager/LightManager'
+import NormalBuilding from '../building/NormalBuilding'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -447,7 +447,7 @@ export default class Bullet extends BaseColliderComponent {
                 interactBuilding.takeDamage(damage)
             }
             if (!damageSuccess) {
-                let hitBuilding = attackTarget.getComponent(HitBuilding)
+                let hitBuilding = attackTarget.getComponent(NormalBuilding)
                 if (this.data.canBreakBuilding == 1 && hitBuilding) {
                     damageSuccess = true
                     hitBuilding.takeDamage(damage)

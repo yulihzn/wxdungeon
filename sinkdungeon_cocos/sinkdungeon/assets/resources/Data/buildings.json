@@ -45,9 +45,37 @@
         "z": 128
     },
     "platform00007": {
-        "nameCn": "实验室柜子（打开）",
+        "nameCn": "厕所",
         "scale": 4,
         "spritePos": "0,96",
         "collider": "0,32,128,64,128"
+    },
+    "platform00008": {
+        "nameCn": "厕所反面",
+        "scale": 4,
+        "spritePos": "0,96",
+        "collider": "0,32,128,64,128"
+    },
+    "platform00009": {
+        "nameCn": "洗手池",
+        "scale": 4,
+        "spritePos": "0,96",
+        "collider": "0,32,128,64,128"
+    },
+    "platform00010": {
+        "nameCn": "小便池",
+        "scale": 4,
+        "spritePos": "0,96",
+        "collider": "0,32,128,64,128"
+    },
+    "hitbuilding00000": {
+        "nameCn": "废弃面包车",
+        "scale": 8,
+        "spritePos": "0,70",
+        "collider": "0,32,240,64,100",
+        "breakEquipItems": "shield001,1",
+        "maxHealth": 30,
+        "currentHealth": 30,
+        "breakZ": 16
     }
 }

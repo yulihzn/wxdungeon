@@ -2,13 +2,13 @@ import Boss from '../boss/Boss'
 import DamageData from '../data/DamageData'
 import IndexZ from '../utils/IndexZ'
 import Dungeon from '../logic/Dungeon'
-import HitBuilding from '../building/HitBuilding'
 import AreaOfEffectData from '../data/AreaOfEffectData'
 import ActorUtils from '../utils/ActorUtils'
 import InteractBuilding from '../building/InteractBuilding'
 import Actor from '../base/Actor'
 import CCollider from '../collider/CCollider'
 import BaseColliderComponent from '../base/BaseColliderComponent'
+import NormalBuilding from '../building/NormalBuilding'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -151,7 +151,7 @@ export default class AreaOfEffect extends BaseColliderComponent {
                 interactBuilding.takeDamage(damage)
                 return
             }
-            let hitBuilding = attackTarget.getComponent(HitBuilding)
+            let hitBuilding = attackTarget.getComponent(NormalBuilding)
             if (this.data.canBreakBuilding && hitBuilding) {
                 hitBuilding.takeDamage(damage)
             }

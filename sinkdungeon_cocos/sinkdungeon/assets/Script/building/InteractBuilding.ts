@@ -15,9 +15,9 @@ import FromData from '../data/FromData'
 import StatusManager from '../manager/StatusManager'
 import NonPlayer from '../logic/NonPlayer'
 import Box from './Box'
-import HitBuilding from './HitBuilding'
 import CCollider from '../collider/CCollider'
 import ActorUtils from '../utils/ActorUtils'
+import NormalBuilding from './NormalBuilding'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -478,7 +478,7 @@ export default class InteractBuilding extends Building {
                 box.breakBox()
             }
             if (!attackSuccess) {
-                let hitBuilding = attackTarget.node.getComponent(HitBuilding)
+                let hitBuilding = attackTarget.node.getComponent(NormalBuilding)
                 if (hitBuilding) {
                     attackSuccess = true
                     hitBuilding.takeDamage(damage)

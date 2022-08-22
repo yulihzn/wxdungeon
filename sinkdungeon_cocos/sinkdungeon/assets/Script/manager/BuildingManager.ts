@@ -10,7 +10,6 @@ import Box from '../building/Box'
 import ShopTable from '../building/ShopTable'
 import FallStone from '../building/FallStone'
 import MagicLightening from '../building/MagicLightening'
-import HitBuilding from '../building/HitBuilding'
 import ExitDoor from '../building/ExitDoor'
 import Door from '../building/Door'
 import Wall from '../building/Wall'
@@ -207,7 +206,7 @@ export default class BuildingManager extends BaseManager {
         let isequal = mapStr[0] == typeStr
         return isequal
     }
-    private addBuilding(prefab: cc.Prefab, indexPos: cc.Vec3, resName?: string, moveable?: boolean): cc.Node {
+    private addBuilding(prefab: cc.Prefab, indexPos: cc.Vec3, id?: string, moveable?: boolean): cc.Node {
         let building = cc.instantiate(prefab)
         building.parent = this.node
         building.position = Dungeon.getPosInMap(indexPos)
@@ -219,8 +218,8 @@ export default class BuildingManager extends BaseManager {
             b.entity.Transform.position = Dungeon.getPosInMap(indexPos)
             b.entity.Move.isStatic = !moveable
             b.seed = Logic.mapManager.getSeedFromRoom()
-            if (resName && resName.length > 0) {
-                b.data.valueCopy(Logic.normalBuildings[resName])
+            if (id && id.length > 0) {
+                b.data.valueCopy(Logic.normalBuildings[id])
             } else {
                 b.data.custom = true
             }
@@ -315,7 +314,7 @@ export default class BuildingManager extends BaseManager {
             })
         } else if (this.isFirstEqual(mapDataStr, 'H')) {
             //生成可打击建筑
-            this.addHitBuilding(dungeon, mapDataStr, indexPos)
+            this.addNormalBuilding(dungeon, mapDataStr, NormalBuilding.PREFIX_HITBUILDING, indexPos)
         } else if (mapDataStr == 'I0') {
             //生成通风管
             Logic.getBuildings(BuildingManager.WENTLINE, (prefab: cc.Prefab) => {
@@ -331,7 +330,7 @@ export default class BuildingManager extends BaseManager {
                 this.monsterGeneratorList.push(p)
             })
         } else if (this.isFirstEqual(mapDataStr, 'J')) {
-            this.addPlatform(mapDataStr, indexPos)
+            this.addNormalBuilding(dungeon, mapDataStr, NormalBuilding.PREFIX_PLATFORM, indexPos)
         } else if (this.isFirstEqual(mapDataStr, 'K')) {
         } else if (this.isFirstEqual(mapDataStr, 'L')) {
             //生成灯
@@ -471,10 +470,12 @@ export default class BuildingManager extends BaseManager {
             this.addDoor(mapDataStr, indexPos, true)
         }
     }
-    private addPlatform(mapDataStr: string, indexPos: cc.Vec3) {
+    private addNormalBuilding(dungeon: Dungeon, mapDataStr: string, prefix: string, indexPos: cc.Vec3) {
         Logic.getBuildings(BuildingManager.NORMAL_BUILDING, (prefab: cc.Prefab) => {
-            let platmform = this.addBuilding(prefab, indexPos, `platform${mapDataStr.substring(1)}`).getComponent(NormalBuilding)
-            platmform.init()
+            let building = this.addBuilding(prefab, indexPos, `${prefix}${mapDataStr.substring(1)}`).getComponent(NormalBuilding)
+            let save = Logic.mapManager.getCurrentMapBuilding(building.data.defaultPos)
+            building.data.valueCopy(save)
+            building.init(dungeon)
         })
     }
     private addInteractBuilding(mapDataStr: string, indexPos: cc.Vec3) {
@@ -1058,40 +1059,6 @@ export default class BuildingManager extends BaseManager {
                 script.data.isOpen = save.isOpen
             }
         }
-    }
-    /**生成可打击建筑 */
-    private addHitBuilding(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
-        Logic.getBuildings(BuildingManager.HITBUILDING, (prefab: cc.Prefab) => {
-            let isCustom = false
-            let hitBuilding = this.addBuilding(prefab, indexPos)
-            let h = hitBuilding.getComponent(HitBuilding)
-            h.setDefaultPos(indexPos)
-            let resName = 'car'
-            let equipmentNames = []
-            let itemNames = []
-            let maxhealth = 9999
-            let scale = 4
-            let colliderExtrude = 0
-            switch (mapDataStr) {
-                case 'H0':
-                    resName = 'car'
-                    equipmentNames = ['shield001']
-                    itemNames = []
-                    maxhealth = 5
-                    scale = 8
-                    colliderExtrude = 3
-                    break
-                default:
-                    break
-            }
-            h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, maxhealth, scale, isCustom, colliderExtrude)
-            let saveHit = Logic.mapManager.getCurrentMapBuilding(h.data.defaultPos)
-            if (saveHit) {
-                h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, saveHit.currentHealth, scale, isCustom, colliderExtrude)
-            } else {
-                Logic.mapManager.setCurrentBuildingData(h.data.clone())
-            }
-        })
     }
 
     /**掉落石头 */

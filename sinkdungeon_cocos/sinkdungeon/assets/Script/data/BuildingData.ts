@@ -1,4 +1,5 @@
 import DataUtils from '../utils/DataUtils'
+import CommonData from './CommonData'
 import EquipmentData from './EquipmentData'
 import ItemData from './ItemData'
 
@@ -27,15 +28,18 @@ export default class BuildingData {
     generatorList: string[] = []
     generatorCount = 0
     generatorInterval = 0
+    breakEquipItems: string = '' //被破坏掉落 weapon001,0.5#item002,1 名称，概率，#号隔开
     interact = 0 //是否可以互动拾取
     rollover = 0 //是否翻倒
     nameCn: string = ''
     nameEn: string = ''
+    id = '' //id
     resName: string = '' //资源名
     scale = 1 //贴图缩放
     collider = '' //碰撞 x,y,w,h,z
     spritePos = '' //贴图位置 x,y
     z = 0 //浮空高度
+    breakZ = 0 //破损后的z
     custom = false //自定义,为true不读取预设参数
     info = ''
     desc = ''
@@ -43,7 +47,7 @@ export default class BuildingData {
         if (!data) {
             return
         }
-        DataUtils.baseCopy(this, data)
+        DataUtils.baseCopy(this, data, true)
         this.defaultPos = data.defaultPos ? cc.v3(data.defaultPos.x, data.defaultPos.y) : cc.v3(0, 0)
         this.position = data.position ? cc.v3(data.position.x, data.position.y) : cc.v3(0, 0)
         if (data.equipdata) {

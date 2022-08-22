@@ -286,7 +286,7 @@ export default class LoadingManager {
             } else {
                 Logic.normalBuildings = resource.json
                 for (let key in resource.json) {
-                    Logic.normalBuildings[key].resName = key
+                    Logic.normalBuildings[key].id = key
                 }
                 this.isNormalBuildingLoaded = true
                 cc.log('加载建筑完成')

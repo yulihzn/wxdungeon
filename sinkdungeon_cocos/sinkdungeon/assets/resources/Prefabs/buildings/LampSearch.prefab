@@ -282,7 +282,7 @@
     },
     "showLight": true,
     "showRayCast": false,
-    "fromSky": false,
+    "fromSky": true,
     "z": 0,
     "zHeight": 0,
     "_id": ""

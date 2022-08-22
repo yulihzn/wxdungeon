@@ -14,7 +14,6 @@ import AudioPlayer from '../utils/AudioPlayer'
 import IndexZ from '../utils/IndexZ'
 import EquipmentData from '../data/EquipmentData'
 import InventoryManager from '../manager/InventoryManager'
-import HitBuilding from '../building/HitBuilding'
 import CommonData from '../data/CommonData'
 import Actor from '../base/Actor'
 import AvatarData from '../data/AvatarData'
@@ -28,6 +27,7 @@ import Emplacement from '../building/Emplacement'
 import PlayActor from '../base/PlayActor'
 import BaseAvatar from '../base/BaseAvatar'
 import ReflectLight from '../effect/ReflectLight'
+import NormalBuilding from '../building/NormalBuilding'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -674,8 +674,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 }
             }
             if (!attackSuccess) {
-                let hitBuilding = attackTarget.node.getComponent(HitBuilding)
-                if (hitBuilding && hitBuilding.data.currentHealth > 0) {
+                let hitBuilding = attackTarget.node.getComponent(NormalBuilding)
+                if (hitBuilding) {
                     attackSuccess = true
                     hitBuilding.takeDamage(damage)
                 }
