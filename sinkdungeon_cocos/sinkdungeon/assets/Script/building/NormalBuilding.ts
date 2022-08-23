@@ -67,7 +67,7 @@ export default class NormalBuilding extends Building {
         }
         let resIndex = this.getResIndex()
         this.changeRes(resIndex)
-        if (resIndex >= this.resLength - 1) {
+        if (resIndex > 0 && resIndex >= this.resLength - 1) {
             pcollider.zHeight = this.data.breakZ
         }
     }

@@ -133,7 +133,7 @@ export default class Loading extends cc.Component {
         this.loadingManager.isWorldLoaded = Logic.worldLoader.isloaded
         this.showCut()
         this.showTransport()
-        this.showElevator()
+        // this.showElevator()
         if (
             this.timeDelay > 0.02 &&
             this.loadingManager.isEquipmentLoaded &&

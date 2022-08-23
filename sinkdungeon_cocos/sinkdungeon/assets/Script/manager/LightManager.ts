@@ -14,7 +14,12 @@ import IndexZ from '../utils/IndexZ'
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const { ccclass, property } = cc._decorator
-
+/**
+ * 光源分为环境光源和普通光源
+ * 普通光源分为自然光和人造光，自然光会随着时间产生变化
+ * 当房间拥有自然光会根据时间变化明暗，底色为偏蓝的黑色
+ * 当房间不存在自然光时会根据场景里拥有的主要光源来确定底色
+ */
 @ccclass
 export default class LightManager extends BaseManager {
     @property(cc.Camera)

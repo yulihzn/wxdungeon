@@ -107,10 +107,9 @@ export default class MiniTile extends cc.Component {
             this.bg.color = this.getColor(MiniMap.ColorLevel.PLAYER)
             this.bg.opacity = 200
         }
-        // if (rectroom.isFound) {
-        //     this.drawMap(-1, -1,this.baseGraphics,true);
-        // }
-        this.drawMap(-1, -1, this.graphics)
+        if (!levelData.minimapOnlyCurrentRoom || (levelData.minimapOnlyCurrentRoom && this.isCurrentRoom)) {
+            this.drawMap(-1, -1, this.graphics)
+        }
     }
     private drawMap(playerX: number, playerY: number, graphics: cc.Graphics) {
         if (!graphics) {

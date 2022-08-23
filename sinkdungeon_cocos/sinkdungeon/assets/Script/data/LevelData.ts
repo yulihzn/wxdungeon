@@ -54,6 +54,7 @@ export default class LevelData {
     wallResOther9 = '' //墙壁资源名9(##9独立矮墙体)
     equipitems = '' //装备和道具16,4,weapon001#27,1,0,bottle000 井号隔开，坐标（y轴向下）资源名
     needRadomDecorate = false
+    minimapOnlyCurrentRoom = false
     map: string[][] = []
     floormap: string[][] = []
     roomTypes: string[][] = []
