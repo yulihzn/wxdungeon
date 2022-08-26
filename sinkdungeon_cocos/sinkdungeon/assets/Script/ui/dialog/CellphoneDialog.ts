@@ -73,7 +73,7 @@ export default class CellphoneDialog extends BaseDialog {
     static changeFlashLight() {
         AudioPlayer.play(AudioPlayer.FLASHLIGHT)
         Logic.settings.isFlashLightOpen = !Logic.settings.isFlashLightOpen
-        LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_SHOW_FLASHLIGHT, Logic.settings.isFlashLightOpen)
+        LocalStorage.saveSystemSettings(Logic.settings)
         EventHelper.emit(EventHelper.PLAYER_SHOW_FLASHLIGHT, { isOpen: Logic.settings.isFlashLightOpen })
     }
     private changeFlashLightSprite(isOpen: boolean) {

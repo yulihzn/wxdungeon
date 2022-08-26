@@ -194,7 +194,7 @@ export default class Inventory extends cc.Component {
     showEquipment() {
         this.equipmentNode.active = !this.equipmentNode.active
         Logic.settings.showEquipDialog = this.equipmentNode.active
-        LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_SHOW_EQUIPDIALOG, Logic.settings.showEquipDialog)
+        LocalStorage.saveSystemSettings(Logic.settings)
     }
     private fadeOut() {
         if (!this.equipmentNode) {

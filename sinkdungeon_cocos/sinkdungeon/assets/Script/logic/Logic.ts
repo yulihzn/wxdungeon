@@ -16,7 +16,6 @@ import WorldLoader from '../map/WorldLoader'
 import ProfessionData from '../data/ProfessionData'
 import Random4Save from '../utils/Random4Save'
 import ExitData from '../data/ExitData'
-import Settings from '../model/Settings'
 import LocalStorage from '../utils/LocalStorage'
 import SavePointData from '../data/SavePointData'
 import NonPlayerData from '../data/NonPlayerData'
@@ -28,6 +27,7 @@ import FurnitureData from '../data/FurnitureData'
 import LoadingManager from '../manager/LoadingManager'
 import DialogueData from '../data/DialogueData'
 import BuildingData from '../data/BuildingData'
+import SettingsData from '../data/SettingsData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -124,12 +124,12 @@ export default class Logic extends cc.Component {
     static profileManager: ProfileManager = new ProfileManager()
     static bagSortIndex = 0 //0时间,1类别,2品质,3价格
     static sortIndexs: { [key: string]: number } = {} //0时间,1类别,2品质,3价格
-    static settings: Settings = new Settings()
+    static settings: SettingsData = new SettingsData()
     static nonPlayerList: NonPlayerData[] = []
 
     onLoad() {
+        Logic.settings.valueCopy(LocalStorage.getSystemSettings())
         //关闭调试
-        Logic.settings.lowPower = LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_LOW_POWER)
         if (Logic.settings.lowPower) {
             cc.game.setFrameRate(45)
         } else {

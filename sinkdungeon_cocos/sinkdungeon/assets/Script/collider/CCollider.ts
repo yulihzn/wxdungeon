@@ -164,6 +164,7 @@ export default class CCollider extends cc.Component {
         this.baseChangedCount = 0
         let offset = cc.v3(this.offsetX, this.offsetY)
         this._center = this.node.convertToWorldSpaceAR(cc.v3(this.offsetX, this.offsetY))
+
         let woffset = this.node.convertToWorldSpaceAR(offset)
         this._radius = this.node
             .convertToWorldSpaceAR(offset.add(cc.v3(this.radius, 0)))

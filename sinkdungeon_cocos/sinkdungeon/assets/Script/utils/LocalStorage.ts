@@ -10,6 +10,7 @@
 
 import AchievementData from '../data/AchievementData'
 import FurnitureData from '../data/FurnitureData'
+import SettingsData from '../data/SettingsData'
 
 const { ccclass, property } = cc._decorator
 
@@ -18,13 +19,9 @@ export default class LocalStorage {
     public static SAVE_NAME = 'SINKDUNGEON_SAVE'
     public static SAVE_DUNGEON = 'SAVE_DUNGEON'
     public static KEY_ACHIEVEMENT = 'KEY_ACHIEVEMENT'
+    public static KEY_SYSTEM_SETTINGS = 'KEY_SYSTEM_SETTINGS'
     public static KEY_COIN = 'KEY_COIN'
     public static KEY_COIN_DREAM_COUNT = 'KEY_DREAM_COIN_COUNT'
-    public static KEY_SWITCH_SHOW_SOFT_SHADOW = 'KEY_SWITCH_SHOW_SOFT_SHADOW'
-    public static KEY_SWITCH_SHOW_GAMEPAD = 'KEY_SWITCH_SHOW_GAMEPAD'
-    public static KEY_SWITCH_LOW_POWER = 'KEY_SWITCH_LOW_POWER'
-    public static KEY_SWITCH_SHOW_EQUIPDIALOG = 'KEY_SWITCH_SHOW_EQUIPDIALOG'
-    public static KEY_SWITCH_SHOW_FLASHLIGHT = 'KEY_SWITCH_SHOW_FLASHLIGHT'
     public static KEY_FURNITURES = 'KEY_FURNITURES'
     public static VAULE_OPEN = '1'
     public static KEY_LAST_SAVE_SLOT = 'KEY_LAST_SAVE_SLOT'
@@ -66,6 +63,15 @@ export default class LocalStorage {
     static saveAchievementData(data: AchievementData): void {
         LocalStorage.saveData(LocalStorage.KEY_ACHIEVEMENT, data)
     }
+
+    static getSystemSettings(): SettingsData {
+        let data = new SettingsData()
+        data.valueCopy(LocalStorage.getData()[LocalStorage.KEY_SYSTEM_SETTINGS])
+        return data
+    }
+    static saveSystemSettings(data: SettingsData): void {
+        LocalStorage.saveData(LocalStorage.KEY_SYSTEM_SETTINGS, data)
+    }
     static getFurnitureData(id: string) {
         let map: { [key: string]: FurnitureData } = LocalStorage.getData()[LocalStorage.KEY_FURNITURES]
         if (!map) {
@@ -95,14 +101,6 @@ export default class LocalStorage {
         }
         map[data.id] = oldData
         LocalStorage.saveData(LocalStorage.KEY_FURNITURES, map)
-    }
-    static isSwitchOpen(key: string) {
-        let v = LocalStorage.getValueFromData(key)
-        let num = v || v == 0 ? parseInt(v) : LocalStorage.DEFAULT_MAP[key]
-        return num == 1
-    }
-    static saveSwitch(key: string, isOpen: boolean) {
-        LocalStorage.saveData(key, isOpen ? 1 : 0)
     }
 
     static getLastSaveSlotKey() {

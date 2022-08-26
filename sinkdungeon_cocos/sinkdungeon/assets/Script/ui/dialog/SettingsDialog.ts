@@ -28,10 +28,10 @@ export default class SettingsDialog extends BaseDialog {
     start() {}
     show() {
         super.show()
-        this.pcInfo.active = !LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD)
-        this.initToggle(this.tgShadow, LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_SOFT_SHADOW))
-        this.initToggle(this.tgGamepad, LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD))
-        this.initToggle(this.tgFps, LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_LOW_POWER))
+        this.pcInfo.active = !Logic.settings.showGamepad
+        this.initToggle(this.tgShadow, Logic.settings.showSoftShadow)
+        this.initToggle(this.tgGamepad, Logic.settings.showGamepad)
+        this.initToggle(this.tgFps, Logic.settings.lowPower)
     }
     private initToggle(toggle: cc.Toggle, isOpen: boolean) {
         if (isOpen) {
@@ -46,19 +46,19 @@ export default class SettingsDialog extends BaseDialog {
     toggleShadow(toggle: cc.Toggle, customEventData: string) {
         AudioPlayer.play(AudioPlayer.SELECT)
         Logic.settings.showSoftShadow = toggle.isChecked
-        LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_SHOW_SOFT_SHADOW, Logic.settings.showSoftShadow)
+        LocalStorage.saveSystemSettings(Logic.settings)
     }
     toggleGamepad(toggle: cc.Toggle, customEventData: string) {
         AudioPlayer.play(AudioPlayer.SELECT)
         Logic.settings.showGamepad = toggle.isChecked
-        LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD, Logic.settings.showGamepad)
+        LocalStorage.saveSystemSettings(Logic.settings)
         this.pcInfo.active = !Logic.settings.showGamepad
         EventHelper.emit(EventHelper.HUD_CONTROLLER_UPDATE_GAMEPAD)
     }
     toggleFps(toggle: cc.Toggle, customEventData: string) {
         AudioPlayer.play(AudioPlayer.SELECT)
         Logic.settings.lowPower = toggle.isChecked
-        LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_LOW_POWER, Logic.settings.lowPower)
+        LocalStorage.saveSystemSettings(Logic.settings)
         EventHelper.emit(EventHelper.SETTINGS_LOW_POWER)
     }
     close() {
