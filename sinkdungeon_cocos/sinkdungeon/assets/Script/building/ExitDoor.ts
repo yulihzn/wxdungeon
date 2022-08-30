@@ -100,6 +100,9 @@ export default class ExitDoor extends Building {
                 this.changeRes('exit000')
                 break
         }
+        if (this.exitData.res?.length > 0) {
+            this.changeRes(this.exitData.res)
+        }
         let subfix = 'anim000'
         let spriteframe = Logic.spriteFrameRes(`roof${Logic.worldLoader.getCurrentLevelData().wallRes1}${subfix}`)
         if (this.dir % 4 > 1 || this.dir > 7) {
