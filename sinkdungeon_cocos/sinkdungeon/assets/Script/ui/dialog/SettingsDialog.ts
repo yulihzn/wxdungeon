@@ -61,6 +61,10 @@ export default class SettingsDialog extends BaseDialog {
         LocalStorage.saveSystemSettings(Logic.settings)
         EventHelper.emit(EventHelper.SETTINGS_LOW_POWER)
     }
+    showActionSettingDialog() {
+        this.close()
+        EventHelper.emit(EventHelper.HUD_ACTION_SETTING_DIALOG)
+    }
     close() {
         cc.director.getScheduler().setTimeScale(1)
         AudioPlayer.play(AudioPlayer.SELECT)

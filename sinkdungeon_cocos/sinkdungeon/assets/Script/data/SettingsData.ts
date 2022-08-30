@@ -6,13 +6,13 @@ export default class SettingsData {
     showEquipDialog = false
     lowPower = false
     isFlashLightOpen = false
-    static readonly BPA = cc.v2(0, 0)
-    static readonly BPR = cc.v2(0, 0)
-    static readonly BPD = cc.v2(0, 0)
-    static readonly BPJ = cc.v2(0, 0)
-    static readonly BPI = cc.v2(0, 0)
-    static readonly BPS1 = cc.v2(0, 0)
-    static readonly BPS2 = cc.v2(0, 0)
+    static readonly BPA = cc.v2(-24, -8)
+    static readonly BPR = cc.v2(-96, -96)
+    static readonly BPJ = cc.v2(98, -8)
+    static readonly BPD = cc.v2(40, -96)
+    static readonly BPI = cc.v2(30, 80)
+    static readonly BPS1 = cc.v2(-120, 16)
+    static readonly BPS2 = cc.v2(-200, -60)
     buttonPosAttack = SettingsData.BPA.clone()
     buttonPosRemote = SettingsData.BPR.clone()
     buttonPosJump = SettingsData.BPJ.clone()
@@ -35,14 +35,6 @@ export default class SettingsData {
     }
     private copyPos(selfPos: cc.Vec2, otherPos: cc.Vec2, defaultPos: cc.Vec2) {
         selfPos = otherPos ? cc.v2(otherPos.x, otherPos.y) : defaultPos.clone()
-    }
-    public allButtonPosReset() {
-        this.copyPos(this.buttonPosAttack, undefined, SettingsData.BPA)
-        this.copyPos(this.buttonPosRemote, undefined, SettingsData.BPR)
-        this.copyPos(this.buttonPosDash, undefined, SettingsData.BPD)
-        this.copyPos(this.buttonPosJump, undefined, SettingsData.BPJ)
-        this.copyPos(this.buttonPosSkill1, undefined, SettingsData.BPS1)
-        this.copyPos(this.buttonPosSkill2, undefined, SettingsData.BPS2)
     }
 
     public clone(): SettingsData {

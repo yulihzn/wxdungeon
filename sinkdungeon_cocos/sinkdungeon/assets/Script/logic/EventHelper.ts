@@ -76,6 +76,7 @@ export class EventHelper extends cc.Component {
     public static readonly HUD_UPDATE_PLAYER_AMMO = 'HUD_UPDATE_PLAYER_AMMO'
     public static readonly HUD_INVENTORY_SHOW = 'HUD_INVENTORY_SHOW'
     public static readonly HUD_CELLPHONE_SHOW = 'HUD_CELLPHONE_SHOW'
+    public static readonly HUD_ACTION_SETTING_DIALOG = 'HUD_ACTION_SETTING_DIALOG'
     public static readonly HUD_INVENTORY_SELECT_UPDATE = 'HUD_INVENTORY_SELECT_UPDATE'
     public static readonly HUD_INVENTORY_ITEM_UPDATE = 'HUD_INVENTORY_ITEM_UPDATE'
     public static readonly HUD_INVENTORY_EQUIP_UPDATE = 'HUD_INVENTORY_EQUIP_UPDATE'

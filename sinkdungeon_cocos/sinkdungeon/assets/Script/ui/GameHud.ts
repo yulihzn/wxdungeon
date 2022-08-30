@@ -11,6 +11,7 @@ import SatietyView from './SatietyView'
 import DollMachineDialog from './dialog/DollMachineDialog'
 import Dialogue from './Dialogue'
 import CellphoneDialog from './dialog/CellphoneDialog'
+import ActionSettingDialog from './dialog/ActionSettingDialog'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -66,6 +67,8 @@ export default class GameHud extends cc.Component {
     dialogue: Dialogue = null
     @property(CellphoneDialog)
     cellphoneDialog: CellphoneDialog = null
+    @property(ActionSettingDialog)
+    actionSettingDialog: ActionSettingDialog = null
     private arrowList: cc.Node[] = []
     private isCompleteShowed = false
     private checkTimeDelay = 0
@@ -137,6 +140,9 @@ export default class GameHud extends cc.Component {
         })
         EventHelper.on(EventHelper.HUD_CELLPHONE_SHOW, detail => {
             this.showCellphoneDialog()
+        })
+        EventHelper.on(EventHelper.HUD_ACTION_SETTING_DIALOG, detail => {
+            this.showActionSettingDialog()
         })
         if (this.clock) {
             this.clock.string = `${Logic.time}`
@@ -298,7 +304,12 @@ export default class GameHud extends cc.Component {
     }
     get HasModalDialogShow() {
         return (
-            this.settingsDialog.node.active || this.martShelvesDialog.node.active || this.cellphoneDialog.node.active || this.dollMachineDialog.node.active || this.dialogue.isShow
+            this.settingsDialog.node.active ||
+            this.martShelvesDialog.node.active ||
+            this.cellphoneDialog.node.active ||
+            this.actionSettingDialog.node.active ||
+            this.dollMachineDialog.node.active ||
+            this.dialogue.isShow
         )
     }
     get IsTimeCountDialogShow() {
@@ -311,6 +322,10 @@ export default class GameHud extends cc.Component {
         }
         if (this.cellphoneDialog.isShow) {
             this.cellphoneDialog.dismiss()
+            return true
+        }
+        if (this.actionSettingDialog.isShow) {
+            this.actionSettingDialog.dismiss()
             return true
         }
         if (this.dollMachineDialog.isShow) {
@@ -384,6 +399,16 @@ export default class GameHud extends cc.Component {
             this.cellphoneDialog.dismiss()
         } else {
             this.cellphoneDialog.show()
+        }
+    }
+    showActionSettingDialog(): void {
+        if (!this.actionSettingDialog) {
+            return
+        }
+        if (this.actionSettingDialog.isShow) {
+            this.actionSettingDialog.dismiss()
+        } else {
+            this.actionSettingDialog.show()
         }
     }
     //button

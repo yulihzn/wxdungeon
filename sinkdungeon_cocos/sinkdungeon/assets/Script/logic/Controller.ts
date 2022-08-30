@@ -290,6 +290,14 @@ export default class Controller extends cc.Component {
         return !cc.sys.isMobile && !Logic.settings.showGamepad
     }
     private updateGamepad() {
+        this.attackAction.position = cc.v3(Logic.settings.buttonPosAttack)
+        this.shootAction.position = cc.v3(Logic.settings.buttonPosRemote)
+        this.jumpAction.position = cc.v3(Logic.settings.buttonPosJump)
+        this.dashAction.position = cc.v3(Logic.settings.buttonPosDash)
+        this.interactAction.position = cc.v3(Logic.settings.buttonPosInteract)
+        this.interactEmpty.position = cc.v3(Logic.settings.buttonPosInteract)
+        this.skillAction.position = cc.v3(Logic.settings.buttonPosSkill1)
+        this.skillAction1.position = cc.v3(Logic.settings.buttonPosSkill2)
         if (Controller.isMouseMode()) {
             this.attackAction.active = false
             this.shootAction.active = false
