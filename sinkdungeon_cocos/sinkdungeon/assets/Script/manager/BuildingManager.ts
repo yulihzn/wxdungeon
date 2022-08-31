@@ -48,6 +48,7 @@ import BuildingData from '../data/BuildingData'
 import EquipItemMapData from '../data/EquipItemMapData'
 import InventoryManager from './InventoryManager'
 import NormalBuilding from '../building/NormalBuilding'
+import Stairs from '../building/Stairs'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -134,6 +135,11 @@ export default class BuildingManager extends BaseManager {
     static readonly FURNITURE = 'Furniture'
     static readonly WALLPAINT = 'WallPaint'
     static readonly NORMAL_BUILDING = 'NormalBuilding'
+    static readonly STAIRS0 = 'Stairs0'
+    static readonly STAIRS1 = 'Stairs1'
+    static readonly STAIRS2 = 'Stairs2'
+    static readonly STAIRS3 = 'Stairs3'
+    static readonly STAIRS4 = 'Stairs4'
 
     // LIFE-CYCLE CALLBACKS:
     footboards: FootBoard[] = new Array()
@@ -428,7 +434,11 @@ export default class BuildingManager extends BaseManager {
                 wallpaint.init(mapDataStr)
             })
         } else if (this.isFirstEqual(mapDataStr, 'V')) {
-            this.addNormalBuilding(dungeon, mapDataStr, NormalBuilding.PREFIX_STAIRS, indexPos)
+            if (this.hasThe(mapDataStr, Stairs.TYPE_PLATFORM)) {
+                this.addNormalBuilding(dungeon, mapDataStr, NormalBuilding.PREFIX_STAIRS, indexPos)
+            } else {
+                this.addStairs(dungeon, mapDataStr, indexPos)
+            }
         } else if (this.isFirstEqual(mapDataStr, 'W')) {
             //生成可破坏装饰 并且根据之前记录的位置放置
             this.addInteractBuilding(mapDataStr, indexPos)
@@ -471,6 +481,22 @@ export default class BuildingManager extends BaseManager {
             //生成门
             this.addDoor(mapDataStr, indexPos, true)
         }
+    }
+    private addStairs(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
+        let map: Map<string, string> = new Map()
+        map.set(Stairs.TYPE_FRONT, BuildingManager.STAIRS0)
+        map.set(Stairs.TYPE_BEHIND, BuildingManager.STAIRS1)
+        map.set(Stairs.TYPE_LEFT, BuildingManager.STAIRS2)
+        map.set(Stairs.TYPE_RIGHT, BuildingManager.STAIRS3)
+        map.forEach((value: string, key: string) => {
+            if (this.hasThe(mapDataStr, key)) {
+                Logic.getBuildings(value, (prefab: cc.Prefab) => {
+                    let building = this.addBuilding(prefab, indexPos).getComponent(Stairs)
+                    building.data.z = 0
+                    building.init(dungeon)
+                })
+            }
+        })
     }
     private addNormalBuilding(dungeon: Dungeon, mapDataStr: string, prefix: string, indexPos: cc.Vec3) {
         Logic.getBuildings(BuildingManager.NORMAL_BUILDING, (prefab: cc.Prefab) => {

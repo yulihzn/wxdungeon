@@ -42,9 +42,6 @@ export default class NormalBuilding extends Building {
             return
         }
         let pcollider = this.getComponent(CCollider)
-        pcollider.stairsX = this.data.stairsX
-        pcollider.stairsY = this.data.stairsY
-        pcollider.stairsZ = this.data.stairsZ
         if (this.data.collider.length > 0) {
             let arr = this.data.collider.split(',')
             pcollider.offset = cc.v2(parseInt(arr[0]), parseInt(arr[1]))
