@@ -427,6 +427,8 @@ export default class BuildingManager extends BaseManager {
                 wallpaint.node.zIndex = IndexZ.getActorZIndex(wallpaint.node.position.add(cc.v3(0, 120)))
                 wallpaint.init(mapDataStr)
             })
+        } else if (this.isFirstEqual(mapDataStr, 'V')) {
+            this.addNormalBuilding(dungeon, mapDataStr, NormalBuilding.PREFIX_STAIRS, indexPos)
         } else if (this.isFirstEqual(mapDataStr, 'W')) {
             //生成可破坏装饰 并且根据之前记录的位置放置
             this.addInteractBuilding(mapDataStr, indexPos)

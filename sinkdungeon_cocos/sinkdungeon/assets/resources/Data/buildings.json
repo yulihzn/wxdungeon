@@ -83,5 +83,43 @@
         "maxHealth": 30,
         "currentHealth": 30,
         "breakZ": 16
+    },
+    "stairs00000": {
+        "nameCn": "楼梯正面",
+        "scale": 4,
+        "spritePos": "0,64",
+        "collider": "0,32,128,64,64",
+        "stairsY": 16,
+        "stairsZ": 16
+    },
+    "stairs00100": {
+        "nameCn": "楼梯背面",
+        "scale": 4,
+        "spritePos": "0,64",
+        "collider": "0,32,128,64,64",
+        "stairsY": -16,
+        "stairsZ": 16
+    },
+    "stairs00200": {
+        "nameCn": "楼梯左侧",
+        "scale": 4,
+        "spritePos": "0,96",
+        "collider": "0,32,128,64,128",
+        "stairsX": -16,
+        "stairsZ": 16
+    },
+    "stairs00300": {
+        "nameCn": "楼梯右侧",
+        "scale": 4,
+        "spritePos": "0,96",
+        "collider": "0,32,128,64,128",
+        "stairsX": 16,
+        "stairsZ": 16
+    },
+    "stairs00400": {
+        "nameCn": "楼梯衔接平台",
+        "scale": 4,
+        "spritePos": "0,96",
+        "collider": "0,32,128,64,128"
     }
 }

@@ -40,6 +40,9 @@ export default class BuildingData {
     spritePos = '' //贴图位置 x,y
     z = 0 //浮空高度
     breakZ = 0 //破损后的z
+    stairsX = 0 //高度纵向分割
+    stairsY = 0 //高度横向分割
+    stairsZ = 0 //分割高度
     custom = false //自定义,为true不读取预设参数
     info = ''
     desc = ''

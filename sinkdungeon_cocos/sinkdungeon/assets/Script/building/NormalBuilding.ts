@@ -30,6 +30,7 @@ export default class NormalBuilding extends Building {
     private _breakable = false
     static readonly PREFIX_PLATFORM = 'platform'
     static readonly PREFIX_HITBUILDING = 'hitbuilding'
+    static readonly PREFIX_STAIRS = 'stairs'
     get breakable() {
         return this._breakable && this.data.currentHealth > 0 && this.data.currentHealth < 9999
     }
@@ -41,6 +42,9 @@ export default class NormalBuilding extends Building {
             return
         }
         let pcollider = this.getComponent(CCollider)
+        pcollider.stairsX = this.data.stairsX
+        pcollider.stairsY = this.data.stairsY
+        pcollider.stairsZ = this.data.stairsZ
         if (this.data.collider.length > 0) {
             let arr = this.data.collider.split(',')
             pcollider.offset = cc.v2(parseInt(arr[0]), parseInt(arr[1]))
@@ -83,6 +87,9 @@ export default class NormalBuilding extends Building {
             return
         }
         let spriteFrame = Logic.spriteFrameRes(`${this.data.id}anim${index < 0 ? 0 : index}`)
+        if (!spriteFrame) {
+            spriteFrame = Logic.spriteFrameRes(`${this.data.id}`)
+        }
         if (spriteFrame) {
             this.sprite.spriteFrame = spriteFrame
             this.sprite.node.width = spriteFrame.getOriginalSize().width

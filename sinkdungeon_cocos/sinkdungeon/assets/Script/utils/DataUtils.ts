@@ -36,11 +36,7 @@ export default class DataUtils {
                     self[key] = other[key] ? other[key] : ''
                 }
             } else if (typeof self[key] == 'boolean') {
-                if (keepDefault) {
-                    self[key] = other[key] ? other[key] : self[key]
-                } else {
-                    self[key] = other[key] ? other[key] : false
-                }
+                self[key] = other[key] ? other[key] : false
             }
         }
     }

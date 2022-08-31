@@ -78,6 +78,7 @@ export default class CCollider extends cc.Component {
     zHeight = 32
     @property
     bounce: number = 0
+
     @property
     sensor: boolean = false
     @property
@@ -95,6 +96,10 @@ export default class CCollider extends cc.Component {
         }
     })
     ignoreTagList: number[] = []
+
+    stairsX: number = 0 //从左往右按区域分割zHeight
+    stairsY: number = 0 //从上往下按区域分割zHeight
+    stairsZ: number = 0 //分割的高度
 
     //当前已经碰撞过的物体
     inColliders: Map<number, boolean> = new Map()
@@ -246,8 +251,8 @@ export default class CCollider extends cc.Component {
     isBelowOther(other: CCollider) {
         return this.z + this.zHeight < other.z
     }
-    isAboveOther(other: CCollider) {
-        return this.z >= other.z + other.zHeight
+    isAboveOther(other: CCollider, selfCenter?: cc.Vec2, otherRect?: cc.Rect) {
+        return this.z >= this.getOtherSurfaceBase(other, selfCenter, otherRect)
     }
     isHeightNotCollid(other: CCollider) {
         return this.isBelowOther(other) || this.isAboveOther(other)
@@ -323,9 +328,9 @@ export default class CCollider extends cc.Component {
         let lenHorizonal = Math.abs(center1.x - center2.x) //两者中心位置的横向距离
         let offsetVertical = (h1 + h2) / 2 - lenVertical //两者纵向重合部分的长度
         let offsetHorizonal = (w1 + w2) / 2 - lenHorizonal //两者横向重合部分的长度
-        if (this.isAboveOther(other)) {
+        if (this.isAboveOther(other, center1, rect2)) {
             //在对方上方和表面时修改base为对方的表面
-            this.entity.Transform.base = other.z + other.zHeight
+            this.entity.Transform.base = this.getOtherSurfaceBase(other, center1, rect2)
             this.baseChangedCount++
         } else if (this.z < other.z) {
             //在对面下方时，如果头部穿过对面底部修改当前的z为对方底部，且向上的速度置0
@@ -359,6 +364,55 @@ export default class CCollider extends cc.Component {
                 this.onContactListener.onColliderExit(other, this)
             }
         }
+    }
+    private getOtherSurfaceBase(other: CCollider, selfCenter: cc.Vec2, otherRect: cc.Rect): number {
+        let height = other.zHeight
+        if (other.stairsZ != 0 && otherRect && selfCenter) {
+            if (other.stairsX != 0) {
+                let absX = Math.abs(other.stairsX)
+                //获取在碰撞盒的纵向位置
+                let x = selfCenter.x - otherRect.x
+                if (x < 0) {
+                    x = 0
+                }
+                //获取纵向等分碰撞盒总格数
+                let count = Math.floor(otherRect.width / absX)
+                //根据位置判断在哪一格
+                let index = Math.floor(x / absX)
+                if (other.stairsX < 0) {
+                    index = count - index
+                }
+                if (index < 0) {
+                    index = 0
+                }
+                if (index > count) {
+                    index = count
+                }
+                height -= index * other.stairsZ
+            } else if (other.stairsY != 0) {
+                let absY = Math.abs(other.stairsY)
+                //获取在碰撞盒的横向位置
+                let y = selfCenter.y - otherRect.y
+                if (y < 0) {
+                    y = 0
+                }
+                //获取纵向等分碰撞盒总格数
+                let count = Math.floor(otherRect.width / absY)
+                //根据位置判断在哪一格
+                let index = Math.floor(y / absY)
+                if (other.stairsY < 0) {
+                    index = count - index
+                }
+                if (index < 0) {
+                    index = 0
+                }
+                if (index > count) {
+                    index = count
+                }
+                height -= index * other.stairsZ
+            }
+        }
+        return other.z + height
     }
     drawDebug(graphics: cc.Graphics) {
         if (!graphics) {
