@@ -85,8 +85,8 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
             for (let other of colliders) {
                 allCount++
                 if (
-                    (collider.tag == CCollider.TAG.PLAYER_HIT && other.tag == CCollider.TAG.BULLET) ||
-                    (other.tag == CCollider.TAG.PLAYER_HIT && collider.tag == CCollider.TAG.BULLET)
+                    (collider.tag == CCollider.TAG.PLAYER && other.tag == CCollider.TAG.BUILDING) ||
+                    (other.tag == CCollider.TAG.PLAYER && collider.tag == CCollider.TAG.BUILDING)
                 ) {
                     collider
                 }

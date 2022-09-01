@@ -13,6 +13,7 @@ import LoadingManager from '../manager/LoadingManager'
 import NonPlayerManager from '../manager/NonPlayerManager'
 import AudioPlayer from '../utils/AudioPlayer'
 import Utils from '../utils/Utils'
+import Furniture from './Furniture'
 
 const { ccclass, property } = cc._decorator
 
@@ -47,12 +48,12 @@ export default class RoomFishtank extends cc.Component {
         if (zoomIn) {
             this.showAudio = true
             if (this.dungeon) {
-                this.dungeon.cameraTargetNode = this.node
+                this.dungeon.cameraTargetActor = this.node.getComponent(Furniture)
             }
         } else {
             this.showAudio = false
             if (this.dungeon) {
-                this.dungeon.cameraTargetNode = this.dungeon.player.node
+                this.dungeon.cameraTargetActor = this.dungeon.player
             }
         }
         EventHelper.emit(zoomIn ? EventHelper.HUD_CAMERA_ZOOM_IN : EventHelper.HUD_CAMERA_ZOOM_OUT)

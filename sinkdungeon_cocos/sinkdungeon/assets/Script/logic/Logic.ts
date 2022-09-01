@@ -386,6 +386,7 @@ export default class Logic extends cc.Component {
         let roomX = Math.floor(exitData.toPos.x / levelData.roomWidth)
         let roomY = Math.floor(ty / levelData.roomHeight)
         Logic.playerData.pos = cc.v3(exitData.toPos.x % levelData.roomWidth, ty % levelData.roomHeight)
+        Logic.playerData.posZ = exitData.toPosZ
         Logic.mapManager.reset(cc.v3(roomX, roomY))
         Logic.changeDungeonSize()
         if (exitData.fromChapter == Logic.CHAPTER00 && Logic.chapterIndex == Logic.CHAPTER01) {

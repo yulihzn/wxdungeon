@@ -9,6 +9,7 @@ export default class ExitData {
     toChapter = 0
     toLevel = 0
     toPos = cc.v3(0, 0)
+    toPosZ = 0
     res = ''
     valueCopy(data: ExitData) {
         if (!data) {

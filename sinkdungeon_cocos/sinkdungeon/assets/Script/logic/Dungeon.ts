@@ -80,7 +80,7 @@ export default class Dungeon extends cc.Component {
     isComplete = false
     currentPos = cc.v3(0, 0)
     isDisappeared = false
-    cameraTargetNode: cc.Node = null
+    cameraTargetActor: Actor = null
 
     rootSystem: GameWorldSystem = null
 
@@ -282,7 +282,7 @@ export default class Dungeon extends cc.Component {
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player)
         this.player.statusIconList = this.statusIconList
         this.player.node.parent = this.node
-        this.cameraTargetNode = this.player.node
+        this.cameraTargetActor = this.player
         this.fog.setPosition(this.player.node.position.clone())
     }
     /**

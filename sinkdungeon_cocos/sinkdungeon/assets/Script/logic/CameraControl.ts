@@ -57,7 +57,7 @@ export default class CameraControl extends cc.Component {
 
     start() {}
     lateUpdate() {
-        if (this.dungeon.cameraTargetNode) {
+        if (this.dungeon.cameraTargetActor) {
             this.followTarget(false)
         }
         this.camera.zoomRatio = this.lerpNumber(this.camera.zoomRatio, this.dungeon.CameraZoom, 0.05)
@@ -66,7 +66,7 @@ export default class CameraControl extends cc.Component {
         // this.camera.zoomRatio = 1 + (0.5 - ratio) * 0.5;
     }
     followTarget(isDirect: boolean) {
-        if (!this.dungeon || !this.dungeon.cameraTargetNode) {
+        if (!this.dungeon || !this.dungeon.cameraTargetActor) {
             return
         }
         // let xmax = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE - 4, 0)).x
@@ -86,11 +86,15 @@ export default class CameraControl extends cc.Component {
         // if (this.dungeon.cameraTargetNode.y > ymax) {
         //     offset.y = ymax - this.dungeon.cameraTargetNode.y
         // }
-        let targetPos = this.dungeon.node.convertToWorldSpaceAR(this.dungeon.cameraTargetNode.position.clone().addSelf(offset))
+        let targetPos = this.dungeon.node.convertToWorldSpaceAR(this.dungeon.cameraTargetActor.node.position.clone().addSelf(offset))
+        let pos = this.node.parent.convertToNodeSpaceAR(targetPos)
+        if (this.dungeon.cameraTargetActor.entity) {
+            pos.y += this.dungeon.cameraTargetActor.entity.Transform.z
+        }
         if (isDirect) {
-            this.node.position = this.node.parent.convertToNodeSpaceAR(targetPos)
+            this.node.position = pos
         } else {
-            this.node.position = this.lerp(this.node.position, this.node.parent.convertToNodeSpaceAR(targetPos), 0.1)
+            this.node.position = this.lerp(this.node.position, pos, 0.1)
         }
         if (this.isShaking) {
             if (this.offsetIndex > this.offsetArr.length - 1) {

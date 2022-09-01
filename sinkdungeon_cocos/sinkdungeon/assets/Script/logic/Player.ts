@@ -529,6 +529,7 @@ export default class Player extends PlayActor {
     }
     updatePlayerPos() {
         this.entity.Transform.position = Dungeon.getPosInMap(this.pos)
+        this.entity.Transform.z = this.data.posZ
         this.node.position = this.entity.Transform.position.clone()
     }
     transportPlayer(pos: cc.Vec3) {
@@ -547,7 +548,8 @@ export default class Player extends PlayActor {
     changeZIndex() {
         let offsetY = this.entity.Transform.base
         if (offsetY > 0) {
-            offsetY += 500
+            //一格是128 128/16
+            offsetY = offsetY * 8
         }
         this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.node.position.x, this.node.position.y - offsetY))
     }
@@ -719,6 +721,7 @@ export default class Player extends PlayActor {
             }
             this.pos = Dungeon.getIndexInMap(this.entity.Transform.position)
             this.data.pos = this.pos.clone()
+            this.data.posZ = this.entity.Transform.z
             this.updateHv(cc.v2(pos).normalize())
             this.shooterEx.setHv(this.Hv.clone())
             this.weaponLeft.shooter.setHv(this.Hv.clone())

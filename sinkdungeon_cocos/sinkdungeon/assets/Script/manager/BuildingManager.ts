@@ -434,11 +434,7 @@ export default class BuildingManager extends BaseManager {
                 wallpaint.init(mapDataStr)
             })
         } else if (this.isFirstEqual(mapDataStr, 'V')) {
-            if (this.hasThe(mapDataStr, Stairs.TYPE_PLATFORM)) {
-                this.addNormalBuilding(dungeon, mapDataStr, NormalBuilding.PREFIX_STAIRS, indexPos)
-            } else {
-                this.addStairs(dungeon, mapDataStr, indexPos)
-            }
+            this.addStairs(mapDataStr, indexPos)
         } else if (this.isFirstEqual(mapDataStr, 'W')) {
             //生成可破坏装饰 并且根据之前记录的位置放置
             this.addInteractBuilding(mapDataStr, indexPos)
@@ -482,19 +478,21 @@ export default class BuildingManager extends BaseManager {
             this.addDoor(mapDataStr, indexPos, true)
         }
     }
-    private addStairs(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
+    private addStairs(mapDataStr: string, indexPos: cc.Vec3) {
         let map: Map<string, string> = new Map()
         map.set(Stairs.TYPE_FRONT, BuildingManager.STAIRS0)
         map.set(Stairs.TYPE_BEHIND, BuildingManager.STAIRS1)
         map.set(Stairs.TYPE_LEFT, BuildingManager.STAIRS2)
         map.set(Stairs.TYPE_RIGHT, BuildingManager.STAIRS3)
+        map.set(Stairs.TYPE_PLATFORM, BuildingManager.STAIRS4)
         map.forEach((value: string, key: string) => {
             if (this.hasThe(mapDataStr, key)) {
                 Logic.getBuildings(value, (prefab: cc.Prefab) => {
                     let building = this.addBuilding(prefab, indexPos).getComponent(Stairs)
                     building.data.z = 0
-                    building.init(dungeon)
+                    building.init(mapDataStr)
                 })
+                return
             }
         })
     }

@@ -339,10 +339,7 @@ export default class CCollider extends cc.Component {
             //两者包围盒互相包含对方中点的时候添加一个反向斥力
             pos = center1.sub(center2).normalizeSelf().mul(offset)
         } else {
-            if (this.entity.Move.linearVelocityZ <= 0 && this.z + 16 >= other.z + other.zHeight && this.z < other.z + other.zHeight) {
-                offset = 0
-                this.entity.Move.linearVelocityZ = 5
-            } else if (isLeft && pos.x >= 0 && offsetHorizonal > 0 && offsetHorizonal < offsetVertical) {
+            if (isLeft && pos.x >= 0 && offsetHorizonal > 0 && offsetHorizonal < offsetVertical) {
                 pos.x = -offset
             } else if (isRight && pos.x <= 0 && offsetHorizonal > 0 && offsetHorizonal < offsetVertical) {
                 pos.x = offset
@@ -351,6 +348,10 @@ export default class CCollider extends cc.Component {
             } else if (isBottom && pos.y >= 0 && offsetVertical > 0 && offsetHorizonal > offsetVertical) {
                 pos.y = -offset
             }
+        }
+        if (this.entity.Move.linearVelocityZ <= 0 && this.z + 17 >= other.z + other.zHeight && this.z < other.z + other.zHeight) {
+            pos.mulSelf(0.5)
+            this.entity.Move.linearVelocityZ = 5
         }
         this.entity.Move.linearVelocity = pos
     }
