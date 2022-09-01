@@ -886,7 +886,7 @@
     "radius": 64,
     "w": 128,
     "h": 128,
-    "zHeight": 32,
+    "zHeight": 9999,
     "bounce": 0,
     "sensor": false,
     "isStatic": true,

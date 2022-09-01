@@ -4,6 +4,7 @@ import DataUtils from '../utils/DataUtils'
 export default class ExitData {
     fromRoomPos = cc.v3(0, 0)
     fromPos = cc.v3(0, 0)
+    fromZ = 0
     fromChapter = 0
     fromLevel = 0
     toChapter = 0

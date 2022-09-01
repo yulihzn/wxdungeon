@@ -208,10 +208,13 @@ export default class LevelData {
                 data.toLevel = parseInt(temps[3])
                 data.toPos = cc.v3(tx, ty)
                 if (temps.length > 6) {
-                    data.toPosZ = parseInt(temps[6])
+                    data.fromZ = parseInt(temps[6])
                 }
                 if (temps.length > 7) {
-                    data.res = temps[7]
+                    data.toPosZ = parseInt(temps[7])
+                }
+                if (temps.length > 8) {
+                    data.res = temps[8]
                 }
                 list.push(data)
             }

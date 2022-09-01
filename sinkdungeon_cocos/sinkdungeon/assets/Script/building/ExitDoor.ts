@@ -110,7 +110,7 @@ export default class ExitDoor extends Building {
         }
         this.roof.spriteFrame = spriteframe
         this.roof.node.parent = this.node.parent
-        let p = this.node.convertToWorldSpaceAR(cc.v3(0, 128))
+        let p = this.node.convertToWorldSpaceAR(cc.v3(0, 128 + this.exitData.fromZ))
         this.roof.node.position = this.roof.node.parent.convertToNodeSpaceAR(p)
         this.roof.node.zIndex = IndexZ.OVERHEAD
         this.roof.node.opacity = 255

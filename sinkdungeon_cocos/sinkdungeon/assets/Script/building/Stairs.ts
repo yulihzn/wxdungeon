@@ -29,16 +29,16 @@ export default class Stairs extends Building {
 
     init(mapStr: string) {
         //V00000注意，楼梯的root不能绑定到entity上
-        let z = parseInt(mapStr[5]) * Dungeon.TILE_SIZE
+        let z = (parseInt(mapStr[5]) * Dungeon.TILE_SIZE) / 2
         this.root.y = z
         this.entity.Move.gravity = 0
         this.wall.height = z
         for (let collider of this.ccolliders) {
             collider.zHeight += z
         }
-        if (Utils.hasThe(mapStr, Stairs.TYPE_BEHIND)) {
-            this.node.zIndex -= 128
-        }
+        // if (Utils.hasThe(mapStr, Stairs.TYPE_BEHIND)) {
+        //     this.node.zIndex -= 128
+        // }
     }
 
     // update (dt) {}
