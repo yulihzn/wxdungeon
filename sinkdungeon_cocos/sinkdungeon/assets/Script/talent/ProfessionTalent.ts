@@ -19,7 +19,6 @@ import TalentData from '../data/TalentData'
 import InventoryManager from '../manager/InventoryManager'
 import ShadowPlayer from '../actor/ShadowPlayer'
 import Utils from '../utils/Utils'
-import BaseAvatar from '../base/BaseAvatar'
 import NonPlayerData from '../data/NonPlayerData'
 /**
  * 技能管理器
@@ -247,6 +246,7 @@ export default class ProfessionTalent extends Talent {
             this.player.weaponRight.meleeWeapon.dungeon.nonPlayerManager.addNonPlayerFromData(
                 data,
                 shadowPlayer ? shadowPlayer.node.position : this.player.node.position,
+                this.player.entity?.Transform.z,
                 this.player.weaponRight.meleeWeapon.dungeon
             )
         }

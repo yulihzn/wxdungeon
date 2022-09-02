@@ -46,6 +46,7 @@ export default class CCollider extends cc.Component {
         PLAYER_INTERACT: 21, //玩家触碰范围用来触发交互
         INTERACT: 22 //触碰范围用来触发
     })
+    static readonly MIN_HEIGHT = 17
     @property({ type: CCollider.TAG, displayName: 'Collider Tag' })
     tag: number = CCollider.TAG.DEFAULT
 
@@ -349,7 +350,7 @@ export default class CCollider extends cc.Component {
                 pos.y = -offset
             }
         }
-        if (this.entity.Move.linearVelocityZ <= 0 && this.z + 17 >= other.z + other.zHeight && this.z < other.z + other.zHeight) {
+        if (this.entity.Move.linearVelocityZ <= 0 && this.z + CCollider.MIN_HEIGHT >= other.z + other.zHeight && this.z < other.z + other.zHeight) {
             pos.mulSelf(0.5)
             this.entity.Move.linearVelocityZ = 5
         }

@@ -236,7 +236,7 @@ export default class Dungeon extends cc.Component {
                                 this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j))
                             }
                             //加载npc
-                            this.nonPlayerManager.addNonPlayerFromMap(this, mapData[i][j], cc.v3(i, j))
+                            this.nonPlayerManager.addNonPlayerFromMap(this, mapData[i][j], cc.v3(i, j), 0)
                         }
                     }
                     let offsets = [cc.v3(-1, -1, 4), cc.v3(-1, 0, 2), cc.v3(-1, 1, 6), cc.v3(0, -1, 0), cc.v3(0, 1, 1), cc.v3(1, -1, 5), cc.v3(1, 0, 3), cc.v3(1, 1, 7)]
@@ -254,7 +254,7 @@ export default class Dungeon extends cc.Component {
                     //加载跟随npc
                     let list = new Array().concat(Logic.nonPlayerList)
                     this.scheduleOnce(() => {
-                        this.nonPlayerManager.addNonPlayerListFromSave(this, list, this.player.node.position)
+                        this.nonPlayerManager.addNonPlayerListFromSave(this, list, this.player.node.position, this.player.entity.Transform.z)
                     }, 1)
                     //设置门开关
                     this.setDoors(true, true)

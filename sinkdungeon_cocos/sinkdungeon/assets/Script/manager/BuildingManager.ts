@@ -49,6 +49,8 @@ import EquipItemMapData from '../data/EquipItemMapData'
 import InventoryManager from './InventoryManager'
 import NormalBuilding from '../building/NormalBuilding'
 import Stairs from '../building/Stairs'
+import DecorationWall from '../building/DecorationWall'
+import Ladder from '../building/Ladder'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -76,6 +78,7 @@ export default class BuildingManager extends BaseManager {
     static readonly INTERACTBUILDING = 'InteractBuilding'
     static readonly DECORATIONFLOOR = 'DecorationFloor'
     static readonly DECORATIONOVERHEAD = 'DecorationOverHead'
+    static readonly DECORATIONWALL = 'DecorationWall'
     static readonly DOOR = 'Door'
     static readonly DRYADTWINE = 'DryadTwine'
     static readonly EMPLACEMENT = 'Emplacement'
@@ -85,6 +88,7 @@ export default class BuildingManager extends BaseManager {
     static readonly HITBUILDING = 'HitBuilding'
     static readonly ICEDEMONTHRON = 'IceDemonThron'
     static readonly LIGHTENINGFALL = 'LighteningFall'
+    static readonly LADDER = 'Ladder'
     static readonly MARTCASHIER = 'MartCashier'
     static readonly MARTFRIDGE = 'MartFridge'
     static readonly MARTSHELVES = 'MartShelves'
@@ -119,6 +123,7 @@ export default class BuildingManager extends BaseManager {
     static readonly LAMPTORCH = 'LampTorch'
     static readonly LAMPROAD = 'LampRoad'
     static readonly LAMPFIREFLY = 'LampFireFly'
+    static readonly LAMPEXIT = 'LampExit'
     static readonly LAMPDIRECT = 'LampDirectLight'
     static readonly MUSHROOM01 = 'MushRoom01'
     static readonly MUSHROOM02 = 'MushRoom02'
@@ -403,7 +408,7 @@ export default class BuildingManager extends BaseManager {
                 let pos = Dungeon.getPosInMap(indexPos)
                 let data = new NonPlayerData()
                 data.valueCopy(Logic.nonplayers[NonPlayerManager.SHOP_KEEPER])
-                dungeon.nonPlayerManager.addNonPlayerFromData(data, cc.v3(pos.x - 60, pos.y + 180), dungeon)
+                dungeon.nonPlayerManager.addNonPlayerFromData(data, cc.v3(pos.x - 60, pos.y + 180), 0, dungeon)
             })
         } else if (mapDataStr == 'S7') {
             //生成餐桌
@@ -438,6 +443,14 @@ export default class BuildingManager extends BaseManager {
         } else if (this.isFirstEqual(mapDataStr, 'W')) {
             //生成可破坏装饰 并且根据之前记录的位置放置
             this.addInteractBuilding(mapDataStr, indexPos)
+        } else if (this.isFirstEqual(mapDataStr, 'X')) {
+            Logic.getBuildings(BuildingManager.DECORATIONWALL, (prefab: cc.Prefab) => {
+                let decorationWall = this.addBuilding(prefab, indexPos).getComponent(DecorationWall)
+                decorationWall.node.zIndex = IndexZ.getActorZIndex(decorationWall.node.position.add(cc.v3(0, 120)))
+                decorationWall.init(mapDataStr)
+            })
+        } else if (this.isFirstEqual(mapDataStr, 'Y')) {
+            this.addLadder(mapDataStr, indexPos)
         } else if (this.isFirstEqual(mapDataStr, 'Z')) {
             if (mapDataStr == 'Z0' || mapDataStr == 'Z1') {
                 Logic.getBuildings(BuildingManager.ROOMBED, (prefab: cc.Prefab) => {
@@ -451,6 +464,14 @@ export default class BuildingManager extends BaseManager {
                 this.addFurnitures(dungeon, mapDataStr, indexPos)
             }
         }
+    }
+    private addLadder(mapDataStr: string, indexPos: cc.Vec3) {
+        Logic.getBuildings(BuildingManager.LADDER, (prefab: cc.Prefab) => {
+            let p = this.addBuilding(prefab, indexPos)
+            let ladder = p.getComponent(Ladder)
+            p.zIndex = IndexZ.getActorZIndex(p.position.add(cc.v3(0, 120)))
+            ladder.init(mapDataStr)
+        })
     }
     public addBuildingsFromSideMap(mapDataStr: string, mapData: string[][], indexPos: cc.Vec3, levelData: LevelData) {
         if (this.isFirstEqual(mapDataStr, '#')) {
@@ -729,6 +750,9 @@ export default class BuildingManager extends BaseManager {
                 break
             case 'L11':
                 prefabName = BuildingManager.LAMPFIREFLY
+                break
+            case 'L12':
+                prefabName = BuildingManager.LAMPEXIT
                 break
             case 'LL020':
             case 'LL021':

@@ -44,20 +44,20 @@ export default class NonPlayerManager extends BaseManager {
     clear(): void {
         Utils.clearComponentArray(this.nonplayers)
     }
-    public addNonPlayerListFromSave(dungeon: Dungeon, list: NonPlayerData[], position: cc.Vec3) {
+    public addNonPlayerListFromSave(dungeon: Dungeon, list: NonPlayerData[], position: cc.Vec3, posZ: number) {
         for (let data of list) {
             if (data.isPet || data.lifeTime > 0) {
                 this.getNonPlayer(data, dungeon, (npc: NonPlayer) => {
-                    this.addNonPlayer(npc, position)
+                    this.addNonPlayer(npc, position, posZ)
                 })
             }
         }
     }
     /**添加npc */
-    public addNonPlayerFromData(data: NonPlayerData, pos: cc.Vec3, dungeon: Dungeon) {
+    public addNonPlayerFromData(data: NonPlayerData, pos: cc.Vec3, posZ: number, dungeon: Dungeon) {
         Achievement.addNpcsAchievement(data.resName)
         this.getNonPlayer(data, dungeon, (npc: NonPlayer) => {
-            this.addNonPlayer(npc, pos)
+            this.addNonPlayer(npc, pos, posZ)
         })
     }
 
@@ -67,7 +67,7 @@ export default class NonPlayerManager extends BaseManager {
         }
         return false
     }
-    addPetFromData(data: NonPlayerData, pos: cc.Vec3, dungeon: Dungeon) {
+    addPetFromData(data: NonPlayerData, pos: cc.Vec3, posZ: number, dungeon: Dungeon) {
         let hasPetCount = 0
         for (let p of this.nonPlayerList) {
             if (p.data.isPet > 0) {
@@ -79,15 +79,15 @@ export default class NonPlayerManager extends BaseManager {
         }
         Achievement.addNpcsAchievement(data.resName)
         this.getNonPlayer(data, dungeon, (npc: NonPlayer) => {
-            this.addNonPlayer(npc, pos)
+            this.addNonPlayer(npc, pos, posZ)
         })
     }
 
-    public addNonPlayerFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
+    public addNonPlayerFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3, posZ: number) {
         if (Dungeon.isFirstEqual(mapDataStr, 'n')) {
             let data = new NonPlayerData()
             data.valueCopy(Logic.nonplayers[`nonplayer${mapDataStr.substring(1)}`])
-            this.addNonPlayerFromData(data, Dungeon.getPosInMap(indexPos), dungeon)
+            this.addNonPlayerFromData(data, Dungeon.getPosInMap(indexPos), posZ, dungeon)
         }
     }
     private getNonPlayer(nonPlayerData: NonPlayerData, dungeon: Dungeon, callback: Function): void {
@@ -112,11 +112,14 @@ export default class NonPlayerManager extends BaseManager {
             callback(nonPlayer)
         })
     }
-    private addNonPlayer(nonPlayer: NonPlayer, pos: cc.Vec3) {
+    private addNonPlayer(nonPlayer: NonPlayer, pos: cc.Vec3, posZ: number) {
         //激活
         nonPlayer.node.active = true
         nonPlayer.pos = Dungeon.getIndexInMap(pos)
         nonPlayer.entity.Transform.position = pos
+        if (posZ) {
+            nonPlayer.posZ = posZ
+        }
         this.nonPlayerList.push(nonPlayer)
         if (nonPlayer.data.isPet > 0) {
             this.pet = nonPlayer

@@ -70,6 +70,7 @@ export default class NonPlayer extends PlayActor {
     @property(cc.Vec3)
     pos: cc.Vec3 = cc.v3(0, 0)
     defautPos: cc.Vec3 = cc.v3(0, 0)
+    posZ = 0
     @property(cc.Node)
     root: cc.Node = null
     @property(cc.Node)
@@ -1410,7 +1411,7 @@ export default class NonPlayer extends PlayActor {
                 this.sc.isDashing = false
                 this.dangerBox.finish()
             }
-            if (!other.sensor && other.z < 9999 && self.z < other.z + other.zHeight) {
+            if (!other.sensor && other.z < 9999 && self.z + CCollider.MIN_HEIGHT < other.z + other.zHeight) {
                 this.jump()
             }
         } else if (self.tag == CCollider.TAG.DEFAULT) {
@@ -1472,6 +1473,10 @@ export default class NonPlayer extends PlayActor {
         this.setLinearVelocity(cc.Vec2.ZERO)
         this.entity.NodeRender.node = this.node
         this.entity.NodeRender.root = this.root
+        if (this.posZ != 0) {
+            this.entity.Transform.z = this.posZ
+            this.posZ = 0
+        }
         this.fly()
         let action = cc
             .tween()

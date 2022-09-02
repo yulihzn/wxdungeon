@@ -5,10 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import CCollider from '../collider/CCollider'
 import Dungeon from '../logic/Dungeon'
-import IndexZ from '../utils/IndexZ'
-import Utils from '../utils/Utils'
 import Building from './Building'
 
 const { ccclass, property } = cc._decorator
@@ -19,7 +16,6 @@ export default class Stairs extends Building {
     root: cc.Node = null
     @property(cc.Node)
     wall: cc.Node = null
-    private mat: cc.MaterialVariant
     // LIFE-CYCLE CALLBACKS:
     static readonly TYPE_FRONT = 'V000'
     static readonly TYPE_BEHIND = 'V001'

@@ -98,7 +98,7 @@ export default class ShadowOfSight extends cc.Component {
     /** 绘制视野区域 */
     renderSightArea(camera: cc.Camera): void {
         let pos = this.node.convertToWorldSpaceAR(cc.v2(0, 0))
-        let size = 20
+        let size = this.radius / 10
         let delta = 0.1
         if (this.offset > size) {
             this.offsetPlus = false
@@ -159,6 +159,9 @@ export default class ShadowOfSight extends cc.Component {
             }
         }
         if (this.customCollider && this.customCollider.type == CCollider.TYPE.RECT && this.customCollider.w > 0 && this.customCollider.h > 0) {
+            if (this.customCollider.points.length < 1) {
+                this.customCollider.fixCenterAndScale()
+            }
             for (let i = 0; i < this.customCollider.points.length; i++) {
                 let p = this.node.convertToNodeSpaceAR(this.customCollider.points[i])
                 this.lightVertsArray.push(this.customCollider.points[i])

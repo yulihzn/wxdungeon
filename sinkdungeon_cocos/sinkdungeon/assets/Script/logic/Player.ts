@@ -548,8 +548,7 @@ export default class Player extends PlayActor {
     changeZIndex() {
         let offsetY = this.entity.Transform.base
         if (offsetY > 0) {
-            //一格是128 128/16
-            offsetY = offsetY * 8
+            offsetY += 500
         }
         this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.node.position.x, this.node.position.y - offsetY))
     }

@@ -163,7 +163,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
                 this.tempColliders.set(`${collider.id}${other.id}`, true)
             }
             if (!collider.sensor && collider.baseChangedCount < 1) {
-                collider.entity.Transform.base = 0
+                collider.entity.Transform.base = collider.entity.Transform.fixBase
             }
         }
         this.quadTree.clear()

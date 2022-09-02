@@ -23,6 +23,8 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class ExitDoor extends Building {
+    @property(cc.Node)
+    root: cc.Node = null
     isOpen: boolean = false
     isDoor: boolean = true
     bgSprite: cc.Sprite = null
@@ -63,15 +65,16 @@ export default class ExitDoor extends Building {
             this.entity.Transform.position = Dungeon.getPosInMap(indexPos)
             this.node.position = this.entity.Transform.position.clone()
         }
+        this.root.y = this.exitData.fromZ
         let label = this.roof.getComponentInChildren(cc.Label)
         label.string = `-${Logic.worldLoader.getLevelData(this.exitData.toChapter, this.exitData.toLevel).name}`
     }
     onLoad() {
-        this.spriteNode = this.node.getChildByName('sprite')
-        this.bgSprite = this.node.getChildByName('sprite').getChildByName('exitbg').getComponent(cc.Sprite)
-        this.closeSprite = this.node.getChildByName('sprite').getChildByName('exitopen').getComponent(cc.Sprite)
-        this.openSprite = this.node.getChildByName('sprite').getChildByName('exitclose').getComponent(cc.Sprite)
-        this.roof = this.node.getChildByName('roof').getComponent(cc.Sprite)
+        this.spriteNode = this.root.getChildByName('sprite')
+        this.bgSprite = this.root.getChildByName('sprite').getChildByName('exitbg').getComponent(cc.Sprite)
+        this.closeSprite = this.root.getChildByName('sprite').getChildByName('exitopen').getComponent(cc.Sprite)
+        this.openSprite = this.root.getChildByName('sprite').getChildByName('exitclose').getComponent(cc.Sprite)
+        this.roof = this.root.getChildByName('roof').getComponent(cc.Sprite)
         this.openSprite.node.zIndex = IndexZ.FLOOR
         this.closeSprite.node.zIndex = IndexZ.ACTOR
     }
@@ -110,7 +113,7 @@ export default class ExitDoor extends Building {
         }
         this.roof.spriteFrame = spriteframe
         this.roof.node.parent = this.node.parent
-        let p = this.node.convertToWorldSpaceAR(cc.v3(0, 128 + this.exitData.fromZ))
+        let p = this.node.convertToWorldSpaceAR(cc.v3(0, 128))
         this.roof.node.position = this.roof.node.parent.convertToNodeSpaceAR(p)
         this.roof.node.zIndex = IndexZ.OVERHEAD
         this.roof.node.opacity = 255

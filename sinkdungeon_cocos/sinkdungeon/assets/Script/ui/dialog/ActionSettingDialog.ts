@@ -105,7 +105,6 @@ export default class ActionSettingDialog extends BaseDialog {
 
     show() {
         super.show()
-        this.setAllPos()
     }
     private setAllPos() {
         this.attack.position = this.getSettingsButtonPos(Logic.settings.buttonPosAttack)

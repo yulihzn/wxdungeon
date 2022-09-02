@@ -546,12 +546,12 @@ export default class MeleeWeapon extends BaseColliderComponent {
             this.rotateCollider(this.hv)
         }
         this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 5)
-        let z = this.player.Root.y
-        this.node.y = -z
-        if (this.spriteNode) {
-            let zpos = this.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO)
-            this.spriteNode.position = this.node.convertToNodeSpaceAR(zpos)
-        }
+        // let z = this.player.Root.y
+        // this.node.y = -z
+        // if (this.spriteNode) {
+        //     let zpos = this.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO)
+        //     this.spriteNode.position = this.node.convertToNodeSpaceAR(zpos)
+        // }
     }
 
     protected rotateCollider(direction: cc.Vec2) {

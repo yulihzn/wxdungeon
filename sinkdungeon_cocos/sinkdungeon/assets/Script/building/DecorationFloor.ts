@@ -21,6 +21,7 @@ export default class DecorationFloor extends Building {
     dungeon: Dungeon
     originPos: cc.Vec3
     init(dungeon: Dungeon, resName: string, scale: number, angle?: number, parallexLevel?: number, anchor?: cc.Vec3, opacity?: number, zIndex?: number) {
+        this.entity.destroy()
         this.dungeon = dungeon
         this.parallexLevel = parallexLevel ?? 0
         if (zIndex) {
@@ -37,11 +38,11 @@ export default class DecorationFloor extends Building {
         this.node.width = sprite.spriteFrame.getOriginalSize().width
         this.node.height = sprite.spriteFrame.getOriginalSize().height
         this.node.opacity = opacity ? opacity : 255
-        this.originPos = this.entity.Transform.position.clone()
+        this.originPos = this.node.position.clone()
     }
     update(dt: number) {
         if (this.dungeon && this.dungeon.player && this.parallexLevel > 0) {
-            let pos = this.dungeon.player.node.position.sub(this.entity.Transform.position)
+            let pos = this.dungeon.player.node.position.sub(this.node.position)
             if (pos.x > this.RANGE) {
                 pos.x = this.RANGE
             }
@@ -55,7 +56,7 @@ export default class DecorationFloor extends Building {
                 pos.y = -this.RANGE
             }
             let p = cc.v3((pos.x / this.RANGE) * Dungeon.TILE_SIZE * this.parallexLevel, ((-pos.y / this.RANGE) * Dungeon.TILE_SIZE * this.parallexLevel) / 2)
-            this.entity.Transform.position = Logic.lerpPos(this.entity.Transform.position, this.originPos.add(p), dt * 5)
+            this.node.position = Logic.lerpPos(this.node.position, this.originPos.add(p), dt * 5)
         }
     }
 }

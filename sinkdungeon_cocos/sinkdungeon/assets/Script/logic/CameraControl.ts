@@ -89,7 +89,7 @@ export default class CameraControl extends cc.Component {
         let targetPos = this.dungeon.node.convertToWorldSpaceAR(this.dungeon.cameraTargetActor.node.position.clone().addSelf(offset))
         let pos = this.node.parent.convertToNodeSpaceAR(targetPos)
         if (this.dungeon.cameraTargetActor.entity) {
-            pos.y += this.dungeon.cameraTargetActor.entity.Transform.z
+            pos.y += this.dungeon.cameraTargetActor.entity.Transform.base
         }
         if (isDirect) {
             this.node.position = pos

@@ -144,6 +144,7 @@ export default class EquipItemTalent extends Talent {
             this.player.weaponRight.meleeWeapon.dungeon.nonPlayerManager.addNonPlayerFromData(
                 data,
                 shadowPlayer ? shadowPlayer.node.position : this.player.node.position,
+                this.player.entity?.Transform.z,
                 this.player.weaponRight.meleeWeapon.dungeon
             )
         }
