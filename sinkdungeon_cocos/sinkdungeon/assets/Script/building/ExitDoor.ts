@@ -43,11 +43,11 @@ export default class ExitDoor extends Building {
         this.type = type
         this.exitData.valueCopy(exitData)
         this.isBackToUpLevel = type == 2 || type == 3
+        let collider = this.node.getComponent(CCollider)
         if (this.type % 2 == 1) {
             this.node.opacity = 0
             this.roof.node.opacity = 0
             let indexPos = this.data.defaultPos.clone()
-            let collider = this.node.getComponent(CCollider)
             collider.setSize(cc.size(128, 128))
             collider.offset = cc.v2(0, 0)
             if (this.dir == 0) {
@@ -66,6 +66,7 @@ export default class ExitDoor extends Building {
             this.node.position = this.entity.Transform.position.clone()
         }
         this.root.y = this.exitData.fromZ
+        this.entity.Transform.z = this.exitData.fromZ
         let label = this.roof.getComponentInChildren(cc.Label)
         label.string = `-${Logic.worldLoader.getLevelData(this.exitData.toChapter, this.exitData.toLevel).name}`
     }
@@ -113,7 +114,7 @@ export default class ExitDoor extends Building {
         }
         this.roof.spriteFrame = spriteframe
         this.roof.node.parent = this.node.parent
-        let p = this.node.convertToWorldSpaceAR(cc.v3(0, 128))
+        let p = this.root.convertToWorldSpaceAR(cc.v3(0, 128))
         this.roof.node.position = this.roof.node.parent.convertToNodeSpaceAR(p)
         this.roof.node.zIndex = IndexZ.OVERHEAD
         this.roof.node.opacity = 255
@@ -121,9 +122,8 @@ export default class ExitDoor extends Building {
             case 0:
                 break
             case 1:
-                this.roof.node.angle = 180
-                this.roof.node.opacity = 128
-                this.roof.node.getChildByName('info').angle = 180
+                // this.roof.node.angle = 180
+                // this.roof.node.getChildByName('info').angle = 180
                 break
             case 2:
                 break

@@ -30,7 +30,7 @@ export default class Ladder extends Building {
         for (let collider of this.ccolliders) {
             collider.zHeight = z
         }
-        this.sprite.node.height = z / 4
+        this.sprite.node.height = z / 4 + 4
     }
 
     // update (dt) {}
@@ -43,14 +43,15 @@ export default class Ladder extends Building {
     onColliderStay(other: CCollider, self: CCollider) {
         if (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER || other.tag == CCollider.TAG.GOODNONPLAYER) {
             let y = other.entity.Move.linearVelocity.y
-            other.entity.Move.gravity = MoveComponent.DEFAULT_GRAVITY / 8
             if (y > 0) {
+                other.entity.Move.gravity = MoveComponent.DEFAULT_GRAVITY
                 // other.entity.Transform.fixBase = other.entity.Transform.z - 1
                 other.entity.Move.linearVelocity.y = 0
-                if (other.entity.Move.linearVelocityZ < 3) {
-                    other.entity.Move.linearVelocityZ = 3
+                if (other.entity.Move.linearVelocityZ < 5) {
+                    other.entity.Move.linearVelocityZ = 5
                 }
             } else {
+                other.entity.Move.gravity = MoveComponent.DEFAULT_GRAVITY / 8
                 // other.entity.Transform.fixBase = 0
             }
         }

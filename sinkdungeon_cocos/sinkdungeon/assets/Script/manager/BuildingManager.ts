@@ -673,6 +673,8 @@ export default class BuildingManager extends BaseManager {
                     df.init(dungeon, 'exitarrow', 4, -45)
                 } else if (mapDataStr == '+5') {
                     df.init(dungeon, 'floor_final', 4)
+                } else if (mapDataStr == '+6') {
+                    df.init(dungeon, 'floor_ladder', 4)
                 } else if (mapDataStr == '++0') {
                     df.init(dungeon, 'roomoutside0', 32, 0, 1, cc.v3(0.7, 0.5), 255, IndexZ.BASE)
                 } else if (mapDataStr == '++1') {
@@ -710,6 +712,7 @@ export default class BuildingManager extends BaseManager {
         let isOverHead = false
         let isRect = false
         let isCustom = false
+        let isAttachTop = false
         switch (mapDataStr) {
             case 'L0':
                 prefabName = BuildingManager.LAMPOVALLIGHT
@@ -753,6 +756,7 @@ export default class BuildingManager extends BaseManager {
                 break
             case 'L12':
                 prefabName = BuildingManager.LAMPEXIT
+                isAttachTop = true
                 break
             case 'LL020':
             case 'LL021':
@@ -792,6 +796,9 @@ export default class BuildingManager extends BaseManager {
             let node = this.addBuilding(prefab, indexPos)
             if (isOverHead) {
                 node.zIndex = IndexZ.OVERHEAD + 100
+            }
+            if (isAttachTop) {
+                node.zIndex = IndexZ.getActorZIndex(node.position.add(cc.v3(0, 120)))
             }
             if (isCustom) {
                 let b = node.getComponent(Building)
