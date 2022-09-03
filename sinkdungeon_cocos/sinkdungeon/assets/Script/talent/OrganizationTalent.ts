@@ -140,7 +140,7 @@ export default class OrganizationTalent extends Talent {
                 data.Common.damageMin += Logic.playerData.OilGoldData.level
                 data.Common.remoteDamage += Logic.playerData.OilGoldData.level
                 data.Common.defence += Logic.playerData.OilGoldData.level
-                this.player.dungeon.nonPlayerManager.addPetFromData(data, this.player.node.position, this.player.dungeon)
+                this.player.dungeon.nonPlayerManager.addPetFromData(data, this.player.node.position, this.player.entity?.Transform.z, this.player.dungeon)
                 AudioPlayer.play(data.specialAudio)
                 Utils.toast(`你召唤了宠物${data.nameCn}：血量上限为${data.Common.maxHealth}，攻击力为${data.getAttackPoint().getTotalDamage()}`, false, true)
             }
