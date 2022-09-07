@@ -35,9 +35,9 @@ export default class CoinCount extends cc.Component {
         let c = parseInt(value)
         Logic.coins += c
         if (c > 0) {
-            Logic.coinDreamCount += c
-            if (Logic.coinDreamCount >= 1) {
-                Logic.coinDreamCount = 0
+            Logic.coinCounts += c
+            if (Logic.coinCounts >= 1) {
+                Logic.coinCounts = 0
                 EventHelper.emit(EventHelper.PLAYER_USEDREAM, { value: -1 })
             }
         }

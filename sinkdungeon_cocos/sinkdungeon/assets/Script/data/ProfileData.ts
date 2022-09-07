@@ -43,4 +43,7 @@ export default class ProfileData {
     groundOilGoldData: GroundOilGoldData = new GroundOilGoldData()
     oilGolds = 0
     killPlayerCounts: { [key: number]: number } = {} //玩家怪物击杀表
+    coins = 0 //梦境里的金币
+    coinCounts = 0
+    lastSaveTime = 0 //最近游玩时间
 }

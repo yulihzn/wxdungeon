@@ -18,14 +18,17 @@ const { ccclass, property } = cc._decorator
 export default class LocalStorage {
     public static SAVE_NAME = 'SINKDUNGEON_SAVE'
     public static SAVE_DUNGEON = 'SAVE_DUNGEON'
+    //成就
     public static KEY_ACHIEVEMENT = 'KEY_ACHIEVEMENT'
+    //系统设置
     public static KEY_SYSTEM_SETTINGS = 'KEY_SYSTEM_SETTINGS'
-    public static KEY_COIN = 'KEY_COIN'
-    public static KEY_COIN_DREAM_COUNT = 'KEY_DREAM_COIN_COUNT'
+    //现实货币，所有存档通用
+    public static KEY_REAL_COINS = 'KEY_REAL_COINS'
+    //已购家具
     public static KEY_FURNITURES = 'KEY_FURNITURES'
     public static VAULE_OPEN = '1'
+    //最近存档
     public static KEY_LAST_SAVE_SLOT = 'KEY_LAST_SAVE_SLOT'
-    static DEFAULT_MAP = { KEY_SWITCH_SHOW_SHADOW: 1, KEY_SWITCH_SHOW_GAMEPAD: 0, KEY_SWITCH_SHOW_EQUIPDIALOG: 0, KEY_SWITCH_LOW_POWER: 0, KEY_LAST_SAVE_SLOT: 0 }
 
     static getValue(key: string): string {
         return cc.sys.localStorage.getItem(key)
@@ -105,7 +108,10 @@ export default class LocalStorage {
 
     static getLastSaveSlotKey() {
         let v = LocalStorage.getValueFromData(LocalStorage.KEY_LAST_SAVE_SLOT)
-        let num = v || v == 0 ? parseInt(v) : LocalStorage.DEFAULT_MAP[LocalStorage.KEY_LAST_SAVE_SLOT]
+        let num = parseInt(v)
+        if (isNaN(num)) {
+            num = 0
+        }
         return num
     }
     static setLastSaveSlotKey(slot: number) {

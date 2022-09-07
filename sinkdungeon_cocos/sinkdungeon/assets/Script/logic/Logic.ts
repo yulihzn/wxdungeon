@@ -99,10 +99,11 @@ export default class Logic extends cc.Component {
     static inventoryManager: InventoryManager = new InventoryManager()
     static mapManager: MapManager = new MapManager()
     static worldLoader: WorldLoader = new WorldLoader()
+    static realCoins = 0 //真实货币
     static coins = 0 //金币
     static oilGolds = 0 //油金
     static killCount = 0 //杀敌数
-    static coinDreamCount = 0 //金币累加数
+    static coinCounts = 0 //金币累加数
     static time = '00:00:00'
     static realTime = 1559145600000
     static seed = 5
@@ -184,9 +185,11 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.groundOilGoldData = Logic.groundOilGoldData.clone()
         Logic.profileManager.data.killPlayerCounts = Logic.killPlayerCounts
         Logic.profileManager.data.oilGolds = Logic.oilGolds
+        Logic.profileManager.data.coins = Logic.coins
+        Logic.profileManager.data.coinCounts = Logic.coinCounts
+        Logic.profileManager.data.lastSaveTime = new Date().getTime()
         Logic.profileManager.saveData()
-        LocalStorage.saveData(LocalStorage.KEY_COIN, Logic.coins)
-        LocalStorage.saveData(LocalStorage.KEY_COIN_DREAM_COUNT, Logic.coinDreamCount)
+        LocalStorage.saveData(LocalStorage.KEY_REAL_COINS, Logic.realCoins)
         Logic.inventoryManager.furnitureMap.forEach(value => {
             LocalStorage.saveFurnitureData(value)
         })
@@ -227,15 +230,15 @@ export default class Logic extends cc.Component {
         Dungeon.WIDTH_SIZE = 15
         Dungeon.HEIGHT_SIZE = 9
         //加载金币
-        let c = LocalStorage.getValueFromData(LocalStorage.KEY_COIN)
-        Logic.coins = c ? parseInt(c) : 0
-        let c1 = LocalStorage.getValueFromData(LocalStorage.KEY_COIN_DREAM_COUNT)
-        Logic.coinDreamCount = c1 ? parseInt(c1) : 0
+        Logic.coins = Logic.profileManager.data.coins
+        Logic.coinCounts = Logic.profileManager.data.coinCounts
+        let c = LocalStorage.getValueFromData(LocalStorage.KEY_REAL_COINS)
+        Logic.realCoins = c ? parseInt(c) : 0
         //重置bgm
         Logic.lastBgmIndex = 0
         //加载怪物击杀玩家数据
         Logic.killPlayerCounts = Logic.profileManager.data.killPlayerCounts
-        Logic.updateOilGoldCount()
+        Logic.playerData.OilGoldData.valueCopy(Logic.getOilGoldData(Logic.oilGolds))
     }
     static resetInventoryAndOtherData() {
         Logic.inventoryManager = new InventoryManager()
@@ -265,8 +268,8 @@ export default class Logic extends cc.Component {
             }
         }
     }
-    static updateOilGoldCount() {
-        let value = Logic.oilGolds
+    static getOilGoldData(oilGolds: number) {
+        let value = oilGolds
         let data = new OilGoldData()
         for (let i = 0; i < Logic.OIL_GOLD_LIST.length; i++) {
             let offset = value - Logic.OIL_GOLD_LIST[i]
@@ -283,7 +286,7 @@ export default class Logic extends cc.Component {
         data.Common.maxHealth = data.level
         data.Common.maxDream = data.level
         data.Common.remoteDamage = data.level * 0.1
-        Logic.playerData.OilGoldData.valueCopy(data)
+        return data
     }
 
     static changeDungeonSize() {

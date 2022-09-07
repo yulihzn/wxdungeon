@@ -48,7 +48,7 @@ export default class OilGoldCount extends cc.Component {
         }
         Logic.oilGolds += parseInt(value)
         let gemIndex = Logic.playerData.OilGoldData.index
-        Logic.updateOilGoldCount()
+        Logic.playerData.OilGoldData.valueCopy(Logic.getOilGoldData(Logic.oilGolds))
         if (gemIndex < Logic.playerData.OilGoldData.index) {
             AudioPlayer.play(AudioPlayer.LEVELUP)
         }

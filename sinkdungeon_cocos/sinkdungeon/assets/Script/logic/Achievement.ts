@@ -82,7 +82,7 @@ export default class Achievement extends cc.Component {
             this.lifesLabel.string = `DIED ${this.data.playerLifes}`
         }
         if (this.coinLabel) {
-            let c = LocalStorage.getValueFromData(LocalStorage.KEY_COIN)
+            let c = LocalStorage.getValueFromData(LocalStorage.KEY_REAL_COINS)
             this.coinLabel.string = `${c ? parseInt(c) : 0}`
         }
         if (this.achievementItemDialog) {

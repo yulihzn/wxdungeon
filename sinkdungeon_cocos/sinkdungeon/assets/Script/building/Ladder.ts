@@ -51,7 +51,7 @@ export default class Ladder extends Building {
                     other.entity.Move.linearVelocityZ = 5
                 }
             } else {
-                other.entity.Move.gravity = MoveComponent.DEFAULT_GRAVITY / 8
+                other.entity.Move.gravity = MoveComponent.DEFAULT_GRAVITY / 5
                 // other.entity.Transform.fixBase = 0
             }
         }

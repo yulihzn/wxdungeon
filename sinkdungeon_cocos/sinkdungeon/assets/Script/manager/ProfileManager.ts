@@ -1,5 +1,6 @@
 import ProfileData from '../data/ProfileData'
 import RectDungeon from '../rect/RectDungeon'
+import DataUtils from '../utils/DataUtils'
 import LocalStorage from '../utils/LocalStorage'
 
 // Learn TypeScript:
@@ -28,8 +29,8 @@ export default class ProfileManager {
         this.loadProfile()
     }
 
-    private getSaveData(slot: number): ProfileData {
-        let str = slot ? `${slot}` : ''
+    static getSaveData(slot: number): ProfileData {
+        let str = `${slot}`
         let s = LocalStorage.getValue(LocalStorage.SAVE_DUNGEON + str)
         if (s) {
             return JSON.parse(s)
@@ -37,7 +38,7 @@ export default class ProfileManager {
         return null
     }
     saveData() {
-        LocalStorage.putValue(LocalStorage.SAVE_DUNGEON, this.data)
+        LocalStorage.putValue(LocalStorage.SAVE_DUNGEON + LocalStorage.getLastSaveSlotKey(), this.data)
         this.hasSaveData = true
         console.log('save data')
     }
@@ -49,7 +50,7 @@ export default class ProfileManager {
     }
 
     loadProfile(): boolean {
-        let data = this.getSaveData(LocalStorage.getLastSaveSlotKey())
+        let data = ProfileManager.getSaveData(LocalStorage.getLastSaveSlotKey())
         if (!data) {
             this.hasSaveData = false
             return false
@@ -60,17 +61,18 @@ export default class ProfileManager {
         }
         //清空当前数据
         this.data = new ProfileData()
+        DataUtils.baseCopy(this.data, data)
         this.hasSaveData = true
         //玩家数据
         this.data.playerData.valueCopy(data.playerData)
         //章节名称
-        this.data.chapterIndex = data.chapterIndex
-        this.data.chapterMaxIndex = data.chapterMaxIndex
-        this.data.level = data.level
+        // this.data.chapterIndex = data.chapterIndex
+        // this.data.chapterMaxIndex = data.chapterMaxIndex
+        // this.data.level = data.level
         //存档点
         this.data.savePointData.valueCopy(data.savePointData)
         //掉落翠金
-        this.data.oilGolds = data.oilGolds ? data.oilGolds : 0
+        // this.data.oilGolds = data.oilGolds ? data.oilGolds : 0
         this.data.groundOilGoldData.valueCopy(data.groundOilGoldData)
         //玩家装备列表
         for (let key in data.playerEquips) {
@@ -120,12 +122,15 @@ export default class ProfileManager {
         }
 
         //加载时间
-        if (data.time) {
-            this.data.time = data.time
-        }
-        if (data.realTime) {
-            this.data.realTime = data.realTime
-        }
+        // if (data.time) {
+        //     this.data.time = data.time
+        // }
+        // if (data.realTime) {
+        //     this.data.realTime = data.realTime
+        // }
+        // if (data.coins) {
+        //     this.data.coins = data.coins
+        // }
         console.log('data', this)
         return true
     }
