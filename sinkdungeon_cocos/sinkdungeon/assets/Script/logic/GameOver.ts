@@ -99,9 +99,5 @@ export default class GameOver extends cc.Component {
         AudioPlayer.play(AudioPlayer.SELECT)
         cc.director.loadScene('start')
     }
-    resetWorld() {
-        AudioPlayer.play(AudioPlayer.SELECT)
-        cc.director.loadScene('start')
-        Logic.profileManager.clearData()
-    }
+    resetWorld() {}
 }

@@ -23,6 +23,8 @@ import LoadingIcon from './LoadingIcon'
 import Utils from '../utils/Utils'
 import EquipmentData from '../data/EquipmentData'
 import CursorArea from './CursorArea'
+import LocalStorage from '../utils/LocalStorage'
+import ProfileManager from '../manager/ProfileManager'
 
 const { ccclass, property } = cc._decorator
 
@@ -347,7 +349,7 @@ export default class PickAvatar extends cc.Component {
             return
         }
         //清除存档
-        Logic.profileManager.clearData()
+        ProfileManager.clearData(Logic.jumpSlotIndex)
         //重置数据
         Logic.resetData(Logic.jumpChapter)
         Logic.jumpChapter = 0

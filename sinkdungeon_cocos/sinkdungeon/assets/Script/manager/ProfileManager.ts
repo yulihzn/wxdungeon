@@ -21,36 +21,32 @@ const { ccclass, property } = cc._decorator
 export default class ProfileManager {
     data: ProfileData = new ProfileData()
     hasSaveData: boolean = false
-    constructor() {
-        this.loadData()
-    }
-    private loadData() {
+    constructor() {}
+    loadData(slotIndex: number) {
         //读取存档
-        this.loadProfile()
+        this.loadProfile(slotIndex)
     }
 
     static getSaveData(slot: number): ProfileData {
         let str = `${slot}`
         let s = LocalStorage.getValue(LocalStorage.SAVE_DUNGEON + str)
-        if (s) {
+        if (s && s.length > 0) {
             return JSON.parse(s)
         }
         return null
     }
-    saveData() {
-        LocalStorage.putValue(LocalStorage.SAVE_DUNGEON + LocalStorage.getLastSaveSlotKey(), this.data)
+    saveData(slotIndex: number) {
+        LocalStorage.putValue(LocalStorage.SAVE_DUNGEON + slotIndex, this.data)
         this.hasSaveData = true
         console.log('save data')
     }
-    clearData() {
-        cc.sys.localStorage.setItem(LocalStorage.SAVE_DUNGEON, '')
-        this.hasSaveData = false
-        this.data = new ProfileData()
-        console.log('clear data')
+    static clearData(slotIndex: number) {
+        LocalStorage.putValue(LocalStorage.SAVE_DUNGEON + slotIndex, null)
+        console.log('clear data' + LocalStorage.SAVE_DUNGEON + slotIndex)
     }
 
-    loadProfile(): boolean {
-        let data = ProfileManager.getSaveData(LocalStorage.getLastSaveSlotKey())
+    loadProfile(slotIndex: number): boolean {
+        let data = ProfileManager.getSaveData(slotIndex)
         if (!data) {
             this.hasSaveData = false
             return false

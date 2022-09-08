@@ -1083,8 +1083,6 @@ export default class Player extends PlayActor {
         this.weaponLeft.node.opacity = 0
         this.weaponRight.node.opacity = 0
         Logic.dieFrom.valueCopy(from)
-        Logic.setKillPlayerCounts(from, true)
-        Logic.saveData()
         this.scheduleOnce(() => {
             cc.audioEngine.stopMusic()
             cc.director.loadScene('gameover')

@@ -110,6 +110,7 @@ export default class Logic extends cc.Component {
     static isFirst = 1
     static isFirstLoading = true
     static jumpChapter = 0
+    static jumpSlotIndex = 0
     static shipTransportScene = 0
     static elevatorScene = 0
     static isCheatMode = false //作弊
@@ -188,14 +189,16 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.coins = Logic.coins
         Logic.profileManager.data.coinCounts = Logic.coinCounts
         Logic.profileManager.data.lastSaveTime = new Date().getTime()
-        Logic.profileManager.saveData()
+        Logic.profileManager.saveData(Logic.jumpSlotIndex)
         LocalStorage.saveData(LocalStorage.KEY_REAL_COINS, Logic.realCoins)
+        LocalStorage.setLastSaveSlotKey(Logic.jumpSlotIndex)
         Logic.inventoryManager.furnitureMap.forEach(value => {
             LocalStorage.saveFurnitureData(value)
         })
     }
     static resetData(chapter?: number) {
         Logic.profileManager = new ProfileManager()
+        Logic.profileManager.loadData(Logic.jumpSlotIndex)
         //重置时间
         Logic.time = Logic.profileManager.data.time
         Logic.realTime = Logic.profileManager.data.realTime

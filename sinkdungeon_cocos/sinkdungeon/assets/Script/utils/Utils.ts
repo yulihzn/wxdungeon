@@ -43,7 +43,19 @@ export default class Utils {
         let angle = (cc.v2(1, 0).signAngle(cc.v2(direction.normalize())) * 180) / Math.PI
         return isFlip ? -angle : angle
     }
-
+    static getFullFormatTime(time: number) {
+        let date = new Date(time)
+        let y = date.getFullYear()
+        let mo = date.getMonth() + 1
+        let d = date.getDate()
+        let h = date.getHours() + 1
+        if (h > 23) {
+            h = 0
+        }
+        let m = date.getMinutes()
+        let s = date.getSeconds()
+        return `${Utils.getNumberStr2(y)}/${Utils.getNumberStr2(mo)}/${Utils.getNumberStr2(d)} ${Utils.getNumberStr2(h)}:${Utils.getNumberStr2(m)}:${Utils.getNumberStr2(s)}`
+    }
     static getDay(time: number) {
         let date = new Date(time)
         let m = date.getMonth() + 1

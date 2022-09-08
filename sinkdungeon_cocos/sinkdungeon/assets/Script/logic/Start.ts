@@ -3,6 +3,8 @@ import AudioPlayer from '../utils/AudioPlayer'
 import NoticeDialog from '../ui/dialog/NoticeDialog'
 import StartBackground from '../ui/StartBackground'
 import CursorArea from '../ui/CursorArea'
+import SaveSlotDialog from '../ui/dialog/SaveSlotDialog'
+import LocalStorage from '../utils/LocalStorage'
 
 const { ccclass, property } = cc._decorator
 
@@ -30,6 +32,8 @@ export default class Start extends cc.Component {
     startBg: StartBackground = null
     @property(cc.Prefab)
     cursorAreaPrefab: cc.Prefab = null
+    @property(SaveSlotDialog)
+    saveSlotDialog: SaveSlotDialog = null
     cheatClickCount = 0
     debugClickCount = 0
     tourClickCount = 0
@@ -38,11 +42,29 @@ export default class Start extends cc.Component {
         this.cheatButton.opacity = Logic.isCheatMode ? 255 : 0
         this.debugButton.opacity = Logic.isDebug ? 255 : 0
         this.noticeDialog.node.active = false
+        this.saveSlotDialog.node.active = false
+        this.saveSlotDialog.onItemSelectListener((slotIndex: number) => {
+            this._startShow()
+            this.scheduleOnce(() => {
+                Logic.jumpSlotIndex = slotIndex
+                Logic.resetData(slotIndex)
+                if (Logic.profileManager.hasSaveData) {
+                    this.scheduleOnce(() => {
+                        cc.director.loadScene('loading')
+                    }, 0.5)
+                } else {
+                    Logic.jumpSlotIndex = slotIndex
+                    cc.director.loadScene('pickavatar')
+                }
+            }, 0.5)
+        })
     }
 
     start() {
         // init logic
         if (this.continueButton) {
+            Logic.jumpSlotIndex = LocalStorage.getLastSaveSlotKey()
+            Logic.resetData()
             this.continueButton.active = Logic.profileManager.hasSaveData
             if (this.continueButton.active) {
                 this.scheduleOnce(() => {
@@ -72,11 +94,9 @@ export default class Start extends cc.Component {
         AudioPlayer.play(AudioPlayer.SELECT)
         // cc.director.loadScene('loading');
         //进入选择页面
-        this._startShow()
-        this.scheduleOnce(() => {
-            cc.director.loadScene('pickavatar')
-        }, 0.5)
+        this.saveSlotDialog.show()
     }
+
     chooseChapter() {
         AudioPlayer.play(AudioPlayer.SELECT)
         cc.director.loadScene('chapter')
@@ -89,7 +109,8 @@ export default class Start extends cc.Component {
         }, 0.5)
     }
     continueGame() {
-        Logic.resetData()
+        Logic.jumpSlotIndex = LocalStorage.getLastSaveSlotKey()
+        Logic.resetData(LocalStorage.getLastSaveSlotKey())
         Logic.isFirst = 1
         AudioPlayer.play(AudioPlayer.SELECT)
         this._startShow()

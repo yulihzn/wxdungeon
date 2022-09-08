@@ -3,6 +3,7 @@ import RectDungeon from '../rect/RectDungeon'
 import AudioPlayer from '../utils/AudioPlayer'
 import StartBackground from '../ui/StartBackground'
 import CursorArea from '../ui/CursorArea'
+import LocalStorage from '../utils/LocalStorage'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,7 +42,7 @@ export default class Chapter extends cc.Component {
 
     clickChapter(event, chapter: string) {
         if (chapter) {
-            Logic.profileManager.clearData()
+            Logic.jumpSlotIndex = LocalStorage.getLastSaveSlotKey()
             Logic.jumpChapter = parseInt(chapter)
             AudioPlayer.play(AudioPlayer.SELECT)
             let bg = this.getComponentInChildren(StartBackground)
