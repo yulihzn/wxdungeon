@@ -91,6 +91,7 @@ export default class GameOver extends cc.Component {
         }
     }
     retry() {
+        Logic.saveData()
         Logic.resetData()
         AudioPlayer.play(AudioPlayer.SELECT)
         Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level))

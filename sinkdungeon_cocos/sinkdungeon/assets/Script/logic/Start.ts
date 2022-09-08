@@ -47,7 +47,7 @@ export default class Start extends cc.Component {
             this._startShow()
             this.scheduleOnce(() => {
                 Logic.jumpSlotIndex = slotIndex
-                Logic.resetData(slotIndex)
+                Logic.resetData()
                 if (Logic.profileManager.hasSaveData) {
                     this.scheduleOnce(() => {
                         cc.director.loadScene('loading')
@@ -110,7 +110,7 @@ export default class Start extends cc.Component {
     }
     continueGame() {
         Logic.jumpSlotIndex = LocalStorage.getLastSaveSlotKey()
-        Logic.resetData(LocalStorage.getLastSaveSlotKey())
+        Logic.resetData()
         Logic.isFirst = 1
         AudioPlayer.play(AudioPlayer.SELECT)
         this._startShow()

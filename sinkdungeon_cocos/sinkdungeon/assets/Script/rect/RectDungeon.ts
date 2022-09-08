@@ -4,7 +4,6 @@ import RoomType from './RoomType'
 import BuildingData from '../data/BuildingData'
 import EquipmentData from '../data/EquipmentData'
 import ItemData from '../data/ItemData'
-import EquipItemMapData from '../data/EquipItemMapData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

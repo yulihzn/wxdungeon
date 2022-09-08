@@ -333,9 +333,10 @@ export default class Logic extends cc.Component {
             groundOilGoldData.chapter = Logic.chapterIndex
             groundOilGoldData.value = value
         }
+        //先重置数据，再保存翠金数据
+        Logic.resetData()
+        Logic.mapManager.rectDungeon.currentPos = Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id].currentPos.clone()
         Logic.groundOilGoldData.valueCopy(groundOilGoldData)
-        //保存数据
-        Logic.saveData()
     }
     static loadingNextRoom(dir: number) {
         Logic.mapManager.rand4save = null
