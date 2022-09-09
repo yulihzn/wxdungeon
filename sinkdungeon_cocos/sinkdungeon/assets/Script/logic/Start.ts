@@ -5,6 +5,7 @@ import StartBackground from '../ui/StartBackground'
 import CursorArea from '../ui/CursorArea'
 import SaveSlotDialog from '../ui/dialog/SaveSlotDialog'
 import LocalStorage from '../utils/LocalStorage'
+import ExitData from '../data/ExitData'
 
 const { ccclass, property } = cc._decorator
 
@@ -50,7 +51,7 @@ export default class Start extends cc.Component {
                 Logic.resetData()
                 if (Logic.profileManager.hasSaveData) {
                     this.scheduleOnce(() => {
-                        cc.director.loadScene('loading')
+                        Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level))
                     }, 0.5)
                 } else {
                     Logic.jumpSlotIndex = slotIndex
@@ -86,13 +87,7 @@ export default class Start extends cc.Component {
         cc.tween(this.noticeButton).to(0.5, { opacity: 0 }).start()
     }
     startGame() {
-        // //清除存档
-        // Logic.profileManager.clearData();
-        // //重置数据
-        // Logic.resetData();
-        // //加载资源
         AudioPlayer.play(AudioPlayer.SELECT)
-        // cc.director.loadScene('loading');
         //进入选择页面
         this.saveSlotDialog.show()
     }
@@ -115,7 +110,7 @@ export default class Start extends cc.Component {
         AudioPlayer.play(AudioPlayer.SELECT)
         this._startShow()
         this.scheduleOnce(() => {
-            cc.director.loadScene('loading')
+            Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level))
         }, 0.5)
     }
     cheatModeChange() {

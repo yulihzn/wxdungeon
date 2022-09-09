@@ -55,7 +55,6 @@ export default class Loading extends cc.Component {
     start() {
         //加载地图，装备，贴图，敌人，状态，子弹，物品资源,建筑预制
         LoadingManager.loadAllBundle(LoadingManager.ALL_BUNDLES, () => {
-            this.loadingManager.loadWorld()
             this.loadingManager.loadEquipment()
             this.loadingManager.loadAutoSpriteFrames()
             this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor')
@@ -130,7 +129,6 @@ export default class Loading extends cc.Component {
     }
     update(dt) {
         this.timeDelay += dt
-        this.loadingManager.isWorldLoaded = Logic.worldLoader.isloaded
         this.showCut()
         this.showTransport()
         // this.showElevator()
@@ -145,7 +143,7 @@ export default class Loading extends cc.Component {
             this.loadingManager.isBulletsLoaded &&
             this.loadingManager.isItemsLoaded &&
             this.loadingManager.isSkillsLoaded &&
-            this.loadingManager.isWorldLoaded &&
+            Logic.mapManager.isloaded &&
             this.loadingManager.isSuitsLoaded &&
             this.loadingManager.isFurnituresLoaded &&
             this.loadingManager.isSoundLoaded &&
@@ -161,7 +159,6 @@ export default class Loading extends cc.Component {
             this.isTransportAnimFinished = false
             this.isElevatorAnimFinished = false
             this.loadingManager.reset()
-            Logic.mapManager.loadMap()
             cc.director.loadScene('game')
         }
     }

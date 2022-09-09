@@ -104,7 +104,7 @@ export default class Logic extends cc.Component {
     static oilGolds = 0 //油金
     static killCount = 0 //杀敌数
     static coinCounts = 0 //金币累加数
-    static time = '00:00:00'
+    static totalTime = 0
     static realTime = 1559145600000
     static seed = 5
     static isFirst = 1
@@ -118,7 +118,6 @@ export default class Logic extends cc.Component {
     static isTour = false //游览
     static isGamePause = false
     static dieFrom: FromData = new FromData()
-    static isMapReset = false
     static lastBgmIndex = 1
     static savePoinitData: SavePointData = new SavePointData()
     static groundOilGoldData: GroundOilGoldData = new GroundOilGoldData()
@@ -180,7 +179,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.level = Logic.level
         Logic.profileManager.data.chapterIndex = Logic.chapterIndex
         Logic.profileManager.data.chapterMaxIndex = Logic.chapterMaxIndex
-        Logic.profileManager.data.time = Logic.time
+        Logic.profileManager.data.totalTime = Logic.totalTime
         Logic.profileManager.data.realTime = Logic.realTime
         Logic.profileManager.data.savePointData = Logic.savePoinitData.clone()
         Logic.profileManager.data.groundOilGoldData = Logic.groundOilGoldData.clone()
@@ -200,7 +199,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager = new ProfileManager()
         Logic.profileManager.loadData(Logic.jumpSlotIndex)
         //重置时间
-        Logic.time = Logic.profileManager.data.time
+        Logic.totalTime = Logic.profileManager.data.totalTime
         Logic.realTime = Logic.profileManager.data.realTime
         //加载章节名
         Logic.profileManager.data.chapterIndex = chapter ? chapter : Logic.profileManager.data.chapterIndex
@@ -227,8 +226,6 @@ export default class Logic extends cc.Component {
         }
         //加载背包和装备
         Logic.resetInventoryAndOtherData()
-        //设置地图重置状态在loading完成处理地图
-        Logic.isMapReset = true
         //重置地牢宽高
         Dungeon.WIDTH_SIZE = 15
         Dungeon.HEIGHT_SIZE = 9
@@ -334,9 +331,8 @@ export default class Logic extends cc.Component {
             groundOilGoldData.value = value
         }
         //先重置数据，再保存翠金数据
-        Logic.resetData()
-        Logic.mapManager.rectDungeon.currentPos = Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id].currentPos.clone()
         Logic.groundOilGoldData.valueCopy(groundOilGoldData)
+        Logic.saveData()
     }
     static loadingNextRoom(dir: number) {
         Logic.mapManager.rand4save = null
@@ -364,55 +360,59 @@ export default class Logic extends cc.Component {
         }
     }
     static loadingNextLevel(exitData: ExitData) {
-        if (!exitData) {
-            return
-        }
-        //如果地图不存在停止加载
-        let levelData = Logic.worldLoader.getLevelData(exitData.toChapter, exitData.toLevel)
-        if (!levelData) {
-            return
-        }
-        //如果是从梦境进入现实或者跨章节需要调整当前章节已经清理的房间为重生状态并保存
-        if (exitData.fromChapter != Logic.CHAPTER099 && exitData.fromChapter != exitData.toChapter) {
-            Logic.mapManager.rectDungeon.changeAllClearRoomsReborn()
-            for (let rd in Logic.profileManager.data.rectDungeons) {
-                if (Logic.profileManager.data.rectDungeons[rd]) {
-                    Logic.profileManager.data.rectDungeons[rd].changeAllClearRoomsReborn()
+        Logic.worldLoader.loadWorld(() => {
+            if (!exitData) {
+                return
+            }
+            //如果地图不存在停止加载
+            let levelData = Logic.worldLoader.getLevelData(exitData.toChapter, exitData.toLevel)
+            if (!levelData) {
+                return
+            }
+            Logic.mapManager.reset()
+            //如果是从梦境进入现实或者跨章节需要调整当前章节已经清理的房间为重生状态并保存
+            if (exitData.fromChapter != Logic.CHAPTER099 && exitData.fromChapter != exitData.toChapter) {
+                Logic.mapManager.rectDungeon.changeAllClearRoomsReborn()
+                for (let rd in Logic.profileManager.data.rectDungeons) {
+                    if (Logic.profileManager.data.rectDungeons[rd]) {
+                        Logic.profileManager.data.rectDungeons[rd].changeAllClearRoomsReborn()
+                    }
                 }
             }
-        }
-        Logic.saveData()
-        /**************加载exitData关卡数据***************** */
-        Logic.chapterIndex = exitData.toChapter
-        Logic.level = exitData.toLevel
-        if (Logic.chapterMaxIndex < Logic.chapterIndex && Logic.chapterIndex < Logic.CHAPTER05) {
-            Logic.chapterMaxIndex = Logic.chapterIndex
-        }
-        //地图数据的y轴向下的
-        let ty = levelData.height * levelData.roomHeight - 1 - exitData.toPos.y
-        let roomX = Math.floor(exitData.toPos.x / levelData.roomWidth)
-        let roomY = Math.floor(ty / levelData.roomHeight)
-        Logic.playerData.pos = cc.v3(exitData.toPos.x % levelData.roomWidth, ty % levelData.roomHeight)
-        Logic.playerData.posZ = exitData.toPosZ
-        Logic.mapManager.reset(cc.v3(roomX, roomY))
-        Logic.changeDungeonSize()
-        if (exitData.fromChapter == Logic.CHAPTER00 && Logic.chapterIndex == Logic.CHAPTER01) {
-            Logic.shipTransportScene = 1
-        } else if (exitData.fromChapter == Logic.CHAPTER02 && Logic.chapterIndex == Logic.CHAPTER01) {
-            Logic.shipTransportScene = 2
-        } else if (exitData.fromChapter == Logic.CHAPTER01 && Logic.chapterIndex == Logic.CHAPTER00) {
-            Logic.shipTransportScene = 2
-        } else if (exitData.fromChapter == Logic.CHAPTER01 && Logic.chapterIndex == Logic.CHAPTER02) {
-            Logic.shipTransportScene = 1
-        }
-        if (exitData.fromChapter == Logic.CHAPTER00 && Logic.chapterIndex == Logic.CHAPTER00) {
-            if (!(exitData.fromLevel == 0 && exitData.toLevel == 0)) {
-                Logic.elevatorScene = exitData.fromLevel > Logic.level ? 1 : 2
+            Logic.saveData()
+            /**************加载exitData关卡数据***************** */
+            Logic.chapterIndex = exitData.toChapter
+            Logic.level = exitData.toLevel
+            if (Logic.chapterMaxIndex < Logic.chapterIndex && Logic.chapterIndex < Logic.CHAPTER05) {
+                Logic.chapterMaxIndex = Logic.chapterIndex
             }
-        }
-        Logic.playerData.isWakeUp = exitData.fromChapter != Logic.CHAPTER099 && exitData.toChapter == Logic.CHAPTER099
-        //重置装备和跟随的npc
-        Logic.resetInventoryAndOtherData()
+            //地图数据的y轴向下的
+            let ty = levelData.height * levelData.roomHeight - 1 - exitData.toPos.y
+            let roomX = Math.floor(exitData.toPos.x / levelData.roomWidth)
+            let roomY = Math.floor(ty / levelData.roomHeight)
+            Logic.playerData.pos = cc.v3(exitData.toPos.x % levelData.roomWidth, ty % levelData.roomHeight)
+            Logic.playerData.posZ = exitData.toPosZ
+            Logic.mapManager.reset()
+            Logic.mapManager.changePos(cc.v3(roomX, roomY))
+            Logic.changeDungeonSize()
+            if (exitData.fromChapter == Logic.CHAPTER00 && Logic.chapterIndex == Logic.CHAPTER01) {
+                Logic.shipTransportScene = 1
+            } else if (exitData.fromChapter == Logic.CHAPTER02 && Logic.chapterIndex == Logic.CHAPTER01) {
+                Logic.shipTransportScene = 2
+            } else if (exitData.fromChapter == Logic.CHAPTER01 && Logic.chapterIndex == Logic.CHAPTER00) {
+                Logic.shipTransportScene = 2
+            } else if (exitData.fromChapter == Logic.CHAPTER01 && Logic.chapterIndex == Logic.CHAPTER02) {
+                Logic.shipTransportScene = 1
+            }
+            if (exitData.fromChapter == Logic.CHAPTER00 && Logic.chapterIndex == Logic.CHAPTER00) {
+                if (!(exitData.fromLevel == 0 && exitData.toLevel == 0)) {
+                    Logic.elevatorScene = exitData.fromLevel > Logic.level ? 1 : 2
+                }
+            }
+            Logic.playerData.isWakeUp = exitData.fromChapter != Logic.CHAPTER099 && exitData.toChapter == Logic.CHAPTER099
+            //重置装备和跟随的npc
+            Logic.resetInventoryAndOtherData()
+        })
         cc.director.loadScene('loading')
     }
 

@@ -2,7 +2,6 @@ import { EventHelper } from './../logic/EventHelper'
 import ProfessionData from '../data/ProfessionData'
 import Logic from '../logic/Logic'
 import LoadingIcon from '../ui/LoadingIcon'
-import DialogueData from '../data/DialogueData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -34,7 +33,6 @@ export default class LoadingManager {
     public isEquipmentLoaded = false
     public isMonsterLoaded = false
     public isNonplayerLoaded = false
-    public isWorldLoaded = false
     public isBuffsLoaded = false
     public isSuitsLoaded = false
     public isBulletsLoaded = false
@@ -57,7 +55,6 @@ export default class LoadingManager {
         if (!Logic.buildings) {
             Logic.buildings = {}
         }
-        this.isWorldLoaded = false
         this.isEquipmentLoaded = false
         this.isMonsterLoaded = false
         this.isBuffsLoaded = false
@@ -69,7 +66,6 @@ export default class LoadingManager {
         this.isNormalBuildingLoaded = false
     }
     reset() {
-        this.isWorldLoaded = false
         this.isEquipmentLoaded = false
         this.setAllSpriteFramesUnload()
         this.isBuffsLoaded = false
@@ -113,7 +109,6 @@ export default class LoadingManager {
     }
 
     loadWorld() {
-        Logic.worldLoader.isloaded = false
         Logic.worldLoader.loadWorld()
     }
     loadSound() {

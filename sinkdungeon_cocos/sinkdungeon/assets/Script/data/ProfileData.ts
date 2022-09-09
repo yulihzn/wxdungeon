@@ -36,7 +36,7 @@ export default class ProfileData {
     nonPlayerList: NonPlayerData[] = new Array()
     level = 0 //当前层级
     //游玩时间
-    time = '00:00:00'
+    totalTime = 0
     //游戏里的时间，默认从2018-05-14 12:55:46开始
     realTime = 1526273746000
     savePointData: SavePointData = new SavePointData()

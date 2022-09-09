@@ -43,6 +43,12 @@ export default class Utils {
         let angle = (cc.v2(1, 0).signAngle(cc.v2(direction.normalize())) * 180) / Math.PI
         return isFlip ? -angle : angle
     }
+    static getPlayTime(time: number) {
+        let hour = Math.floor(time / 3600000)
+        let min = Math.floor((time - hour * 3600000) / 60000)
+        let second = Math.floor((time - hour * 3600000 - min * 60000) / 1000)
+        return `${Utils.getNumberStr2(hour)}:${Utils.getNumberStr2(min)}:${Utils.getNumberStr2(second)}`
+    }
     static getFullFormatTime(time: number) {
         let date = new Date(time)
         let y = date.getFullYear()

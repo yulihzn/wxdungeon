@@ -4,6 +4,7 @@ import { EventHelper } from './EventHelper'
 import AudioPlayer from '../utils/AudioPlayer'
 import StartBackground from '../ui/StartBackground'
 import CursorArea from '../ui/CursorArea'
+import Utils from '../utils/Utils'
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -33,7 +34,7 @@ export default class NewClass extends cc.Component {
 
     start() {
         if (this.clock) {
-            this.clock.string = `${Logic.time}`
+            this.clock.string = `${Utils.getPlayTime(Logic.totalTime)}`
         }
         if (this.level) {
             this.level.string = `Level ${Logic.chapterIndex + 1}-${Logic.level}`

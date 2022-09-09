@@ -267,7 +267,7 @@ export default class Dungeon extends cc.Component {
                             .delay(0.1)
                             .to(0.5, { opacity: 0 })
                             .call(() => {
-                                if (!Logic.profileManager.hasSaveData && Logic.CHAPTER00 == Logic.chapterIndex) {
+                                if (Logic.totalTime < 5 && Logic.CHAPTER00 == Logic.chapterIndex) {
                                     Dialogue.play(Controller.isMouseMode() ? 'course000' : 'course001')
                                 }
                             })

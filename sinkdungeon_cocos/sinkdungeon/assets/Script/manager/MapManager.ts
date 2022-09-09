@@ -34,21 +34,8 @@ export default class MapManager {
         this.isloaded = false
     }
     clear(): void {}
-    /**
-     * 初始化地图数据
-     * 读取指定章节和层数的地图列表，随机选取一个
-     *
-     */
-    public loadMap() {
-        if (Logic.isMapReset) {
-            //加载地图
-            Logic.mapManager.reset()
-        }
-        cc.log('加载地图完成')
-    }
 
-    reset(pos?: cc.Vec3) {
-        Logic.isMapReset = false
+    reset() {
         let data = Logic.worldLoader.getCurrentLevelData()
         this.rand4save = null
         //地图重新生成
@@ -58,14 +45,17 @@ export default class MapManager {
         } else {
             this.rectDungeon.buildMap(data)
             //设置当前位置为开始房间位置
-            let index = this.rectDungeon.startIndex
-            this.rectDungeon.currentPos = cc.v3(index.x, index.y)
-        }
-        if (pos) {
-            this.rectDungeon.currentPos = pos.clone()
+            // let index = this.rectDungeon.startIndex
+            // this.rectDungeon.currentPos = cc.v3(index.x, index.y)
         }
         cc.log(this.rectDungeon.getDisPlay())
         //修改当前房间和四周房间状态为发现
+        this.rectDungeon.changeRoomsIsFound(this.rectDungeon.currentPos.x, this.rectDungeon.currentPos.y)
+        this.isloaded = true
+        cc.log('加载地图完成')
+    }
+    changePos(pos: cc.Vec3) {
+        this.rectDungeon.currentPos = pos.clone()
         this.rectDungeon.changeRoomsIsFound(this.rectDungeon.currentPos.x, this.rectDungeon.currentPos.y)
     }
     /** dir为-1就是当前房间 */

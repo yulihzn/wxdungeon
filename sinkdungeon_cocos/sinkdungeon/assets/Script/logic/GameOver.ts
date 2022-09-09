@@ -4,6 +4,7 @@ import Random from '../utils/Random'
 import ExitData from '../data/ExitData'
 import LocalStorage from '../utils/LocalStorage'
 import CursorArea from '../ui/CursorArea'
+import Utils from '../utils/Utils'
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -55,7 +56,7 @@ export default class GameOver extends cc.Component {
     start() {
         let ach = LocalStorage.getAchievementData()
         if (this.clock) {
-            this.clock.string = `存活时间：${Logic.time}`
+            this.clock.string = `存活时间：${Utils.getPlayTime(Logic.totalTime)}`
         }
         if (this.level) {
             this.level.string = ``
@@ -91,7 +92,6 @@ export default class GameOver extends cc.Component {
         }
     }
     retry() {
-        Logic.saveData()
         Logic.resetData()
         AudioPlayer.play(AudioPlayer.SELECT)
         Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level))

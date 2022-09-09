@@ -25,6 +25,7 @@ import EquipmentData from '../data/EquipmentData'
 import CursorArea from './CursorArea'
 import LocalStorage from '../utils/LocalStorage'
 import ProfileManager from '../manager/ProfileManager'
+import ExitData from '../data/ExitData'
 
 const { ccclass, property } = cc._decorator
 
@@ -356,8 +357,8 @@ export default class PickAvatar extends cc.Component {
         //加载资源
         AudioPlayer.play(AudioPlayer.SELECT)
         Logic.playerData.AvatarData = this.data.clone()
+        Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal())
         this.addPorfessionEquipment()
-        cc.director.loadScene('loading')
     }
     backToHome() {
         cc.director.loadScene('start')

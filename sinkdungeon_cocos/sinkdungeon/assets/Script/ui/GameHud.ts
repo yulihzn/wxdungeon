@@ -12,6 +12,7 @@ import DollMachineDialog from './dialog/DollMachineDialog'
 import Dialogue from './Dialogue'
 import CellphoneDialog from './dialog/CellphoneDialog'
 import ActionSettingDialog from './dialog/ActionSettingDialog'
+import Utils from '../utils/Utils'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -73,10 +74,6 @@ export default class GameHud extends cc.Component {
     private isCompleteShowed = false
     private checkTimeDelay = 0
     private startCountTime = true
-
-    private hour = 0
-    private minute = 0
-    private second = 0
 
     onLoad() {
         EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, detail => {
@@ -145,7 +142,7 @@ export default class GameHud extends cc.Component {
             this.showActionSettingDialog()
         })
         if (this.clock) {
-            this.clock.string = `${Logic.time}`
+            this.clock.string = `${Utils.getPlayTime(Logic.totalTime)}`
         }
         if (this.level) {
             this.level.string = `${Logic.worldLoader.getCurrentLevelData().name}`
@@ -287,12 +284,7 @@ export default class GameHud extends cc.Component {
             this.satietyView.refreshPercent(sanity, solid, poo, liquid, pee)
         }
     }
-    start() {
-        let arr = Logic.time.split(':')
-        this.hour = parseInt(arr[0])
-        this.minute = parseInt(arr[1])
-        this.second = parseInt(arr[2])
-    }
+    start() {}
 
     isCheckTimeDelay(dt: number): boolean {
         this.checkTimeDelay += dt
@@ -346,7 +338,7 @@ export default class GameHud extends cc.Component {
         if (this.isCheckTimeDelay(dt)) {
             if (this.clock && this.startCountTime) {
                 this.changeTime()
-                this.clock.string = `${Logic.time}`
+                this.clock.string = `${Utils.getPlayTime(Logic.totalTime)}`
             }
         }
         if (this.HasModalDialogShow) {
@@ -360,22 +352,7 @@ export default class GameHud extends cc.Component {
         if (Logic.isGamePause && !this.IsTimeCountDialogShow) {
             return
         }
-        this.second = this.second + 1
-        if (this.second >= 60) {
-            this.second = 0
-            this.minute = this.minute + 1
-        }
-        if (this.minute >= 60) {
-            this.minute = 0
-            this.hour = this.hour + 1
-        }
-        let strHour = `${this.hour}`
-        strHour = strHour.length > 1 ? strHour : '0' + strHour
-        let strMinute = `${this.minute}`
-        strMinute = strMinute.length > 1 ? strMinute : '0' + strMinute
-        let strSecond = `${this.second}`
-        strSecond = strSecond.length > 1 ? strSecond : '0' + strSecond
-        Logic.time = strHour + ':' + strMinute + ':' + strSecond
+        Logic.totalTime += 1000
         Logic.realTime = Logic.realTime + (Logic.chapterIndex == Logic.CHAPTER099 ? 10000 : 60000)
         EventHelper.emit(EventHelper.HUD_TIME_TICK)
     }

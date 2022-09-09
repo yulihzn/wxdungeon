@@ -21,15 +21,13 @@ export default class RectDungeon {
     public height: number = 0 //地图高
     public map: RectRoom[][]
     //当前房间下标 默认1-1
-    currentPos: cc.Vec3 = cc.v3(1, 1)
+    currentPos: cc.Vec3 = cc.v3(-1, -1)
 
     public buildings: { [key: string]: { [key: string]: BuildingData } } = {} //根据下标保存建筑信息
     //根据下标+uuid保存地上的装备
     equipments: { [key: string]: EquipmentData[] } = {}
     //根据下标+uuid保存地上的物品
     items: { [key: string]: ItemData[] } = {}
-    public startIndex: cc.Vec2 = cc.Vec2.ZERO
-    public endIndex: cc.Vec2 = cc.v2(-1, -1)
 
     buildMapFromSave(dungeon: RectDungeon, levelData?: LevelData): RectDungeon {
         this.id = dungeon.id
@@ -37,7 +35,7 @@ export default class RectDungeon {
         this.height = dungeon.height
         this.map = new Array()
         //加载当前位置
-        this.currentPos = dungeon.currentPos ? cc.v3(dungeon.currentPos.x, dungeon.currentPos.y) : cc.v3(0, 0)
+        this.currentPos = dungeon.currentPos ? cc.v3(dungeon.currentPos.x, dungeon.currentPos.y) : cc.v3(-1, -1)
         //加载建筑
         for (let key1 in dungeon.buildings) {
             let map = dungeon.buildings[key1]
@@ -78,23 +76,18 @@ export default class RectDungeon {
                         this.map[i][j].shadowLevel = levelData.shadowMap[i][j]
                     }
                 }
-                if (this.map[i][j] && this.map[i][j].roomType.isEqual(RoomType.START_ROOM)) {
-                    //开始房间默认被发现
-                    if (this.map[i][j].state != RectRoom.STATE_CLEAR) {
-                        this.map[i][j].state = RectRoom.STATE_FOUND
-                    }
-                    this.startIndex = cc.v2(i, j)
-                }
-                if (this.map[i][j] && this.map[i][j].roomType.isEqual(RoomType.END_ROOM)) {
-                    if (this.map[i][j].state != RectRoom.STATE_CLEAR) {
-                        this.map[i][j].state = RectRoom.STATE_FOUND
-                    }
-                    this.endIndex = cc.v2(i, j)
-                }
+                // if (this.map[i][j] && this.map[i][j].roomType.isEqual(RoomType.START_ROOM)) {
+                //     //开始房间默认被发现
+                //     if (this.map[i][j].state != RectRoom.STATE_CLEAR) {
+                //         this.map[i][j].state = RectRoom.STATE_FOUND
+                //     }
+                // }
+                // if (this.map[i][j] && this.map[i][j].roomType.isEqual(RoomType.END_ROOM)) {
+                //     if (this.map[i][j].state != RectRoom.STATE_CLEAR) {
+                //         this.map[i][j].state = RectRoom.STATE_FOUND
+                //     }
+                // }
             }
-        }
-        if (this.endIndex.x < 0 && this.endIndex.y < 0) {
-            this.endIndex = this.startIndex.clone()
         }
         return this
     }
@@ -112,23 +105,18 @@ export default class RectDungeon {
             for (let j = 0; j < levelData.height; j++) {
                 this.map[i][j] = new RectRoom(i, j, RoomType.getTypeByName(levelData.roomTypes[i][j]))
                 this.map[i][j].shadowLevel = levelData.shadowMap[i][j]
-                if (this.map[i][j].roomType.isEqual(RoomType.START_ROOM)) {
-                    //开始房间默认被发现
-                    if (this.map[i][j].state != RectRoom.STATE_CLEAR) {
-                        this.map[i][j].state = RectRoom.STATE_FOUND
-                    }
-                    this.startIndex = cc.v2(i, j)
-                }
-                if (this.map[i][j].roomType.isEqual(RoomType.END_ROOM)) {
-                    if (this.map[i][j].state != RectRoom.STATE_CLEAR) {
-                        this.map[i][j].state = RectRoom.STATE_FOUND
-                    }
-                    this.endIndex = cc.v2(i, j)
-                }
+                // if (this.map[i][j].roomType.isEqual(RoomType.START_ROOM)) {
+                //     //开始房间默认被发现
+                //     if (this.map[i][j].state != RectRoom.STATE_CLEAR) {
+                //         this.map[i][j].state = RectRoom.STATE_FOUND
+                //     }
+                // }
+                // if (this.map[i][j].roomType.isEqual(RoomType.END_ROOM)) {
+                //     if (this.map[i][j].state != RectRoom.STATE_CLEAR) {
+                //         this.map[i][j].state = RectRoom.STATE_FOUND
+                //     }
+                // }
             }
-        }
-        if (this.endIndex.x < 0 && this.endIndex.y < 0) {
-            this.endIndex = this.startIndex.clone()
         }
     }
 
