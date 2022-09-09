@@ -103,7 +103,7 @@ export default class Achievement extends cc.Component {
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor')
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_ITEM, 'ammo')
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_EQUIPMENT, 'emptyequipment')
-        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'npcshadow')
+        // this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'npcshadow')
         this.loadingManager.loadMonsters()
         this.loadingManager.loadItems()
         this.loadingManager.loadNonplayer()

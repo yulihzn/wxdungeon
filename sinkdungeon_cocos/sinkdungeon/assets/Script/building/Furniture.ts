@@ -334,16 +334,16 @@ export default class Furniture extends Building {
                 this.boxcover.node.y = this.sprite.node.y
                 let width = this.sprite.node.width * this.sprite.node.scale
                 let height = this.sprite.node.height * this.sprite.node.scale
-                this.tips.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height - Dungeon.TILE_SIZE / 2)
+                this.tips.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, Dungeon.TILE_SIZE)
                 this.lock.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height / 2 - Dungeon.TILE_SIZE / 2)
                 let collider = this.tips.node.getComponent(CCollider)
-                collider.radius = width > height ? height / 2 : width / 2
+                collider.radius = width > height ? height / 4 : width / 4
                 if (width > height) {
-                    collider.radius = height / 2
-                    collider.offset = cc.v2(0, -height / 2)
+                    collider.radius = height / 4
+                    collider.offset = cc.v2(0, -Dungeon.TILE_SIZE / 2)
                 } else {
-                    collider.radius = width / 2
-                    collider.offset = cc.v2(0, -height + width)
+                    collider.radius = width / 4
+                    collider.offset = cc.v2(0, -Dungeon.TILE_SIZE / 2)
                 }
             }
         }

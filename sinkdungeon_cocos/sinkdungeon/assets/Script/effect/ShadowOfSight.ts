@@ -107,16 +107,15 @@ export default class ShadowOfSight extends cc.Component {
         }
         this.offset = this.offsetPlus ? this.offset + delta : this.offset - delta
         this.ray.clear()
+
         if (this.showShadow) {
             this.lightRects = {}
             this.lightVertsArray = []
             this.circle = cc.v3(0, 0, 0)
             if (this.showRayCast) {
                 this.drawRayByNum(pos, camera, this.showLight)
-                // this.drawRayByNum(pos, camera, false);
             } else {
                 this.drawCustom(pos, camera, this.showLight)
-                // this.drawCustom(pos, camera, false);
             }
         }
     }
@@ -220,19 +219,6 @@ export default class ShadowOfSight extends cc.Component {
                     this.lightRects[node.uuid] = r
                 }
             }
-            // if (result.length > 0 && !result[0].collider.sensor && result[0].collider.node != this.node.parent && (result[0].collider.tag == CCollider.TAG.WALL
-            //     || result[0].collider.tag == CCollider.TAG.BUILDING || result[0].collider.tag == CCollider.TAG.PLAYER || result[0].collider.tag == CCollider.TAG.WALL_TOP
-            //     || result[0].collider.tag == CCollider.TAG.NONPLAYER)) {
-            //     p3 = result[0].point;
-            //     let node = result[0].collider.node;
-            //     let bottomPos = node.convertToNodeSpaceAR(p3);
-            //     if (bottomPos.y <= 0 && p3.y > pos.y) {
-            //         let np = node.convertToWorldSpaceAR(cc.v3(0, 0));
-            //         let offset = 0;
-            //         let r = cc.rect(np.x - node.width * node.anchorX, np.y - node.height * node.anchorY - offset, node.width, node.height + offset);
-            //         this.lightRects[node.uuid] = r;
-            //     }
-            // }
             this.lightVertsArray.push(p3)
             this.ray.lineWidth = 3
             this.ray.strokeColor = cc.color(0, 0, 0, 80)

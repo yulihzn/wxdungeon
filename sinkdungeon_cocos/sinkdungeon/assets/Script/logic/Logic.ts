@@ -369,7 +369,9 @@ export default class Logic extends cc.Component {
             if (!levelData) {
                 return
             }
-            Logic.mapManager.reset()
+            if (!Logic.mapManager.rectDungeon) {
+                Logic.mapManager.reset()
+            }
             //如果是从梦境进入现实或者跨章节需要调整当前章节已经清理的房间为重生状态并保存
             if (exitData.fromChapter != Logic.CHAPTER099 && exitData.fromChapter != exitData.toChapter) {
                 Logic.mapManager.rectDungeon.changeAllClearRoomsReborn()

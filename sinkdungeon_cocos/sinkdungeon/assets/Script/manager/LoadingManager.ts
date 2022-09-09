@@ -19,7 +19,6 @@ const { ccclass, property } = cc._decorator
 export default class LoadingManager {
     public static readonly KEY_AUTO = 'auto'
     public static readonly KEY_TEXTURES = 'textures'
-    public static readonly KEY_NPC = 'npc'
     public static readonly KEY_EQUIPMENT = 'equipment'
     public static readonly KEY_ITEM = 'item'
     public static readonly LOAD_CACHE = 0
@@ -103,7 +102,6 @@ export default class LoadingManager {
         this.spriteFrameNames = {}
         this.spriteFrameNames[LoadingManager.KEY_AUTO] = false
         this.spriteFrameNames[LoadingManager.KEY_TEXTURES] = false
-        this.spriteFrameNames[LoadingManager.KEY_NPC] = false
         this.spriteFrameNames[LoadingManager.KEY_EQUIPMENT] = false
         this.spriteFrameNames[LoadingManager.KEY_ITEM] = false
     }
@@ -403,9 +401,6 @@ export default class LoadingManager {
                 break
             case LoadingManager.KEY_ITEM:
                 type = LoadingIcon.TYPE_ITEM
-                break
-            case LoadingManager.KEY_NPC:
-                type = LoadingIcon.TYPE_NPC
                 break
             case LoadingManager.KEY_TEXTURES:
                 type = LoadingIcon.TYPE_TEXTURE

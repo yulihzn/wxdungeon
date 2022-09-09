@@ -9,6 +9,7 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity> {
     }
 
     update(entities: ActorEntity[]): void {
+        let dt = 0.016
         for (let e of entities) {
             let move = e.Move
             if (move.isStatic || (e.NodeRender.node && !e.NodeRender.node.active)) {
@@ -19,10 +20,10 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity> {
                 move.damping = 0
             }
             //xy
-            let temp = move.linearVelocity.mul(this.dt * MoveComponent.PIXELS_PER_UNIT)
+            let temp = move.linearVelocity.mul(dt * MoveComponent.PIXELS_PER_UNIT)
             let tp = cc.v3(transform.position.x + temp.x, transform.position.y + temp.y)
             transform.position = tp
-            let damping = move.damping * this.dt
+            let damping = move.damping * dt
             if (move.linearVelocity.x > 0) {
                 move.linearVelocity.x -= damping
                 if (move.linearVelocity.x < 0) {
@@ -45,15 +46,15 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity> {
                     move.linearVelocity.y = 0
                 }
             }
-            let acceleration = move.acceleration * this.dt
+            let acceleration = move.acceleration * dt
             move.linearVelocity.x += acceleration
             move.linearVelocity.y += acceleration
             if (e.NodeRender.node) {
                 e.NodeRender.node.setPosition(transform.position)
             }
             //z
-            transform.z += move.linearVelocityZ * this.dt * MoveComponent.PIXELS_PER_UNIT
-            let gravity = move.gravity * this.dt
+            transform.z += move.linearVelocityZ * dt * MoveComponent.PIXELS_PER_UNIT
+            let gravity = move.gravity * dt
             if (transform.z < transform.base) {
                 transform.z = transform.base
                 move.linearVelocityZ = 0
