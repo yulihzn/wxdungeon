@@ -1,5 +1,6 @@
 import Logic from '../logic/Logic'
 import DataUtils from '../utils/DataUtils'
+import SavePointData from './SavePointData'
 
 export default class ExitData {
     fromRoomPos = cc.v3(0, 0)
@@ -47,13 +48,13 @@ export default class ExitData {
         data.toPos = cc.v3(6, 16)
         return data
     }
-    static getDreamExitDataFromReal() {
+    static getDreamExitDataFromReal(chapterdata?: SavePointData) {
         let data = new ExitData()
         data.fromChapter = Logic.CHAPTER099
         data.fromLevel = 0
-        data.toChapter = Logic.savePoinitData.chapter
-        data.toLevel = Logic.savePoinitData.level
-        data.toPos = cc.v3(Logic.savePoinitData.x, Logic.savePoinitData.y)
+        data.toChapter = chapterdata ? chapterdata.chapter : Logic.savePoinitData.chapter
+        data.toLevel = chapterdata ? chapterdata.level : Logic.savePoinitData.level
+        data.toPos = chapterdata ? cc.v3(chapterdata.x, chapterdata.y) : cc.v3(Logic.savePoinitData.x, Logic.savePoinitData.y)
         return data
     }
 }

@@ -28,6 +28,8 @@ import PlayActor from '../base/PlayActor'
 import BaseAvatar from '../base/BaseAvatar'
 import ReflectLight from '../effect/ReflectLight'
 import NormalBuilding from '../building/NormalBuilding'
+import ColliderSystem from '../ecs/system/ColliderSystem'
+import GameWorldSystem from '../ecs/system/GameWorldSystem'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -329,13 +331,23 @@ export default class MeleeWeapon extends BaseColliderComponent {
             return '1'
         }
     }
-    protected getReflectLight(dungeon: Dungeon, isFar: boolean, isStab: boolean, isWall: boolean, hv: cc.Vec2, color: cc.Color) {
+    protected getReflectLight(dungeon: Dungeon, other: CCollider, self: CCollider, isFar: boolean, isStab: boolean, isWall: boolean, hv: cc.Vec2, color: cc.Color) {
         if (!this.weaponReflectPoint) {
             return
         }
         if (isWall && this.player.sc.isJumping) {
             return
         }
+        let w1 = this.player.node.convertToWorldSpaceAR(this.hv.mul(this.weaponReflectPoint.position.mag()))
+        let p = GameWorldSystem.colliderSystem.getColliderPoint(self.w_center, w1, other).point
+        if (!p) {
+            return
+        }
+        let p1 = this.player.node.convertToWorldSpaceAR(cc.Vec3.ZERO)
+        let p2 = this.node.convertToWorldSpaceAR(cc.Vec3.ZERO)
+        let y = p2.y - p1.y
+        p.y += y
+        let pos = this.dungeon.node.convertToNodeSpaceAR(p)
         if (isWall) {
             let pos = this.player.hv.clone()
             this.player.sc.isMoving = false
@@ -354,11 +366,17 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 this.player.playerAnim(BaseAvatar.STATE_IDLE, this.player.currentDir)
             }, 0.2)
         }
-        let p = this.weaponReflectPoint.position.clone()
-        let pos = this.dungeon.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(p))
+
         if (this.reflectLight) {
             let light = cc.instantiate(this.reflectLight).getComponent(ReflectLight)
-            light.show(dungeon, pos, isFar, isStab, isWall, hv, color)
+            let audioType = ReflectLight.AUDIO_TYPE_MELEE
+            if (isWall) {
+                audioType = ReflectLight.AUDIO_TYPE_METAL
+                if (other.audioMaterial != CCollider.AUDIO_MATERIAL.METAL || this.isFist) {
+                    audioType = ReflectLight.AUDIO_TYPE_WOOD
+                }
+            }
+            light.show(dungeon, cc.v3(pos), isFar, isStab, isWall, hv, color, audioType)
         }
     }
     protected getWaveLight(dungeonNode: cc.Node, p: cc.Vec3, elementType: number, isStab: boolean, isFar: boolean) {
@@ -582,7 +600,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 return false
             } else {
                 this.hasTargetMap.set(other.id, 1)
-                return this.attacking(other, this.anim, false)
+                return this.attacking(other, self, this.anim, false)
             }
         }
     }
@@ -614,7 +632,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
             actor.entity.Move.linearVelocity = cc.v2(pos.x, pos.y).mul(actor.sc.isAttacking ? 0.2 : 1)
         }, 0.05)
     }
-    public attacking(attackTarget: CCollider, anim: cc.Animation, isShadow: boolean): boolean {
+
+    public attacking(attackTarget: CCollider, self: CCollider, anim: cc.Animation, isShadow: boolean): boolean {
         if (!attackTarget || !this.isAttacking) {
             return false
         }
@@ -644,7 +663,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 }
                 damageSuccess = monster.takeDamage(damage)
                 if (damageSuccess) {
-                    this.getReflectLight(this.dungeon, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
+                    this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
                     this.beatBack(monster)
                     this.addTargetAllStatus(common, monster)
                     this.addHitExTrigger(damage, monster)
@@ -655,7 +674,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
             if (boss && !boss.sc.isDied && !this.isMiss) {
                 damageSuccess = boss.takeDamage(damage)
                 if (damageSuccess) {
-                    this.getReflectLight(this.dungeon, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
+                    this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
                     this.addTargetAllStatus(common, boss)
                     this.addHitExTrigger(damage, boss)
                 }
@@ -687,9 +706,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
                     hitBuilding.takeDamage(damage)
                 }
             }
-            this.getReflectLight(this.dungeon, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)
+            this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)
         } else if (attackTarget.tag == CCollider.TAG.BOSS_HIT || attackTarget.tag == CCollider.TAG.NONPLAYER_HIT) {
-            this.getReflectLight(this.dungeon, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)
+            this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)
         }
         //生命汲取,内置1s cd
         if (damageSuccess) {

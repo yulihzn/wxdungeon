@@ -132,9 +132,11 @@ export default class MiniTile extends cc.Component {
                 graphics.fillColor = cc.color(33, 33, 33, alpha) //灰色
                 if (this.isFirstEqual(mapDataStr, '#')) {
                     graphics.fillColor = cc.color(119, 136, 153, alpha) //浅灰色
-                    if (Utils.hasThe(mapDataStr, '##')) {
-                        isTriangle = true
-                    }
+                    // if (Utils.hasThe(mapDataStr, '##')) {
+                    //     isTriangle = true
+                    // }
+                } else if (this.isFirstEqual(mapDataStr, 'J')) {
+                    graphics.fillColor = cc.color(60, 179, 113, alpha) //春天的绿色
                 } else if (mapDataStr == '@S') {
                     graphics.fillColor = cc.color(60, 179, 113, alpha) //春天的绿色
                 } else if (this.isFirstEqual(mapDataStr, 'D')) {

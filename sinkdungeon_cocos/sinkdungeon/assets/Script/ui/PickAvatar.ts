@@ -26,6 +26,7 @@ import CursorArea from './CursorArea'
 import LocalStorage from '../utils/LocalStorage'
 import ProfileManager from '../manager/ProfileManager'
 import ExitData from '../data/ExitData'
+import SavePointData from '../data/SavePointData'
 
 const { ccclass, property } = cc._decorator
 
@@ -353,11 +354,26 @@ export default class PickAvatar extends cc.Component {
         ProfileManager.clearData(Logic.jumpSlotIndex)
         //重置数据
         Logic.resetData(Logic.jumpChapter)
-        Logic.jumpChapter = 0
         //加载资源
         AudioPlayer.play(AudioPlayer.SELECT)
         Logic.playerData.AvatarData = this.data.clone()
-        Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal())
+        let data = new SavePointData()
+        switch (Logic.jumpChapter) {
+            case Logic.CHAPTER01:
+                data = SavePointData.chapter01()
+                break
+            case Logic.CHAPTER02:
+                data = SavePointData.chapter02()
+                break
+            case Logic.CHAPTER03:
+                data = SavePointData.chapter03()
+                break
+            case Logic.CHAPTER04:
+                data = SavePointData.chapter04()
+                break
+        }
+        Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal(data))
+        Logic.jumpChapter = 0
         this.addPorfessionEquipment()
     }
     backToHome() {

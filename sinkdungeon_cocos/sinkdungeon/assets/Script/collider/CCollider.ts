@@ -46,6 +46,14 @@ export default class CCollider extends cc.Component {
         PLAYER_INTERACT: 21, //玩家触碰范围用来触发交互
         INTERACT: 22 //触碰范围用来触发
     })
+    static readonly AUDIO_MATERIAL = cc.Enum({
+        METAL: 0,
+        WOOD: 1,
+        STONE: 2,
+        PLASTIC: 3,
+        MEAT: 4
+    })
+    audioMaterial = CCollider.AUDIO_MATERIAL.METAL
     static readonly MIN_HEIGHT = 17
     @property({ type: CCollider.TAG, displayName: 'Collider Tag' })
     tag: number = CCollider.TAG.DEFAULT

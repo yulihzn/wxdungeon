@@ -16,6 +16,12 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class ReflectLight extends cc.Component {
+    static readonly AUDIO_TYPE_MELEE = 0
+    static readonly AUDIO_TYPE_METAL = 1
+    static readonly AUDIO_TYPE_WOOD = 2
+    static readonly AUDIOS_MELEE = [AudioPlayer.MELEE_REFLECT, AudioPlayer.MELEE_REFLECT1]
+    static readonly AUDIOS_WOOD = [AudioPlayer.MELEE_REFLECT_WOOD1, AudioPlayer.MELEE_REFLECT_WOOD2, AudioPlayer.MELEE_REFLECT_WOOD3]
+    static readonly AUDIOS_METAL = [AudioPlayer.MELEE_REFLECT_WALL, AudioPlayer.MELEE_REFLECT_WALL1]
     @property(cc.Sprite)
     sprite: cc.Sprite = null
     @property(cc.Node)
@@ -23,14 +29,24 @@ export default class ReflectLight extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
-    show(dungeon: Dungeon, position: cc.Vec3, isFar: boolean, isStab: boolean, isWall: boolean, hv: cc.Vec2, color: cc.Color) {
+    show(dungeon: Dungeon, position: cc.Vec3, isFar: boolean, isStab: boolean, isWall: boolean, hv: cc.Vec2, color: cc.Color, audioType: number) {
         this.node.parent = dungeon.node
         this.node.position = position.clone()
         this.node.zIndex = IndexZ.OVERHEAD
+        let audios = ReflectLight.AUDIOS_MELEE
+        switch (audioType) {
+            case ReflectLight.AUDIO_TYPE_METAL:
+                audios = ReflectLight.AUDIOS_METAL
+                break
+            case ReflectLight.AUDIO_TYPE_WOOD:
+                audios = ReflectLight.AUDIOS_WOOD
+                break
+        }
+        let audioIndex = Logic.getRandomNum(0, audios.length - 1)
         let fix = ''
         if (isWall) {
             fix = 'wall'
-            AudioPlayer.play(Logic.getHalfChance() ? AudioPlayer.MELEE_REFLECT_WALL : AudioPlayer.MELEE_REFLECT_WALL1)
+            AudioPlayer.play(audios[audioIndex])
         } else if (isFar) {
             fix = 'far'
         } else if (isStab) {
@@ -40,7 +56,7 @@ export default class ReflectLight extends cc.Component {
         if (isWall) {
             direction = cc.v2(-hv.x, -hv.y)
         } else {
-            AudioPlayer.play(Logic.getHalfChance() ? AudioPlayer.MELEE_REFLECT : AudioPlayer.MELEE_REFLECT1)
+            AudioPlayer.play(audios[audioIndex])
         }
         this.sprite.node.color = color
         this.root.angle = Utils.getRotateAngle(direction)

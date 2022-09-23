@@ -292,6 +292,20 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
         }
         return result
     }
+    public getColliderPoint(p1: cc.Vec2, p2: cc.Vec2, collider: CCollider): RayCastResult {
+        let result = new RayCastResult(collider, null)
+        let length = result.collider.points.length
+        for (let i = 0; i < length; ++i) {
+            let b1 = result.collider.points[i]
+            let b2 = result.collider.points[(i + 1) % length]
+            let ponit = this.getLineLinePoint(p1, p2, b1, b2)
+            if (ponit) {
+                result.point = ponit
+                break
+            }
+        }
+        return result
+    }
     private getLineLinePoint(a: cc.Vec2, b: cc.Vec2, c: cc.Vec2, d: cc.Vec2) {
         // 三角形abc 面积的2倍
         let area_abc = (a.x - c.x) * (b.y - c.y) - (a.y - c.y) * (b.x - c.x)

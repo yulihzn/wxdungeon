@@ -217,7 +217,14 @@ export default class BuildingManager extends BaseManager {
         let isequal = mapStr[0] == typeStr
         return isequal
     }
-    private addBuilding(prefab: cc.Prefab, indexPos: cc.Vec3, id?: string, moveable?: boolean): cc.Node {
+    private setAudioMaterial(b: Building, audioMaterial: number) {
+        if (audioMaterial && b.ccolliders) {
+            for (let c of b.ccolliders) {
+                c.audioMaterial = audioMaterial
+            }
+        }
+    }
+    private addBuilding(prefab: cc.Prefab, indexPos: cc.Vec3, audioMaterial?: number, id?: string, moveable?: boolean): cc.Node {
         let building = cc.instantiate(prefab)
         building.parent = this.node
         building.position = Dungeon.getPosInMap(indexPos)
@@ -225,6 +232,7 @@ export default class BuildingManager extends BaseManager {
         let b = building.getComponent(Building)
         if (b) {
             b.initCollider()
+            this.setAudioMaterial(b, audioMaterial)
             b.entity.NodeRender.node = building
             b.entity.Transform.position = Dungeon.getPosInMap(indexPos)
             b.entity.Move.isStatic = !moveable
@@ -305,6 +313,7 @@ export default class BuildingManager extends BaseManager {
             //生成营火
             Logic.getBuildings(BuildingManager.CAMPFIRE, (prefab: cc.Prefab) => {
                 let camp = this.addBuilding(prefab, indexPos)
+                this.setAudioMaterial(camp.getComponent(Building), CCollider.AUDIO_MATERIAL.WOOD)
                 let fallentree = camp.getChildByName('sprite').getChildByName('fallentree')
                 fallentree.position = Dungeon.getPosInMap(indexPos)
                 fallentree.position = cc.v3(fallentree.position.x, fallentree.position.y + 40)
@@ -454,7 +463,7 @@ export default class BuildingManager extends BaseManager {
         } else if (this.isFirstEqual(mapDataStr, 'Z')) {
             if (mapDataStr == 'Z0' || mapDataStr == 'Z1') {
                 Logic.getBuildings(BuildingManager.ROOMBED, (prefab: cc.Prefab) => {
-                    let p = this.addBuilding(prefab, indexPos)
+                    let p = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
                     let rb = p.getComponent(RoomBed)
                     p.zIndex -= 40
                     rb.init(dungeon, mapDataStr == 'Z1')
@@ -519,7 +528,7 @@ export default class BuildingManager extends BaseManager {
     }
     private addNormalBuilding(dungeon: Dungeon, mapDataStr: string, prefix: string, indexPos: cc.Vec3) {
         Logic.getBuildings(BuildingManager.NORMAL_BUILDING, (prefab: cc.Prefab) => {
-            let building = this.addBuilding(prefab, indexPos, `${prefix}${mapDataStr.substring(1)}`).getComponent(NormalBuilding)
+            let building = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.METAL, `${prefix}${mapDataStr.substring(1)}`).getComponent(NormalBuilding)
             let save = Logic.mapManager.getCurrentMapBuilding(building.data.defaultPos)
             building.data.valueCopy(save)
             building.init(dungeon)
@@ -532,7 +541,7 @@ export default class BuildingManager extends BaseManager {
             if (saveBox) {
                 //生命值大于0才生成
                 if (saveBox.currentHealth > 0 || isReborn) {
-                    let interactBuilding = this.addBuilding(prefab, indexPos, '', true)
+                    let interactBuilding = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD, '', true)
                     let d = interactBuilding.getComponent(InteractBuilding)
                     d.node.position = saveBox.position.clone()
                     d.data.valueCopy(saveBox)
@@ -544,7 +553,7 @@ export default class BuildingManager extends BaseManager {
                     this.interactBuildings.push(d)
                 }
             } else {
-                let interactBuilding = this.addBuilding(prefab, indexPos, '', true)
+                let interactBuilding = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD, '', true)
                 let d = interactBuilding.getComponent(InteractBuilding)
                 d.data.currentHealth = 5
                 Logic.mapManager.setCurrentBuildingData(d.data.clone())
@@ -555,7 +564,7 @@ export default class BuildingManager extends BaseManager {
     }
     private addBox(mapDataStr: string, indexPos: cc.Vec3) {
         Logic.getBuildings(BuildingManager.BOX, (prefab: cc.Prefab) => {
-            let box = this.addBuilding(prefab, indexPos, '', true)
+            let box = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD, '', true)
             let b = box.getComponent(Box)
             b.setDefaultPos(indexPos)
             //生成植物
@@ -573,7 +582,7 @@ export default class BuildingManager extends BaseManager {
     }
     private addShopTable(indexPos: cc.Vec3) {
         Logic.getBuildings(BuildingManager.SHOPTABLE, (prefab: cc.Prefab) => {
-            let table = this.addBuilding(prefab, indexPos)
+            let table = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
             let ta = table.getComponent(ShopTable)
             ta.setDefaultPos(indexPos)
             let isReborn = Logic.mapManager.getCurrentRoom().isReborn
@@ -597,7 +606,7 @@ export default class BuildingManager extends BaseManager {
     }
     private addChest(indexPos: cc.Vec3) {
         Logic.getBuildings(BuildingManager.CHEST, (prefab: cc.Prefab) => {
-            let chest = this.addBuilding(prefab, indexPos)
+            let chest = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
             let c = chest.getComponent(Chest)
             c.seDefaultPos(indexPos)
             let rand4save = Logic.mapManager.getRandom4Save(c.seed)
@@ -645,23 +654,23 @@ export default class BuildingManager extends BaseManager {
     private addDecorate(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
         if (mapDataStr == '+++0') {
             Logic.getBuildings(BuildingManager.GRASS01, (prefab: cc.Prefab) => {
-                this.addBuilding(prefab, indexPos)
+                this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
             })
         } else if (mapDataStr == '+++1') {
             Logic.getBuildings(BuildingManager.GRASS02, (prefab: cc.Prefab) => {
-                this.addBuilding(prefab, indexPos)
+                this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
             })
         } else if (mapDataStr == '+++2') {
             Logic.getBuildings(BuildingManager.GRASS03, (prefab: cc.Prefab) => {
-                this.addBuilding(prefab, indexPos)
+                this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
             })
         } else if (mapDataStr == '+++3') {
             Logic.getBuildings(BuildingManager.GRASS04, (prefab: cc.Prefab) => {
-                this.addBuilding(prefab, indexPos)
+                this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
             })
         } else {
             Logic.getBuildings(BuildingManager.DECORATIONFLOOR, (prefab: cc.Prefab) => {
-                let fd = this.addBuilding(prefab, indexPos)
+                let fd = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
                 let df = fd.getComponent(DecorationFloor)
                 if (mapDataStr == '+1') {
                     df.init(dungeon, 'exitarrow', 4, 0)
@@ -691,7 +700,7 @@ export default class BuildingManager extends BaseManager {
         if (this.hasThe(mapDataStr, '~#')) {
             Logic.getBuildings(BuildingManager.COAST, (prefab: cc.Prefab) => {
                 let fint = parseInt(mapDataStr.substring(2))
-                let co = this.addBuilding(prefab, indexPos)
+                let co = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
                 co.zIndex = IndexZ.ACTOR
                 co.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`coast${Utils.getNumberStr3(fint)}`)
                 // let pbc = co.getComponent(CCollider)
@@ -703,7 +712,7 @@ export default class BuildingManager extends BaseManager {
         } else if (this.hasThe(mapDataStr, '~~')) {
             Logic.getBuildings(BuildingManager.WATERFALL, (prefab: cc.Prefab) => {
                 AudioPlayer.play(AudioPlayer.WATERFALL, false, true)
-                let dn = this.addBuilding(prefab, indexPos)
+                let dn = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
             })
         }
     }
@@ -793,7 +802,7 @@ export default class BuildingManager extends BaseManager {
                 break
         }
         Logic.getBuildings(prefabName, (prefab: cc.Prefab) => {
-            let node = this.addBuilding(prefab, indexPos)
+            let node = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
             if (isOverHead) {
                 node.zIndex = IndexZ.OVERHEAD + 100
             }
@@ -844,12 +853,12 @@ export default class BuildingManager extends BaseManager {
         //生成货架
         if (mapDataStr == MartShelves.TYPE_FRIDGE) {
             Logic.getBuildings(BuildingManager.MARTFRIDGE, (prefab: cc.Prefab) => {
-                let ms = this.addBuilding(prefab, indexPos).getComponent(MartShelves)
+                let ms = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD).getComponent(MartShelves)
                 ms.init(mapDataStr, this.getGoodsList(mapDataStr))
             })
         } else {
             Logic.getBuildings(BuildingManager.MARTSHELVES, (prefab: cc.Prefab) => {
-                let ms = this.addBuilding(prefab, indexPos).getComponent(MartShelves)
+                let ms = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD).getComponent(MartShelves)
                 ms.init(mapDataStr, this.getGoodsList(mapDataStr))
             })
         }
@@ -1059,7 +1068,7 @@ export default class BuildingManager extends BaseManager {
             })
         } else if (mapDataStr == 'Z4') {
             Logic.getBuildings(BuildingManager.ROOMSOFA, (prefab: cc.Prefab) => {
-                building = this.addBuilding(prefab, indexPos)
+                building = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
                 building.zIndex = IndexZ.ACTOR
                 script = building.getComponent(Furniture)
                 script.init(data, false)
@@ -1080,32 +1089,32 @@ export default class BuildingManager extends BaseManager {
             })
         } else if (mapDataStr == 'Z17') {
             Logic.getBuildings(BuildingManager.ROOMCLOCK, (prefab: cc.Prefab) => {
-                building = this.addBuilding(prefab, indexPos)
+                building = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
                 script = building.getComponent(Furniture)
                 script.init(data, false)
             })
         } else if (mapDataStr == 'Z18') {
             Logic.getBuildings(BuildingManager.ROOMFISHTANK, (prefab: cc.Prefab) => {
-                building = this.addBuilding(prefab, indexPos)
+                building = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
                 building.getComponent(RoomFishtank).init(dungeon)
                 script = building.getComponent(Furniture)
                 script.init(data, false)
             })
         } else if (mapDataStr == 'Z20') {
             Logic.getBuildings(BuildingManager.ROOMWATERDISPENSER, (prefab: cc.Prefab) => {
-                building = this.addBuilding(prefab, indexPos)
+                building = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
                 script = building.getComponent(Furniture)
                 script.init(data, false)
             })
         } else if (mapDataStr == 'Z21') {
             Logic.getBuildings(BuildingManager.ROOMTRASHCAN, (prefab: cc.Prefab) => {
-                building = this.addBuilding(prefab, indexPos)
+                building = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
                 script = building.getComponent(Furniture)
                 script.init(data, false)
             })
         } else {
             Logic.getBuildings(BuildingManager.FURNITURE, (prefab: cc.Prefab) => {
-                building = this.addBuilding(prefab, indexPos)
+                building = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
                 script = building.getComponent(Furniture)
                 script.init(data, true)
             })

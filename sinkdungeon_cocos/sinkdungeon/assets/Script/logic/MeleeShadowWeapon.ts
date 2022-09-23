@@ -133,7 +133,7 @@ export default class MeleeShadowWeapon extends BaseColliderComponent {
             } else {
                 this.hasTargetMap.set(other.id, 1)
                 if (this.meleeWeapon) {
-                    return this.meleeWeapon.attacking(other, this.anim, true)
+                    return this.meleeWeapon.attacking(other, self, this.anim, true)
                 }
                 return false
             }

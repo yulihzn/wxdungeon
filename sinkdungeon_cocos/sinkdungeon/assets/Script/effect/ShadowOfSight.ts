@@ -8,6 +8,7 @@
 import CCollider from '../collider/CCollider'
 import GameWorldSystem from '../ecs/system/GameWorldSystem'
 import Actor from '../base/Actor'
+import Logic from '../logic/Logic'
 
 const { ccclass, property } = cc._decorator
 
@@ -33,6 +34,7 @@ export default class ShadowOfSight extends cc.Component {
     z = 0
     @property
     zHeight = 0
+    sprite: cc.Sprite = null
     showShadow = true
     /** 视野顶点数组 */
     lightVertsArray = new Array()
@@ -52,6 +54,7 @@ export default class ShadowOfSight extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite)
         this.mat = this.ray.getMaterial(0)
         this.polygonCollider = this.getComponent(cc.PolygonCollider)
         this.customCollider = this.getComponent(CCollider)
@@ -107,6 +110,9 @@ export default class ShadowOfSight extends cc.Component {
         }
         this.offset = this.offsetPlus ? this.offset + delta : this.offset - delta
         this.ray.clear()
+        if (this.sprite) {
+            this.sprite.enabled = false
+        }
 
         if (this.showShadow) {
             this.lightRects = {}
@@ -173,23 +179,52 @@ export default class ShadowOfSight extends cc.Component {
                 }
             }
             if (renderLight) {
-                this.ray.close()
-                this.ray.fill()
-                let sp = camera.getWorldToScreenPoint(pos)
-                this.updateMat(this.mat, cc.v2(sp.x, sp.y), camera.zoomRatio)
+                if (this.sprite) {
+                    this.sprite.enabled = true
+                    this.sprite.node.width = this.customCollider.w
+                    this.sprite.node.height = this.customCollider.h
+                    this.sprite.spriteFrame = Logic.spriteFrameRes('lightrect')
+                    this.sprite.node.color = cc.color(this.renderColor.r, this.renderColor.g, this.renderColor.b)
+                    this.sprite.node.opacity = this.renderColor.a
+                    this.ray.enabled = false
+                } else {
+                    if (this.sprite) {
+                        this.sprite.enabled = false
+                    }
+                    this.ray.enabled = true
+                    this.ray.close()
+                    this.ray.fill()
+                    let sp = camera.getWorldToScreenPoint(pos)
+                    this.updateMat(this.mat, cc.v2(sp.x, sp.y), camera.zoomRatio)
+                }
             }
         }
         if (this.customCollider && this.customCollider.type == CCollider.TYPE.CIRCLE && this.customCollider.radius > 0) {
             let p = this.node.convertToWorldSpaceAR(cc.v2(this.customCollider.offsetX, this.customCollider.offsetY))
             this.circle = cc.v3(p.x, p.y, this.getRadius())
             if (renderLight) {
-                this.ray.lineWidth = 10
-                this.ray.fillColor = this.renderColor
-                let center = this.customCollider.offset
-                this.ray.circle(center.x, center.y, this.getRadius())
-                this.ray.fill()
-                let sp = camera.getWorldToScreenPoint(pos)
-                this.updateMat(this.mat, cc.v2(sp.x, sp.y), camera.zoomRatio)
+                if (this.sprite) {
+                    this.sprite.enabled = true
+                    let r = this.getRadius()
+                    this.sprite.node.width = r * 2
+                    this.sprite.node.height = r * 2
+                    this.sprite.spriteFrame = Logic.spriteFrameRes('lightpoint')
+                    this.sprite.node.color = cc.color(this.renderColor.r, this.renderColor.g, this.renderColor.b)
+                    this.sprite.node.opacity = this.renderColor.a
+                    this.ray.enabled = false
+                } else {
+                    this.ray.enabled = true
+                    if (this.sprite) {
+                        this.sprite.enabled = false
+                    }
+                    this.ray.lineWidth = 10
+                    this.ray.fillColor = this.renderColor
+                    let center = this.customCollider.offset
+                    this.ray.circle(center.x, center.y, this.getRadius())
+                    this.ray.fill()
+                    let sp = camera.getWorldToScreenPoint(pos)
+                    this.updateMat(this.mat, cc.v2(sp.x, sp.y), camera.zoomRatio)
+                }
             }
         }
     }
@@ -198,6 +233,10 @@ export default class ShadowOfSight extends cc.Component {
         if (!this.customCollider || this.customCollider.radius <= 0) {
             return
         }
+        if (this.sprite) {
+            this.sprite.enabled = false
+        }
+        this.ray.enabled = true
         this.ray.lineWidth = 10
         this.ray.fillColor = this.renderColor
         let unitRd = (2 * Math.PI) / this.rayNum
@@ -264,16 +303,16 @@ export default class ShadowOfSight extends cc.Component {
     }
 
     private updateMat(mat: cc.MaterialVariant, pos: cc.Vec2, zoomRatio: number) {
-        let canvasSize = cc.view.getCanvasSize()
-        let visibleSize = cc.view.getVisibleSize()
-        let visibleRatio = visibleSize.width / visibleSize.height
-        let r = this.getRadius() / visibleSize.height
-        let scale = canvasSize.width / visibleSize.width
-        mat.setProperty('screen', cc.v2(canvasSize.width, canvasSize.height))
-        mat.setProperty('maxRadius', r * zoomRatio)
-        mat.setProperty('whRatio', visibleRatio)
-        let lightPos = cc.v2(pos.x / visibleSize.width, pos.y / visibleSize.height)
-        let y = (Math.abs(lightPos.y - 0.5) * visibleSize.height * scale) / canvasSize.height
-        this.mat.setProperty('lightPos', cc.v2(lightPos.x, lightPos.y > 0.5 ? 0.5 + y : 0.5 - y))
+        let canvasSize = cc.view.getCanvasSize() //返回视图中 canvas 的尺寸。 在 native 平台下，它返回全屏视图下屏幕的尺寸。 在 Web 平台下，它返回 canvas 元素尺寸
+        let visibleSize = cc.view.getVisibleSize() //返回视图窗口可见区域尺寸。
+        let visibleRatio = visibleSize.width / visibleSize.height //宽高比
+        let r = this.getRadius() / visibleSize.height //最大半径
+        let scale = canvasSize.width / visibleSize.width //实现画面大小缩放比
+        mat.setProperty('screen', cc.v2(canvasSize.width, canvasSize.height)) //设置尺寸
+        mat.setProperty('maxRadius', r * zoomRatio) //设置最大半径
+        mat.setProperty('whRatio', visibleRatio) //设置宽高比
+        let lightPos = cc.v2(pos.x / visibleSize.width, pos.y / visibleSize.height) //坐标归一
+        let y = (Math.abs(lightPos.y - 0.5) * visibleSize.height * scale) / canvasSize.height //坐标y转换为shader坐标
+        this.mat.setProperty('lightPos', cc.v2(lightPos.x, lightPos.y > 0.5 ? 0.5 + y : 0.5 - y)) //设置中心点
     }
 }
