@@ -380,10 +380,10 @@
     },
     "renderColor": {
       "__type__": "cc.Color",
-      "r": 232,
+      "r": 249,
       "g": 255,
-      "b": 21,
-      "a": 80
+      "b": 193,
+      "a": 95
     },
     "showLight": true,
     "showRayCast": false,

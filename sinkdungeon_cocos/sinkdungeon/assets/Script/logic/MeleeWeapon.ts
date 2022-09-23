@@ -338,16 +338,18 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (isWall && this.player.sc.isJumping) {
             return
         }
-        let w1 = this.player.node.convertToWorldSpaceAR(this.hv.mul(this.weaponReflectPoint.position.mag()))
-        let p = GameWorldSystem.colliderSystem.getColliderPoint(self.w_center, w1, other).point
-        if (!p) {
+        // let w1 = this.player.node.convertToWorldSpaceAR(this.hv.mul(this.weaponReflectPoint.position.mag()))
+        let hv1 = other.w_center.sub(self.w_center).normalize()
+        let wp2 = this.player.node.convertToWorldSpaceAR(hv1.mul(this.weaponReflectPoint.position.mag()))
+        let wp = GameWorldSystem.colliderSystem.getNearestColliderPoint(self.w_center, wp2, other).point
+        if (this.hv.dot(hv1) < 0) {
             return
         }
         let p1 = this.player.node.convertToWorldSpaceAR(cc.Vec3.ZERO)
         let p2 = this.node.convertToWorldSpaceAR(cc.Vec3.ZERO)
         let y = p2.y - p1.y
-        p.y += y
-        let pos = this.dungeon.node.convertToNodeSpaceAR(p)
+        wp.y += y
+        let pos = this.dungeon.node.convertToNodeSpaceAR(wp)
         if (isWall) {
             let pos = this.player.hv.clone()
             this.player.sc.isMoving = false

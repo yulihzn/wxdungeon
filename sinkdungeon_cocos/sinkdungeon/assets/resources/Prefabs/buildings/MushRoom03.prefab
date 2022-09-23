@@ -656,10 +656,10 @@
     },
     "renderColor": {
       "__type__": "cc.Color",
-      "r": 249,
-      "g": 86,
-      "b": 249,
-      "a": 124
+      "r": 254,
+      "g": 155,
+      "b": 254,
+      "a": 114
     },
     "showLight": true,
     "showRayCast": false,

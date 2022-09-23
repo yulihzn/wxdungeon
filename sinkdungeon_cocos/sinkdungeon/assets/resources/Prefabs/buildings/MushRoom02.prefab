@@ -500,9 +500,9 @@
     },
     "renderColor": {
       "__type__": "cc.Color",
-      "r": 249,
-      "g": 216,
-      "b": 86,
+      "r": 255,
+      "g": 237,
+      "b": 166,
       "a": 103
     },
     "showLight": true,

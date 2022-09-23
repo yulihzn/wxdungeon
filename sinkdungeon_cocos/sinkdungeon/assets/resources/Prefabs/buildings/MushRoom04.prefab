@@ -1147,9 +1147,9 @@
     },
     "renderColor": {
       "__type__": "cc.Color",
-      "r": 86,
-      "g": 161,
-      "b": 249,
+      "r": 186,
+      "g": 218,
+      "b": 255,
       "a": 181
     },
     "showLight": true,
@@ -1419,9 +1419,9 @@
     },
     "renderColor": {
       "__type__": "cc.Color",
-      "r": 86,
-      "g": 161,
-      "b": 249,
+      "r": 186,
+      "g": 218,
+      "b": 255,
       "a": 181
     },
     "showLight": true,
@@ -1691,9 +1691,9 @@
     },
     "renderColor": {
       "__type__": "cc.Color",
-      "r": 86,
-      "g": 161,
-      "b": 249,
+      "r": 186,
+      "g": 218,
+      "b": 255,
       "a": 181
     },
     "showLight": true,

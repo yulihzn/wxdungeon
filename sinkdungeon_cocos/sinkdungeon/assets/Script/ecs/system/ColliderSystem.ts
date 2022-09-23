@@ -292,16 +292,15 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
         }
         return result
     }
-    public getColliderPoint(p1: cc.Vec2, p2: cc.Vec2, collider: CCollider): RayCastResult {
-        let result = new RayCastResult(collider, null)
+    public getNearestColliderPoint(p1: cc.Vec2, p2: cc.Vec2, collider: CCollider): RayCastResult {
+        let result = new RayCastResult(collider, p2)
         let length = result.collider.points.length
         for (let i = 0; i < length; ++i) {
             let b1 = result.collider.points[i]
             let b2 = result.collider.points[(i + 1) % length]
             let ponit = this.getLineLinePoint(p1, p2, b1, b2)
-            if (ponit) {
+            if (ponit && ponit.sub(p1).magSqr() < result.point.sub(p1).magSqr()) {
                 result.point = ponit
-                break
             }
         }
         return result

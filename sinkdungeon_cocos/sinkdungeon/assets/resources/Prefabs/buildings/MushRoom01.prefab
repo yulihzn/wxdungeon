@@ -1159,10 +1159,10 @@
     },
     "renderColor": {
       "__type__": "cc.Color",
-      "r": 86,
-      "g": 161,
-      "b": 249,
-      "a": 105
+      "r": 186,
+      "g": 218,
+      "b": 255,
+      "a": 89
     },
     "showLight": true,
     "showRayCast": false,
@@ -1431,9 +1431,9 @@
     },
     "renderColor": {
       "__type__": "cc.Color",
-      "r": 86,
-      "g": 161,
-      "b": 249,
+      "r": 186,
+      "g": 218,
+      "b": 255,
       "a": 105
     },
     "showLight": true,
