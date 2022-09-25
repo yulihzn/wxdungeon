@@ -12,6 +12,7 @@ import DamageData from '../data/DamageData'
 import AudioPlayer from '../utils/AudioPlayer'
 import Dungeon from '../logic/Dungeon'
 import InventoryManager from '../manager/InventoryManager'
+import IndexZ from '../utils/IndexZ'
 
 const { ccclass, property } = cc._decorator
 
@@ -70,6 +71,9 @@ export default class NormalBuilding extends Building {
         this.changeRes(resIndex)
         if (resIndex > 0 && resIndex >= this.resLength - 1) {
             pcollider.zHeight = this.data.breakZ
+        }
+        if (this.data.indexZ) {
+            this.node.zIndex = IndexZ.getActorZIndex(this.node.position.add(cc.v3(0, this.data.indexZ)))
         }
     }
     private getResIndex() {

@@ -115,7 +115,9 @@ export default class BuildingManager extends BaseManager {
     static readonly WALL = 'Wall'
     static readonly WATER = 'Water'
     static readonly LAMPLIGHT = 'LampLight'
+    static readonly LAMPLIGHTOUTSIDE = 'LampLightOutside'
     static readonly LAMPOVALLIGHT = 'LampOvalLight'
+    static readonly LAMPOVALLIGHTOUTSIDE = 'LampOvalLightOutside'
     static readonly LAMPSUN = 'LampSun'
     static readonly LAMPSHIP = 'LampShip'
     static readonly LAMPSEARCH = 'LampSearch'
@@ -721,6 +723,7 @@ export default class BuildingManager extends BaseManager {
         let isOverHead = false
         let isRect = false
         let isCustom = false
+        let isOutSide = false
         let isAttachTop = false
         switch (mapDataStr) {
             case 'L0':
@@ -767,6 +770,9 @@ export default class BuildingManager extends BaseManager {
                 prefabName = BuildingManager.LAMPEXIT
                 isAttachTop = true
                 break
+            case 'L13':
+                prefabName = BuildingManager.LAMPOVALLIGHTOUTSIDE
+                break
             case 'LL020':
             case 'LL021':
             case 'LL022':
@@ -797,6 +803,33 @@ export default class BuildingManager extends BaseManager {
             case 'LL008':
             case 'LL009':
                 prefabName = BuildingManager.LAMPLIGHT
+                isCustom = true
+                isRect = true
+                break
+            case 'LO010':
+            case 'LO011':
+            case 'LO012':
+            case 'LO013':
+            case 'LO014':
+            case 'LO015':
+            case 'LO016':
+            case 'LO017':
+            case 'LO018':
+            case 'LO019':
+                prefabName = BuildingManager.LAMPLIGHTOUTSIDE
+                isCustom = true
+                break
+            case 'LO000':
+            case 'LO001':
+            case 'LO002':
+            case 'LO003':
+            case 'LO004':
+            case 'LO005':
+            case 'LO006':
+            case 'LO007':
+            case 'LO008':
+            case 'LO009':
+                prefabName = BuildingManager.LAMPLIGHTOUTSIDE
                 isCustom = true
                 isRect = true
                 break

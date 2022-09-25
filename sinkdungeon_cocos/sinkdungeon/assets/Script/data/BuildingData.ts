@@ -40,6 +40,7 @@ export default class BuildingData {
     spritePos = '' //贴图位置 x,y
     z = 0 //浮空高度
     breakZ = 0 //破损后的z
+    indexZ = 0 //额外此参数会修改zindex
     custom = false //自定义,为true不读取预设参数
     info = ''
     desc = ''

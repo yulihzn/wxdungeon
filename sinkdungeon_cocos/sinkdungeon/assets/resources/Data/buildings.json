@@ -59,8 +59,8 @@
     "platform00009": {
         "nameCn": "厕所反面",
         "scale": 4,
-        "spritePos": "0,96",
-        "collider": "0,32,128,64,128"
+        "spritePos": "0,32",
+        "collider": "0,-32,128,64,128"
     },
     "platform00010": {
         "nameCn": "洗手池",
@@ -71,8 +71,9 @@
     "platform00011": {
         "nameCn": "小便池",
         "scale": 4,
-        "spritePos": "0,96",
-        "collider": "0,4,64,8,96"
+        "spritePos": "0,120",
+        "collider": "0,60,64,16,96",
+        "indexZ": 120
     },
     "hitbuilding00000": {
         "nameCn": "废弃面包车",

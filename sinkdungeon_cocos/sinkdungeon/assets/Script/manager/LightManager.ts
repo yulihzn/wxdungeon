@@ -43,6 +43,8 @@ export default class LightManager extends BaseManager {
     static readonly ALPHA_END = 220
     static readonly ROOM_LIGHT = 50
     private shadowAlpha = LightManager.ALPHA_START
+    private hasOutSideLight = false
+    private isFirstRender = true
 
     clear(): void {
         LightManager.lightList = []
@@ -53,9 +55,13 @@ export default class LightManager extends BaseManager {
         this.timeChange()
     }
     private render() {
+        this.hasOutSideLight = false
         for (let i = 0; i < LightManager.lightList.length; i++) {
             let light = LightManager.lightList[i]
             if (light) {
+                if (light.fromOutside) {
+                    this.hasOutSideLight = true
+                }
                 light.renderSightArea(this.camera)
                 this.renderRay(light, i == 0, this.shadowRay)
             }
@@ -75,6 +81,10 @@ export default class LightManager extends BaseManager {
             this.shadowTexture1.setFilters(cc.Texture2D.Filter.LINEAR, cc.Texture2D.Filter.LINEAR)
             this.shadowCamera1.targetTexture = this.shadowTexture1
             this.shadow1.spriteFrame = new cc.SpriteFrame(this.shadowTexture1)
+        }
+        if (this.isFirstRender) {
+            this.isFirstRender = false
+            this.timeChange()
         }
     }
     public static registerLight(lights: ShadowOfSight[], actorNode: cc.Node) {
@@ -225,8 +235,11 @@ export default class LightManager extends BaseManager {
             this.shadowAlpha = LightManager.ALPHA_START
         }
         this.shadowAlpha += this.getShadowAlphaByRoom()
-        if (this.shadowAlpha > 255) {
-            this.shadowAlpha = 255
+        if (this.shadowAlpha > 240) {
+            this.shadowAlpha = 240
+        }
+        if (this.shadowAlpha < 0) {
+            this.shadowAlpha = 0
         }
         this.mat.setProperty('lightColor', cc.color(0, 0, 20, this.shadowAlpha))
     }
@@ -235,10 +248,13 @@ export default class LightManager extends BaseManager {
         if (!shadowLevel || isNaN(parseInt(shadowLevel))) {
             return 0
         } else {
-            return parseInt(shadowLevel) * 25.5
+            return parseInt(shadowLevel) * 25
         }
     }
     private getShadowAlphaByTime() {
+        if (!this.hasOutSideLight) {
+            return 0
+        }
         let date = new Date(Logic.realTime)
         let hour = date.getHours()
         let minute = date.getMinutes()

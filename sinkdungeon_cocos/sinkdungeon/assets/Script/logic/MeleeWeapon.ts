@@ -342,7 +342,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
         let hv1 = other.w_center.sub(self.w_center).normalize()
         let wp2 = this.player.node.convertToWorldSpaceAR(hv1.mul(this.weaponReflectPoint.position.mag()))
         let wp = GameWorldSystem.colliderSystem.getNearestColliderPoint(self.w_center, wp2, other).point
-        if (this.hv.dot(hv1) < 0) {
+        let d = this.hv.dot(hv1)
+        if (d < -0.8) {
             return
         }
         let p1 = this.player.node.convertToWorldSpaceAR(cc.Vec3.ZERO)

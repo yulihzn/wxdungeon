@@ -34,6 +34,8 @@ export default class ShadowOfSight extends cc.Component {
     z = 0
     @property
     zHeight = 0
+    @property
+    fromOutside = false //是否来自外面
     sprite: cc.Sprite = null
     showShadow = true
     /** 视野顶点数组 */
