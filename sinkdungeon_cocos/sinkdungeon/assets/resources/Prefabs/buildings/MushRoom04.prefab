@@ -831,6 +831,7 @@
     "fromSky": false,
     "z": 0,
     "zHeight": 0,
+    "fromOutside": true,
     "_id": ""
   },
   {
@@ -1157,6 +1158,7 @@
     "fromSky": false,
     "z": 0,
     "zHeight": 0,
+    "fromOutside": true,
     "_id": ""
   },
   {
@@ -1429,6 +1431,7 @@
     "fromSky": false,
     "z": 0,
     "zHeight": 0,
+    "fromOutside": true,
     "_id": ""
   },
   {
@@ -1701,6 +1704,7 @@
     "fromSky": false,
     "z": 0,
     "zHeight": 0,
+    "fromOutside": true,
     "_id": ""
   },
   {

@@ -30,6 +30,7 @@ export class EventHelper extends cc.Component {
     public static readonly CHANGE_MINIMAP = 'CHANGE_MINIMAP'
     public static readonly OPEN_MINIMAP = 'OPEN_MINIMAP'
     public static readonly HUD_ADD_COIN = 'HUD_ADD_COIN'
+    public static readonly HUD_ADD_REAL_COIN = 'HUD_ADD_REAL_COIN'
     public static readonly HUD_ADD_OILGOLD = 'HUD_ADD_OILGOLD'
     public static readonly HUD_LOSE_OILGOLD = 'HUD_LOSE_OILGOLD'
     public static readonly HUD_OILGOLD_LOSE_SHOW = 'HUD_OILGOLD_LOSE_SHOW'

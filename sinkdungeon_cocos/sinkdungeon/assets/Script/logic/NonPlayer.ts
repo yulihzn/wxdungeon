@@ -45,6 +45,7 @@ import PlayActor from '../base/PlayActor'
 import PlayerAvatar from './PlayerAvatar'
 import BaseAvatar from '../base/BaseAvatar'
 import FrameAvatar from './FrameAvatar'
+import Tips from '../ui/Tips'
 
 @ccclass
 export default class NonPlayer extends PlayActor {
@@ -100,6 +101,8 @@ export default class NonPlayer extends PlayActor {
     avatarPrefab: cc.Prefab = null
     @property(cc.Prefab)
     frameAvatarPrefab: cc.Prefab = null
+    @property(Tips)
+    tips: Tips = null
     private attrNode: cc.Node
     private sprite: cc.Node
     private bodySprite: cc.Sprite
@@ -1277,6 +1280,7 @@ export default class NonPlayer extends PlayActor {
         //防止错位
         this.healthBar.node.x = -30 * this.node.scale
         this.healthBar.node.y = this.data.boxType == 3 || this.data.boxType == 5 ? 150 : 120
+        this.tips.node.y = this.data.boxType == 3 || this.data.boxType == 5 ? 180 : 150
         //变异为紫色
         this.healthBar.progressBar.barSprite.node.color = this.IsVariation ? cc.color(128, 0, 128) : cc.color(194, 0, 0)
         this.healthBar.progressBar.barSprite.node.color = this.killPlayerCount > 0 ? cc.color(255, 215, 0) : this.healthBar.progressBar.barSprite.node.color
@@ -1545,7 +1549,8 @@ export default class NonPlayer extends PlayActor {
                     newPos = newPos.addSelf(cc.v3(-1, 0))
                 }
                 let pos = Dungeon.getPosInMap(newPos)
-                this.entity.Transform.position = pos
+                let r = cc.v3(Logic.getRandomNum(-Dungeon.TILE_SIZE / 2, Dungeon.TILE_SIZE / 2), Logic.getRandomNum(-Dungeon.TILE_SIZE / 2, Dungeon.TILE_SIZE / 2))
+                this.entity.Transform.position = pos.add(r)
                 this.node.setPosition(pos)
             })
             .to(0.2, { opacity: 255 })

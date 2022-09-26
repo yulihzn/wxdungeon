@@ -25,6 +25,7 @@ export default class Coin extends BaseColliderComponent {
     valueRes = ['gem01', 'gem02', 'gem03', 'gem04']
     isReady = false
     player: Player
+    isReal = false
     private soundPlaying = false
 
     // LIFE-CYCLE CALLBACKS:
@@ -58,7 +59,11 @@ export default class Coin extends BaseColliderComponent {
             index = 1
             this.node.scale = 1
         }
-        this.node.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(this.valueRes[index])
+        let sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite)
+        sprite.spriteFrame = Logic.spriteFrameRes(this.valueRes[index])
+        if (this.isReal) {
+            sprite.spriteFrame = Logic.spriteFrameRes('realcoin')
+        }
     }
 
     start() {}
@@ -97,7 +102,7 @@ export default class Coin extends BaseColliderComponent {
                 let arr = [AudioPlayer.COIN, AudioPlayer.COIN1, AudioPlayer.COIN2]
                 AudioPlayer.play(arr[Logic.getRandomNum(0, arr.length - 1)])
             }
-            EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: this.value })
+            EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: this.value, isReal: this.isReal })
             EventHelper.emit('destorycoin', { coinNode: this.node })
         }
     }

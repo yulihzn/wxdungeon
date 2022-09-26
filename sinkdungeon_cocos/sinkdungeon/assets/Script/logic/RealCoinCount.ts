@@ -14,44 +14,31 @@ import { EventHelper } from './EventHelper'
 const { ccclass, property } = cc._decorator
 
 @ccclass
-export default class CoinCount extends cc.Component {
+export default class RealCoinCount extends cc.Component {
     anim: cc.Animation
     @property(cc.Label)
     label: cc.Label = null
-    @property
-    isReal = false
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.anim = this.getComponent(cc.Animation)
-        EventHelper.on(EventHelper.HUD_ADD_COIN, detail => {
-            this.addCount(detail.count, detail.isReal)
+        EventHelper.on(EventHelper.HUD_ADD_REAL_COIN, detail => {
+            this.addCount(detail.count)
         })
     }
 
     start() {}
-    addCount(value: string, isReal: boolean) {
+    addCount(value: string) {
         if (!this.anim) {
             return
         }
         let c = parseInt(value)
-        if (isReal && this.isReal) {
-            Logic.realCoins += c
-        } else if (!isReal && !this.isReal) {
-            Logic.coins += c
-            if (c > 0) {
-                Logic.coinCounts += c
-                if (Logic.coinCounts >= 1) {
-                    Logic.coinCounts = 0
-                    EventHelper.emit(EventHelper.PLAYER_USEDREAM, { value: -1 })
-                }
-            }
-        }
+        Logic.realCoins += c
     }
 
     update(dt) {
         if (this.label) {
-            this.label.string = `${this.isReal ? Logic.realCoins : Logic.coins}`
+            this.label.string = `${Logic.realCoins}`
         }
     }
 }

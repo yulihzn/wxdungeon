@@ -17,6 +17,7 @@ export default class DialogueData {
     list: DialogueTextData[] = []
     actors: DialogueActorData[] = []
     isTalk = false
+    count: number = 0 //出现次数
 
     valueCopy(data: DialogueData) {
         if (!data) {

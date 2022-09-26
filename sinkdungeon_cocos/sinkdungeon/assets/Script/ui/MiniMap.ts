@@ -137,7 +137,7 @@ export default class MiniMap extends cc.Component {
         if (this.dialog.position.equals(cc.Vec3.ZERO)) {
             this.closeButton.active = true
             cc.tween(this.dialog)
-                .to(0.3, { position: cc.v3(-410, -245), width: 600, height: 300, scale: 1 })
+                .to(0.3, { position: cc.v3(310, -290), width: 600, height: 300, scale: 1.5 })
                 .call(() => {
                     this.cover.active = false
                     this.isAniming = false

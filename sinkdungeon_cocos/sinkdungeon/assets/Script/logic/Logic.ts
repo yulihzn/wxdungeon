@@ -28,6 +28,7 @@ import LoadingManager from '../manager/LoadingManager'
 import DialogueData from '../data/DialogueData'
 import BuildingData from '../data/BuildingData'
 import SettingsData from '../data/SettingsData'
+import Utils from '../utils/Utils'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -99,11 +100,12 @@ export default class Logic extends cc.Component {
     static inventoryManager: InventoryManager = new InventoryManager()
     static mapManager: MapManager = new MapManager()
     static worldLoader: WorldLoader = new WorldLoader()
-    static realCoins = 0 //真实货币
+    static realCoins = 0 //真实货币，真是货币无法从梦境里获得，但是会出现对应的npc会进行这样的交易
     static coins = 0 //金币
     static oilGolds = 0 //油金
     static killCount = 0 //杀敌数
     static coinCounts = 0 //金币累加数
+    static dialogueCounts: { [key: string]: number } = {} //对话出现次数
     static totalTime = 0
     static realTime = 1559145600000
     static seed = 5
@@ -183,7 +185,8 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.realTime = Logic.realTime
         Logic.profileManager.data.savePointData = Logic.savePoinitData.clone()
         Logic.profileManager.data.groundOilGoldData = Logic.groundOilGoldData.clone()
-        Logic.profileManager.data.killPlayerCounts = Logic.killPlayerCounts
+        Logic.profileManager.data.killPlayerCounts = Utils.cloneKeyValueNumber(Logic.killPlayerCounts)
+        Logic.profileManager.data.dialogueCounts = Utils.cloneKeyValue(Logic.dialogueCounts)
         Logic.profileManager.data.oilGolds = Logic.oilGolds
         Logic.profileManager.data.coins = Logic.coins
         Logic.profileManager.data.coinCounts = Logic.coinCounts
@@ -237,7 +240,9 @@ export default class Logic extends cc.Component {
         //重置bgm
         Logic.lastBgmIndex = 0
         //加载怪物击杀玩家数据
-        Logic.killPlayerCounts = Logic.profileManager.data.killPlayerCounts
+        Logic.killPlayerCounts = Utils.cloneKeyValueNumber(Logic.profileManager.data.killPlayerCounts)
+        //加载对话出现次数
+        Logic.dialogueCounts = Utils.cloneKeyValue(Logic.profileManager.data.dialogueCounts)
         Logic.playerData.OilGoldData.valueCopy(Logic.getOilGoldData(Logic.oilGolds))
     }
     static resetInventoryAndOtherData() {
@@ -493,5 +498,15 @@ export default class Logic extends cc.Component {
                 }
             }
         }
+    }
+    static getDialogueCount(id: string) {
+        if (Logic.dialogueCounts[id]) {
+            return Logic.dialogueCounts[id]
+        } else {
+            return 0
+        }
+    }
+    static addDialogueCount(id: string) {
+        Logic.dialogueCounts[id] = Logic.dialogueCounts[id] + 1
     }
 }

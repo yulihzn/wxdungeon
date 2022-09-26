@@ -115,7 +115,7 @@ export default class Dungeon extends cc.Component {
             if (this.node) this.addEquipment(detail.res, detail.pos, detail.equipmentData)
         })
         EventHelper.on(EventHelper.DUNGEON_ADD_COIN, detail => {
-            this.addCoin(detail.pos, detail.count)
+            this.addCoin(detail.pos, detail.count, detail.isReal)
         })
         EventHelper.on(EventHelper.DUNGEON_ADD_OILGOLD, detail => {
             this.addOilGold(detail.pos, detail.count)
@@ -456,11 +456,12 @@ export default class Dungeon extends cc.Component {
     }
 
     /**掉落金币 */
-    private addCoin(pos: cc.Vec3, count: number) {
+    private addCoin(pos: cc.Vec3, count: number, isReal: boolean) {
         if (this.itemManager) {
-            this.itemManager.getValueCoin(count, pos, this.node)
+            this.itemManager.getValueCoin(count, pos, this.node, isReal)
         }
     }
+
     /**掉落油金 */
     private addOilGold(pos: cc.Vec3, count: number) {
         if (this.itemManager) {

@@ -1,5 +1,4 @@
 import Logic from '../logic/Logic'
-import Building from './Building'
 import CCollider from '../collider/CCollider'
 import BaseColliderComponent from '../base/BaseColliderComponent'
 

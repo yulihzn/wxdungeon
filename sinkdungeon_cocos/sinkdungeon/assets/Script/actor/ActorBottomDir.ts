@@ -1,10 +1,5 @@
-import FromData from '../data/FromData'
 import Actor from '../base/Actor'
-import ActorUtils from '../utils/ActorUtils'
 import Utils from '../utils/Utils'
-import Dungeon from '../logic/Dungeon'
-import NonPlayer from '../logic/NonPlayer'
-import CCollider from '../collider/CCollider'
 import Logic from '../logic/Logic'
 
 // Learn TypeScript:

@@ -1,7 +1,6 @@
 import Boss from '../boss/Boss'
 import DamageData from '../data/DamageData'
 import IndexZ from '../utils/IndexZ'
-import Dungeon from '../logic/Dungeon'
 import AreaOfEffectData from '../data/AreaOfEffectData'
 import ActorUtils from '../utils/ActorUtils'
 import InteractBuilding from '../building/InteractBuilding'
@@ -30,7 +29,6 @@ export default class AreaOfEffect extends BaseColliderComponent {
     private isAttacking = false
     data: AreaOfEffectData = new AreaOfEffectData()
     // LIFE-CYCLE CALLBACKS:
-    dugeon: Dungeon
     killCallBack: Function
     destoryCallBack: Function
     usePool = false

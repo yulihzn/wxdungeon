@@ -23,6 +23,7 @@ export default class OilGold extends BaseColliderComponent {
     value: number = 0
     isReady = false
     player: Player
+    isReal = false
 
     // LIFE-CYCLE CALLBACKS:
 

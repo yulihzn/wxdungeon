@@ -52,30 +52,31 @@ export default class ItemManager extends BaseManager {
         }
         this.groundList = []
     }
-    getValueCoin(count: number, pos: cc.Vec3, parentNode: cc.Node) {
+    getValueCoin(count: number, pos: cc.Vec3, parentNode: cc.Node, isReal: boolean) {
         let updateValue = Coin.FACE_VALUE
         let v = count % updateValue
         for (let i = 0; i < v; i++) {
-            this.getCoinItem(1, pos, parentNode, true)
+            this.getCoinItem(1, pos, parentNode, true, isReal)
         }
         let v1 = (count - v) / updateValue
         for (let i = 0; i < v1; i++) {
-            this.getCoinItem(updateValue, pos, parentNode, true)
+            this.getCoinItem(updateValue, pos, parentNode, true, isReal)
         }
     }
+
     getValueOilGold(count: number, pos: cc.Vec3, parentNode: cc.Node) {
         let updateValue = OilGold.FACE_VALUE
         let v = count % updateValue
         for (let i = 0; i < v; i++) {
-            this.getCoinItem(1, pos, parentNode, false)
+            this.getCoinItem(1, pos, parentNode, false, false)
         }
         let v1 = (count - v) / updateValue
         for (let i = 0; i < v1; i++) {
-            this.getCoinItem(updateValue, pos, parentNode, false)
+            this.getCoinItem(updateValue, pos, parentNode, false, false)
         }
     }
 
-    private getCoinItem(value: number, pos: cc.Vec3, parentNode: cc.Node, isCoin: boolean) {
+    private getCoinItem(value: number, pos: cc.Vec3, parentNode: cc.Node, isCoin: boolean, isReal: boolean) {
         let pool = isCoin ? this.coinPool : this.oilPool
         let prefab = isCoin ? this.coin : this.oilGold
         let player
@@ -98,6 +99,7 @@ export default class ItemManager extends BaseManager {
         let item = isCoin ? itemPrefab.getComponent(Coin) : itemPrefab.getComponent(OilGold)
         item.entity.Transform.position = p
         item.player = player
+        item.isReal = isReal
         item.changeValue(value)
         item.node.zIndex = IndexZ.OVERHEAD
         itemPrefab.active = true
