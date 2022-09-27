@@ -68,8 +68,6 @@ import EquipItemTalent from '../talent/EquipItemTalent'
 export default class Player extends PlayActor {
     @property(cc.Sprite)
     sprite: cc.Sprite = null
-    @property(FloatinglabelManager)
-    floatinglabelManager: FloatinglabelManager = null
     @property(cc.Vec3)
     pos: cc.Vec3 = null
     @property(cc.Node)
@@ -135,7 +133,6 @@ export default class Player extends PlayActor {
     swimmingAudioStep: NextStep = new NextStep()
     lastLinearVelocityZ = 0 //上次向上的速度
     statusPos: cc.Vec3 = cc.v3(0, 0)
-    floatPos: cc.Vec3 = cc.v3(0, 0)
     dashCooling = false
     stateMachine: StateMachine<Player, State<Player>>
     // LIFE-CYCLE CALLBACKS:
@@ -146,7 +143,6 @@ export default class Player extends PlayActor {
         this.triggerShooter = this.shooterEx
         this.handLeft = this.weaponLeft
         this.handRight = this.weaponRight
-        this.floatinglabelMgr = this.floatinglabelManager
         this.statusMgr = this.statusManager
         this.playerData = this.data
         this.jumpAbility = this.addComponent(JumpingAbility)
@@ -171,7 +167,6 @@ export default class Player extends PlayActor {
         this.entity.Move.linearVelocity = cc.v2(0, 0)
         this.statusManager.statusIconList = this.statusIconList
         this.statusPos = this.statusManager.node.position.clone()
-        this.floatPos = this.floatinglabelManager.node.position.clone()
         this.inventoryManager = Logic.inventoryManager
 
         this.pos = cc.v3(0, 0)
@@ -1021,7 +1016,7 @@ export default class Player extends PlayActor {
             }
         }
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y })
-        this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false, false, isBlock, damageData.isBackAttack, isAvoidDeath)
+        this.showFloatFont(dd.getTotalDamage(), isDodge, false, false, isBlock, damageData.isBackAttack, isAvoidDeath)
         if (isDodge) {
             this.exTrigger(TriggerData.GROUP_HURT, TriggerData.TYPE_HURT_DODGE, from, actor)
         }
@@ -1227,7 +1222,6 @@ export default class Player extends PlayActor {
             this.jumpAbility.updateLogic()
         }
         this.statusManager.node.position = this.statusPos.clone().add(cc.v3(0, this.root.y))
-        this.floatinglabelManager.node.position = this.floatPos.clone().add(cc.v3(0, this.root.y))
         if (this.sc.isJumping && this.CanJump) {
             this.playerAnim(this.entity.Move.linearVelocityZ > 0 ? BaseAvatar.STATE_JUMP_UP : BaseAvatar.STATE_JUMP_DOWN, this.currentDir)
         }

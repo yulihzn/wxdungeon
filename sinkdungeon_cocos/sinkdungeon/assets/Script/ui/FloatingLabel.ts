@@ -73,7 +73,7 @@ export default class FloatingLabel extends cc.Component {
 
     hideLabel() {
         this.node.active = false
-        EventHelper.emit('destorylabel', { labelNode: this.node })
+        EventHelper.emit(EventHelper.POOL_DESTROY_LABEL, { labelNode: this.node })
     }
     //Anim
     FloatingFinish() {

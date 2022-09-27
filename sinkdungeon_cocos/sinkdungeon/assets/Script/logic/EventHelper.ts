@@ -86,6 +86,8 @@ export class EventHelper extends cc.Component {
     public static readonly HUD_TIME_TICK = 'HUD_TIME_TICK'
     public static readonly HUD_DIALOGUE_SHOW = 'HUD_DIALOGUE_SHOW'
     public static readonly HUD_FURNITURE_REFRESH = 'HUD_FURNITURE_REFRESH'
+    public static readonly HUD_SHOW_FLOATING_LABEL = 'HUD_SHOW_FLOATING_LABEL'
+    public static readonly POOL_DESTROY_LABEL = 'POOL_DESTROY_LABEL'
     public static readonly TALENT_TREE_UPDATE = 'TALENT_TREE_UPDATE'
     public static readonly TALENT_TREE_SELECT = 'TALENT_TREE_SELECT'
     public static readonly PLAY_AUDIO = 'PLAY_AUDIO'

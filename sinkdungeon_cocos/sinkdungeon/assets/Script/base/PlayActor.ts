@@ -10,10 +10,11 @@ import ShadowPlayer from '../actor/ShadowPlayer'
 import PlayerWeapon from '../logic/PlayerWeapon'
 import PlayerData from '../data/PlayerData'
 import NonPlayerData from '../data/NonPlayerData'
-import FloatinglabelManager from '../manager/FloatingLabelManager'
 import JumpingAbility from '../actor/JumpingAbility'
 import PlayerAvatar from '../logic/PlayerAvatar'
 import FrameAvatar from '../logic/FrameAvatar'
+import { EventHelper } from '../logic/EventHelper'
+import FloatingLabelData from '../data/FloatingLabelData'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -32,7 +33,6 @@ export default abstract class PlayActor extends Actor {
     dungeon: Dungeon
     triggerShooter: Shooter
     inventoryManager: InventoryManager
-    floatinglabelMgr: FloatinglabelManager
     statusMgr: StatusManager
     shadowList: ShadowPlayer[]
     handLeft: PlayerWeapon
@@ -60,24 +60,15 @@ export default abstract class PlayActor extends Actor {
         this.invisible = false
         this.statusMgr.stopStatus(StatusManager.TALENT_INVISIBLE)
     }
-    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean, isBlock: boolean, isBackStab: boolean, isAvoidDeath: boolean) {
-        if (!this.floatinglabelMgr) {
-            return
+    showFloatFont(d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean, isBlock: boolean, isBackStab: boolean, isAvoidDeath: boolean) {
+        let y = 0
+        if (this.Root) {
+            y = this.Root.y
         }
-        let flabel = this.floatinglabelMgr.getFloaingLabel(dungeonNode)
-        if (isDodge) {
-            flabel.showDoge()
-        } else if (isMiss) {
-            flabel.showMiss()
-        } else if (isBlock) {
-            flabel.showBlock()
-        } else if (isAvoidDeath) {
-            flabel.showAvoidDeath()
-        } else if (d != 0 && d) {
-            flabel.showDamage(-d, isCritical, isBackStab)
-        } else {
-            flabel.hideLabel()
-        }
+        let worldPos = this.node.convertToWorldSpaceAR(cc.v3(0, y + 80))
+        EventHelper.emit(EventHelper.HUD_SHOW_FLOATING_LABEL, {
+            data: FloatingLabelData.create(worldPos, d, isDodge, isMiss, isCritical, isBlock, isBackStab, isAvoidDeath)
+        })
     }
     get Hv(): cc.Vec2 {
         return this.hv

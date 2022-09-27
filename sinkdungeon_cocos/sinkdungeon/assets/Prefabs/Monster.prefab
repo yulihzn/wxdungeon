@@ -39,29 +39,26 @@
         "__id__": 94
       },
       {
-        "__id__": 97
-      },
-      {
-        "__id__": 101
+        "__id__": 98
       }
     ],
     "_active": true,
     "_components": [
       {
+        "__id__": 102
+      },
+      {
+        "__id__": 103
+      },
+      {
+        "__id__": 104
+      },
+      {
         "__id__": 105
-      },
-      {
-        "__id__": 106
-      },
-      {
-        "__id__": 107
-      },
-      {
-        "__id__": 108
       }
     ],
     "_prefab": {
-      "__id__": 109
+      "__id__": 106
     },
     "_opacity": 255,
     "_color": {
@@ -3286,7 +3283,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "FloatingLabelManager",
+    "_name": "SpecialManager",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -3300,94 +3297,6 @@
     ],
     "_prefab": {
       "__id__": 93
-    },
-    "_opacity": 0,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float64Array",
-      "array": [
-        0,
-        80,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1,
-        1
-      ]
-    },
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_is3DNode": false,
-    "_groupIndex": 2,
-    "groupIndex": 2,
-    "_id": ""
-  },
-  {
-    "__type__": "70be4qc1pdJGpxF0vSkBTb1",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 91
-    },
-    "_enabled": true,
-    "label": {
-      "__uuid__": "8e1d80fa-8af6-455d-9c92-80ac7bb70bef"
-    },
-    "_id": ""
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 1
-    },
-    "asset": {
-      "__id__": 0
-    },
-    "fileId": "13qpbj86tOO7ruB/IMQGpM",
-    "sync": false
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "SpecialManager",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 1
-    },
-    "_children": [],
-    "_active": true,
-    "_components": [
-      {
-        "__id__": 95
-      }
-    ],
-    "_prefab": {
-      "__id__": 96
     },
     "_opacity": 255,
     "_color": {
@@ -3441,7 +3350,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 94
+      "__id__": 91
     },
     "_enabled": true,
     "aoe": {
@@ -3483,14 +3392,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 98
+        "__id__": 95
       },
       {
-        "__id__": 99
+        "__id__": 96
       }
     ],
     "_prefab": {
-      "__id__": 100
+      "__id__": 97
     },
     "_opacity": 255,
     "_color": {
@@ -3544,7 +3453,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 97
+      "__id__": 94
     },
     "_enabled": true,
     "_id": ""
@@ -3554,7 +3463,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 97
+      "__id__": 94
     },
     "_enabled": true,
     "tag": 0,
@@ -3597,14 +3506,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 102
+        "__id__": 99
       },
       {
-        "__id__": 103
+        "__id__": 100
       }
     ],
     "_prefab": {
-      "__id__": 104
+      "__id__": 101
     },
     "_opacity": 255,
     "_color": {
@@ -3658,7 +3567,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 101
+      "__id__": 98
     },
     "_enabled": true,
     "_layoutSize": {
@@ -3690,7 +3599,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 101
+      "__id__": 98
     },
     "_enabled": true,
     "statusPrefab": {
@@ -3755,13 +3664,10 @@
       "__id__": 77
     },
     "statusManager": {
-      "__id__": 103
-    },
-    "floatinglabelManager": {
-      "__id__": 92
+      "__id__": 100
     },
     "specialManager": {
-      "__id__": 95
+      "__id__": 92
     },
     "boom": {
       "__uuid__": "d876d450-5edd-4ce5-ae3a-298945d3c014"

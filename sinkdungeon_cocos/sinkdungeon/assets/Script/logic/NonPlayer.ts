@@ -80,8 +80,6 @@ export default class NonPlayer extends PlayActor {
     healthBar: HealthBar = null
     @property(StatusManager)
     statusManager: StatusManager = null
-    @property(FloatinglabelManager)
-    floatinglabelManager: FloatinglabelManager = null
     @property(SpecialManager)
     specialManager: SpecialManager = null
     @property(cc.Prefab)
@@ -144,7 +142,6 @@ export default class NonPlayer extends PlayActor {
     lastTimeInWater = false
     jumpAbility: JumpingAbility
     statusPos: cc.Vec3 = cc.v3(0, 0)
-    floatPos: cc.Vec3 = cc.v3(0, 0)
     public stateMachine: StateMachine<NonPlayer, State<NonPlayer>>
     get IsVariation() {
         return this.isVariation || this.data.StatusTotalData.variation > 0
@@ -153,7 +150,6 @@ export default class NonPlayer extends PlayActor {
         this.triggerShooter = this.shooter
         // this.handLeft = this.weaponLeft
         // this.handRight = this.weaponRight
-        this.floatinglabelMgr = this.floatinglabelManager
         this.statusMgr = this.statusManager
         this.nonPlayerData = this.data
         this.jumpAbility = this.addComponent(JumpingAbility)
@@ -201,7 +197,6 @@ export default class NonPlayer extends PlayActor {
         this.areaDetector = this.getComponentInChildren(AreaDetector)
         this.resetBodyColor()
         this.statusPos = this.statusManager.node.position.clone()
-        this.floatPos = this.floatinglabelManager.node.position.clone()
         if (this.data.isStatic > 0) {
             this.entity.Collider.colliders[0].isStatic = true
             this.node.width = this.entity.Collider.colliders[0].w
@@ -765,12 +760,12 @@ export default class NonPlayer extends PlayActor {
         }
         //隐身中
         if (this.data.invisible > 0 && Logic.getRandomNum(1, 10) > 4) {
-            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false, false, false)
+            this.showFloatFont(0, true, false, damageData.isCriticalStrike, false, false, false)
             return false
         }
         //闪烁中
         if (this.sc.isBlinking) {
-            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false, false, false)
+            this.showFloatFont(0, true, false, damageData.isCriticalStrike, false, false, false)
             return false
         }
         let dd = this.data.getDamage(damageData)
@@ -778,7 +773,7 @@ export default class NonPlayer extends PlayActor {
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0
         dd = isDodge ? new DamageData() : dd
         if (isDodge) {
-            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false, false, false)
+            this.showFloatFont(0, true, false, damageData.isCriticalStrike, false, false, false)
             return false
         }
         let isHurting = dd.getTotalDamage() > 0
@@ -821,7 +816,7 @@ export default class NonPlayer extends PlayActor {
             this.data.currentHealth = this.data.getHealth().y
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.getHealth().y)
-        this.showFloatFont(this.dungeon.node, dd.getTotalDamage(), false, false, damageData.isCriticalStrike, false, damageData.isBackAttack, false)
+        this.showFloatFont(dd.getTotalDamage(), false, false, damageData.isCriticalStrike, false, damageData.isBackAttack, false)
         //挨打回血
         if (this.data.isRecovery > 0 && isHurting) {
             this.addStatus(StatusManager.RECOVERY, new FromData())
@@ -1078,7 +1073,7 @@ export default class NonPlayer extends PlayActor {
                 this.showAttackEffect(false)
                 let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate
                 if (isMiss) {
-                    this.showFloatFont(this.dungeon.node, 0, false, true, false, false, false, false)
+                    this.showFloatFont(0, false, true, false, false, false, false)
                 }
                 this.showAttackAnim(
                     () => {},
@@ -1344,7 +1339,6 @@ export default class NonPlayer extends PlayActor {
             this.jumpAbility.updateLogic()
         }
         this.statusManager.node.position = this.statusPos.clone().add(cc.v3(0, this.root.y))
-        this.floatinglabelManager.node.position = this.floatPos.clone().add(cc.v3(0, this.root.y))
     }
     private setInWaterMat(sprite: cc.Sprite, inWater: boolean) {
         if (!sprite || !sprite.spriteFrame) {

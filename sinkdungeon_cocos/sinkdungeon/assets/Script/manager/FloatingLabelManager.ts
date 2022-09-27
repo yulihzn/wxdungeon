@@ -1,3 +1,4 @@
+import FloatingLabelData from '../data/FloatingLabelData'
 import { EventHelper } from '../logic/EventHelper'
 import Logic from '../logic/Logic'
 import FloatingLabel from '../ui/FloatingLabel'
@@ -24,14 +25,31 @@ export default class FloatinglabelManager extends cc.Component {
     clear(): void {}
     onLoad() {
         this.labelPool = new cc.NodePool()
-        EventHelper.on('destorylabel', detail => {
+        EventHelper.on(EventHelper.POOL_DESTROY_LABEL, detail => {
             this.destroyLabel(detail.labelNode)
         })
+        EventHelper.on(EventHelper.HUD_SHOW_FLOATING_LABEL, detail => {
+            this.showFloatFont(detail.data)
+        })
     }
-    getFloaingLabel(parentNode: cc.Node) {
-        let p = this.node.position.clone()
-        p = this.node.convertToWorldSpaceAR(p)
-        p = parentNode.convertToNodeSpaceAR(p)
+    private showFloatFont(data: FloatingLabelData) {
+        let flabel = this.getFloaingLabel(data.worldPos)
+        if (data.isDodge) {
+            flabel.showDoge()
+        } else if (data.isMiss) {
+            flabel.showMiss()
+        } else if (data.isBlock) {
+            flabel.showBlock()
+        } else if (data.isAvoidDeath) {
+            flabel.showAvoidDeath()
+        } else if (data.d != 0 && data.d) {
+            flabel.showDamage(-data.d, data.isCritical, data.isBackStab)
+        } else {
+            flabel.hideLabel()
+        }
+    }
+    private getFloaingLabel(worldPos: cc.Vec3) {
+        let p = this.node.convertToNodeSpaceAR(worldPos)
         let labelPrefab: cc.Node = null
         if (this.labelPool.size() > 0) {
             // 通过 size 接口判断对象池中是否有空闲的对象
@@ -41,8 +59,8 @@ export default class FloatinglabelManager extends cc.Component {
         if (!labelPrefab || labelPrefab.active) {
             labelPrefab = cc.instantiate(this.label)
         }
-        labelPrefab.parent = parentNode
-        labelPrefab.position = p.clone()
+        labelPrefab.parent = this.node
+        labelPrefab.position = p
         let label = labelPrefab.getComponent(FloatingLabel)
         labelPrefab.zIndex = IndexZ.UI
         labelPrefab.opacity = 255
