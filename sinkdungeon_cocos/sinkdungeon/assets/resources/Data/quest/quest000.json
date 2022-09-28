@@ -1,1 +1,11 @@
-{ "id": "quest000", "name": "test" }
+{
+    "id": "quest000",
+    "name": "测试树",
+    "root": {
+        "id": "quest000",
+        "name": "序章",
+        "content": "测试一下",
+        "successList": [{ "id": "quest000", "name": "测试成功", "content": "测试两下", "successList": [] }],
+        "failList": [{ "id": "quest000", "name": "测试失败", "content": "测试三下", "successList": [] }]
+    }
+}

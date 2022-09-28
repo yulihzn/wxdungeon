@@ -25,15 +25,16 @@ export default class QuestData {
     successCondition: QuestConditionData = new QuestConditionData() //完成条件
     failCondition: QuestConditionData = new QuestConditionData() //失败条件
     status = QuestData.STATUS_INIT
-    id = '' //id
+    id = '' //id 00left0层数下标，节点下标，左右，列表下标
     name = '' //名字
     content = '' //内容
+    index = -1 //下标
     mapThingsList = '' //指定地图刷出物品和npc列表item000,0,0,0,0,0,0;npc000,0,0,0,0,0,0;
     startTime = 0 //任务开始时间
     mapThingsCreated = false //地图物品npc已刷新
     reward: QuestRewardData = new QuestRewardData()
 
-    parent: QuestData //父节点
+    parentId: string = '' //父节点id
     successList: QuestData[] = [] //成功子节点列表
     failList: QuestData[] = [] //失败子节点列表
     valueCopy(data: QuestData) {
@@ -45,7 +46,6 @@ export default class QuestData {
         this.successCondition.valueCopy(data.successCondition)
         this.failCondition.valueCopy(data.failCondition)
         this.reward.valueCopy(data.reward)
-        this.parent.valueCopy(data.parent)
         if (data.successList) {
             this.successList = []
             for (let c of data.successList) {

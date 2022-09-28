@@ -1,4 +1,6 @@
+import QuestData from '../data/QuestData'
 import QuestTreeData from '../data/QuestTreeData'
+import QuestCard from '../ui/QuestCard'
 const { ccclass, property } = cc._decorator
 
 @ccclass
@@ -7,15 +9,59 @@ export default class QuestFileEditManager extends cc.Component {
     label: cc.Label = null
     @property(cc.EditBox)
     editBox: cc.EditBox = null
+    @property(cc.Node)
+    layout: cc.Node = null
+    @property(cc.Prefab)
+    questCard: cc.Prefab = null
     questTree: QuestTreeData = new QuestTreeData()
+    startPos = cc.v3(0, 0)
+    touchPos = cc.v2(0, 0)
+    cardList: QuestCard[] = []
+    protected onLoad(): void {
+        this.layout.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
+            this.touchPos = event.getLocation()
+            this.startPos = this.layout.position.clone()
+        })
+        this.layout.on(cc.Node.EventType.TOUCH_MOVE, (event: cc.Event.EventTouch) => {
+            let offset = event.getLocation().sub(this.touchPos).mul(0.5)
+            this.layout.setPosition(this.startPos.x + offset.x, this.startPos.y + offset.y)
+        })
+        this.layout.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {})
+        this.layout.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {})
+    }
+    private addQuestNode(parentCard: QuestCard, data: QuestData) {
+        let cardNode = cc.instantiate(this.questCard)
+        let card = cardNode.getComponent(QuestCard)
+        card.updateData(data)
+        this.layout.addChild(cardNode)
+        this.cardList.push(card)
+        if (parentCard) {
+            parentCard.cardList.push(card)
+        }
+        cc.log(this.cardList.length)
+        for (let c of data.successList) {
+            this.addQuestNode(card, c)
+        }
+        for (let c of data.failList) {
+            this.addQuestNode(card, c)
+        }
+    }
+    updateTree() {
+        this.layout.removeAllChildren()
+        this.cardList = []
+        this.addQuestNode(null, this.questTree.root)
+    }
+
+    //button
     buttonUpload() {
         this.uploadForBrowser()
     }
+    //button
     buttonSave() {
         this.questTree.name = this.questTree.name + 'test'
         this.saveForBrowser(JSON.stringify(this.questTree), this.editBox.string)
     }
-    uploadForBrowser() {
+    private uploadForBrowser() {
         if (!cc.sys.isBrowser) return
         let input = document.createElement('input')
         input.type = 'file'
@@ -34,8 +80,9 @@ export default class QuestFileEditManager extends cc.Component {
                     } else {
                         this.questTree.valueCopy(JSON.parse(resource._nativeAsset))
                         this.editBox.string = this.questTree.id
-                        this.label.string = JSON.stringify(this.questTree)
+                        this.label.string = this.questTree.name
                         cc.log(`加载任务列表完成`)
+                        this.updateTree()
                     }
                 })
             }
@@ -48,7 +95,7 @@ export default class QuestFileEditManager extends cc.Component {
      * @param textToWrite 要保存的文件内容
      * @param fileNameToSaveAs 要保存的文件名
      */
-    saveForBrowser(textToWrite: string, fileNameToSaveAs: string) {
+    private saveForBrowser(textToWrite: string, fileNameToSaveAs: string) {
         if (!cc.sys.isBrowser) return
         var textFileAsBlob = new Blob([textToWrite], { type: 'text' })
         var downloadLink = document.createElement('a')

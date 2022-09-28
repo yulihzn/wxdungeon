@@ -2,7 +2,7 @@ import DataUtils from '../utils/DataUtils'
 
 export default class SettingsData {
     showSoftShadow = false
-    showGamepad = true
+    showGamepad = false
     showEquipDialog = false
     lowPower = false
     isFlashLightOpen = false

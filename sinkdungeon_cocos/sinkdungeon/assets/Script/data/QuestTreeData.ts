@@ -19,7 +19,7 @@ export default class QuestTreeData {
     id = '' //id
     name = '' //名字
     content = '' //内容
-    root: QuestData
+    root: QuestData = new QuestData()
     valueCopy(data: QuestTreeData) {
         if (!data) {
             return this
