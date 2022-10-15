@@ -67,7 +67,9 @@ export default class QuestCard extends cc.Component {
             this.graphics.clear()
             this.graphics.moveTo(QuestCard.SIZE / 2, 0)
             for (let c of this.cardList) {
-                this.graphics.lineTo(c.node.position.x + QuestCard.SIZE, c.node.position.y)
+                let pos = c.node.convertToWorldSpaceAR(cc.v3(0, 0))
+                pos = this.node.convertToNodeSpaceAR(pos)
+                this.graphics.lineTo(pos.x, pos.y)
                 this.graphics.moveTo(QuestCard.SIZE / 2, 0)
             }
             this.graphics.stroke()
