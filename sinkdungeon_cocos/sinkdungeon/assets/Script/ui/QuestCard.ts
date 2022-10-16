@@ -42,7 +42,7 @@ export default class QuestCard extends cc.Component {
             this.startPos = this.node.position.clone()
         })
         this.node.on(cc.Node.EventType.TOUCH_MOVE, (event: cc.Event.EventTouch) => {
-            let offset = event.getLocation().sub(this.touchPos).mul(0.5)
+            let offset = event.getLocation().sub(this.touchPos)
             this.node.setPosition(this.startPos.x + offset.x, this.startPos.y + offset.y)
         })
         this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {})
@@ -66,6 +66,7 @@ export default class QuestCard extends cc.Component {
         if (this.isTimeDelay(dt)) {
             this.graphics.clear()
             this.graphics.moveTo(QuestCard.SIZE / 2, 0)
+            this.graphics.lineWidth = 5 + (5 * this.node.parent.scale) / 2
             for (let c of this.cardList) {
                 let pos = c.node.convertToWorldSpaceAR(cc.v3(0, 0))
                 pos = this.node.convertToNodeSpaceAR(pos)

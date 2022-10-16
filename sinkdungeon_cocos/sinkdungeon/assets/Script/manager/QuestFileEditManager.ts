@@ -28,6 +28,16 @@ export default class QuestFileEditManager extends cc.Component {
         })
         this.layout.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {})
         this.layout.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {})
+        this.layout.on(cc.Node.EventType.MOUSE_WHEEL, (event: cc.Event.EventMouse) => {
+            if (event.getScrollY() > 0) {
+                this.layout.scale += 0.02
+            } else {
+                this.layout.scale -= 0.02
+            }
+            if (this.layout.scale < 0) {
+                this.layout.scale = 0.1
+            }
+        })
     }
     private addQuestNode(parentCard: QuestCard, data: QuestData) {
         let cardNode = cc.instantiate(this.questCard)
