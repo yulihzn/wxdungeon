@@ -11,12 +11,26 @@ export default class QuestFileEditManager extends cc.Component {
     editBox: cc.EditBox = null
     @property(cc.Node)
     layout: cc.Node = null
+    @property(cc.Node)
+    zoomUp: cc.Node = null
+    @property(cc.Node)
+    zoomDown: cc.Node = null
     @property(cc.Prefab)
     questCard: cc.Prefab = null
-    questTree: QuestTreeData = new QuestTreeData()
-    startPos = cc.v3(0, 0)
-    touchPos = cc.v2(0, 0)
-    cardList: QuestCard[] = []
+    @property(cc.Node)
+    revokeButton: cc.Node = null
+    @property(cc.Node)
+    revokeCancelButton: cc.Node = null
+    private questTree: QuestTreeData = new QuestTreeData()
+    private revokeTreeList: QuestTreeData[] = []
+    private revokeCancelTreeList: QuestTreeData[] = []
+    private startPos = cc.v3(0, 0)
+    private touchPos = cc.v2(0, 0)
+    private cardList: QuestCard[] = []
+    private currentSelectData: QuestData
+    zoomOffset = 0
+    private isCtrlPressing = false
+    private isShiftPressing = false
     protected onLoad(): void {
         this.layout.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.touchPos = event.getLocation()
@@ -28,32 +42,152 @@ export default class QuestFileEditManager extends cc.Component {
         })
         this.layout.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {})
         this.layout.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {})
-        this.layout.on(cc.Node.EventType.MOUSE_WHEEL, (event: cc.Event.EventMouse) => {
-            if (event.getScrollY() > 0) {
-                this.layout.scale += 0.02
-            } else {
-                this.layout.scale -= 0.02
-            }
-            if (this.layout.scale < 0) {
-                this.layout.scale = 0.1
-            }
+
+        this.zoomUp.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
+            this.zoomOffset = 0.05
         })
+        this.zoomUp.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
+            this.zoomOffset = 0
+        })
+        this.zoomUp.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
+            this.zoomOffset = 0
+        })
+        this.zoomDown.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
+            this.zoomOffset = -0.05
+        })
+        this.zoomDown.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
+            this.zoomOffset = 0
+        })
+        this.zoomDown.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
+            this.zoomOffset = 0
+        })
+        this.layout.on(cc.Node.EventType.MOUSE_WHEEL, (event: cc.Event.EventMouse) => {
+            this.zoom(event.getScrollY() > 0 ? 0.05 : -0.05)
+        })
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this)
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this)
+    }
+    onKeyDown(event: cc.Event.EventKeyboard) {
+        switch (event.keyCode) {
+            case cc.macro.KEY.ctrl:
+                this.isCtrlPressing = true
+                break
+            case cc.macro.KEY.shift:
+                this.isShiftPressing = true
+                break
+            case cc.macro.KEY.z:
+                break
+        }
+    }
+    onKeyUp(event: cc.Event.EventKeyboard) {
+        switch (event.keyCode) {
+            case cc.macro.KEY.ctrl:
+                this.isCtrlPressing = false
+                break
+            case cc.macro.KEY.shift:
+                this.isShiftPressing = false
+                break
+            case cc.macro.KEY.z:
+                if (this.isCtrlPressing) {
+                    if (this.isShiftPressing) {
+                        this.revokeCancel()
+                    } else {
+                        this.revoke()
+                    }
+                }
+                break
+        }
+    }
+    protected update(dt: number): void {
+        if (this.zoomOffset != 0) {
+            this.zoom(this.zoomOffset)
+            this.zoomOffset = 0
+        }
+        this.revokeButton.active = this.revokeTreeList.length > 0
+        this.revokeCancelButton.active = this.revokeCancelTreeList.length > 0
+    }
+    private zoom(offset: number) {
+        this.layout.scale += offset
+        if (this.layout.scale < 0) {
+            this.layout.scale = 0.1
+        }
     }
     private addQuestNode(parentCard: QuestCard, data: QuestData) {
         let cardNode = cc.instantiate(this.questCard)
         let card = cardNode.getComponent(QuestCard)
+        card.editManager = this
         card.updateData(data)
-        this.layout.addChild(cardNode)
+        cardNode.parent = this.layout
         this.cardList.push(card)
+        let pos = cc.v3(-300, -200)
+        if (this.currentSelectData) {
+            let mixId1 = `${this.currentSelectData.parentId},${this.currentSelectData.indexId}`
+            let mixId2 = `${data.parentId},${data.indexId}`
+            if (mixId1 == mixId2) {
+                card.isSelected = true
+            }
+        }
         if (parentCard) {
             parentCard.cardList.push(card)
+            let y = 0
+            if (data.isSuccessType) {
+                y = QuestCard.SIZE * 0.75
+            } else {
+                y = -QuestCard.SIZE * 0.75
+            }
+            pos = parentCard.node.position.add(cc.v3(QuestCard.SIZE * 1.5, y))
         }
+        card.node.position = pos
         cc.log(this.cardList.length)
-        for (let c of data.successList) {
+        for (let i = 0; i < data.successList.length; i++) {
+            let c = data.successList[i]
+            QuestTreeData.updateIndexId(c, data, true)
             this.addQuestNode(card, c)
         }
-        for (let c of data.failList) {
+        for (let i = 0; i < data.failList.length; i++) {
+            let c = data.failList[i]
+            QuestTreeData.updateIndexId(c, data, false)
             this.addQuestNode(card, c)
+        }
+    }
+    selectCard(card: QuestCard) {
+        for (let c of this.cardList) {
+            c.isSelected = false
+        }
+        this.currentSelectData = card.data
+        card.isSelected = true
+    }
+    addTreeNode(indexId: string, parentId: string, isSuccessType: boolean, newdata: QuestData) {
+        let newTree = new QuestTreeData()
+        newTree.valueCopy(this.questTree)
+        newTree.addTreeNode(indexId, parentId, isSuccessType, newdata)
+        this.revokeTreeList.push(this.questTree)
+        this.questTree = newTree
+        this.updateTree()
+    }
+
+    removeTreeNode(indexId: string, parentId: string) {
+        let newTree = new QuestTreeData()
+        newTree.valueCopy(this.questTree)
+        newTree.removeTreeNode(indexId, parentId)
+        this.revokeTreeList.push(this.questTree)
+        this.questTree = newTree
+        this.updateTree()
+    }
+    //button
+    revoke() {
+        if (this.revokeTreeList.length > 0) {
+            this.revokeCancelTreeList.push(this.questTree)
+            this.questTree = this.revokeTreeList.pop()
+            this.updateTree()
+        }
+    }
+    //button
+    revokeCancel() {
+        if (this.revokeCancelTreeList.length > 0) {
+            this.questTree = this.revokeCancelTreeList.pop()
+            this.revokeTreeList.push(this.questTree)
+            this.updateTree()
         }
     }
     updateTree() {
@@ -69,7 +203,18 @@ export default class QuestFileEditManager extends cc.Component {
     //button
     buttonSave() {
         this.questTree.name = this.questTree.name + 'test'
+        let name = this.editBox.string
+        if (name.length < 1) {
+            this.showLog('need a name!')
+        }
         this.saveForBrowser(JSON.stringify(this.questTree), this.editBox.string)
+    }
+    showLog(msg: string) {
+        this.label.string = msg
+        this.unscheduleAllCallbacks()
+        this.scheduleOnce(() => {
+            this.label.string = ''
+        }, 10)
     }
     private uploadForBrowser() {
         if (!cc.sys.isBrowser) return

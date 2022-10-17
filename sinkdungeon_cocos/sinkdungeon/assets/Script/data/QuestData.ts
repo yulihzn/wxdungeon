@@ -21,22 +21,29 @@ export default class QuestData {
     static readonly STATUS_SUCCESS = 2
     static readonly STATUS_FAILED = 3
     static readonly STATUS_DISCARD = 4
+    static readonly TYPE_ROOT = 0
+    static readonly TYPE_SUCCESS = 1
+    static readonly TYPE_FAIL = 2
     triggerCondition: QuestConditionData = new QuestConditionData() //触发条件
     successCondition: QuestConditionData = new QuestConditionData() //完成条件
     failCondition: QuestConditionData = new QuestConditionData() //失败条件
     status = QuestData.STATUS_INIT
-    id = '' //id 00left0层数下标，节点下标，左右，列表下标
+    id = '' //id
     name = '' //名字
     content = '' //内容
-    index = -1 //下标
+    indexId = '' //下标 s0  f0
     mapThingsList = '' //指定地图刷出物品和npc列表item000,0,0,0,0,0,0;npc000,0,0,0,0,0,0;
     startTime = 0 //任务开始时间
     mapThingsCreated = false //地图物品npc已刷新
     reward: QuestRewardData = new QuestRewardData()
 
+    //下标 s0,f0,s0,f0
     parentId: string = '' //父节点id
     successList: QuestData[] = [] //成功子节点列表
     failList: QuestData[] = [] //失败子节点列表
+    get isSuccessType() {
+        return this.indexId.indexOf('s') != -1
+    }
     valueCopy(data: QuestData) {
         if (!data) {
             return this

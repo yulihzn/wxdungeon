@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "88d84e77-8f73-438e-9eef-f0c797357d47",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 17,
+  "height": 17,
+  "platformSettings": {},
+  "subMetas": {
+    "questcardselect": {
+      "ver": "1.0.6",
+      "uuid": "fa1b7d86-3cc1-4b94-af47-ec032dbfd11e",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "88d84e77-8f73-438e-9eef-f0c797357d47",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 17,
+      "height": 17,
+      "rawWidth": 17,
+      "rawHeight": 17,
+      "borderTop": 4,
+      "borderBottom": 4,
+      "borderLeft": 4,
+      "borderRight": 4,
+      "subMetas": {}
+    }
+  }
+}
