@@ -44,7 +44,7 @@ export default class QuestFileEditManager extends cc.Component {
         this.layout.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {})
 
         this.zoomUp.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
-            this.zoomOffset = 0.05
+            this.zoomOffset = 0.025
         })
         this.zoomUp.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             this.zoomOffset = 0
@@ -53,7 +53,7 @@ export default class QuestFileEditManager extends cc.Component {
             this.zoomOffset = 0
         })
         this.zoomDown.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
-            this.zoomOffset = -0.05
+            this.zoomOffset = -0.025
         })
         this.zoomDown.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             this.zoomOffset = 0
@@ -101,7 +101,6 @@ export default class QuestFileEditManager extends cc.Component {
     protected update(dt: number): void {
         if (this.zoomOffset != 0) {
             this.zoom(this.zoomOffset)
-            this.zoomOffset = 0
         }
         this.revokeButton.active = this.revokeTreeList.length > 0
         this.revokeCancelButton.active = this.revokeCancelTreeList.length > 0
@@ -125,6 +124,7 @@ export default class QuestFileEditManager extends cc.Component {
             let mixId2 = `${data.parentId},${data.indexId}`
             if (mixId1 == mixId2) {
                 card.isSelected = true
+                card.select.active = true
             }
         }
         if (parentCard) {
@@ -137,16 +137,20 @@ export default class QuestFileEditManager extends cc.Component {
             }
             pos = parentCard.node.position.add(cc.v3(QuestCard.SIZE * 1.5, y))
         }
-        card.node.position = pos
-        cc.log(this.cardList.length)
+        if (!cc.Vec3.ZERO.equals(data.editPos)) {
+            pos = data.editPos.clone()
+        }
+        card.node.setPosition(pos.clone())
+        // cc.log(`NEW:${card.data.parentId + card.data.indexId},x=${card.node.position.x},y=${card.node.position.y}`)
+        this.questTree.updateTreeNodePos(data.indexId, data.parentId, pos)
         for (let i = 0; i < data.successList.length; i++) {
             let c = data.successList[i]
-            QuestTreeData.updateIndexId(c, data, true)
+            QuestTreeData.updateIndexId(c, data, true, i)
             this.addQuestNode(card, c)
         }
         for (let i = 0; i < data.failList.length; i++) {
             let c = data.failList[i]
-            QuestTreeData.updateIndexId(c, data, false)
+            QuestTreeData.updateIndexId(c, data, false, i)
             this.addQuestNode(card, c)
         }
     }
@@ -156,6 +160,14 @@ export default class QuestFileEditManager extends cc.Component {
         }
         this.currentSelectData = card.data
         card.isSelected = true
+    }
+    updateTreeNodePos(indexId: string, parentId: string, pos: cc.Vec3) {
+        let newTree = new QuestTreeData()
+        newTree.valueCopy(this.questTree)
+        newTree.updateTreeNodePos(indexId, parentId, pos)
+        this.revokeTreeList.push(this.questTree)
+        this.questTree = newTree
+        this.updateTree()
     }
     addTreeNode(indexId: string, parentId: string, isSuccessType: boolean, newdata: QuestData) {
         let newTree = new QuestTreeData()
@@ -177,6 +189,7 @@ export default class QuestFileEditManager extends cc.Component {
     //button
     revoke() {
         if (this.revokeTreeList.length > 0) {
+            //当前修改入栈取消列表里,撤销列表出栈
             this.revokeCancelTreeList.push(this.questTree)
             this.questTree = this.revokeTreeList.pop()
             this.updateTree()
@@ -185,8 +198,8 @@ export default class QuestFileEditManager extends cc.Component {
     //button
     revokeCancel() {
         if (this.revokeCancelTreeList.length > 0) {
-            this.questTree = this.revokeCancelTreeList.pop()
             this.revokeTreeList.push(this.questTree)
+            this.questTree = this.revokeCancelTreeList.pop()
             this.updateTree()
         }
     }
@@ -202,10 +215,11 @@ export default class QuestFileEditManager extends cc.Component {
     }
     //button
     buttonSave() {
-        this.questTree.name = this.questTree.name + 'test'
+        this.questTree.name = this.questTree.name
         let name = this.editBox.string
         if (name.length < 1) {
             this.showLog('need a name!')
+            return
         }
         this.saveForBrowser(JSON.stringify(this.questTree), this.editBox.string)
     }
@@ -215,6 +229,19 @@ export default class QuestFileEditManager extends cc.Component {
         this.scheduleOnce(() => {
             this.label.string = ''
         }, 10)
+    }
+    //button
+    newQuestTree() {
+        this.questTree = new QuestTreeData()
+        this.questTree.id = 'quest000'
+        this.questTree.name = '测试树'
+        this.questTree.root.name = '序章'
+        this.questTree.root.content = '开始卷'
+        this.editBox.string = this.questTree.id
+        this.label.string = this.questTree.name
+        this.revokeTreeList = []
+        this.revokeCancelTreeList = []
+        this.updateTree()
     }
     private uploadForBrowser() {
         if (!cc.sys.isBrowser) return
@@ -237,6 +264,9 @@ export default class QuestFileEditManager extends cc.Component {
                         this.editBox.string = this.questTree.id
                         this.label.string = this.questTree.name
                         cc.log(`加载任务列表完成`)
+                        //清空修改列表
+                        this.revokeTreeList = []
+                        this.revokeCancelTreeList = []
                         this.updateTree()
                     }
                 })

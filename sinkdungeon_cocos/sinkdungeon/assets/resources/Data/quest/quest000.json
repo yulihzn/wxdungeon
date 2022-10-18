@@ -3,6 +3,8 @@
     "name": "测试树",
     "root": {
         "id": "quest000",
+        "indexId": "r0",
+        "parentId": "e0",
         "name": "序章",
         "content": "开始卷"
     }

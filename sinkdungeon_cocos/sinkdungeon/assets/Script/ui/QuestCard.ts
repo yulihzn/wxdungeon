@@ -43,15 +43,18 @@ export default class QuestCard extends cc.Component {
         })
         this.node.on(cc.Node.EventType.TOUCH_MOVE, (event: cc.Event.EventTouch) => {
             let offset = event.getLocation().sub(this.touchPos)
-            this.node.setPosition(this.startPos.x + offset.x, this.startPos.y + offset.y)
+            this.node.setPosition(this.startPos.x + offset.x / this.node.parent.scale, this.startPos.y + offset.y / this.node.parent.scale)
         })
         this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             if (this.startPos.sub(this.node.position).mag() < 5) {
                 this.editManager.selectCard(this)
+            } else {
+                // cc.log(`END:${this.data.parentId + this.data.indexId},x=${this.node.position.x},y=${this.node.position.y}`)
+                this.editManager.updateTreeNodePos(this.data.indexId, this.data.parentId, this.node.position.clone())
             }
         })
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {})
-        this.select.active = false
+        this.select.active = this.isSelected
     }
     //button
     addSuccessChildCard() {

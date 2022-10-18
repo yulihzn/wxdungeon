@@ -62,14 +62,12 @@ export default class QuestTreeData {
         newdata.content = '开始卷'
         list.push(newdata)
     }
-    static updateIndexId(data: QuestData, parent: QuestData, isSuccessType: boolean) {
-        data.indexId = `${isSuccessType ? 's' : 'f'}${length}`
-        if (parent.parentId.length > 0) {
-            data.parentId = `${parent.parentId},${parent.indexId}`
-        }
+    static updateIndexId(data: QuestData, parent: QuestData, isSuccessType: boolean, index: number) {
+        data.indexId = `${isSuccessType ? 's' : 'f'}${index}`
+        data.parentId = `${parent.parentId},${parent.indexId}`
     }
     removeTreeNode(indexId: string, parentId: string) {
-        if (indexId.length < 1) {
+        if (indexId.indexOf('r') != -1) {
             return
         }
         let isSuccess = indexId.indexOf('s') != -1
@@ -77,5 +75,10 @@ export default class QuestTreeData {
         let data = this.getTreeNode(parentId)
         let list = isSuccess ? data.successList : data.failList
         list.splice(i, 1)
+    }
+    updateTreeNodePos(indexId: string, parentId: string, pos: cc.Vec3) {
+        let mixId = `${parentId},${indexId}`
+        let data = this.getTreeNode(mixId)
+        data.editPos = pos.clone()
     }
 }

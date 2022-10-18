@@ -31,14 +31,15 @@ export default class QuestData {
     id = '' //id
     name = '' //名字
     content = '' //内容
-    indexId = '' //下标 s0  f0
     mapThingsList = '' //指定地图刷出物品和npc列表item000,0,0,0,0,0,0;npc000,0,0,0,0,0,0;
     startTime = 0 //任务开始时间
     mapThingsCreated = false //地图物品npc已刷新
     reward: QuestRewardData = new QuestRewardData()
+    editPos: cc.Vec3 = cc.v3(0, 0)
 
-    //下标 s0,f0,s0,f0
-    parentId: string = '' //父节点id
+    indexId = 'r0' //下标 s0  f0
+    //下标 s0,f0,s0,f0 r0
+    parentId: string = 'e0' //父节点id
     successList: QuestData[] = [] //成功子节点列表
     failList: QuestData[] = [] //失败子节点列表
     get isSuccessType() {
@@ -65,6 +66,7 @@ export default class QuestData {
                 this.failList.push(new QuestData().valueCopy(c))
             }
         }
+        this.editPos = data.editPos ? cc.v3(data.editPos.x, data.editPos.y) : cc.v3(0, 0)
         return this
     }
     clone(): QuestData {
