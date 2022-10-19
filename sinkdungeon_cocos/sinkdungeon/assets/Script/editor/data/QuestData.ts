@@ -1,4 +1,4 @@
-import DataUtils from '../utils/DataUtils'
+import DataUtils from '../../utils/DataUtils'
 import QuestConditionData from './QuestConditionData'
 import QuestRewardData from './QuestRewardData'
 

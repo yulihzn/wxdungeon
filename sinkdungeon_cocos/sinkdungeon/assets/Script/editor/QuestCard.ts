@@ -1,5 +1,5 @@
-import QuestData from '../data/QuestData'
-import QuestFileEditManager from '../manager/QuestFileEditManager'
+import QuestData from './data/QuestData'
+import QuestFileEditManager from './QuestFileEditManager'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html

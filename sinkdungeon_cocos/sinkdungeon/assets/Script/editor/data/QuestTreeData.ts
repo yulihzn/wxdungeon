@@ -1,4 +1,4 @@
-import DataUtils from '../utils/DataUtils'
+import DataUtils from '../../utils/DataUtils'
 import QuestData from './QuestData'
 
 // Learn TypeScript:
@@ -80,5 +80,10 @@ export default class QuestTreeData {
         let mixId = `${parentId},${indexId}`
         let data = this.getTreeNode(mixId)
         data.editPos = pos.clone()
+    }
+    updateTreeNodeData(indexId: string, parentId: string, data: QuestData) {
+        let mixId = `${parentId},${indexId}`
+        let data1 = this.getTreeNode(mixId)
+        data1.valueCopy(data)
     }
 }

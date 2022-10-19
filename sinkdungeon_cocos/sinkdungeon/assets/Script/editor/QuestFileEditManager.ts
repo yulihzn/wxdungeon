@@ -1,6 +1,9 @@
-import QuestData from '../data/QuestData'
-import QuestTreeData from '../data/QuestTreeData'
-import QuestCard from '../ui/QuestCard'
+import QuestData from './data/QuestData'
+import QuestTreeData from './data/QuestTreeData'
+import QuestAlertDialog from './QuestAlertDialog'
+import QuestCard from './QuestCard'
+import QuestFileEditor from './QuestFileEditor'
+
 const { ccclass, property } = cc._decorator
 
 @ccclass
@@ -21,6 +24,10 @@ export default class QuestFileEditManager extends cc.Component {
     revokeButton: cc.Node = null
     @property(cc.Node)
     revokeCancelButton: cc.Node = null
+    @property(QuestFileEditor)
+    editor: QuestFileEditor = null
+    @property(QuestAlertDialog)
+    alertDialog: QuestAlertDialog = null
     private questTree: QuestTreeData = new QuestTreeData()
     private revokeTreeList: QuestTreeData[] = []
     private revokeCancelTreeList: QuestTreeData[] = []
@@ -40,7 +47,11 @@ export default class QuestFileEditManager extends cc.Component {
             let offset = event.getLocation().sub(this.touchPos).mul(0.5)
             this.layout.setPosition(this.startPos.x + offset.x, this.startPos.y + offset.y)
         })
-        this.layout.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {})
+        this.layout.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
+            if (this.startPos.sub(this.layout.position).mag() < 5) {
+                this.selectNone()
+            }
+        })
         this.layout.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {})
 
         this.zoomUp.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
@@ -66,6 +77,9 @@ export default class QuestFileEditManager extends cc.Component {
         })
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this)
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this)
+        this.editor.editManager = this
+        this.editor.node.scaleX = 0
+        this.alertDialog.node.active = false
     }
     onKeyDown(event: cc.Event.EventKeyboard) {
         switch (event.keyCode) {
@@ -95,6 +109,9 @@ export default class QuestFileEditManager extends cc.Component {
                         this.revoke()
                     }
                 }
+                break
+            case cc.macro.KEY.escape:
+                this.selectNone()
                 break
         }
     }
@@ -135,6 +152,7 @@ export default class QuestFileEditManager extends cc.Component {
             } else {
                 y = -QuestCard.SIZE * 0.75
             }
+            y += this.getRandomNum(-50, 50)
             pos = parentCard.node.position.add(cc.v3(QuestCard.SIZE * 1.5, y))
         }
         if (!cc.Vec3.ZERO.equals(data.editPos)) {
@@ -154,17 +172,42 @@ export default class QuestFileEditManager extends cc.Component {
             this.addQuestNode(card, c)
         }
     }
+    private getRandomNum(min: number, max: number): number {
+        //生成一个随机数从[min,max]
+        return min + Math.round(Math.random() * (max - min))
+    }
+    selectNone() {
+        if (this.editor.hide()) {
+            this.alertDialog.show('数据发生变化，是否放弃更改', '是', '否', (flag: boolean) => {
+                if (flag) {
+                    for (let c of this.cardList) {
+                        c.isSelected = false
+                    }
+                    this.currentSelectData = null
+                }
+            })
+        }
+    }
     selectCard(card: QuestCard) {
         for (let c of this.cardList) {
             c.isSelected = false
         }
         this.currentSelectData = card.data
         card.isSelected = true
+        this.editor.show(card.data)
     }
     updateTreeNodePos(indexId: string, parentId: string, pos: cc.Vec3) {
         let newTree = new QuestTreeData()
         newTree.valueCopy(this.questTree)
         newTree.updateTreeNodePos(indexId, parentId, pos)
+        this.revokeTreeList.push(this.questTree)
+        this.questTree = newTree
+        this.updateTree()
+    }
+    updateTreeNodeData(indexId: string, parentId: string, data: QuestData) {
+        let newTree = new QuestTreeData()
+        newTree.valueCopy(this.questTree)
+        newTree.updateTreeNodeData(indexId, parentId, data)
         this.revokeTreeList.push(this.questTree)
         this.questTree = newTree
         this.updateTree()
