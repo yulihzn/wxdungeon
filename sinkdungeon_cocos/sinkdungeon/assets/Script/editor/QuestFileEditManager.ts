@@ -196,7 +196,9 @@ export default class QuestFileEditManager extends cc.Component {
             }
             this.currentSelectData = null
             this.editor.hide()
-            callback()
+            if (callback) {
+                callback()
+            }
         }
     }
     selectCard(card: QuestCard) {
@@ -209,7 +211,7 @@ export default class QuestFileEditManager extends cc.Component {
             }
             this.currentSelectData = card.data
             card.isSelected = true
-            this.editor.show(card.data)
+            this.editor.show(this.getTreeNode(card.data.indexId, card.data.parentId))
         })
     }
     private updateRevokTreeList(newTree: QuestTreeData) {

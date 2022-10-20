@@ -29,15 +29,21 @@ export default class QuestFileEditor extends cc.Component {
 
     onLoad() {
         this.inputName = this.addInputItem('名称：', '请输入任务名称')
-        this.inputContent = this.addInputItem('描述：', '请输入任务描述')
+        this.inputContent = this.addInputItem('描述：', '请输入任务描述', 200, 200)
     }
 
-    private addInputItem(name: string, placeholder: string) {
+    private addInputItem(name: string, placeholder: string, maxLength?: number, editHeight?: number) {
         let item = cc.instantiate(this.inputPrefab).getComponent(QuestInputItem)
         item.label.string = name
         item.editBox.placeholder = placeholder
         item.node.parent = this.content
         item.editor = this
+        if (editHeight) {
+            item.editBox.node.height = editHeight
+        }
+        if (maxLength) {
+            item.editBox.maxLength = maxLength
+        }
         return item
     }
     private showAnim() {
@@ -66,8 +72,8 @@ export default class QuestFileEditor extends cc.Component {
         this.data.content = this.inputContent.Value
     }
     public canHide() {
-        if (this.node.opacity == 0) {
-            return false
+        if (this.node.scaleX == 0) {
+            return true
         }
         if (this.isDataChanged()) {
             return false

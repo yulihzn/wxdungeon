@@ -58,11 +58,15 @@ export default class QuestCard extends cc.Component {
     }
     //button
     addSuccessChildCard() {
-        this.addChildCard(true)
+        this.editManager.selectNone(() => {
+            this.addChildCard(true)
+        })
     }
     //button
     addFailChildCard() {
-        this.addChildCard(false)
+        this.editManager.selectNone(() => {
+            this.addChildCard(false)
+        })
     }
     private addChildCard(isSuccessType: boolean) {
         let newdata = new QuestData()
@@ -70,13 +74,15 @@ export default class QuestCard extends cc.Component {
     }
     //button
     removeSelfCard() {
-        if (this.data.successList.length > 0) {
-            this.editManager.showLog('has successList!')
-        }
-        if (this.data.failList.length > 0) {
-            this.editManager.showLog('has failList!')
-        }
-        this.editManager.removeTreeNode(this.data.indexId, this.data.parentId)
+        this.editManager.selectNone(() => {
+            if (this.data.successList.length > 0) {
+                this.editManager.showLog('has successList!')
+            }
+            if (this.data.failList.length > 0) {
+                this.editManager.showLog('has failList!')
+            }
+            this.editManager.removeTreeNode(this.data.indexId, this.data.parentId)
+        })
     }
     updateData(data: QuestData) {
         this.data.valueCopy(data)
