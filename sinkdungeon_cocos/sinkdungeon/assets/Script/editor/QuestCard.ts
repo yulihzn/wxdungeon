@@ -95,7 +95,7 @@ export default class QuestCard extends cc.Component {
     private updateLine() {
         this.graphics.clear()
         this.graphics.moveTo(QuestCard.SIZE / 2, 0)
-        this.graphics.lineWidth = 5 + (5 * this.node.parent.scale) / 2
+        this.graphics.lineWidth = 5
         for (let c of this.cardList) {
             this.graphics.strokeColor = c.data.isSuccessType ? cc.Color.GREEN : cc.Color.RED
             let pos = c.node.convertToWorldSpaceAR(cc.v3(0, 0))

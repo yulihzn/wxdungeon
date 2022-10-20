@@ -176,75 +176,95 @@ export default class QuestFileEditManager extends cc.Component {
         //生成一个随机数从[min,max]
         return min + Math.round(Math.random() * (max - min))
     }
-    selectNone() {
-        if (this.editor.hide()) {
+    selectNone(callback?: Function) {
+        if (!this.editor.canHide()) {
             this.alertDialog.show('数据发生变化，是否放弃更改', '是', '否', (flag: boolean) => {
                 if (flag) {
+                    this.editor.hide()
                     for (let c of this.cardList) {
                         c.isSelected = false
                     }
                     this.currentSelectData = null
+                    if (callback) {
+                        callback()
+                    }
                 }
             })
+        } else {
+            for (let c of this.cardList) {
+                c.isSelected = false
+            }
+            this.currentSelectData = null
+            this.editor.hide()
+            callback()
         }
     }
     selectCard(card: QuestCard) {
-        for (let c of this.cardList) {
-            c.isSelected = false
+        if (card.isSelected) {
+            return
         }
-        this.currentSelectData = card.data
-        card.isSelected = true
-        this.editor.show(card.data)
+        this.selectNone(() => {
+            for (let c of this.cardList) {
+                c.isSelected = false
+            }
+            this.currentSelectData = card.data
+            card.isSelected = true
+            this.editor.show(card.data)
+        })
+    }
+    private updateRevokTreeList(newTree: QuestTreeData) {
+        this.revokeTreeList.push(this.questTree)
+        this.questTree = newTree
+        this.updateTree()
     }
     updateTreeNodePos(indexId: string, parentId: string, pos: cc.Vec3) {
         let newTree = new QuestTreeData()
         newTree.valueCopy(this.questTree)
         newTree.updateTreeNodePos(indexId, parentId, pos)
-        this.revokeTreeList.push(this.questTree)
-        this.questTree = newTree
-        this.updateTree()
+        this.updateRevokTreeList(newTree)
     }
     updateTreeNodeData(indexId: string, parentId: string, data: QuestData) {
         let newTree = new QuestTreeData()
         newTree.valueCopy(this.questTree)
         newTree.updateTreeNodeData(indexId, parentId, data)
-        this.revokeTreeList.push(this.questTree)
-        this.questTree = newTree
-        this.updateTree()
+        this.updateRevokTreeList(newTree)
     }
     addTreeNode(indexId: string, parentId: string, isSuccessType: boolean, newdata: QuestData) {
         let newTree = new QuestTreeData()
         newTree.valueCopy(this.questTree)
         newTree.addTreeNode(indexId, parentId, isSuccessType, newdata)
-        this.revokeTreeList.push(this.questTree)
-        this.questTree = newTree
-        this.updateTree()
+        this.updateRevokTreeList(newTree)
     }
-
     removeTreeNode(indexId: string, parentId: string) {
         let newTree = new QuestTreeData()
         newTree.valueCopy(this.questTree)
         newTree.removeTreeNode(indexId, parentId)
-        this.revokeTreeList.push(this.questTree)
-        this.questTree = newTree
-        this.updateTree()
+        this.updateRevokTreeList(newTree)
+    }
+    getTreeNode(indexId: string, parentId: string) {
+        let mixId = `${parentId},${indexId}`
+        return this.questTree.getTreeNode(mixId)
     }
     //button
     revoke() {
-        if (this.revokeTreeList.length > 0) {
-            //当前修改入栈取消列表里,撤销列表出栈
-            this.revokeCancelTreeList.push(this.questTree)
-            this.questTree = this.revokeTreeList.pop()
-            this.updateTree()
-        }
+        this.selectNone(() => {
+            if (this.revokeTreeList.length > 0) {
+                //当前修改入栈取消列表里,撤销列表出栈
+                this.revokeCancelTreeList.push(this.questTree)
+                this.questTree = this.revokeTreeList.pop()
+                this.updateTree()
+            }
+        })
     }
     //button
     revokeCancel() {
-        if (this.revokeCancelTreeList.length > 0) {
-            this.revokeTreeList.push(this.questTree)
-            this.questTree = this.revokeCancelTreeList.pop()
-            this.updateTree()
-        }
+        this.selectNone(() => {
+            if (this.revokeCancelTreeList.length > 0) {
+                this.revokeTreeList.push(this.questTree)
+                this.questTree = this.revokeCancelTreeList.pop()
+                this.updateTree()
+            }
+        })
     }
     updateTree() {
         this.layout.removeAllChildren()
@@ -254,17 +274,21 @@ export default class QuestFileEditManager extends cc.Component {
 
     //button
     buttonUpload() {
-        this.uploadForBrowser()
+        this.selectNone(() => {
+            this.uploadForBrowser()
+        })
     }
     //button
     buttonSave() {
-        this.questTree.name = this.questTree.name
-        let name = this.editBox.string
-        if (name.length < 1) {
-            this.showLog('need a name!')
-            return
-        }
-        this.saveForBrowser(JSON.stringify(this.questTree), this.editBox.string)
+        this.selectNone(() => {
+            this.questTree.name = this.questTree.name
+            let name = this.editBox.string
+            if (name.length < 1) {
+                this.showLog('need a name!')
+                return
+            }
+            this.saveForBrowser(JSON.stringify(this.questTree), this.editBox.string)
+        })
     }
     showLog(msg: string) {
         this.label.string = msg
@@ -275,16 +299,18 @@ export default class QuestFileEditManager extends cc.Component {
     }
     //button
     newQuestTree() {
-        this.questTree = new QuestTreeData()
-        this.questTree.id = 'quest000'
-        this.questTree.name = '测试树'
-        this.questTree.root.name = '序章'
-        this.questTree.root.content = '开始卷'
-        this.editBox.string = this.questTree.id
-        this.label.string = this.questTree.name
-        this.revokeTreeList = []
-        this.revokeCancelTreeList = []
-        this.updateTree()
+        this.selectNone(() => {
+            this.questTree = new QuestTreeData()
+            this.questTree.id = 'quest000'
+            this.questTree.name = '测试树'
+            this.questTree.root.name = '序章'
+            this.questTree.root.content = '开始卷'
+            this.editBox.string = this.questTree.id
+            this.label.string = this.questTree.name
+            this.revokeTreeList = []
+            this.revokeCancelTreeList = []
+            this.updateTree()
+        })
     }
     private uploadForBrowser() {
         if (!cc.sys.isBrowser) return

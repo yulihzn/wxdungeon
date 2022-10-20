@@ -22,7 +22,6 @@ export default class QuestFileEditor extends cc.Component {
     @property(cc.Node)
     content: cc.Node = null
     data: QuestData = new QuestData()
-    originData: QuestData = new QuestData()
     private inputName: QuestInputItem
     private inputContent: QuestInputItem
     editManager: QuestFileEditManager
@@ -38,6 +37,7 @@ export default class QuestFileEditor extends cc.Component {
         item.label.string = name
         item.editBox.placeholder = placeholder
         item.node.parent = this.content
+        item.editor = this
         return item
     }
     private showAnim() {
@@ -45,35 +45,41 @@ export default class QuestFileEditor extends cc.Component {
         if (this.node.scaleX != 1) {
             this.node.scaleX = 0
         }
-        cc.tween(this.node).to(0.2, { scaleX: 1 }).start()
+        cc.tween(this.node).to(0.1, { scaleX: 1 }).start()
     }
     private hideAnim() {
         this.node.stopAllActions()
         if (this.node.scaleX != 0) {
             this.node.scaleX = 1
         }
-        cc.tween(this.node).to(0.2, { scaleX: 0 }).start()
+        cc.tween(this.node).to(0.1, { scaleX: 0 }).start()
     }
     public show(data: QuestData) {
         this.data.valueCopy(data)
-        this.originData.valueCopy(data)
         this.showAnim()
         this.inputName.Value = data.name
         this.inputContent.Value = data.content
     }
+
     updateData() {
         this.data.name = this.inputName.Value
         this.data.content = this.inputContent.Value
     }
-    public hide() {
+    public canHide() {
+        if (this.node.opacity == 0) {
+            return false
+        }
         if (this.isDataChanged()) {
             return false
         }
+        return true
+    }
+    public hide() {
         this.hideAnim()
         return true
     }
     isDataChanged() {
-        let str1 = JSON.stringify(this.originData)
+        let str1 = JSON.stringify(this.editManager.getTreeNode(this.data.indexId, this.data.parentId))
         let str2 = JSON.stringify(this.data)
         return str1 != str2
     }
