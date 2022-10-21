@@ -29,7 +29,7 @@ export default class QuestInputItem extends cc.Component {
         this.editBox.string = value
     }
     onTextChanged(text: string, editbox: cc.EditBox, customEventData) {
-        this.editor.updateData()
+        this.editor.updateInputData()
     }
     start() {}
 

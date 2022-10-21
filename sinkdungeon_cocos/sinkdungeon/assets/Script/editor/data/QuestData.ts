@@ -35,13 +35,15 @@ export default class QuestData {
     startTime = 0 //任务开始时间
     mapThingsCreated = false //地图物品npc已刷新
     reward: QuestRewardData = new QuestRewardData()
-    editPos: cc.Vec3 = cc.v3(0, 0)
 
     indexId = 'r0' //下标 s0  f0
     //下标 s0,f0,s0,f0 r0
     parentId: string = 'e0' //父节点id
     successList: QuestData[] = [] //成功子节点列表
     failList: QuestData[] = [] //失败子节点列表
+
+    editPos: cc.Vec3 = cc.v3(0, 0) //editor
+
     get isSuccessType() {
         return this.indexId.indexOf('s') != -1
     }

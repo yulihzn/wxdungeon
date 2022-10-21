@@ -1,8 +1,12 @@
+import LoadingManager from '../manager/LoadingManager'
+import CursorArea from '../ui/CursorArea'
+import LoadingIcon from '../ui/LoadingIcon'
 import QuestData from './data/QuestData'
 import QuestTreeData from './data/QuestTreeData'
 import QuestAlertDialog from './QuestAlertDialog'
 import QuestCard from './QuestCard'
 import QuestFileEditor from './QuestFileEditor'
+import QuestSpritePickDialog from './QuestSpritePickDialog'
 
 const { ccclass, property } = cc._decorator
 
@@ -28,6 +32,23 @@ export default class QuestFileEditManager extends cc.Component {
     editor: QuestFileEditor = null
     @property(QuestAlertDialog)
     alertDialog: QuestAlertDialog = null
+    @property(QuestSpritePickDialog)
+    spritePickDialog: QuestSpritePickDialog = null
+
+    @property(cc.Node)
+    loadingBackground: cc.Node = null
+    @property(cc.Prefab)
+    loadingIconPrefab: cc.Prefab = null
+    @property(cc.Prefab)
+    cursorAreaPrefab: cc.Prefab = null
+    private loadingIcon: LoadingIcon
+
+    //图片资源
+    bossSpriteFrames: { [key: string]: cc.SpriteFrame } = null
+    // LIFE-CYCLE CALLBACKS:
+    isBossLoaded = false
+    private loadingManager: LoadingManager = new LoadingManager()
+
     private questTree: QuestTreeData = new QuestTreeData()
     private revokeTreeList: QuestTreeData[] = []
     private revokeCancelTreeList: QuestTreeData[] = []
@@ -38,7 +59,13 @@ export default class QuestFileEditManager extends cc.Component {
     zoomOffset = 0
     private isCtrlPressing = false
     private isShiftPressing = false
+
     protected onLoad(): void {
+        CursorArea.init(this.cursorAreaPrefab)
+        this.loadingManager.init()
+        this.loadingIcon = cc.instantiate(this.loadingIconPrefab).getComponent(LoadingIcon)
+        this.loadingIcon.node.parent = this.loadingBackground
+        this.loadingIcon.init([LoadingIcon.TYPE_TEXTURE, LoadingIcon.TYPE_ITEM, LoadingIcon.TYPE_EQUIP, LoadingIcon.TYPE_NPC])
         this.layout.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.touchPos = event.getLocation()
             this.startPos = this.layout.position.clone()
@@ -80,6 +107,49 @@ export default class QuestFileEditManager extends cc.Component {
         this.editor.editManager = this
         this.editor.node.scaleX = 0
         this.alertDialog.node.active = false
+        this.spritePickDialog.node.active = false
+    }
+    start() {
+        this.loadingManager.loadEquipment()
+        this.loadingManager.loadAutoSpriteFrames()
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor')
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_ITEM, 'ammo')
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_EQUIPMENT, 'emptyequipment')
+        // this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'npcshadow')
+        this.loadingManager.loadMonsters()
+        this.loadingManager.loadItems()
+        this.loadingManager.loadNonplayer()
+        this.loadingManager.loadSuits()
+        this.loadingManager.loadFurnitures()
+        this.loadBossSpriteFrames()
+        this.loadingBackground.active = true
+    }
+    loadBossSpriteFrames() {
+        if (this.bossSpriteFrames) {
+            this.isBossLoaded = true
+            return
+        }
+        cc.resources.load('OtherTexture/bossicons', cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
+            this.bossSpriteFrames = {}
+            for (let frame of atlas.getSpriteFrames()) {
+                this.bossSpriteFrames[frame.name] = frame
+            }
+            this.isBossLoaded = true
+            cc.log('bossicons spriteatlas loaded')
+        })
+    }
+    show() {
+        if (this.loadingIcon && this.loadingIcon.isFirst) {
+            cc.tween(this.loadingBackground)
+                .to(0.5, { opacity: 0 })
+                .call(() => {
+                    this.loadingBackground.active = false
+                })
+                .start()
+        } else {
+            this.loadingBackground.active = false
+        }
+        this.editor.updateAllData()
     }
     onKeyDown(event: cc.Event.EventKeyboard) {
         switch (event.keyCode) {
@@ -116,6 +186,20 @@ export default class QuestFileEditManager extends cc.Component {
         }
     }
     protected update(dt: number): void {
+        if (
+            this.isBossLoaded &&
+            this.loadingManager.isEquipmentLoaded &&
+            this.loadingManager.isAllSpriteFramesLoaded() &&
+            this.loadingManager.isMonsterLoaded &&
+            this.loadingManager.isNonplayerLoaded &&
+            this.loadingManager.isItemsLoaded &&
+            this.loadingManager.isFurnituresLoaded &&
+            this.loadingManager.isSuitsLoaded
+        ) {
+            this.isBossLoaded = true
+            this.loadingManager.reset()
+            this.show()
+        }
         if (this.zoomOffset != 0) {
             this.zoom(this.zoomOffset)
         }
@@ -313,6 +397,9 @@ export default class QuestFileEditManager extends cc.Component {
             this.revokeCancelTreeList = []
             this.updateTree()
         })
+    }
+    public showSpritePickDialog(text: string, type: number, callback: Function) {
+        this.spritePickDialog.show(text, type, callback)
     }
     private uploadForBrowser() {
         if (!cc.sys.isBrowser) return

@@ -179,4 +179,7 @@ export default class Start extends cc.Component {
     goTest() {
         cc.director.loadScene('test')
     }
+    goQuestEditor() {
+        cc.director.loadScene('questeditor')
+    }
 }

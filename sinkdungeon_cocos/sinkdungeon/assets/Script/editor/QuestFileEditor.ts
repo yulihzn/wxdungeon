@@ -8,9 +8,11 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import QuestConditionItem from './QuestConditionItem'
 import QuestData from './data/QuestData'
 import QuestFileEditManager from './QuestFileEditManager'
 import QuestInputItem from './QuestInputItem'
+import QuestSpriteInfoDialog from './QuestSpriteInfoDialog'
 
 //任务卡片
 const { ccclass, property } = cc._decorator
@@ -19,17 +21,34 @@ const { ccclass, property } = cc._decorator
 export default class QuestFileEditor extends cc.Component {
     @property(cc.Prefab)
     inputPrefab: cc.Prefab = null
+    @property(cc.Prefab)
+    conditonPrefab: cc.Prefab = null
     @property(cc.Node)
     content: cc.Node = null
+    @property(QuestSpriteInfoDialog)
+    questSpriteInfoDialog: QuestSpriteInfoDialog = null
     data: QuestData = new QuestData()
     private inputName: QuestInputItem
     private inputContent: QuestInputItem
+    private conditionTriggerItem: QuestConditionItem
+    private conditionSuccessItem: QuestConditionItem
+    private conditionFailItem: QuestConditionItem
     editManager: QuestFileEditManager
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.node.on(
+            cc.Node.EventType.MOUSE_MOVE,
+            (event: cc.Event.EventMouse) => {
+                this.questSpriteInfoDialog.node.position = cc.v3(this.node.convertToNodeSpaceAR(event.getLocation()))
+            },
+            this
+        )
         this.inputName = this.addInputItem('名称：', '请输入任务名称')
         this.inputContent = this.addInputItem('描述：', '请输入任务描述', 200, 200)
+        this.conditionTriggerItem = this.addQuestConditionItem('触发条件')
+        this.conditionSuccessItem = this.addQuestConditionItem('完成条件')
+        this.conditionFailItem = this.addQuestConditionItem('失败条件')
     }
 
     private addInputItem(name: string, placeholder: string, maxLength?: number, editHeight?: number) {
@@ -44,6 +63,11 @@ export default class QuestFileEditor extends cc.Component {
         if (maxLength) {
             item.editBox.maxLength = maxLength
         }
+        return item
+    }
+    private addQuestConditionItem(name: string) {
+        let item = cc.instantiate(this.conditonPrefab).getComponent(QuestConditionItem)
+        item.init(name)
         return item
     }
     private showAnim() {
@@ -67,9 +91,19 @@ export default class QuestFileEditor extends cc.Component {
         this.inputContent.Value = data.content
     }
 
-    updateData() {
+    updateInputData() {
         this.data.name = this.inputName.Value
         this.data.content = this.inputContent.Value
+        this.conditionTriggerItem.updateData(this.data.triggerCondition)
+        this.conditionSuccessItem.updateData(this.data.successCondition)
+        this.conditionFailItem.updateData(this.data.failCondition)
+    }
+    updateAllData() {
+        this.data.name = this.inputName.Value
+        this.data.content = this.inputContent.Value
+        this.conditionTriggerItem.updateData(this.data.triggerCondition)
+        this.conditionSuccessItem.updateData(this.data.successCondition)
+        this.conditionFailItem.updateData(this.data.failCondition)
     }
     public canHide() {
         if (this.node.scaleX == 0) {
