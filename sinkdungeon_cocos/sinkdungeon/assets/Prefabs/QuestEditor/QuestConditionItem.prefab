@@ -725,8 +725,9 @@
     "layout": {
       "__id__": 15
     },
-    "itemListLayout": null,
-    "npcListLayout": null,
+    "childItem": {
+      "__uuid__": "9370d56d-57ef-4d25-b995-69146a9e3dea"
+    },
     "_id": ""
   },
   {

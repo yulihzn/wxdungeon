@@ -57,6 +57,7 @@ export default class QuestConditionItem extends cc.Component {
     private addChildItem(title: string, type: number) {
         let item = cc.instantiate(this.childItem).getComponent(QuestConditionChildItem)
         item.init(title, type)
+        item.editor = this.editor
         this.layout.addChild(item.node)
         return item
     }

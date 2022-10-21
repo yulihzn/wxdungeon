@@ -35,13 +35,8 @@ export default class QuestFileEditManager extends cc.Component {
     @property(QuestSpritePickDialog)
     spritePickDialog: QuestSpritePickDialog = null
 
-    @property(cc.Node)
-    loadingBackground: cc.Node = null
-    @property(cc.Prefab)
-    loadingIconPrefab: cc.Prefab = null
     @property(cc.Prefab)
     cursorAreaPrefab: cc.Prefab = null
-    private loadingIcon: LoadingIcon
 
     //图片资源
     bossSpriteFrames: { [key: string]: cc.SpriteFrame } = null
@@ -63,9 +58,6 @@ export default class QuestFileEditManager extends cc.Component {
     protected onLoad(): void {
         CursorArea.init(this.cursorAreaPrefab)
         this.loadingManager.init()
-        this.loadingIcon = cc.instantiate(this.loadingIconPrefab).getComponent(LoadingIcon)
-        this.loadingIcon.node.parent = this.loadingBackground
-        this.loadingIcon.init([LoadingIcon.TYPE_TEXTURE, LoadingIcon.TYPE_ITEM, LoadingIcon.TYPE_EQUIP, LoadingIcon.TYPE_NPC])
         this.layout.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.touchPos = event.getLocation()
             this.startPos = this.layout.position.clone()
@@ -111,18 +103,16 @@ export default class QuestFileEditManager extends cc.Component {
     }
     start() {
         this.loadingManager.loadEquipment()
-        this.loadingManager.loadAutoSpriteFrames()
+        // this.loadingManager.loadAutoSpriteFrames()
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor')
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_ITEM, 'ammo')
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_EQUIPMENT, 'emptyequipment')
-        // this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'npcshadow')
         this.loadingManager.loadMonsters()
         this.loadingManager.loadItems()
         this.loadingManager.loadNonplayer()
         this.loadingManager.loadSuits()
         this.loadingManager.loadFurnitures()
         this.loadBossSpriteFrames()
-        this.loadingBackground.active = true
     }
     loadBossSpriteFrames() {
         if (this.bossSpriteFrames) {
@@ -138,19 +128,7 @@ export default class QuestFileEditManager extends cc.Component {
             cc.log('bossicons spriteatlas loaded')
         })
     }
-    show() {
-        if (this.loadingIcon && this.loadingIcon.isFirst) {
-            cc.tween(this.loadingBackground)
-                .to(0.5, { opacity: 0 })
-                .call(() => {
-                    this.loadingBackground.active = false
-                })
-                .start()
-        } else {
-            this.loadingBackground.active = false
-        }
-        this.editor.updateAllData()
-    }
+
     onKeyDown(event: cc.Event.EventKeyboard) {
         switch (event.keyCode) {
             case cc.macro.KEY.ctrl:
@@ -198,7 +176,6 @@ export default class QuestFileEditManager extends cc.Component {
         ) {
             this.isBossLoaded = true
             this.loadingManager.reset()
-            this.show()
         }
         if (this.zoomOffset != 0) {
             this.zoom(this.zoomOffset)

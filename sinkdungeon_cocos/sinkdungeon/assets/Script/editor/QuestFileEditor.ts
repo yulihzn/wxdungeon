@@ -67,6 +67,8 @@ export default class QuestFileEditor extends cc.Component {
     }
     private addQuestConditionItem(name: string) {
         let item = cc.instantiate(this.conditonPrefab).getComponent(QuestConditionItem)
+        item.node.parent = this.content
+        item.editor = this
         item.init(name)
         return item
     }
@@ -89,16 +91,17 @@ export default class QuestFileEditor extends cc.Component {
         this.showAnim()
         this.inputName.Value = data.name
         this.inputContent.Value = data.content
+        this.updateAllData()
     }
 
     updateInputData() {
         this.data.name = this.inputName.Value
         this.data.content = this.inputContent.Value
-        this.conditionTriggerItem.updateData(this.data.triggerCondition)
-        this.conditionSuccessItem.updateData(this.data.successCondition)
-        this.conditionFailItem.updateData(this.data.failCondition)
     }
     updateAllData() {
+        if (!this.inputName) {
+            return
+        }
         this.data.name = this.inputName.Value
         this.data.content = this.inputContent.Value
         this.conditionTriggerItem.updateData(this.data.triggerCondition)
@@ -122,6 +125,9 @@ export default class QuestFileEditor extends cc.Component {
         let str1 = JSON.stringify(this.editManager.getTreeNode(this.data.indexId, this.data.parentId))
         let str2 = JSON.stringify(this.data)
         return str1 != str2
+    }
+    protected start(): void {
+        this.updateAllData()
     }
     //button
     save() {
