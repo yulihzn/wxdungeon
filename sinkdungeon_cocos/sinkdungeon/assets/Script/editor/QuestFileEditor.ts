@@ -99,7 +99,7 @@ export default class QuestFileEditor extends cc.Component {
         this.data.content = this.inputContent.Value
     }
     updateAllData() {
-        if (!this.inputName) {
+        if (!this.conditionTriggerItem) {
             return
         }
         this.data.name = this.inputName.Value

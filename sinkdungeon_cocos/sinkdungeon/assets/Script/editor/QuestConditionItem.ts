@@ -51,9 +51,7 @@ export default class QuestConditionItem extends cc.Component {
         this.buildingChild = this.addChildItem('建筑触发', QuestConditionChildItem.TYPE_BUILDING)
     }
 
-    start() {
-        this.updateData(this.data)
-    }
+    start() {}
     private addChildItem(title: string, type: number) {
         let item = cc.instantiate(this.childItem).getComponent(QuestConditionChildItem)
         item.init(title, type)
