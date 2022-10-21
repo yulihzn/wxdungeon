@@ -46,9 +46,11 @@ export default class QuestConditionChildItem extends cc.Component {
         this.layout.removeAllChildren()
         this.spriteList = []
         let arr = text.split[';']
-        for (let t of arr) {
-            if (t && t.length > 0) {
-                this.addSprite(t)
+        if (arr) {
+            for (let t of arr) {
+                if (t && t.length > 0) {
+                    this.addSprite(t)
+                }
             }
         }
     }
