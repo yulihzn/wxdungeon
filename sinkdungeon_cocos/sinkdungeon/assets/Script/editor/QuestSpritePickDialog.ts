@@ -49,14 +49,14 @@ export default class QuestSpritePickDialog extends cc.Component {
     //button
     clickOk() {
         if (this.callback) {
-            this.callback(true)
+            this.callback(true, '')
         }
         this.hide()
     }
     //button
     clickCancel() {
         if (this.callback) {
-            this.callback(false)
+            this.callback(false, '')
         }
         this.hide()
     }

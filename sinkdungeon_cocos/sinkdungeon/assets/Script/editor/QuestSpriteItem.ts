@@ -97,7 +97,13 @@ export default class QuestSpriteItem extends cc.Component {
     }
     updateSpriteFrame() {
         let resName = this.text.split(',')[0]
-        this.sprite.spriteFrame = Logic.spriteFrameRes(resName)
+        if (!this.sprite) {
+            this.sprite = this.getComponent(cc.Sprite)
+        }
+        let sf = Logic.spriteFrameRes(resName)
+        if (sf) {
+            this.sprite.spriteFrame = sf
+        }
     }
 
     start() {

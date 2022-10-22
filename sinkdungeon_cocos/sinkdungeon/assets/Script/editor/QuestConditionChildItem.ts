@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
+import QuestConditionItem from './QuestConditionItem'
 import QuestFileEditor from './QuestFileEditor'
 import QuestSpriteItem from './QuestSpriteItem'
 
@@ -25,7 +26,7 @@ export default class QuestConditionChildItem extends cc.Component {
     layout: cc.Node = null
     @property(cc.Prefab)
     spriteItem: cc.Prefab = null
-    editor: QuestFileEditor
+    conditionItem: QuestConditionItem
     spriteList: QuestSpriteItem[] = []
     textArr: string[] = []
     isTextMode = false
@@ -49,7 +50,7 @@ export default class QuestConditionChildItem extends cc.Component {
         if (arr) {
             for (let t of arr) {
                 if (t && t.length > 0) {
-                    this.addSprite(t)
+                    this.getSprite(t)
                 }
             }
         }
@@ -59,10 +60,9 @@ export default class QuestConditionChildItem extends cc.Component {
 
     start() {}
 
-    //button
-    addSprite(t: string) {
+    getSprite(t: string) {
         let sprite = cc.instantiate(this.spriteItem).getComponent(QuestSpriteItem)
-        sprite.editor = this.editor
+        sprite.conditionParent = this
         sprite.text = t
         sprite.index = this.spriteList.length
         sprite.clickCallback = (value: QuestSpriteItem) => {
@@ -81,6 +81,15 @@ export default class QuestConditionChildItem extends cc.Component {
         this.layout.addChild(sprite.node)
         this.spriteList.push(sprite)
         this.textArr.push(t)
+        return sprite
+    }
+    //button
+    addSprite() {
+        this.conditionItem.editor.editManager.showSpritePickDialog('', this.type, (flag: boolean, text: string) => {
+            if (flag) {
+                this.getSprite(text)
+            }
+        })
     }
     //button
     removeSprite() {

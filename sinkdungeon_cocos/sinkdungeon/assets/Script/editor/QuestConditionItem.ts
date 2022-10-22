@@ -31,7 +31,7 @@ export default class QuestConditionItem extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     buttonClick() {
         this.isExpand = !this.isExpand
-        this.layout.active = this.isExpand
+        this.collapseExpand()
     }
     init(name: string) {
         this.label.string = name
@@ -49,13 +49,18 @@ export default class QuestConditionItem extends cc.Component {
         this.itemChild = this.addChildItem('物品触发', QuestConditionChildItem.TYPE_ITEM)
         this.npcChild = this.addChildItem('NPC触发', QuestConditionChildItem.TYPE_NPC)
         this.buildingChild = this.addChildItem('建筑触发', QuestConditionChildItem.TYPE_BUILDING)
+        this.collapseExpand()
+    }
+    collapseExpand() {
+        this.layout.active = this.isExpand
+        this.button.node.angle = this.isExpand ? 0 : -180
     }
 
     start() {}
     private addChildItem(title: string, type: number) {
         let item = cc.instantiate(this.childItem).getComponent(QuestConditionChildItem)
         item.init(title, type)
-        item.editor = this.editor
+        item.conditionItem = this
         this.layout.addChild(item.node)
         return item
     }
