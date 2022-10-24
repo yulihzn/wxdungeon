@@ -1,6 +1,5 @@
 import FloatingLabelData from '../data/FloatingLabelData'
 import { EventHelper } from '../logic/EventHelper'
-import Logic from '../logic/Logic'
 import FloatingLabel from '../ui/FloatingLabel'
 import IndexZ from '../utils/IndexZ'
 
@@ -26,10 +25,14 @@ export default class FloatinglabelManager extends cc.Component {
     onLoad() {
         this.labelPool = new cc.NodePool()
         EventHelper.on(EventHelper.POOL_DESTROY_LABEL, detail => {
-            this.destroyLabel(detail.labelNode)
+            if (this.node) {
+                this.destroyLabel(detail.labelNode)
+            }
         })
         EventHelper.on(EventHelper.HUD_SHOW_FLOATING_LABEL, detail => {
-            this.showFloatFont(detail.data)
+            if (this.node) {
+                this.showFloatFont(detail.data)
+            }
         })
     }
     private showFloatFont(data: FloatingLabelData) {

@@ -68,6 +68,8 @@ export default class Logic extends cc.Component {
     static monsters: { [key: string]: NonPlayerData } = null
     //npc json
     static nonplayers: { [key: string]: NonPlayerData } = null
+    //boss json
+    static bosses: { [key: string]: NonPlayerData } = null
     //图片资源
     static spriteFrames: { [key: string]: cc.SpriteFrame } = null
     //状态json

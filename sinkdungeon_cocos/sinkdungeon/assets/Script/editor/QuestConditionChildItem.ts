@@ -6,7 +6,6 @@
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
 import QuestConditionItem from './QuestConditionItem'
-import QuestFileEditor from './QuestFileEditor'
 import QuestSpriteItem from './QuestSpriteItem'
 
 const { ccclass, property } = cc._decorator
@@ -28,7 +27,6 @@ export default class QuestConditionChildItem extends cc.Component {
     spriteItem: cc.Prefab = null
     conditionItem: QuestConditionItem
     spriteList: QuestSpriteItem[] = []
-    textArr: string[] = []
     isTextMode = false
     type = 0
     currentSprite: QuestSpriteItem
@@ -61,27 +59,30 @@ export default class QuestConditionChildItem extends cc.Component {
     start() {}
 
     getSprite(t: string) {
-        let sprite = cc.instantiate(this.spriteItem).getComponent(QuestSpriteItem)
-        sprite.conditionParent = this
-        sprite.text = t
-        sprite.index = this.spriteList.length
-        sprite.clickCallback = (value: QuestSpriteItem) => {
-            this.currentSprite = value
+        let icon = cc.instantiate(this.spriteItem).getComponent(QuestSpriteItem)
+        icon.init(0, this.spriteList.length, t)
+        this.layout.addChild(icon.node)
+        icon.clickCallback = (value: QuestSpriteItem) => {
+            if (this.currentSprite == value) {
+                this.pick(this.currentSprite.text)
+            } else {
+                if (this.currentSprite) {
+                    this.currentSprite.select.active = false
+                }
+                this.currentSprite = value
+                this.currentSprite.select.active = true
+            }
         }
         switch (this.type) {
             case QuestConditionChildItem.TYPE_ITEM:
-                sprite.node.width = 30
-                sprite.node.height = 30
                 break
             case QuestConditionChildItem.TYPE_NPC:
                 break
             case QuestConditionChildItem.TYPE_BUILDING:
                 break
         }
-        this.layout.addChild(sprite.node)
-        this.spriteList.push(sprite)
-        this.textArr.push(t)
-        return sprite
+        this.spriteList.push(icon)
+        return icon
     }
     //button
     addSprite() {
@@ -93,13 +94,11 @@ export default class QuestConditionChildItem extends cc.Component {
     }
     //button
     removeSprite() {
-        this.currentSprite.node.destroy()
-        let index = this.currentSprite.index
-        this.spriteList.splice(index, 1)
-        this.textArr.splice(index, 1)
-    }
-    modifySprite() {
-        this.textArr[this.currentSprite.index] = this.currentSprite.text
+        if (this.currentSprite) {
+            this.currentSprite.node.destroy()
+            let index = this.currentSprite.index
+            this.spriteList.splice(index, 1)
+        }
     }
     //button
     switchInfoMode() {
@@ -110,12 +109,20 @@ export default class QuestConditionChildItem extends cc.Component {
     }
     getFinalText() {
         let str = ''
-        for (let t of this.textArr) {
-            if (t.length > 0) {
+        for (let t of this.spriteList) {
+            if (t.text.length > 0) {
                 str += ';'
                 str += t
             }
         }
         return str
+    }
+    pick(text: string) {
+        this.conditionItem.editor.editManager.showSpritePickDialog(text, this.type, (flag: boolean, text: string) => {
+            if (flag) {
+                this.currentSprite.text = text
+                this.currentSprite.updateSpriteFrame()
+            }
+        })
     }
 }

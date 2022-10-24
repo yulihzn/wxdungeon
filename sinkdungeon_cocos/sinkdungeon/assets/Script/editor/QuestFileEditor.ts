@@ -25,8 +25,7 @@ export default class QuestFileEditor extends cc.Component {
     conditonPrefab: cc.Prefab = null
     @property(cc.Node)
     content: cc.Node = null
-    @property(QuestSpriteInfoDialog)
-    questSpriteInfoDialog: QuestSpriteInfoDialog = null
+
     data: QuestData = new QuestData()
     private inputName: QuestInputItem
     private inputContent: QuestInputItem
@@ -37,13 +36,6 @@ export default class QuestFileEditor extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.node.on(
-            cc.Node.EventType.MOUSE_MOVE,
-            (event: cc.Event.EventMouse) => {
-                this.questSpriteInfoDialog.node.position = cc.v3(this.node.convertToNodeSpaceAR(event.getLocation()))
-            },
-            this
-        )
         this.inputName = this.addInputItem('名称：', '请输入任务名称')
         this.inputContent = this.addInputItem('描述：', '请输入任务描述', 200, 200)
         this.conditionTriggerItem = this.addQuestConditionItem('触发条件')

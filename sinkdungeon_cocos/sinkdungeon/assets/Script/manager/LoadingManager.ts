@@ -21,6 +21,7 @@ export default class LoadingManager {
     public static readonly KEY_TEXTURES = 'textures'
     public static readonly KEY_EQUIPMENT = 'equipment'
     public static readonly KEY_ITEM = 'item'
+    public static readonly KEY_BOSS = 'bossicons'
     public static readonly LOAD_CACHE = 0
     public static readonly LOAD_SUCCESS = 1
     public static readonly LOAD_FAIL = 2
@@ -32,6 +33,7 @@ export default class LoadingManager {
     public isEquipmentLoaded = false
     public isMonsterLoaded = false
     public isNonplayerLoaded = false
+    public isBossLoaded = false
     public isBuffsLoaded = false
     public isSuitsLoaded = false
     public isBulletsLoaded = false
@@ -332,6 +334,21 @@ export default class LoadingManager {
             }
         })
     }
+    loadBosses() {
+        if (Logic.bosses) {
+            this.isBossLoaded = true
+            return
+        }
+        cc.resources.load('Data/bosses', (err: Error, resource: cc.JsonAsset) => {
+            if (err) {
+                cc.error(err)
+            } else {
+                Logic.bosses = resource.json
+                this.isBossLoaded = true
+                cc.log('加载Boss完成')
+            }
+        })
+    }
     loadBuildings() {
         if (Logic.buildings && Logic.buildings['Door']) {
             this.isBuildingLoaded = true
@@ -404,6 +421,9 @@ export default class LoadingManager {
                 break
             case LoadingManager.KEY_TEXTURES:
                 type = LoadingIcon.TYPE_TEXTURE
+                break
+            case LoadingManager.KEY_BOSS:
+                type = LoadingIcon.TYPE_NPC
                 break
         }
         if (Logic.spriteFrames && Logic.spriteFrames[hasKey]) {

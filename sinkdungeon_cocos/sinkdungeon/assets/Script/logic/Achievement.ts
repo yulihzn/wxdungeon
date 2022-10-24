@@ -40,13 +40,7 @@ export default class Achievement extends cc.Component {
     static readonly TYPE_EQUIP = 6
     static readonly TYPE_ITEM = 7
     @property(cc.Node)
-    contentBg: cc.Node = null
-    @property(cc.Node)
-    contentSprite: cc.Node = null
-    @property(cc.Node)
-    contentLabelBg: cc.Node = null
-    @property(cc.Node)
-    contentLabel: cc.Node = null
+    content: cc.Node = null
     @property(cc.Prefab)
     prefab: cc.Prefab = null
     @property(cc.Label)
@@ -67,7 +61,6 @@ export default class Achievement extends cc.Component {
     //图片资源
     bossSpriteFrames: { [key: string]: cc.SpriteFrame } = null
     // LIFE-CYCLE CALLBACKS:
-    isBossLoaded = false
     currentListIndex = 0
     currentItemIndex = -1
     private loadingManager: LoadingManager = new LoadingManager()
@@ -103,23 +96,34 @@ export default class Achievement extends cc.Component {
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor')
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_ITEM, 'ammo')
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_EQUIPMENT, 'emptyequipment')
-        // this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'npcshadow')
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_BOSS, 'iconboss000')
         this.loadingManager.loadMonsters()
+        this.loadingManager.loadBosses()
         this.loadingManager.loadItems()
         this.loadingManager.loadNonplayer()
         this.loadingManager.loadSuits()
         this.loadingManager.loadFurnitures()
-        this.loadBossSpriteFrames()
         this.loadingBackground.active = true
     }
+    // loadBossSpriteFrames() {
+    //     if (this.bossSpriteFrames) {
+    //         this.isBossLoaded = true
+    //         return
+    //     }
+    //     cc.resources.load('OtherTexture/bossicons', cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
+    //         this.bossSpriteFrames = {}
+    //         for (let frame of atlas.getSpriteFrames()) {
+    //             this.bossSpriteFrames[frame.name] = frame
+    //         }
+    //         this.isBossLoaded = true
+    //         cc.log('bossicons spriteatlas loaded')
+    //     })
+    // }
     private removeContent() {
-        this.contentBg.removeAllChildren()
-        this.contentSprite.removeAllChildren()
-        this.contentLabelBg.removeAllChildren()
-        this.contentLabel.removeAllChildren()
+        this.content.removeAllChildren()
     }
     private addItem(item: AchievementItem) {
-        this.contentBg.addChild(item.node)
+        this.content.addChild(item.node)
     }
     //toggle
     changeList(toggle: cc.Toggle, index: string) {
@@ -151,20 +155,6 @@ export default class Achievement extends cc.Component {
                 this.showItemList()
                 break
         }
-        this.scheduleOnce(() => {
-            for (let node of this.contentLabelBg.children) {
-                let item = node.getComponent(AchievementItem)
-                let pos1 = this.contentSprite.convertToNodeSpaceAR(item.sprite.node.convertToWorldSpaceAR(cc.Vec3.ZERO))
-                let pos2 = this.contentLabelBg.convertToNodeSpaceAR(item.labelBg.convertToWorldSpaceAR(cc.Vec3.ZERO))
-                let pos3 = this.contentLabel.convertToNodeSpaceAR(item.label.node.convertToWorldSpaceAR(cc.Vec3.ZERO))
-                item.sprite.node.parent = this.contentSprite
-                item.labelBg.parent = this.contentLabelBg
-                item.label.node.parent = this.contentLabel
-                item.sprite.node.position = pos1
-                item.labelBg.position = pos2
-                item.label.node.position = pos3
-            }
-        }, 0.1)
     }
     private showMonsterList() {
         this.removeContent()
@@ -181,9 +171,12 @@ export default class Achievement extends cc.Component {
     }
     private showBossList() {
         this.removeContent()
-        for (let i = 0; i < Achievement.BOSS_SIZE; i++) {
+        let index = 0
+        for (let key in Logic.bosses) {
+            let data = new NonPlayerData()
+            data.valueCopy(Logic.nonplayers[key])
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem)
-            icon.init(this, this.currentListIndex, i, this.data.monsters[`iconboss00${i}`], this.bossSpriteFrames[`iconboss00${i}`], null, null, null, null)
+            icon.init(this, this.currentListIndex, index++, this.data.npcs[data.resName], Logic.spriteFrameRes(`icon${data.resName}`), data, null, null, null)
             this.addItem(icon)
         }
     }
@@ -191,11 +184,13 @@ export default class Achievement extends cc.Component {
         this.removeContent()
         let index = 0
         for (let key in Logic.nonplayers) {
-            let data = new NonPlayerData()
-            data.valueCopy(Logic.nonplayers[key])
-            let icon = cc.instantiate(this.prefab).getComponent(AchievementItem)
-            icon.init(this, this.currentListIndex, index++, this.data.npcs[data.resName], Logic.spriteFrameRes(data.resName + 'anim000'), data, null, null, null)
-            this.addItem(icon)
+            LoadingManager.loadNpcSpriteAtlas(key, () => {
+                let data = new NonPlayerData()
+                data.valueCopy(Logic.nonplayers[key])
+                let icon = cc.instantiate(this.prefab).getComponent(AchievementItem)
+                icon.init(this, this.currentListIndex, index++, this.data.npcs[data.resName], Logic.spriteFrameRes(data.resName + 'anim000'), data, null, null, null)
+                this.addItem(icon)
+            })
         }
     }
     private showItemList() {
@@ -313,20 +308,6 @@ export default class Achievement extends cc.Component {
     //         }
     //     }
     // }
-    loadBossSpriteFrames() {
-        if (this.bossSpriteFrames) {
-            this.isBossLoaded = true
-            return
-        }
-        cc.resources.load('OtherTexture/bossicons', cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
-            this.bossSpriteFrames = {}
-            for (let frame of atlas.getSpriteFrames()) {
-                this.bossSpriteFrames[frame.name] = frame
-            }
-            this.isBossLoaded = true
-            cc.log('bossicons spriteatlas loaded')
-        })
-    }
 
     backToHome() {
         cc.director.loadScene('start')
@@ -438,7 +419,6 @@ export default class Achievement extends cc.Component {
     }
     update(dt) {
         if (
-            this.isBossLoaded &&
             this.loadingManager.isEquipmentLoaded &&
             this.loadingManager.isAllSpriteFramesLoaded() &&
             this.loadingManager.isMonsterLoaded &&
@@ -447,7 +427,6 @@ export default class Achievement extends cc.Component {
             this.loadingManager.isFurnituresLoaded &&
             this.loadingManager.isSuitsLoaded
         ) {
-            this.isBossLoaded = true
             this.loadingManager.reset()
             this.show()
         }

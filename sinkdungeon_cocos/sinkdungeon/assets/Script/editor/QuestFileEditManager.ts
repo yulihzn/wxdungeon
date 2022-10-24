@@ -1,3 +1,4 @@
+import { EventHelper } from '../logic/EventHelper'
 import LoadingManager from '../manager/LoadingManager'
 import CursorArea from '../ui/CursorArea'
 import LoadingIcon from '../ui/LoadingIcon'
@@ -6,6 +7,7 @@ import QuestTreeData from './data/QuestTreeData'
 import QuestAlertDialog from './QuestAlertDialog'
 import QuestCard from './QuestCard'
 import QuestFileEditor from './QuestFileEditor'
+import QuestSpriteInfoDialog from './QuestSpriteInfoDialog'
 import QuestSpritePickDialog from './QuestSpritePickDialog'
 
 const { ccclass, property } = cc._decorator
@@ -34,6 +36,8 @@ export default class QuestFileEditManager extends cc.Component {
     alertDialog: QuestAlertDialog = null
     @property(QuestSpritePickDialog)
     spritePickDialog: QuestSpritePickDialog = null
+    @property(QuestSpriteInfoDialog)
+    questSpriteInfoDialog: QuestSpriteInfoDialog = null
 
     @property(cc.Prefab)
     cursorAreaPrefab: cc.Prefab = null
@@ -96,6 +100,27 @@ export default class QuestFileEditManager extends cc.Component {
         })
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this)
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this)
+        this.node.on(
+            cc.Node.EventType.MOUSE_MOVE,
+            (event: cc.Event.EventMouse) => {
+                this.questSpriteInfoDialog.node.position = cc.v3(this.node.convertToNodeSpaceAR(event.getLocation()))
+            },
+            this
+        )
+        this.node.on(
+            cc.Node.EventType.TOUCH_START,
+            (event: cc.Event.EventTouch) => {
+                this.questSpriteInfoDialog.node.position = cc.v3(this.node.convertToNodeSpaceAR(event.getLocation()))
+            },
+            this
+        )
+        EventHelper.on(EventHelper.EDITOR_SHOW_SPRITE_INFO, detail => {
+            if (detail.isShow) {
+                this.questSpriteInfoDialog.show(detail.text)
+            } else {
+                this.questSpriteInfoDialog.hide()
+            }
+        })
         this.editor.editManager = this
         this.editor.node.scaleX = 0
         this.alertDialog.node.active = false
@@ -107,26 +132,13 @@ export default class QuestFileEditManager extends cc.Component {
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor')
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_ITEM, 'ammo')
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_EQUIPMENT, 'emptyequipment')
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_BOSS, 'iconboss000')
+        this.loadingManager.loadBosses()
         this.loadingManager.loadMonsters()
         this.loadingManager.loadItems()
         this.loadingManager.loadNonplayer()
         this.loadingManager.loadSuits()
         this.loadingManager.loadFurnitures()
-        this.loadBossSpriteFrames()
-    }
-    loadBossSpriteFrames() {
-        if (this.bossSpriteFrames) {
-            this.isBossLoaded = true
-            return
-        }
-        cc.resources.load('OtherTexture/bossicons', cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
-            this.bossSpriteFrames = {}
-            for (let frame of atlas.getSpriteFrames()) {
-                this.bossSpriteFrames[frame.name] = frame
-            }
-            this.isBossLoaded = true
-            cc.log('bossicons spriteatlas loaded')
-        })
     }
 
     onKeyDown(event: cc.Event.EventKeyboard) {
