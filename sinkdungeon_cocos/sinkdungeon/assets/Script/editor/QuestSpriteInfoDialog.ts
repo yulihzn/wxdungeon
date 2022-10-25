@@ -20,9 +20,15 @@ export default class QuestSpriteInfoDialog extends cc.Component {
 
     onLoad() {}
 
-    public show(msg: string) {
+    public show(msg: string, wpos: cc.Vec3) {
         this.msg.string = msg
         this.node.opacity = 255
+        this.node.position = this.node.parent.convertToNodeSpaceAR(wpos)
+        this.scheduleOnce(() => {
+            let bg = this.node.getChildByName('bg')
+            bg.width = this.msg.node.width + 10
+            bg.height = this.msg.node.height + 10
+        }, 0)
     }
 
     public hide() {

@@ -129,4 +129,12 @@ export class EventHelper extends cc.Component {
             callback(event ? event.detail : {})
         })
     }
+    /**
+     * 自定义事件取消
+     * @param key
+     * @param callback
+     */
+    public static off(key: string) {
+        cc.director.off(key)
+    }
 }

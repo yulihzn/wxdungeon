@@ -1,7 +1,6 @@
 import { EventHelper } from '../logic/EventHelper'
 import LoadingManager from '../manager/LoadingManager'
 import CursorArea from '../ui/CursorArea'
-import LoadingIcon from '../ui/LoadingIcon'
 import QuestData from './data/QuestData'
 import QuestTreeData from './data/QuestTreeData'
 import QuestAlertDialog from './QuestAlertDialog'
@@ -100,23 +99,9 @@ export default class QuestFileEditManager extends cc.Component {
         })
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this)
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this)
-        this.node.on(
-            cc.Node.EventType.MOUSE_MOVE,
-            (event: cc.Event.EventMouse) => {
-                this.questSpriteInfoDialog.node.position = cc.v3(this.node.convertToNodeSpaceAR(event.getLocation()))
-            },
-            this
-        )
-        this.node.on(
-            cc.Node.EventType.TOUCH_START,
-            (event: cc.Event.EventTouch) => {
-                this.questSpriteInfoDialog.node.position = cc.v3(this.node.convertToNodeSpaceAR(event.getLocation()))
-            },
-            this
-        )
         EventHelper.on(EventHelper.EDITOR_SHOW_SPRITE_INFO, detail => {
             if (detail.isShow) {
-                this.questSpriteInfoDialog.show(detail.text)
+                this.questSpriteInfoDialog.show(detail.text, detail.wpos)
             } else {
                 this.questSpriteInfoDialog.hide()
             }
@@ -125,10 +110,11 @@ export default class QuestFileEditManager extends cc.Component {
         this.editor.node.scaleX = 0
         this.alertDialog.node.active = false
         this.spritePickDialog.node.active = false
+        this.questSpriteInfoDialog.node.opacity = 0
     }
     start() {
         this.loadingManager.loadEquipment()
-        // this.loadingManager.loadAutoSpriteFrames()
+        this.loadingManager.loadAutoSpriteFrames()
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor')
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_ITEM, 'ammo')
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_EQUIPMENT, 'emptyequipment')
@@ -177,7 +163,7 @@ export default class QuestFileEditManager extends cc.Component {
     }
     protected update(dt: number): void {
         if (
-            this.isBossLoaded &&
+            this.loadingManager.isBossLoaded &&
             this.loadingManager.isEquipmentLoaded &&
             this.loadingManager.isAllSpriteFramesLoaded() &&
             this.loadingManager.isMonsterLoaded &&
@@ -387,8 +373,8 @@ export default class QuestFileEditManager extends cc.Component {
             this.updateTree()
         })
     }
-    public showSpritePickDialog(text: string, type: number, callback: Function) {
-        this.spritePickDialog.show(text, type, callback)
+    public showSpritePickDialog(text: string, callback: Function) {
+        this.spritePickDialog.show(text, callback)
     }
     private uploadForBrowser() {
         if (!cc.sys.isBrowser) return

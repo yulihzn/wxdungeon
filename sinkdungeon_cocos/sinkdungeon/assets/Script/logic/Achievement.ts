@@ -174,7 +174,7 @@ export default class Achievement extends cc.Component {
         let index = 0
         for (let key in Logic.bosses) {
             let data = new NonPlayerData()
-            data.valueCopy(Logic.nonplayers[key])
+            data.valueCopy(Logic.bosses[key])
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem)
             icon.init(this, this.currentListIndex, index++, this.data.npcs[data.resName], Logic.spriteFrameRes(`icon${data.resName}`), data, null, null, null)
             this.addItem(icon)

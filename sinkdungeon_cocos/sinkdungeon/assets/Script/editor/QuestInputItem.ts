@@ -16,7 +16,6 @@ export default class QuestInputItem extends cc.Component {
 
     @property(cc.EditBox)
     editBox: cc.EditBox = null
-    editor: QuestFileEditor
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -28,9 +27,7 @@ export default class QuestInputItem extends cc.Component {
     set Value(value: string) {
         this.editBox.string = value
     }
-    onTextChanged(text: string, editbox: cc.EditBox, customEventData) {
-        this.editor.updateInputData()
-    }
+
     start() {}
 
     // update (dt) {}

@@ -6,8 +6,8 @@
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
 import QuestConditionData from './data/QuestConditionData'
-import QuestConditionChildItem from './QuestConditionChildItem'
 import QuestFileEditor from './QuestFileEditor'
+import QuestInputItem from './QuestInputItem'
 import QuestSpriteItem from './QuestSpriteItem'
 
 const { ccclass, property } = cc._decorator
@@ -20,14 +20,27 @@ export default class QuestConditionItem extends cc.Component {
     button: cc.EditBox = null
     @property(cc.Node)
     layout: cc.Node = null
+    @property(cc.Button)
+    editbutton: cc.Button = null
+    @property(cc.Label)
+    textLabel: cc.Label = null
+    @property(cc.Node)
+    spriteLayout: cc.Node = null
     @property(cc.Prefab)
-    childItem: cc.Prefab = null
-    isExpand = false
+    spriteItem: cc.Prefab = null
+    @property(cc.Prefab)
+    inputItem: cc.Prefab = null
+    spriteList: QuestSpriteItem[] = []
+    isTextMode = false
+    currentSprite: QuestSpriteItem
+
+    isExpand = true
     editor: QuestFileEditor
-    itemChild: QuestConditionChildItem
-    npcChild: QuestConditionChildItem
-    buildingChild: QuestConditionChildItem
     data: QuestConditionData = new QuestConditionData()
+
+    private inputStartTime: QuestInputItem
+    private inputEndTime: QuestInputItem
+    private inputLimitTime: QuestInputItem
     // LIFE-CYCLE CALLBACKS:
     buttonClick() {
         this.isExpand = !this.isExpand
@@ -35,21 +48,41 @@ export default class QuestConditionItem extends cc.Component {
     }
     init(name: string) {
         this.label.string = name
+        this.spriteLayout.removeAllChildren()
+        this.spriteList = []
+    }
+    updateInputData() {
+        this.data.timeLimit = parseInt(this.inputLimitTime.Value)
+        this.data.startTime = new Date(this.inputStartTime.Value).getTime()
+        this.data.endTime = new Date(this.inputEndTime.Value).getTime()
     }
     updateData(data: QuestConditionData) {
         this.data.valueCopy(data)
-        if (this.itemChild) {
-            this.itemChild.updateData(data.itemList)
-            this.buildingChild.updateData(data.buildingList)
-            this.npcChild.updateData(data.npcList)
+        if (!this.spriteLayout) {
+            this.spriteLayout = this.node.getChildByName('spriteLayout')
         }
+        this.spriteLayout.removeAllChildren()
+        this.spriteList = []
+        let arr = data.conditionList.split(';')
+        if (arr) {
+            for (let t of arr) {
+                if (t && t.length > 0) {
+                    this.getSprite(t)
+                }
+            }
+        }
+        let d1 = this.data.startTime ? new Date(this.data.startTime) : new Date()
+        let d2 = this.data.startTime ? new Date(this.data.endTime) : new Date()
+        this.inputStartTime.editBox.string = d1.toLocaleString()
+        this.inputEndTime.editBox.string = d2.toLocaleString()
+        this.inputLimitTime.editBox.string = this.data.timeLimit + '天'
     }
 
     onLoad() {
-        this.itemChild = this.addChildItem('物品触发', QuestConditionChildItem.TYPE_ITEM)
-        this.npcChild = this.addChildItem('NPC触发', QuestConditionChildItem.TYPE_NPC)
-        this.buildingChild = this.addChildItem('建筑触发', QuestConditionChildItem.TYPE_BUILDING)
         this.collapseExpand()
+        this.inputStartTime = QuestFileEditor.addInputItem(this.layout, this.inputItem, '开始区间：', '请输入开始区间：')
+        this.inputEndTime = QuestFileEditor.addInputItem(this.layout, this.inputItem, '结束区间：', '请输入结束区间：')
+        this.inputLimitTime = QuestFileEditor.addInputItem(this.layout, this.inputItem, '完成期限：', '请输入完成期限')
     }
     collapseExpand() {
         this.layout.active = this.isExpand
@@ -57,11 +90,79 @@ export default class QuestConditionItem extends cc.Component {
     }
 
     start() {}
-    private addChildItem(title: string, type: number) {
-        let item = cc.instantiate(this.childItem).getComponent(QuestConditionChildItem)
-        item.init(title, type)
-        item.conditionItem = this
-        this.layout.addChild(item.node)
-        return item
+
+    getSprite(t: string) {
+        let icon = cc.instantiate(this.spriteItem).getComponent(QuestSpriteItem)
+        icon.init(0, this.spriteList.length, t, true)
+        this.spriteLayout.addChild(icon.node)
+        icon.clickCallback = (value: QuestSpriteItem) => {
+            if (this.currentSprite == value) {
+                this.pick(this.currentSprite.text)
+            } else {
+                if (this.currentSprite && this.currentSprite.select) {
+                    this.currentSprite.select.active = false
+                }
+                this.currentSprite = value
+                this.currentSprite.select.active = true
+            }
+        }
+        this.spriteList.push(icon)
+        return icon
+    }
+    //button
+    addSprite() {
+        this.editor.editManager.showSpritePickDialog('', (flag: boolean, text: string) => {
+            if (flag) {
+                if (this.currentSprite && this.currentSprite.select) {
+                    this.currentSprite.select.active = false
+                }
+                this.currentSprite = this.getSprite(text)
+                this.currentSprite.select.active = true
+                this.isExpand = true
+                this.collapseExpand()
+                this.data.conditionList = this.getFinalText()
+            }
+        })
+    }
+    //button
+    removeSprite() {
+        if (this.currentSprite) {
+            this.currentSprite.node.destroy()
+            let index = this.currentSprite.index
+            this.spriteList.splice(index, 1)
+            this.isExpand = true
+            this.collapseExpand()
+            this.data.conditionList = this.getFinalText()
+        }
+    }
+    //button
+    switchInfoMode() {
+        this.isTextMode = !this.isTextMode
+        this.textLabel.node.active = this.isTextMode
+        this.layout.active = !this.isTextMode
+        this.textLabel.string = this.getFinalText()
+        this.isExpand = true
+        this.collapseExpand()
+    }
+    getFinalText() {
+        let str = ''
+        for (let i = 0; i < this.spriteList.length; i++) {
+            let t = this.spriteList[i]
+            if (t.text.length > 0) {
+                if (i > 0) {
+                    str += ';'
+                }
+                str += t.text
+            }
+        }
+        return str
+    }
+    pick(text: string) {
+        this.editor.editManager.showSpritePickDialog(text, (flag: boolean, text: string) => {
+            if (flag) {
+                this.currentSprite.text = text
+                this.currentSprite.updateSpriteFrame()
+            }
+        })
     }
 }

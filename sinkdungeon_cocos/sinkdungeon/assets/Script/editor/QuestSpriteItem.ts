@@ -6,6 +6,9 @@
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
 import EquipmentData from '../data/EquipmentData'
+import FurnitureData from '../data/FurnitureData'
+import ItemData from '../data/ItemData'
+import Item from '../item/Item'
 import { EventHelper } from '../logic/EventHelper'
 import Logic from '../logic/Logic'
 import InventoryManager from '../manager/InventoryManager'
@@ -30,44 +33,57 @@ export default class QuestSpriteItem extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     text = ''
     clickCallback: Function
+    isSmall: boolean
+    isLongPress = false
 
     onLoad() {
-        this.node.on(cc.Node.EventType.MOUSE_ENTER, (event: cc.Event.EventTouch) => {
-            this.showInfo(true)
+        this.node.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
+            this.showInfo(true, event.getLocation())
+            this.isLongPress = false
+            this.unschedule(this.longPressCallback)
+            this.scheduleOnce(this.longPressCallback, 0.2)
         })
-        this.node.on(cc.Node.EventType.MOUSE_LEAVE, (event: cc.Event.EventTouch) => {
-            this.showInfo(false)
-        })
-
         this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
-            if (this.clickCallback) {
+            this.showInfo(false, event.getLocation())
+            if (!this.isLongPress && this.clickCallback) {
                 this.clickCallback(this)
             }
         })
+        this.node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
+            this.showInfo(false, event.getLocation())
+        })
     }
-    init(parentIndex: number, index: number, text: string) {
+    longPressCallback = () => {
+        this.isLongPress = true
+    }
+    init(parentIndex: number, index: number, text: string, isSmall: boolean) {
         this.parentIndex = parentIndex
         this.index = index
         this.text = text
+        this.isSmall = isSmall
         this.updateSpriteFrame()
     }
     updateSpriteFrame() {
         let spriteFrame = this.getSpriteFrameByType()
         if (spriteFrame) {
-            this.sprite.spriteFrame = null
             this.sprite.spriteFrame = spriteFrame
             let w = spriteFrame.getOriginalSize().width
             let h = spriteFrame.getOriginalSize().height
             this.sprite.node.width = w * 4
             this.sprite.node.height = h * 4
-            if (this.sprite.node.height > 96) {
-                this.sprite.node.height = 96
-                this.sprite.node.width = (96 / spriteFrame.getOriginalSize().height) * spriteFrame.getOriginalSize().width
+            let size = this.isSmall ? 32 : 96
+            if (this.sprite.node.height > size) {
+                this.sprite.node.height = size
+                this.sprite.node.width = (size / spriteFrame.getOriginalSize().height) * spriteFrame.getOriginalSize().width
             }
+        } else {
+            this.scheduleOnce(() => {
+                this.updateSpriteFrame()
+            }, 2)
         }
     }
     getSpriteFrameByType() {
-        let id = this.text.split[0]
+        let id = this.text.split(',')[0]
         let spriteFrame = Logic.spriteFrameRes(id)
         let data = new EquipmentData()
         data.valueCopy(Logic.equipments[id])
@@ -77,46 +93,93 @@ export default class QuestSpriteItem extends cc.Component {
             spriteFrame = Logic.spriteFrameRes(data.img + 'anim0')
         } else if (data.equipmetType == InventoryManager.REMOTE) {
             spriteFrame = Logic.spriteFrameRes(data.img + 'anim0')
-        } else if (id.indexOf('boss') != -1) {
+        } else if (data.equipmetType != InventoryManager.EMPTY) {
+            spriteFrame = Logic.spriteFrameRes(data.img)
+        } else if (id.indexOf('furniture') != -1) {
+            let fd = new FurnitureData()
+            fd.valueCopy(Logic.furnitures[id])
+            spriteFrame = Logic.spriteFrameRes(fd.resName)
+        } else if (id.indexOf('boss') != -1 && id.indexOf('food') == -1) {
             spriteFrame = Logic.spriteFrameRes('icon' + id)
-        } else if (id.indexOf('monster') != -1 || id.indexOf('nonplayer') != -1) {
+        } else if ((id.indexOf('monster') != -1 || id.indexOf('nonplayer') != -1) && id.indexOf('food') == -1) {
             spriteFrame = Logic.spriteFrameRes(id + 'anim000')
+        } else {
+            let itemData = new ItemData()
+            itemData.valueCopy(Logic.items[id])
+            if (itemData.resName != Item.EMPTY) {
+                spriteFrame = Logic.spriteFrameRes(itemData.resName)
+            }
         }
         return spriteFrame
     }
-    showInfo(flag: boolean) {
-        let arr = this.text.split
-        let trigger = ''
-        let title = ''
-        let count = parseInt(arr[2])
-        switch (arr[1]) {
-            case QuestConditionData.BUILDING_TRIGGER:
-                title = '建筑'
-                trigger = `交互${count}次`
-                break
-            case QuestConditionData.ITEM_DROP:
-                title = '物品'
-                trigger = `丢弃`
-                break
-            case QuestConditionData.ITEM_PICK:
-                title = '物品'
-                trigger = `拾取${count}个`
-                break
-            case QuestConditionData.ITEM_USE:
-                title = '物品'
-                trigger = `使用${count}次`
-                break
-            case QuestConditionData.NPC_ALIVE:
-                title = 'NPC'
-                trigger = `存活${count}个`
-                break
-            case QuestConditionData.NPC_KILL:
-                title = 'NPC'
-                trigger = `击杀${count}个`
-                break
+    showInfo(flag: boolean, wpos: cc.Vec2) {
+        let str = ''
+        if (flag) {
+            let arr = this.text.split(',')
+            let trigger = ''
+            let title = ''
+            let count = parseInt(arr[2])
+            switch (arr[1]) {
+                case QuestConditionData.BUILDING_TRIGGER:
+                    title = '建筑'
+                    trigger = `交互${count}次`
+                    break
+                case QuestConditionData.ITEM_DROP:
+                    title = '物品'
+                    trigger = `丢弃`
+                    break
+                case QuestConditionData.ITEM_PICK:
+                    title = '物品'
+                    trigger = `拾取${count}个`
+                    break
+                case QuestConditionData.ITEM_USE:
+                    title = '物品'
+                    trigger = `使用${count}次`
+                    break
+                case QuestConditionData.EQUIP_PICK:
+                    title = '装备'
+                    trigger = `拾取${count}个`
+                    break
+                case QuestConditionData.EQUIP_ON:
+                    title = '装备'
+                    trigger = `装备${count}个`
+                    break
+                case QuestConditionData.EQUIP_OFF:
+                    title = '装备'
+                    trigger = `脱下`
+                    break
+                case QuestConditionData.EQUIP_DROP:
+                    title = '装备'
+                    trigger = `丢弃`
+                    break
+                case QuestConditionData.NPC_ALIVE:
+                    title = 'NPC'
+                    trigger = `存活${count}个`
+                    break
+                case QuestConditionData.NPC_KILL:
+                    title = 'BOSS'
+                    trigger = `击杀${count}个`
+                    break
+                case QuestConditionData.BOSS_ALIVE:
+                    title = 'BOSS'
+                    trigger = `存活${count}个`
+                    break
+                case QuestConditionData.BOSS_KILL:
+                    title = 'NPC'
+                    trigger = `击杀${count}个`
+                    break
+                case QuestConditionData.MONSTER_ALIVE:
+                    title = '生物'
+                    trigger = `存活${count}个`
+                    break
+                case QuestConditionData.MONSTER_KILL:
+                    title = '生物'
+                    trigger = `击杀${count}个`
+                    break
+            }
+            str = `类型：${title}\n触发条件：${trigger}\n资源名：${arr[0]}\n`
         }
-        let str = `类型：${title}触发条件:${trigger}\n资源名:${arr[0]}\n`
-        EventHelper.emit(EventHelper.EDITOR_SHOW_SPRITE_INFO, { isShow: flag, text: str })
+        EventHelper.emit(EventHelper.EDITOR_SHOW_SPRITE_INFO, { isShow: flag, text: str, wpos: wpos })
     }
 
     // update (dt) {}
