@@ -40,7 +40,6 @@ export default class QuestConditionItem extends cc.Component {
 
     private inputStartTime: QuestInputItem
     private inputEndTime: QuestInputItem
-    private inputLimitTime: QuestInputItem
     // LIFE-CYCLE CALLBACKS:
     buttonClick() {
         this.isExpand = !this.isExpand
@@ -52,11 +51,14 @@ export default class QuestConditionItem extends cc.Component {
         this.spriteList = []
     }
     updateInputData() {
-        this.data.timeLimit = parseInt(this.inputLimitTime.Value)
-        this.data.startTime = new Date(this.inputStartTime.Value).getTime()
-        this.data.endTime = new Date(this.inputEndTime.Value).getTime()
+        if (this.inputStartTime.node.active) {
+            this.data.startTime = new Date(this.inputStartTime.Value).getTime()
+        }
+        if (this.inputEndTime.node.active) {
+            this.data.endTime = new Date(this.inputEndTime.Value).getTime()
+        }
     }
-    updateData(data: QuestConditionData) {
+    updateData(data: QuestConditionData, showStart: boolean, showEnd: boolean) {
         this.data.valueCopy(data)
         if (!this.spriteLayout) {
             this.spriteLayout = this.node.getChildByName('spriteLayout')
@@ -75,14 +77,14 @@ export default class QuestConditionItem extends cc.Component {
         let d2 = this.data.startTime ? new Date(this.data.endTime) : new Date()
         this.inputStartTime.editBox.string = d1.toLocaleString()
         this.inputEndTime.editBox.string = d2.toLocaleString()
-        this.inputLimitTime.editBox.string = this.data.timeLimit + '天'
+        this.inputStartTime.node.active = showStart
+        this.inputEndTime.node.active = showEnd
     }
 
     onLoad() {
         this.collapseExpand()
         this.inputStartTime = QuestFileEditor.addInputItem(this.layout, this.inputItem, '开始区间：', '请输入开始区间：')
         this.inputEndTime = QuestFileEditor.addInputItem(this.layout, this.inputItem, '结束区间：', '请输入结束区间：')
-        this.inputLimitTime = QuestFileEditor.addInputItem(this.layout, this.inputItem, '完成期限：', '请输入完成期限')
     }
     collapseExpand() {
         this.layout.active = this.isExpand

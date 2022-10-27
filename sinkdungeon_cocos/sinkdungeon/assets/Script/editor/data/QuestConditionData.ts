@@ -39,9 +39,8 @@ export default class QuestConditionData {
     conditionList = ''
     dialogueList = '' //触发目标对话列表，每次使用判断是否满足触发指定对话的指定id，quest000,1;分号隔开，逗号后面是id
     roomList = '' //进入/离开/清理 指定房间触发0,0,0,0,0章节，层数，房间xy坐标，最后第二位0代表进入，1代表离开，2代表清理最后一位代表次数
-    timeLimit = 0 //任务开始以后的时限
-    startTime = 0 //最早开始时间
-    endTime = 0 //最晚开始时间
+    startTime = 0 //开始时间
+    endTime = 0 //开始时间
     isExpand = false //editor 是否展开
 
     valueCopy(data: QuestConditionData) {

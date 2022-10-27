@@ -98,9 +98,9 @@ export default class QuestFileEditor extends cc.Component {
         }
         this.inputName.Value = this.data.name
         this.inputContent.Value = this.data.content
-        this.conditionTriggerItem.updateData(this.data.triggerCondition)
-        this.conditionSuccessItem.updateData(this.data.successCondition)
-        this.conditionFailItem.updateData(this.data.failCondition)
+        this.conditionTriggerItem.updateData(this.data.triggerCondition, true, true)
+        this.conditionSuccessItem.updateData(this.data.successCondition, false, true)
+        this.conditionFailItem.updateData(this.data.failCondition, false, true)
     }
     public canHide() {
         if (this.node.scaleX == 0) {
