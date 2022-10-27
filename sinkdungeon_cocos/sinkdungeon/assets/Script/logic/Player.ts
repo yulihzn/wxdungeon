@@ -207,10 +207,10 @@ export default class Player extends PlayActor {
             }
         })
         EventHelper.on(EventHelper.PLAYER_ATTACK, detail => {
-            if (this.useInteractBuilding(true) || this.avatar?.isAniming) {
+            if (!this.node || this.useInteractBuilding(true) || this.avatar?.isAniming) {
                 return
             }
-            if (this.node) this.meleeAttack()
+            this.meleeAttack()
         })
         EventHelper.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL, detail => {
             if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {

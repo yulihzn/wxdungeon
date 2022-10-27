@@ -11,6 +11,7 @@ import NonPlayerData from '../data/NonPlayerData'
 import LoadingManager from './LoadingManager'
 import Utils from '../utils/Utils'
 import AudioPlayer from '../utils/AudioPlayer'
+import ActorIconList from '../ui/ActorIconList'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -141,6 +142,8 @@ export default class MonsterManager extends BaseManager {
     sphinx = null
     @property(cc.Prefab)
     dragon = null
+    @property(ActorIconList)
+    actorIconList: ActorIconList = null
     readonly maxHealth00 = 200
     readonly maxHealth01 = 400
     readonly maxHealth02 = 600
@@ -345,6 +348,7 @@ export default class MonsterManager extends BaseManager {
                 monster.changeBodyRes(resName, NonPlayer.RES_IDLE000)
             }
             monster.addAttrIcon()
+            monster.icon = this.actorIconList.getIcon(data.resName)
             callBack(monster)
         })
     }

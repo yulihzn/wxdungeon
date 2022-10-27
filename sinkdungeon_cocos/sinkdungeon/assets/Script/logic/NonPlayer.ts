@@ -46,6 +46,7 @@ import PlayerAvatar from './PlayerAvatar'
 import BaseAvatar from '../base/BaseAvatar'
 import FrameAvatar from './FrameAvatar'
 import Tips from '../ui/Tips'
+import ActorIcon from '../ui/ActorIcon'
 
 @ccclass
 export default class NonPlayer extends PlayActor {
@@ -143,6 +144,7 @@ export default class NonPlayer extends PlayActor {
     jumpAbility: JumpingAbility
     statusPos: cc.Vec3 = cc.v3(0, 0)
     public stateMachine: StateMachine<NonPlayer, State<NonPlayer>>
+    icon: ActorIcon
     get IsVariation() {
         return this.isVariation || this.data.StatusTotalData.variation > 0
     }
@@ -1339,6 +1341,9 @@ export default class NonPlayer extends PlayActor {
             this.jumpAbility.updateLogic()
         }
         this.statusManager.node.position = this.statusPos.clone().add(cc.v3(0, this.root.y))
+        if (this.icon) {
+            this.icon.updateLogic(this.data)
+        }
     }
     private setInWaterMat(sprite: cc.Sprite, inWater: boolean) {
         if (!sprite || !sprite.spriteFrame) {

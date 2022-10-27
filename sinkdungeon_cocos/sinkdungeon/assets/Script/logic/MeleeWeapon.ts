@@ -613,22 +613,22 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0)
         }
-        let power = 2 + this.exBeatBack
+        let power = 3
         if (!this.isFar && this.isStab) {
-            power = 2
+            power = 3
         } else if (this.isFar && this.isStab) {
-            power = 8
-        } else if (this.isFar && !this.isStab) {
             power = 6
+        } else if (this.isFar && !this.isStab) {
+            power = 5
         } else if (!this.isFar && !this.isStab) {
-            power = 4
+            power = 3
         } else {
-            power = 2
+            power = 3
         }
         if (this.comboType == MeleeWeapon.COMBO3) {
             power += 2
         }
-
+        power += this.exBeatBack
         pos = pos.normalize().mul(power)
         this.scheduleOnce(() => {
             // cc.log(`beat x=${pos.x},y=${pos.y}`);
