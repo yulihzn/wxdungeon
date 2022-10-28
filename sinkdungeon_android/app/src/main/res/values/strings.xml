@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">梦境地牢</string>
-    <string name="title_activity_splash">FullscreenActivity</string>
-    <string name="radio_button_default">离线</string>
-    <string name="radio_button_new">最新</string>
-    <string name="dummy_button">游玩</string>
-    <string name="app_title">梦 境 地 牢</string>
-</resources>
