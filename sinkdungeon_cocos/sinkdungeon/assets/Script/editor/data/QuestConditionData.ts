@@ -37,7 +37,6 @@ export default class QuestConditionData {
      * 触发建筑列表，每次使用判断是否满足使用次数furniture000,trigger,1;分号隔开，逗号后面是次数不填代表1
      */
     conditionList = ''
-    dialogueList = '' //触发目标对话列表，每次使用判断是否满足触发指定对话的指定id，quest000,1;分号隔开，逗号后面是id
     roomList = '' //进入/离开/清理 指定房间触发0,0,0,0,0章节，层数，房间xy坐标，最后第二位0代表进入，1代表离开，2代表清理最后一位代表次数
     startTime = 0 //开始时间
     endTime = 0 //开始时间

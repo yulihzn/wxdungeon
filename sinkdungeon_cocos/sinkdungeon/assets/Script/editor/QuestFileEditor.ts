@@ -12,6 +12,8 @@ import QuestConditionItem from './QuestConditionItem'
 import QuestData from './data/QuestData'
 import QuestFileEditManager from './QuestFileEditManager'
 import QuestInputItem from './QuestInputItem'
+import QuestConditionData from './data/QuestConditionData'
+import QuestDateInputItem from './QuestDateInputItem'
 
 //任务卡片
 const { ccclass, property } = cc._decorator
@@ -28,18 +30,28 @@ export default class QuestFileEditor extends cc.Component {
     data: QuestData = new QuestData()
     private inputName: QuestInputItem
     private inputContent: QuestInputItem
+    private inputMapThings: QuestInputItem
     private conditionTriggerItem: QuestConditionItem
     private conditionSuccessItem: QuestConditionItem
     private conditionFailItem: QuestConditionItem
+    private rewardItem: QuestConditionItem
+    private inputCoin: QuestInputItem
+    private inputRealCoin: QuestInputItem
+    private inputOilGold: QuestInputItem
     editManager: QuestFileEditManager
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.inputName = QuestFileEditor.addInputItem(this.content, this.inputPrefab, '名称：', '请输入任务名称')
-        this.inputContent = QuestFileEditor.addInputItem(this.content, this.inputPrefab, '描述：', '请输入任务描述', 200, 200)
+        this.inputContent = QuestFileEditor.addInputItem(this.content, this.inputPrefab, '描述：', '请输入任务描述', 500, 200)
+        this.inputMapThings = QuestFileEditor.addInputItem(this.content, this.inputPrefab, '生成：', 'chapter,index,x,y,z,count', 500, 100)
         this.conditionTriggerItem = this.addQuestConditionItem('触发条件')
         this.conditionSuccessItem = this.addQuestConditionItem('完成条件')
         this.conditionFailItem = this.addQuestConditionItem('失败条件')
+        this.rewardItem = this.addQuestConditionItem('奖励')
+        this.inputCoin = QuestFileEditor.addInputItem(this.content, this.inputPrefab, '金币：', '请输入数字')
+        this.inputRealCoin = QuestFileEditor.addInputItem(this.content, this.inputPrefab, '货币：', '请输入数字')
+        this.inputOilGold = QuestFileEditor.addInputItem(this.content, this.inputPrefab, '经验：', '请输入数字')
     }
 
     static addInputItem(parent: cc.Node, prefab: cc.Prefab, name: string, placeholder: string, maxLength?: number, editHeight?: number) {
@@ -53,6 +65,12 @@ export default class QuestFileEditor extends cc.Component {
         if (maxLength) {
             item.editBox.maxLength = maxLength
         }
+        return item
+    }
+    static addDateInputItem(parent: cc.Node, prefab: cc.Prefab, name: string) {
+        let item = cc.instantiate(prefab).getComponent(QuestDateInputItem)
+        item.label.string = name
+        item.node.parent = parent
         return item
     }
     private addQuestConditionItem(name: string) {
@@ -85,12 +103,20 @@ export default class QuestFileEditor extends cc.Component {
     private updateData() {
         this.data.name = this.inputName.Value
         this.data.content = this.inputContent.Value
+        this.data.mapThingsList = this.inputMapThings.Value
         this.conditionTriggerItem.updateInputData()
         this.conditionSuccessItem.updateInputData()
         this.conditionFailItem.updateInputData()
         this.data.triggerCondition.valueCopy(this.conditionTriggerItem.data)
         this.data.successCondition.valueCopy(this.conditionSuccessItem.data)
         this.data.failCondition.valueCopy(this.conditionFailItem.data)
+        this.data.reward.itemList = this.rewardItem.data.conditionList
+        let coin = parseInt(this.inputCoin.Value)
+        let realcoin = parseInt(this.inputRealCoin.Value)
+        let oilgold = parseInt(this.inputOilGold.Value)
+        coin = this.data.reward.coins = isNaN(coin) ? 0 : coin
+        this.data.reward.realCoins = isNaN(realcoin) ? 0 : realcoin
+        this.data.reward.oilGolds = isNaN(oilgold) ? 0 : oilgold
     }
     initAllData() {
         if (!this.conditionTriggerItem) {
@@ -98,9 +124,16 @@ export default class QuestFileEditor extends cc.Component {
         }
         this.inputName.Value = this.data.name
         this.inputContent.Value = this.data.content
-        this.conditionTriggerItem.updateData(this.data.triggerCondition, true, true)
-        this.conditionSuccessItem.updateData(this.data.successCondition, false, true)
-        this.conditionFailItem.updateData(this.data.failCondition, false, true)
+        this.inputMapThings.Value = this.data.mapThingsList
+        this.conditionTriggerItem.updateData(this.data.triggerCondition, true, true, true)
+        this.conditionSuccessItem.updateData(this.data.successCondition, true, false, true)
+        this.conditionFailItem.updateData(this.data.failCondition, true, false, true)
+        let reward = new QuestConditionData()
+        reward.conditionList = this.data.reward.itemList
+        this.rewardItem.updateData(reward, false, false, false)
+        this.inputCoin.Value = `${this.data.reward.coins}`
+        this.inputRealCoin.Value = `${this.data.reward.realCoins}`
+        this.inputOilGold.Value = `${this.data.reward.oilGolds}`
     }
     public canHide() {
         if (this.node.scaleX == 0) {

@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
 import QuestConditionData from './data/QuestConditionData'
+import QuestDateInputItem from './QuestDateInputItem'
 import QuestFileEditor from './QuestFileEditor'
 import QuestInputItem from './QuestInputItem'
 import QuestSpriteItem from './QuestSpriteItem'
@@ -30,6 +31,8 @@ export default class QuestConditionItem extends cc.Component {
     spriteItem: cc.Prefab = null
     @property(cc.Prefab)
     inputItem: cc.Prefab = null
+    @property(cc.Prefab)
+    inputDateItem: cc.Prefab = null
     spriteList: QuestSpriteItem[] = []
     isTextMode = false
     currentSprite: QuestSpriteItem
@@ -38,8 +41,10 @@ export default class QuestConditionItem extends cc.Component {
     editor: QuestFileEditor
     data: QuestConditionData = new QuestConditionData()
 
-    private inputStartTime: QuestInputItem
-    private inputEndTime: QuestInputItem
+    private inputStartTime: QuestDateInputItem
+    private inputEndTime: QuestDateInputItem
+    private inputRoom: QuestInputItem
+
     // LIFE-CYCLE CALLBACKS:
     buttonClick() {
         this.isExpand = !this.isExpand
@@ -51,14 +56,17 @@ export default class QuestConditionItem extends cc.Component {
         this.spriteList = []
     }
     updateInputData() {
+        if (this.inputRoom.node.active) {
+            this.data.roomList = this.inputRoom.Value
+        }
         if (this.inputStartTime.node.active) {
-            this.data.startTime = new Date(this.inputStartTime.Value).getTime()
+            this.data.startTime = this.inputStartTime.Value
         }
         if (this.inputEndTime.node.active) {
-            this.data.endTime = new Date(this.inputEndTime.Value).getTime()
+            this.data.endTime = this.inputEndTime.Value
         }
     }
-    updateData(data: QuestConditionData, showStart: boolean, showEnd: boolean) {
+    updateData(data: QuestConditionData, showRoom: boolean, showStart: boolean, showEnd: boolean) {
         this.data.valueCopy(data)
         if (!this.spriteLayout) {
             this.spriteLayout = this.node.getChildByName('spriteLayout')
@@ -75,16 +83,19 @@ export default class QuestConditionItem extends cc.Component {
         }
         let d1 = this.data.startTime ? new Date(this.data.startTime) : new Date()
         let d2 = this.data.startTime ? new Date(this.data.endTime) : new Date()
-        this.inputStartTime.editBox.string = d1.toLocaleString()
-        this.inputEndTime.editBox.string = d2.toLocaleString()
+        this.inputRoom.Value = this.data.roomList
+        this.inputStartTime.Value = this.data.startTime
+        this.inputEndTime.Value = this.data.endTime
+        this.inputRoom.node.active = showRoom
         this.inputStartTime.node.active = showStart
         this.inputEndTime.node.active = showEnd
     }
 
     onLoad() {
         this.collapseExpand()
-        this.inputStartTime = QuestFileEditor.addInputItem(this.layout, this.inputItem, '开始区间：', '请输入开始区间：')
-        this.inputEndTime = QuestFileEditor.addInputItem(this.layout, this.inputItem, '结束区间：', '请输入结束区间：')
+        this.inputRoom = QuestFileEditor.addInputItem(this.layout, this.inputItem, '坐标：', '章节，层数，房间坐标，进出，次数', 200, 80)
+        this.inputStartTime = QuestFileEditor.addDateInputItem(this.layout, this.inputDateItem, '开始：')
+        this.inputEndTime = QuestFileEditor.addDateInputItem(this.layout, this.inputDateItem, '结束：')
     }
     collapseExpand() {
         this.layout.active = this.isExpand

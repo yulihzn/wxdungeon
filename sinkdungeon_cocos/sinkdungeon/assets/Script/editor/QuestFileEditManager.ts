@@ -38,9 +38,6 @@ export default class QuestFileEditManager extends cc.Component {
     @property(QuestSpriteInfoDialog)
     questSpriteInfoDialog: QuestSpriteInfoDialog = null
 
-    @property(cc.Prefab)
-    cursorAreaPrefab: cc.Prefab = null
-
     //图片资源
     bossSpriteFrames: { [key: string]: cc.SpriteFrame } = null
     // LIFE-CYCLE CALLBACKS:
@@ -59,7 +56,6 @@ export default class QuestFileEditManager extends cc.Component {
     private isShiftPressing = false
 
     protected onLoad(): void {
-        CursorArea.init(this.cursorAreaPrefab)
         this.loadingManager.init()
         this.layout.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.touchPos = event.getLocation()
