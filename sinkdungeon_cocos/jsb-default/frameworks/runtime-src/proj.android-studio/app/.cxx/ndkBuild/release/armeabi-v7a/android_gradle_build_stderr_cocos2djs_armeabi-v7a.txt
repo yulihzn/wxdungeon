@@ -1,0 +1,8 @@
+E:/cocosproject/wxdungeon/sinkdungeon_cocos/jsb-default/frameworks/cocos2d-x/external/sources/tremolo/Tremolo/floor0.c:61:13: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+  if(a<(-140<<12)) return 0;
+        ~~~~^
+1 warning generated.
+E:/cocosproject/wxdungeon/sinkdungeon_cocos/jsb-default/frameworks/cocos2d-x/cocos/platform/android/jni/JniImp.cpp:313:5: warning: non-void function does not return a value [-Wreturn-type]
+    }
+    ^
+1 warning generated.

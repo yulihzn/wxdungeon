@@ -187,16 +187,25 @@ export default class GameHud extends cc.Component {
         let arr1 = ['碎', '碎片', '碎片找', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找', '碎片', '碎', '']
         if (!isLose) AudioPlayer.play(AudioPlayer.COMPLETE)
         let arr = isLose ? arr0 : arr1
+        this.oilGoldLabel.node.color = isLose ? cc.Color.RED : cc.color().fromHEX('#EDB411')
+        this.oilGoldLabel.node.parent.color = isLose ? cc.Color.RED : cc.color().fromHEX('#EDB411')
         let i = 0
         this.oilGoldLabel.string = ''
         this.oilGoldLabel.unscheduleAllCallbacks()
+        let itl = 0.15
+        cc.tween(this.oilGoldLabel.node.parent)
+            .to(itl, { height: 80, width: 80 })
+            .to(itl * 3, { width: 1000 })
+            .delay(itl * arr.length)
+            .to(itl, { height: 0 })
+            .start()
         this.oilGoldLabel.schedule(
             () => {
                 if (i < arr.length) {
                     this.oilGoldLabel.string = arr[i++]
                 }
             },
-            0.15,
+            itl,
             arr.length
         )
     }
@@ -210,15 +219,24 @@ export default class GameHud extends cc.Component {
         this.completeLabel.string = ''
         this.completeLabel.unscheduleAllCallbacks()
         this.isCompleteShowed = true
+        let itl = 0.1
+        let delay = 0.5
+        cc.tween(this.completeLabel.node.parent)
+            .delay(delay)
+            .to(itl, { height: 80, width: 80 })
+            .to(itl * 3, { width: 1000 })
+            .delay(itl * arr.length)
+            .to(itl, { height: 0 })
+            .start()
         this.completeLabel.schedule(
             () => {
                 if (i < arr.length) {
                     this.completeLabel.string = arr[i++]
                 }
             },
-            0.1,
+            itl,
             arr.length,
-            0.5
+            delay
         )
         if (map && map.size > 0) {
             for (let i = 0; i < 4; i++) {

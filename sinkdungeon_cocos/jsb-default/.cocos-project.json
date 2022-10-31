@@ -1,0 +1,7 @@
+{
+  "engine_version": "2.4.10-rc.1",
+  "has_native": true,
+  "project_type": "js",
+  "projectName": "SinkDungeon",
+  "packageName": "org.cocos2d.sinkdungeon"
+}

@@ -1,0 +1,140 @@
+{
+  "abi": "ARMEABI_V7A",
+  "info": {
+    "abi": "ARMEABI_V7A",
+    "bitness": 32,
+    "deprecated": false,
+    "default": true
+  },
+  "originalCxxBuildFolder": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\instantapp\\.cxx\\ndkBuild\\debug\\armeabi-v7a",
+  "cxxBuildFolder": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\instantapp\\.cxx\\ndkBuild\\debug\\armeabi-v7a",
+  "abiPlatformVersion": 19,
+  "variant": {
+    "buildSystemArgumentList": [
+      "NDK_TOOLCHAIN_VERSION\u003dclang",
+      "NDK_MODULE_PATH\u003dE:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\cocos2d-x;E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\cocos2d-x\\cocos;E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\cocos2d-x\\external",
+      "-j8",
+      "NDK_DEBUG\u003d1"
+    ],
+    "cFlagsList": [],
+    "cppFlagsList": [],
+    "variantName": "debug",
+    "objFolder": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\instantapp\\build\\intermediates\\ndkBuild\\debug\\obj\\local",
+    "soFolder": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\instantapp\\build\\intermediates\\ndkBuild\\debug\\lib",
+    "isDebuggableEnabled": true,
+    "validAbiList": [
+      "ARMEABI_V7A"
+    ],
+    "buildTargetSet": [
+      "cocos2djs"
+    ],
+    "implicitBuildTargetSet": [],
+    "cmakeSettingsConfiguration": "android-gradle-plugin-predetermined-name",
+    "module": {
+      "cxxFolder": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\instantapp\\.cxx",
+      "splitsAbiFilterSet": [],
+      "intermediatesFolder": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\instantapp\\build\\intermediates",
+      "gradleModulePathName": ":instantapp",
+      "moduleRootFolder": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\instantapp",
+      "moduleBuildFile": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\instantapp\\build.gradle",
+      "makeFile": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\instantapp\\jni\\Android.mk",
+      "buildSystem": "NDK_BUILD",
+      "ndkFolder": "D:\\android-sdk-windows\\ndk\\25.0.8775105",
+      "ndkVersion": "25.0.8775105",
+      "ndkSupportedAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultStl": "SYSTEM",
+      "ndkMetaPlatforms": {
+        "min": 19,
+        "max": 33,
+        "aliases": {
+          "20": 19,
+          "25": 24,
+          "J": 16,
+          "J-MR1": 17,
+          "J-MR2": 18,
+          "K": 19,
+          "L": 21,
+          "L-MR1": 22,
+          "M": 23,
+          "N": 24,
+          "N-MR1": 24,
+          "O": 26,
+          "O-MR1": 27,
+          "P": 28,
+          "Q": 29,
+          "R": 30,
+          "S": 31,
+          "Sv2": 32,
+          "Tiramisu": 33
+        }
+      },
+      "ndkMetaAbiList": [
+        {
+          "abi": "ARMEABI_V7A",
+          "bitness": 32,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "ARM64_V8A",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "X86",
+          "bitness": 32,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "X86_64",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        }
+      ],
+      "originalCmakeToolchainFile": "D:\\android-sdk-windows\\ndk\\25.0.8775105\\build\\cmake\\android.toolchain.cmake",
+      "cmakeToolchainFile": "D:\\android-sdk-windows\\ndk\\25.0.8775105\\build\\cmake\\android.toolchain.cmake",
+      "stlSharedObjectMap": {
+        "LIBCXX_SHARED": {
+          "ARMEABI_V7A": "D:\\android-sdk-windows\\ndk\\25.0.8775105\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\arm-linux-androideabi\\libc++_shared.so",
+          "ARM64_V8A": "D:\\android-sdk-windows\\ndk\\25.0.8775105\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\aarch64-linux-android\\libc++_shared.so",
+          "X86": "D:\\android-sdk-windows\\ndk\\25.0.8775105\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\i686-linux-android\\libc++_shared.so",
+          "X86_64": "D:\\android-sdk-windows\\ndk\\25.0.8775105\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\x86_64-linux-android\\libc++_shared.so"
+        },
+        "LIBCXX_STATIC": {},
+        "NONE": {},
+        "SYSTEM": {}
+      },
+      "project": {
+        "rootBuildGradleFolder": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio",
+        "cxxFolder": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\.cxx",
+        "compilerSettingsCacheFolder": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\.cxx",
+        "sdkFolder": "D:\\android-sdk-windows",
+        "isNativeCompilerSettingsCacheEnabled": false,
+        "isBuildOnlyTargetAbiEnabled": true,
+        "isCmakeBuildCohabitationEnabled": false,
+        "isPrefabEnabled": false,
+        "isV2NativeModelEnabled": true
+      },
+      "nativeBuildOutputLevel": "QUIET"
+    },
+    "prefabDirectory": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\instantapp\\.cxx\\ndkBuild\\debug\\prefab"
+  },
+  "buildSettings": {
+    "environmentVariables": []
+  },
+  "prefabFolder": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\instantapp\\.cxx\\ndkBuild\\debug\\prefab\\armeabi-v7a"
+}

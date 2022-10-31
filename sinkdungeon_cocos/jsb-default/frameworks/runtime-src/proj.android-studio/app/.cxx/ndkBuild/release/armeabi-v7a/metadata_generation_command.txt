@@ -1,0 +1,21 @@
+Executable : D:\android-sdk-windows\ndk\25.0.8775105\ndk-build.cmd
+arguments : 
+NDK_PROJECT_PATH=null
+APP_BUILD_SCRIPT=E:\cocosproject\wxdungeon\sinkdungeon_cocos\jsb-default\frameworks\runtime-src\proj.android-studio\app\jni\Android.mk
+NDK_APPLICATION_MK=E:\cocosproject\wxdungeon\sinkdungeon_cocos\jsb-default\frameworks\runtime-src\proj.android-studio\app\jni\Application.mk
+APP_ABI=armeabi-v7a
+NDK_ALL_ABIS=armeabi-v7a
+NDK_DEBUG=0
+APP_PLATFORM=android-19
+NDK_OUT=E:/cocosproject/wxdungeon/sinkdungeon_cocos/jsb-default/frameworks/runtime-src/proj.android-studio/app/build/intermediates/ndkBuild/release/obj
+NDK_LIBS_OUT=E:\cocosproject\wxdungeon\sinkdungeon_cocos\jsb-default\frameworks\runtime-src\proj.android-studio\app\build\intermediates\ndkBuild\release\lib
+NDK_TOOLCHAIN_VERSION=clang
+NDK_MODULE_PATH=E:\cocosproject\wxdungeon\sinkdungeon_cocos\jsb-default\frameworks\cocos2d-x;E:\cocosproject\wxdungeon\sinkdungeon_cocos\jsb-default\frameworks\cocos2d-x\cocos;E:\cocosproject\wxdungeon\sinkdungeon_cocos\jsb-default\frameworks\cocos2d-x\external
+-j8
+NDK_DEBUG=0
+APP_SHORT_COMMANDS=false
+LOCAL_SHORT_COMMANDS=false
+-B
+-n
+jvmArgs : 
+

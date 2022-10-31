@@ -1,12 +1,6 @@
-/jsb-link/assets
-/jsb-link/js backups (useful for debugging)
-/jsb-link/jsb-adapter
-/jsb-link/src
-/jsb-link/.cocos-project.json
-/jsb-link/captures
-/jsb-linkcocos-project-template.json
-/jsb-linkmain.js
-/jsb-linkproject.json
-/jsb-link/frameworks/runtime-src/Classes
-/jsb-link/frameworks/runtime-src/proj.ios_mac
-/jsb-link/frameworks/runtime-src/proj.win32
+/jsb-default/assets
+/jsb-default/frameworks/cocos2d-x
+/jsb-default/frameworks/runtime-src/Classes
+/jsb-default/frameworks/runtime-src/proj.ios_mac
+/jsb-default/frameworks/runtime-src/proj.win32
+/jsb-default/frameworks/runtime-src/proj.android-studio/.idea
