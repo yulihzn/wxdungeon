@@ -75,7 +75,7 @@ export default class MapManager {
         let data = Logic.worldLoader.getCurrentLevelData()
         mdd.map = data.getRoomMap(room.x, room.y)
         //添加随机元素
-        let mapdata = this.addGenerateThings(mdd, room.roomType, room.seed, data.needRadomDecorate)
+        let mapdata = this.addGenerateThings(mdd, room.roomType, room.seed, data.needRandomDecorate)
         return mapdata.map
     }
     public getCurrentSideMapStringArray(offset: cc.Vec3): string[][] {

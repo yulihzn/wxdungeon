@@ -2,10 +2,10 @@
   "meta": {
     "version": "0.6.7"
   },
-  "savePath": "D:\\wxcx\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\Texture",
+  "savePath": "D:\\cocosprojects\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\Texture",
   "images": [],
   "folders": [
-    "D:/wxcx/wxdungeon/sinkdungeon_resource/Texture/equipment"
+    "D:/cocosprojects/wxdungeon/sinkdungeon_resource/Texture/equipment"
   ],
   "packOptions": {
     "textureName": "equipment",
@@ -19,7 +19,7 @@
     "filter": "none",
     "exporter": "cocos2d",
     "fileName": "pack-result",
-    "savePath": "D:\\wxcx\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\Texture",
+    "savePath": "D:\\cocosprojects\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\Texture",
     "width": 256,
     "height": 0,
     "fixedSize": false,

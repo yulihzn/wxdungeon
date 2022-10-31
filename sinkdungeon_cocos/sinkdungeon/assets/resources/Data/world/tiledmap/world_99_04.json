@@ -1,170 +1,158 @@
-{ "compressionlevel":-1,
- "height":11,
- "infinite":false,
- "layers":[
+{
+    "compressionlevel": -1,
+    "height": 11,
+    "infinite": false,
+    "layers": [
         {
-         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 194,
-            194, 204, 204, 204, 203, 203, 203, 203, 203, 203, 194,
-            194, 204, 204, 204, 203, 203, 203, 203, 203, 203, 194,
-            193, 193, 193, 193, 203, 203, 203, 203, 203, 203, 194,
-            193, 193, 193, 193, 203, 203, 203, 203, 203, 203, 194,
-            193, 193, 193, 193, 203, 203, 203, 203, 203, 203, 194,
-            194, 194, 194, 194, 194, 194, 194, 204, 204, 204, 194,
-            193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 194],
-         "height":11,
-         "id":4,
-         "name":"floor",
-         "opacity":1,
-         "type":"tilelayer",
-         "visible":true,
-         "width":11,
-         "x":0,
-         "y":0
-        }, 
+            "data": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 194, 194, 204,
+                204, 204, 203, 203, 203, 203, 203, 203, 194, 194, 204, 204, 204, 203, 203, 203, 203, 203, 203, 194, 193, 193, 193, 193, 203, 203, 203, 203, 203, 203, 194, 193, 193,
+                193, 193, 203, 203, 203, 203, 203, 203, 194, 193, 193, 193, 193, 203, 203, 203, 203, 203, 203, 194, 194, 194, 194, 194, 194, 194, 194, 204, 204, 204, 194, 193, 193,
+                193, 193, 193, 193, 193, 193, 193, 193, 194
+            ],
+            "height": 11,
+            "id": 4,
+            "name": "floor",
+            "opacity": 1,
+            "type": "tilelayer",
+            "visible": true,
+            "width": 11,
+            "x": 0,
+            "y": 0
+        },
         {
-         "data":[2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433,
-            2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433,
-            2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433,
-            4, 130, 130, 130, 130, 130, 130, 130, 130, 130, 5,
-            67, 0, 2054, 2054, 0, 2052, 0, 0, 2052, 0, 65,
-            67, 0, 0, 0, 0, 2053, 0, 0, 2053, 0, 65,
-            67, 0, 0, 0, 0, 2052, 0, 0, 2052, 0, 65,
-            67, 0, 0, 0, 0, 2053, 0, 0, 2053, 0, 65,
-            67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65,
-            67, 475, 2055, 475, 475, 646, 475, 475, 2056, 475, 65,
-            68, 51, 51, 51, 52, 2433, 52, 51, 51, 51, 69],
-         "height":11,
-         "id":1,
-         "name":"map",
-         "offsetx":2.8421709430404e-14,
-         "offsety":0,
-         "opacity":1,
-         "properties":[
+            "data": [
+                2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433, 2433,
+                2433, 2433, 2433, 2433, 2433, 2433, 4, 130, 130, 130, 130, 130, 130, 130, 130, 130, 5, 67, 0, 2054, 2054, 0, 2052, 0, 0, 2052, 0, 65, 67, 0, 0, 0, 0, 2053, 0, 0,
+                2053, 0, 65, 67, 0, 0, 0, 0, 2052, 0, 0, 2052, 0, 65, 67, 0, 0, 0, 0, 2053, 0, 0, 2053, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 475, 2055, 475, 475, 646, 475,
+                475, 2056, 475, 65, 68, 51, 51, 51, 52, 2433, 52, 51, 51, 51, 69
+            ],
+            "height": 11,
+            "id": 1,
+            "name": "map",
+            "offsetx": 2.8421709430404e-14,
+            "offsety": 0,
+            "opacity": 1,
+            "properties": [
                 {
-                 "name":"chapter",
-                 "type":"int",
-                 "value":0
-                }, 
-                {
-                 "name":"exits",
-                 "type":"string",
-                 "value":"5,9,99,3,8,2"
-                }, 
-                {
-                 "name":"floorRes",
-                 "type":"string",
-                 "value":"tile_mart001"
-                }, 
-                {
-                 "name":"floorRes1",
-                 "type":"string",
-                 "value":"tile_mart004"
-                }, 
-                {
-                 "name":"height",
-                 "type":"int",
-                 "value":1
-                }, 
-                {
-                 "name":"index",
-                 "type":"int",
-                 "value":4
-                }, 
-                {
-                 "name":"name",
-                 "type":"string",
-                 "value":"\u6709\u5bb6"
-                }, 
-                {
-                 "name":"needRadomDecorate",
-                 "type":"bool",
-                 "value":false
-                }, 
-                {
-                 "name":"roomHeight",
-                 "type":"int",
-                 "value":11
-                }, 
-                {
-                 "name":"roomWidth",
-                 "type":"int",
-                 "value":11
-                }, 
-                {
-                 "name":"seed",
-                 "type":"int",
-                 "value":0
+                    "name": "chapter",
+                    "type": "int",
+                    "value": 0
                 },
-            
                 {
-                 "name":"wallRes0",
-                 "type":"string",
-                 "value":"wallroom00"
-                }, 
+                    "name": "exits",
+                    "type": "string",
+                    "value": "5,9,99,3,8,2"
+                },
                 {
-                 "name":"wallRes1",
-                 "type":"string",
-                 "value":"wallroom01"
-                }, 
+                    "name": "floorRes",
+                    "type": "string",
+                    "value": "tile_mart001"
+                },
                 {
-                 "name":"wallResOther0",
-                 "type":"string",
-                 "value":"wall99anim000"
-                }, 
+                    "name": "floorRes1",
+                    "type": "string",
+                    "value": "tile_mart004"
+                },
                 {
-                 "name":"wallResOther1",
-                 "type":"string",
-                 "value":"wall99anim001"
-                }, 
+                    "name": "height",
+                    "type": "int",
+                    "value": 1
+                },
                 {
-                 "name":"width",
-                 "type":"int",
-                 "value":1
-                }],
-         "type":"tilelayer",
-         "visible":true,
-         "width":11,
-         "x":0,
-         "y":0
-        }, 
+                    "name": "index",
+                    "type": "int",
+                    "value": 4
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "value": "\u6709\u5bb6"
+                },
+                {
+                    "name": "needRandomDecorate",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "roomHeight",
+                    "type": "int",
+                    "value": 11
+                },
+                {
+                    "name": "roomWidth",
+                    "type": "int",
+                    "value": 11
+                },
+                {
+                    "name": "seed",
+                    "type": "int",
+                    "value": 0
+                },
+
+                {
+                    "name": "wallRes0",
+                    "type": "string",
+                    "value": "wallroom00"
+                },
+                {
+                    "name": "wallRes1",
+                    "type": "string",
+                    "value": "wallroom01"
+                },
+                {
+                    "name": "wallResOther0",
+                    "type": "string",
+                    "value": "wall99anim000"
+                },
+                {
+                    "name": "wallResOther1",
+                    "type": "string",
+                    "value": "wall99anim001"
+                },
+                {
+                    "name": "width",
+                    "type": "int",
+                    "value": 1
+                }
+            ],
+            "type": "tilelayer",
+            "visible": true,
+            "width": 11,
+            "x": 0,
+            "y": 0
+        },
         {
-         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            1171, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         "height":11,
-         "id":2,
-         "name":"flag",
-         "opacity":1,
-         "type":"tilelayer",
-         "visible":true,
-         "width":11,
-         "x":0,
-         "y":0
-        }],
- "nextlayerid":5,
- "nextobjectid":3,
- "orientation":"orthogonal",
- "renderorder":"right-down",
- "tiledversion":"1.8.4",
- "tileheight":8,
- "tilesets":[
+            "data": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                1171, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ],
+            "height": 11,
+            "id": 2,
+            "name": "flag",
+            "opacity": 1,
+            "type": "tilelayer",
+            "visible": true,
+            "width": 11,
+            "x": 0,
+            "y": 0
+        }
+    ],
+    "nextlayerid": 5,
+    "nextobjectid": 3,
+    "orientation": "orthogonal",
+    "renderorder": "right-down",
+    "tiledversion": "1.8.4",
+    "tileheight": 8,
+    "tilesets": [
         {
-         "firstgid":1,
-         "source":"..\/tileset.json"
-        }],
- "tilewidth":8,
- "type":"map",
- "version":"1.8",
- "width":11
+            "firstgid": 1,
+            "source": "../tileset.json"
+        }
+    ],
+    "tilewidth": 8,
+    "type": "map",
+    "version": "1.8",
+    "width": 11
 }

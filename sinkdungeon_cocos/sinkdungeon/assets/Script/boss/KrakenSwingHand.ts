@@ -20,7 +20,7 @@ const { ccclass, property } = cc._decorator
 @ccclass
 export default class KrakenSwingHand extends BaseColliderComponent {
     @property
-    damage = 2
+    damage = 8
     // LIFE-CYCLE CALLBACKS:
     isShow = false
     anim: cc.Animation

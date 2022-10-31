@@ -229,7 +229,7 @@ export default class Dragon extends Boss {
             let target = ActorUtils.getEnemyCollisionTarget(other)
             if (target && !this.sc.isDied && !this.physicBox.sensor) {
                 let d = new DamageData()
-                d.physicalDamage = 3
+                d.physicalDamage = 15
                 target.takeDamage(d, FromData.getClone(this.actorName(), 'dragonhead'), this)
             }
         }

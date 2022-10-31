@@ -180,7 +180,7 @@ export default class IceDemon extends Boss {
                         for (let i = 0; i < ps.length; i++) {
                             // this.dungeon.addIceThron(Dungeon.getPosInMap(ps[i]), true);
                             let d = new DamageData()
-                            d.physicalDamage = 3
+                            d.physicalDamage = 5
                             this.shooter.dungeon = this.dungeon
                             this.shooter.actor = this
                             this.shooter.fireAoe(
@@ -260,7 +260,7 @@ export default class IceDemon extends Boss {
                         for (let i = 0; i < ps.length; i++) {
                             // this.dungeon.addIceThron(Dungeon.getPosInMap(ps[i]), true);
                             let d = new DamageData()
-                            d.physicalDamage = 3
+                            d.physicalDamage = 5
                             this.shooter.dungeon = this.dungeon
                             this.shooter.actor = this
                             this.shooter.fireAoe(
@@ -324,7 +324,7 @@ export default class IceDemon extends Boss {
             cc.v3(disdance / 2, -disdance / 2)
         ]
         let d = new DamageData()
-        d.magicDamage = 1
+        d.magicDamage = 2
         for (let i = 0; i < angles.length; i++) {
             this.shooter.dungeon = this.dungeon
             this.shooter.actor = this
@@ -500,7 +500,7 @@ export default class IceDemon extends Boss {
             let target = ActorUtils.getEnemyCollisionTarget(other)
             if (target && (this.meleeSkill.IsExcuting || this.dashSkill.IsExcuting) && !this.sc.isDied) {
                 let d = new DamageData()
-                d.physicalDamage = 3
+                d.physicalDamage = 8
                 let from = FromData.getClone(this.actorName(), 'bossicepart01')
                 if (target.takeDamage(d, from, this)) {
                     target.addStatus(StatusManager.FROZEN, from)

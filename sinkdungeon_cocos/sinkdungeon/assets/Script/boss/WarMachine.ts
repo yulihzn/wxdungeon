@@ -282,7 +282,7 @@ export default class WarMachine extends Boss {
             let target = ActorUtils.getEnemyCollisionTarget(other)
             if (target && !this.sc.isDied) {
                 let d = new DamageData()
-                d.physicalDamage = 5
+                d.physicalDamage = 8
                 target.takeDamage(d, FromData.getClone(this.actorName(), 'bossmachinehead'), this)
             }
         }

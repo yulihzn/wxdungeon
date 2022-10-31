@@ -64,9 +64,14 @@
                  "value":"\u7814\u7a76\u6240-\u5916\u90e8"
                 }, 
                 {
-                 "name":"needRadomDecorate",
+                 "name":"needRandomDecorate",
                  "type":"bool",
                  "value":false
+                }, 
+                {
+                 "name":"needSides",
+                 "type":"bool",
+                 "value":true
                 }, 
                 {
                  "name":"roomHeight",

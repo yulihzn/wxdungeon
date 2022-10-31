@@ -64,7 +64,12 @@
                  "value":"\u5e7d\u7075\u8239-\u7532\u677f"
                 }, 
                 {
-                 "name":"needRadomDecorate",
+                 "name":"needRandomDecorate",
+                 "type":"bool",
+                 "value":true
+                }, 
+                {
+                 "name":"needSides",
                  "type":"bool",
                  "value":true
                 }, 

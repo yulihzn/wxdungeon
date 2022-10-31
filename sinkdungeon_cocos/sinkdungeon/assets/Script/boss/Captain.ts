@@ -150,7 +150,7 @@ export default class Captain extends Boss {
                 if (this.isFall && !this.sc.isDied) {
                     this.isFall = false
                     let dd = new DamageData()
-                    dd.physicalDamage = 2
+                    dd.physicalDamage = 10
                     target.takeDamage(dd, FromData.getClone(this.actorName(), 'captain_head'), this)
                 }
             }

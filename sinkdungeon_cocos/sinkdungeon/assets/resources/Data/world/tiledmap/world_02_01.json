@@ -1,144 +1,159 @@
-{ "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "target":"."
+{
+    "compressionlevel": -1,
+    "editorsettings": {
+        "export": {
+            "target": "."
         }
     },
- "height":11,
- "infinite":false,
- "layers":[
+    "height": 11,
+    "infinite": false,
+    "layers": [
         {
-         "data":[193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193],
-         "height":11,
-         "id":3,
-         "name":"floor",
-         "opacity":1,
-         "type":"tilelayer",
-         "visible":true,
-         "width":11,
-         "x":0,
-         "y":0
-        }, 
+            "data": [
+                193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193,
+                193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193,
+                193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193,
+                193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193
+            ],
+            "height": 11,
+            "id": 3,
+            "name": "floor",
+            "opacity": 1,
+            "type": "tilelayer",
+            "visible": true,
+            "width": 11,
+            "x": 0,
+            "y": 0
+        },
         {
-         "data":[4, 130, 130, 130, 130, 130, 130, 130, 130, 130, 5, 67, 0, 0, 0, 0, 525, 0, 0, 0, 0, 65, 67, 0, 778, 1606, 1606, 1606, 1606, 1606, 778, 0, 65, 67, 0, 778, 778, 778, 778, 778, 778, 778, 0, 65, 67, 0, 778, 778, 778, 778, 778, 778, 778, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 68, 2, 2, 2, 2, 642, 2, 2, 2, 2, 69],
-         "height":11,
-         "id":1,
-         "name":"map",
-         "opacity":1,
-         "properties":[
+            "data": [
+                4, 130, 130, 130, 130, 130, 130, 130, 130, 130, 5, 67, 0, 0, 0, 0, 525, 0, 0, 0, 0, 65, 67, 0, 778, 1606, 1606, 1606, 1606, 1606, 778, 0, 65, 67, 0, 778, 778, 778,
+                778, 778, 778, 778, 0, 65, 67, 0, 778, 778, 778, 778, 778, 778, 778, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 68, 2, 2, 2, 2, 642, 2, 2, 2, 2, 69
+            ],
+            "height": 11,
+            "id": 1,
+            "name": "map",
+            "opacity": 1,
+            "properties": [
                 {
-                 "name":"chapter",
-                 "type":"int",
-                 "value":2
-                }, 
+                    "name": "chapter",
+                    "type": "int",
+                    "value": 2
+                },
                 {
-                 "name":"exits",
-                 "type":"string",
-                 "value":"5,10,2,0,1,4"
-                }, 
+                    "name": "exits",
+                    "type": "string",
+                    "value": "5,10,2,0,1,4"
+                },
                 {
-                 "name":"floorRes",
-                 "type":"string",
-                 "value":"tile_pyramid001"
-                }, 
+                    "name": "floorRes",
+                    "type": "string",
+                    "value": "tile_pyramid001"
+                },
                 {
-                 "name":"floorRes1",
-                 "type":"string",
-                 "value":"tile_pyramid004"
-                }, 
+                    "name": "floorRes1",
+                    "type": "string",
+                    "value": "tile_pyramid004"
+                },
                 {
-                 "name":"height",
-                 "type":"int",
-                 "value":1
-                }, 
+                    "name": "height",
+                    "type": "int",
+                    "value": 1
+                },
                 {
-                 "name":"index",
-                 "type":"int",
-                 "value":1
-                }, 
+                    "name": "index",
+                    "type": "int",
+                    "value": 1
+                },
                 {
-                 "name":"name",
-                 "type":"string",
-                 "value":"\u91d1\u5b57\u5854-\u5bc6\u5ba4"
-                }, 
+                    "name": "name",
+                    "type": "string",
+                    "value": "\u91d1\u5b57\u5854-\u5bc6\u5ba4"
+                },
                 {
-                 "name":"needRadomDecorate",
-                 "type":"bool",
-                 "value":false
-                }, 
+                    "name": "needRandomDecorate",
+                    "type": "bool",
+                    "value": false
+                },
                 {
-                 "name":"roomHeight",
-                 "type":"int",
-                 "value":11
-                }, 
+                    "name": "roomHeight",
+                    "type": "int",
+                    "value": 11
+                },
                 {
-                 "name":"roomWidth",
-                 "type":"int",
-                 "value":11
-                }, 
+                    "name": "roomWidth",
+                    "type": "int",
+                    "value": 11
+                },
                 {
-                 "name":"seed",
-                 "type":"int",
-                 "value":0
-                }, 
+                    "name": "seed",
+                    "type": "int",
+                    "value": 0
+                },
                 {
-                 "name":"wallRes0",
-                 "type":"string",
-                 "value":"wallpyramid00"
-                }, 
+                    "name": "wallRes0",
+                    "type": "string",
+                    "value": "wallpyramid00"
+                },
                 {
-                 "name":"wallRes1",
-                 "type":"string",
-                 "value":"walldungeon00"
-                }, 
+                    "name": "wallRes1",
+                    "type": "string",
+                    "value": "walldungeon00"
+                },
                 {
-                 "name":"wallResOther0",
-                 "type":"string",
-                 "value":"wall03anim001"
-                }, 
+                    "name": "wallResOther0",
+                    "type": "string",
+                    "value": "wall03anim001"
+                },
                 {
-                 "name":"wallResOther1",
-                 "type":"string",
-                 "value":"wall03anim002"
-                }, 
+                    "name": "wallResOther1",
+                    "type": "string",
+                    "value": "wall03anim002"
+                },
                 {
-                 "name":"width",
-                 "type":"int",
-                 "value":1
-                }],
-         "type":"tilelayer",
-         "visible":true,
-         "width":11,
-         "x":0,
-         "y":0
-        }, 
+                    "name": "width",
+                    "type": "int",
+                    "value": 1
+                }
+            ],
+            "type": "tilelayer",
+            "visible": true,
+            "width": 11,
+            "x": 0,
+            "y": 0
+        },
         {
-         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1166, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         "height":11,
-         "id":2,
-         "name":"flag",
-         "opacity":1,
-         "type":"tilelayer",
-         "visible":true,
-         "width":11,
-         "x":0,
-         "y":0
-        }],
- "nextlayerid":4,
- "nextobjectid":2,
- "orientation":"orthogonal",
- "renderorder":"right-down",
- "tiledversion":"1.4.2",
- "tileheight":8,
- "tilesets":[
+            "data": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                1166, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ],
+            "height": 11,
+            "id": 2,
+            "name": "flag",
+            "opacity": 1,
+            "type": "tilelayer",
+            "visible": true,
+            "width": 11,
+            "x": 0,
+            "y": 0
+        }
+    ],
+    "nextlayerid": 4,
+    "nextobjectid": 2,
+    "orientation": "orthogonal",
+    "renderorder": "right-down",
+    "tiledversion": "1.4.2",
+    "tileheight": 8,
+    "tilesets": [
         {
-         "firstgid":1,
-         "source":"..\/tileset.json"
-        }],
- "tilewidth":8,
- "type":"map",
- "version":1.4,
- "width":11
+            "firstgid": 1,
+            "source": "../tileset.json"
+        }
+    ],
+    "tilewidth": 8,
+    "type": "map",
+    "version": 1.4,
+    "width": 11
 }
