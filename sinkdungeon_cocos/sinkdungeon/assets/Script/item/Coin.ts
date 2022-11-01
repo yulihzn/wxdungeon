@@ -27,26 +27,34 @@ export default class Coin extends BaseColliderComponent {
     player: Player
     isReal = false
     private soundPlaying = false
+    shadow: cc.Node
+    zSpeed = 20
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.initCollider()
+        super.onLoad()
+        this.init()
     }
     onEnable() {
+        this.init()
+    }
+    init() {
         this.anim = this.getComponent(cc.Animation)
         let speed = Logic.getRandomNum(6, 12)
         let x = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed
         let y = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed
-
+        this.zSpeed = 20
         this.entity.Move.linearVelocity = cc.v2(x, y)
         this.entity.Move.damping = 3
+        this.entity.Move.linearVelocityZ = this.zSpeed
         this.isReady = false
+        this.entity.NodeRender.root = this.node.getChildByName('root')
+        this.shadow = this.node.getChildByName('shadow')
+        this.entity.Transform.position = this.node.position.clone()
         this.scheduleOnce(() => {
             this.isReady = true
-            this.entity.Transform.position = this.node.position.clone()
-            this.entity.NodeRender.node = this.node
-        }, 0.5)
+        }, 2)
     }
     changeValue(value: number) {
         //目前只有1和10
@@ -59,7 +67,7 @@ export default class Coin extends BaseColliderComponent {
             index = 1
             this.node.scale = 1
         }
-        let sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite)
+        let sprite = this.node.getChildByName('root').getChildByName('sprite').getComponent(cc.Sprite)
         sprite.spriteFrame = Logic.spriteFrameRes(this.valueRes[index])
         if (this.isReal) {
             sprite.spriteFrame = Logic.spriteFrameRes('realcoin')
@@ -84,6 +92,19 @@ export default class Coin extends BaseColliderComponent {
         return dis
     }
     update(dt) {
+        let y = this.entity.NodeRender.root.y - this.entity.Transform.base
+        if (y < 0) {
+            y = 0
+        }
+        let scale = 1 - y / 64
+        this.shadow.scale = scale < 0.5 ? 0.5 : scale
+        if (y == 0) {
+            this.zSpeed -= 5
+            if (this.zSpeed < 0) {
+                this.zSpeed = 0
+            }
+            this.entity.Move.linearVelocityZ = this.zSpeed
+        }
         if (this.isCheckTimeDelay(dt)) {
             if (this.player && this.getNearPlayerDistance(this.player.node) < 800 && this.node.active && this.isReady) {
                 let p = this.player.node.position.clone()

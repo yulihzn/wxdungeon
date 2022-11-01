@@ -670,9 +670,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                     this.beatBack(monster)
                     this.addTargetAllStatus(common, monster)
                     this.addHitExTrigger(damage, monster)
-                    if (monster.data.isTest > 0) {
-                        this.dungeon.addFloorPaper(this.player.node.position, monster.node.position, Logic.getRandomNum(3, 6))
-                    }
+                    this.dungeon.addFloorPaper(this.player.node.position, monster.node.position, Logic.getRandomNum(3, 6))
                 }
             }
         } else if (attackTarget.tag == CCollider.TAG.BOSS) {
@@ -683,6 +681,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                     this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
                     this.addTargetAllStatus(common, boss)
                     this.addHitExTrigger(damage, boss)
+                    this.dungeon.addFloorPaper(this.player.node.position, boss.node.position, Logic.getRandomNum(3, 6))
                 }
             }
         } else if (attackTarget.tag == CCollider.TAG.BUILDING || attackTarget.tag == CCollider.TAG.WALL) {
@@ -696,6 +695,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 if (interactBuilding && interactBuilding.data.currentHealth > 0) {
                     attackSuccess = true
                     interactBuilding.takeDamage(damage)
+                    this.dungeon.addFloorPaper(this.player.node.position, interactBuilding.node.position, Logic.getRandomNum(3, 6))
                 }
             }
             if (!attackSuccess) {
@@ -710,6 +710,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 if (hitBuilding && hitBuilding.data.currentHealth > 0) {
                     attackSuccess = true
                     hitBuilding.takeDamage(damage)
+                    this.dungeon.addFloorPaper(this.player.node.position, hitBuilding.node.position, Logic.getRandomNum(3, 6))
                 }
             }
             this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)

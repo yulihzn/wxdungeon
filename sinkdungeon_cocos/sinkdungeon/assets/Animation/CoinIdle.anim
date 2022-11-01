@@ -9,7 +9,29 @@
   "wrapMode": 2,
   "curveData": {
     "paths": {
-      "sprite": {
+      "root/sprite/cover": {
+        "comps": {},
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.4166666666666667,
+              "value": 0,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.75,
+              "value": 255
+            }
+          ]
+        }
+      },
+      "root/sprite": {
+        "comps": {},
         "props": {
           "scaleX": [
             {
@@ -31,22 +53,24 @@
           ]
         }
       },
-      "sprite/cover": {
+      "shadow": {
         "props": {
-          "opacity": [
+          "scaleX": [
             {
               "frame": 0,
-              "value": 0,
-              "curve": "constant"
+              "value": 2
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 0.75
             },
             {
               "frame": 0.4166666666666667,
-              "value": 0,
-              "curve": "constant"
+              "value": 0.75
             },
             {
-              "frame": 0.75,
-              "value": 255
+              "frame": 0.8333333333333334,
+              "value": 2
             }
           ]
         }

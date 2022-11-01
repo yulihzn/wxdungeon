@@ -11,6 +11,7 @@ import CCollider from '../collider/CCollider'
 import Logic from '../logic/Logic'
 import Random from '../utils/Random'
 import IndexZ from '../utils/IndexZ'
+import { EventHelper } from '../logic/EventHelper'
 
 const { ccclass, property } = cc._decorator
 
@@ -24,18 +25,33 @@ export default class FloorPaper extends BaseColliderComponent {
     shadow: cc.Sprite = null
     static readonly SPRITES = ['paper0', 'paper1', 'paper2', 'paper3']
     spriteIndex = 0
-    hv = cc.v2(0, 0)
     rotateAngle = 0
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         super.onLoad()
-        this.node.scale = 1.5 + Random.rand()
+        this.init()
+    }
+    protected onEnable(): void {
+        this.init()
+    }
+    init() {
+        this.node.scale = 0.5 + Random.rand()
         this.spriteIndex = Logic.getRandomNum(0, FloorPaper.SPRITES.length - 1)
+        this.rotateAngle = 0
+        let r = Logic.getRandomNum(0, 255)
+        let g = Logic.getRandomNum(0, 255)
+        let b = Logic.getRandomNum(0, 255)
+        this.sprite.node.color = cc.color(r, g, b)
         this.updateSprite()
-        this.scheduleOnce(() => {
-            this.node.destroy()
-        }, 120)
+        this.unscheduleAllCallbacks()
+        cc.tween(this.sprite.node)
+            .delay(5)
+            .to(0.5, { opacity: 0 })
+            .call(() => {
+                EventHelper.emit(EventHelper.POOL_DESTORY_PAPER, { paperNode: this.node, entity: this.entity })
+            })
+            .start()
     }
     updateSprite() {
         if (this.spriteIndex > FloorPaper.SPRITES.length - 1) {
@@ -81,10 +97,7 @@ export default class FloorPaper extends BaseColliderComponent {
         this.entity.NodeRender.root = this.root
         this.entity.Move.linearVelocityZ = 2
         this.entity.Move.gravity = MoveComponent.DEFAULT_GRAVITY / 10
-        let speed = Logic.getRandomNum(3, 7)
-        if (isReverse) {
-            speed += 2
-        }
+        let speed = isReverse ? Logic.getRandomNum(5, 8) : Logic.getRandomNum(2, 5)
         let x = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed
         let y = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed
         if (targetPos) {
@@ -118,6 +131,11 @@ export default class FloorPaper extends BaseColliderComponent {
             ) {
                 this.fly(this.node.parent.convertToNodeSpaceAR(cc.v3(other.w_center)), true)
             }
+        }
+    }
+    onColliderStay(other: CCollider, self: CCollider): void {
+        if (!other.sensor && other.isStatic) {
+            this.entity.Move.linearVelocity = cc.Vec2.ZERO
         }
     }
     checkTimeDelay = 0
