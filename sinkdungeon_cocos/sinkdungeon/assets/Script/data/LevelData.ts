@@ -55,12 +55,12 @@ export default class LevelData {
     equipitems = '' //装备和道具16,4,weapon001#27,1,0,bottle000 井号隔开，坐标（y轴向下）资源名
     needRandomDecorate = false
     minimapOnlyCurrentRoom = false
-    needSides = false
+    isOutside = false
     map: string[][] = []
     floormap: string[][] = []
     roomTypes: string[][] = []
     shadowMap: string[][] = []
-    minimaplock: string[][] = []
+    outSideMap: boolean[][] = []
     exits: string = '' //16,4,0,1,27,1#27,1,0,0,16,4 井号隔开，出口坐标，章节，层数，入口坐标（y轴向下）
     lights: MapLightData[]
 
@@ -159,7 +159,7 @@ export default class LevelData {
         this.floormap = data.floormap
         this.roomTypes = data.roomTypes
         this.shadowMap = data.shadowMap
-        this.minimaplock = data.minimaplock
+        this.outSideMap = data.outSideMap
         this.lights = data.lights
     }
     getRoomMap(x: number, y: number): string[][] {

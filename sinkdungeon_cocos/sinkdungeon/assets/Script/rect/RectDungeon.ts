@@ -72,6 +72,7 @@ export default class RectDungeon {
                 this.map[i][j] = new RectRoom(i, j, RoomType.EMPTY_ROOM).initFromSave(dungeon.map[i][j])
                 if (levelData) {
                     this.map[i][j].roomType = RoomType.getTypeByName(levelData.roomTypes[i][j])
+                    this.map[i][j].isOutside = levelData.outSideMap[i][j]
                     if (!this.map[i][j].shadowLevel) {
                         this.map[i][j].shadowLevel = levelData.shadowMap[i][j]
                     }
@@ -104,6 +105,7 @@ export default class RectDungeon {
             this.map[i] = new Array()
             for (let j = 0; j < levelData.height; j++) {
                 this.map[i][j] = new RectRoom(i, j, RoomType.getTypeByName(levelData.roomTypes[i][j]))
+                this.map[i][j].isOutside = levelData.outSideMap[i][j]
                 this.map[i][j].shadowLevel = levelData.shadowMap[i][j]
                 // if (this.map[i][j].roomType.isEqual(RoomType.START_ROOM)) {
                 //     //开始房间默认被发现

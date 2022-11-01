@@ -24,6 +24,8 @@ import StatusIconList from '../ui/StatusIconList'
 import Actor from '../base/Actor'
 import Dialogue from '../ui/Dialogue'
 import Controller from './Controller'
+import WeatherManager from '../manager/WeatherManager'
+import EffectItemManager from '../manager/EffectItemManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -72,6 +74,8 @@ export default class Dungeon extends cc.Component {
     itemManager: ItemManager = null //金币和物品管理
     buildingManager: BuildingManager = null //建筑管理
     lightManager: LightManager = null //光线管理
+    weatherManager: WeatherManager = null //天气管理器
+    effectItemManager: EffectItemManager = null //特效物体管理器
     anim: cc.Animation
     CameraZoom = Dungeon.DEFAULT_ZOOM
     needZoomIn = false
@@ -167,6 +171,8 @@ export default class Dungeon extends cc.Component {
         this.dungeonStyleManager = this.getComponent(DungeonStyleManager)
         this.buildingManager = this.getComponent(BuildingManager)
         this.lightManager = this.getComponent(LightManager)
+        this.weatherManager = this.getComponent(WeatherManager)
+        this.effectItemManager = this.getComponent(EffectItemManager)
         this.reset()
     }
     reset() {
@@ -180,6 +186,7 @@ export default class Dungeon extends cc.Component {
         this.dungeonStyleManager.clear()
         this.buildingManager.clear()
         this.lightManager.clear()
+        this.weatherManager.clear()
         //设置雾气层级
         this.fog.zIndex = IndexZ.FOG
         this.fog.scale = 0.6
@@ -278,6 +285,10 @@ export default class Dungeon extends cc.Component {
                 })
             })
         })
+        if ((leveldata.isOutside && !Logic.mapManager.getCurrentRoom().isOutside) || (!leveldata.isOutside && Logic.mapManager.getCurrentRoom().isOutside)) {
+            this.weatherManager.addRain(cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.WIDTH_SIZE / 2)), 0)
+        }
+
         //初始化玩家
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player)
         this.player.statusIconList = this.statusIconList
@@ -528,6 +539,14 @@ export default class Dungeon extends cc.Component {
                     currequipments.push(data)
                     Logic.mapManager.setCurrentEquipmentsArr(currequipments)
                 }
+            }
+        }
+    }
+    /**纸 */
+    addFloorPaper(targetPos: cc.Vec3, pos: cc.Vec3, count: number) {
+        for (let i = 0; i < count; i++) {
+            if (this.effectItemManager) {
+                this.effectItemManager.addPaper(targetPos, pos)
             }
         }
     }

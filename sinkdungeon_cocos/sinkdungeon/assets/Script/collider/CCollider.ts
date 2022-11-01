@@ -44,7 +44,8 @@ export default class CCollider extends cc.Component {
         ENERGY_SHIELD: 19, //能量罩
         LIGHT: 20, //光线 特殊的一种类型，不做碰撞检测
         PLAYER_INTERACT: 21, //玩家触碰范围用来触发交互
-        INTERACT: 22 //触碰范围用来触发
+        INTERACT: 22, //触碰范围用来触发
+        EFFECT: 23 //特效
     })
     static readonly AUDIO_MATERIAL = cc.Enum({
         METAL: 0,

@@ -154,6 +154,7 @@ export default class Player extends PlayActor {
                     this.playerAnim(BaseAvatar.STATE_IDLE, this.currentDir)
                 }
             }
+
             this.exTrigger(group, type, null, null)
         })
         this.avatar = PlayerAvatar.create(this.avatarPrefab, this.root, Logic.playerData.AvatarData.clone(), this.node.group)

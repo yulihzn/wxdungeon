@@ -30,6 +30,7 @@ export default class RectRoom {
     isReborn = false
     reborn = 0
     shadowLevel = '' //阴影强度
+    isOutside = false
 
     constructor(x: number, y: number, roomType: RoomType) {
         this.x = x
@@ -51,6 +52,7 @@ export default class RectRoom {
         this.reborn = room.reborn
         this.isReborn = room.isReborn
         this.shadowLevel = room.shadowLevel
+        this.isOutside = room.isOutside
         this.seed = room.seed ? room.seed : RectRoom.getRandomNum(0, 100000000)
         return this
     }

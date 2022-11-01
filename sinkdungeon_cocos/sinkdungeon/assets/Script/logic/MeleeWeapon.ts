@@ -670,6 +670,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
                     this.beatBack(monster)
                     this.addTargetAllStatus(common, monster)
                     this.addHitExTrigger(damage, monster)
+                    if (monster.data.isTest > 0) {
+                        this.dungeon.addFloorPaper(this.player.node.position, monster.node.position, Logic.getRandomNum(3, 6))
+                    }
                 }
             }
         } else if (attackTarget.tag == CCollider.TAG.BOSS) {
