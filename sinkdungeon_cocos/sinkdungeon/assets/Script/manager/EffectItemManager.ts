@@ -52,6 +52,7 @@ export default class EffectItemManager extends BaseManager {
         blood.node.active = true
         blood.node.position = targetPos.clone()
         blood.entity.Transform.position = targetPos.clone()
+        blood.entity.Transform.z = 64
         blood.fly(fromPos, true)
     }
     addPaper(fromPos: cc.Vec3, targetPos: cc.Vec3) {
@@ -60,6 +61,7 @@ export default class EffectItemManager extends BaseManager {
         paper.node.active = true
         paper.node.position = targetPos.clone()
         paper.entity.Transform.position = targetPos.clone()
+        paper.entity.Transform.z = 64
         paper.fly(fromPos, false)
     }
     // update (dt) {}
