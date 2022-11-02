@@ -1,12 +1,6 @@
-import { ColliderComponent } from './../component/ColliderComponent';
-import { NodeRenderComponent } from '../component/NodeRenderComponent';
-import { TransformComponent } from '../component/TransformComponent';
-import { MoveComponent } from '../component/MoveComponent';
-import { ecs } from "../ECS"
+import { ColliderComponent } from './../component/ColliderComponent'
+import NodeEntity from './NodeEntity'
 
-export default class ActorEntity extends ecs.Entity {
-    Move:MoveComponent;
-    Transform:TransformComponent;
-    NodeRender:NodeRenderComponent;
-    Collider:ColliderComponent;
+export default class ActorEntity extends NodeEntity {
+    Collider: ColliderComponent
 }

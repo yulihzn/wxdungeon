@@ -28,13 +28,10 @@
       },
       {
         "__id__": 6
-      },
-      {
-        "__id__": 7
       }
     ],
     "_prefab": {
-      "__id__": 8
+      "__id__": 7
     },
     "_opacity": 255,
     "_color": {
@@ -219,31 +216,6 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_id": ""
-  },
-  {
-    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 16,
-    "offsetX": 0,
-    "offsetY": 0,
-    "type": 0,
-    "radius": 20,
-    "w": 128,
-    "h": 128,
-    "density": 0,
-    "sensor": true,
-    "isStatic": true,
-    "ignoreSameTag": false,
-    "targetTagList": [
-      21
-    ],
-    "ignoreTagList": [],
     "_id": ""
   },
   {

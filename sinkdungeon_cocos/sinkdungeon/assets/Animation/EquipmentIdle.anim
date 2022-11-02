@@ -2,32 +2,18 @@
   "__type__": "cc.AnimationClip",
   "_name": "EquipmentIdle",
   "_objFlags": 0,
-  "_rawFiles": null,
+  "_native": "",
   "_duration": 2,
   "sample": 60,
   "speed": 1,
-  "wrapMode": "2",
+  "wrapMode": 2,
   "curveData": {
     "paths": {
-      "sprite": {
-        "props": {
-          "y": [
-            {
-              "frame": 0,
-              "value": 24
-            },
-            {
-              "frame": 1,
-              "value": 32
-            },
-            {
-              "frame": 2,
-              "value": 24
-            }
-          ]
-        }
+      "root/sprite": {
+        "comps": {}
       },
-      "sprite/bling": {
+      "root/sprite/bling": {
+        "comps": {},
         "props": {
           "scale": [
             {

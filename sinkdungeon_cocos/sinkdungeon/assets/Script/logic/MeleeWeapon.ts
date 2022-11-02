@@ -664,24 +664,24 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 if (damage.isBackAttack) {
                     damage.realDamage += common.DamageBack
                 }
-                damageSuccess = monster.takeDamage(damage)
+                damageSuccess = monster.takeDamage(damage, new FromData(), this.player)
                 if (damageSuccess) {
                     this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
                     this.beatBack(monster)
                     this.addTargetAllStatus(common, monster)
                     this.addHitExTrigger(damage, monster)
-                    this.dungeon.addFloorPaper(this.player.node.position, monster.node.position, Logic.getRandomNum(3, 6))
                 }
             }
         } else if (attackTarget.tag == CCollider.TAG.BOSS) {
             let boss = attackTarget.node.getComponent(Boss)
             if (boss && !boss.sc.isDied && !this.isMiss) {
-                damageSuccess = boss.takeDamage(damage)
+                damageSuccess = boss.takeDamage(damage, new FromData(), this.player)
                 if (damageSuccess) {
                     this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
                     this.addTargetAllStatus(common, boss)
                     this.addHitExTrigger(damage, boss)
-                    this.dungeon.addFloorPaper(this.player.node.position, boss.node.position, Logic.getRandomNum(3, 6))
+                    let count = damage.isCriticalStrike ? Logic.getRandomNum(12, 24) : Logic.getRandomNum(3, 6)
+                    this.dungeon.addHitBlood(this.player.node.position, boss.node.position, Logic.getRandomNum(3, 6))
                 }
             }
         } else if (attackTarget.tag == CCollider.TAG.BUILDING || attackTarget.tag == CCollider.TAG.WALL) {
@@ -694,23 +694,21 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 let interactBuilding = attackTarget.node.getComponent(InteractBuilding)
                 if (interactBuilding && interactBuilding.data.currentHealth > 0) {
                     attackSuccess = true
-                    interactBuilding.takeDamage(damage)
-                    this.dungeon.addFloorPaper(this.player.node.position, interactBuilding.node.position, Logic.getRandomNum(3, 6))
+                    interactBuilding.takeDamage(damage, new FromData(), this.player)
                 }
             }
             if (!attackSuccess) {
                 let hitBuilding = attackTarget.node.getComponent(NormalBuilding)
                 if (hitBuilding) {
                     attackSuccess = true
-                    hitBuilding.takeDamage(damage)
+                    hitBuilding.takeDamage(damage, new FromData(), this.player)
                 }
             }
             if (!attackSuccess) {
                 let hitBuilding = attackTarget.node.getComponent(Emplacement)
                 if (hitBuilding && hitBuilding.data.currentHealth > 0) {
                     attackSuccess = true
-                    hitBuilding.takeDamage(damage)
-                    this.dungeon.addFloorPaper(this.player.node.position, hitBuilding.node.position, Logic.getRandomNum(3, 6))
+                    hitBuilding.takeDamage(damage, new FromData(), this.player)
                 }
             }
             this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)

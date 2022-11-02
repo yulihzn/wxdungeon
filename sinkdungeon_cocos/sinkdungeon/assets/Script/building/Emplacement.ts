@@ -6,6 +6,7 @@ import FromData from '../data/FromData'
 import IndexZ from '../utils/IndexZ'
 import DamageData from '../data/DamageData'
 import AudioPlayer from '../utils/AudioPlayer'
+import Actor from '../base/Actor'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -239,7 +240,7 @@ export default class Emplacement extends Building {
             this.anim.play()
         }
     }
-    takeDamage(damage: DamageData): boolean {
+    takeDamage(damage: DamageData, from?: FromData, actor?: Actor): boolean {
         if (this.data.currentHealth <= 0 || this.data.currentHealth >= 9999) {
             return false
         }

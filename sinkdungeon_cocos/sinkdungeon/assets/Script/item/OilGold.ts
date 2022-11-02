@@ -3,7 +3,7 @@ import Logic from '../logic/Logic'
 import { EventHelper } from '../logic/EventHelper'
 import Random from '../utils/Random'
 import AudioPlayer from '../utils/AudioPlayer'
-import BaseColliderComponent from '../base/BaseColliderComponent'
+import BaseNodeComponent from '../base/BaseNodeComponent'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,7 +18,7 @@ import BaseColliderComponent from '../base/BaseColliderComponent'
 const { ccclass, property } = cc._decorator
 
 @ccclass
-export default class OilGold extends BaseColliderComponent {
+export default class OilGold extends BaseNodeComponent {
     static readonly FACE_VALUE = 100
     value: number = 0
     isReady = false
@@ -28,7 +28,7 @@ export default class OilGold extends BaseColliderComponent {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.initCollider()
+        super.onLoad()
     }
     onEnable() {
         let speed = 6
@@ -95,7 +95,7 @@ export default class OilGold extends BaseColliderComponent {
     }
     update(dt) {
         if (this.isCheckTimeDelay(dt)) {
-            if (this.player && this.getNearPlayerDistance(this.player.node) < 800 && this.node.active && this.isReady) {
+            if (this.player && this.getNearPlayerDistance(this.player.node) < 1600 && this.node.active && this.isReady) {
                 let p = this.player.node.position.clone()
                 p.y += 10
                 let pos = p.sub(this.node.position)

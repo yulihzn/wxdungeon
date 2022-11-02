@@ -1,4 +1,4 @@
-import { MoveComponent } from './../ecs/component/MoveComponent'
+import { MoveComponent } from '../ecs/component/MoveComponent'
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
 // Learn Attribute:
@@ -6,17 +6,16 @@ import { MoveComponent } from './../ecs/component/MoveComponent'
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import BaseColliderComponent from '../base/BaseColliderComponent'
-import CCollider from '../collider/CCollider'
 import Logic from '../logic/Logic'
 import Random from '../utils/Random'
 import IndexZ from '../utils/IndexZ'
 import { EventHelper } from '../logic/EventHelper'
+import BaseNodeComponent from '../base/BaseNodeComponent'
 
 const { ccclass, property } = cc._decorator
 
 @ccclass
-export default class FloorPaper extends BaseColliderComponent {
+export default class HitBlood extends BaseNodeComponent {
     @property(cc.Sprite)
     sprite: cc.Sprite = null
     @property(cc.Node)
@@ -36,27 +35,31 @@ export default class FloorPaper extends BaseColliderComponent {
         this.init()
     }
     init() {
-        this.node.scale = 1.5 + Random.rand()
-        this.spriteIndex = Logic.getRandomNum(0, FloorPaper.SPRITES.length - 1)
+        this.node.scale = 0.5 + Random.rand()
+        this.spriteIndex = Logic.getRandomNum(0, HitBlood.SPRITES.length - 1)
         this.rotateAngle = 0
-        let c = Logic.getRandomNum(180, 255)
-        this.sprite.node.color = cc.color(c, c, c)
+        let r = Logic.getRandomNum(0, 255)
+        let g = Logic.getRandomNum(0, 255)
+        let b = Logic.getRandomNum(0, 255)
+        this.sprite.node.color = cc.color(r, g, b)
+        this.sprite.node.opacity = 255
         this.updateSprite()
         this.unscheduleAllCallbacks()
-        // cc.tween(this.sprite.node)
-        //     .delay(5)
-        //     .to(0.5, { opacity: 0 })
-        //     .call(() => {
-        //         this.destroyEntityNode()
-        //     })
-        //     .start()
+        cc.tween(this.sprite.node)
+            .delay(5)
+            .to(0.5, { opacity: 0 })
+            .call(() => {
+                EventHelper.emit(EventHelper.POOL_DESTORY_HIT_BLOOD, { paperNode: this.node })
+            })
+            .start()
     }
+    randomColor() {}
     updateSprite() {
-        if (this.spriteIndex > FloorPaper.SPRITES.length - 1) {
+        if (this.spriteIndex > HitBlood.SPRITES.length - 1) {
             this.spriteIndex = 0
         }
-        this.sprite.spriteFrame = Logic.spriteFrameRes(FloorPaper.SPRITES[this.spriteIndex])
-        this.shadow.spriteFrame = Logic.spriteFrameRes(FloorPaper.SPRITES[this.spriteIndex])
+        this.sprite.spriteFrame = Logic.spriteFrameRes(HitBlood.SPRITES[this.spriteIndex])
+        this.shadow.spriteFrame = Logic.spriteFrameRes(HitBlood.SPRITES[this.spriteIndex])
         this.spriteIndex++
     }
     rotateSprite() {
@@ -85,13 +88,13 @@ export default class FloorPaper extends BaseColliderComponent {
             this.rotateSprite()
         }
         if (this.isCheckTimeDelay(dt)) {
-            this.changeZIndex()
             if (y > 0) {
                 this.updateSprite()
             }
         }
     }
     fly(fromPos?: cc.Vec3, isReverse?: boolean) {
+        this.changeZIndex()
         this.entity.NodeRender.root = this.root
         this.entity.Move.linearVelocityZ = 2
         this.entity.Move.gravity = MoveComponent.DEFAULT_GRAVITY / 10
@@ -100,44 +103,17 @@ export default class FloorPaper extends BaseColliderComponent {
         let y = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed
         if (fromPos) {
             let p = isReverse ? this.node.position.sub(fromPos) : fromPos.sub(this.node.position)
-            if (!p.equals(cc.Vec3.ZERO)) {
-                p = cc
-                    .v3(cc.v2(p.normalize()).rotate((Logic.getRandomNum(-45, 45) * Math.PI) / 180))
-                    .normalize()
-                    .mul(speed)
-                x = p.x
-                y = p.y
-            }
+            p = cc
+                .v3(cc.v2(p.normalize()).rotate((Logic.getRandomNum(-45, 45) * Math.PI) / 180))
+                .normalize()
+                .mul(speed)
+            x = p.x
+            y = p.y
         }
         this.entity.Move.linearVelocity = cc.v2(x, y)
         this.entity.Move.damping = 3
     }
 
-    onColliderEnter(other: CCollider, self: CCollider): void {
-        if (!other.sensor) {
-            if (!other.isStatic) {
-                this.fly(other.entity.Transform.position)
-            } else {
-                this.entity.Move.linearVelocity = cc.Vec2.ZERO
-            }
-        } else {
-            if (other.tag == CCollider.TAG.NONPLAYER || other.tag == CCollider.TAG.GOODNONPLAYER) {
-                this.fly(other.entity.Transform.position)
-            } else if (
-                other.tag == CCollider.TAG.PLAYER_HIT ||
-                other.tag == CCollider.TAG.AOE ||
-                other.tag == CCollider.TAG.NONPLAYER_HIT ||
-                other.tag == CCollider.TAG.GOODNONPLAYER_HIT
-            ) {
-                this.fly(this.node.parent.convertToNodeSpaceAR(cc.v3(other.w_center)), true)
-            }
-        }
-    }
-    onColliderStay(other: CCollider, self: CCollider): void {
-        if (!other.sensor && other.isStatic) {
-            this.entity.Move.linearVelocity = cc.Vec2.ZERO
-        }
-    }
     checkTimeDelay = 0
     isCheckTimeDelay(dt: number): boolean {
         this.checkTimeDelay += dt

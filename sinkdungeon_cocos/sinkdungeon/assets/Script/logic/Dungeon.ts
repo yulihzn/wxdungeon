@@ -128,10 +128,13 @@ export default class Dungeon extends cc.Component {
             if (this.node) this.addItem(detail.pos, detail.res, detail.count)
         })
         EventHelper.on(EventHelper.DUNGEON_ADD_FALLSTONE, detail => {
-            this.addFallStone(detail.pos, detail.isAuto)
+            if (this.node) this.addFallStone(detail.pos, detail.isAuto)
+        })
+        EventHelper.on(EventHelper.DUNGEON_ADD_FLOORPAPER, detail => {
+            if (this.node) this.addFloorPaper(detail.fromPos, detail.targetPos, detail.count)
         })
         EventHelper.on(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, detail => {
-            this.addLighteningFall(detail.pos, false, false, detail.showArea, detail.damage)
+            if (this.node) this.addLighteningFall(detail.pos, false, false, detail.showArea, detail.damage)
         })
         EventHelper.on(EventHelper.DUNGEON_SHAKEONCE, detail => {
             if (this.anim) {
@@ -543,10 +546,17 @@ export default class Dungeon extends cc.Component {
         }
     }
     /**纸 */
-    addFloorPaper(targetPos: cc.Vec3, pos: cc.Vec3, count: number) {
+    addFloorPaper(fromPos: cc.Vec3, targetPos: cc.Vec3, count: number) {
         for (let i = 0; i < count; i++) {
             if (this.effectItemManager) {
-                this.effectItemManager.addPaper(targetPos, pos)
+                this.effectItemManager.addPaper(fromPos, targetPos)
+            }
+        }
+    }
+    addHitBlood(fromPos: cc.Vec3, targetPos: cc.Vec3, count: number) {
+        for (let i = 0; i < count; i++) {
+            if (this.effectItemManager) {
+                this.effectItemManager.addHitBlood(fromPos, targetPos)
             }
         }
     }

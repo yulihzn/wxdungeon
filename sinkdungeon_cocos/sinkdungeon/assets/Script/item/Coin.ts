@@ -4,6 +4,7 @@ import { EventHelper } from '../logic/EventHelper'
 import Random from '../utils/Random'
 import AudioPlayer from '../utils/AudioPlayer'
 import BaseColliderComponent from '../base/BaseColliderComponent'
+import BaseNodeComponent from '../base/BaseNodeComponent'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,7 +19,7 @@ import BaseColliderComponent from '../base/BaseColliderComponent'
 const { ccclass, property } = cc._decorator
 
 @ccclass
-export default class Coin extends BaseColliderComponent {
+export default class Coin extends BaseNodeComponent {
     static readonly FACE_VALUE = 10
     anim: cc.Animation
     value: number = 0
@@ -102,11 +103,13 @@ export default class Coin extends BaseColliderComponent {
             this.zSpeed -= 5
             if (this.zSpeed < 0) {
                 this.zSpeed = 0
+            } else {
+                this.playSound()
             }
             this.entity.Move.linearVelocityZ = this.zSpeed
         }
         if (this.isCheckTimeDelay(dt)) {
-            if (this.player && this.getNearPlayerDistance(this.player.node) < 800 && this.node.active && this.isReady) {
+            if (this.player && this.getNearPlayerDistance(this.player.node) < 1600 && this.node.active && this.isReady) {
                 let p = this.player.node.position.clone()
                 p.y += 10
                 let pos = p.sub(this.node.position)
@@ -118,13 +121,16 @@ export default class Coin extends BaseColliderComponent {
         }
         if (this.player && this.getNearPlayerDistance(this.player.node) < 64 && this.node.active && this.isReady) {
             this.isReady = false
-            if (!this.soundPlaying) {
-                this.soundPlaying = true
-                let arr = [AudioPlayer.COIN, AudioPlayer.COIN1, AudioPlayer.COIN2]
-                AudioPlayer.play(arr[Logic.getRandomNum(0, arr.length - 1)])
-            }
+            this.playSound()
             EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: this.value, isReal: this.isReal })
             EventHelper.emit('destorycoin', { coinNode: this.node })
+        }
+    }
+    private playSound() {
+        if (!this.soundPlaying) {
+            this.soundPlaying = true
+            let arr = [AudioPlayer.COIN, AudioPlayer.COIN1, AudioPlayer.COIN2]
+            AudioPlayer.play(arr[Logic.getRandomNum(0, arr.length - 1)])
         }
     }
 }

@@ -13,6 +13,8 @@ import AudioPlayer from '../utils/AudioPlayer'
 import Dungeon from '../logic/Dungeon'
 import InventoryManager from '../manager/InventoryManager'
 import IndexZ from '../utils/IndexZ'
+import FromData from '../data/FromData'
+import Actor from '../base/Actor'
 
 const { ccclass, property } = cc._decorator
 
@@ -97,7 +99,7 @@ export default class NormalBuilding extends Building {
             this.sprite.node.height = spriteFrame.getOriginalSize().height
         }
     }
-    takeDamage(damage: DamageData): boolean {
+    takeDamage(damage: DamageData, from?: FromData, actor?: Actor): boolean {
         if (!this.breakable) {
             return false
         }

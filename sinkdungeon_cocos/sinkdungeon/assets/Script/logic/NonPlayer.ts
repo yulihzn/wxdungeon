@@ -16,7 +16,6 @@ import Dungeon from './Dungeon'
 import Shooter from './Shooter'
 import StatusManager from '../manager/StatusManager'
 import DamageData from '../data/DamageData'
-import FloatinglabelManager from '../manager/FloatingLabelManager'
 import Random from '../utils/Random'
 import NextStep from '../utils/NextStep'
 import Item from '../item/Item'
@@ -756,7 +755,7 @@ export default class NonPlayer extends PlayActor {
         this.bodySprite.node.angle = 0
         this.sprite.x = 0
     }
-    public takeDamage(damageData: DamageData): boolean {
+    public takeDamage(damageData: DamageData, from?: FromData, actor?: Actor): boolean {
         if (!this.sc.isShow || this.sc.isDied) {
             return false
         }
@@ -804,8 +803,13 @@ export default class NonPlayer extends PlayActor {
             this.hitLight(true)
             this.hitLightS(damageData)
             if (damageData.isBackAttack || damageData.isCriticalStrike) {
-                this.showBloodEffect()
+                let pos = this.node.position.clone()
+                if (actor) {
+                    pos = actor.node.position.clone()
+                }
+                this.showBloodEffect(pos)
             }
+
             //150ms后恢复状态
             this.unschedule(this.hurtReset)
             this.scheduleOnce(this.hurtReset, 0.15)
@@ -884,8 +888,9 @@ export default class NonPlayer extends PlayActor {
         }
     }
 
-    private showBloodEffect() {
+    private showBloodEffect(pos: cc.Vec3) {
         AudioPlayer.play(AudioPlayer.BLEEDING)
+        this.dungeon.addHitBlood(pos, this.node.position, Logic.getRandomNum(12, 24))
         this.particleBlood.resetSystem()
         this.scheduleOnce(() => {
             this.particleBlood.stopSystem()

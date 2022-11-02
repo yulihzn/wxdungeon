@@ -9,6 +9,7 @@ import Achievement from '../logic/Achievement'
 import Status from '../status/Status'
 import StatusData from '../data/StatusData'
 import StatusManager from '../manager/StatusManager'
+import BaseNodeComponent from '../base/BaseNodeComponent'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -23,7 +24,7 @@ import StatusManager from '../manager/StatusManager'
 const { ccclass, property } = cc._decorator
 
 @ccclass
-export default class Item extends cc.Component {
+export default class Item extends BaseNodeComponent {
     public static readonly EMPTY = 'emptyitem'
     public static readonly HEART = 'heart'
     public static readonly DREAM = 'dream'
@@ -49,6 +50,7 @@ export default class Item extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        super.onLoad()
         this.taketips = this.node.getChildByName('sprite').getChildByName('taketips')
     }
 
@@ -127,7 +129,7 @@ export default class Item extends cc.Component {
             }
             this.scheduleOnce(() => {
                 if (this.node) {
-                    this.node.active = false
+                    this.destroyEntityNode()
                 }
             }, 3)
         }

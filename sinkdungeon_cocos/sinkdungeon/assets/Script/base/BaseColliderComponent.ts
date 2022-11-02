@@ -23,7 +23,11 @@ const { ccclass, property } = cc._decorator
 export default abstract class BaseColliderComponent extends cc.Component implements OnContactListener {
     ccolliders: CCollider[]
     entity = ecs.createEntityWithComps<ActorEntity>(NodeRenderComponent, MoveComponent, TransformComponent, ColliderComponent)
-
+    resetEntity() {
+        this.entity = ecs.createEntityWithComps<ActorEntity>(NodeRenderComponent, MoveComponent, TransformComponent, ColliderComponent)
+        this.initCollider()
+        this.entity.NodeRender.node = this.node
+    }
     onLoad() {
         this.initCollider()
         this.entity.NodeRender.node = this.node

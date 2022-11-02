@@ -1,14 +1,14 @@
 import { MoveComponent } from '../component/MoveComponent'
 import { TransformComponent } from '../component/TransformComponent'
 import { ecs } from '../ECS'
-import ActorEntity from '../entity/ActorEntity'
+import NodeEntity from '../entity/NodeEntity'
 
-export default class MoveSystem extends ecs.ComblockSystem<ActorEntity> {
+export default class MoveSystem extends ecs.ComblockSystem<NodeEntity> {
     filter(): ecs.IMatcher {
         return ecs.allOf(MoveComponent, TransformComponent)
     }
 
-    update(entities: ActorEntity[]): void {
+    update(entities: NodeEntity[]): void {
         let dt = 0.016
         for (let e of entities) {
             let move = e.Move

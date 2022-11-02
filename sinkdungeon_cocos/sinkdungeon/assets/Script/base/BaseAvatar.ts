@@ -1,17 +1,3 @@
-import { ColliderComponent } from '../ecs/component/ColliderComponent'
-import CCollider from '../collider/CCollider'
-import DamageData from '../data/DamageData'
-import FromData from '../data/FromData'
-import StatusData from '../data/StatusData'
-import { MoveComponent } from '../ecs/component/MoveComponent'
-import { NodeRenderComponent } from '../ecs/component/NodeRenderComponent'
-import { TransformComponent } from '../ecs/component/TransformComponent'
-import { ecs } from '../ecs/ECS'
-import ActorEntity from '../ecs/entity/ActorEntity'
-import ShadowOfSight from '../effect/ShadowOfSight'
-import StateContext from './StateContext'
-import OnContactListener from '../collider/OnContactListener'
-import BaseColliderComponent from './BaseColliderComponent'
 import AvatarData from '../data/AvatarData'
 
 // Learn TypeScript:

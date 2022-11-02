@@ -133,7 +133,7 @@ export default class InteractBuilding extends Building {
         }
         this.mat.setProperty('openOutline', isHigh ? 1 : 0)
     }
-    takeDamage(damage: DamageData): boolean {
+    takeDamage(damage: DamageData, from?: FromData, actor?: Actor): boolean {
         if (this.data.currentHealth <= 0) {
             return
         }
@@ -147,6 +147,11 @@ export default class InteractBuilding extends Building {
             }, 0.1)
             return true
         }
+        let pos = this.node.position.clone()
+        if (actor) {
+            pos = actor.node.position.clone()
+        }
+        EventHelper.emit(EventHelper.DUNGEON_ADD_FLOORPAPER, { fromPos: pos, targetPos: this.node.position, count: Logic.getRandomNum(3, 6) })
         this.isTaken = false
         this.isAttacking = false
         cc.tween(this.sprite.node)
