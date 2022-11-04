@@ -809,12 +809,9 @@ export default class EquipmentManager extends BaseManager {
 
             if (distance < 64 && equip) {
                 equip.highLight(true)
-                if (!equip.taketips) {
-                    equip.taketips = this.node.getChildByName('sprite').getChildByName('taketips')
-                }
                 if (!this.lastGroundEquip || this.lastGroundEquip.uuid != equip.uuid) {
                     cc.tween(equip.taketips).to(0.2, { opacity: 255 }).delay(1).to(0.2, { opacity: 0 }).start()
-                    EventHelper.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW, { worldPos: equip.node.convertToWorldSpaceAR(cc.v3(0, 32)), equipData: equip.data })
+                    EventHelper.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW, { worldPos: equip.node.convertToWorldSpaceAR(cc.v3(64, 32)), equipData: equip.data })
                 }
                 this.lastGroundEquip = equip
             } else {

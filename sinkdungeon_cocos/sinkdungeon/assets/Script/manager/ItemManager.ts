@@ -223,9 +223,6 @@ export default class ItemManager extends BaseManager {
             let min = item && item.data.canSave ? 64 : 48
             if (distance < min && item) {
                 item.highLight(true)
-                if (!item.taketips) {
-                    item.taketips = this.node.getChildByName('sprite').getChildByName('taketips')
-                }
                 if (item.data.canSave) {
                     if (!this.lastGroundItem || this.lastGroundItem.uuid != item.uuid) {
                         cc.tween(item.taketips).to(0.2, { opacity: 255 }).delay(1).to(0.2, { opacity: 0 }).start()

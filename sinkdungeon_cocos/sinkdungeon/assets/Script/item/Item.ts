@@ -1,3 +1,4 @@
+import { MoveComponent } from './../ecs/component/MoveComponent'
 import { EventHelper } from '../logic/EventHelper'
 import Player from '../logic/Player'
 import Logic from '../logic/Logic'
@@ -40,18 +41,23 @@ export default class Item extends BaseNodeComponent {
     public static readonly GOLDAPPLE = 'goldapple'
     public static readonly GOLDFINGER = 'goldfinger'
     public static readonly FRIEDRICE = 'food000'
+    @property(cc.Node)
+    root: cc.Node = null
+    @property(cc.Sprite)
+    sprite: cc.Sprite = null
+    @property(cc.Sprite)
+    shadow: cc.Sprite = null
     anim: cc.Animation
     data: ItemData = new ItemData()
     shopTable: ShopTable
-
-    sprite: cc.Sprite
     mat: cc.MaterialVariant
     taketips: cc.Node
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         super.onLoad()
-        this.taketips = this.node.getChildByName('sprite').getChildByName('taketips')
+        this.taketips = this.sprite.node.getChildByName('taketips')
+        this.entity.NodeRender.root = this.root
     }
 
     start() {
@@ -73,8 +79,7 @@ export default class Item extends BaseNodeComponent {
         }
         let spriteFrame = Logic.spriteFrameRes(this.data.resName)
         if (spriteFrame) {
-            this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite)
-            this.node.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = spriteFrame
+            this.sprite.spriteFrame = spriteFrame
             this.sprite.node.width = spriteFrame.getOriginalSize().width
             this.sprite.node.height = spriteFrame.getOriginalSize().height
             this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0)
@@ -82,13 +87,29 @@ export default class Item extends BaseNodeComponent {
             this.mat.setProperty('textureSizeHeight', spriteFrame.getTexture().height * this.sprite.node.scaleY)
             this.mat.setProperty('outlineColor', cc.color(200, 200, 200))
             this.highLight(false)
+            this.shadow.node.width = this.sprite.node.width
+            this.shadow.node.height = this.sprite.node.height
+            this.entity.Move.linearVelocityZ = 6
+            this.entity.Transform.position = this.node.position.clone()
         }
     }
-
+    fly(flag: boolean) {
+        if (flag) {
+            this.entity.Move.gravity = 0
+            if (this.entity.Transform.z <= 0) {
+                this.entity.Move.linearVelocityZ = 4
+            } else if (this.entity.Transform.z > 32) {
+                this.entity.Move.linearVelocityZ = 0
+            }
+        } else {
+            this.entity.Move.gravity = MoveComponent.DEFAULT_GRAVITY
+        }
+    }
     highLight(isHigh: boolean) {
         if (!this.mat) {
             this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0)
         }
+        this.fly(isHigh)
         this.mat.setProperty('openOutline', isHigh ? 1 : 0)
     }
 
