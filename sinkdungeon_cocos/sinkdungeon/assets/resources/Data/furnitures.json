@@ -134,7 +134,7 @@
         "spritePos": "-64,0",
         "collider": "64,32,256,64,192",
         "storage": 8,
-        "price": 700,
+        "price": 0,
         "height": 30
     },
     "furniture012": {
