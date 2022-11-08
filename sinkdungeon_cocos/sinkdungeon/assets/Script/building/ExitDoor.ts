@@ -112,6 +112,9 @@ export default class ExitDoor extends Building {
         if (this.dir % 4 > 1 || this.dir > 7) {
             spriteframe = null
         }
+        if (this.type > 1) {
+            this.roof.getComponentInChildren(cc.Label).node.active = false
+        }
         this.roof.spriteFrame = spriteframe
         this.roof.node.parent = this.node.parent
         let p = this.root.convertToWorldSpaceAR(cc.v3(0, 128))
