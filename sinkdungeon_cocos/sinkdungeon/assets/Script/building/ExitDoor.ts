@@ -113,7 +113,7 @@ export default class ExitDoor extends Building {
             spriteframe = null
         }
         if (this.type > 1) {
-            this.roof.getComponentInChildren(cc.Label).node.active = false
+            this.roof.getComponentInChildren(cc.Label).node.parent.active = false
         }
         this.roof.spriteFrame = spriteframe
         this.roof.node.parent = this.node.parent
