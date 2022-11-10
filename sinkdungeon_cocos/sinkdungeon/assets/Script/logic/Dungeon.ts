@@ -801,6 +801,7 @@ export default class Dungeon extends cc.Component {
                 this.buildingManager.updateLogic(dt, this.player)
                 this.equipmentManager.updateLogic(dt, this.player)
                 this.itemManager.updateLogic(dt, this.player)
+                this.weatherManager.updateLogic(dt, this.player)
             }
             if (this.isCheckTimeDelay(dt)) {
                 this.checkRoomClear()

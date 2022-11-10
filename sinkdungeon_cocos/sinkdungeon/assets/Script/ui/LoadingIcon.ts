@@ -116,7 +116,7 @@ export default class LoadingIcon extends cc.Component {
         })
     }
     private iconShow(node0: cc.Node, node1: cc.Node) {
-        cc.tween(node0).to(0.1, { scale: 2 }).to(0.1, { scale: 0.8 }).to(0.1, { scale: 1 }).start()
+        cc.tween(node0).to(0.1, { scale: 0.8 }).to(0.1, { scale: 2 }).to(0.1, { scale: 1 }).start()
         cc.tween(node1).to(0.3, { opacity: 255 }).start()
     }
     init(includeArr: number[]) {

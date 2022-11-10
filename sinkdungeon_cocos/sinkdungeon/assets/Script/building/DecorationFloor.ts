@@ -1,5 +1,6 @@
 import Dungeon from '../logic/Dungeon'
 import Logic from '../logic/Logic'
+import IndexZ from '../utils/IndexZ'
 import Building from './Building'
 
 // Learn TypeScript:
@@ -26,6 +27,8 @@ export default class DecorationFloor extends Building {
         this.parallexLevel = parallexLevel ?? 0
         if (zIndex) {
             this.node.zIndex = zIndex
+        } else {
+            this.node.zIndex = IndexZ.ACTOR
         }
         this.node.scale = scale
         if (anchor) {

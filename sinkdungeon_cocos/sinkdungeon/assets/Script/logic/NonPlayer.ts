@@ -893,7 +893,7 @@ export default class NonPlayer extends PlayActor {
 
     private showBloodEffect(pos: cc.Vec3) {
         AudioPlayer.play(AudioPlayer.BLEEDING)
-        this.dungeon.addHitBlood(pos, this.node.position, Logic.getRandomNum(12, 24))
+        this.dungeon.addHitBlood(pos, this.node.position, Logic.getRandomNum(3, 6))
         this.particleBlood.resetSystem()
         this.scheduleOnce(() => {
             this.particleBlood.stopSystem()
@@ -1557,7 +1557,7 @@ export default class NonPlayer extends PlayActor {
         cc.tween(body)
             .to(0.2, { opacity: 0 })
             .call(() => {
-                let newPos = ActorUtils.getTargetPosition(this.node.position, this.getNearestEnemyActor(),true)
+                let newPos = ActorUtils.getTargetPosition(this.node.position, this.getNearestEnemyActor(), true)
                 newPos = Dungeon.getIndexInMap(newPos)
                 if (newPos.x > this.pos.x) {
                     newPos = newPos.addSelf(cc.v3(1, 0))
