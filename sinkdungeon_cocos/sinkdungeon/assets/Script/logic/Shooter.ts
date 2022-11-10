@@ -14,6 +14,7 @@ import InventoryManager from '../manager/InventoryManager'
 import ActorUtils from '../utils/ActorUtils'
 import AudioPlayer from '../utils/AudioPlayer'
 import IndexZ from '../utils/IndexZ'
+import NextStep from '../utils/NextStep'
 import NodeKey from '../utils/NodeKey'
 import Utils from '../utils/Utils'
 import Controller from './Controller'
@@ -72,6 +73,7 @@ export default class Shooter extends cc.Component {
     public defaultPos = cc.v3(0, 0)
     ignoreEmptyWall = false
     shootBaseHeight = 0
+    trackStep: NextStep = new NextStep()
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics)
@@ -151,10 +153,13 @@ export default class Shooter extends cc.Component {
             return
         }
         this.hv = hv
-        let pos = this.hasNearEnemy()
-        if (!pos.equals(cc.Vec3.ZERO)) {
-            this.hv = cc.v2(pos)
-        }
+        this.trackStep.next(() => {
+            let pos = this.hasNearEnemy()
+            if (!pos.equals(cc.Vec3.ZERO)) {
+                this.hv = cc.v2(pos)
+            }
+            this.rotateCollider(cc.v2(this.hv.x, this.hv.y))
+        }, 1)
         this.rotateCollider(cc.v2(this.hv.x, this.hv.y))
     }
     getAoeNode(prefab: cc.Prefab, usePool: boolean) {

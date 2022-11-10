@@ -675,25 +675,27 @@ export default class BuildingManager extends BaseManager {
                 let fd = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
                 let df = fd.getComponent(DecorationFloor)
                 if (mapDataStr == '+1') {
-                    df.init(dungeon, 'exitarrow', 4, 0)
+                    df.init(dungeon, 'floor_exitarrow', 4, 0)
                 } else if (mapDataStr == '+2') {
-                    df.init(dungeon, 'exitarrow', 4, 45)
+                    df.init(dungeon, 'floor_exitarrow', 4, 45)
                 } else if (mapDataStr == '+3') {
-                    df.init(dungeon, 'exitarrow', 4, 90)
+                    df.init(dungeon, 'floor_exitarrow', 4, 90)
                 } else if (mapDataStr == '+4') {
-                    df.init(dungeon, 'exitarrow', 4, -45)
+                    df.init(dungeon, 'floor_exitarrow', 4, -45)
                 } else if (mapDataStr == '+5') {
                     df.init(dungeon, 'floor_final', 4)
                 } else if (mapDataStr == '+6') {
                     df.init(dungeon, 'floor_ladder', 4)
+                } else if (mapDataStr == '+7') {
+                    df.init(dungeon, 'floor_whiteline', 4)
                 } else if (mapDataStr == '++0') {
-                    df.init(dungeon, 'roomoutside0', 32, 0, 1, cc.v3(0.7, 0.5), 255, IndexZ.BASE)
+                    df.init(dungeon, 'floor_roomoutside0', 32, 0, 1, cc.v3(0.7, 0.5), 255, IndexZ.BASE)
                 } else if (mapDataStr == '++1') {
-                    df.init(dungeon, 'roomoutside1', 32, 0, 1, cc.v3(0.7, 0.5), 255, IndexZ.BASE)
+                    df.init(dungeon, 'floor_roomoutside1', 32, 0, 1, cc.v3(0.7, 0.5), 255, IndexZ.BASE)
                 } else if (mapDataStr == '++2') {
-                    df.init(dungeon, 'roomoutside2', 32, 0, 1, cc.v3(0, 0.5), 255, IndexZ.BASE)
+                    df.init(dungeon, 'floor_roomoutside2', 32, 0, 1, cc.v3(0, 0.5), 255, IndexZ.BASE)
                 } else {
-                    df.init(dungeon, 'dev', 4)
+                    df.init(dungeon, 'floor_dev', 4)
                 }
             })
         }

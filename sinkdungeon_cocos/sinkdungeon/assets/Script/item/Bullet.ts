@@ -581,7 +581,20 @@ export default class Bullet extends BaseColliderComponent {
         if (this.data.isTracking != 1 || !this.dungeon) {
             return cc.Vec3.ZERO
         }
-        return ActorUtils.getDirectionFromNearestEnemy(this.node.position, !this.isFromPlayer, this.dungeon, false, 500)
+        let needRefresh = this.trackCount > 10
+        if (this.trackCount > 10) {
+            this.trackCount = 0
+        }
+        return this.getTrackDirection(needRefresh)
+    }
+    private currentTrackActor: Actor
+    private trackCount = 0
+    private getTrackDirection(needRefresh: boolean) {
+        this.trackCount++
+        if (!ActorUtils.isTargetCanTrack(this.currentTrackActor) || needRefresh) {
+            this.currentTrackActor = ActorUtils.getNearestEnemyActor(this.node.position, !this.isFromPlayer, this.dungeon, 500)
+        }
+        return ActorUtils.getTargetDirection(this.node.position, this.currentTrackActor, false)
     }
 
     rotateCollider(direction: cc.Vec2) {

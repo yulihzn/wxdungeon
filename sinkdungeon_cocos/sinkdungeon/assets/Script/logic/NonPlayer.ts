@@ -126,6 +126,7 @@ export default class NonPlayer extends PlayActor {
     specialStep = new NextStep()
     dashStep = new NextStep()
     blinkStep = new NextStep()
+    trackStep = new NextStep()
     swimmingAudioStep = new NextStep()
     attrmap: { [key: string]: number } = {}
     mat: cc.MaterialVariant
@@ -144,6 +145,8 @@ export default class NonPlayer extends PlayActor {
     statusPos: cc.Vec3 = cc.v3(0, 0)
     public stateMachine: StateMachine<NonPlayer, State<NonPlayer>>
     icon: ActorIcon
+
+    private currentTarget: Actor
     get IsVariation() {
         return this.isVariation || this.data.StatusTotalData.variation > 0
     }
@@ -1039,12 +1042,18 @@ export default class NonPlayer extends PlayActor {
             this.sc.isDashing
         )
     }
+    private getNearestEnemyActor(needRefresh?: boolean) {
+        if (!ActorUtils.isTargetCanTrack(this.currentTarget) || needRefresh) {
+            this.currentTarget = ActorUtils.getNearestEnemyActor(this.node.position, this.data.isEnemy > 0, this.dungeon)
+        }
+        return this.currentTarget
+    }
 
     updateAttack() {
         if (this.isPassive) {
             return
         }
-        let target = ActorUtils.getNearestEnemyActor(this.node.position, this.data.isEnemy > 0, this.dungeon)
+        let target = this.getNearestEnemyActor()
         let targetDis = ActorUtils.getTargetDistance(this, target)
         //目标不存在、死亡或者隐身直接返回
         if (!ActorUtils.isTargetAlive(target)) {
@@ -1163,8 +1172,11 @@ export default class NonPlayer extends PlayActor {
             this.lastWaterPos = Dungeon.getIndexInMap(this.entity.Transform.position)
         }
         this.changeZIndex()
+        this.trackStep.next(() => {
+            this.getNearestEnemyActor(true)
+        }, 10)
+        let target = this.getNearestEnemyActor()
         this.updateAttack()
-        let target = ActorUtils.getNearestEnemyActor(this.entity.Transform.position, this.data.isEnemy > 0, this.dungeon)
         let targetDis = ActorUtils.getTargetDistance(this, target)
         //靠近取消伪装
         if (this.data.disguise > 0 && targetDis < this.data.disguise && this.sc.isDisguising) {
@@ -1545,7 +1557,7 @@ export default class NonPlayer extends PlayActor {
         cc.tween(body)
             .to(0.2, { opacity: 0 })
             .call(() => {
-                let newPos = ActorUtils.getNearestEnemyPosition(this.node.position, true, this.dungeon, true)
+                let newPos = ActorUtils.getTargetPosition(this.node.position, this.getNearestEnemyActor(),true)
                 newPos = Dungeon.getIndexInMap(newPos)
                 if (newPos.x > this.pos.x) {
                     newPos = newPos.addSelf(cc.v3(1, 0))

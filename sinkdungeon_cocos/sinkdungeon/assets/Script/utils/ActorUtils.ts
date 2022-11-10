@@ -61,13 +61,11 @@ export default class ActorUtils {
      * @param distance
      */
     static getDirectionFromNearestEnemy(selfPosition: cc.Vec3, selfIsEnemy: boolean, dungeon: Dungeon, needRandom: boolean, distance?: number) {
-        let pos = ActorUtils.getNearestTargetPosition(
-            selfPosition,
-            selfIsEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER] : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS],
-            dungeon,
-            needRandom,
-            distance
-        )
+        let targetActor: Actor = ActorUtils.getNearestEnemyActor(selfPosition, selfIsEnemy, dungeon, distance)
+        return ActorUtils.getTargetDirection(selfPosition, targetActor, needRandom)
+    }
+    static getTargetDirection(selfPosition: cc.Vec3, targetActor: Actor, needRandom: boolean) {
+        let pos = ActorUtils.getTargetPosition(selfPosition, targetActor, needRandom)
         if (pos.equals(cc.Vec3.ZERO)) {
             return cc.Vec3.ZERO
         } else {
@@ -97,6 +95,9 @@ export default class ActorUtils {
      */
     static getNearestTargetPosition(selfPosition: cc.Vec3, targetTypes: number[], dungeon: Dungeon, needRandom: boolean, distance?: number): cc.Vec3 {
         let targetActor: Actor = ActorUtils.getNearestTargetActor(selfPosition, targetTypes, dungeon, distance ? distance : 999999)
+        return ActorUtils.getTargetPosition(selfPosition, targetActor, needRandom)
+    }
+    static getTargetPosition(selfPosition: cc.Vec3, targetActor: Actor, needRandom: boolean) {
         if (targetActor) {
             return targetActor.getCenterPosition()
         }
@@ -112,11 +113,12 @@ export default class ActorUtils {
      * @param dungeon
      * @param distance
      */
-    static getNearestEnemyActor(selfPosition: cc.Vec3, selfIsEnemy: boolean, dungeon: Dungeon) {
+    static getNearestEnemyActor(selfPosition: cc.Vec3, selfIsEnemy: boolean, dungeon: Dungeon, distance?: number) {
         return ActorUtils.getNearestTargetActor(
             selfPosition,
             selfIsEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER] : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS],
-            dungeon
+            dungeon,
+            distance
         )
     }
 
@@ -155,7 +157,7 @@ export default class ActorUtils {
             }
         }
         for (let target of targetList) {
-            if (target && target.node && target.node.active && this.isTargetCanTrack(target)) {
+            if (this.isTargetCanTrack(target)) {
                 let dis = Logic.getDistanceNoSqrt(selfPosition, target.getCenterPosition())
                 if (dis < shortdis) {
                     shortdis = dis
@@ -198,7 +200,7 @@ export default class ActorUtils {
      * @returns
      */
     static isTargetCanTrack(target: Actor): boolean {
-        if (target.isValid && !target.sc.isDied && target.sc.isShow) {
+        if (target && target.node && target.node.active && target.isValid && !target.sc.isDied && target.sc.isShow) {
             return true
         }
         return false
