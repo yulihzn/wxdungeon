@@ -19,6 +19,8 @@ export default class QuestTreeData {
     id = '' //id
     name = '' //名字
     content = '' //内容
+    icon = '' //任务图标
+    iconLarge = '' //任务图标
     root: QuestData = new QuestData()
     valueCopy(data: QuestTreeData) {
         if (!data) {
