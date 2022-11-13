@@ -7,6 +7,7 @@ import AudioPlayer from '../utils/AudioPlayer'
 import QuestTreeData from '../editor/data/QuestTreeData'
 import Logic from '../logic/Logic'
 import QuestBoardDialog from './dialog/QuestBoardDialog'
+import QuestData from '../editor/data/QuestData'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -37,8 +38,10 @@ export default class QuestItem extends cc.Component {
     sprite: cc.Sprite = null
     @property(cc.Label)
     title: cc.Label = null
+    @property(cc.Sprite)
+    track: cc.Sprite = null
     index = 0 //列表里的下标
-    data: QuestTreeData = new QuestTreeData()
+    data: QuestData = new QuestData()
     questBoradDialog: QuestBoardDialog
 
     // LIFE-CYCLE CALLBACKS:
@@ -59,7 +62,7 @@ export default class QuestItem extends cc.Component {
 
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {}, this)
     }
-    init(questBoradDialog: QuestBoardDialog, data: QuestTreeData, index: number) {
+    init(questBoradDialog: QuestBoardDialog, data: QuestData, index: number) {
         this.questBoradDialog = questBoradDialog
         this.data.valueCopy(data)
         this.index = index

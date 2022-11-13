@@ -31,6 +31,8 @@ export default class QuestData {
     id = '' //id
     name = '' //名字
     content = '' //内容
+    icon = '' //任务图标
+    iconLarge = '' //任务图标
     mapThingsList = '' //指定地图刷出物品和npc列表item000,0,0,0,0,0,0;npc000,0,0,0,0,0,0;
     startTime = 0 //任务开始时间
     mapThingsCreated = false //地图物品npc已刷新
@@ -43,6 +45,8 @@ export default class QuestData {
     failList: QuestData[] = [] //失败子节点列表
 
     editPos: cc.Vec3 = cc.v3(0, 0) //editor
+
+    isTracked = false //是否追踪
 
     get isSuccessType() {
         return this.indexId.indexOf('s') != -1
