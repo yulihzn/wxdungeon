@@ -63,6 +63,7 @@ import PlayActor from '../base/PlayActor'
 import BaseAvatar from '../base/BaseAvatar'
 import Dialogue from '../ui/Dialogue'
 import EquipItemTalent from '../talent/EquipItemTalent'
+import OilGoldMetal from '../talent/OilGoldMetal'
 @ccclass
 export default class Player extends PlayActor {
     @property(cc.Sprite)
@@ -101,6 +102,8 @@ export default class Player extends PlayActor {
     waterSpark: cc.Prefab = null
     @property(cc.Prefab)
     aoe: cc.Prefab = null
+    @property(OilGoldMetal)
+    metal: OilGoldMetal = null
     professionTalent: ProfessionTalent = null
     equipmentTalent: EquipItemTalent = null
     organizationTalent: OrganizationTalent = null
@@ -155,6 +158,7 @@ export default class Player extends PlayActor {
             this.exTrigger(group, type, null, null)
         })
         this.avatar = PlayerAvatar.create(this.avatarPrefab, this.root, Logic.playerData.AvatarData.clone(), this.node.group)
+        this.metal.init(this)
     }
     onLoad() {
         this.data = Logic.playerData.clone()
@@ -1153,6 +1157,9 @@ export default class Player extends PlayActor {
     update(dt) {
         if (Logic.isGamePause) {
             return
+        }
+        if (this.metal) {
+            this.metal.updateLogic(dt)
         }
         if (this.isSmokeTimeDelay(dt) && this.sc.isMoving && !this.sc.isJumping) {
             this.getWalkSmoke(this.node.parent, this.entity.Transform.position)
