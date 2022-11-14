@@ -76,7 +76,7 @@ export default class Rah extends Boss {
         Achievement.addMonsterKillAchievement(this.data.resName)
         cc.tween(this.node).to(3, { opacity: 0 }).start()
         this.sc.isDied = true
-        cc.tween(this.dungeon.fog).to(3, { scale: 5 }).start()
+        this.dungeon.fogScaleNormal()
         this.scheduleOnce(() => {
             if (this.node) {
                 this.node.active = false
@@ -167,7 +167,7 @@ export default class Rah extends Boss {
     }
     dark() {
         this.darkSkill.next(() => {
-            cc.tween(this.dungeon.fog).to(2, { scale: 1.75 }).to(6, { angle: 0 }).to(2, { scale: 0.6 }).start()
+            this.dungeon.fogScaleDark()
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation)
             }

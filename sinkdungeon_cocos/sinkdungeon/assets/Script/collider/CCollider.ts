@@ -173,21 +173,17 @@ export default class CCollider extends cc.Component {
         this.isStaying = false
         this.baseChangedCount = 0
         let offset = cc.v3(this.offsetX, this.offsetY)
-        this._center = this.node.convertToWorldSpaceAR(cc.v3(this.offsetX, this.offsetY))
-
         let woffset = this.node.convertToWorldSpaceAR(offset)
-        this._radius = this.node
-            .convertToWorldSpaceAR(offset.add(cc.v3(this.radius, 0)))
+        this._center = this.node.convertToWorldSpaceAR(cc.v3(this.offsetX, this.offsetY))
+        let wScale = this.node
+            .convertToWorldSpaceAR(offset.add(cc.v3(1, 0)))
             .sub(woffset)
             .mag()
-        let wlen = this.node
-            .convertToWorldSpaceAR(offset.add(cc.v3(this.w, 0)))
-            .sub(woffset)
-            .mag()
-        let hlen = this.node
-            .convertToWorldSpaceAR(offset.add(cc.v3(this.h, 0)))
-            .sub(woffset)
-            .mag()
+
+        this._radius = this.radius * wScale
+        let wlen = this.w * wScale
+        let hlen = this.h * wScale
+
         if (this.isCircle) {
             this.isRotate = false
             this._points = []

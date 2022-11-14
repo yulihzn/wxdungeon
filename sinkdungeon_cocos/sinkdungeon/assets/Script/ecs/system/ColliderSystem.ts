@@ -71,6 +71,37 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
             }
         }
     }
+    colliderVaild(collider: CCollider, other: CCollider): boolean {
+        if (!other.enabled) {
+            return false
+        }
+        if (other === collider) {
+            return false
+        }
+        if (other.groupId == collider.groupId) {
+            return false
+        }
+        if (collider.ignoreSameTag) {
+            if (collider.tag == other.tag) {
+                return false
+            }
+        }
+        if (collider.targetTags.size > 0) {
+            if (!collider.targetTags.has(other.tag)) {
+                return false
+            }
+        } else if (collider.ignoreTags.has(other.tag)) {
+            return false
+        }
+        if (other.targetTags.size > 0) {
+            if (!other.targetTags.has(collider.tag)) {
+                return false
+            }
+        } else if (other.ignoreTags.has(collider.tag)) {
+            return false
+        }
+        return true
+    }
     private collisionCheck() {
         this.tempColliders.clear()
         let allCount = 0
@@ -84,45 +115,47 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
             let colliders = this.quadTree.retrieve(collider)
             for (let other of colliders) {
                 allCount++
-                if (
-                    (collider.tag == CCollider.TAG.PLAYER && other.tag == CCollider.TAG.BUILDING) ||
-                    (other.tag == CCollider.TAG.PLAYER && collider.tag == CCollider.TAG.BUILDING)
-                ) {
-                    collider
-                }
-                if (!other.enabled) {
+                // if (
+                //     (collider.tag == CCollider.TAG.PLAYER && other.tag == CCollider.TAG.BUILDING) ||
+                //     (other.tag == CCollider.TAG.PLAYER && collider.tag == CCollider.TAG.BUILDING)
+                // ) {
+                //     collider
+                // }
+                // if (!other.enabled) {
+                //     continue
+                // }
+                // if (other === collider) {
+                //     continue
+                // }
+                // if (other.groupId == collider.groupId) {
+                //     continue
+                // }
+                if (!this.colliderVaild(collider, other)) {
                     continue
                 }
-                if (other === collider) {
-                    continue
-                }
-                if (other.groupId == collider.groupId) {
-                    continue
-                }
-
                 if (this.tempColliders.has(`${collider.id}${other.id}`) || this.tempColliders.has(`${other.id}${collider.id}`)) {
                     continue
                 }
 
-                if (collider.ignoreSameTag) {
-                    if (collider.tag == other.tag) {
-                        continue
-                    }
-                }
-                if (collider.targetTags.size > 0) {
-                    if (!collider.targetTags.has(other.tag)) {
-                        continue
-                    }
-                } else if (collider.ignoreTags.has(other.tag)) {
-                    continue
-                }
-                if (other.targetTags.size > 0) {
-                    if (!other.targetTags.has(collider.tag)) {
-                        continue
-                    }
-                } else if (other.ignoreTags.has(collider.tag)) {
-                    continue
-                }
+                // if (collider.ignoreSameTag) {
+                //     if (collider.tag == other.tag) {
+                //         continue
+                //     }
+                // }
+                // if (collider.targetTags.size > 0) {
+                //     if (!collider.targetTags.has(other.tag)) {
+                //         continue
+                //     }
+                // } else if (collider.ignoreTags.has(other.tag)) {
+                //     continue
+                // }
+                // if (other.targetTags.size > 0) {
+                //     if (!other.targetTags.has(collider.tag)) {
+                //         continue
+                //     }
+                // } else if (other.ignoreTags.has(collider.tag)) {
+                //     continue
+                // }
                 let isCollision = false
                 if (collider.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.RECT) {
                     //矩形检测

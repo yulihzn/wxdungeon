@@ -104,12 +104,10 @@ export default class Player extends PlayActor {
     professionTalent: ProfessionTalent = null
     equipmentTalent: EquipItemTalent = null
     organizationTalent: OrganizationTalent = null
-    baseAttackPoint: number = 1
     //触碰到的提示
     touchedTips: Tips
     private touchDelay = false
     data: PlayerData
-    attackTarget: CCollider
 
     defaultPos = cc.v3(0, 0)
 
@@ -255,7 +253,6 @@ export default class Player extends PlayActor {
         }
         this.pos = Logic.playerData.pos.clone()
         this.defaultPos = Logic.playerData.pos.clone()
-        this.baseAttackPoint = Logic.playerData.FinalCommon.DamageMin
         this.updatePlayerPos()
         this.entity.NodeRender.node = this.node
         this.entity.NodeRender.root = this.root
@@ -357,7 +354,7 @@ export default class Player extends PlayActor {
     }
     highLight(isHigh: boolean) {
         this.sprite.getMaterial(0).setProperty('openOutline', isHigh ? 1 : 0)
-        this.sprite.getMaterial(0).setProperty('outlineSize', 0.5)
+        this.sprite.getMaterial(0).setProperty('outlineSize', 0.2)
         this.sprite.getMaterial(0).setProperty('outlineColor', cc.color(255, 215, 0))
     }
     private updateFistCombo() {

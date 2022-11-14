@@ -29,7 +29,7 @@ export default class Coin extends BaseNodeComponent {
     isReal = false
     private soundPlaying = false
     shadow: cc.Node
-    zSpeed = 20
+    zSpeed = 15
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -42,10 +42,10 @@ export default class Coin extends BaseNodeComponent {
     }
     init() {
         this.anim = this.getComponent(cc.Animation)
-        let speed = Logic.getRandomNum(6, 12)
+        let speed = Logic.getRandomNum(5, 10)
         let x = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed
         let y = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed
-        this.zSpeed = 20
+        this.zSpeed = 15
         this.entity.Move.linearVelocity = cc.v2(x, y)
         this.entity.Move.damping = 3
         this.entity.Move.linearVelocityZ = this.zSpeed
@@ -100,7 +100,7 @@ export default class Coin extends BaseNodeComponent {
         let scale = 1 - y / 64
         this.shadow.scale = scale < 0.5 ? 0.5 : scale
         if (y == 0) {
-            this.zSpeed -= 5
+            this.zSpeed -= 3
             if (this.zSpeed < 0) {
                 this.zSpeed = 0
             } else {

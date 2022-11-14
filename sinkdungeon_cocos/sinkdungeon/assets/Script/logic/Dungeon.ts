@@ -271,7 +271,7 @@ export default class Dungeon extends cc.Component {
                     cc.log('load finished')
                     this.scheduleOnce(() => {
                         this.isInitFinish = true
-                        cc.tween(this.fog).to(3, { scale: 5 }).start()
+                        this.fogScaleNormal()
                         let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter')
                         cc.tween(blackcenter)
                             .delay(0.1)
@@ -298,6 +298,12 @@ export default class Dungeon extends cc.Component {
         this.player.node.parent = this.node
         this.cameraTargetActor = this.player
         this.fog.setPosition(this.player.node.position.clone())
+    }
+    public fogScaleNormal() {
+        cc.tween(this.fog).to(3, { scale: 2.5 }).start()
+    }
+    public fogScaleDark() {
+        cc.tween(this.fog).to(2, { scale: 1.75 }).to(6, { angle: 0 }).to(2, { scale: 0.6 }).start()
     }
     /**
      *
