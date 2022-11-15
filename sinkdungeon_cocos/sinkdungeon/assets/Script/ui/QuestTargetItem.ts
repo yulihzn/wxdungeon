@@ -39,18 +39,16 @@ export default class QuestTargetItem extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.node.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {}, this)
-
-        this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {}, this)
-
-        this.node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {}, this)
+        // this.node.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {}, this)
+        // this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {}, this)
+        // this.node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {}, this)
     }
     init(data: QuestTargetData, index: number) {
         this.data.valueCopy(data)
         this.index = index
         this.title.string = data.getDesc()
         this.toggle.isChecked = data.status == QuestData.STATUS_SUCCESS
-        this.title.node.opacity = data.status == QuestData.STATUS_FAILED ? 128 : 255
+        this.node.opacity = data.status == QuestData.STATUS_FAILED ? 128 : 255
         this.title.node.color = data.status == QuestData.STATUS_FAILED ? cc.Color.RED : cc.Color.WHITE
     }
 

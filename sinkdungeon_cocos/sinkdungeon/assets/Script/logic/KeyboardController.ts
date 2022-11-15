@@ -167,7 +167,7 @@ export default class KeyboardController extends cc.Component {
         if (!Logic.isGamePause) EventHelper.emit(EventHelper.HUD_CELLPHONE_SHOW)
     }
     private openQuestBoard() {
-        if (!Logic.isGamePause) EventHelper.emit(EventHelper.HUD_QUEST_BOARD_SHOW)
+        EventHelper.emit(EventHelper.HUD_QUEST_BOARD_SHOW)
     }
     useItem(index: number) {
         if (!Logic.isGamePause) EventHelper.emit(EventHelper.USEITEM_KEYBOARD, { index: index })

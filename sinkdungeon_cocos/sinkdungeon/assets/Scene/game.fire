@@ -41931,7 +41931,7 @@
       "__id__": 905
     },
     "component": "",
-    "_componentId": "24e528ueQhMDYfsDE3eSpqK",
+    "_componentId": "c5716Zfgo5Mv6xK5UIV/jbw",
     "handler": "close",
     "customEventData": ""
   },
@@ -45619,6 +45619,9 @@
     },
     "contentRight": {
       "__id__": 977
+    },
+    "scollRight": {
+      "__id__": 951
     },
     "title": {
       "__id__": 964

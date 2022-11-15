@@ -33,6 +33,8 @@ export default class QuestBoardDialog extends BaseDialog {
     contentLeft: cc.Node = null
     @property(cc.Node)
     contentRight: cc.Node = null
+    @property(cc.Node)
+    scollRight: cc.Node = null
     @property(cc.Label)
     title: cc.Label = null
     @property(cc.Label)
@@ -59,7 +61,7 @@ export default class QuestBoardDialog extends BaseDialog {
             data.content = '一个普通的任务' + i
             data.icon = 'questicon' + i
             let t1 = QuestTargetData.build('weapon00' + i, QuestTargetData.TARGET_EQUIP, QuestTargetData.EQUIP_PICK, 1)
-            let t2 = QuestTargetData.build('monster000' + i, QuestTargetData.TARGET_MONSTER, QuestTargetData.MONSTER_KILL, 1)
+            let t2 = QuestTargetData.build('monster00' + i, QuestTargetData.TARGET_MONSTER, QuestTargetData.MONSTER_KILL, 1)
             t2.status = QuestData.STATUS_SUCCESS
             let t3 = QuestTargetData.build('furniture00' + (i + 1), QuestTargetData.TARGET_FURNITURE, QuestTargetData.BUILDING_TRIGGER, 1)
             t3.status = QuestData.STATUS_FAILED
@@ -74,6 +76,7 @@ export default class QuestBoardDialog extends BaseDialog {
         this.contentLeft.removeAllChildren()
         this.questList = []
         this.targetList = []
+        this.scollRight.active = false
     }
     buildQuestItem(data: QuestData) {
         let item = cc.instantiate(this.questItemPrefab).getComponent(QuestItem)
@@ -101,8 +104,10 @@ export default class QuestBoardDialog extends BaseDialog {
             this.desc.string = ''
             this.titleBg.spriteFrame = null
             this.contentRight.removeAllChildren()
+            this.scollRight.active = false
             return
         }
+        this.scollRight.active = true
         let data = this.currentItem.data
         this.title.string = data.name
         this.desc.string = data.content
