@@ -54,7 +54,6 @@ export default class QuestBoardDialog extends BaseDialog {
     show(): void {
         super.show()
         this.clearUi()
-        this.updateInfo()
         for (let i = 0; i < 6; i++) {
             let data = new QuestData()
             data.name = '测试一下' + i
@@ -70,6 +69,7 @@ export default class QuestBoardDialog extends BaseDialog {
             data.successCondition.list.push(t3)
             this.buildQuestItem(data)
         }
+        this.selectNone()
     }
     private clearUi() {
         this.currentItem = null
@@ -96,6 +96,14 @@ export default class QuestBoardDialog extends BaseDialog {
             this.questList[i].select(index == i)
         }
         this.currentItem = this.questList[index]
+        this.updateInfo()
+    }
+    selectNone() {
+        let len = this.questList.length
+        for (let i = 0; i < len; i++) {
+            this.questList[i].select(false)
+        }
+        this.currentItem = null
         this.updateInfo()
     }
     private updateInfo() {
