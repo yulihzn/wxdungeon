@@ -38,8 +38,8 @@ export default class QuestItem extends cc.Component {
     sprite: cc.Sprite = null
     @property(cc.Label)
     title: cc.Label = null
-    @property(cc.Sprite)
-    track: cc.Sprite = null
+    @property(cc.Toggle)
+    track: cc.Toggle = null
     index = 0 //列表里的下标
     data: QuestData = new QuestData()
     questBoradDialog: QuestBoardDialog
@@ -68,10 +68,15 @@ export default class QuestItem extends cc.Component {
         this.index = index
         this.isSelect = false
         this.sprite.spriteFrame = Logic.spriteFrameRes(this.data.icon)
+        this.title.string = data.name
+        this.trackedItem()
     }
     select(isSelect: boolean) {
         this.isSelect = true
         this.node.opacity = isSelect ? 255 : 200
+    }
+    trackedItem() {
+        this.data.isTracked = this.track.isChecked
     }
 
     start() {}

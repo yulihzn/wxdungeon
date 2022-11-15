@@ -82,7 +82,7 @@ export default class QuestBoardDialog extends BaseDialog {
         this.contentLeft.addChild(item.node)
     }
     buildTargetItem(data: QuestTargetData) {
-        let item = cc.instantiate(this.questItemPrefab).getComponent(QuestTargetItem)
+        let item = cc.instantiate(this.questTargetPrefab).getComponent(QuestTargetItem)
         item.init(data, this.targetList.length)
         this.targetList.push(item)
         this.contentRight.addChild(item.node)
