@@ -33,7 +33,6 @@ const { ccclass, property } = cc._decorator
  */
 @ccclass
 export default class QuestItem extends cc.Component {
-    isSelect = false
     @property(cc.Sprite)
     sprite: cc.Sprite = null
     @property(cc.Label)
@@ -66,14 +65,13 @@ export default class QuestItem extends cc.Component {
         this.questBoradDialog = questBoradDialog
         this.data.valueCopy(data)
         this.index = index
-        this.isSelect = false
         this.sprite.spriteFrame = Logic.spriteFrameRes(this.data.icon)
         this.title.string = data.name
         this.trackedItem()
     }
     select(isSelect: boolean) {
-        this.isSelect = true
-        this.node.opacity = isSelect ? 255 : 200
+        this.node.opacity = isSelect ? 255 : 180
+        this.track.interactable = isSelect
     }
     trackedItem() {
         this.data.isTracked = this.track.isChecked
