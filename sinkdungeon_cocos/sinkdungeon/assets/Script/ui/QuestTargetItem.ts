@@ -3,6 +3,7 @@ import QuestTreeData from '../editor/data/QuestTreeData'
 import Logic from '../logic/Logic'
 import QuestBoardDialog from './dialog/QuestBoardDialog'
 import QuestData from '../editor/data/QuestData'
+import QuestTargetData from '../editor/data/QuestTargetData'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -33,7 +34,7 @@ export default class QuestTargetItem extends cc.Component {
     @property(cc.Label)
     title: cc.Label = null
     index = 0 //列表里的下标
-    data: QuestData = new QuestData()
+    data: QuestTargetData = new QuestTargetData()
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -44,11 +45,13 @@ export default class QuestTargetItem extends cc.Component {
 
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {}, this)
     }
-    init(data: QuestData, index: number) {
+    init(data: QuestTargetData, index: number) {
         this.data.valueCopy(data)
         this.index = index
-        this.title.string = data.content
+        this.title.string = data.getDesc()
         this.toggle.isChecked = data.status == QuestData.STATUS_SUCCESS
+        this.title.node.opacity = data.status == QuestData.STATUS_FAILED ? 128 : 255
+        this.title.node.color = data.status == QuestData.STATUS_FAILED ? cc.Color.RED : cc.Color.WHITE
     }
 
     start() {}

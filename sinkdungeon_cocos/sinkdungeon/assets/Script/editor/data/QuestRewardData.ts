@@ -9,6 +9,7 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import DataUtils from '../../utils/DataUtils'
+import QuestTargetData from './QuestTargetData'
 
 /**
  * 任务奖励
@@ -19,7 +20,6 @@ export default class QuestRewardData {
     realCoins = 0 //货币
     oilGolds = 0 //经验
     statusList = '' //状态列表
-
     valueCopy(data: QuestRewardData) {
         if (!data) {
             return

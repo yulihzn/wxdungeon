@@ -110,7 +110,7 @@ export default class QuestFileEditor extends cc.Component {
         this.data.triggerCondition.valueCopy(this.conditionTriggerItem.data)
         this.data.successCondition.valueCopy(this.conditionSuccessItem.data)
         this.data.failCondition.valueCopy(this.conditionFailItem.data)
-        this.data.reward.itemList = this.rewardItem.data.conditionList
+        this.data.reward.copyList(this.rewardItem.data.list)
         let coin = parseInt(this.inputCoin.Value)
         let realcoin = parseInt(this.inputRealCoin.Value)
         let oilgold = parseInt(this.inputOilGold.Value)
@@ -129,7 +129,7 @@ export default class QuestFileEditor extends cc.Component {
         this.conditionSuccessItem.updateData(this.data.successCondition, true, false, true)
         this.conditionFailItem.updateData(this.data.failCondition, true, false, true)
         let reward = new QuestConditionData()
-        reward.conditionList = this.data.reward.itemList
+        reward.copyList(this.data.reward.list)
         this.rewardItem.updateData(reward, false, false, false)
         this.inputCoin.Value = `${this.data.reward.coins}`
         this.inputRealCoin.Value = `${this.data.reward.realCoins}`

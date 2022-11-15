@@ -6,6 +6,8 @@
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
 import QuestConditionData from './data/QuestConditionData'
+import QuestTargetData from './data/QuestTargetData'
+import QuestTreeData from './data/QuestTreeData'
 import QuestDateInputItem from './QuestDateInputItem'
 import QuestFileEditor from './QuestFileEditor'
 import QuestInputItem from './QuestInputItem'
@@ -43,7 +45,6 @@ export default class QuestConditionItem extends cc.Component {
 
     private inputStartTime: QuestDateInputItem
     private inputEndTime: QuestDateInputItem
-    private inputRoom: QuestInputItem
 
     // LIFE-CYCLE CALLBACKS:
     buttonClick() {
@@ -56,9 +57,6 @@ export default class QuestConditionItem extends cc.Component {
         this.spriteList = []
     }
     updateInputData() {
-        if (this.inputRoom.node.active) {
-            this.data.roomList = this.inputRoom.Value
-        }
         if (this.inputStartTime.node.active) {
             this.data.startTime = this.inputStartTime.Value
         }
@@ -73,27 +71,19 @@ export default class QuestConditionItem extends cc.Component {
         }
         this.spriteLayout.removeAllChildren()
         this.spriteList = []
-        let arr = data.conditionList.split(';')
-        if (arr) {
-            for (let t of arr) {
-                if (t && t.length > 0) {
-                    this.getSprite(t)
-                }
-            }
+        for (let t of data.list) {
+            this.getSprite(t)
         }
         let d1 = this.data.startTime ? new Date(this.data.startTime) : new Date()
         let d2 = this.data.startTime ? new Date(this.data.endTime) : new Date()
-        this.inputRoom.Value = this.data.roomList
         this.inputStartTime.Value = this.data.startTime
         this.inputEndTime.Value = this.data.endTime
-        this.inputRoom.node.active = showRoom
         this.inputStartTime.node.active = showStart
         this.inputEndTime.node.active = showEnd
     }
 
     onLoad() {
         this.collapseExpand()
-        this.inputRoom = QuestFileEditor.addInputItem(this.layout, this.inputItem, '坐标：', '章节，层数，房间坐标，进出，次数', 200, 80)
         this.inputStartTime = QuestFileEditor.addDateInputItem(this.layout, this.inputDateItem, '开始：')
         this.inputEndTime = QuestFileEditor.addDateInputItem(this.layout, this.inputDateItem, '结束：')
     }
@@ -104,13 +94,13 @@ export default class QuestConditionItem extends cc.Component {
 
     start() {}
 
-    getSprite(t: string) {
+    getSprite(t: QuestTargetData) {
         let icon = cc.instantiate(this.spriteItem).getComponent(QuestSpriteItem)
         icon.init(0, this.spriteList.length, t, true)
         this.spriteLayout.addChild(icon.node)
         icon.clickCallback = (value: QuestSpriteItem) => {
             if (this.currentSprite == value) {
-                this.pick(this.currentSprite.text)
+                this.pick(this.currentSprite.targetData)
             } else {
                 if (this.currentSprite && this.currentSprite.select) {
                     this.currentSprite.select.active = false
@@ -124,16 +114,16 @@ export default class QuestConditionItem extends cc.Component {
     }
     //button
     addSprite() {
-        this.editor.editManager.showSpritePickDialog('', (flag: boolean, text: string) => {
+        this.editor.editManager.showSpritePickDialog(null, (flag: boolean, targetData: QuestTargetData) => {
             if (flag) {
                 if (this.currentSprite && this.currentSprite.select) {
                     this.currentSprite.select.active = false
                 }
-                this.currentSprite = this.getSprite(text)
+                this.currentSprite = this.getSprite(targetData)
                 this.currentSprite.select.active = true
                 this.isExpand = true
                 this.collapseExpand()
-                this.data.conditionList = this.getFinalText()
+                this.data.copyList(this.getFinalList())
             }
         })
     }
@@ -145,7 +135,7 @@ export default class QuestConditionItem extends cc.Component {
             this.spriteList.splice(index, 1)
             this.isExpand = true
             this.collapseExpand()
-            this.data.conditionList = this.getFinalText()
+            this.data.copyList(this.getFinalList())
         }
     }
     //button
@@ -153,27 +143,23 @@ export default class QuestConditionItem extends cc.Component {
         this.isTextMode = !this.isTextMode
         this.textLabel.node.active = this.isTextMode
         this.layout.active = !this.isTextMode
-        this.textLabel.string = this.getFinalText()
+        this.textLabel.string = JSON.stringify(this.data)
         this.isExpand = true
         this.collapseExpand()
     }
-    getFinalText() {
+    getFinalList() {
         let str = ''
+        let list = []
         for (let i = 0; i < this.spriteList.length; i++) {
             let t = this.spriteList[i]
-            if (t.text.length > 0) {
-                if (i > 0) {
-                    str += ';'
-                }
-                str += t.text
-            }
+            list.push(t.targetData)
         }
-        return str
+        return list
     }
-    pick(text: string) {
-        this.editor.editManager.showSpritePickDialog(text, (flag: boolean, text: string) => {
+    pick(targetData: QuestTargetData) {
+        this.editor.editManager.showSpritePickDialog(targetData, (flag: boolean, text: string) => {
             if (flag) {
-                this.currentSprite.text = text
+                this.currentSprite.targetData.valueCopy(targetData)
                 this.currentSprite.updateSpriteFrame()
             }
         })

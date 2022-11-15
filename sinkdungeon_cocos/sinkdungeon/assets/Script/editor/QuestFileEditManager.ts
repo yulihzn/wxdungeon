@@ -2,6 +2,7 @@ import { EventHelper } from '../logic/EventHelper'
 import LoadingManager from '../manager/LoadingManager'
 import CursorArea from '../ui/CursorArea'
 import QuestData from './data/QuestData'
+import QuestTargetData from './data/QuestTargetData'
 import QuestTreeData from './data/QuestTreeData'
 import QuestAlertDialog from './QuestAlertDialog'
 import QuestCard from './QuestCard'
@@ -369,8 +370,8 @@ export default class QuestFileEditManager extends cc.Component {
             this.updateTree()
         })
     }
-    public showSpritePickDialog(text: string, callback: Function) {
-        this.spritePickDialog.show(text, callback)
+    public showSpritePickDialog(targetData: QuestTargetData, callback: Function) {
+        this.spritePickDialog.show(targetData, callback)
     }
     private uploadForBrowser() {
         if (!cc.sys.isBrowser) return

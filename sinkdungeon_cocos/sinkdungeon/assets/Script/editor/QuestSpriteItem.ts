@@ -12,7 +12,7 @@ import Item from '../item/Item'
 import { EventHelper } from '../logic/EventHelper'
 import Logic from '../logic/Logic'
 import InventoryManager from '../manager/InventoryManager'
-import QuestConditionData from './data/QuestConditionData'
+import QuestTargetData from './data/QuestTargetData'
 
 const { ccclass, property } = cc._decorator
 
@@ -31,7 +31,7 @@ export default class QuestSpriteItem extends cc.Component {
     index = 0 //列表里的下标
     parentIndex = 0 //父下标
     // LIFE-CYCLE CALLBACKS:
-    text = ''
+    targetData = new QuestTargetData()
     clickCallback: Function
     isSmall: boolean
     isLongPress = false
@@ -56,10 +56,10 @@ export default class QuestSpriteItem extends cc.Component {
     longPressCallback = () => {
         this.isLongPress = true
     }
-    init(parentIndex: number, index: number, text: string, isSmall: boolean) {
+    init(parentIndex: number, index: number, targetData: QuestTargetData, isSmall: boolean) {
         this.parentIndex = parentIndex
         this.index = index
-        this.text = text
+        this.targetData.valueCopy(targetData)
         this.isSmall = isSmall
         this.updateSpriteFrame()
     }
@@ -83,7 +83,7 @@ export default class QuestSpriteItem extends cc.Component {
         }
     }
     getSpriteFrameByType() {
-        let id = this.text.split(',')[0]
+        let id = this.targetData.resId
         let spriteFrame = Logic.spriteFrameRes(id)
         let data = new EquipmentData()
         data.valueCopy(Logic.equipments[id])
@@ -113,72 +113,7 @@ export default class QuestSpriteItem extends cc.Component {
         return spriteFrame
     }
     showInfo(flag: boolean, wpos: cc.Vec2) {
-        let str = ''
-        if (flag) {
-            let arr = this.text.split(',')
-            let trigger = ''
-            let title = ''
-            let count = parseInt(arr[2])
-            switch (arr[1]) {
-                case QuestConditionData.BUILDING_TRIGGER:
-                    title = '建筑'
-                    trigger = `交互${count}次`
-                    break
-                case QuestConditionData.ITEM_DROP:
-                    title = '物品'
-                    trigger = `丢弃`
-                    break
-                case QuestConditionData.ITEM_PICK:
-                    title = '物品'
-                    trigger = `拾取${count}个`
-                    break
-                case QuestConditionData.ITEM_USE:
-                    title = '物品'
-                    trigger = `使用${count}次`
-                    break
-                case QuestConditionData.EQUIP_PICK:
-                    title = '装备'
-                    trigger = `拾取${count}个`
-                    break
-                case QuestConditionData.EQUIP_ON:
-                    title = '装备'
-                    trigger = `装备${count}个`
-                    break
-                case QuestConditionData.EQUIP_OFF:
-                    title = '装备'
-                    trigger = `脱下`
-                    break
-                case QuestConditionData.EQUIP_DROP:
-                    title = '装备'
-                    trigger = `丢弃`
-                    break
-                case QuestConditionData.NPC_ALIVE:
-                    title = 'NPC'
-                    trigger = `存活${count}个`
-                    break
-                case QuestConditionData.NPC_KILL:
-                    title = 'BOSS'
-                    trigger = `击杀${count}个`
-                    break
-                case QuestConditionData.BOSS_ALIVE:
-                    title = 'BOSS'
-                    trigger = `存活${count}个`
-                    break
-                case QuestConditionData.BOSS_KILL:
-                    title = 'NPC'
-                    trigger = `击杀${count}个`
-                    break
-                case QuestConditionData.MONSTER_ALIVE:
-                    title = '生物'
-                    trigger = `存活${count}个`
-                    break
-                case QuestConditionData.MONSTER_KILL:
-                    title = '生物'
-                    trigger = `击杀${count}个`
-                    break
-            }
-            str = `类型：${title}\n触发条件：${trigger}\n资源名：${arr[0]}\n`
-        }
+        let str = this.targetData.getDesc(true)
         EventHelper.emit(EventHelper.EDITOR_SHOW_SPRITE_INFO, { isShow: flag, text: str, wpos: wpos })
     }
 

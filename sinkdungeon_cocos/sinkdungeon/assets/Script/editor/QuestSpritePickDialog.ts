@@ -12,6 +12,7 @@ import Achievement from '../logic/Achievement'
 import Logic from '../logic/Logic'
 import LoadingManager from '../manager/LoadingManager'
 import QuestConditionData from './data/QuestConditionData'
+import QuestTargetData from './data/QuestTargetData'
 import QuestFileEditManager from './QuestFileEditManager'
 import QuestSpriteItem from './QuestSpriteItem'
 
@@ -38,15 +39,26 @@ export default class QuestSpritePickDialog extends cc.Component {
     currentListIndex = 0
     currentItemIndex = -1
     editorManager: QuestFileEditManager
-    showText = ''
-    static readonly TYPES_ITEM = [`拾取,${QuestConditionData.ITEM_PICK}`, `使用,${QuestConditionData.ITEM_PICK}`, `丢弃,${QuestConditionData.ITEM_PICK}`]
-    static readonly TYPES_NPC = [`击杀,${QuestConditionData.NPC_KILL}`, `存活,${QuestConditionData.NPC_ALIVE}`]
-    static readonly TYPES_BUILDING = [`使用,${QuestConditionData.BUILDING_TRIGGER}`]
+    targetData: QuestTargetData = new QuestTargetData()
+
+    static readonly TYPES_ITEM = [
+        `拾取,${QuestTargetData.ITEM_PICK},${QuestTargetData.TARGET_ITEM}`,
+        `使用,${QuestTargetData.ITEM_PICK},${QuestTargetData.TARGET_ITEM}`,
+        `丢弃,${QuestTargetData.ITEM_PICK},${QuestTargetData.TARGET_ITEM}`
+    ]
+    static readonly TYPES_NPC = [`击杀,${QuestTargetData.NPC_KILL},${QuestTargetData.TARGET_NPC}`, `存活,${QuestTargetData.NPC_ALIVE},${QuestTargetData.TARGET_NPC}`]
+    static readonly TYPES_MONSTER = [`击杀,${QuestTargetData.NPC_KILL},${QuestTargetData.TARGET_MONSTER}`, `存活,${QuestTargetData.NPC_ALIVE},${QuestTargetData.TARGET_MONSTER}`]
+    static readonly TYPES_BUILDING = [`使用,${QuestTargetData.BUILDING_TRIGGER},${QuestTargetData.TARGET_FURNITURE}`]
+    static readonly TYPES_ROOM = [
+        `进入,${QuestTargetData.ROOM_ENTER},${QuestTargetData.TARGET_ROOM}`,
+        `离开,${QuestTargetData.ROOM_LEAVE},${QuestTargetData.TARGET_ROOM}`,
+        `清理,${QuestTargetData.ROOM_CLEAR},${QuestTargetData.TARGET_ROOM}`
+    ]
     static readonly TYPES_EQUIP = [
-        `拾取,${QuestConditionData.EQUIP_PICK}`,
-        `装备,${QuestConditionData.EQUIP_ON}`,
-        `脱下,${QuestConditionData.EQUIP_OFF}`,
-        `丢弃,${QuestConditionData.EQUIP_DROP}`
+        `拾取,${QuestTargetData.EQUIP_PICK},${QuestTargetData.TARGET_EQUIP}`,
+        `装备,${QuestTargetData.EQUIP_ON},${QuestTargetData.TARGET_EQUIP}`,
+        `脱下,${QuestTargetData.EQUIP_OFF},${QuestTargetData.TARGET_EQUIP}`,
+        `丢弃,${QuestTargetData.EQUIP_DROP},${QuestTargetData.TARGET_EQUIP}`
     ]
     currentTypeArr = QuestSpritePickDialog.TYPES_ITEM
     // LIFE-CYCLE CALLBACKS:
@@ -59,29 +71,27 @@ export default class QuestSpritePickDialog extends cc.Component {
     private hideAnim() {
         this.node.active = false
     }
-    public show(text: string, callback?: Function) {
-        this.showText = text
+    public show(targetData: QuestTargetData, callback?: Function) {
+        this.targetData.valueCopy(targetData)
         this.callback = callback
         this.showAnim()
-        this.changeList(null, this.getChangeIndex(text))
+        this.changeList(null, this.getChangeIndex(targetData))
         this.typeUpdate('')
     }
 
-    getSprite(text: string, index: number) {
+    getSprite(targetData: QuestTargetData, index: number) {
         let icon = cc.instantiate(this.prefab).getComponent(QuestSpriteItem)
-        icon.init(this.currentListIndex, index++, text, false)
+        icon.init(this.currentListIndex, index++, this.targetData, false)
         this.addItem(icon)
-        if (this.showText.length > 0 && text.length > 0) {
-            let type1 = this.showText.split(',')[0]
-            let type2 = text.split(',')[0]
-            if (type1 == type2) {
-                if (this.currentSprite) {
-                    this.currentSprite.select.active = false
-                }
-                this.currentSprite = icon
-                this.currentSprite.select.active = true
-                this.typeUpdate(this.currentSprite.text.split(',')[1])
+        let type1 = this.targetData.resId
+        let type2 = targetData.resId
+        if (type1 == type2) {
+            if (this.currentSprite) {
+                this.currentSprite.select.active = false
             }
+            this.currentSprite = icon
+            this.currentSprite.select.active = true
+            this.typeUpdate(this.currentSprite.targetData.triggerType)
         }
         icon.clickCallback = (value: QuestSpriteItem) => {
             if (this.currentSprite == value) {
@@ -91,7 +101,7 @@ export default class QuestSpritePickDialog extends cc.Component {
                 }
                 this.currentSprite = value
                 this.currentSprite.select.active = true
-                this.typeUpdate(this.currentSprite.text.split(',')[1])
+                this.typeUpdate(this.currentSprite.targetData.triggerType)
             }
         }
         return icon
@@ -104,27 +114,29 @@ export default class QuestSpritePickDialog extends cc.Component {
     clickOk() {
         if (!this.currentSprite) {
             if (this.callback) {
-                this.callback(false, '')
+                this.callback(false, null)
             }
             return
         }
         if (this.callback) {
             let triggerType = ''
+            let targetType = ''
             for (let i = 0; i < this.typeContainer.toggleItems.length; i++) {
                 if (this.typeContainer.toggleItems[i].isChecked) {
                     triggerType = this.currentTypeArr[i].split(',')[1]
+                    targetType = this.currentTypeArr[i].split(',')[2]
                 }
             }
-
-            this.currentSprite.text = `${this.currentSprite.text.split(',')[0]},${triggerType},${this.countLabel.string}`
-            this.callback(true, this.currentSprite.text)
+            let d = QuestTargetData.build(this.currentSprite.targetData.resId, targetType, triggerType, parseInt(this.countLabel.string))
+            this.currentSprite.targetData.valueCopy(d)
+            this.callback(true, this.currentSprite.targetData)
         }
         this.hide()
     }
     //button
     clickCancel() {
         if (this.callback) {
-            this.callback(false, '')
+            this.callback(false, null)
         }
         this.hide()
     }
@@ -152,7 +164,8 @@ export default class QuestSpritePickDialog extends cc.Component {
         }
         this.countLabel.string = `${this.countLabel.string}`
     }
-    getChangeIndex(text: string) {
+    getChangeIndex(targetData: QuestTargetData) {
+        let text = targetData.resId
         if (text.indexOf('challenge') != -1) {
             return '0'
         } else if (text.indexOf('map') != -1) {
@@ -259,7 +272,7 @@ export default class QuestSpritePickDialog extends cc.Component {
         for (let key in Logic.monsters) {
             LoadingManager.loadNpcSpriteAtlas(key, () => {
                 if (this.currentListIndex == Achievement.TYPE_MONSTER) {
-                    this.getSprite(`${key},${QuestConditionData.MONSTER_KILL},1`, index++)
+                    this.getSprite(QuestTargetData.build(key, QuestTargetData.TARGET_MONSTER, QuestTargetData.MONSTER_KILL, 1), index++)
                 }
             })
         }
@@ -268,7 +281,7 @@ export default class QuestSpritePickDialog extends cc.Component {
         this.removeContent()
         let index = 0
         for (let key in Logic.bosses) {
-            this.getSprite(`${key},${QuestConditionData.BOSS_KILL},1`, index++)
+            this.getSprite(QuestTargetData.build(key, QuestTargetData.TARGET_BOSS, QuestTargetData.BOSS_KILL, 1), index++)
         }
     }
     private showNpcList() {
@@ -277,7 +290,7 @@ export default class QuestSpritePickDialog extends cc.Component {
         for (let key in Logic.nonplayers) {
             LoadingManager.loadNpcSpriteAtlas(key, () => {
                 if (this.currentListIndex == Achievement.TYPE_NPC) {
-                    this.getSprite(`${key},${QuestConditionData.NPC_KILL},1`, index++)
+                    this.getSprite(QuestTargetData.build(key, QuestTargetData.TARGET_NPC, QuestTargetData.NPC_KILL, 1), index++)
                 }
             })
         }
@@ -288,7 +301,7 @@ export default class QuestSpritePickDialog extends cc.Component {
         for (let key in Logic.items) {
             index++
             if (index > 5) {
-                this.getSprite(`${key},${QuestConditionData.ITEM_PICK},1`, index)
+                this.getSprite(QuestTargetData.build(key, QuestTargetData.TARGET_ITEM, QuestTargetData.ITEM_PICK, 1), index)
             }
         }
     }
@@ -298,7 +311,7 @@ export default class QuestSpritePickDialog extends cc.Component {
         for (let key in Logic.equipments) {
             index++
             if (index > 1) {
-                this.getSprite(`${key},${QuestConditionData.EQUIP_PICK},1`, index)
+                this.getSprite(QuestTargetData.build(key, QuestTargetData.TARGET_EQUIP, QuestTargetData.EQUIP_PICK, 1), index)
             }
         }
     }
@@ -306,7 +319,7 @@ export default class QuestSpritePickDialog extends cc.Component {
         this.removeContent()
         let index = 0
         for (let key in Logic.furnitures) {
-            this.getSprite(`${key},${QuestConditionData.BUILDING_TRIGGER},1`, index++)
+            this.getSprite(QuestTargetData.build(key, QuestTargetData.TARGET_FURNITURE, QuestTargetData.BUILDING_TRIGGER, 1), index++)
         }
     }
 }

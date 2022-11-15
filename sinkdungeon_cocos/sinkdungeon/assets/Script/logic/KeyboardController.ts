@@ -59,6 +59,9 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.u:
                 this.openCellphone()
                 break
+            case cc.macro.KEY.q:
+                this.openQuestBoard()
+                break
             case cc.macro.KEY.t:
                 CellphoneDialog.changeFlashLight()
                 break
@@ -162,6 +165,9 @@ export default class KeyboardController extends cc.Component {
     }
     private openCellphone() {
         if (!Logic.isGamePause) EventHelper.emit(EventHelper.HUD_CELLPHONE_SHOW)
+    }
+    private openQuestBoard() {
+        if (!Logic.isGamePause) EventHelper.emit(EventHelper.HUD_QUEST_BOARD_SHOW)
     }
     useItem(index: number) {
         if (!Logic.isGamePause) EventHelper.emit(EventHelper.USEITEM_KEYBOARD, { index: index })

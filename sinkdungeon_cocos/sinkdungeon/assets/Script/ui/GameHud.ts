@@ -13,6 +13,7 @@ import Dialogue from './Dialogue'
 import CellphoneDialog from './dialog/CellphoneDialog'
 import ActionSettingDialog from './dialog/ActionSettingDialog'
 import Utils from '../utils/Utils'
+import QuestBoardDialog from './dialog/QuestBoardDialog'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -70,6 +71,8 @@ export default class GameHud extends cc.Component {
     cellphoneDialog: CellphoneDialog = null
     @property(ActionSettingDialog)
     actionSettingDialog: ActionSettingDialog = null
+    @property(QuestBoardDialog)
+    questBoardDialog: QuestBoardDialog = null
     private arrowList: cc.Node[] = []
     private isCompleteShowed = false
     private checkTimeDelay = 0
@@ -140,6 +143,9 @@ export default class GameHud extends cc.Component {
         })
         EventHelper.on(EventHelper.HUD_ACTION_SETTING_DIALOG, detail => {
             this.showActionSettingDialog()
+        })
+        EventHelper.on(EventHelper.HUD_QUEST_BOARD_SHOW, detail => {
+            this.showQuestBoardDialog()
         })
         if (this.clock) {
             this.clock.string = `${Utils.getPlayTime(Logic.totalTime)}`
@@ -319,6 +325,7 @@ export default class GameHud extends cc.Component {
             this.cellphoneDialog.node.active ||
             this.actionSettingDialog.node.active ||
             this.dollMachineDialog.node.active ||
+            this.questBoardDialog.node.active ||
             this.dialogue.isShow
         )
     }
@@ -340,6 +347,10 @@ export default class GameHud extends cc.Component {
         }
         if (this.dollMachineDialog.isShow) {
             this.dollMachineDialog.dismiss()
+            return true
+        }
+        if (this.questBoardDialog.isShow) {
+            this.questBoardDialog.dismiss()
             return true
         }
         if (this.inventoryDialog.isShow) {
@@ -463,6 +474,16 @@ export default class GameHud extends cc.Component {
             this.dollMachineDialog.dismiss()
         } else {
             this.dollMachineDialog.show()
+        }
+    }
+    showQuestBoardDialog() {
+        if (!this.questBoardDialog) {
+            return
+        }
+        if (this.questBoardDialog.isShow) {
+            this.questBoardDialog.dismiss()
+        } else {
+            this.questBoardDialog.show()
         }
     }
 }

@@ -1,6 +1,5 @@
 import DataUtils from '../../utils/DataUtils'
 import QuestConditionData from './QuestConditionData'
-import QuestRewardData from './QuestRewardData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -36,7 +35,7 @@ export default class QuestData {
     mapThingsList = '' //指定地图刷出物品和npc列表item000,0,0,0,0,0,0;npc000,0,0,0,0,0,0;
     startTime = 0 //任务开始时间
     mapThingsCreated = false //地图物品npc已刷新
-    reward: QuestRewardData = new QuestRewardData()
+    reward: QuestConditionData = new QuestConditionData()
 
     indexId = 'r0' //下标 s0  f0
     //下标 s0,f0,s0,f0 r0
