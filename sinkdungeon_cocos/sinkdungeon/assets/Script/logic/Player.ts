@@ -903,7 +903,7 @@ export default class Player extends PlayActor {
         this.highLight(true)
         this.scheduleOnce(() => {
             this.entity.Move.damping = 3
-            this.entity.Move.linearVelocity = cc.Vec2.ZERO
+            // this.entity.Move.linearVelocity = cc.Vec2.ZERO
             this.playerAnim(BaseAvatar.STATE_IDLE, this.currentDir)
             this.sc.isDashing = false
             this.highLight(false)
@@ -1226,7 +1226,7 @@ export default class Player extends PlayActor {
             this.jumpAbility.updateLogic()
         }
         this.statusManager.node.position = this.statusPos.clone().add(cc.v3(0, this.root.y))
-        if (this.sc.isJumping && this.CanJump) {
+        if ((this.sc.isJumping || this.entity.Transform.z - this.entity.Transform.base > 0) && this.CanJump) {
             this.playerAnim(this.entity.Move.linearVelocityZ > 0 ? BaseAvatar.STATE_JUMP_UP : BaseAvatar.STATE_JUMP_DOWN, this.currentDir)
         }
         this.updateFlashLight()
