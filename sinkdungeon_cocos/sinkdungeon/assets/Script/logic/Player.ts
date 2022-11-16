@@ -910,7 +910,7 @@ export default class Player extends PlayActor {
             this.scheduleOnce(() => {
                 this.dashCooling = false
             }, 0.5)
-        }, 0.5)
+        }, 0.3)
     }
     private addDashGhost(shooterEx: Shooter) {
         let aoe = shooterEx.fireAoe(

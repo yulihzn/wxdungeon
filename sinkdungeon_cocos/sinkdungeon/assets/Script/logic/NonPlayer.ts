@@ -1431,7 +1431,7 @@ export default class NonPlayer extends PlayActor {
                 this.sc.isDashing = false
                 this.dangerBox.finish()
             }
-            if (!other.sensor && other.z < 9999 && self.z + CCollider.MIN_HEIGHT < other.z + other.zHeight) {
+            if (!other.sensor && other.z < 9999 && self.z + CCollider.MIN_HEIGHT < other.z + other.zHeight && !this.sc.isHurting) {
                 this.jump()
             }
         } else if (self.tag == CCollider.TAG.DEFAULT) {
