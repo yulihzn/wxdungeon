@@ -771,7 +771,7 @@ export default class Player extends PlayActor {
             this.updateAvatarFace(dir)
             return
         }
-        let pos = ActorUtils.getDirectionFromNearestEnemy(this.node.position, false, this.dungeon, false, 200)
+        let pos = ActorUtils.getDirectionFromNearestEnemy(this.node.position, false, this.dungeon, false, 300)
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.hv = cc.v2(pos).normalize()
         } else if (hv && !hv.equals(cc.Vec2.ZERO)) {
@@ -903,7 +903,7 @@ export default class Player extends PlayActor {
         this.highLight(true)
         this.scheduleOnce(() => {
             this.entity.Move.damping = 3
-            // this.entity.Move.linearVelocity = cc.Vec2.ZERO
+            this.entity.Move.linearVelocity = cc.Vec2.ZERO
             this.playerAnim(BaseAvatar.STATE_IDLE, this.currentDir)
             this.sc.isDashing = false
             this.highLight(false)

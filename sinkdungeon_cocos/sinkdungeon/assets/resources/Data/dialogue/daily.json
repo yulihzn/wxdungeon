@@ -19,11 +19,10 @@
             {
                 "id": 0,
                 "actor": 0,
-                "text": "你决定休息多久？",
+                "text": "开始休息？",
                 "next": [
-                    { "jumpId": 1, "text": "小憩(15分钟)" },
-                    { "jumpId": 1, "text": "安睡(4小时)" },
-                    { "jumpId": 1, "text": "酣睡(8小时)" }
+                    { "jumpId": 1, "text": "离去" },
+                    { "jumpId": 1, "text": "入睡" }
                 ]
             }
         ]

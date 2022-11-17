@@ -20,7 +20,6 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class RoomBed extends Building {
-    isWakeUp = false
     dungeon: Dungeon
     isFirst = true
     isDecorate = false
@@ -61,8 +60,12 @@ export default class RoomBed extends Building {
         this.enterDream(player)
     }
     enterDream(player: Player) {
-        if (player && !this.isWakeUp && this.isFirst) {
+        if (player && this.isFirst) {
+            player.avatar.playStop()
             Dialogue.play('daily001', (index: number) => {
+                if (index == 0) {
+                    return
+                }
                 this.isFirst = false
                 if (this.dungeon) {
                     this.dungeon.CameraZoom = Dungeon.DEFAULT_ZOOM_MAX
@@ -75,20 +78,10 @@ export default class RoomBed extends Building {
                     }
                     AudioPlayer.play(AudioPlayer.EXIT)
                     //休息8小时
-                    let times = [60000 * 15, 60000 * 60 * 4, 60000 * 60 * 8]
-                    Logic.dreamCostTime = times[index]
+                    Logic.dreamCostTime = 60000 * 60 * 8
                     Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal())
                 }, 1)
             })
-        }
-    }
-    onColliderExit(other: CCollider, self: CCollider) {
-        if (this.isDecorate) {
-            return
-        }
-        let player = other.node.getComponent(Player)
-        if (player && !this.isWakeUp) {
-            this.isWakeUp = true
         }
     }
     // update (dt) {}

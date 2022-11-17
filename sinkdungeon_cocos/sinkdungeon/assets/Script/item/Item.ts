@@ -87,6 +87,7 @@ export default class Item extends BaseNodeComponent {
             this.mat.setProperty('textureSizeHeight', spriteFrame.getTexture().height * this.sprite.node.scaleY)
             this.mat.setProperty('outlineColor', cc.color(200, 200, 200))
             this.highLight(false)
+            this.shadow.spriteFrame = spriteFrame
             this.shadow.node.width = this.sprite.node.width
             this.shadow.node.height = this.sprite.node.height
             this.entity.Move.linearVelocityZ = 6

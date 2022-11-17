@@ -43,13 +43,13 @@ export default class FloorPaper extends BaseColliderComponent {
         this.sprite.node.color = cc.color(c, c, c)
         this.updateSprite()
         this.unscheduleAllCallbacks()
-        // cc.tween(this.sprite.node)
-        //     .delay(5)
-        //     .to(0.5, { opacity: 0 })
-        //     .call(() => {
-        //         this.destroyEntityNode()
-        //     })
-        //     .start()
+        cc.tween(this.sprite.node)
+            .delay(30)
+            .to(0.5, { opacity: 0 })
+            .call(() => {
+                this.destroyEntityNode()
+            })
+            .start()
     }
     updateSprite() {
         if (this.spriteIndex > FloorPaper.SPRITES.length - 1) {

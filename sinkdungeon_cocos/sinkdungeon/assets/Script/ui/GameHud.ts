@@ -219,7 +219,6 @@ export default class GameHud extends cc.Component {
         if (!this.completeLabel || this.isCompleteShowed) {
             return
         }
-        AudioPlayer.play(AudioPlayer.COMPLETE)
         let arr = ['清', '清理', '清理完', '清理完成', '清理完成', '清理完成', '清理完成', '清理完成', '清理完成', '清理完成', '清理完', '清理', '清', '']
         let i = 0
         this.completeLabel.string = ''
@@ -228,8 +227,10 @@ export default class GameHud extends cc.Component {
         let itl = 0.1
         let delay = 0.5
         cc.tween(this.completeLabel.node.parent)
-            .delay(delay)
             .to(itl, { height: 80, width: 80 })
+            .call(() => {
+                AudioPlayer.play(AudioPlayer.COMPLETE)
+            })
             .to(itl * 3, { width: 1000 })
             .delay(itl * arr.length)
             .to(itl, { height: 0 })
