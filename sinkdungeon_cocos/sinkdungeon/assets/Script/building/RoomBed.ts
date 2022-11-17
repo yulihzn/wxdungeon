@@ -14,6 +14,7 @@ import Tips from '../ui/Tips'
 import AudioPlayer from '../utils/AudioPlayer'
 import Building from './Building'
 import CCollider from '../collider/CCollider'
+import Dialogue from '../ui/Dialogue'
 
 const { ccclass, property } = cc._decorator
 
@@ -61,19 +62,24 @@ export default class RoomBed extends Building {
     }
     enterDream(player: Player) {
         if (player && !this.isWakeUp && this.isFirst) {
-            this.isFirst = false
-            if (this.dungeon) {
-                this.dungeon.CameraZoom = Dungeon.DEFAULT_ZOOM_MAX
-            }
-            player.sleep()
-            this.scheduleOnce(() => {
-                Logic.playerData = player.data.clone()
-                if (Logic.playerData.pos.equals(this.data.defaultPos)) {
-                    Logic.playerData.pos.y = this.data.defaultPos.y
+            Dialogue.play('daily001', (index: number) => {
+                this.isFirst = false
+                if (this.dungeon) {
+                    this.dungeon.CameraZoom = Dungeon.DEFAULT_ZOOM_MAX
                 }
-                AudioPlayer.play(AudioPlayer.EXIT)
-                Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal())
-            }, 1)
+                player.sleep()
+                this.scheduleOnce(() => {
+                    Logic.playerData = player.data.clone()
+                    if (Logic.playerData.pos.equals(this.data.defaultPos)) {
+                        Logic.playerData.pos.y = this.data.defaultPos.y
+                    }
+                    AudioPlayer.play(AudioPlayer.EXIT)
+                    //休息8小时
+                    let times = [60000 * 15, 60000 * 60 * 4, 60000 * 60 * 8]
+                    Logic.dreamCostTime = times[index]
+                    Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal())
+                }, 1)
+            })
         }
     }
     onColliderExit(other: CCollider, self: CCollider) {

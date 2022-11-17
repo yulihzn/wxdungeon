@@ -129,7 +129,7 @@ export default class Dialogue extends cc.Component {
         if (this.splitArr.length < 1) {
             //如果跳转的位置不存在默认选中下一条
             if (current.next.length > index) {
-                this.currentTextIndex = current.next[index].id
+                this.currentTextIndex = current.next[index].jumpId
             } else {
                 this.currentTextIndex++
             }
@@ -139,7 +139,7 @@ export default class Dialogue extends cc.Component {
             this.hide()
             let callback = Dialogue.callbacks.get(this.data.id)
             if (callback) {
-                callback()
+                callback(index)
                 Dialogue.callbacks.delete(this.data.id)
             }
             return

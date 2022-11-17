@@ -57,8 +57,8 @@ export default class CellphoneDialog extends BaseDialog {
         this.itemSelect.opacity = 0
         this.layer.active = false
         this.equipmentAndItemDialog = this.initDialog()
-        this.dayLabel.string = Utils.getDay(Logic.realTime)
-        this.hourLabel.string = Utils.getHour(Logic.realTime)
+        this.dayLabel.string = Utils.getDay(Logic.getTickTime())
+        this.hourLabel.string = Utils.getHour(Logic.getTickTime())
         this.updateList(this.appIndex)
         EventHelper.on(EventHelper.PLAYER_SHOW_FLASHLIGHT, detail => {
             if (this.node) {
@@ -235,8 +235,8 @@ export default class CellphoneDialog extends BaseDialog {
     }
     update(dt) {
         if (this.isCheckTimeChangeDelay(dt)) {
-            this.dayLabel.string = Utils.getDay(Logic.realTime)
-            this.hourLabel.string = Utils.getHour(Logic.realTime)
+            this.dayLabel.string = Utils.getDay(Logic.getTickTime())
+            this.hourLabel.string = Utils.getHour(Logic.getTickTime())
         }
     }
     checkTimeChangeDelay = 0
@@ -256,8 +256,12 @@ export default class CellphoneDialog extends BaseDialog {
     }
 
     waitOneHour() {
-        Logic.realTime += 60000 * 60
-        this.dayLabel.string = Utils.getDay(Logic.realTime)
-        this.hourLabel.string = Utils.getHour(Logic.realTime)
+        if (Logic.isDreaming()) {
+            Logic.dreamTime += 60000 * 60
+        } else {
+            Logic.realTime += 60000 * 60
+        }
+        this.dayLabel.string = Utils.getDay(Logic.getTickTime())
+        this.hourLabel.string = Utils.getHour(Logic.getTickTime())
     }
 }

@@ -255,7 +255,7 @@ export default class LightManager extends BaseManager {
         if (!this.hasOutSideLight) {
             return 0
         }
-        let date = new Date(Logic.realTime)
+        let date = new Date(Logic.getTickTime())
         let hour = date.getHours()
         let minute = date.getMinutes()
         //将240等分为12份，先算出分钟比例的值

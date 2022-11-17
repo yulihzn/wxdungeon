@@ -11,7 +11,7 @@ import DataUtils from '../utils/DataUtils'
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 export default class DialogueButtonData {
-    id = 0 //跳转的text下标
+    jumpId = 0 //跳转的text下标
     text = '' //按钮内容
     valueCopy(data: DialogueButtonData) {
         if (!data) {

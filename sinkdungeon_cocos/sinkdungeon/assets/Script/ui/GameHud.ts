@@ -382,7 +382,11 @@ export default class GameHud extends cc.Component {
             return
         }
         Logic.totalTime += 1000
-        Logic.realTime = Logic.realTime + (Logic.chapterIndex == Logic.CHAPTER099 ? 10000 : 60000)
+        if (Logic.isDreaming()) {
+            Logic.dreamTime += 60000
+        } else {
+            Logic.realTime += 10000
+        }
         EventHelper.emit(EventHelper.HUD_TIME_TICK)
     }
 

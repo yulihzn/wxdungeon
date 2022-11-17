@@ -1366,7 +1366,7 @@ export default class Player extends PlayActor {
 
     setLinearVelocity(movement: cc.Vec2) {}
     timeConsumeLife() {
-        if (Logic.chapterIndex != Logic.CHAPTER099) {
+        if (Logic.isDreaming()) {
             return
         }
         let time = Logic.realTime - this.lastConsumeTime

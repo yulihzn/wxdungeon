@@ -110,6 +110,8 @@ export default class Logic extends cc.Component {
     static dialogueCounts: { [key: string]: number } = {} //对话出现次数
     static totalTime = 0
     static realTime = 1559145600000
+    static dreamTime = 1559145600000
+    static dreamCostTime = 0
     static seed = 5
     static isFirst = 1
     static isFirstLoading = true
@@ -185,6 +187,8 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.chapterMaxIndex = Logic.chapterMaxIndex
         Logic.profileManager.data.totalTime = Logic.totalTime
         Logic.profileManager.data.realTime = Logic.realTime
+        Logic.profileManager.data.dreamTime = Logic.dreamTime
+        Logic.profileManager.data.dreamCostTime = Logic.dreamCostTime
         Logic.profileManager.data.savePointData = Logic.savePoinitData.clone()
         Logic.profileManager.data.groundOilGoldData = Logic.groundOilGoldData.clone()
         Logic.profileManager.data.killPlayerCounts = Utils.cloneKeyValueNumber(Logic.killPlayerCounts)
@@ -206,6 +210,8 @@ export default class Logic extends cc.Component {
         //重置时间
         Logic.totalTime = Logic.profileManager.data.totalTime
         Logic.realTime = Logic.profileManager.data.realTime
+        Logic.dreamTime = Logic.profileManager.data.dreamTime
+        Logic.dreamCostTime = Logic.profileManager.data.dreamCostTime
         //加载章节名
         Logic.profileManager.data.chapterIndex = chapter ? chapter : Logic.profileManager.data.chapterIndex
         if (Logic.profileManager.data.chapterIndex > Logic.profileManager.data.chapterMaxIndex && Logic.profileManager.data.chapterIndex < this.CHAPTER05) {
@@ -387,6 +393,11 @@ export default class Logic extends cc.Component {
                         Logic.profileManager.data.rectDungeons[rd].changeAllClearRoomsReborn()
                     }
                 }
+                //如果是从梦境进入现实，需要扣除对应的休息时间，默认八小时
+                if (exitData.toChapter == Logic.CHAPTER099) {
+                    Logic.realTime += Logic.dreamCostTime
+                    Logic.dreamCostTime = 0
+                }
             }
             Logic.saveData()
             /**************加载exitData关卡数据***************** */
@@ -510,5 +521,11 @@ export default class Logic extends cc.Component {
     }
     static addDialogueCount(id: string) {
         Logic.dialogueCounts[id] = Logic.dialogueCounts[id] + 1
+    }
+    static isDreaming() {
+        return Logic.chapterIndex != Logic.CHAPTER099
+    }
+    static getTickTime() {
+        return Logic.isDreaming() ? Logic.dreamTime : Logic.realTime
     }
 }

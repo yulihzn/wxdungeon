@@ -38,8 +38,9 @@ export default class ProfileData {
     level = 0 //当前层级
     //游玩时间
     totalTime = 0
-    //游戏里的时间，默认从2018-05-14 12:55:46开始
+    //游戏里的时间，默认从2018-05-14 12:55:46开始,现实时间和梦境时间隔开
     realTime = 1526273746000
+    dreamTime = 1526273746000
     savePointData: SavePointData = new SavePointData()
     groundOilGoldData: GroundOilGoldData = new GroundOilGoldData()
     oilGolds = 0
@@ -48,4 +49,5 @@ export default class ProfileData {
     coins = 0 //梦境里的金币
     coinCounts = 0
     lastSaveTime = 0 //最近游玩时间
+    dreamCostTime = 0 //做梦需要消耗的时间
 }

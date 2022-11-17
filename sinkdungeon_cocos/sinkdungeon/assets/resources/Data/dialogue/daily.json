@@ -6,7 +6,7 @@
             { "id": "aside", "name": "旁白" },
             { "id": "player", "name": "查内姆" }
         ],
-        "list": [{ "id": 0, "actor": 0, "text": "zzzZZZ...", "next": [{ "id": 1, "text": "醒来" }] }]
+        "list": [{ "id": 0, "actor": 0, "text": "zzzZZZ...", "next": [{ "jumpId": 1, "text": "醒来" }] }]
     },
     "daily001": {
         "id": "daily001",
@@ -15,10 +15,30 @@
             { "id": "aside", "name": "旁白" },
             { "id": "player", "name": "查内姆" }
         ],
-        "list": [{ "id": 0, "actor": 0, "text": "你嗓子冒烟了，根本无法说话", "next": [{ "id": 1, "text": "去喝水" }] }]
+        "list": [
+            {
+                "id": 0,
+                "actor": 0,
+                "text": "你决定休息多久？",
+                "next": [
+                    { "jumpId": 1, "text": "小憩(15分钟)" },
+                    { "jumpId": 1, "text": "安睡(4小时)" },
+                    { "jumpId": 1, "text": "酣睡(8小时)" }
+                ]
+            }
+        ]
     },
     "daily002": {
         "id": "daily002",
+        "isTalk": true,
+        "actors": [
+            { "id": "aside", "name": "旁白" },
+            { "id": "player", "name": "查内姆" }
+        ],
+        "list": [{ "id": 0, "actor": 0, "text": "你嗓子冒烟了，根本无法说话", "next": [{ "jumpId": 1, "text": "去喝水" }] }]
+    },
+    "daily003": {
+        "id": "daily003",
         "isTalk": true,
         "actors": [
             { "id": "aside", "name": "便利店老板" },
@@ -30,15 +50,15 @@
                 "actor": 0,
                 "text": "欢迎光临，随便看看~",
                 "next": [
-                    { "id": 1, "text": "买东西" },
-                    { "id": 1, "text": "闲聊" }
+                    { "jumpId": 1, "text": "买东西" },
+                    { "jumpId": 1, "text": "闲聊" }
                 ]
             },
             {
                 "id": 1,
                 "actor": 1,
                 "text": "需要什么去货架挑选吧",
-                "next": [{ "id": 1, "text": "闲聊" }]
+                "next": [{ "jumpId": 1, "text": "闲聊" }]
             }
         ]
     }
