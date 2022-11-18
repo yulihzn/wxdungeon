@@ -55,6 +55,7 @@ export default class QuestFileEditManager extends cc.Component {
     zoomOffset = 0
     private isCtrlPressing = false
     private isShiftPressing = false
+    private isEditFileMode = false
 
     protected onLoad(): void {
         this.loadingManager.init()
@@ -153,6 +154,11 @@ export default class QuestFileEditManager extends cc.Component {
                     }
                 }
                 break
+            case cc.macro.KEY.s:
+                if (this.isCtrlPressing) {
+                    this.buttonSave()
+                }
+                break
             case cc.macro.KEY.escape:
                 this.selectNone()
                 break
@@ -177,6 +183,13 @@ export default class QuestFileEditManager extends cc.Component {
         }
         this.revokeButton.active = this.revokeTreeList.length > 0
         this.revokeCancelButton.active = this.revokeCancelTreeList.length > 0
+        this.editBox.enabled = !this.fileHandle
+        if (this.fileHandle) {
+            let name = this.fileHandle.name as string
+            if (name.indexOf('.') != -1) {
+                this.editBox.string = name.split('.')[0]
+            }
+        }
     }
     private zoom(offset: number) {
         this.layout.scale += offset
@@ -333,7 +346,7 @@ export default class QuestFileEditManager extends cc.Component {
     //button
     buttonUpload() {
         this.selectNone(() => {
-            this.uploadForBrowser()
+            this.openJsonFile()
         })
     }
     //button
@@ -345,7 +358,7 @@ export default class QuestFileEditManager extends cc.Component {
                 this.showLog('need a name!')
                 return
             }
-            this.saveForBrowser(JSON.stringify(this.questTree), this.editBox.string)
+            this.writeFile(JSON.stringify(this.questTree), this.editBox.string)
         })
     }
     showLog(msg: string) {
@@ -368,11 +381,119 @@ export default class QuestFileEditManager extends cc.Component {
             this.revokeTreeList = []
             this.revokeCancelTreeList = []
             this.updateTree()
+            this.fileHandle = null
         })
     }
     public showSpritePickDialog(targetData: QuestTargetData, callback: Function) {
         this.spritePickDialog.show(targetData, callback)
     }
+    private loadFileTreeFinish(jsonText: string) {
+        this.questTree.valueCopy(JSON.parse(jsonText))
+        this.editBox.string = this.questTree.id
+        this.label.string = this.questTree.name
+        cc.log(`加载任务列表完成`)
+        //清空修改列表
+        this.revokeTreeList = []
+        this.revokeCancelTreeList = []
+        this.updateTree()
+    }
+    private fileHandle: any
+
+    openJsonFile() {
+        window
+            //@ts-ignore
+            .showOpenFilePicker({
+                multiple: false, // 取消多选
+                excludeAcceptAllOption: true,
+                types: [
+                    {
+                        description: '选择任务文件',
+                        accept: {
+                            'application/json': ['.json']
+                        }
+                    }
+                ]
+            })
+            .then(fileHandles => {
+                const [fh] = fileHandles
+                this.fileHandle = fh
+                // console.log(fh);
+                fh.getFile().then(file => {
+                    cc.log('file:', file)
+                    // 读取文本内容
+                    const reader = new FileReader()
+                    reader.onload = e => {
+                        console.log(`打开文件: ${fh.name}\n文件内容:\n\n%c${e.target.result}`, 'color:#35ccbf;fontsize: 20px;')
+                        this.loadFileTreeFinish(`${e.target.result}`)
+                    }
+                    reader.readAsText(file)
+                })
+            })
+            .catch(err => {
+                if (err.name == 'AbortError') {
+                    this.showLog('取消保存')
+                } else {
+                    this.showLog(`保存失败: ${this.fileHandle.name}`)
+                    console.error('选择文件失败: ', err)
+                    this.uploadForBrowser()
+                }
+            })
+    }
+
+    async writeFile(textToWrite: string, fileNameToSaveAs: string) {
+        try {
+            if (!this.fileHandle) {
+                this.newFileWrite(textToWrite, fileNameToSaveAs)
+                return
+            }
+            const writableStream = await this.fileHandle.createWritable()
+            // 写入文件
+            await writableStream.write(textToWrite)
+            await writableStream.close()
+            cc.log(`保存成功: ${this.fileHandle.name}`)
+        } catch (error) {
+            if (error.name == 'AbortError') {
+                this.showLog('取消保存')
+            } else {
+                cc.log(`保存失败: ${this.fileHandle.name}`)
+                this.newFileWrite(textToWrite, fileNameToSaveAs)
+            }
+        }
+    }
+    newFileWrite(textToWrite: string, fileNameToSaveAs: string) {
+        window
+            //@ts-ignore
+            .showSaveFilePicker({
+                suggestedName: fileNameToSaveAs, // 待写入的文件名
+                types: [
+                    {
+                        description: '保存任务文件',
+                        accept: {
+                            'application/json': ['.json']
+                        }
+                    }
+                ]
+            })
+            .then(async writeHandle => {
+                this.fileHandle = writeHandle
+                // create a FileSystemWritableFileStream to write to
+                const writableStream = await writeHandle.createWritable()
+                // 写入文件
+                await writableStream.write(textToWrite)
+                // close the file and write the contents to disk.
+                await writableStream.close()
+                console.log(`保存成功: ${writeHandle.name}`)
+            })
+            .catch(err => {
+                if (err.name == 'AbortError') {
+                    this.showLog('取消写入')
+                } else {
+                    console.error('写入失败: ', err)
+                    this.saveForBrowser(textToWrite, fileNameToSaveAs)
+                }
+            })
+    }
+
     private uploadForBrowser() {
         if (!cc.sys.isBrowser) return
         let input = document.createElement('input')
@@ -390,14 +511,7 @@ export default class QuestFileEditManager extends cc.Component {
                     if (err) {
                         cc.error(err)
                     } else {
-                        this.questTree.valueCopy(JSON.parse(resource._nativeAsset))
-                        this.editBox.string = this.questTree.id
-                        this.label.string = this.questTree.name
-                        cc.log(`加载任务列表完成`)
-                        //清空修改列表
-                        this.revokeTreeList = []
-                        this.revokeCancelTreeList = []
-                        this.updateTree()
+                        this.loadFileTreeFinish(`${resource._nativeAsset}`)
                     }
                 })
             }

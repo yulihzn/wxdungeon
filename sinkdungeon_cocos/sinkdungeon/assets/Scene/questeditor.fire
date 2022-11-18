@@ -787,7 +787,7 @@
     },
     "component": "",
     "_componentId": "f94ebtnVVRAuJM/+7s9a6V3",
-    "handler": "uploadForBrowser",
+    "handler": "buttonUpload",
     "customEventData": ""
   },
   {

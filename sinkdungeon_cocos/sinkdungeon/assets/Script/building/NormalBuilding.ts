@@ -15,6 +15,8 @@ import InventoryManager from '../manager/InventoryManager'
 import IndexZ from '../utils/IndexZ'
 import FromData from '../data/FromData'
 import Actor from '../base/Actor'
+import Tips from '../ui/Tips'
+import Player from '../logic/Player'
 
 const { ccclass, property } = cc._decorator
 
@@ -26,6 +28,8 @@ export default class NormalBuilding extends Building {
     sprite: cc.Sprite = null
     @property(cc.Node)
     shadow: cc.Node = null
+    @property(Tips)
+    tips: Tips = null
     resLength = 1
     dungeon: Dungeon
     private mat: cc.MaterialVariant
@@ -34,12 +38,46 @@ export default class NormalBuilding extends Building {
     static readonly PREFIX_PLATFORM = 'platform'
     static readonly PREFIX_HITBUILDING = 'hitbuilding'
     static readonly PREFIX_STAIRS = 'stairs'
+    static readonly PREFIX_FURNITURE = 'furniture'
+    private _tipsInteract: (isLongPress: boolean, player: Player) => void
+    private _tipsEnter: () => void
+    private _tipsExit: () => void
+
+    onLoad() {
+        this.tips.onInteract((isLongPress: boolean, player: Player) => {
+            this.tipsInteract(isLongPress, player)
+        })
+        this.tips.onEnter(() => {
+            this.tipsEnter()
+        })
+        this.tips.onExit(() => {
+            this.tipsExit()
+        })
+    }
+    tipsInteract(isLongPress: boolean, player: Player): void {
+        if (this._tipsInteract) {
+            this._tipsInteract(isLongPress, player)
+        }
+    }
+    tipsEnter(): void {
+        if (this._tipsEnter) {
+            this._tipsEnter()
+        }
+    }
+    tipsExit(): void {
+        if (this._tipsExit) {
+            this._tipsExit()
+        }
+    }
     get breakable() {
         return this._breakable && this.data.currentHealth > 0 && this.data.currentHealth < 9999
     }
 
-    init(dungeon: Dungeon) {
+    init(dungeon: Dungeon, tipsInteract?: (isLongPress: boolean, player: Player) => void, tipsEnter?: () => void, tipsExit?: () => void) {
         this.dungeon = dungeon
+        this._tipsInteract = tipsInteract
+        this._tipsEnter = tipsEnter
+        this._tipsExit = tipsExit
         this._breakable = this.data.id.indexOf('hitbuilding') > -1
         if (this.data.custom) {
             return

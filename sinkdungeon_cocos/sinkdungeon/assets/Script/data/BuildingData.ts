@@ -1,6 +1,7 @@
 import DataUtils from '../utils/DataUtils'
 import CommonData from './CommonData'
 import EquipmentData from './EquipmentData'
+import InventoryData from './InventoryData'
 import ItemData from './ItemData'
 
 // Learn TypeScript:
@@ -44,6 +45,10 @@ export default class BuildingData {
     custom = false //自定义,为true不读取预设参数
     info = ''
     desc = ''
+
+    purchased = false //是否购买
+    storageList: InventoryData[] = [] //储物列表
+    storage = 0 //储物容量
     valueCopy(data: BuildingData) {
         if (!data) {
             return
@@ -64,32 +69,22 @@ export default class BuildingData {
         if (data.generatorList) {
             this.generatorList = data.generatorList
         }
+        this.scale = data.scale ? data.scale : 1
+        if (this.storage > 32) {
+            this.storage = 32
+        }
+        if (data.storageList && data.storage > 0) {
+            this.storageList = []
+            for (let idata of data.storageList) {
+                let ida = new InventoryData()
+                ida.valueCopy(idata)
+                this.storageList.push(ida)
+            }
+        }
     }
     clone(): BuildingData {
         let data = new BuildingData()
         data.valueCopy(this)
-        // data.defaultPos=this.defaultPos;
-        // data.position=this.position;
-        // data.isOpen=this.isOpen;
-        // data.quality=this.quality;
-        // if(this.equipdata){
-        //     data.equipdata = new EquipmentData();
-        //     data.equipdata.valueCopy(this.equipdata);
-        // }
-        // if(this.itemdata){
-        //     data.itemdata = new ItemData();
-        //     data.itemdata.valueCopy(this.itemdata);
-        // }
-        // data.price = this.price;
-        // data.shopType = this.shopType;
-        // data.isSaled = this.isSaled;
-        // data.maxHealth = this.maxHealth;
-        // data.currentHealth = this.currentHealth;
-        // data.generatorInterval = this.generatorInterval;
-        // data.generatorCount = this.generatorCount;
-        // data.generatorList = this.generatorList;
-        // data.interact = this.interact;
-        // data.rollover = this.rollover;
         return data
     }
 }

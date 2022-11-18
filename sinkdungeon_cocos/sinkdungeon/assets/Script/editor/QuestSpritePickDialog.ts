@@ -46,6 +46,7 @@ export default class QuestSpritePickDialog extends cc.Component {
         `使用,${QuestTargetData.ITEM_PICK},${QuestTargetData.TARGET_ITEM}`,
         `丢弃,${QuestTargetData.ITEM_PICK},${QuestTargetData.TARGET_ITEM}`
     ]
+    static readonly TYPES_BOSS = [`击杀,${QuestTargetData.BOSS_KILL},${QuestTargetData.TARGET_BOSS}`, `存活,${QuestTargetData.BOSS_ALIVE},${QuestTargetData.TARGET_BOSS}`]
     static readonly TYPES_NPC = [`击杀,${QuestTargetData.NPC_KILL},${QuestTargetData.TARGET_NPC}`, `存活,${QuestTargetData.NPC_ALIVE},${QuestTargetData.TARGET_NPC}`]
     static readonly TYPES_MONSTER = [`击杀,${QuestTargetData.NPC_KILL},${QuestTargetData.TARGET_MONSTER}`, `存活,${QuestTargetData.NPC_ALIVE},${QuestTargetData.TARGET_MONSTER}`]
     static readonly TYPES_BUILDING = [`使用,${QuestTargetData.BUILDING_TRIGGER},${QuestTargetData.TARGET_FURNITURE}`]
@@ -81,9 +82,9 @@ export default class QuestSpritePickDialog extends cc.Component {
 
     getSprite(targetData: QuestTargetData, index: number) {
         let icon = cc.instantiate(this.prefab).getComponent(QuestSpriteItem)
-        icon.init(this.currentListIndex, index++, this.targetData, false)
+        icon.init(this.currentListIndex, index++, targetData, false)
         this.addItem(icon)
-        let type1 = this.targetData.resId
+        let type1 = targetData.resId
         let type2 = targetData.resId
         if (type1 == type2) {
             if (this.currentSprite) {
@@ -165,7 +166,7 @@ export default class QuestSpritePickDialog extends cc.Component {
         this.countLabel.string = `${this.countLabel.string}`
     }
     getChangeIndex(targetData: QuestTargetData) {
-        let text = targetData.resId
+        let text = targetData ? targetData.targetType : ''
         if (text.indexOf('challenge') != -1) {
             return '0'
         } else if (text.indexOf('map') != -1) {

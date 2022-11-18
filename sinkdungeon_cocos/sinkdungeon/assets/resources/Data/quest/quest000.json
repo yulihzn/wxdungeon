@@ -1,11 +1,1 @@
-{
-    "id": "quest000",
-    "name": "测试树",
-    "root": {
-        "id": "quest000",
-        "indexId": "r0",
-        "parentId": "e0",
-        "name": "序章",
-        "content": "开始卷"
-    }
-}
+{"status":0,"id":"quest000","name":"测试树","content":"","root":{"triggerCondition":{"list":[],"roomList":"","startTime":0,"endTime":0,"isExpand":false,"coins":0,"realCoins":0,"oilGolds":0,"statusList":""},"successCondition":{"list":[],"roomList":"","startTime":0,"endTime":0,"isExpand":false,"coins":0,"realCoins":0,"oilGolds":0,"statusList":""},"failCondition":{"list":[],"roomList":"","startTime":0,"endTime":0,"isExpand":false,"coins":0,"realCoins":0,"oilGolds":0,"statusList":""},"status":0,"id":"quest000","name":"序章","content":"开始卷吧","icon":"","iconLarge":"","mapThingsList":"","startTime":0,"mapThingsCreated":false,"reward":{"list":[],"roomList":"","startTime":0,"endTime":0,"isExpand":false,"coins":0,"realCoins":0,"oilGolds":0,"statusList":""},"indexId":"r0","parentId":"e0","successList":[],"failList":[],"editPos":{"x":-300,"y":-200,"z":0},"isTracked":false}}
