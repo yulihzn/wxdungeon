@@ -138,9 +138,9 @@ export default class AreaOfEffect extends BaseColliderComponent {
                     if (this.data.canBeatBack && !target.getComponent(Boss)) {
                         this.beatBack(target, normal)
                     }
-                }
-                for (let status of this.data.statusList) {
-                    target.addStatus(status, this.data.from)
+                    for (let status of this.data.statusList) {
+                        target.addStatus(status, this.data.from)
+                    }
                 }
             }
         } else if (tag == CCollider.TAG.BUILDING) {

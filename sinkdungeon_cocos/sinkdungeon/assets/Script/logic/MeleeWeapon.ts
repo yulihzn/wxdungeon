@@ -685,34 +685,32 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 }
             }
         } else if (attackTarget.tag == CCollider.TAG.BUILDING || attackTarget.tag == CCollider.TAG.WALL) {
+            attackSuccess = true
             let box = attackTarget.node.getComponent(Box)
             if (box) {
-                attackSuccess = true
                 box.breakBox()
             }
             if (!attackSuccess) {
                 let interactBuilding = attackTarget.node.getComponent(InteractBuilding)
                 if (interactBuilding && interactBuilding.data.currentHealth > 0) {
-                    attackSuccess = true
                     interactBuilding.takeDamage(damage, new FromData(), this.player)
                 }
             }
             if (!attackSuccess) {
                 let hitBuilding = attackTarget.node.getComponent(NormalBuilding)
                 if (hitBuilding) {
-                    attackSuccess = true
                     hitBuilding.takeDamage(damage, new FromData(), this.player)
                 }
             }
             if (!attackSuccess) {
                 let hitBuilding = attackTarget.node.getComponent(Emplacement)
                 if (hitBuilding && hitBuilding.data.currentHealth > 0) {
-                    attackSuccess = true
                     hitBuilding.takeDamage(damage, new FromData(), this.player)
                 }
             }
             this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)
         } else if (attackTarget.tag == CCollider.TAG.BOSS_HIT || attackTarget.tag == CCollider.TAG.NONPLAYER_HIT) {
+            attackSuccess = true
             this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)
         }
         //生命汲取,内置1s cd
@@ -738,6 +736,18 @@ export default class MeleeWeapon extends BaseColliderComponent {
             }
             if (!isShadow) {
                 EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: this.comboType == MeleeWeapon.COMBO3 })
+            }
+            let pauseTime = 0.1
+            if (!this.isFar && this.isStab) {
+                pauseTime = 0.05
+            } else if (this.isFar && this.isStab) {
+                pauseTime = 0.15
+            } else if (this.isFar && !this.isStab) {
+                pauseTime = 0.2
+            } else if (!this.isFar && !this.isStab) {
+                pauseTime = 0.1
+            } else if (this.isFist) {
+                pauseTime = 0
             }
             this.scheduleOnce(() => {
                 anim.resume()
