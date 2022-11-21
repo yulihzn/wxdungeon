@@ -1,4 +1,4 @@
-import QuestData from './data/QuestData'
+import QuestData from '../data/QuestData'
 import QuestFileEditManager from './QuestFileEditManager'
 
 // Learn TypeScript:

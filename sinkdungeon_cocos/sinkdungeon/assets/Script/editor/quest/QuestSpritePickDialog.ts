@@ -8,11 +8,11 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import Achievement from '../logic/Achievement'
-import Logic from '../logic/Logic'
-import LoadingManager from '../manager/LoadingManager'
-import QuestConditionData from './data/QuestConditionData'
-import QuestTargetData from './data/QuestTargetData'
+import Achievement from '../../logic/Achievement'
+import Logic from '../../logic/Logic'
+import LoadingManager from '../../manager/LoadingManager'
+import QuestConditionData from '../data/QuestConditionData'
+import QuestTargetData from '../data/QuestTargetData'
 import QuestFileEditManager from './QuestFileEditManager'
 import QuestSpriteItem from './QuestSpriteItem'
 

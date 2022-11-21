@@ -5,14 +5,14 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
-import EquipmentData from '../data/EquipmentData'
-import FurnitureData from '../data/FurnitureData'
-import ItemData from '../data/ItemData'
-import Item from '../item/Item'
-import { EventHelper } from '../logic/EventHelper'
-import Logic from '../logic/Logic'
-import InventoryManager from '../manager/InventoryManager'
-import QuestTargetData from './data/QuestTargetData'
+import EquipmentData from '../../data/EquipmentData'
+import FurnitureData from '../../data/FurnitureData'
+import ItemData from '../../data/ItemData'
+import Item from '../../item/Item'
+import { EventHelper } from '../../logic/EventHelper'
+import Logic from '../../logic/Logic'
+import InventoryManager from '../../manager/InventoryManager'
+import QuestTargetData from '../data/QuestTargetData'
 
 const { ccclass, property } = cc._decorator
 

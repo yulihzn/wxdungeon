@@ -1,9 +1,10 @@
-import { EventHelper } from '../logic/EventHelper'
-import LoadingManager from '../manager/LoadingManager'
-import CursorArea from '../ui/CursorArea'
-import QuestData from './data/QuestData'
-import QuestTargetData from './data/QuestTargetData'
-import QuestTreeData from './data/QuestTreeData'
+import { EventHelper } from '../../logic/EventHelper'
+import LoadingManager from '../../manager/LoadingManager'
+import QuestData from '../data/QuestData'
+import QuestTargetData from '../data/QuestTargetData'
+import QuestTreeData from '../data/QuestTreeData'
+import FileOperator from '../utils/FileOperator'
+import RevokeHelper from '../utils/RevokeHelper'
 import QuestAlertDialog from './QuestAlertDialog'
 import QuestCard from './QuestCard'
 import QuestFileEditor from './QuestFileEditor'
@@ -45,9 +46,6 @@ export default class QuestFileEditManager extends cc.Component {
     isBossLoaded = false
     private loadingManager: LoadingManager = new LoadingManager()
 
-    private questTree: QuestTreeData = new QuestTreeData()
-    private revokeTreeList: QuestTreeData[] = []
-    private revokeCancelTreeList: QuestTreeData[] = []
     private startPos = cc.v3(0, 0)
     private touchPos = cc.v2(0, 0)
     private cardList: QuestCard[] = []
@@ -55,7 +53,8 @@ export default class QuestFileEditManager extends cc.Component {
     zoomOffset = 0
     private isCtrlPressing = false
     private isShiftPressing = false
-    private isEditFileMode = false
+    private fileOperator: FileOperator = new FileOperator()
+    private revokeHelper: RevokeHelper<QuestTreeData> = new RevokeHelper<QuestTreeData>(new QuestTreeData())
 
     protected onLoad(): void {
         this.loadingManager.init()
@@ -181,11 +180,11 @@ export default class QuestFileEditManager extends cc.Component {
         if (this.zoomOffset != 0) {
             this.zoom(this.zoomOffset)
         }
-        this.revokeButton.active = this.revokeTreeList.length > 0
-        this.revokeCancelButton.active = this.revokeCancelTreeList.length > 0
-        this.editBox.enabled = !this.fileHandle
-        if (this.fileHandle) {
-            let name = this.fileHandle.name as string
+        this.revokeButton.active = this.revokeHelper.RevokeLength > 0
+        this.revokeCancelButton.active = this.revokeHelper.RevokeCancelLength > 0
+        this.editBox.enabled = !this.fileOperator.getFileHandle()
+        if (this.fileOperator.getFileHandle()) {
+            let name = this.fileOperator.getFileHandle().name as string
             if (name.indexOf('.') != -1) {
                 this.editBox.string = name.split('.')[0]
             }
@@ -229,7 +228,7 @@ export default class QuestFileEditManager extends cc.Component {
         }
         card.node.setPosition(pos.clone())
         // cc.log(`NEW:${card.data.parentId + card.data.indexId},x=${card.node.position.x},y=${card.node.position.y}`)
-        this.questTree.updateTreeNodePos(data.indexId, data.parentId, pos)
+        this.revokeHelper.Data.updateTreeNodePos(data.indexId, data.parentId, pos)
         for (let i = 0; i < data.successList.length; i++) {
             let c = data.successList[i]
             QuestTreeData.updateIndexId(c, data, true, i)
@@ -284,81 +283,89 @@ export default class QuestFileEditManager extends cc.Component {
         })
     }
     private updateRevokTreeList(newTree: QuestTreeData) {
-        this.revokeTreeList.push(this.questTree)
-        this.questTree = newTree
-        this.updateTree()
+        this.revokeHelper.addNode(newTree).then(() => {
+            this.updateTree()
+        })
     }
     updateTreeNodePos(indexId: string, parentId: string, pos: cc.Vec3) {
         let newTree = new QuestTreeData()
-        newTree.valueCopy(this.questTree)
+        newTree.valueCopy(this.revokeHelper.Data)
         newTree.updateTreeNodePos(indexId, parentId, pos)
         this.updateRevokTreeList(newTree)
     }
     updateTreeNodeData(indexId: string, parentId: string, data: QuestData) {
         let newTree = new QuestTreeData()
-        newTree.valueCopy(this.questTree)
+        newTree.valueCopy(this.revokeHelper.Data)
         newTree.updateTreeNodeData(indexId, parentId, data)
         this.updateRevokTreeList(newTree)
     }
     addTreeNode(indexId: string, parentId: string, isSuccessType: boolean, newdata: QuestData) {
         let newTree = new QuestTreeData()
-        newTree.valueCopy(this.questTree)
+        newTree.valueCopy(this.revokeHelper.Data)
         newTree.addTreeNode(indexId, parentId, isSuccessType, newdata)
         this.updateRevokTreeList(newTree)
     }
     removeTreeNode(indexId: string, parentId: string) {
         let newTree = new QuestTreeData()
-        newTree.valueCopy(this.questTree)
+        newTree.valueCopy(this.revokeHelper.Data)
         newTree.removeTreeNode(indexId, parentId)
         this.updateRevokTreeList(newTree)
     }
     getTreeNode(indexId: string, parentId: string) {
         let mixId = `${parentId},${indexId}`
-        return this.questTree.getTreeNode(mixId)
+        return this.revokeHelper.Data.getTreeNode(mixId)
     }
     //button
     revoke() {
         this.selectNone(() => {
-            if (this.revokeTreeList.length > 0) {
-                //当前修改入栈取消列表里,撤销列表出栈
-                this.revokeCancelTreeList.push(this.questTree)
-                this.questTree = this.revokeTreeList.pop()
+            this.revokeHelper.revoke().then(() => {
                 this.updateTree()
-            }
+            })
         })
     }
     //button
     revokeCancel() {
         this.selectNone(() => {
-            if (this.revokeCancelTreeList.length > 0) {
-                this.revokeTreeList.push(this.questTree)
-                this.questTree = this.revokeCancelTreeList.pop()
+            this.revokeHelper.revokeCancel().then(() => {
                 this.updateTree()
-            }
+            })
         })
     }
     updateTree() {
         this.layout.removeAllChildren()
         this.cardList = []
-        this.addQuestNode(null, this.questTree.root)
+        this.addQuestNode(null, this.revokeHelper.Data.root)
     }
 
     //button
     buttonUpload() {
         this.selectNone(() => {
-            this.openJsonFile()
+            this.fileOperator
+                .openJsonFile()
+                .then(value => {
+                    this.loadFileTreeFinish(value)
+                })
+                .catch(err => {
+                    this.showLog(`${err}`)
+                })
         })
     }
     //button
     buttonSave() {
         this.selectNone(() => {
-            this.questTree.name = this.questTree.name
             let name = this.editBox.string
             if (name.length < 1) {
                 this.showLog('need a name!')
                 return
             }
-            this.writeFile(JSON.stringify(this.questTree), this.editBox.string)
+            this.fileOperator
+                .saveJsonFile(JSON.stringify(this.revokeHelper.Data), this.editBox.string)
+                .then(value => {
+                    this.showLog(value)
+                })
+                .catch(err => {
+                    this.showLog(`${err}`)
+                })
         })
     }
     showLog(msg: string) {
@@ -371,185 +378,28 @@ export default class QuestFileEditManager extends cc.Component {
     //button
     newQuestTree() {
         this.selectNone(() => {
-            this.questTree = new QuestTreeData()
-            this.questTree.id = 'quest000'
-            this.questTree.name = '测试树'
-            this.questTree.root.name = '序章'
-            this.questTree.root.content = '开始卷'
-            this.editBox.string = this.questTree.id
-            this.label.string = this.questTree.name
-            this.revokeTreeList = []
-            this.revokeCancelTreeList = []
+            let questTree = new QuestTreeData()
+            questTree.id = 'quest000'
+            questTree.name = '测试树'
+            questTree.root.name = '序章'
+            questTree.root.content = '开始卷'
+            this.editBox.string = questTree.id
+            this.label.string = questTree.name
+            this.revokeHelper.reset(questTree)
             this.updateTree()
-            this.fileHandle = null
+            this.fileOperator.clear()
         })
     }
     public showSpritePickDialog(targetData: QuestTargetData, callback: Function) {
         this.spritePickDialog.show(targetData, callback)
     }
     private loadFileTreeFinish(jsonText: string) {
-        this.questTree.valueCopy(JSON.parse(jsonText))
-        this.editBox.string = this.questTree.id
-        this.label.string = this.questTree.name
+        let data = new QuestTreeData()
+        data.valueCopy(JSON.parse(jsonText))
+        this.revokeHelper.reset(data)
+        this.editBox.string = this.revokeHelper.Data.id
+        this.label.string = this.revokeHelper.Data.name
         cc.log(`加载任务列表完成`)
-        //清空修改列表
-        this.revokeTreeList = []
-        this.revokeCancelTreeList = []
         this.updateTree()
-    }
-    private fileHandle: any
-
-    openJsonFile() {
-        window
-            //@ts-ignore
-            .showOpenFilePicker({
-                multiple: false, // 取消多选
-                excludeAcceptAllOption: true,
-                types: [
-                    {
-                        description: '选择任务文件',
-                        accept: {
-                            'application/json': ['.json']
-                        }
-                    }
-                ]
-            })
-            .then(fileHandles => {
-                const [fh] = fileHandles
-                this.fileHandle = fh
-                // console.log(fh);
-                fh.getFile().then(file => {
-                    cc.log('file:', file)
-                    // 读取文本内容
-                    const reader = new FileReader()
-                    reader.onload = e => {
-                        console.log(`打开文件: ${fh.name}\n文件内容:\n\n%c${e.target.result}`, 'color:#35ccbf;fontsize: 20px;')
-                        this.loadFileTreeFinish(`${e.target.result}`)
-                    }
-                    reader.readAsText(file)
-                })
-            })
-            .catch(err => {
-                if (err.name == 'AbortError') {
-                    this.showLog('取消保存')
-                } else {
-                    this.showLog(`保存失败: ${this.fileHandle.name}`)
-                    console.error('选择文件失败: ', err)
-                    this.uploadForBrowser()
-                }
-            })
-    }
-
-    async writeFile(textToWrite: string, fileNameToSaveAs: string) {
-        try {
-            if (!this.fileHandle) {
-                this.newFileWrite(textToWrite, fileNameToSaveAs)
-                return
-            }
-            const writableStream = await this.fileHandle.createWritable()
-            // 写入文件
-            await writableStream.write(textToWrite)
-            await writableStream.close()
-            cc.log(`保存成功: ${this.fileHandle.name}`)
-        } catch (error) {
-            if (error.name == 'AbortError') {
-                this.showLog('取消保存')
-            } else {
-                cc.log(`保存失败: ${this.fileHandle.name}`)
-                this.newFileWrite(textToWrite, fileNameToSaveAs)
-            }
-        }
-    }
-    newFileWrite(textToWrite: string, fileNameToSaveAs: string) {
-        window
-            //@ts-ignore
-            .showSaveFilePicker({
-                suggestedName: fileNameToSaveAs, // 待写入的文件名
-                types: [
-                    {
-                        description: '保存任务文件',
-                        accept: {
-                            'application/json': ['.json']
-                        }
-                    }
-                ]
-            })
-            .then(async writeHandle => {
-                this.fileHandle = writeHandle
-                // create a FileSystemWritableFileStream to write to
-                const writableStream = await writeHandle.createWritable()
-                // 写入文件
-                await writableStream.write(textToWrite)
-                // close the file and write the contents to disk.
-                await writableStream.close()
-                console.log(`保存成功: ${writeHandle.name}`)
-            })
-            .catch(err => {
-                if (err.name == 'AbortError') {
-                    this.showLog('取消写入')
-                } else {
-                    console.error('写入失败: ', err)
-                    this.saveForBrowser(textToWrite, fileNameToSaveAs)
-                }
-            })
-    }
-
-    private uploadForBrowser() {
-        if (!cc.sys.isBrowser) return
-        let input = document.createElement('input')
-        input.type = 'file'
-        input.onchange = e => {
-            let files = e.target['files']
-            if (files.length == 0) {
-                return
-            }
-            let fileReader = new FileReader()
-            fileReader.onload = e => {
-                //获得数据
-                let dataURL = e.target.result as string
-                cc.assetManager.loadRemote(dataURL, (err: Error, resource: any) => {
-                    if (err) {
-                        cc.error(err)
-                    } else {
-                        this.loadFileTreeFinish(`${resource._nativeAsset}`)
-                    }
-                })
-            }
-            fileReader.readAsDataURL(files[0])
-        }
-        input.click()
-    }
-
-    /**保存字符串内容到文件。效果相当于从浏览器下载了一个文件到本地。
-     * @param textToWrite 要保存的文件内容
-     * @param fileNameToSaveAs 要保存的文件名
-     */
-    private saveForBrowser(textToWrite: string, fileNameToSaveAs: string) {
-        if (!cc.sys.isBrowser) return
-        var textFileAsBlob = new Blob([textToWrite], { type: 'text' })
-        var downloadLink = document.createElement('a')
-        downloadLink.download = fileNameToSaveAs
-        downloadLink.innerHTML = 'Download File'
-        if (window.webkitURL != null) {
-            // Chrome allows the link to be clicked
-            // without actually adding it to the DOM.
-            // var url = window.webkitURL.createObjectURL(textFileAsBlob);
-
-            // var downloader = new jsb.Downloader({
-            //     // This will match all url with .scene extension or all url with scene type
-            //     'scene': function (url, callback) { }
-            // });
-            downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob)
-        } else {
-            // Firefox requires the link to be added to the DOM
-            // before it can be clicked.
-            downloadLink.href = window.URL.createObjectURL(textFileAsBlob)
-            downloadLink.onclick = function () {
-                if (downloadLink) document.body.removeChild(downloadLink)
-            }
-            downloadLink.style.display = 'none'
-            document.body.appendChild(downloadLink)
-        }
-        downloadLink.click()
     }
 }

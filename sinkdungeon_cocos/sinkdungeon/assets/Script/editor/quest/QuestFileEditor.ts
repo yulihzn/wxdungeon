@@ -9,11 +9,11 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import QuestConditionItem from './QuestConditionItem'
-import QuestData from './data/QuestData'
 import QuestFileEditManager from './QuestFileEditManager'
 import QuestInputItem from './QuestInputItem'
-import QuestConditionData from './data/QuestConditionData'
 import QuestDateInputItem from './QuestDateInputItem'
+import QuestConditionData from '../data/QuestConditionData'
+import QuestData from '../data/QuestData'
 
 //任务卡片
 const { ccclass, property } = cc._decorator

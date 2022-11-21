@@ -5,12 +5,10 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
-import QuestConditionData from './data/QuestConditionData'
-import QuestTargetData from './data/QuestTargetData'
-import QuestTreeData from './data/QuestTreeData'
+import QuestConditionData from '../data/QuestConditionData'
+import QuestTargetData from '../data/QuestTargetData'
 import QuestDateInputItem from './QuestDateInputItem'
 import QuestFileEditor from './QuestFileEditor'
-import QuestInputItem from './QuestInputItem'
 import QuestSpriteItem from './QuestSpriteItem'
 
 const { ccclass, property } = cc._decorator
