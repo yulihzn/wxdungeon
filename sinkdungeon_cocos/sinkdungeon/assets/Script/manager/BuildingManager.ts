@@ -37,7 +37,6 @@ import Player from '../logic/Player'
 import EnergyShield from '../building/EnergyShield'
 import EquipmentManager from './EquipmentManager'
 import Furniture from '../building/Furniture'
-import FurnitureData from '../data/FurnitureData'
 import RoomFishtank from '../building/RoomFishtank'
 import CCollider from '../collider/CCollider'
 import WallPaint from '../building/WallPaint'
@@ -621,10 +620,10 @@ export default class BuildingManager extends BaseManager {
             } else if (rand > 0.8 && rand < 0.85) {
                 quality = 4
             }
-            c.setQuality(quality, false)
+            c.setQuality(quality, 0)
             let saveChest = Logic.mapManager.getCurrentMapBuilding(c.data.defaultPos)
             if (saveChest) {
-                c.setQuality(saveChest.quality, saveChest.isOpen)
+                c.setQuality(saveChest.quality, saveChest.triggerCount)
             } else {
                 Logic.mapManager.setCurrentBuildingData(c.data.clone())
             }
@@ -634,10 +633,10 @@ export default class BuildingManager extends BaseManager {
         let data = new BuildingData()
         let repetitive = mapDataStr == '@b'
         data.defaultPos = indexPos.clone()
-        data.isOpen = true
+        data.triggerCount = 1
         if (!repetitive) {
             let savedata = Logic.mapManager.getCurrentMapBuilding(data.defaultPos)
-            if (savedata && savedata.isOpen) {
+            if (savedata && savedata.triggerCount > 0) {
                 return
             }
             Logic.mapManager.setCurrentBuildingData(data.clone())
@@ -1028,7 +1027,7 @@ export default class BuildingManager extends BaseManager {
         })
     }
     private addFurnitures(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
-        let data = new FurnitureData()
+        let data = new BuildingData()
         switch (mapDataStr) {
             case 'Z2':
                 data.valueCopy(Logic.furnitures[Furniture.DESK])
@@ -1157,7 +1156,7 @@ export default class BuildingManager extends BaseManager {
         if (script) {
             let save = Logic.mapManager.getCurrentMapBuilding(script.data.defaultPos)
             if (save) {
-                script.data.isOpen = save.isOpen
+                script.data.triggerCount = save.triggerCount
             }
         }
     }

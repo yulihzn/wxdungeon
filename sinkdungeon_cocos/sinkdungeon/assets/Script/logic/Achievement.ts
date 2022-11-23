@@ -1,6 +1,5 @@
 import AchievementData from '../data/AchievementData'
 import EquipmentData from '../data/EquipmentData'
-import FurnitureData from '../data/FurnitureData'
 import ItemData from '../data/ItemData'
 import NonPlayerData from '../data/NonPlayerData'
 import Logic from './Logic'
@@ -13,6 +12,7 @@ import LocalStorage from '../utils/LocalStorage'
 import LoadingIcon from '../ui/LoadingIcon'
 import { EventHelper } from './EventHelper'
 import CursorArea from '../ui/CursorArea'
+import BuildingData from '../data/BuildingData'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -231,7 +231,7 @@ export default class Achievement extends cc.Component {
         this.removeContent()
         let index = 0
         for (let key in Logic.furnitures) {
-            let data = new FurnitureData()
+            let data = new BuildingData()
             data.valueCopy(Logic.furnitures[key])
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem)
             icon.init(this, this.currentListIndex, index++, this.data.furnitures[data.id], Logic.spriteFrameRes(data.resName), null, null, null, data)

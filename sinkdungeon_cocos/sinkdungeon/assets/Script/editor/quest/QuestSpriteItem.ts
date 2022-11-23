@@ -5,8 +5,8 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
+import BuildingData from '../../data/BuildingData'
 import EquipmentData from '../../data/EquipmentData'
-import FurnitureData from '../../data/FurnitureData'
 import ItemData from '../../data/ItemData'
 import Item from '../../item/Item'
 import { EventHelper } from '../../logic/EventHelper'
@@ -96,7 +96,7 @@ export default class QuestSpriteItem extends cc.Component {
         } else if (data.equipmetType != InventoryManager.EMPTY) {
             spriteFrame = Logic.spriteFrameRes(data.img)
         } else if (id.indexOf('furniture') != -1) {
-            let fd = new FurnitureData()
+            let fd = new BuildingData()
             fd.valueCopy(Logic.furnitures[id])
             spriteFrame = Logic.spriteFrameRes(fd.resName)
         } else if (id.indexOf('boss') != -1 && id.indexOf('food') == -1) {

@@ -584,6 +584,7 @@
     "fromSky": false,
     "z": 0,
     "zHeight": 0,
+    "fromOutside": false,
     "_id": ""
   },
   {
@@ -964,6 +965,9 @@
     "_clips": [
       {
         "__uuid__": "136c5d3e-ca89-4dfa-88a3-5bd0249afa82"
+      },
+      {
+        "__uuid__": "e63b1729-0fb3-4e1b-a074-df28659d7d67"
       }
     ],
     "playOnLoad": true,

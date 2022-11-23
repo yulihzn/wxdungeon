@@ -8,8 +8,8 @@
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import BuildingData from '../../data/BuildingData'
 import EquipmentData from '../../data/EquipmentData'
-import FurnitureData from '../../data/FurnitureData'
 import ItemData from '../../data/ItemData'
 import NonPlayerData from '../../data/NonPlayerData'
 import Logic from '../../logic/Logic'
@@ -197,11 +197,11 @@ export default class EquipmentAndItemDialog extends cc.Component {
         this.count.string = ``
         this.labelTitle.node.color = this.labelTitle.node.color.fromHEX('#F4C021')
     }
-    showDialogFurnitureInfo(data: FurnitureData) {
+    showDialogFurnitureInfo(data: BuildingData) {
         this.node.active = true
         this.refreshFurnitureInfo(data)
     }
-    private refreshFurnitureInfo(data: FurnitureData) {
+    private refreshFurnitureInfo(data: BuildingData) {
         this.layout.color = cc.Color.WHITE
         this.infoBase.node.active = true
         this.info1.node.active = false
@@ -223,7 +223,7 @@ export default class EquipmentAndItemDialog extends cc.Component {
         nonPlayerData: NonPlayerData,
         item: ItemData,
         equipment: EquipmentData,
-        furniture: FurnitureData,
+        furniture: BuildingData,
         inventoryManager?: InventoryManager,
         bgType?: number
     ) {

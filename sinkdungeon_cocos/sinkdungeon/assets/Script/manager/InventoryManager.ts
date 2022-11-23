@@ -1,11 +1,11 @@
 import EquipmentData from '../data/EquipmentData'
-import FurnitureData from '../data/FurnitureData'
 import InventoryData from '../data/InventoryData'
 import ItemData from '../data/ItemData'
 import SuitData from '../data/SuitData'
 import InventoryItem from '../ui/InventoryItem'
 import NextStep from '../utils/NextStep'
 import Item from '../item/Item'
+import BuildingData from '../data/BuildingData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -68,7 +68,7 @@ export default class InventoryManager {
     equips: { [key: string]: EquipmentData } = {}
     suitMap: { [key: string]: SuitData } = {}
     suitEquipMap: { [key: string]: EquipmentData } = {}
-    furnitureMap: Map<String, FurnitureData> = new Map()
+    furnitureMap: Map<String, BuildingData> = new Map()
     emptyEquipData = new EquipmentData()
     private totalEquipData = new EquipmentData()
     clear(): void {}

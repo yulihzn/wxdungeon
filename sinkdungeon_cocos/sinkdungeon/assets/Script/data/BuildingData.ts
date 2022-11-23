@@ -17,7 +17,7 @@ import ItemData from './ItemData'
 export default class BuildingData {
     defaultPos: cc.Vec3 //默认下标
     position: cc.Vec3 //当前位置
-    isOpen = false //宝箱是否打开或者建筑物是否触发或者家具已经打开
+    triggerCount = 0 //触发次数 宝箱打开或者建筑物触发
     quality = 1 //宝箱品质
     equipdata: EquipmentData //携带装备数据
     itemdata: ItemData //携带物品数据

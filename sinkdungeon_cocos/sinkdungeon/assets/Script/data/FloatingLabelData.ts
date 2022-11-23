@@ -1,7 +1,5 @@
 import DataUtils from '../utils/DataUtils'
 import BaseData from './BaseData'
-import FurnitureData from './FurnitureData'
-import ItemData from './ItemData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

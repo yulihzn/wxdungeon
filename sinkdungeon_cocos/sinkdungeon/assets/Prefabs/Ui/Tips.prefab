@@ -59,14 +59,14 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        32,
+        64,
         0,
         0,
         0,
         0,
         1,
-        0.5,
-        0.5,
+        2,
+        2,
         1
       ]
     },
@@ -187,7 +187,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "8c699138-b085-42b8-b858-8bc8eb93565a"
+      "__id__": 0
     },
     "fileId": "00dmgG3+FL+q6vEg7hfX/c",
     "sync": false
@@ -206,6 +206,9 @@
     "_clips": [
       {
         "__uuid__": "136c5d3e-ca89-4dfa-88a3-5bd0249afa82"
+      },
+      {
+        "__uuid__": "e63b1729-0fb3-4e1b-a074-df28659d7d67"
       }
     ],
     "playOnLoad": true,
@@ -221,18 +224,22 @@
     "_enabled": true,
     "tag": 17,
     "offsetX": 0,
-    "offsetY": 0,
+    "offsetY": -32,
     "type": 0,
-    "radius": 15,
+    "radius": 24,
     "w": 128,
     "h": 128,
+    "zHeight": 32,
+    "bounce": 0,
     "sensor": true,
     "isStatic": true,
-    "ignoreSameTag": true,
+    "ignoreSameTag": false,
     "targetTagList": [
       21
     ],
-    "ignoreTagList": [],
+    "ignoreTagList": [
+      17
+    ],
     "_id": ""
   },
   {
@@ -251,7 +258,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "8c699138-b085-42b8-b858-8bc8eb93565a"
+      "__id__": 0
     },
     "fileId": "",
     "sync": false

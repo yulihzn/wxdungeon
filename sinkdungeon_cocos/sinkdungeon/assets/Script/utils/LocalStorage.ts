@@ -9,7 +9,7 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import AchievementData from '../data/AchievementData'
-import FurnitureData from '../data/FurnitureData'
+import BuildingData from '../data/BuildingData'
 import SettingsData from '../data/SettingsData'
 
 const { ccclass, property } = cc._decorator
@@ -76,32 +76,23 @@ export default class LocalStorage {
         LocalStorage.saveData(LocalStorage.KEY_SYSTEM_SETTINGS, data)
     }
     static getFurnitureData(id: string) {
-        let map: { [key: string]: FurnitureData } = LocalStorage.getData()[LocalStorage.KEY_FURNITURES]
+        let map: { [key: string]: BuildingData } = LocalStorage.getData()[LocalStorage.KEY_FURNITURES]
         if (!map) {
             map = {}
         }
         return map[id]
     }
-    static saveFurnitureData(data: FurnitureData) {
+    static saveFurnitureData(data: BuildingData) {
         if (!data) {
             return
         }
-        let map: { [key: string]: FurnitureData } = LocalStorage.getData()[LocalStorage.KEY_FURNITURES]
+        let map: { [key: string]: BuildingData } = LocalStorage.getData()[LocalStorage.KEY_FURNITURES]
         if (!map) {
             map = {}
         }
-        let oldData = new FurnitureData()
+        let oldData = new BuildingData()
         oldData.valueCopy(map[data.id])
-        let purchased = oldData.purchased
-        let isOpen = oldData.isOpen
         oldData.valueCopy(data)
-
-        if (purchased) {
-            oldData.purchased = purchased
-        }
-        if (isOpen) {
-            oldData.isOpen = isOpen
-        }
         map[data.id] = oldData
         LocalStorage.saveData(LocalStorage.KEY_FURNITURES, map)
     }

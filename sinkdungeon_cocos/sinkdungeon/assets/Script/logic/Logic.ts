@@ -23,7 +23,6 @@ import SuitData from '../data/SuitData'
 import InventoryData from '../data/InventoryData'
 import GroundOilGoldData from '../data/GroundOilGoldData'
 import OilGoldData from '../data/OilGoldData'
-import FurnitureData from '../data/FurnitureData'
 import LoadingManager from '../manager/LoadingManager'
 import DialogueData from '../data/DialogueData'
 import BuildingData from '../data/BuildingData'
@@ -83,7 +82,7 @@ export default class Logic extends cc.Component {
     //技能json
     static talents: { [key: string]: TalentData } = null
     //家具json
-    static furnitures: { [key: string]: FurnitureData } = null
+    static furnitures: { [key: string]: BuildingData } = null
     //平台json
     static normalBuildings: { [key: string]: BuildingData } = null
     //职业json

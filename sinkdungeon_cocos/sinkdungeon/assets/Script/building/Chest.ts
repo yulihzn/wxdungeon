@@ -35,9 +35,9 @@ export default class Chest extends Building {
 
     start() {}
 
-    setQuality(quality: number, isOpen: boolean) {
+    setQuality(quality: number, triggerCount: number) {
         this.data.quality = quality
-        this.data.isOpen = isOpen
+        this.data.triggerCount = triggerCount
         if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite')
         }
@@ -66,7 +66,7 @@ export default class Chest extends Building {
         this.openSpriteFrame = openFrame
         this.closeSpriteFrame = closeFrame
         this.sprite.getComponent(cc.Sprite).spriteFrame = this.openSpriteFrame
-        if (isOpen) {
+        if (triggerCount < 1) {
             this.sprite.getComponent(cc.Sprite).spriteFrame = this.closeSpriteFrame
         }
     }
@@ -79,10 +79,10 @@ export default class Chest extends Building {
     }
 
     openChest() {
-        if (this.data.isOpen) {
+        if (this.data.triggerCount > 0) {
             return
         }
-        this.data.isOpen = true
+        this.data.triggerCount = 1
         AudioPlayer.play(AudioPlayer.PICK_UP)
         cc.tween(this.sprite)
             .to(0.1, { position: cc.v3(5, 16) })
@@ -120,7 +120,7 @@ export default class Chest extends Building {
             .start()
         let saveChest = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos)
         if (saveChest) {
-            saveChest.isOpen = this.data.isOpen
+            saveChest.triggerCount = this.data.triggerCount
             saveChest.quality = this.data.quality
         } else {
             Logic.mapManager.setCurrentBuildingData(this.data.clone())
@@ -129,7 +129,7 @@ export default class Chest extends Building {
 
     onColliderStay(other: CCollider, self: CCollider) {
         if (other.tag == CCollider.TAG.PLAYER) {
-            if (!this.data.isOpen) {
+            if (this.data.triggerCount < 1) {
                 this.openChest()
             }
         }

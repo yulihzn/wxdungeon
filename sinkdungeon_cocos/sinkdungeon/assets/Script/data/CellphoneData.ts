@@ -1,6 +1,6 @@
 import DataUtils from '../utils/DataUtils'
 import BaseData from './BaseData'
-import FurnitureData from './FurnitureData'
+import BuildingData from './BuildingData'
 import ItemData from './ItemData'
 
 // Learn TypeScript:
@@ -15,7 +15,7 @@ import ItemData from './ItemData'
 
 export default class CellphoneData extends BaseData {
     createTime: number = 0
-    furnitureData: FurnitureData
+    furnitureData: BuildingData
     itemData: ItemData
     price: number
     type: number = 0
@@ -28,7 +28,7 @@ export default class CellphoneData extends BaseData {
         // this.type = data.type?data.type:0;
         // this.price = data.price?data.price:0;
         if (data.furnitureData) {
-            this.furnitureData = new FurnitureData()
+            this.furnitureData = new BuildingData()
             this.furnitureData.valueCopy(data.furnitureData)
             this.price = this.furnitureData.price
         }

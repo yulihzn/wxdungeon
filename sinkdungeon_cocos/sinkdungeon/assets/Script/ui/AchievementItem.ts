@@ -1,9 +1,9 @@
 import Achievement from '../logic/Achievement'
 import EquipmentData from '../data/EquipmentData'
-import FurnitureData from '../data/FurnitureData'
 import ItemData from '../data/ItemData'
 import NonPlayerData from '../data/NonPlayerData'
 import AudioPlayer from '../utils/AudioPlayer'
+import BuildingData from '../data/BuildingData'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,7 +41,7 @@ export default class AchievementItem extends cc.Component {
     nonPlayerData: NonPlayerData
     itemData: ItemData
     equipData: EquipmentData
-    furnitureData: FurnitureData
+    furnitureData: BuildingData
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -72,7 +72,7 @@ export default class AchievementItem extends cc.Component {
         nonPlayerData: NonPlayerData,
         itemData: ItemData,
         equipData: EquipmentData,
-        furnitureData: FurnitureData
+        furnitureData: BuildingData
     ) {
         this.nonPlayerData = nonPlayerData
         this.itemData = itemData

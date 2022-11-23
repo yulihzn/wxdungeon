@@ -1,6 +1,5 @@
 import { EventHelper } from './../logic/EventHelper'
 import Achievement from '../logic/Achievement'
-import FurnitureData from '../data/FurnitureData'
 import Dungeon from '../logic/Dungeon'
 import Logic from '../logic/Logic'
 import Tips from '../ui/Tips'
@@ -21,6 +20,7 @@ import RoomKitchen from './RoomKitchen'
 import IndexZ from '../utils/IndexZ'
 import EquipmentManager from '../manager/EquipmentManager'
 import InventoryManager from '../manager/InventoryManager'
+import BuildingData from '../data/BuildingData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -59,13 +59,9 @@ export default class Furniture extends Building {
     static readonly WATERDISPENER = 'furniture019'
     static readonly TRASHCAN = 'furniture020'
     sprite: cc.Sprite
-    boxcover: cc.Sprite
-    boxback: cc.Sprite
     lock: cc.Sprite
     tips: Tips
-    isOpening = false
     anim: cc.Animation
-    furnitureData: FurnitureData
     isNormal = false
     unlockStep: NextStep = new NextStep()
     bookStep: NextStep = new NextStep()
@@ -75,18 +71,12 @@ export default class Furniture extends Building {
     onLoad() {
         this.anim = this.getComponent(cc.Animation)
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite)
-        this.boxcover = this.node.getChildByName('boxcover').getComponent(cc.Sprite)
-        this.boxback = this.node.getChildByName('boxback').getComponent(cc.Sprite)
         this.lock = this.node.getChildByName('lock').getComponent(cc.Sprite)
         this.tips = this.getComponentInChildren(Tips)
         this.tips.onInteract((isLongPress: boolean, player: Player) => {
-            if (this.furnitureData) {
-                if (this.furnitureData.purchased) {
-                    if (this.furnitureData.isOpen) {
-                        this.interact(player)
-                    } else {
-                        this.openBox()
-                    }
+            if (this.node) {
+                if (this.data.purchased) {
+                    this.interact(player)
                 } else {
                     this.unlockStep.next(
                         () => {
@@ -102,27 +92,25 @@ export default class Furniture extends Building {
             }
         })
         this.tips.onEnter(() => {
-            if (this.furnitureData) {
-                if (this.furnitureData.purchased && this.furnitureData.isOpen) {
-                    this.onTipsEnter(true)
-                }
+            if (this.node && this.data.purchased) {
+                this.onTipsEnter(true)
             }
         })
         this.tips.onExit(() => {
-            if (this.furnitureData) {
-                if (this.furnitureData.purchased && this.furnitureData.isOpen) {
+            if (this.node) {
+                if (this.data.purchased) {
                     this.onTipsExit(true)
                 }
             }
         })
         EventHelper.on(EventHelper.HUD_FURNITURE_REFRESH, detail => {
-            if (this.node && detail.id == this.furnitureData.id) {
-                this.init(this.furnitureData, this.isNormal)
+            if (this.node && detail.id == this.data.id) {
+                this.init(this.data, this.isNormal)
             }
         })
     }
     interact(player: Player) {
-        switch (this.furnitureData.id) {
+        switch (this.data.id) {
             case Furniture.TV:
                 let tv = this.getComponent(RoomTv)
                 if (tv) {
@@ -155,19 +143,18 @@ export default class Furniture extends Building {
                     EquipmentManager.getNewEquipData(EquipmentManager.CLOTHES_SHIRT),
                     EquipmentManager.getNewEquipData(EquipmentManager.SHOES_SKATEBOARD)
                 ]
-                if (this.furnitureData.storageList.length < 1) {
-                    for (let i = 0; i < this.furnitureData.storage; i++) {
+                if (this.data.storageList.length < 1) {
+                    for (let i = 0; i < this.data.storage; i++) {
                         let data = new InventoryData()
-                        if (i < equips.length && !this.data.isOpen) {
+                        if (i < equips.length && this.data.triggerCount < 1) {
                             data = InventoryManager.buildEquipInventoryData(equips[i])
                         }
-                        this.furnitureData.storageList.push(data)
+                        this.data.storageList.push(data)
                     }
-                    LocalStorage.saveFurnitureData(this.furnitureData)
+                    LocalStorage.saveFurnitureData(this.data)
                 }
-                this.data.isOpen = true
-                Logic.mapManager.setCurrentBuildingData(this.data.clone())
-                EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW, { id: this.furnitureData.id })
+
+                EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW, { id: this.data.id })
                 break
             case Furniture.LITTLE_TABLE_2:
                 Utils.toast(`现在是${Utils.getYear(Logic.realTime)}${Utils.getDay(Logic.realTime)}${Utils.getHour(Logic.realTime)}`, false, true)
@@ -197,9 +184,11 @@ export default class Furniture extends Building {
                 Utils.toast('梦境开发中,无法使用。')
                 break
         }
+        this.data.triggerCount++
+        Logic.mapManager.setCurrentBuildingData(this.data.clone())
     }
     onTipsEnter(isTips: boolean) {
-        switch (this.furnitureData.id) {
+        switch (this.data.id) {
             case Furniture.FISHTANK:
                 let fishtank = this.getComponent(RoomFishtank)
                 if (fishtank) {
@@ -218,7 +207,7 @@ export default class Furniture extends Building {
         }
     }
     onTipsExit(isTips: boolean) {
-        switch (this.furnitureData.id) {
+        switch (this.data.id) {
             case Furniture.FISHTANK:
                 let fishtank = this.getComponent(RoomFishtank)
                 if (fishtank) {
@@ -242,11 +231,11 @@ export default class Furniture extends Building {
                 break
         }
     }
-    init(furnitureData: FurnitureData, isNormal: boolean) {
+    init(furnitureData: BuildingData, isNormal: boolean) {
         this.isNormal = isNormal
         let save = LocalStorage.getFurnitureData(furnitureData.id)
         if (save) {
-            furnitureData.isOpen = save.isOpen
+            furnitureData.triggerCount = save.triggerCount
             furnitureData.purchased = save.purchased
             furnitureData.storage = save.storage ? save.storage : furnitureData.storage
             furnitureData.storageList = []
@@ -261,60 +250,38 @@ export default class Furniture extends Building {
             }
         }
         if (furnitureData.price <= 0) {
-            furnitureData.isOpen = true
             furnitureData.purchased = true
         }
-        this.furnitureData = new FurnitureData()
-        this.furnitureData.valueCopy(furnitureData)
-        Logic.inventoryManager.furnitureMap.set(furnitureData.id, this.furnitureData)
-        if (this.furnitureData.purchased) {
+        this.data.valueCopy(furnitureData)
+        Logic.inventoryManager.furnitureMap.set(furnitureData.id, this.data)
+        if (this.data.purchased) {
             this.sprite.node.color = cc.color(255, 255, 255, 255)
             this.sprite.node.opacity = 255
             this.lock.node.active = false
-            if (this.furnitureData.isOpen) {
-                this.boxcover.node.active = false
-                this.boxback.node.active = false
-            } else {
-                this.boxcover.node.active = true
-                this.boxback.node.active = true
-            }
         } else {
             this.sprite.node.color = cc.color(128, 128, 128, 255)
             this.sprite.node.opacity = 128
-            this.boxcover.node.active = false
-            this.boxback.node.active = false
             this.lock.node.active = true
         }
-        this.changeRes(this.furnitureData.resName, isNormal)
+        this.changeRes(this.data.resName, isNormal)
         let pcollider = this.getComponent(CCollider)
         if (isNormal) {
-            if (this.furnitureData.collider.length > 0) {
-                let arr = this.furnitureData.collider.split(',')
+            if (this.data.collider.length > 0) {
+                let arr = this.data.collider.split(',')
                 pcollider.offset = cc.v2(parseInt(arr[0]), parseInt(arr[1]))
                 pcollider.setSize(cc.size(parseInt(arr[2]), parseInt(arr[3])), parseInt(arr[4]))
             }
-            if (this.furnitureData.spritePos.length > 0) {
-                let arr = this.furnitureData.spritePos.split(',')
+            if (this.data.spritePos.length > 0) {
+                let arr = this.data.spritePos.split(',')
                 this.sprite.node.x = parseInt(arr[0])
                 this.sprite.node.y = parseInt(arr[1])
             }
         }
-        LocalStorage.saveFurnitureData(this.furnitureData)
-        Achievement.addFurnituresAchievement(this.furnitureData.id)
+        LocalStorage.saveFurnitureData(this.data)
+        Achievement.addFurnituresAchievement(this.data.id)
         this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.node.position.x, this.node.position.y + pcollider.offset.y))
     }
-    // private isNormal() {
-    //     if (
-    //         this.furnitureData.id != Furniture.STOOL &&
-    //         this.furnitureData.id != Furniture.TV &&
-    //         this.furnitureData.id != Furniture.SOFA &&
-    //         this.furnitureData.id != Furniture.COOKING_BENCH &&
-    //         this.furnitureData.id != Furniture.FISHTANK
-    //     ) {
-    //         return true
-    //     }
-    //     return false
-    // }
+
     changeRes(resName: string, isNormal: boolean) {
         let spriteFrame = Logic.spriteFrameRes(resName)
         if (spriteFrame) {
@@ -322,16 +289,9 @@ export default class Furniture extends Building {
                 this.sprite.spriteFrame = spriteFrame
                 this.sprite.node.width = spriteFrame.getOriginalSize().width
                 this.sprite.node.height = spriteFrame.getOriginalSize().height
-                this.boxback.node.width = spriteFrame.getOriginalSize().width
-                this.boxback.node.height = spriteFrame.getOriginalSize().height
-                this.boxcover.node.width = spriteFrame.getOriginalSize().width
-                this.boxcover.node.height = spriteFrame.getOriginalSize().height
-                this.sprite.node.scale = this.furnitureData.scale
+
+                this.sprite.node.scale = this.data.scale
                 this.tips.node.scale = 2
-                this.boxback.node.scale = this.furnitureData.scale
-                this.boxcover.node.scale = this.furnitureData.scale
-                this.boxback.node.y = this.sprite.node.y
-                this.boxcover.node.y = this.sprite.node.y
                 let width = this.sprite.node.width * this.sprite.node.scale
                 let height = this.sprite.node.height * this.sprite.node.scale
                 this.tips.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, Dungeon.TILE_SIZE)
@@ -351,17 +311,9 @@ export default class Furniture extends Building {
     zoomCamera(zoomIn: boolean) {
         EventHelper.emit(zoomIn ? EventHelper.HUD_CAMERA_ZOOM_IN : EventHelper.HUD_CAMERA_ZOOM_OUT)
     }
-    openBox() {
-        if (this.furnitureData.isOpen) {
-            return
-        }
-        this.furnitureData.isOpen = true
-        LocalStorage.saveFurnitureData(this.furnitureData)
-        this.anim.play('FurnitureOpen')
-    }
 
     start() {
-        this.changeRes(this.furnitureData.resName, this.isNormal)
+        this.changeRes(this.data.resName, this.isNormal)
     }
 
     onColliderEnter(other: CCollider, self: CCollider): void {}

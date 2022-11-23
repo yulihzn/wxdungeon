@@ -5,8 +5,8 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import BuildingData from '../../data/BuildingData'
 import EquipmentData from '../../data/EquipmentData'
-import FurnitureData from '../../data/FurnitureData'
 import ItemData from '../../data/ItemData'
 import NonPlayerData from '../../data/NonPlayerData'
 import EquipmentManager from '../../manager/EquipmentManager'
@@ -39,7 +39,7 @@ export default class AchievementItemDialog extends BaseDialog {
     }
 
     start() {}
-    show(nonPlayerData?: NonPlayerData, itemData?: ItemData, equipData?: EquipmentData, furnitureData?: FurnitureData, spriteFrame?: cc.SpriteFrame, count?: number) {
+    show(nonPlayerData?: NonPlayerData, itemData?: ItemData, equipData?: EquipmentData, furnitureData?: BuildingData, spriteFrame?: cc.SpriteFrame, count?: number) {
         super.show()
         if (spriteFrame) {
             this.icon.spriteFrame = spriteFrame

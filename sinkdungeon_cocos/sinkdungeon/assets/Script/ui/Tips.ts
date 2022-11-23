@@ -20,6 +20,7 @@ export default class Tips extends BaseColliderComponent {
     private interactCallback: Function
     private enterCallback: Function
     private exitCallback: Function
+    private isTriggering = false
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -33,6 +34,18 @@ export default class Tips extends BaseColliderComponent {
     start() {}
     next(isLongPress: boolean, player: Player): void {
         if (this.node && this.node.active && this.interactCallback) {
+            if (this.isTriggering) {
+                return
+            }
+            this.isTriggering = true
+            let anim = this.getComponent(cc.Animation)
+            if (anim.hasAnimationState('TipsTrigger')) {
+                anim.play('TipsTrigger')
+            }
+            //内置0.4s交互时间
+            this.scheduleOnce(() => {
+                this.isTriggering = false
+            }, 0.4)
             this.interactCallback(isLongPress, player)
         }
     }

@@ -8,8 +8,8 @@
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import BuildingData from '../../data/BuildingData'
 import EquipmentData from '../../data/EquipmentData'
-import FurnitureData from '../../data/FurnitureData'
 import ItemData from '../../data/ItemData'
 import NonPlayerData from '../../data/NonPlayerData'
 import Logic from '../../logic/Logic'
@@ -198,7 +198,7 @@ export default class QuestTargetData {
                 str = itemData.nameCn
                 break
             case QuestTargetData.TARGET_FURNITURE:
-                let fd = new FurnitureData()
+                let fd = new BuildingData()
                 fd.valueCopy(Logic.furnitures[this.resId])
                 str = fd.nameCn
                 break

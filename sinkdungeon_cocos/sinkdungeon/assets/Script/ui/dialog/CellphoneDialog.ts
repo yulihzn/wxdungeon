@@ -7,7 +7,6 @@
 
 import Achievement from '../../logic/Achievement'
 import CellphoneData from '../../data/CellphoneData'
-import FurnitureData from '../../data/FurnitureData'
 import ItemData from '../../data/ItemData'
 import { EventHelper } from '../../logic/EventHelper'
 import Logic from '../../logic/Logic'
@@ -17,6 +16,7 @@ import Utils from '../../utils/Utils'
 import CellphoneItem from '../CellphoneItem'
 import BaseDialog from './BaseDialog'
 import EquipmentAndItemDialog from './EquipmentAndItemDialog'
+import BuildingData from '../../data/BuildingData'
 
 const { ccclass, property } = cc._decorator
 
@@ -178,14 +178,14 @@ export default class CellphoneDialog extends BaseDialog {
             let purchasedlist: CellphoneData[] = []
             let index = 0
             for (let key in Logic.furnitures) {
-                let fd = new FurnitureData()
+                let fd = new BuildingData()
                 fd.valueCopy(Logic.furnitures[key])
                 if (fd.price <= 0) {
                     continue
                 }
                 let save = LocalStorage.getFurnitureData(fd.id)
                 if (save) {
-                    fd.isOpen = save.isOpen
+                    fd.triggerCount = save.triggerCount
                     fd.purchased = save.purchased
                 }
                 let data = new CellphoneData()
