@@ -61,14 +61,11 @@ export default class Chest extends Building {
                 name2 = 'chestopen002'
                 break
         }
-        let openFrame = Logic.spriteFrameRes(name1)
-        let closeFrame = Logic.spriteFrameRes(name2)
+        let openFrame = Logic.spriteFrameRes(name2)
+        let closeFrame = Logic.spriteFrameRes(name1)
         this.openSpriteFrame = openFrame
         this.closeSpriteFrame = closeFrame
-        this.sprite.getComponent(cc.Sprite).spriteFrame = this.openSpriteFrame
-        if (triggerCount < 1) {
-            this.sprite.getComponent(cc.Sprite).spriteFrame = this.closeSpriteFrame
-        }
+        this.sprite.getComponent(cc.Sprite).spriteFrame = triggerCount < 1 ? closeFrame : openFrame
     }
 
     seDefaultPos(defaultPos: cc.Vec3) {
