@@ -30,7 +30,6 @@ export default class Loading extends cc.Component {
     loadingIconPrefab: cc.Prefab = null
     @property(cc.Prefab)
     cursorAreaPrefab: cc.Prefab = null
-    private timeDelay = 0
     private isTransportAnimFinished = true
     private isElevatorAnimFinished = true
     private loadingManager: LoadingManager = new LoadingManager()
@@ -80,6 +79,7 @@ export default class Loading extends cc.Component {
             this.cutScene.isSkip = true
             this.cutScene.unregisterClick()
         }
+        this.checkLoaded()
     }
 
     showLoadingLabel() {
@@ -126,13 +126,11 @@ export default class Loading extends cc.Component {
             }, 1)
         }
     }
-    update(dt) {
-        this.timeDelay += dt
+    checkLoaded() {
         this.showCut()
         this.showTransport()
         // this.showElevator()
         if (
-            this.timeDelay > 0.02 &&
             this.loadingManager.isEquipmentLoaded &&
             this.loadingManager.isAllSpriteFramesLoaded() &&
             this.loadingManager.isMonsterLoaded &&
@@ -153,12 +151,16 @@ export default class Loading extends cc.Component {
             this.isTransportAnimFinished &&
             this.isElevatorAnimFinished
         ) {
-            this.timeDelay = 0
             this.cutScene.unregisterClick()
             this.isTransportAnimFinished = false
             this.isElevatorAnimFinished = false
             this.loadingManager.reset()
             cc.director.loadScene('game')
+            return true
         }
+        return false
+    }
+    update(dt) {
+        this.checkLoaded()
     }
 }

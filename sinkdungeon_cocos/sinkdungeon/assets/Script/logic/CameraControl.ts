@@ -39,12 +39,12 @@ export default class CameraControl extends cc.Component {
         })
         EventHelper.on(EventHelper.HUD_CAMERA_ZOOM_IN, detail => {
             if (this.dungeon) {
-                this.dungeon.CameraZoom = Dungeon.DEFAULT_ZOOM_MAX
+                this.dungeon.cameraZoom = Dungeon.DEFAULT_ZOOM_MAX
             }
         })
         EventHelper.on(EventHelper.HUD_CAMERA_ZOOM_OUT, detail => {
             if (this.dungeon) {
-                this.dungeon.CameraZoom = this.dungeon.needZoomIn ? Dungeon.DEFAULT_ZOOM_MIN : Dungeon.DEFAULT_ZOOM
+                this.dungeon.cameraZoom = this.dungeon.needZoomIn ? Dungeon.DEFAULT_ZOOM_MIN : Dungeon.DEFAULT_ZOOM
             }
         })
     }
@@ -60,7 +60,7 @@ export default class CameraControl extends cc.Component {
         if (this.dungeon.cameraTargetActor) {
             this.followTarget(false)
         }
-        this.camera.zoomRatio = this.lerpNumber(this.camera.zoomRatio, this.dungeon.CameraZoom, 0.05)
+        this.camera.zoomRatio = this.lerpNumber(this.camera.zoomRatio, this.dungeon.cameraZoom, 0.05)
         // this.node.position = this.node.parent.convertToNodeSpaceAR(targetPos);
         // let ratio = targetPos.y / cc.winSize.height;
         // this.camera.zoomRatio = 1 + (0.5 - ratio) * 0.5;
@@ -93,6 +93,7 @@ export default class CameraControl extends cc.Component {
         }
         if (isDirect) {
             this.node.position = pos
+            cc.log(`mainCamera pos:${this.node.position}`)
         } else {
             this.node.position = this.lerp(this.node.position, pos, 0.1)
         }

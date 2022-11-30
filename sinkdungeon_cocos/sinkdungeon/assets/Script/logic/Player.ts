@@ -260,7 +260,6 @@ export default class Player extends PlayActor {
         this.updatePlayerPos()
         this.entity.NodeRender.node = this.node
         this.entity.NodeRender.root = this.root
-        EventHelper.emit(EventHelper.CAMERA_LOOK, { pos: this.getCenterPosition(), isDirect: true })
         this.shooterEx.player = this
         this.shooterEx.isEx = true
         this.smokePool = new cc.NodePool()

@@ -77,7 +77,7 @@ export default class Dungeon extends cc.Component {
     weatherManager: WeatherManager = null //天气管理器
     effectItemManager: EffectItemManager = null //特效物体管理器
     anim: cc.Animation
-    CameraZoom = Dungeon.DEFAULT_ZOOM
+    cameraZoom = Dungeon.DEFAULT_ZOOM
     needZoomIn = false
     isInitFinish = false
     isClear = false
@@ -192,7 +192,7 @@ export default class Dungeon extends cc.Component {
         this.weatherManager.clear()
         //设置雾气层级
         this.fog.zIndex = IndexZ.FOG
-        this.fog.scale = 0.6
+        this.fog.scale = 2
         this.fog.opacity = 255
         this.lightManager.shadow.node.zIndex = IndexZ.SHADOW
         this.lightManager.shadow1.node.zIndex = IndexZ.SHADOW
@@ -205,6 +205,7 @@ export default class Dungeon extends cc.Component {
         let exits = leveldata.getExitList()
         let equipitems = leveldata.getEquipItemList()
         Logic.changeDungeonSize()
+        this.node.position = cc.v3(Dungeon.WIDTH_SIZE * Dungeon.TILE_SIZE * this.currentPos.x, Dungeon.HEIGHT_SIZE * Dungeon.TILE_SIZE * this.currentPos.y)
         this.dungeonStyleManager.addDecorations()
         for (let arr of this.tilesmap) {
             Utils.clearComponentArray(arr)
@@ -298,6 +299,7 @@ export default class Dungeon extends cc.Component {
         this.player.node.parent = this.node
         this.cameraTargetActor = this.player
         this.fog.setPosition(this.player.node.position.clone())
+        EventHelper.emit(EventHelper.CAMERA_LOOK, { pos: this.player.getCenterPosition(), isDirect: true })
     }
     public fogScaleNormal() {
         cc.tween(this.fog).to(3, { scale: 2.5 }).start()
@@ -574,7 +576,7 @@ export default class Dungeon extends cc.Component {
     }
 
     public shakeForKraken() {
-        this.CameraZoom = Dungeon.DEFAULT_ZOOM_MIN
+        this.cameraZoom = Dungeon.DEFAULT_ZOOM_MIN
         this.needZoomIn = true
         this.anim.playAdditive('DungeonShakeOnce')
         this.scheduleOnce(() => {
@@ -650,6 +652,7 @@ export default class Dungeon extends cc.Component {
                 this.checkRoomClear()
             }
         }, 0.1)
+        cc.log(`dungeon pos:${this.node.position}`)
     }
     breakTile(pos: cc.Vec3) {
         let tile = this.tilesmap[pos.x][pos.y]
