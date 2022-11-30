@@ -40,7 +40,28 @@ export default class DataUtils {
             }
         }
     }
-
+    static copyMapValue<T, K>(map1: Map<T, K>, map2: Map<T, K>, callback: (arg0: K) => K) {
+        if (!map1) {
+            map1 = new Map<T, K>()
+        }
+        if (map1 && map2) {
+            map1.clear()
+            map2.forEach((element, key) => {
+                map1.set(key, callback(element))
+            })
+        }
+    }
+    static copyListValue<T>(list1: T[], list2: T[], callback: (arg0: T) => T) {
+        if (!list1) {
+            list1 = []
+        }
+        if (list1 && list2) {
+            list1 = []
+            for (let c of list2) {
+                list1.push(callback(c))
+            }
+        }
+    }
     /**几率相加 范围0-100 */
     public static addRateFixed(origin: number, target: number): number {
         return DataUtils.fixRateRange(DataUtils.addRate(origin, target), 0, 100)
