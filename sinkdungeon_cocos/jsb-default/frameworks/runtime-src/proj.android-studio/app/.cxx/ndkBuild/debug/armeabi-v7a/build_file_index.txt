@@ -1,2 +1,0 @@
-E:\cocosproject\wxdungeon\sinkdungeon_cocos\jsb-default\frameworks\runtime-src\proj.android-studio\app\jni\Android.mk
-E:\cocosproject\wxdungeon\sinkdungeon_cocos\jsb-default\frameworks\runtime-src\proj.android-studio\app\jni\Application.mk
