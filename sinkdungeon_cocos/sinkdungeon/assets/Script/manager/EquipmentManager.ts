@@ -13,6 +13,7 @@ import Player from '../logic/Player'
 import InventoryManager from './InventoryManager'
 import SuitData from '../data/SuitData'
 import DataUtils from '../utils/DataUtils'
+import AffixManager from './AffixManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -161,13 +162,15 @@ export default class EquipmentManager extends BaseManager {
     static readonly PURPLE_AFFIX_RATE = [0.3, 0.6, 0.8, 1] //   30% 30% 20% 20%
     static readonly YELLOW_AFFIX_RATE = [0.2, 0.4, 0.7, 1] //   20% 20% 30% 30%
     static readonly ORANGE_AFFIX_RATE = [0.1, 0.2, 0.5, 1] //   10% 10% 30% 50%
-    static readonly RATE_OF_QUALITY = [0.5, 0.85, 0.95, 0.99, 0.999] //   40% 30% 20% 10% 5% 1%
+    static readonly QUALITY_RATE = [0.4, 0.7, 0.85, 0.95, 0.99] //   40% 30% 15% 10% 4% 1%
+    static readonly QUALITY_COLORS = ['#ffffff', '#00ff00', '#4169E1', '#8B008B', '#FFFF00', '#ffa500']
     static readonly QUALITY_WHITE = 0
     static readonly QUALITY_GREEN = 1
     static readonly QUALITY_BLUE = 2
     static readonly QUALITY_PURPLE = 3
-    static readonly QUALITY_ORANGE = 4
-    static readonly QUALITY_RED = 5
+    static readonly QUALITY_GOLD = 4
+    static readonly QUALITY_ORANGE = 5
+    static readonly QUALITY_RED = 6
 
     @property(cc.Prefab)
     equipment: cc.Prefab = null
@@ -201,251 +204,258 @@ export default class EquipmentManager extends BaseManager {
         // let arr = ['rough', 'normal', 'good', 'excellent', 'epic', 'legend']
         let arr = ['', '普通的', '精良的', '优秀的', '史诗的', '传说的']
         let colors = ['#dcdcdc', '#ffffff', '#00ff00', '#0000ff', '#800080', '#ffa500']
-        let level = 0
         let rand4save = Logic.mapManager.getCurrentRoomRandom4Save()
-        //暴击0-20减去装备自带
-        let criticalStrikeRate = cc.v3(0, 0)
-        if (
-            EquipmentManager.isTheEquipType(data.equipmetType, [
-                InventoryManager.WEAPON,
-                InventoryManager.HELMET,
-                InventoryManager.GLOVES,
-                InventoryManager.CLOAK,
-                InventoryManager.REMOTE
-            ]) &&
-            data.Common.criticalStrikeRate > 0
-        ) {
-            let csk = 20 - data.Common.criticalStrikeRate
-            if (csk < 5) {
-                csk = 5
-            }
-            criticalStrikeRate = EquipmentManager.getRandomQuality(0, csk, chestQuality, rand4save)
-            level = criticalStrikeRate.y > level ? criticalStrikeRate.y : level
-            desc.prefix += criticalStrikeRate.y > 2 ? '暴击' : ''
-            desc.color = EquipmentManager.getMixColor('#000000', criticalStrikeRate.y > 2 ? EquipmentManager.COLOR_CRITICALSTRIKE : '#000000')
-        }
+        let quality = EquipmentManager.getRandomQuality(chestQuality, rand4save)
+        let affixs = []
+        let indexs = new Array(Logic.affixs.length).keys()
+        cc.log(indexs)
 
-        //基础攻击0-5 +chapter
-        let damageMin = cc.v3(0, 0)
-        if (
-            EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES, InventoryManager.CLOTHES, InventoryManager.REMOTE]) &&
-            data.Common.damageMin > 0
-        ) {
-            damageMin = EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save)
-            level = damageMin.y > level ? damageMin.y : level
+        for (let i = 0; i < quality; i++) {
+            // affixs.push(AffixManager.getRandomAffix(AffixManager.AFFIXS_EQUIP_GROUP.get(data.equipmetType), data.requireLevel, rand4save))
         }
-        //远程攻击0-5 +chapter
-        let remoteDamage = cc.v3(0, 0)
-        if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.GLOVES, InventoryManager.REMOTE]) && data.Common.remoteDamage > 0) {
-            remoteDamage = rand4save.rand() < 0.2 ? EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save) : cc.v3(0, 0)
-            level = remoteDamage.y > level ? remoteDamage.y : level
-        }
-        //最大攻击0-5 +chapter
-        let damageMax = cc.v3(0, 0)
-        if (
-            EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES, InventoryManager.CLOTHES, InventoryManager.REMOTE]) &&
-            data.Common.damageMax > 0
-        ) {
-            damageMax = EquipmentManager.getRandomQuality(damageMin.x, damageMin.x + EquipmentManager.getRandomRange(), chestQuality, rand4save)
-            level = damageMax.y > level ? damageMax.y : level
-            desc.prefix += damageMax.y > 2 ? '强力' : ''
-            desc.color = EquipmentManager.getMixColor(desc.color, damageMax.y > 2 ? EquipmentManager.COLOR_POWERFUL : '#000000')
-        }
-        //物理防御0-5 +chapter
-        let defence = cc.v3(0, 0)
-        if (
-            EquipmentManager.isTheEquipType(data.equipmetType, [
-                InventoryManager.HELMET,
-                InventoryManager.GLOVES,
-                InventoryManager.CLOAK,
-                InventoryManager.TROUSERS,
-                InventoryManager.SHOES,
-                InventoryManager.SHIELD,
-                InventoryManager.CLOTHES
-            ]) &&
-            data.Common.defence > 0
-        ) {
-            defence = EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save)
-            level = defence.y > level ? defence.y : level
-            desc.prefix += defence.y > 2 ? '坚固' : ''
-            desc.color = EquipmentManager.getMixColor(desc.color, defence.y > 5 ? EquipmentManager.COLOR_STABLE : '#000000')
-        }
-        //吸血0%-50%
-        let lifeDrain = cc.v3(0, 0)
-        if (
-            EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.HELMET, InventoryManager.GLOVES, InventoryManager.REMOTE]) &&
-            data.Common.lifeDrain > 0
-        ) {
-            let ld = 50 - data.Common.lifeDrain
-            if (ld < 5) {
-                ld = 5
-            }
-            lifeDrain = EquipmentManager.getRandomQuality(0, ld, chestQuality, rand4save)
-            level = lifeDrain.y > level ? lifeDrain.y : level
-            desc.prefix += lifeDrain.y > 2 ? '邪恶' : ''
-            desc.color = EquipmentManager.getMixColor(desc.color, lifeDrain.y > 2 ? EquipmentManager.COLOR_LIFEDRAIN : '#000000')
-        }
-        //背刺伤害10% 0-5 +chapter
-        let damageBack = cc.v3(0, 0)
-        if (
-            EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES, InventoryManager.CLOTHES, InventoryManager.REMOTE]) &&
-            data.Common.damageBack > 0
-        ) {
-            damageBack = EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save)
-            level = damageBack.y > level ? damageBack.y : level
-            desc.prefix += damageBack.y > 2 ? '阴冷' : ''
-            desc.color = EquipmentManager.getMixColor(desc.color, damageBack.y > 2 ? EquipmentManager.COLOR_BACK : '#000000')
-        }
-        //移动速度0-5减去装备自带移动速度
-        let moveSpeed = cc.v3(0, 0)
-        if (
-            EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.CLOAK, InventoryManager.TROUSERS, InventoryManager.SHOES, InventoryManager.CLOTHES]) &&
-            data.Common.moveSpeed > 0
-        ) {
-            let ms = 5 - data.Common.moveSpeed
-            if (ms < 1) {
-                ms = 1
-            }
-            moveSpeed = EquipmentManager.getRandomQuality(0, ms, chestQuality, rand4save)
-            level = moveSpeed.y > level ? moveSpeed.y : level
-            desc.prefix += moveSpeed.y > 2 ? '灵动' : ''
-            desc.color = EquipmentManager.getMixColor(desc.color, moveSpeed.y > 2 ? EquipmentManager.COLOR_MOVESPEED : '#000000')
-        }
-        //攻击速度0-30减去装备自带攻速
-        let attackSpeed = cc.v3(0, 0)
-        if (
-            EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES, InventoryManager.CLOTHES, InventoryManager.REMOTE]) &&
-            data.Common.attackSpeed > 0
-        ) {
-            let as = 30 - data.Common.attackSpeed
-            if (as < 5) {
-                as = 5
-            }
-            attackSpeed = EquipmentManager.getRandomQuality(0, as, chestQuality, rand4save)
-            level = attackSpeed.y > level ? attackSpeed.y : level
-            desc.prefix += attackSpeed.y > 2 ? '迅捷' : ''
-            desc.color = EquipmentManager.getMixColor(desc.color, attackSpeed.y > 2 ? EquipmentManager.COLOR_ATTACKSPPED : '#000000')
-        }
-        //闪避0-30减去装备自带闪避
-        let dodge = cc.v3(0, 0)
-        if (
-            EquipmentManager.isTheEquipType(data.equipmetType, [
-                InventoryManager.HELMET,
-                InventoryManager.CLOAK,
-                InventoryManager.TROUSERS,
-                InventoryManager.SHOES,
-                InventoryManager.CLOTHES
-            ]) &&
-            data.Common.dodge > 0
-        ) {
-            let d1 = 30 - data.Common.dodge
-            if (d1 < 10) {
-                d1 = 10
-            }
-            dodge = EquipmentManager.getRandomQuality(0, d1, chestQuality, rand4save)
-            level = dodge.y > level ? dodge.y : level
-            desc.prefix += dodge.y > 2 ? '飘逸' : ''
-            desc.color = EquipmentManager.getMixColor(desc.color, dodge.y > 2 ? EquipmentManager.COLOR_DODGE : '#000000')
-        }
-        //生命值0-5 +chapter
-        let health = cc.v3(0, 0)
-        if (
-            EquipmentManager.isTheEquipType(data.equipmetType, [
-                InventoryManager.HELMET,
-                InventoryManager.GLOVES,
-                InventoryManager.CLOAK,
-                InventoryManager.TROUSERS,
-                InventoryManager.SHIELD,
-                InventoryManager.SHOES,
-                InventoryManager.CLOTHES
-            ]) &&
-            data.Common.maxHealth > 0
-        ) {
-            health = EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save)
-            level = health.y > level ? health.y : level
-            desc.prefix += health.y > 2 ? '健康' : ''
-            desc.color = EquipmentManager.getMixColor(desc.color, health.y > 2 ? EquipmentManager.COLOR_HEALTHY : '#000000')
-        }
-        //梦境0-5 +chapter
-        let dream = cc.v3(0, 0)
-        if (data.Common.maxDream > 0) {
-            dream = EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save)
-            level = dream.y > level ? dream.y : level
-            desc.prefix += dream.y > 2 ? '梦幻' : ''
-            desc.color = EquipmentManager.getMixColor(desc.color, dream.y > 2 ? EquipmentManager.COLOR_DREAM : '#000000')
-        }
-        let damageRate = 0.1
-        let damage = EquipmentManager.getRandomRange()
-        if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.GLOVES, InventoryManager.REMOTE, InventoryManager.WEAPON])) {
-            //流血伤害0-5 +chapter
-            let realDamage = rand4save.rand() < damageRate ? EquipmentManager.getRandomQuality(0, damage, chestQuality, rand4save) : cc.v3(0, 0)
-            level = realDamage.y > level ? realDamage.y : level
-            desc.prefix += realDamage.y > damage / 2 ? '锋利' : ''
-            //魔法伤害0-5 +chapter
-            let magicDamage = rand4save.rand() < damageRate ? EquipmentManager.getRandomQuality(0, damage, chestQuality, rand4save) : cc.v3(0, 0)
-            level = magicDamage.y > level ? magicDamage.y : level
-            desc.prefix += magicDamage.y > damage / 2 ? '神秘' : ''
+        // //暴击0-20减去装备自带
+        // let criticalStrikeRate = cc.v3(0, 0)
+        // if (
+        //     EquipmentManager.isTheEquipType(data.equipmetType, [
+        //         InventoryManager.WEAPON,
+        //         InventoryManager.HELMET,
+        //         InventoryManager.GLOVES,
+        //         InventoryManager.CLOAK,
+        //         InventoryManager.REMOTE
+        //     ]) &&
+        //     data.Common.criticalStrikeRate > 0
+        // ) {
+        //     let csk = 20 - data.Common.criticalStrikeRate
+        //     if (csk < 5) {
+        //         csk = 5
+        //     }
+        //     criticalStrikeRate = EquipmentManager.getRandomQuality(0, csk, chestQuality, rand4save)
+        //     level = criticalStrikeRate.y > level ? criticalStrikeRate.y : level
+        //     desc.prefix += criticalStrikeRate.y > 2 ? '暴击' : ''
+        //     desc.color = EquipmentManager.getMixColor('#000000', criticalStrikeRate.y > 2 ? EquipmentManager.COLOR_CRITICALSTRIKE : '#000000')
+        // }
 
-            desc.common.realDamage = realDamage.x
-            desc.common.magicDamage = magicDamage.x
-        }
-        let defenceMax = 60
-        let defenceMin = 30
-        let defenceRate = 0.1
-        //魔法抗性30-60 0.1几率
-        let magicDefence = rand4save.rand() < defenceRate ? EquipmentManager.getRandomQuality(defenceMin, defenceMax, chestQuality, rand4save) : cc.v3(0, 0)
-        level = magicDefence.y > level ? magicDefence.y : level
-        let rateMax = 60
-        let rateMin = 10
-        let rateRate = 0.05
-        //流血几率0-60
-        let realRate = rand4save.rand() < rateRate ? EquipmentManager.getRandomQuality(rateMin, rateMax, chestQuality, rand4save) : cc.v3(0, 0)
-        level = realRate.y > level ? realRate.y : level
-        //冰几率0-60
-        let iceRate = rand4save.rand() < rateRate ? EquipmentManager.getRandomQuality(rateMin, rateMax, chestQuality, rand4save) : cc.v3(0, 0)
-        level = iceRate.y > level ? iceRate.y : level
-        desc.prefix += iceRate.y > rateMax / 2 ? '寒冷' : ''
-        //火几率0-60
-        let fireRate = rand4save.rand() < rateRate ? EquipmentManager.getRandomQuality(rateMin, rateMax, chestQuality, rand4save) : cc.v3(0, 0)
-        level = fireRate.y > level ? fireRate.y : level
-        desc.prefix += fireRate.y > rateMax / 2 ? '炎热' : ''
-        //雷几率0-60
-        let lighteningRate = rand4save.rand() < rateRate ? EquipmentManager.getRandomQuality(rateMin, rateMax, chestQuality, rand4save) : cc.v3(0, 0)
-        level = lighteningRate.y > level ? lighteningRate.y : level
-        desc.prefix += lighteningRate.y > rateMax / 2 ? '闪电' : ''
-        //毒几率0-60
-        let toxicRate = rand4save.rand() < rateRate ? EquipmentManager.getRandomQuality(rateMin, rateMax, chestQuality, rand4save) : cc.v3(0, 0)
-        level = toxicRate.y > level ? toxicRate.y : level
-        desc.prefix += toxicRate.y > rateMax / 2 ? '剧毒' : ''
-        //诅咒几率0-60
-        let curseRate = rand4save.rand() < rateRate ? EquipmentManager.getRandomQuality(rateMin, rateMax, chestQuality, rand4save) : cc.v3(0, 0)
-        level = curseRate.y > level ? curseRate.y : level
-        desc.prefix += curseRate.y > rateMax / 2 ? '诅咒' : ''
-        desc.prefix = arr[level] + desc.prefix
-        desc.titlecolor = colors[level]
-        desc.level = level
-        desc.color = desc.color == '#000000' ? '#ffffff' : desc.color
+        // //基础攻击0-5 +chapter
+        // let damageMin = cc.v3(0, 0)
+        // if (
+        //     EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES, InventoryManager.CLOTHES, InventoryManager.REMOTE]) &&
+        //     data.Common.damageMin > 0
+        // ) {
+        //     damageMin = EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save)
+        //     level = damageMin.y > level ? damageMin.y : level
+        // }
+        // //远程攻击0-5 +chapter
+        // let remoteDamage = cc.v3(0, 0)
+        // if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.GLOVES, InventoryManager.REMOTE]) && data.Common.remoteDamage > 0) {
+        //     remoteDamage = rand4save.rand() < 0.2 ? EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save) : cc.v3(0, 0)
+        //     level = remoteDamage.y > level ? remoteDamage.y : level
+        // }
+        // //最大攻击0-5 +chapter
+        // let damageMax = cc.v3(0, 0)
+        // if (
+        //     EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES, InventoryManager.CLOTHES, InventoryManager.REMOTE]) &&
+        //     data.Common.damageMax > 0
+        // ) {
+        //     damageMax = EquipmentManager.getRandomQuality(damageMin.x, damageMin.x + EquipmentManager.getRandomRange(), chestQuality, rand4save)
+        //     level = damageMax.y > level ? damageMax.y : level
+        //     desc.prefix += damageMax.y > 2 ? '强力' : ''
+        //     desc.color = EquipmentManager.getMixColor(desc.color, damageMax.y > 2 ? EquipmentManager.COLOR_POWERFUL : '#000000')
+        // }
+        // //物理防御0-5 +chapter
+        // let defence = cc.v3(0, 0)
+        // if (
+        //     EquipmentManager.isTheEquipType(data.equipmetType, [
+        //         InventoryManager.HELMET,
+        //         InventoryManager.GLOVES,
+        //         InventoryManager.CLOAK,
+        //         InventoryManager.TROUSERS,
+        //         InventoryManager.SHOES,
+        //         InventoryManager.SHIELD,
+        //         InventoryManager.CLOTHES
+        //     ]) &&
+        //     data.Common.defence > 0
+        // ) {
+        //     defence = EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save)
+        //     level = defence.y > level ? defence.y : level
+        //     desc.prefix += defence.y > 2 ? '坚固' : ''
+        //     desc.color = EquipmentManager.getMixColor(desc.color, defence.y > 5 ? EquipmentManager.COLOR_STABLE : '#000000')
+        // }
+        // //吸血0%-50%
+        // let lifeDrain = cc.v3(0, 0)
+        // if (
+        //     EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.HELMET, InventoryManager.GLOVES, InventoryManager.REMOTE]) &&
+        //     data.Common.lifeDrain > 0
+        // ) {
+        //     let ld = 50 - data.Common.lifeDrain
+        //     if (ld < 5) {
+        //         ld = 5
+        //     }
+        //     lifeDrain = EquipmentManager.getRandomQuality(0, ld, chestQuality, rand4save)
+        //     level = lifeDrain.y > level ? lifeDrain.y : level
+        //     desc.prefix += lifeDrain.y > 2 ? '邪恶' : ''
+        //     desc.color = EquipmentManager.getMixColor(desc.color, lifeDrain.y > 2 ? EquipmentManager.COLOR_LIFEDRAIN : '#000000')
+        // }
+        // //背刺伤害10% 0-5 +chapter
+        // let damageBack = cc.v3(0, 0)
+        // if (
+        //     EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES, InventoryManager.CLOTHES, InventoryManager.REMOTE]) &&
+        //     data.Common.damageBack > 0
+        // ) {
+        //     damageBack = EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save)
+        //     level = damageBack.y > level ? damageBack.y : level
+        //     desc.prefix += damageBack.y > 2 ? '阴冷' : ''
+        //     desc.color = EquipmentManager.getMixColor(desc.color, damageBack.y > 2 ? EquipmentManager.COLOR_BACK : '#000000')
+        // }
+        // //移动速度0-5减去装备自带移动速度
+        // let moveSpeed = cc.v3(0, 0)
+        // if (
+        //     EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.CLOAK, InventoryManager.TROUSERS, InventoryManager.SHOES, InventoryManager.CLOTHES]) &&
+        //     data.Common.moveSpeed > 0
+        // ) {
+        //     let ms = 5 - data.Common.moveSpeed
+        //     if (ms < 1) {
+        //         ms = 1
+        //     }
+        //     moveSpeed = EquipmentManager.getRandomQuality(0, ms, chestQuality, rand4save)
+        //     level = moveSpeed.y > level ? moveSpeed.y : level
+        //     desc.prefix += moveSpeed.y > 2 ? '灵动' : ''
+        //     desc.color = EquipmentManager.getMixColor(desc.color, moveSpeed.y > 2 ? EquipmentManager.COLOR_MOVESPEED : '#000000')
+        // }
+        // //攻击速度0-30减去装备自带攻速
+        // let attackSpeed = cc.v3(0, 0)
+        // if (
+        //     EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES, InventoryManager.CLOTHES, InventoryManager.REMOTE]) &&
+        //     data.Common.attackSpeed > 0
+        // ) {
+        //     let as = 30 - data.Common.attackSpeed
+        //     if (as < 5) {
+        //         as = 5
+        //     }
+        //     attackSpeed = EquipmentManager.getRandomQuality(0, as, chestQuality, rand4save)
+        //     level = attackSpeed.y > level ? attackSpeed.y : level
+        //     desc.prefix += attackSpeed.y > 2 ? '迅捷' : ''
+        //     desc.color = EquipmentManager.getMixColor(desc.color, attackSpeed.y > 2 ? EquipmentManager.COLOR_ATTACKSPPED : '#000000')
+        // }
+        // //闪避0-30减去装备自带闪避
+        // let dodge = cc.v3(0, 0)
+        // if (
+        //     EquipmentManager.isTheEquipType(data.equipmetType, [
+        //         InventoryManager.HELMET,
+        //         InventoryManager.CLOAK,
+        //         InventoryManager.TROUSERS,
+        //         InventoryManager.SHOES,
+        //         InventoryManager.CLOTHES
+        //     ]) &&
+        //     data.Common.dodge > 0
+        // ) {
+        //     let d1 = 30 - data.Common.dodge
+        //     if (d1 < 10) {
+        //         d1 = 10
+        //     }
+        //     dodge = EquipmentManager.getRandomQuality(0, d1, chestQuality, rand4save)
+        //     level = dodge.y > level ? dodge.y : level
+        //     desc.prefix += dodge.y > 2 ? '飘逸' : ''
+        //     desc.color = EquipmentManager.getMixColor(desc.color, dodge.y > 2 ? EquipmentManager.COLOR_DODGE : '#000000')
+        // }
+        // //生命值0-5 +chapter
+        // let health = cc.v3(0, 0)
+        // if (
+        //     EquipmentManager.isTheEquipType(data.equipmetType, [
+        //         InventoryManager.HELMET,
+        //         InventoryManager.GLOVES,
+        //         InventoryManager.CLOAK,
+        //         InventoryManager.TROUSERS,
+        //         InventoryManager.SHIELD,
+        //         InventoryManager.SHOES,
+        //         InventoryManager.CLOTHES
+        //     ]) &&
+        //     data.Common.maxHealth > 0
+        // ) {
+        //     health = EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save)
+        //     level = health.y > level ? health.y : level
+        //     desc.prefix += health.y > 2 ? '健康' : ''
+        //     desc.color = EquipmentManager.getMixColor(desc.color, health.y > 2 ? EquipmentManager.COLOR_HEALTHY : '#000000')
+        // }
+        // //梦境0-5 +chapter
+        // let dream = cc.v3(0, 0)
+        // if (data.Common.maxDream > 0) {
+        //     dream = EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save)
+        //     level = dream.y > level ? dream.y : level
+        //     desc.prefix += dream.y > 2 ? '梦幻' : ''
+        //     desc.color = EquipmentManager.getMixColor(desc.color, dream.y > 2 ? EquipmentManager.COLOR_DREAM : '#000000')
+        // }
+        // let damageRate = 0.1
+        // let damage = EquipmentManager.getRandomRange()
+        // if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.GLOVES, InventoryManager.REMOTE, InventoryManager.WEAPON])) {
+        //     //流血伤害0-5 +chapter
+        //     let realDamage = rand4save.rand() < damageRate ? EquipmentManager.getRandomQuality(0, damage, chestQuality, rand4save) : cc.v3(0, 0)
+        //     level = realDamage.y > level ? realDamage.y : level
+        //     desc.prefix += realDamage.y > damage / 2 ? '锋利' : ''
+        //     //魔法伤害0-5 +chapter
+        //     let magicDamage = rand4save.rand() < damageRate ? EquipmentManager.getRandomQuality(0, damage, chestQuality, rand4save) : cc.v3(0, 0)
+        //     level = magicDamage.y > level ? magicDamage.y : level
+        //     desc.prefix += magicDamage.y > damage / 2 ? '神秘' : ''
 
-        desc.common.criticalStrikeRate = criticalStrikeRate.x
-        desc.common.damageMin = damageMin.x
-        desc.common.damageMax = damageMax.x
-        desc.common.defence = defence.x
-        desc.common.lifeDrain = lifeDrain.x
-        desc.common.damageBack = damageBack.x
-        desc.common.moveSpeed = moveSpeed.x
-        desc.common.attackSpeed = attackSpeed.x
-        desc.common.dodge = dodge.x
-        desc.common.maxHealth = health.x
+        //     desc.common.realDamage = realDamage.x
+        //     desc.common.magicDamage = magicDamage.x
+        // }
+        // let defenceMax = 60
+        // let defenceMin = 30
+        // let defenceRate = 0.1
+        // //魔法抗性30-60 0.1几率
+        // let magicDefence = rand4save.rand() < defenceRate ? EquipmentManager.getRandomQuality(defenceMin, defenceMax, chestQuality, rand4save) : cc.v3(0, 0)
+        // level = magicDefence.y > level ? magicDefence.y : level
+        // let rateMax = 60
+        // let rateMin = 10
+        // let rateRate = 0.05
+        // //流血几率0-60
+        // let realRate = rand4save.rand() < rateRate ? EquipmentManager.getRandomQuality(rateMin, rateMax, chestQuality, rand4save) : cc.v3(0, 0)
+        // level = realRate.y > level ? realRate.y : level
+        // //冰几率0-60
+        // let iceRate = rand4save.rand() < rateRate ? EquipmentManager.getRandomQuality(rateMin, rateMax, chestQuality, rand4save) : cc.v3(0, 0)
+        // level = iceRate.y > level ? iceRate.y : level
+        // desc.prefix += iceRate.y > rateMax / 2 ? '寒冷' : ''
+        // //火几率0-60
+        // let fireRate = rand4save.rand() < rateRate ? EquipmentManager.getRandomQuality(rateMin, rateMax, chestQuality, rand4save) : cc.v3(0, 0)
+        // level = fireRate.y > level ? fireRate.y : level
+        // desc.prefix += fireRate.y > rateMax / 2 ? '炎热' : ''
+        // //雷几率0-60
+        // let lighteningRate = rand4save.rand() < rateRate ? EquipmentManager.getRandomQuality(rateMin, rateMax, chestQuality, rand4save) : cc.v3(0, 0)
+        // level = lighteningRate.y > level ? lighteningRate.y : level
+        // desc.prefix += lighteningRate.y > rateMax / 2 ? '闪电' : ''
+        // //毒几率0-60
+        // let toxicRate = rand4save.rand() < rateRate ? EquipmentManager.getRandomQuality(rateMin, rateMax, chestQuality, rand4save) : cc.v3(0, 0)
+        // level = toxicRate.y > level ? toxicRate.y : level
+        // desc.prefix += toxicRate.y > rateMax / 2 ? '剧毒' : ''
+        // //诅咒几率0-60
+        // let curseRate = rand4save.rand() < rateRate ? EquipmentManager.getRandomQuality(rateMin, rateMax, chestQuality, rand4save) : cc.v3(0, 0)
+        // level = curseRate.y > level ? curseRate.y : level
+        // desc.prefix += curseRate.y > rateMax / 2 ? '诅咒' : ''
+        // desc.prefix = arr[level] + desc.prefix
+        // desc.titlecolor = colors[level]
+        // desc.level = level
+        // desc.color = desc.color == '#000000' ? '#ffffff' : desc.color
 
-        desc.common.magicDefence = magicDefence.x
-        desc.common.realRate = realRate.x
-        desc.common.iceRate = iceRate.x
-        desc.common.fireRate = fireRate.x
-        desc.common.lighteningRate = lighteningRate.x
-        desc.common.toxicRate = toxicRate.x
-        desc.common.curseRate = curseRate.x
-        desc.common.maxDream = dream.x
-        desc.requireLevel = Logic.playerData.OilGoldData.level
+        // desc.common.criticalStrikeRate = criticalStrikeRate.x
+        // desc.common.damageMin = damageMin.x
+        // desc.common.damageMax = damageMax.x
+        // desc.common.defence = defence.x
+        // desc.common.lifeDrain = lifeDrain.x
+        // desc.common.damageBack = damageBack.x
+        // desc.common.moveSpeed = moveSpeed.x
+        // desc.common.attackSpeed = attackSpeed.x
+        // desc.common.dodge = dodge.x
+        // desc.common.maxHealth = health.x
+
+        // desc.common.magicDefence = magicDefence.x
+        // desc.common.realRate = realRate.x
+        // desc.common.iceRate = iceRate.x
+        // desc.common.fireRate = fireRate.x
+        // desc.common.lighteningRate = lighteningRate.x
+        // desc.common.toxicRate = toxicRate.x
+        // desc.common.curseRate = curseRate.x
+        // desc.common.maxDream = dream.x
+        // desc.requireLevel = Logic.playerData.OilGoldData.level
         return desc
     }
     static getAffixQuality(type: number) {}
@@ -461,51 +471,29 @@ export default class EquipmentManager extends BaseManager {
         }
         return isTheType
     }
-    //0.5% 0.25% 0.1% 0.05% 0.01%
-    //white 0-0.05 green 0.05-0.075 blue 0.075-0.085 purple 0.085-0.009 orange 0.09-0.0091
-    //x:qulity y:level 1-5
-    static getRandomQuality(min: number, max: number, chestQuality: number, rand4save: Random4Save): cc.Vec3 {
-        let per = (max - min) / 5
-        let quality = rand4save.rand()
+    //如果有箱子品质则直接返回箱子品质
+    static getRandomQuality(chestQuality: number, rand4save: Random4Save) {
+        //[0.4, 0.7, 0.85, 0.95, 0.99]
+        let quality = 0
+        let rand = rand4save.rand()
         //箱子出来的物品属性挂钩相关的优质属性
-        if (chestQuality && chestQuality > 0) {
-            switch (chestQuality) {
-                case 1:
-                    quality = rand4save.rand() > 0.5 ? 0.06 : quality
-                    break
-                case 2:
-                    quality = rand4save.rand() > 0.5 ? 0.08 : quality
-                    break
-                case 3:
-                    quality = rand4save.rand() > 0.5 ? 0.086 : quality
-                    break
-                case 4:
-                    quality = rand4save.rand() > 0.5 ? 0.09 : quality
-                    break
-            }
+        if (chestQuality && chestQuality > 0 && rand4save.getHalfChance()) {
+            return chestQuality
         }
-        let data = cc.v3(0, 0)
-        if (quality < 0.05) {
-            data.x = rand4save.getRandomNum(0, per)
-            if (per > 5 && data.x < 5) {
-                data.x = 5
-            }
-            data.y = 1
-        } else if (quality >= 0.05 && quality < 0.075) {
-            data.x = rand4save.getRandomNum(per, per * 2)
-            data.y = 2
-        } else if (quality >= 0.075 && quality < 0.085) {
-            data.x = rand4save.getRandomNum(per * 2, per * 3)
-            data.y = 3
-        } else if (quality >= 0.085 && quality < 0.09) {
-            data.x = rand4save.getRandomNum(per * 3, per * 4)
-            data.y = 4
-        } else if (quality >= 0.09 && quality < 0.091) {
-            data.x = rand4save.getRandomNum(per * 4, per * 5)
-            data.y = 5
+        if (rand < 0.4) {
+            quality = 0
+        } else if (quality >= 0.4 && quality < 0.7) {
+            quality = 1
+        } else if (quality >= 0.7 && quality < 0.85) {
+            quality = 2
+        } else if (quality >= 0.85 && quality < 0.95) {
+            quality = 3
+        } else if (quality >= 0.95 && quality < 0.99) {
+            quality = 4
+        } else {
+            quality = 5
         }
-        data.x = parseFloat(data.x.toFixed(0))
-        return data
+        return quality
     }
     getEquipment(equipType: string, pos: cc.Vec3, parent: cc.Node, equipData?: EquipmentData, chestQuality?: number, shopTable?: ShopTable): Equipment {
         let equipmentPrefab = cc.instantiate(this.equipment)

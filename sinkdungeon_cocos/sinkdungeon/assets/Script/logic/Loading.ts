@@ -65,6 +65,7 @@ export default class Loading extends cc.Component {
             this.loadingManager.loadItems()
             this.loadingManager.loadTalents()
             this.loadingManager.loadProfession()
+            this.loadingManager.loadAffixs()
             this.loadingManager.loadNonplayer()
             this.loadingManager.loadSound()
             this.loadingManager.loadBgm()
@@ -140,6 +141,7 @@ export default class Loading extends cc.Component {
             this.loadingManager.isBulletsLoaded &&
             this.loadingManager.isItemsLoaded &&
             this.loadingManager.isSkillsLoaded &&
+            this.loadingManager.isAffixsLoaded &&
             Logic.mapManager.isloaded &&
             this.loadingManager.isSuitsLoaded &&
             this.loadingManager.isFurnituresLoaded &&

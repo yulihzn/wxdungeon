@@ -28,6 +28,7 @@ import DialogueData from '../data/DialogueData'
 import BuildingData from '../data/BuildingData'
 import SettingsData from '../data/SettingsData'
 import Utils from '../utils/Utils'
+import AffixMapData from '../data/AffixMapData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -87,6 +88,8 @@ export default class Logic extends cc.Component {
     static normalBuildings: { [key: string]: BuildingData } = null
     //职业json
     static professionList: ProfessionData[] = []
+    //词缀json
+    static affixs: AffixMapData[] = []
     //建筑资源
     static buildings: { [key: string]: cc.Prefab } = null
     //音频资源

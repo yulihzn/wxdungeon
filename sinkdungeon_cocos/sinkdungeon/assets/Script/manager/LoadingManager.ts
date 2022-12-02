@@ -2,6 +2,7 @@ import { EventHelper } from './../logic/EventHelper'
 import ProfessionData from '../data/ProfessionData'
 import Logic from '../logic/Logic'
 import LoadingIcon from '../ui/LoadingIcon'
+import AffixMapData from '../data/AffixMapData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -47,6 +48,7 @@ export default class LoadingManager {
     public isSoundLoaded = false
     public isBgmLoaded = false
     public isDialogueLoaded = false
+    public isAffixsLoaded = false
     // LIFE-CYCLE CALLBACKS:
     init() {
         this.setAllSpriteFramesUnload()
@@ -65,6 +67,7 @@ export default class LoadingManager {
         this.isSoundLoaded = false
         this.isBgmLoaded = false
         this.isNormalBuildingLoaded = false
+        this.isAffixsLoaded = false
     }
     reset() {
         this.isEquipmentLoaded = false
@@ -84,6 +87,7 @@ export default class LoadingManager {
         this.isBgmLoaded = false
         this.isNormalBuildingLoaded = false
         this.isDialogueLoaded = false
+        this.isAffixsLoaded = false
     }
 
     isSpriteFramesLoaded(loadedName: string) {
@@ -222,6 +226,29 @@ export default class LoadingManager {
                 Logic.talents = resource.json
                 this.isSkillsLoaded = true
                 cc.log(`加载技能完成`)
+            }
+        })
+    }
+    loadAffixs() {
+        if (Logic.affixs && Logic.affixs.length > 0) {
+            this.isAffixsLoaded = true
+            return
+        }
+        cc.resources.load('Data/affixs', (err: Error, resource: cc.JsonAsset) => {
+            if (err) {
+                cc.error(err)
+            } else {
+                Logic.affixs = new Array()
+                let arr: AffixMapData[] = resource.json
+                for (let i = 0; i < arr.length; i++) {
+                    let data = new AffixMapData()
+                    data.valueCopy(arr[i])
+                    data.id = i
+                    Logic.affixs.push(data)
+                }
+
+                this.isAffixsLoaded = true
+                cc.log(`加载词缀(${Logic.affixs.length})完成`)
             }
         })
     }
