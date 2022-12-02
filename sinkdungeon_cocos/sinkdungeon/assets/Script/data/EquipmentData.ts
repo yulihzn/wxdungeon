@@ -28,7 +28,7 @@ export default class EquipmentData extends BaseData {
     lightcolor: string = '#ffffff' //刀光的颜色
     titlecolor: string = '#ffffff'
     img: string = 'emptyequipment'
-    level: number = 0
+    level: number = 0 //白绿蓝紫金橙 红
     requireLevel = 0
     stab = 0 //是否突刺
     far = 0 //是否远距离
@@ -61,6 +61,8 @@ export default class EquipmentData extends BaseData {
     price: number = 0
 
     private common: CommonData
+    private randCommon: CommonData
+    private finalCommon: CommonData
 
     info1: string = ''
     info2: string = ''
@@ -82,10 +84,12 @@ export default class EquipmentData extends BaseData {
     constructor() {
         super()
         this.common = new CommonData()
+        this.randCommon = new CommonData()
+        this.finalCommon = new CommonData()
     }
 
     get Common() {
-        return this.common
+        return this.finalCommon
     }
     public valueCopy(data: EquipmentData): void {
         if (!data) {
@@ -96,46 +100,12 @@ export default class EquipmentData extends BaseData {
         this.id = data.id ? data.id : 10000000
         this.pos = data.pos ? cc.v3(data.pos.x, data.pos.y) : cc.v3(0, 0)
         this.common.valueCopy(data.common)
-        // this.nameCn = data.nameCn ? data.nameCn : '';
-        // this.nameEn = data.nameEn ? data.nameEn : '';
-        // this.equipmetType = data.equipmetType ? data.equipmetType : '';
-        // this.equipmetTypeCn = data.equipmetTypeCn ? data.equipmetTypeCn : '';
-        // this.prefix = data.prefix ? data.prefix : '';
-        // this.desc = data.desc ? data.desc : '';
+        this.randCommon.valueCopy(data.randCommon)
+        this.finalCommon = this.common.add(this.randCommon)
         this.color = data.color ? data.color : '#ffffff'
         this.titlecolor = data.titlecolor ? data.titlecolor : '#ffffff'
         this.lightcolor = data.lightcolor ? data.lightcolor : '#ffffff'
         this.img = data.img ? data.img : 'emptyequipment'
-        // this.stab = data.stab ? data.stab : 0;
-        // this.far = data.far ? data.far : 0;
-        // this.blunt = data.blunt ? data.blunt : 0;
-        // this.isLocked = data.isLocked ? data.isLocked : 0;
-        // this.bulletArcExNum = data.bulletArcExNum ? data.bulletArcExNum : 0;
-        // this.bulletLineExNum = data.bulletLineExNum ? data.bulletLineExNum : 0;
-        // this.bulletLineInterval = data.bulletLineInterval ? data.bulletLineInterval : 0;
-        // this.bulletSize = data.bulletSize ? data.bulletSize : 0;
-        // this.bulletExSpeed = data.bulletExSpeed ? data.bulletExSpeed : 0;
-        // this.bulletArcOffsetX = data.bulletArcOffsetX ? data.bulletArcOffsetX : 0;
-        // this.level = data.level ? data.level : 0;
-        // this.trouserslong = data.trouserslong ? data.trouserslong : 0;
-        // this.showShooter = data.showShooter ? data.showShooter : 0;
-        // this.isHeavy = data.isHeavy ? data.isHeavy : 0;
-        // this.bulletType = data.bulletType ? data.bulletType : '';
-        // this.isLineAim = data.isLineAim ? data.isLineAim : 0;
-        // this.hideHair = data.hideHair ? data.hideHair : 0;
-        // this.isReflect = data.isReflect ? data.isReflect : 0;
-        // this.exBulletOffsetX = data.exBulletOffsetX ? data.exBulletOffsetX : 0;
-        // this.ignoreTrap = data.ignoreTrap ? data.ignoreTrap : 0;
-        // this.price = data.price ? data.price : 0;
-        // this.info1 = data.info1 ? data.info1 : '';
-        // this.info2 = data.info2 ? data.info2 : '';
-        // this.info3 = data.info3 ? data.info3 : '';
-        // this.extraInfo = data.extraInfo ? data.extraInfo : '';
-        // this.suit1 = data.suit1 ? data.suit1 : '';
-        // this.suit2 = data.suit2 ? data.suit2 : '';
-        // this.suit3 = data.suit3 ? data.suit3 : '';
-        // this.suitType = data.suitType ? data.suitType : '';
-        // this.infobase = data.infobase ? data.infobase : '';
         this.infocolor1 = data.infocolor1 ? data.infocolor1 : '#ffffff'
         this.infocolor2 = data.infocolor2 ? data.infocolor2 : '#ffffff'
         this.infocolor3 = data.infocolor3 ? data.infocolor3 : '#ffffff'
@@ -143,10 +113,6 @@ export default class EquipmentData extends BaseData {
         this.suitcolor2 = data.suitcolor2 ? data.suitcolor2 : '#ffffff'
         this.suitcolor3 = data.suitcolor3 ? data.suitcolor3 : '#ffffff'
         this.infobasecolor = data.infobasecolor ? data.infobasecolor : '#ffffff'
-        // this.remoteAudio = data.remoteAudio ? data.remoteAudio : '';
-        // this.exBeatBack = data.exBeatBack ? data.exBeatBack : 0;
-        // this.test = data.test ? data.test : 0;
-        // this.requireLevel = data.requireLevel ? data.requireLevel : 0;
         this.exTriggers = []
         if (data.exTriggers) {
             for (let ex of data.exTriggers) {
@@ -155,75 +121,14 @@ export default class EquipmentData extends BaseData {
                 this.exTriggers.push(d)
             }
         }
-        // this.lastTime = data.lastTime?data.lastTime:0;
-        // this.canUse = data.canUse?data.canUse:0;
     }
     public clone(): EquipmentData {
         let e = new EquipmentData()
         e.valueCopy(this)
-        // e.uuid = this.uuid;
-        // e.id = this.id;
-        // e.pos = this.pos;
-        // e.common = this.common.clone();
-        // e.nameCn = this.nameCn;
-        // e.nameEn = this.nameEn;
-        // e.equipmetType = this.equipmetType;
-        // e.equipmetTypeCn = this.equipmetTypeCn;
-        // e.prefix = this.prefix;
-        // e.desc = this.desc;
-
-        // e.color = this.color;
-        // e.titlecolor = this.titlecolor;
-        // e.lightcolor = this.lightcolor;
-        // e.img = this.img;
-        // e.stab = this.stab;
-        // e.far = this.far;
-        // e.blunt = this.blunt;
-        // e.isLocked = this.isLocked;
-        // e.level = this.level;
-        // e.trouserslong = this.trouserslong;
-        // e.showShooter = this.showShooter;
-        // e.bulletType = this.bulletType;
-        // e.isHeavy = this.isHeavy;
-        // e.isLineAim = this.isLineAim;
-        // e.bulletArcExNum = this.bulletArcExNum;
-        // e.bulletLineExNum = this.bulletLineExNum;
-        // e.bulletLineInterval = this.bulletLineInterval;
-        // e.hideHair = this.hideHair;
-        // e.bulletSize = this.bulletSize;
-        // e.bulletExSpeed = this.bulletExSpeed;
-        // e.bulletArcOffsetX = this.bulletArcOffsetX;
-        // e.isReflect = this.isReflect;
-        // e.exBulletOffsetX = this.exBulletOffsetX;
-        // e.ignoreTrap = this.ignoreTrap;
-        // e.suitType = this.suitType;
-        // e.price = this.price;
-        // e.info1 = this.info1;
-        // e.info2 = this.info2;
-        // e.info3 = this.info3;
-        // e.extraInfo = this.extraInfo;
-        // e.suit1 = this.suit1;
-        // e.suit2 = this.suit2;
-        // e.suit3 = this.suit3;
-        // e.infobase = this.infobase;
-        // e.infocolor1 = this.infocolor1;
-        // e.infocolor2 = this.infocolor2;
-        // e.infocolor3 = this.infocolor3;
-        // e.suitcolor1 = this.suitcolor1;
-        // e.suitcolor2 = this.suitcolor2;
-        // e.suitcolor3 = this.suitcolor3;
-        // e.infobasecolor = this.infobasecolor;
-        // e.remoteAudio = this.remoteAudio;
-        // e.exBeatBack = this.exBeatBack;
-        // e.test = this.test;
-        // e.requireLevel = this.requireLevel;
-        // e.exTriggers = this.exTriggers;
-        // e.lastTime = this.lastTime;
-        // e.canUse = this.lastTime;
         return e
     }
     public add(data: EquipmentData): EquipmentData {
-        this.common = this.common.clone().add(data.Common)
+        this.finalCommon = this.finalCommon.clone().add(data.Common)
         this.ignoreTrap = this.ignoreTrap + data.ignoreTrap
         this.exBeatBack = this.exBeatBack + data.exBeatBack
         for (let ex of data.exTriggers) {

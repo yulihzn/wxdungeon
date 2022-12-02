@@ -26,6 +26,9 @@ import DataUtils from '../utils/DataUtils'
 
 const { ccclass, property } = cc._decorator
 
+/**
+ * 装备的词缀分为全局和局部两种，全局会影响整体的数值，而局部只会影响当前装备
+ */
 @ccclass
 export default class EquipmentManager extends BaseManager {
     public static readonly EMPTY = 'emptyequipment'
@@ -153,6 +156,19 @@ export default class EquipmentManager extends BaseManager {
     //梦幻的(背刺)
     public static readonly COLOR_DREAM = '#800080' //紫色
 
+    static readonly GREEN_AFFIX_RATE = [0.5, 0.85, 0.95, 1] //   50% 35% 10% 5%
+    static readonly BLUE_AFFIX_RATE = [0.4, 0.7, 0.9, 1] //   40% 30% 20% 10%
+    static readonly PURPLE_AFFIX_RATE = [0.3, 0.6, 0.8, 1] //   30% 30% 20% 20%
+    static readonly YELLOW_AFFIX_RATE = [0.2, 0.4, 0.7, 1] //   20% 20% 30% 30%
+    static readonly ORANGE_AFFIX_RATE = [0.1, 0.2, 0.5, 1] //   10% 10% 30% 50%
+    static readonly RATE_OF_QUALITY = [0.5, 0.85, 0.95, 0.99, 0.999] //   40% 30% 20% 10% 5% 1%
+    static readonly QUALITY_WHITE = 0
+    static readonly QUALITY_GREEN = 1
+    static readonly QUALITY_BLUE = 2
+    static readonly QUALITY_PURPLE = 3
+    static readonly QUALITY_ORANGE = 4
+    static readonly QUALITY_RED = 5
+
     @property(cc.Prefab)
     equipment: cc.Prefab = null
     groundList: Equipment[] = []
@@ -162,8 +178,22 @@ export default class EquipmentManager extends BaseManager {
         this.groundList = []
     }
 
-    /*灰色（粗糙）→白色（普通）→绿色（精良）→蓝色（优秀）→紫色（史诗）→橙色（传说）
-    箱子的等级1,2,3越来越高*/
+    /**
+     * 箱子的等级1,2,3越来越高
+     * 装备品质对应随机词缀条数
+     * 白色（普通0）→绿色（精良1）→蓝色（优秀2）→紫色（史诗3）→金色（传说4）→橙色（神话5）
+     * 红色（诅咒）红色是固定属性的诅咒装备，属于特殊掉落无法重铸和强化，红色装备都是独一无二的
+     * 装备的套装属性和成长属性手工填写
+     * 一个词缀按强度从1到9，名称也跟着变化，词缀的参数和装备等级挂钩
+     * 强化和重铸都需要消耗金币
+     * 强化功能可以强化词缀，需要强化碎片来进行强化按概率会出现失败，失败暂时无惩罚
+     * 重铸功能可以替换随机词缀，被重铸的词缀的强度保持不变，且可以指定某一条重铸
+     * 不需要的装备直接卖钱，根据词缀的强度和类型换算
+     *
+     * 装备生成权重按白40% 绿30% 蓝15% 紫9% 金5% 橙1%
+     * 词缀强度权重会根据品质从绿到红色随机1-4之间概率选取，后续5阶需要自己强化
+     *
+     */
     //criticalstrike strong stable drain recovery fast quick agile healthy
     static getRandomDesc(data: EquipmentData, chestQuality?: number): EquipmentDescData {
         let desc = new EquipmentDescData()
@@ -418,6 +448,7 @@ export default class EquipmentManager extends BaseManager {
         desc.requireLevel = Logic.playerData.OilGoldData.level
         return desc
     }
+    static getAffixQuality(type: number) {}
     static getRandomRange() {
         return 5 + Logic.chapterMaxIndex + Math.floor(Logic.playerData.OilGoldData.level / 5)
     }
@@ -667,7 +698,7 @@ export default class EquipmentManager extends BaseManager {
         info += DataUtils.getinfoNum2String(common.iceRate == 0, '攻击有', common.iceRate, '%几率释放冰冻\n')
         info += DataUtils.getinfoNum2String(common.fireRate == 0, '攻击有', common.fireRate, '%几率释放燃烧\n')
         info += DataUtils.getinfoNum2String(common.lighteningRate == 0, '攻击有', common.lighteningRate, '%几率释放闪电\n')
-        info += DataUtils.getinfoNum2String(common.toxicRate == 0, '毒攻击有', common.toxicRate, '%几率释放毒素\n')
+        info += DataUtils.getinfoNum2String(common.toxicRate == 0, '攻击有', common.toxicRate, '%几率释放毒素\n')
         info += DataUtils.getinfoNum2String(common.curseRate == 0, '攻击有', common.curseRate, '%几率释放诅咒\n')
         if (info.length > 0 && info.lastIndexOf('\n') != -1) {
             info = info.substring(0, info.lastIndexOf('\n'))
