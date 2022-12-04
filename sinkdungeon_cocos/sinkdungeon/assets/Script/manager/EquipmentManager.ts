@@ -211,7 +211,7 @@ export default class EquipmentManager extends BaseManager {
         cc.log(indexs)
 
         for (let i = 0; i < quality; i++) {
-            // affixs.push(AffixManager.getRandomAffix(AffixManager.AFFIXS_EQUIP_GROUP.get(data.equipmetType), data.requireLevel, rand4save))
+            affixs.push(AffixManager.buildEquipmentAffixs(data, rand4save))
         }
         // //暴击0-20减去装备自带
         // let criticalStrikeRate = cc.v3(0, 0)
