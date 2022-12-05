@@ -315,7 +315,7 @@ export default class MonsterManager extends BaseManager {
             rand = rand4save.getRandomNum(0, 4)
             if (isAddElement) {
                 data.Common.magicDamage += 1
-                data.Common.magicDefence = data.Common.magicDefence + df > 100 ? 100 : data.Common.magicDefence + df
+                data.Common.magicDefenceRate = data.Common.magicDefenceRate + df > 100 ? 100 : data.Common.magicDefenceRate + df
                 switch (rand) {
                     case 0:
                         data.Common.iceRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er

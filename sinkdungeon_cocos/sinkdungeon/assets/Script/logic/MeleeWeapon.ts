@@ -685,26 +685,29 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 }
             }
         } else if (attackTarget.tag == CCollider.TAG.BUILDING || attackTarget.tag == CCollider.TAG.WALL) {
-            attackSuccess = true
             let box = attackTarget.node.getComponent(Box)
             if (box) {
+                attackSuccess = true
                 box.breakBox()
             }
             if (!attackSuccess) {
                 let interactBuilding = attackTarget.node.getComponent(InteractBuilding)
                 if (interactBuilding && interactBuilding.data.currentHealth > 0) {
+                    attackSuccess = true
                     interactBuilding.takeDamage(damage, new FromData(), this.player)
                 }
             }
             if (!attackSuccess) {
                 let hitBuilding = attackTarget.node.getComponent(NormalBuilding)
                 if (hitBuilding) {
+                    attackSuccess = true
                     hitBuilding.takeDamage(damage, new FromData(), this.player)
                 }
             }
             if (!attackSuccess) {
                 let hitBuilding = attackTarget.node.getComponent(Emplacement)
                 if (hitBuilding && hitBuilding.data.currentHealth > 0) {
+                    attackSuccess = true
                     hitBuilding.takeDamage(damage, new FromData(), this.player)
                 }
             }

@@ -7,6 +7,7 @@ import IndexZ from '../utils/IndexZ'
 import EquipmentManager from '../manager/EquipmentManager'
 import CCollider from '../collider/CCollider'
 import Item from '../item/Item'
+import AffixManager from '../manager/AffixManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,31 +42,10 @@ export default class Chest extends Building {
         if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite')
         }
-        let name1 = 'chest001'
-        let name2 = 'chestopen001'
-        switch (quality) {
-            case 1:
-                name1 = 'chest001'
-                name2 = 'chestopen001'
-                break
-            case 2:
-                name1 = 'chest003'
-                name2 = 'chestopen003'
-                break
-            case 3:
-                name1 = 'chest002'
-                name2 = 'chestopen002'
-                break
-            case 4:
-                name1 = 'chest002'
-                name2 = 'chestopen002'
-                break
+        if (quality > 0) {
+            this.sprite.color = cc.Color.WHITE.fromHEX(AffixManager.QUALITY_COLORS[quality])
         }
-        let openFrame = Logic.spriteFrameRes(name2)
-        let closeFrame = Logic.spriteFrameRes(name1)
-        this.openSpriteFrame = openFrame
-        this.closeSpriteFrame = closeFrame
-        this.sprite.getComponent(cc.Sprite).spriteFrame = triggerCount < 1 ? closeFrame : openFrame
+        this.sprite.getComponent(cc.Sprite).spriteFrame = triggerCount < 1 ? this.closeSpriteFrame : this.openSpriteFrame
     }
 
     seDefaultPos(defaultPos: cc.Vec3) {
@@ -79,8 +59,8 @@ export default class Chest extends Building {
         if (this.data.triggerCount > 0) {
             return
         }
+        AudioPlayer.play(AudioPlayer.OPEN_CHEST)
         this.data.triggerCount = 1
-        AudioPlayer.play(AudioPlayer.PICK_UP)
         cc.tween(this.sprite)
             .to(0.1, { position: cc.v3(5, 16) })
             .to(0.1, { position: cc.v3(-5, 0) })
@@ -88,7 +68,7 @@ export default class Chest extends Building {
             .to(0.1, { position: cc.v3(-5, 0) })
             .to(0.1, { position: cc.v3(0, 0) })
             .call(() => {
-                this.sprite.getComponent(cc.Sprite).spriteFrame = this.closeSpriteFrame
+                this.sprite.getComponent(cc.Sprite).spriteFrame = this.openSpriteFrame
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon)
                     if (dungeon) {

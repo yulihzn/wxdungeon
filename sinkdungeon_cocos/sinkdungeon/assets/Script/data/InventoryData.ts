@@ -16,7 +16,7 @@ import ItemData from './ItemData'
 export default class InventoryData extends BaseData {
     id: number = 0
     createTime: number = 0
-    level: number = 0
+    quality: number = 0
     equipmentData: EquipmentData
     itemData: ItemData
     price: number
@@ -34,7 +34,7 @@ export default class InventoryData extends BaseData {
             this.equipmentData.valueCopy(data.equipmentData)
             this.price = this.equipmentData.price
             this.id = this.equipmentData.id
-            this.level = this.equipmentData.level
+            this.quality = this.equipmentData.quality
         }
         this.equipmentData = data.equipmentData
         if (data.itemData) {
@@ -42,7 +42,7 @@ export default class InventoryData extends BaseData {
             this.itemData.valueCopy(data.itemData)
             this.price = this.itemData.price
             this.id = this.itemData.id
-            this.level = 0
+            this.quality = 0
         }
         this.itemData = data.itemData
         // this.createTime = data.createTime ? data.createTime : 0;
@@ -66,6 +66,6 @@ export default class InventoryData extends BaseData {
         this.createTime = 0
         this.id = 0
         this.price = 0
-        this.level = 0
+        this.quality = 0
     }
 }

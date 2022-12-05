@@ -61249,7 +61249,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "dodge",
+    "_name": "dodgeRate",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1283
@@ -61505,7 +61505,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "lifeDrain",
+    "_name": "lifeDrainRate",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1283
@@ -62785,7 +62785,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "magicDefence",
+    "_name": "magicDefenceRate",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1283

@@ -14,6 +14,7 @@ import Item from '../item/Item'
 import IndexZ from '../utils/IndexZ'
 import ActorUtils from '../utils/ActorUtils'
 import CCollider from '../collider/CCollider'
+import EquipmentManager from '../manager/EquipmentManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -275,7 +276,7 @@ export default class Slime extends Boss {
                 EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.entity.Transform.position, count: 100 })
                 EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.entity.Transform.position, res: Item.HEART })
                 EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.entity.Transform.position, res: Item.DREAM })
-                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, 4)
+                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, EquipmentManager.QUALITY_ORANGE)
             }
             if (this.slimeType < Slime.DIVIDE_COUNT) {
                 EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: this.entity.Transform.position, count: 5 })

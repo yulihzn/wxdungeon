@@ -64,7 +64,6 @@ export default class EquipmentData extends BaseData {
     price: number = 0
 
     private common: CommonData
-    private randCommon: CommonData
     private finalCommon: CommonData
 
     info1: string = ''
@@ -87,12 +86,14 @@ export default class EquipmentData extends BaseData {
     constructor() {
         super()
         this.common = new CommonData()
-        this.randCommon = new CommonData()
         this.finalCommon = new CommonData()
     }
 
-    get Common() {
+    get FinalCommon() {
         return this.finalCommon
+    }
+    get Common() {
+        return this.common
     }
     public valueCopy(data: EquipmentData): void {
         if (!data) {
@@ -103,8 +104,6 @@ export default class EquipmentData extends BaseData {
         this.id = data.id ? data.id : 10000000
         this.pos = data.pos ? cc.v3(data.pos.x, data.pos.y) : cc.v3(0, 0)
         this.common.valueCopy(data.common)
-        this.randCommon.valueCopy(data.randCommon)
-        this.finalCommon = this.common.add(this.randCommon)
         this.color = data.color ? data.color : '#ffffff'
         this.titlecolor = data.titlecolor ? data.titlecolor : '#ffffff'
         this.lightcolor = data.lightcolor ? data.lightcolor : '#ffffff'
@@ -124,9 +123,17 @@ export default class EquipmentData extends BaseData {
                 this.exTriggers.push(d)
             }
         }
-        DataUtils.copyListValue(this.affixs, data.affixs, arg0 => {
+        this.affixs = DataUtils.copyListValue(this.affixs, data.affixs, arg0 => {
             return new AffixData().valueCopy(arg0)
         })
+        this.updateFinalCommon()
+    }
+    updateFinalCommon() {
+        this.finalCommon = new CommonData()
+        this.finalCommon.add(this.common)
+        for (let affix of this.affixs) {
+            this.finalCommon.add(affix.common)
+        }
     }
     public clone(): EquipmentData {
         let e = new EquipmentData()
@@ -134,11 +141,14 @@ export default class EquipmentData extends BaseData {
         return e
     }
     public add(data: EquipmentData): EquipmentData {
-        this.finalCommon = this.finalCommon.clone().add(data.Common)
+        this.common = this.common.clone().add(data.common)
         this.ignoreTrap = this.ignoreTrap + data.ignoreTrap
         this.exBeatBack = this.exBeatBack + data.exBeatBack
         for (let ex of data.exTriggers) {
             this.exTriggers.push(ex)
+        }
+        for (let affix of data.affixs) {
+            this.affixs.push(affix)
         }
         return this
     }

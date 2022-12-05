@@ -25,6 +25,9 @@ export default class MapManager {
     //地图数据管理类
     rectDungeon: RectDungeon = null
     rand4save: Random4Save
+    randMap: Map<string, Random4Save> = new Map()
+    static readonly RANDOM_EQUIP = 'RANDOM_EQUIP'
+    static readonly RANDOM_BUILDING = 'RANDOM_BUILDING'
     constructor() {
         this.init()
     }
@@ -33,7 +36,11 @@ export default class MapManager {
     init() {
         this.isloaded = false
     }
-    clear(): void {}
+    clear(): void {
+        this.rectDungeon = null
+        this.rand4save = null
+        this.randMap.clear()
+    }
 
     reset() {
         let data = Logic.worldLoader.getCurrentLevelData()
@@ -113,40 +120,43 @@ export default class MapManager {
             return room ? room : new RectRoom(1, 1, RoomType.Z_ROOM)
         }
     }
+    getPosKey(pos: cc.Vec3) {
+        return `x=${pos}y=${pos}`
+    }
 
     /** 获取当前房间指定建筑*/
     public getCurrentMapBuilding(defaultPos: cc.Vec3): BuildingData {
-        let buildings = this.rectDungeon.buildings[`x=${this.rectDungeon.currentPos.x}y=${this.rectDungeon.currentPos.y}`]
+        let buildings = this.rectDungeon.buildings[this.getPosKey(this.rectDungeon.currentPos)]
         if (buildings) {
-            return buildings[`x=${defaultPos.x}y=${defaultPos.y}`]
+            return buildings[this.getPosKey(defaultPos)]
         }
         return null
     }
     /** 设置当前房间建筑*/
     public setCurrentBuildingData(data: BuildingData) {
-        let buildings = this.rectDungeon.buildings[`x=${this.rectDungeon.currentPos.x}y=${this.rectDungeon.currentPos.y}`]
+        let buildings = this.rectDungeon.buildings[this.getPosKey(this.rectDungeon.currentPos)]
         if (!buildings) {
             buildings = {}
-            this.rectDungeon.buildings[`x=${this.rectDungeon.currentPos.x}y=${this.rectDungeon.currentPos.y}`] = buildings
+            this.rectDungeon.buildings[this.getPosKey(this.rectDungeon.currentPos)] = buildings
         }
         buildings[`x=${data.defaultPos.x}y=${data.defaultPos.y}`] = data
     }
 
     /** 获取当前房间装备*/
     public getCurrentMapEquipments(): EquipmentData[] {
-        return this.rectDungeon.equipments[`x=${this.rectDungeon.currentPos.x}y=${this.rectDungeon.currentPos.y}`]
+        return this.rectDungeon.equipments[this.getPosKey(this.rectDungeon.currentPos)]
     }
     /** 设置当前房间装备*/
     public setCurrentEquipmentsArr(arr: EquipmentData[]) {
-        this.rectDungeon.equipments[`x=${this.rectDungeon.currentPos.x}y=${this.rectDungeon.currentPos.y}`] = arr
+        this.rectDungeon.equipments[this.getPosKey(this.rectDungeon.currentPos)] = arr
     }
     /** 获取当前房间物品*/
     public getCurrentMapItems(): ItemData[] {
-        return this.rectDungeon.items[`x=${this.rectDungeon.currentPos.x}y=${this.rectDungeon.currentPos.y}`]
+        return this.rectDungeon.items[this.getPosKey(this.rectDungeon.currentPos)]
     }
     /** 设置当前房间物品*/
     public setCurrentItemsArr(arr: ItemData[]) {
-        this.rectDungeon.items[`x=${this.rectDungeon.currentPos.x}y=${this.rectDungeon.currentPos.y}`] = arr
+        this.rectDungeon.items[this.getPosKey(this.rectDungeon.currentPos)] = arr
     }
     /** 设置房间状态为清理*/
     public setRoomClear(x: number, y: number) {
@@ -189,13 +199,14 @@ export default class MapManager {
         }
         return room.state == RectRoom.STATE_CLEAR
     }
-    public getCurrentRoomRandom4Save(): Random4Save {
+    public getCurrentRoomRandom4Save(keyType: string): Random4Save {
         let room = this.getCurrentRoom()
         if (room) {
-            if (!this.rand4save) {
-                this.rand4save = new Random4Save(room.seed)
-                this.rand4save.Seed = room.seed
+            let key = keyType + this.getPosKey(cc.v3(room.x, room.y))
+            if (!this.randMap.has(key)) {
+                this.randMap.set(key, new Random4Save(room.seed))
             }
+            return this.randMap.get(key)
         } else {
             if (!this.rand4save) {
                 this.rand4save = new Random4Save(0)
@@ -207,7 +218,7 @@ export default class MapManager {
         return seed + Logic.mapManager.getCurrentRoom().reborn * 100000000
     }
     public getSeedFromRoom() {
-        let rand4save = Logic.mapManager.getCurrentRoomRandom4Save()
+        let rand4save = Logic.mapManager.getCurrentRoomRandom4Save(MapManager.RANDOM_BUILDING)
         return rand4save.getRandomNum(0, 100000000)
     }
     public getRandom4Save(seed: number) {

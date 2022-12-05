@@ -592,7 +592,7 @@
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
-      "offsetX": 0.5,
+      "offsetX": -0.5,
       "offsetY": -1,
       "trimX": 133,
       "trimY": 49,

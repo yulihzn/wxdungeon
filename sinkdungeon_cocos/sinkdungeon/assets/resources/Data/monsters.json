@@ -1046,7 +1046,7 @@
             "remoteAngle": 5,
             "moveSpeed": 2,
             "maxHealth": 30,
-            "dodge": 100,
+            "dodgeRate": 100,
             "damageMin": 2
         },
         "avatar": {
@@ -1109,7 +1109,7 @@
             "remoteAngle": 5,
             "moveSpeed": 8,
             "maxHealth": 50,
-            "dodge": 60,
+            "dodgeRate": 60,
             "curseRate": 100,
             "damageMin": 6
         },

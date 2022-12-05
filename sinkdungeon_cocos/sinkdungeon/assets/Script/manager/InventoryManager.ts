@@ -99,11 +99,15 @@ export default class InventoryManager {
     updateTotalEquipData(): void {
         let e = new EquipmentData()
         let exTriggers = []
+        let affixs = []
         for (let key in this.equips) {
             let equip = this.equips[key]
             e.Common.add(equip.Common)
             for (let ex of equip.exTriggers) {
                 exTriggers.push(ex)
+            }
+            for (let affix of equip.affixs) {
+                affixs.push(affix)
             }
         }
         e.Common.add(this.buffer.Common)
@@ -117,6 +121,8 @@ export default class InventoryManager {
             }
         }
         e.exTriggers = exTriggers
+        e.affixs = affixs
+        e.updateFinalCommon()
         this.totalEquipData = e
     }
 

@@ -129,7 +129,7 @@
     },
     {
         "id": 16,
-        "desc": "装填时间+@",
+        "desc": "装填时间+@ms",
         "factor": 0,
         "common": "remoteCooldown",
         "levels": [-10, -20, -30, -100, -110, -120, -200, -210, -220, -300],
@@ -147,7 +147,7 @@
         "id": 18,
         "desc": "格挡物免提高@%",
         "factor": 0,
-        "common": "blockPhysical",
+        "common": "blockPhysicalRate",
         "levels": [5, 10, 15, 30, 35, 40, 50, 55, 60, 80],
         "affixs": ["格挡", "坚守", "周密"]
     },
@@ -155,7 +155,7 @@
         "id": 19,
         "desc": "格挡魔免提高@%",
         "factor": 0,
-        "common": "blockMagic",
+        "common": "blockMagicRate",
         "levels": [5, 10, 15, 30, 35, 40, 50, 55, 60, 80],
         "affixs": ["偏转", "中和", "沉默"]
     },
@@ -163,7 +163,7 @@
         "id": 20,
         "desc": "吸血几率提高+@%",
         "factor": 0,
-        "common": "lifeDrain",
+        "common": "lifeDrainRate",
         "levels": [5, 10, 15, 30, 35, 40, 50, 55, 60, 80],
         "affixs": ["吸收", "汲取", "虹吸"]
     },
@@ -171,7 +171,7 @@
         "id": 21,
         "desc": "闪避几率提高@%",
         "factor": 0,
-        "common": "dodge",
+        "common": "dodgeRate",
         "levels": [5, 10, 15, 30, 35, 40, 50, 55, 60, 80],
         "affixs": ["飘逸", "凌波", "幻影"]
     },
@@ -211,7 +211,7 @@
         "id": 26,
         "desc": "魔抗提高@%",
         "factor": 0,
-        "common": "magicDefence",
+        "common": "magicDefenceRate",
         "levels": [5, 10, 15, 30, 35, 40, 50, 55, 60, 80],
         "affixs": ["消散", "阻断", "不侵"]
     },

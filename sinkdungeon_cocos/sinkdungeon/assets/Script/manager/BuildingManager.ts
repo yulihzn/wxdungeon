@@ -303,7 +303,7 @@ export default class BuildingManager extends BaseManager {
             this.addBox(mapDataStr, indexPos)
         } else if (this.isFirstEqual(mapDataStr, 'C')) {
             //生成宝箱 房间清理的情况下箱子是打开的
-            this.addChest(indexPos)
+            this.addChest(indexPos, mapDataStr)
         } else if (this.isFirstEqual(mapDataStr, 'D')) {
             //生成门
             this.addDoor(mapDataStr, indexPos, false)
@@ -605,22 +605,13 @@ export default class BuildingManager extends BaseManager {
             ta.showItem()
         })
     }
-    private addChest(indexPos: cc.Vec3) {
+    private addChest(indexPos: cc.Vec3, mapDataStr: string) {
         Logic.getBuildings(BuildingManager.CHEST, (prefab: cc.Prefab) => {
             let chest = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.WOOD)
             let c = chest.getComponent(Chest)
             c.seDefaultPos(indexPos)
-            let rand4save = Logic.mapManager.getRandom4Save(c.seed)
-            let rand = rand4save.rand()
-            let quality = 1
-            if (rand > 0.5 && rand < 0.7) {
-                quality = 2
-            } else if (rand > 0.7 && rand < 0.8) {
-                quality = 3
-            } else if (rand > 0.8 && rand < 0.85) {
-                quality = 4
-            }
-            c.setQuality(quality, 0)
+            let quality = mapDataStr.substring(mapDataStr.length - 1, mapDataStr.length)
+            c.setQuality(parseInt(quality), 0)
             let saveChest = Logic.mapManager.getCurrentMapBuilding(c.data.defaultPos)
             if (saveChest) {
                 c.setQuality(saveChest.quality, saveChest.triggerCount)

@@ -153,6 +153,7 @@ export default class PickAvatar extends cc.Component {
         this.loadingManager.loadTalents()
         this.loadingManager.loadItems()
         this.loadingManager.loadSuits()
+        this.loadingManager.loadAffixs()
         this.attributeLayout.active = false
         this.randomButton.on(
             cc.Node.EventType.TOUCH_START,
@@ -372,7 +373,7 @@ export default class PickAvatar extends cc.Component {
                 data = SavePointData.chapter04()
                 break
         }
-        Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal(data))
+        Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal(data), true)
         Logic.jumpChapter = 0
         this.addPorfessionEquipment()
     }
@@ -418,7 +419,8 @@ export default class PickAvatar extends cc.Component {
             this.loadingManager.isEquipmentLoaded &&
             this.loadingManager.isSkillsLoaded &&
             this.loadingManager.isItemsLoaded &&
-            this.loadingManager.isSuitsLoaded
+            this.loadingManager.isSuitsLoaded &&
+            this.loadingManager.isAffixsLoaded
         ) {
             this.loadingManager.reset()
             this.show()

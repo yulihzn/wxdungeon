@@ -167,7 +167,7 @@ export default class NonPlayerData {
         let data = this.FinalCommon
         let finalDamageData = damageData.clone()
         let defence = data.Defence
-        let defecneMagic = data.magicDefence
+        let defecneMagic = data.magicDefenceRate
         //伤害=攻击*(1-(护甲*0.06)/(护甲*0.06+1))
         //伤害 = 攻击 + 攻击*(2-0.94^(-护甲))
         if (defence >= 0) {

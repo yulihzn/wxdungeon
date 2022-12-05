@@ -74,7 +74,7 @@ export default class SaveSlotItem extends cc.Component {
             }\n${Utils.getFullFormatTime(data.lastSaveTime)}`
             this.sprite.spriteFrame = this.getIcon(data.chapterIndex)
         } else {
-            this.label.string = '空'
+            this.label.string = `空${index}`
             this.sprite.spriteFrame = this.empty
         }
         this.node.opacity = this.hasSaveData ? 255 : 128

@@ -12,11 +12,11 @@
                     "criticalStrikeRate": 0,
                     "defence": 0,
                     "remoteDamage": 5,
-                    "lifeDrain": 0,
+                    "lifeDrainRate": 0,
                     "damageBack": 0,
                     "moveSpeed": 0,
                     "attackSpeed": 0,
-                    "dodge": 0,
+                    "dodgeRate": 0,
                     "maxHealth": 0
                 }
             }
@@ -131,12 +131,12 @@
                     "criticalStrikeRate": 0,
                     "defence": 0,
                     "remoteDamage": 0,
-                    "lifeDrain": 0,
+                    "lifeDrainRate": 0,
                     "damageBack": 0,
                     "magicDamage": 2,
                     "moveSpeed": 0,
                     "attackSpeed": 0,
-                    "dodge": 0,
+                    "dodgeRate": 0,
                     "maxHealth": 0
                 }
             },
@@ -158,12 +158,12 @@
                     "criticalStrikeRate": 0,
                     "defence": 0,
                     "remoteDamage": 0,
-                    "lifeDrain": 0,
+                    "lifeDrainRate": 0,
                     "damageBack": 0,
                     "magicDamage": 2,
                     "moveSpeed": 0,
                     "attackSpeed": 0,
-                    "dodge": 0,
+                    "dodgeRate": 0,
                     "maxHealth": 0
                 }
             },
@@ -185,12 +185,12 @@
                     "criticalStrikeRate": 0,
                     "defence": 0,
                     "remoteDamage": 0,
-                    "lifeDrain": 0,
+                    "lifeDrainRate": 0,
                     "damageBack": 0,
                     "magicDamage": 2,
                     "moveSpeed": 0,
                     "attackSpeed": 0,
-                    "dodge": 0,
+                    "dodgeRate": 0,
                     "maxHealth": 0
                 }
             }
@@ -290,12 +290,12 @@
                     "criticalStrikeRate": 0,
                     "defence": 0,
                     "remoteCritRate": 30,
-                    "lifeDrain": 0,
+                    "lifeDrainRate": 0,
                     "damageBack": 0,
                     "moveSpeed": 0,
                     "attackSpeed": 0,
                     "remoteDamage": 0,
-                    "dodge": 0,
+                    "dodgeRate": 0,
                     "maxHealth": 0
                 }
             },
@@ -306,13 +306,13 @@
                     "criticalStrikeRate": 0,
                     "defence": 0,
                     "remoteCritRate": 60,
-                    "lifeDrain": 0,
+                    "lifeDrainRate": 0,
                     "damageBack": 0,
                     "moveSpeed": 0,
                     "attackSpeed": 0,
                     "remoteDamage": 0,
                     "remoteCooldown": -100,
-                    "dodge": 0,
+                    "dodgeRate": 0,
                     "maxHealth": 0
                 }
             },
@@ -324,12 +324,12 @@
                     "defence": 0,
                     "remoteCritRate": 80,
                     "remoteCooldown": -500,
-                    "lifeDrain": 0,
+                    "lifeDrainRate": 0,
                     "damageBack": 0,
                     "moveSpeed": 0,
                     "attackSpeed": 0,
                     "remoteDamage": 0,
-                    "dodge": 0,
+                    "dodgeRate": 0,
                     "maxHealth": 0
                 }
             }

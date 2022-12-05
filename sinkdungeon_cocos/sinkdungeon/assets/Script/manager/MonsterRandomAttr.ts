@@ -113,9 +113,9 @@ export default class MonsterRandomAttr {
             }
         }
         if (this.hasAttr(MonsterRandomAttr.ATTR_14)) {
-            data.Common.dodge += 50
-            if (data.Common.dodge > 60) {
-                data.Common.dodge = 60
+            data.Common.dodgeRate += 50
+            if (data.Common.dodgeRate > 60) {
+                data.Common.dodgeRate = 60
             }
         }
         if (this.hasAttr(MonsterRandomAttr.ATTR_15)) {

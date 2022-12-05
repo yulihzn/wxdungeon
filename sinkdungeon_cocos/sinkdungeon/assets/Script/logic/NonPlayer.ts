@@ -46,6 +46,7 @@ import BaseAvatar from '../base/BaseAvatar'
 import FrameAvatar from './FrameAvatar'
 import Tips from '../ui/Tips'
 import ActorIcon from '../ui/ActorIcon'
+import EquipmentManager from '../manager/EquipmentManager'
 
 @ccclass
 export default class NonPlayer extends PlayActor {
@@ -773,7 +774,7 @@ export default class NonPlayer extends PlayActor {
             return false
         }
         let dd = this.data.getDamage(damageData)
-        let dodge = this.data.FinalCommon.dodge / 100
+        let dodge = this.data.FinalCommon.dodgeRate / 100
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0
         dd = isDodge ? new DamageData() : dd
         if (isDodge) {
@@ -977,8 +978,8 @@ export default class NonPlayer extends PlayActor {
         let offset = (1 - percent) / 10
         let quality = 1 + this.killPlayerCount / 2
         quality = Math.floor(quality)
-        if (quality > 4) {
-            quality = 4
+        if (quality > EquipmentManager.QUALITY_ORANGE) {
+            quality = EquipmentManager.QUALITY_ORANGE
         }
 
         if (this.dungeon) {

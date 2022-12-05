@@ -10,6 +10,7 @@ import IndexZ from '../utils/IndexZ'
 import NonPlayerData from '../data/NonPlayerData'
 import StatusData from '../data/StatusData'
 import Shooter from '../logic/Shooter'
+import EquipmentManager from '../manager/EquipmentManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -110,7 +111,7 @@ export default abstract class Boss extends Actor {
                 EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: Item.HEART })
                 EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: Item.DREAM })
             }
-            this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), null, null, isSteal ? 0 : 4)
+            this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), null, null, isSteal ? 0 : EquipmentManager.QUALITY_ORANGE)
         }
     }
     showBoss() {}

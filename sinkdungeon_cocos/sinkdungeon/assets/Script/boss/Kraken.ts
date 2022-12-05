@@ -11,6 +11,7 @@ import FromData from '../data/FromData'
 import Achievement from '../logic/Achievement'
 import IndexZ from '../utils/IndexZ'
 import Item from '../item/Item'
+import EquipmentManager from '../manager/EquipmentManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -152,7 +153,7 @@ export default class Kraken extends Boss {
                 EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.entity.Transform.position, res: Item.HEART })
                 EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.entity.Transform.position, res: Item.DREAM })
             }
-            this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(p), null, 4)
+            this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(p), null, EquipmentManager.QUALITY_ORANGE)
         }
     }
     showBoss() {

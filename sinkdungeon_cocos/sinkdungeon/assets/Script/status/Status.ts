@@ -58,7 +58,7 @@ export default class Status extends cc.Component {
             data.infobase = EquipmentManager.getInfoBase(common)
             data.info1 = EquipmentManager.getInfo1(common)
             data.info2 = EquipmentManager.getInfo2(common, null)
-            data.info3 = EquipmentManager.getInfo3(common)
+            data.info3 = ''
             data.infobasecolor = '#fffff0' //象牙
             data.infocolor1 = '#9370DB' //适中的紫色
             data.infocolor2 = '#87CEFA' //淡蓝色

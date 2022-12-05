@@ -374,7 +374,7 @@ export default class Logic extends cc.Component {
             cc.director.loadScene('loading')
         }
     }
-    static loadingNextLevel(exitData: ExitData) {
+    static loadingNextLevel(exitData: ExitData, clearMapCache?: boolean) {
         Logic.worldLoader.loadWorld(() => {
             if (!exitData) {
                 return
@@ -383,6 +383,9 @@ export default class Logic extends cc.Component {
             let levelData = Logic.worldLoader.getLevelData(exitData.toChapter, exitData.toLevel)
             if (!levelData) {
                 return
+            }
+            if (clearMapCache) {
+                Logic.mapManager.clear()
             }
             if (!Logic.mapManager.rectDungeon) {
                 Logic.mapManager.reset()

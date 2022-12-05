@@ -121,7 +121,7 @@
         "duration": 60,
         "common": {
             "defence": 9999,
-            "dodge": 100,
+            "dodgeRate": 100,
             "damageMin": 250,
             "criticalStrikeRate": 100,
             "moveSpeed": 9
@@ -181,7 +181,7 @@
         "duration": 2,
         "common": {
             "defence": 9999,
-            "magicDefence": 100
+            "magicDefenceRate": 100
         }
     },
     "status016": {
@@ -193,7 +193,7 @@
         "duration": 4,
         "common": {
             "defence": 9999,
-            "magicDefence": 100
+            "magicDefenceRate": 100
         }
     },
     "status017": {
@@ -249,7 +249,7 @@
         "duration": 1,
         "common": {
             "defence": 9999,
-            "dodge": 100
+            "dodgeRate": 100
         }
     },
     "status022": {
@@ -327,8 +327,8 @@
             "moveSpeed": -3,
             "defence": -100,
             "attackSpeed": -300,
-            "magicDefence": -100,
-            "dodge": -100
+            "magicDefenceRate": -100,
+            "dodgeRate": -100
         }
     },
     "status028": {
@@ -602,26 +602,26 @@
     },
     "status050": {
         "nameCn": "吸血(商品)",
-        "nameEn": "lifeDrain",
+        "nameEn": "lifeDrainRate",
         "spriteFrameName": "icondrain",
         "id": 50,
         "desc": "",
         "duration": -1,
         "unique": 1,
         "common": {
-            "lifeDrain": 5
+            "lifeDrainRate": 5
         }
     },
     "status051": {
         "nameCn": "闪避(商品)",
-        "nameEn": "dodge",
-        "spriteFrameName": "icondodge",
+        "nameEn": "dodgeRate",
+        "spriteFrameName": "icondodgeRate",
         "id": 51,
         "desc": "",
         "duration": -1,
         "unique": 1,
         "common": {
-            "dodge": 10
+            "dodgeRate": 10
         }
     },
     "status052": {
@@ -686,14 +686,14 @@
     },
     "status057": {
         "nameCn": "魔法抗性(商品)",
-        "nameEn": "magicDefence",
+        "nameEn": "magicDefenceRate",
         "spriteFrameName": "icondamageback",
         "id": 57,
         "desc": "",
         "duration": -1,
         "unique": 1,
         "common": {
-            "magicDefence": 30
+            "magicDefenceRate": 30
         }
     },
     "status058": {
@@ -801,13 +801,13 @@
     },
     "status067": {
         "nameCn": "全息闪避",
-        "nameEn": "dodge",
-        "spriteFrameName": "icondodge",
+        "nameEn": "dodgeRate",
+        "spriteFrameName": "icondodgeRate",
         "id": 67,
         "desc": "",
         "duration": 2,
         "common": {
-            "dodge": 100
+            "dodgeRate": 100
         }
     },
     "status068": {

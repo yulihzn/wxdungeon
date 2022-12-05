@@ -1,12 +1,4 @@
 { "columns":64,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"",
-         "target":"."
-        }
-    },
  "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tileset.png",
  "imageheight":512,
  "imagewidth":512,
@@ -14,7 +6,7 @@
  "name":"tileset",
  "spacing":0,
  "tilecount":4096,
- "tiledversion":"1.4.2",
+ "tiledversion":"1.8.4",
  "tileheight":8,
  "tiles":[
         {
@@ -2895,11 +2887,31 @@
         }, 
         {
          "id":1607,
-         "type":"C007"
+         "type":"C010"
         }, 
         {
          "id":1608,
-         "type":"C008"
+         "type":"C011"
+        }, 
+        {
+         "id":1609,
+         "type":"C012"
+        }, 
+        {
+         "id":1610,
+         "type":"C013"
+        }, 
+        {
+         "id":1611,
+         "type":"C014"
+        }, 
+        {
+         "id":1612,
+         "type":"C015"
+        }, 
+        {
+         "id":1613,
+         "type":"C016"
         }, 
         {
          "id":1664,
@@ -3691,5 +3703,5 @@
         }],
  "tilewidth":8,
  "type":"tileset",
- "version":1.4
+ "version":"1.8"
 }

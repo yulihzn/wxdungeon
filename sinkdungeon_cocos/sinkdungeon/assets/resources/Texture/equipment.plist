@@ -334,11 +334,11 @@
         <key>frame</key>
         <string>{{133,49},{11,30}}</string>
         <key>offset</key>
-        <string>{0.5,-1}</string>
+        <string>{-0.5,-1}</string>
         <key>rotated</key>
         <false/>
         <key>sourceColorRect</key>
-        <string>{{3,2},{11,30}}</string>
+        <string>{{2,2},{11,30}}</string>
         <key>sourceSize</key>
         <string>{16,32}</string>
       </dict>

@@ -20,11 +20,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 0
         },
         "desc": "忙忙碌碌一天刷完手机入睡"
@@ -50,11 +50,11 @@
             "damageMax": 0,
             "remoteDamage": 1,
             "remoteCritRate": 10,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 0
         },
         "desc": "为任意组织卖命赚更多钱为目的而进入梦境，远程攻击+1，远程暴击+2"
@@ -80,11 +80,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 2
         },
         "desc": "救死扶伤，疲劳过度，最大生命+2"
@@ -110,11 +110,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 0
         },
         "desc": "睡前想起来今天的鱼香肉丝把糖当盐放错了"
@@ -140,11 +140,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 0
         },
         "desc": "为了研究出翠金的奥秘而入眠"
@@ -170,11 +170,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 0
         },
         "desc": "喝着小酒，幻想着自己是海盗"
@@ -200,11 +200,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 0
         },
         "desc": "调查完翠金科技，整理好内容才睡觉"
@@ -230,11 +230,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 20,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 10,
+            "dodgeRate": 10,
             "maxHealth": 0
         },
         "desc": "精通剑类武器，在一天的训练后回来打盹了，近战攻击+1，近战暴击20%，闪避10%"
@@ -260,11 +260,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 2,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 0
         },
         "desc": "只要钱给足了，哪怕在梦中也能完成目标，近战伤害+1，背刺伤害+2"
@@ -290,11 +290,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 10,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 0
         },
         "desc": "才从局里放出来，心情不好回来睡觉，近战暴击10%"
@@ -320,11 +320,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 0
         },
         "desc": "今天谈了一批翠金试剂的大单子，终于可以安稳睡一觉了"
@@ -350,11 +350,11 @@
             "damageMax": 0,
             "remoteDamage": 0,
             "remoteSpeed": 50,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 0
         },
         "desc": "在一次和劫匪生死搏斗后受伤了在家养病,远程射速+50"
@@ -380,11 +380,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 2
         },
         "desc": "今天又是辛苦的一天，最大生命+2"
@@ -410,11 +410,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 1
         },
         "desc": "又表演了一天节目，回来睡觉，最大生命+1"
@@ -439,11 +439,11 @@
             "damageMin": 0,
             "damageMax": 0,
             "magicDamage": 2,
-            "magicDefence": 30,
+            "magicDefenceRate": 30,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 0
         },
         "desc": "梦中我才是真正的魔术师，元素伤害+2，元素抗性30%"
@@ -469,11 +469,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 10,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "jumpHeight": 1,
             "jumpSpeed": 1,
             "maxHealth": 0
@@ -501,11 +501,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 30,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 0
         },
         "desc": "通宵加班打车回家睡觉，近战攻速+30"
@@ -531,11 +531,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 50,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 0
         },
         "desc": "听着早已习惯的酒吧DJ，沉沉的入睡了，近战攻速+50"
@@ -561,11 +561,11 @@
             "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0.3,
             "attackSpeed": 30,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 0
         },
         "desc": "能忍耐的人才是忍者，认真冥想，忍着不睡，移速+0.3，近战攻速+30"
@@ -591,11 +591,11 @@
             "damageMax": 2,
             "criticalStrikeRate": 0,
             "defence": 5,
-            "lifeDrain": 0,
+            "lifeDrainRate": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodgeRate": 0,
             "maxHealth": 2
         },
         "desc": "在冥想的时候睡着了，近战伤害+1，近战最大伤害+2，防御+5，最大生命+2"

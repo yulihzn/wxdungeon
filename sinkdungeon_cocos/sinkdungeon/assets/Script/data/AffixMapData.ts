@@ -5,15 +5,18 @@ export default class AffixMapData {
     id = 0 //id
     factor = 0 //等级系数
     affixs: string[] = [] //词缀名
-    levels = [] //词缀强度数值
+    levels: number[] = [] //词缀强度数值
     common = '' //common的属性名
     public valueCopy(data: AffixMapData): AffixMapData {
         if (!data) {
             return this
         }
         DataUtils.baseCopy(this, data)
-        DataUtils.copyListValue(this.affixs, data.affixs, arg0 => {
+        this.affixs = DataUtils.copyListValue(this.affixs, data.affixs, arg0 => {
             return arg0 ? arg0 : ''
+        })
+        this.levels = DataUtils.copyListValue(this.levels, data.levels, arg0 => {
+            return arg0 ? arg0 : 0
         })
         return this
     }

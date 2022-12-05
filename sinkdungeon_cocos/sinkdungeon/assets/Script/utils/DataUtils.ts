@@ -50,6 +50,7 @@ export default class DataUtils {
                 map1.set(key, callback(element))
             })
         }
+        return map1
     }
     static copyListValue<T>(list1: T[], list2: T[], callback: (arg0: T) => T) {
         if (!list1) {
@@ -61,6 +62,7 @@ export default class DataUtils {
                 list1.push(callback(c))
             }
         }
+        return list1
     }
     /**几率相加 范围0-100 */
     public static addRateFixed(origin: number, target: number): number {

@@ -64,6 +64,7 @@ export default class Bullet extends BaseColliderComponent {
 
     anim: cc.Animation
     sprite: cc.Sprite
+    shadowSprite: cc.Sprite
     light: cc.Sprite
     base: cc.Node
 
@@ -189,6 +190,9 @@ export default class Bullet extends BaseColliderComponent {
         if (!this.sprite) {
             this.sprite = this.root.getChildByName('sprite').getComponent(cc.Sprite)
         }
+        if (!this.shadowSprite) {
+            this.shadowSprite = this.shadow.getComponent(cc.Sprite)
+        }
         if (!this.sprite || resName.length < 1) {
             return
         }
@@ -205,6 +209,9 @@ export default class Bullet extends BaseColliderComponent {
             this.shadow.color = cc.color(255, 0, 0)
             this.shadow.opacity = 60
         }
+        this.shadowSprite.spriteFrame = this.sprite.spriteFrame
+        this.shadow.color = cc.Color.BLACK
+        this.shadow.opacity = 80
     }
     private getSpriteFrameByName(resName: string, suffix?: string, needDefaultSuffix?: boolean): cc.SpriteFrame {
         let spriteFrame = Logic.spriteFrameRes(resName + suffix)

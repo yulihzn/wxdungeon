@@ -31,16 +31,16 @@ export default class CommonData {
     blockDamage: number = 0 //弹反伤害
     remoteCooldown: number = 0 //远程冷却或者充能时间
     criticalStrikeRate: number = 0 //暴击%
-    blockPhysical: number = 0 //物理格挡百分比%
-    blockMagic: number = 0 //魔法格挡百分比%
-    lifeDrain: number = 0 //吸血%
-    dodge: number = 0 //闪避%
+    blockPhysicalRate: number = 0 //物理格挡百分比%
+    blockMagicRate: number = 0 //魔法格挡百分比%
+    lifeDrainRate: number = 0 //吸血%
+    dodgeRate: number = 0 //闪避%
     remoteCritRate: number = 0 //远程暴击%
     remoteInterval: number = 0 //远程子弹间隔
     remoteAngle: number = 0 //子弹准度偏离范围
 
     realRate = 0 //真实伤害几率%
-    magicDefence = 0 //魔法抗性%
+    magicDefenceRate = 0 //魔法抗性%
     iceRate = 0 //冰元素几率%
     fireRate = 0 //火元素几率%
     lighteningRate = 0 //雷元素几率%
@@ -130,54 +130,64 @@ export default class CommonData {
     }
     /**相加 */
     public add(data: CommonData): CommonData {
-        this.maxHealth += data.maxHealth ? data.maxHealth : 0
-        this.maxDream += data.maxDream ? data.maxDream : 0
-        this.damageMin += data.damageMin ? data.damageMin : 0
-        this.damageMax += data.damageMax ? data.damageMax : 0
-        this.maxAmmo += data.maxAmmo ? data.maxAmmo : 0
-        this.ammoRecovery += data.ammoRecovery ? data.ammoRecovery : 0
-        this.remoteDamage += data.remoteDamage ? data.remoteDamage : 0
-        this.defence += data.defence ? data.defence : 0
-        this.damageBack += data.damageBack ? data.damageBack : 0
-        this.moveSpeed += data.moveSpeed ? data.moveSpeed : 0
-        this.attackSpeed += data.attackSpeed ? data.attackSpeed : 0
-        this.jumpSpeed += data.jumpSpeed ? data.jumpSpeed : 0
-        this.jumpHeight += data.jumpHeight ? data.jumpHeight : 0
-        this.remoteCooldown += data.remoteCooldown ? data.remoteCooldown : 0
-        this.remoteInterval += data.remoteInterval ? data.remoteInterval : 0
-        this.remoteAngle += data.remoteAngle ? data.remoteAngle : 0
-        this.realDamage += data.realDamage ? data.realDamage : 0
-        this.magicDamage += data.magicDamage ? data.magicDamage : 0
-        this.blockDamage += data.blockDamage ? data.blockDamage : 0
+        for (const key of Object.keys(this)) {
+            if (key.indexOf('Rate') != -1) {
+                this[key] = DataUtils.addRateFixed(this[key], data[key])
+            } else if (key.indexOf('Percent') != -1) {
+                this[key] = DataUtils.addPercentFixed(this[key], data[key])
+            } else {
+                this[key] += data[key] ? data[key] : 0
+            }
+        }
+        // this.maxHealth += data.maxHealth ? data.maxHealth : 0
+        // this.maxDream += data.maxDream ? data.maxDream : 0
+        // this.damageMin += data.damageMin ? data.damageMin : 0
+        // this.damageMax += data.damageMax ? data.damageMax : 0
+        // this.maxAmmo += data.maxAmmo ? data.maxAmmo : 0
+        // this.ammoRecovery += data.ammoRecovery ? data.ammoRecovery : 0
+        // this.remoteDamage += data.remoteDamage ? data.remoteDamage : 0
+        // this.defence += data.defence ? data.defence : 0
+        // this.damageBack += data.damageBack ? data.damageBack : 0
+        // this.moveSpeed += data.moveSpeed ? data.moveSpeed : 0
+        // this.attackSpeed += data.attackSpeed ? data.attackSpeed : 0
+        // this.jumpSpeed += data.jumpSpeed ? data.jumpSpeed : 0
+        // this.jumpHeight += data.jumpHeight ? data.jumpHeight : 0
+        // this.remoteCooldown += data.remoteCooldown ? data.remoteCooldown : 0
+        // this.remoteInterval += data.remoteInterval ? data.remoteInterval : 0
+        // this.remoteAngle += data.remoteAngle ? data.remoteAngle : 0
+        // this.realDamage += data.realDamage ? data.realDamage : 0
+        // this.magicDamage += data.magicDamage ? data.magicDamage : 0
+        // this.blockDamage += data.blockDamage ? data.blockDamage : 0
 
-        this.iceRate = DataUtils.addRateFixed(this.iceRate, data.iceRate)
-        this.fireRate = DataUtils.addRateFixed(this.fireRate, data.fireRate)
-        this.lighteningRate = DataUtils.addRateFixed(this.lighteningRate, data.lighteningRate)
-        this.toxicRate = DataUtils.addRateFixed(this.toxicRate, data.toxicRate)
-        this.curseRate = DataUtils.addRateFixed(this.curseRate, data.curseRate)
-        this.blockPhysical = DataUtils.addRateFixed(this.blockPhysical, data.blockPhysical)
-        this.blockMagic = DataUtils.addRateFixed(this.blockMagic, data.blockMagic)
-        this.magicDefence = DataUtils.addRateFixed(this.magicDefence, data.magicDefence)
-        this.realRate = DataUtils.addRateFixed(this.realRate, data.realRate)
-        this.lifeDrain = DataUtils.addRateFixed(this.lifeDrain, data.lifeDrain)
-        this.dodge = DataUtils.addRateFixed(this.dodge, data.dodge)
-        this.remoteCritRate = DataUtils.addRateFixed(this.remoteCritRate, data.remoteCritRate)
-        this.criticalStrikeRate = DataUtils.addRateFixed(this.criticalStrikeRate, data.criticalStrikeRate)
-        this.maxHealthPercent = DataUtils.addPercentFixed(this.maxHealthPercent, data.maxHealthPercent)
-        this.maxDreamPercent = DataUtils.addPercentFixed(this.maxDreamPercent, data.maxDreamPercent)
-        this.maxAmmoPercent = DataUtils.addPercentFixed(this.maxAmmoPercent, data.maxAmmoPercent)
-        this.ammoRecoveryPercent = DataUtils.addPercentFixed(this.ammoRecoveryPercent, data.ammoRecoveryPercent)
-        this.damageMinPercent = DataUtils.addPercentFixed(this.damageMinPercent, data.damageMinPercent)
-        this.damageMaxPercent = DataUtils.addPercentFixed(this.damageMaxPercent, data.damageMaxPercent)
-        this.damageBackPercent = DataUtils.addPercentFixed(this.damageBackPercent, data.damageBackPercent)
-        this.defencePercent = DataUtils.addPercentFixed(this.defencePercent, data.defencePercent)
-        this.moveSpeedPercent = DataUtils.addPercentFixed(this.moveSpeedPercent, data.moveSpeedPercent)
-        this.attackSpeedPercent = DataUtils.addPercentFixed(this.attackSpeedPercent, data.attackSpeedPercent)
-        this.jumpSpeedPercent = DataUtils.addPercentFixed(this.jumpSpeedPercent, data.jumpSpeedPercent)
-        this.jumpHeightPercent = DataUtils.addPercentFixed(this.jumpHeightPercent, data.jumpHeightPercent)
-        this.remoteDamagePercent = DataUtils.addPercentFixed(this.remoteDamagePercent, data.remoteDamagePercent)
-        this.realDamagePercent = DataUtils.addPercentFixed(this.realDamagePercent, data.realDamagePercent)
-        this.magicDamagePercent = DataUtils.addPercentFixed(this.magicDamagePercent, data.magicDamagePercent)
+        // this.iceRate = DataUtils.addRateFixed(this.iceRate, data.iceRate)
+        // this.fireRate = DataUtils.addRateFixed(this.fireRate, data.fireRate)
+        // this.lighteningRate = DataUtils.addRateFixed(this.lighteningRate, data.lighteningRate)
+        // this.toxicRate = DataUtils.addRateFixed(this.toxicRate, data.toxicRate)
+        // this.curseRate = DataUtils.addRateFixed(this.curseRate, data.curseRate)
+        // this.blockPhysicalRate = DataUtils.addRateFixed(this.blockPhysicalRate, data.blockPhysicalRate)
+        // this.blockMagicRate = DataUtils.addRateFixed(this.blockMagicRate, data.blockMagicRate)
+        // this.magicDefenceRate = DataUtils.addRateFixed(this.magicDefenceRate, data.magicDefenceRate)
+        // this.realRate = DataUtils.addRateFixed(this.realRate, data.realRate)
+        // this.lifeDrainRate = DataUtils.addRateFixed(this.lifeDrainRate, data.lifeDrainRate)
+        // this.dodgeRate = DataUtils.addRateFixed(this.dodgeRate, data.dodgeRate)
+        // this.remoteCritRate = DataUtils.addRateFixed(this.remoteCritRate, data.remoteCritRate)
+        // this.criticalStrikeRate = DataUtils.addRateFixed(this.criticalStrikeRate, data.criticalStrikeRate)
+
+        // this.maxHealthPercent = DataUtils.addPercentFixed(this.maxHealthPercent, data.maxHealthPercent)
+        // this.maxDreamPercent = DataUtils.addPercentFixed(this.maxDreamPercent, data.maxDreamPercent)
+        // this.maxAmmoPercent = DataUtils.addPercentFixed(this.maxAmmoPercent, data.maxAmmoPercent)
+        // this.ammoRecoveryPercent = DataUtils.addPercentFixed(this.ammoRecoveryPercent, data.ammoRecoveryPercent)
+        // this.damageMinPercent = DataUtils.addPercentFixed(this.damageMinPercent, data.damageMinPercent)
+        // this.damageMaxPercent = DataUtils.addPercentFixed(this.damageMaxPercent, data.damageMaxPercent)
+        // this.damageBackPercent = DataUtils.addPercentFixed(this.damageBackPercent, data.damageBackPercent)
+        // this.defencePercent = DataUtils.addPercentFixed(this.defencePercent, data.defencePercent)
+        // this.moveSpeedPercent = DataUtils.addPercentFixed(this.moveSpeedPercent, data.moveSpeedPercent)
+        // this.attackSpeedPercent = DataUtils.addPercentFixed(this.attackSpeedPercent, data.attackSpeedPercent)
+        // this.jumpSpeedPercent = DataUtils.addPercentFixed(this.jumpSpeedPercent, data.jumpSpeedPercent)
+        // this.jumpHeightPercent = DataUtils.addPercentFixed(this.jumpHeightPercent, data.jumpHeightPercent)
+        // this.remoteDamagePercent = DataUtils.addPercentFixed(this.remoteDamagePercent, data.remoteDamagePercent)
+        // this.realDamagePercent = DataUtils.addPercentFixed(this.realDamagePercent, data.realDamagePercent)
+        // this.magicDamagePercent = DataUtils.addPercentFixed(this.magicDamagePercent, data.magicDamagePercent)
         return this
     }
 }

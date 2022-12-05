@@ -115,7 +115,7 @@ export default class PlayerData {
         let data = new CommonData()
             .add(this.common)
             .add(this.statusTotalData.Common)
-            .add(this.equipmentTotalData.Common)
+            .add(this.equipmentTotalData.FinalCommon)
             .add(this.avatarData.professionData.Common)
             .add(this.oilGoldData.Common)
         return data
@@ -190,9 +190,9 @@ export default class PlayerData {
         let data = this.FinalCommon
         let finalDamageData = damageData.clone()
         let defence = data.Defence
-        let defenceMagic = data.magicDefence / 100
-        let blockPhysical = data.blockPhysical / 100
-        let blockMagic = data.blockMagic / 100
+        let defenceMagic = data.magicDefenceRate / 100
+        let blockPhysical = data.blockPhysicalRate / 100
+        let blockMagic = data.blockMagicRate / 100
         //伤害=攻击*(1-(护甲*0.06)/(护甲*0.06+1))
         //伤害 = 攻击 + 2-0.94^(-护甲)
         if (defence >= 0) {
@@ -219,7 +219,7 @@ export default class PlayerData {
     public getLifeDrain(): number {
         let data = this.FinalCommon
         let chance = data.criticalStrikeRate / 100
-        let drainRate = data.lifeDrain / 100
+        let drainRate = data.lifeDrainRate / 100
         let drain = 0
         if (Random.rand() < drainRate) {
             drain = 0.2
