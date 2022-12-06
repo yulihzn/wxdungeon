@@ -176,7 +176,7 @@ export default class EquipmentManager extends BaseManager {
     static readonly PURPLE_AFFIX_RATE = [0.3, 0.6, 0.8, 1] //   30% 30% 20% 20%
     static readonly YELLOW_AFFIX_RATE = [0.2, 0.4, 0.7, 1] //   20% 20% 30% 30%
     static readonly ORANGE_AFFIX_RATE = [0.1, 0.2, 0.5, 1] //   10% 10% 30% 50%
-    static readonly QUALITY_RATE = [0.81, 0.91, 0.96, 0.99, 0.999] //   40% 10% 5% 3% 0.9% 0.1%
+    static readonly QUALITY_RATE = [0.81, 0.91, 0.96, 0.99, 0.999] //   81% 10% 5% 3% 0.9% 0.1%
     static readonly QUALITY_WHITE = 0
     static readonly QUALITY_GREEN = 1
     static readonly QUALITY_BLUE = 2

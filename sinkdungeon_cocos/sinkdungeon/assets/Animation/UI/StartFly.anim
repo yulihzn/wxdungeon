@@ -1,0 +1,49 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "StartFly",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.35,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "837d06a1-e4a4-4102-9641-8aca695ea868"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "61b9989f-0096-4669-8837-caa38dc75c67"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "b87b909f-865a-4735-b441-032ff48e6348"
+            }
+          },
+          {
+            "frame": 1,
+            "value": {
+              "__uuid__": "28f97300-20e1-453b-a207-06d004d92211"
+            }
+          },
+          {
+            "frame": 1.3333333333333333,
+            "value": {
+              "__uuid__": "837d06a1-e4a4-4102-9641-8aca695ea868"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

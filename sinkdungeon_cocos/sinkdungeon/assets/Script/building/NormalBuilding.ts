@@ -17,6 +17,7 @@ import FromData from '../data/FromData'
 import Actor from '../base/Actor'
 import Tips from '../ui/Tips'
 import Player from '../logic/Player'
+import MapManager from '../manager/MapManager'
 
 const { ccclass, property } = cc._decorator
 
@@ -151,7 +152,7 @@ export default class NormalBuilding extends Building {
             this.hitLight(false)
         }, 0.15)
         if (this.data.currentHealth <= 0) {
-            let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed))
+            let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed), MapManager.RANDOM_BUILDING)
             let arr = this.data.breakEquipItems.split('#')
             for (let name of arr) {
                 let temp = name.split(',')

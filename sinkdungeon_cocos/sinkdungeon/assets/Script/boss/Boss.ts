@@ -11,6 +11,7 @@ import NonPlayerData from '../data/NonPlayerData'
 import StatusData from '../data/StatusData'
 import Shooter from '../logic/Shooter'
 import EquipmentManager from '../manager/EquipmentManager'
+import MapManager from '../manager/MapManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -101,7 +102,7 @@ export default abstract class Boss extends Actor {
     }
     getLoot(isSteal?: boolean) {
         if (this.dungeon) {
-            let rand4save = Logic.mapManager.getRandom4Save(this.seed)
+            let rand4save = Logic.mapManager.getRandom4Save(this.seed, MapManager.RANDOM_BOSS)
             EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: this.node.position, count: isSteal ? 9 : 19 })
             if (!isSteal) {
                 EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.node.position, count: 100 })

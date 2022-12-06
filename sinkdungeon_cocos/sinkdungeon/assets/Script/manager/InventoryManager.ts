@@ -48,17 +48,6 @@ export default class InventoryManager {
         ITEM: 2, //物品区
         CUPBOARD: 3 //衣柜
     })
-    static isEquipTag(str: string) {
-        if (!str || str.length < 1) {
-            return false
-        }
-        for (let name of InventoryManager.EQUIP_TAGS) {
-            if (str.indexOf(name) > -1) {
-                return true
-            }
-        }
-        return false
-    }
 
     //buffer效果
     buffer: EquipmentData = new EquipmentData()
@@ -73,6 +62,15 @@ export default class InventoryManager {
     private totalEquipData = new EquipmentData()
     clear(): void {}
     constructor() {
+        this.itemList = []
+        this.equips = {}
+        this.inventoryList = []
+        this.itemCoolDownList = []
+        this.emptyEquipData = new EquipmentData()
+        this.totalEquipData = new EquipmentData()
+        this.suitMap = {}
+        this.suitEquipMap = {}
+        this.furnitureMap = new Map()
         for (let name of InventoryManager.EQUIP_TAGS) {
             this.equips[name] = new EquipmentData()
         }
@@ -82,9 +80,6 @@ export default class InventoryManager {
             this.itemList.push(data)
             this.itemCoolDownList.push(new NextStep())
         }
-        this.suitMap = {}
-        this.suitEquipMap = {}
-        this.furnitureMap = new Map()
     }
     getEquipBySuit(e: EquipmentData): EquipmentData {
         if (e && this.suitEquipMap[e.suitType]) {
@@ -125,7 +120,17 @@ export default class InventoryManager {
         e.updateFinalCommon()
         this.totalEquipData = e
     }
-
+    static isEquipTag(str: string) {
+        if (!str || str.length < 1) {
+            return false
+        }
+        for (let name of InventoryManager.EQUIP_TAGS) {
+            if (str.indexOf(name) > -1) {
+                return true
+            }
+        }
+        return false
+    }
     static buildItemInventoryData(itemData: ItemData) {
         let newdata = new InventoryData()
         newdata.itemData = new ItemData()

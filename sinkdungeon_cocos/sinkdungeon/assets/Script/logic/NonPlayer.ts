@@ -47,6 +47,7 @@ import FrameAvatar from './FrameAvatar'
 import Tips from '../ui/Tips'
 import ActorIcon from '../ui/ActorIcon'
 import EquipmentManager from '../manager/EquipmentManager'
+import MapManager from '../manager/MapManager'
 
 @ccclass
 export default class NonPlayer extends PlayActor {
@@ -962,7 +963,7 @@ export default class NonPlayer extends PlayActor {
         }, 2)
     }
     public getLoot() {
-        let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed))
+        let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed), MapManager.RANDOM_NONPLAYER)
         let rand = rand4save.rand()
         let equipPercent = 0.1
         let percent = 0.75

@@ -18,6 +18,7 @@ import Box from './Box'
 import CCollider from '../collider/CCollider'
 import ActorUtils from '../utils/ActorUtils'
 import NormalBuilding from './NormalBuilding'
+import MapManager from '../manager/MapManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -173,7 +174,7 @@ export default class InteractBuilding extends Building {
                 this.changeRes(this.resName, 'anim004')
                 this.sprite.node.angle = 0
                 this.updateCollider()
-                let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed))
+                let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed), MapManager.RANDOM_BUILDING)
                 let rand = rand4save.rand()
                 if (rand > 0.6 && rand < 0.8) {
                     EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: this.entity.Transform.position, count: rand4save.getRandomNum(1, 3) })

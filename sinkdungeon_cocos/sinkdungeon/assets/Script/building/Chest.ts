@@ -8,6 +8,7 @@ import EquipmentManager from '../manager/EquipmentManager'
 import CCollider from '../collider/CCollider'
 import Item from '../item/Item'
 import AffixManager from '../manager/AffixManager'
+import MapManager from '../manager/MapManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -72,7 +73,7 @@ export default class Chest extends Building {
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon)
                     if (dungeon) {
-                        let rand4save = Logic.mapManager.getRandom4Save(this.seed)
+                        let rand4save = Logic.mapManager.getRandom4Save(this.seed, MapManager.RANDOM_BUILDING)
                         if (Logic.isCheatMode) {
                             // dungeon.addEquipment(EquipmentManager.CLOTHES_JUNGLE, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment(EquipmentManager.SHOES_JUNGLE, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)

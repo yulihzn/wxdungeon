@@ -24,10 +24,12 @@ export default class MapManager {
     isloaded: boolean = false
     //地图数据管理类
     rectDungeon: RectDungeon = null
-    rand4save: Random4Save
     randMap: Map<string, Random4Save> = new Map()
+    static readonly RANDOM_DEFAULT = 'RANDOM_DEFAULT'
     static readonly RANDOM_EQUIP = 'RANDOM_EQUIP'
     static readonly RANDOM_BUILDING = 'RANDOM_BUILDING'
+    static readonly RANDOM_NONPLAYER = 'RANDOM_NONPLAYER'
+    static readonly RANDOM_BOSS = 'RANDOM_BOSS'
     constructor() {
         this.init()
     }
@@ -38,13 +40,12 @@ export default class MapManager {
     }
     clear(): void {
         this.rectDungeon = null
-        this.rand4save = null
         this.randMap.clear()
     }
 
     reset() {
         let data = Logic.worldLoader.getCurrentLevelData()
-        this.rand4save = null
+        this.randMap.clear()
         //地图重新生成
         this.rectDungeon = new RectDungeon()
         if (Logic.profileManager.data && Logic.profileManager.data.rectDungeons[`${data.chapter}${data.index}`]) {
@@ -208,21 +209,21 @@ export default class MapManager {
             }
             return this.randMap.get(key)
         } else {
-            if (!this.rand4save) {
-                this.rand4save = new Random4Save(0)
+            if (!this.randMap.has(MapManager.RANDOM_DEFAULT)) {
+                this.randMap.set(MapManager.RANDOM_DEFAULT, new Random4Save(0))
             }
+            return this.randMap.get(MapManager.RANDOM_DEFAULT)
         }
-        return this.rand4save
     }
     public getRebornSeed(seed: number) {
         return seed + Logic.mapManager.getCurrentRoom().reborn * 100000000
     }
-    public getSeedFromRoom() {
-        let rand4save = Logic.mapManager.getCurrentRoomRandom4Save(MapManager.RANDOM_BUILDING)
+    public getSeedFromRoom(keyType: string) {
+        let rand4save = Logic.mapManager.getCurrentRoomRandom4Save(keyType)
         return rand4save.getRandomNum(0, 100000000)
     }
-    public getRandom4Save(seed: number) {
-        let rand4save = new Random4Save(seed > 0 ? seed : this.getSeedFromRoom())
+    public getRandom4Save(seed: number, keyType: string) {
+        let rand4save = new Random4Save(seed > 0 ? seed : this.getSeedFromRoom(keyType))
         rand4save.rand()
         return rand4save
     }

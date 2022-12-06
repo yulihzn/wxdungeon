@@ -15,6 +15,7 @@ import IndexZ from '../utils/IndexZ'
 import ActorUtils from '../utils/ActorUtils'
 import CCollider from '../collider/CCollider'
 import EquipmentManager from '../manager/EquipmentManager'
+import MapManager from '../manager/MapManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -271,7 +272,7 @@ export default class Slime extends Boss {
         }, 5)
         if (this.dungeon) {
             if (this.slimeType == 0) {
-                let rand4save = Logic.mapManager.getRandom4Save(this.seed)
+                let rand4save = Logic.mapManager.getRandom4Save(this.seed, MapManager.RANDOM_BOSS)
                 Achievement.addMonsterKillAchievement(this.data.resName)
                 EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.entity.Transform.position, count: 100 })
                 EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.entity.Transform.position, res: Item.HEART })

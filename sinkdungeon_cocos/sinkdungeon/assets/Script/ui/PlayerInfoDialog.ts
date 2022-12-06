@@ -66,7 +66,7 @@ export default class PlayerInfoDialog extends cc.Component {
         this.realDamage = this.node.getChildByName('layout').getChildByName('realDamage').getChildByName('label').getComponent(cc.Label)
         this.realRate = this.node.getChildByName('layout').getChildByName('realRate').getChildByName('label').getComponent(cc.Label)
         this.magicDamage = this.node.getChildByName('layout').getChildByName('magicDamage').getChildByName('label').getComponent(cc.Label)
-        this.magicDefence = this.node.getChildByName('layout').getChildByName('magicDefence').getChildByName('label').getComponent(cc.Label)
+        this.magicDefence = this.node.getChildByName('layout').getChildByName('magicDefenceRate').getChildByName('label').getComponent(cc.Label)
         this.iceRate = this.node.getChildByName('layout').getChildByName('iceRate').getChildByName('label').getComponent(cc.Label)
         this.fireRate = this.node.getChildByName('layout').getChildByName('fireRate').getChildByName('label').getComponent(cc.Label)
         this.lighteningRate = this.node.getChildByName('layout').getChildByName('lighteningRate').getChildByName('label').getComponent(cc.Label)

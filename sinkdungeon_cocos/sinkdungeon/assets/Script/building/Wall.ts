@@ -5,6 +5,7 @@ import Building from './Building'
 import LevelData from '../data/LevelData'
 import CCollider from '../collider/CCollider'
 import Utils from '../utils/Utils'
+import MapManager from '../manager/MapManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -75,7 +76,7 @@ export default class Wall extends Building {
         return this.type == Wall.TYPE_EMPTY
     }
     changeRes(wallName: string) {
-        let rand4save = Logic.mapManager.getRandom4Save(this.seed)
+        let rand4save = Logic.mapManager.getRandom4Save(this.seed, MapManager.RANDOM_BUILDING)
         let spriteframe = Logic.spriteFrameRes(wallName)
         if (this.type == Wall.TYPE_EMPTY) {
             this.node.opacity = 0

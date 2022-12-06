@@ -50,6 +50,7 @@ import NormalBuilding from '../building/NormalBuilding'
 import Stairs from '../building/Stairs'
 import DecorationWall from '../building/DecorationWall'
 import Ladder from '../building/Ladder'
+import MapManager from './MapManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -237,7 +238,7 @@ export default class BuildingManager extends BaseManager {
             b.entity.NodeRender.node = building
             b.entity.Transform.position = Dungeon.getPosInMap(indexPos)
             b.entity.Move.isStatic = !moveable
-            b.seed = Logic.mapManager.getSeedFromRoom()
+            b.seed = Logic.mapManager.getSeedFromRoom(MapManager.RANDOM_BUILDING)
             if (id && id.length > 0) {
                 b.data.valueCopy(Logic.normalBuildings[id])
             } else {
@@ -587,7 +588,7 @@ export default class BuildingManager extends BaseManager {
             let ta = table.getComponent(ShopTable)
             ta.setDefaultPos(indexPos)
             let isReborn = Logic.mapManager.getCurrentRoom().isReborn
-            let rand4save = Logic.mapManager.getRandom4Save(ta.seed)
+            let rand4save = Logic.mapManager.getRandom4Save(ta.seed, MapManager.RANDOM_BUILDING)
             ta.data.shopType = rand4save.getRandomNum(0, 100) > 10 ? ShopTable.EQUIPMENT : ShopTable.ITEM
             let saveTable = Logic.mapManager.getCurrentMapBuilding(ta.data.defaultPos)
             if (saveTable) {
@@ -595,7 +596,7 @@ export default class BuildingManager extends BaseManager {
                     saveTable.isSaled = false
                     saveTable.equipdata = null
                     saveTable.itemdata = null
-                    rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(ta.seed))
+                    rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(ta.seed), MapManager.RANDOM_BUILDING)
                     saveTable.shopType = rand4save.getRandomNum(0, 100) > 10 ? ShopTable.EQUIPMENT : ShopTable.ITEM
                 }
                 ta.data.valueCopy(saveTable)
@@ -667,11 +668,11 @@ export default class BuildingManager extends BaseManager {
                 if (mapDataStr == '+1') {
                     df.init(dungeon, 'floor_exitarrow', 4, 0)
                 } else if (mapDataStr == '+2') {
-                    df.init(dungeon, 'floor_exitarrow', 4, 45)
-                } else if (mapDataStr == '+3') {
                     df.init(dungeon, 'floor_exitarrow', 4, 90)
+                } else if (mapDataStr == '+3') {
+                    df.init(dungeon, 'floor_exitarrow', 4, 180)
                 } else if (mapDataStr == '+4') {
-                    df.init(dungeon, 'floor_exitarrow', 4, -45)
+                    df.init(dungeon, 'floor_exitarrow', 4, 270)
                 } else if (mapDataStr == '+5') {
                     df.init(dungeon, 'floor_final', 4)
                 } else if (mapDataStr == '+6') {

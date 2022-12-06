@@ -58,6 +58,7 @@ export default class Logic extends cc.Component {
         2000000, 3000000, 5000000, 10000000
     ]
 
+    /********************************静态资源 *********************************/
     static equipments: { [key: string]: EquipmentData } = null
     static equipmentNameList: string[] = []
     static itemNameList: string[] = []
@@ -97,11 +98,12 @@ export default class Logic extends cc.Component {
     static bgmClips: { [key: string]: cc.AudioClip } = {}
     //对话资源
     static dialogues: { [key: string]: DialogueData } = null
-    static level = 0
-    static chapterIndex = 0
-    static chapterMaxIndex = 0
-    static playerData: PlayerData = new PlayerData()
-    static inventoryManager: InventoryManager = new InventoryManager()
+    /******************************************************************************/
+    static level = 0 //关卡
+    static chapterIndex = 0 //章节
+    static chapterMaxIndex = 0 //到达的最大章节
+    static playerData: PlayerData = new PlayerData() //玩家数据
+    static inventoryManager: InventoryManager = new InventoryManager() //装备数据
     static mapManager: MapManager = new MapManager()
     static worldLoader: WorldLoader = new WorldLoader()
     static realCoins = 0 //真实货币，真是货币无法从梦境里获得，但是会出现对应的npc会进行这样的交易
@@ -350,7 +352,7 @@ export default class Logic extends cc.Component {
         Logic.saveData()
     }
     static loadingNextRoom(dir: number) {
-        Logic.mapManager.rand4save = null
+        Logic.mapManager.randMap.clear()
         //保存数据
         Logic.saveData()
         AudioPlayer.play(AudioPlayer.EXIT)

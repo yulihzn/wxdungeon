@@ -12,6 +12,7 @@ import LoadingManager from './LoadingManager'
 import Utils from '../utils/Utils'
 import AudioPlayer from '../utils/AudioPlayer'
 import ActorIconList from '../ui/ActorIconList'
+import MapManager from './MapManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -250,7 +251,7 @@ export default class MonsterManager extends BaseManager {
             let data = new NonPlayerData()
             monster.seed = this.getRandomMonsterSeed()
             monster.killPlayerCount = Logic.getKillPlayerCount(monster.seed)
-            let rand4save = Logic.mapManager.getRandom4Save(monster.seed)
+            let rand4save = Logic.mapManager.getRandom4Save(monster.seed, MapManager.RANDOM_NONPLAYER)
             monster.dungeon = dungeon
             data.valueCopy(Logic.monsters[resName])
             let reborn = Logic.mapManager.getCurrentRoom().reborn

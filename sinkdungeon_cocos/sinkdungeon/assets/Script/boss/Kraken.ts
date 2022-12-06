@@ -12,6 +12,7 @@ import Achievement from '../logic/Achievement'
 import IndexZ from '../utils/IndexZ'
 import Item from '../item/Item'
 import EquipmentManager from '../manager/EquipmentManager'
+import MapManager from '../manager/MapManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -141,7 +142,7 @@ export default class Kraken extends Boss {
     }
     getLoot(isSteal?: boolean) {
         if (this.dungeon) {
-            let rand4save = Logic.mapManager.getRandom4Save(this.seed)
+            let rand4save = Logic.mapManager.getRandom4Save(this.seed, MapManager.RANDOM_BOSS)
             let p = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2))
             let pos = Dungeon.getPosInMap(p)
             EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: pos, count: 19 })

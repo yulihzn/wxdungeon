@@ -5,6 +5,7 @@ import Building from './Building'
 import IndexZ from '../utils/IndexZ'
 import BuildingData from '../data/BuildingData'
 import EquipmentManager from '../manager/EquipmentManager'
+import MapManager from '../manager/MapManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -39,7 +40,7 @@ export default class ShopTable extends Building {
         if (!this.data.isSaled) {
             let dungeon = this.node.parent.getComponent(Dungeon)
             if (dungeon) {
-                let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed))
+                let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed), MapManager.RANDOM_BUILDING)
                 if (this.data.shopType == ShopTable.EQUIPMENT) {
                     dungeon.addEquipment(
                         Logic.getRandomEquipType(rand4save),
