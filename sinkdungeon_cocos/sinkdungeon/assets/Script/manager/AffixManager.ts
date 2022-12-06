@@ -74,7 +74,17 @@ export default class AffixManager {
         let data = new AffixData()
         data.groupId = map.id //下标是用来防止重复
         data.factor = map.factor //装备等级增加系数
-        data.index = rand4save.getRandomNum(0, 3) //词缀强度
+        let r = rand4save.rand()
+        //词缀强度80% 15% 4% 1%
+        if (r < 0.8) {
+            data.index = 0
+        } else if (r >= 0.8 && r < 0.95) {
+            data.index = 1
+        } else if (r >= 0.95 && r < 0.99) {
+            data.index = 2
+        } else {
+            data.index = 3
+        }
         if (data.index == 3) {
             data.name = map.affixs[0] //词缀为4的时候拥有名字
         }

@@ -668,11 +668,11 @@ export default class BuildingManager extends BaseManager {
                 if (mapDataStr == '+1') {
                     df.init(dungeon, 'floor_exitarrow', 4, 0)
                 } else if (mapDataStr == '+2') {
-                    df.init(dungeon, 'floor_exitarrow', 4, 90)
+                    df.init(dungeon, 'floor_exitarrow', 4, -90)
                 } else if (mapDataStr == '+3') {
                     df.init(dungeon, 'floor_exitarrow', 4, 180)
                 } else if (mapDataStr == '+4') {
-                    df.init(dungeon, 'floor_exitarrow', 4, 270)
+                    df.init(dungeon, 'floor_exitarrow', 4, 90)
                 } else if (mapDataStr == '+5') {
                     df.init(dungeon, 'floor_final', 4)
                 } else if (mapDataStr == '+6') {

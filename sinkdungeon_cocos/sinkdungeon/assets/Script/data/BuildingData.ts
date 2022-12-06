@@ -18,7 +18,7 @@ export default class BuildingData {
     defaultPos: cc.Vec3 //默认下标
     position: cc.Vec3 //当前位置
     triggerCount = 0 //触发次数 宝箱打开或者建筑物触发
-    quality = 1 //宝箱品质
+    quality = 0 //宝箱品质
     equipdata: EquipmentData //携带装备数据
     itemdata: ItemData //携带物品数据
     price = 60 //商品价格
@@ -64,7 +64,6 @@ export default class BuildingData {
             this.itemdata = new ItemData()
             this.itemdata.valueCopy(data.itemdata)
         }
-        this.quality = data.quality ? data.quality : 1
         this.generatorList = []
         if (data.generatorList) {
             this.generatorList = data.generatorList

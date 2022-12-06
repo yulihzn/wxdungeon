@@ -122,7 +122,7 @@ export default class MapManager {
         }
     }
     getPosKey(pos: cc.Vec3) {
-        return `x=${pos}y=${pos}`
+        return `x=${pos.x}y=${pos.y}`
     }
 
     /** 获取当前房间指定建筑*/
