@@ -913,7 +913,7 @@ export default class Player extends PlayActor {
     private addDashGhost(shooterEx: Shooter) {
         let aoe = shooterEx.fireAoe(
             this.aoe,
-            new AreaOfEffectData().init(0.4, 2, 0, 1, IndexZ.ACTOR, false, false, false, false, false, new DamageData(1), new FromData(), []),
+            new AreaOfEffectData().init(0.4, 2, 0, 1, IndexZ.ACTOR, false, false, false, false, false, new DamageData(0), new FromData(), []),
             shooterEx.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v3(0, this.entity.Transform.z))),
             0,
             null,

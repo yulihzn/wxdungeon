@@ -54,7 +54,7 @@ export default class AirExit extends Building {
         this.node.width = (Dungeon.TILE_SIZE / 8) * length
         this.setTargetTags(CCollider.TAG.PLAYER, CCollider.TAG.BULLET)
         for (let c of this.ccolliders) {
-            c.setSize(cc.size(this.node.width, this.node.height))
+            c.setSize(cc.size(this.node.width, Dungeon.TILE_SIZE / 8))
         }
         this.node.zIndex = IndexZ.OVERHEAD
         this.changeStatus(AirExit.STATUS_CLOSE)

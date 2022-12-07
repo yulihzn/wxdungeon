@@ -815,9 +815,9 @@ export default class NonPlayer extends PlayActor {
                 this.showBloodEffect(pos)
             }
 
-            //150ms后恢复状态
+            //100ms后恢复状态
             this.unschedule(this.hurtReset)
-            this.scheduleOnce(this.hurtReset, 0.15)
+            this.scheduleOnce(this.hurtReset, 0.1)
         }
         //打破隐形
         this.sprite.opacity = 255

@@ -500,7 +500,7 @@ export default class BuildingManager extends BaseManager {
         } else if (this.isFirstEqual(mapDataStr, '~')) {
             //生成水
             this.addWaterBuilding(mapDataStr, indexPos)
-        } else if (mapDataStr == '+3') {
+        } else if (mapDataStr == 'F1') {
             //生成汽艇
             Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL, (prefab: cc.Prefab) => {
                 this.addBuilding(prefab, indexPos)
