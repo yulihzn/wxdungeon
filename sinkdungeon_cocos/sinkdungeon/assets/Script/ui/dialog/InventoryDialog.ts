@@ -172,7 +172,7 @@ export default class InventoryDialog extends BaseDialog {
         if (isFuriniture) {
             cc.tween(this.layer).delay(0.3).to(0.5, { x: 145 }).start()
         } else if (isCast) {
-            cc.tween(this.layer).delay(0.3).to(0.5, { x: -145 }).start()
+            cc.tween(this.layer).delay(0.3).to(0.5, { x: -180 }).start()
         }
     }
     //toggle
@@ -787,15 +787,23 @@ export default class InventoryDialog extends BaseDialog {
         this.dismiss()
     }
     /**重铸强化升级装备 */
-    private castUpgradeStrengthenEquip([selectIndex, dataList, inventoryItemList]: [number, InventoryData[], InventoryItem[]], operatorType: number) {
-        if (inventoryItemList[selectIndex].data.type == InventoryItem.TYPE_EMPTY) {
-            return
-        }
-        if (this.currentSelectIndex == -1) {
-            return
+    private castUpgradeStrengthenEquip(operatorType: number) {
+        let isSelectEquip = this.currentSelectIndex >= InventoryManager.MAX_BAG && this.currentSelectIndex < InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP
+        let current: InventoryItem
+        if (isSelectEquip) {
+            current = this.equipList[this.currentSelectIndex - InventoryManager.MAX_BAG]
+            if (current.data.type == InventoryItem.TYPE_EMPTY) {
+                return
+            }
+        } else {
+            let [selectIndex, dataList, inventoryItemList] = this.getSelectInfo()
+
+            if (this.currentSelectIndex == -1) {
+                return
+            }
+            current = inventoryItemList[selectIndex]
         }
         AudioPlayer.play(AudioPlayer.SELECT)
-        let current = inventoryItemList[selectIndex]
         if (current.data.type == InventoryItem.TYPE_EQUIP) {
             //佩戴装备
             let equipData = new EquipmentData()
@@ -813,7 +821,7 @@ export default class InventoryDialog extends BaseDialog {
                         msg = '是否花费1000金币升级该装备'
                         break
                 }
-                GameAlertDialog.show(msg, '确定', '取消', (flag: boolean) => {
+                GameAlertDialog.show(msg, '敬请期待', '取消', (flag: boolean) => {
                     if (flag) {
                         switch (operatorType) {
                             case InventoryDialog.OPERATOR_CAST:
@@ -840,7 +848,7 @@ export default class InventoryDialog extends BaseDialog {
                     AudioPlayer.play(AudioPlayer.SELECT)
                     this.selectCastAffix(i)
                 },
-                affix
+                this
             )
         }
     }
@@ -866,7 +874,8 @@ export default class InventoryDialog extends BaseDialog {
         }
         for (let i = 0; i < data.affixs.length; i++) {
             this.layoutCast.children[i].active = true
-            this.layoutCast.children[i].getChildByName('label').getComponent(cc.Label).string = data.affixs[i].desc
+            let affix = data.affixs[i]
+            this.layoutCast.children[i].getChildByName('label').getComponent(cc.Label).string = `Lv.${affix.index == 10 ? 'MAX' : affix.index} ${affix.desc}`
         }
         this.upgradeButton.active = data.requireLevel < Logic.playerData.OilGoldData.level
         this.layoutCast.active = true
@@ -880,16 +889,16 @@ export default class InventoryDialog extends BaseDialog {
     }
     //button重铸
     clickCast() {
-        this.castUpgradeStrengthenEquip(this.getSelectInfo(), InventoryDialog.OPERATOR_CAST)
+        this.castUpgradeStrengthenEquip(InventoryDialog.OPERATOR_CAST)
     }
 
     //button强化
     clickStrengthen() {
-        this.castUpgradeStrengthenEquip(this.getSelectInfo(), InventoryDialog.OPERATOR_STRENGTHEN)
+        this.castUpgradeStrengthenEquip(InventoryDialog.OPERATOR_STRENGTHEN)
     }
 
     //button升级
     clickUpgrade() {
-        this.castUpgradeStrengthenEquip(this.getSelectInfo(), InventoryDialog.OPERATOR_UPGRADE)
+        this.castUpgradeStrengthenEquip(InventoryDialog.OPERATOR_UPGRADE)
     }
 }
