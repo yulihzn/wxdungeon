@@ -1844,6 +1844,7 @@
         "bulletLineExNum": 0,
         "isHeavy": 0,
         "price": 60,
+        "remoteAudio": "shuriken",
         "common": {
             "remoteDamage": 1,
             "damageMin": 0,

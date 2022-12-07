@@ -1487,7 +1487,7 @@ export default class Player extends PlayActor {
         if (this.data.isWakeUp) {
             this.data.isWakeUp = false
             this.avatar.playSleep()
-            Dialogue.play('daily000', () => {
+            Dialogue.play(Dialogue.DAILY_WAKE_UP, () => {
                 this.avatar.playWakeUp()
             })
         }

@@ -62,7 +62,7 @@ export default class RoomBed extends Building {
     enterDream(player: Player) {
         if (player && this.isFirst) {
             player.avatar.playStop()
-            Dialogue.play('daily001', (index: number) => {
+            Dialogue.play(Dialogue.DAILY_SLEEP, (index: number) => {
                 if (index == 0) {
                     return
                 }

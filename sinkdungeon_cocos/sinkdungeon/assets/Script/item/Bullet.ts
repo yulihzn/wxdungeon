@@ -549,33 +549,6 @@ export default class Bullet extends BaseColliderComponent {
             )
             AudioPlayer.play(AudioPlayer.BOOM)
             EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: true })
-
-            // let boom = cc.instantiate(this.boom).getComponent(AreaOfEffect)
-            // if (boom) {
-            //     boom.show(
-            //         this.node.parent,
-            //         this.node.position,
-            //         this.hv,
-            //         0,
-            //         new AreaOfEffectData().init(
-            //             1,
-            //             0.2,
-            //             0,
-            //             0,
-            //             IndexZ.OVERHEAD,
-            //             !this.isFromPlayer,
-            //             true,
-            //             true,
-            //             false,
-            //             false,
-            //             new DamageData(2),
-            //             FromData.getClone('爆炸', 'boom000anim004'),
-            //             []
-            //         )
-            //     )
-            //     AudioPlayer.play(AudioPlayer.BOOM)
-            //     EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: true })
-            // }
         }
         if (this.aoePrefab) {
             let aoe = cc.instantiate(this.aoePrefab).getComponent(AreaOfEffect)

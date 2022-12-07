@@ -279,7 +279,7 @@ export default class Dungeon extends cc.Component {
                             .to(0.5, { opacity: 0 })
                             .call(() => {
                                 if (Logic.totalTime < 5 && Logic.CHAPTER00 == Logic.chapterIndex) {
-                                    Dialogue.play(Controller.isMouseMode() ? 'course000' : 'course001')
+                                    Dialogue.play(Controller.isMouseMode() ? Dialogue.COURSE_FIRST_PC : Dialogue.COURSE_FIRST_MOBILE)
                                 }
                             })
                             .start()

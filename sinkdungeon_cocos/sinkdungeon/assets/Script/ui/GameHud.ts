@@ -14,6 +14,7 @@ import CellphoneDialog from './dialog/CellphoneDialog'
 import ActionSettingDialog from './dialog/ActionSettingDialog'
 import Utils from '../utils/Utils'
 import QuestBoardDialog from './dialog/QuestBoardDialog'
+import GameAlertDialog from './dialog/GameAlertDialog'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -73,6 +74,9 @@ export default class GameHud extends cc.Component {
     actionSettingDialog: ActionSettingDialog = null
     @property(QuestBoardDialog)
     questBoardDialog: QuestBoardDialog = null
+    @property(GameAlertDialog)
+    gameAlertDialog: GameAlertDialog = null
+
     private arrowList: cc.Node[] = []
     private isCompleteShowed = false
     private checkTimeDelay = 0
@@ -118,7 +122,7 @@ export default class GameHud extends cc.Component {
             this.showOilGoldInfo(false)
         })
         EventHelper.on(EventHelper.HUD_INVENTORY_SHOW, detail => {
-            this.showInventoryDialog(detail.id)
+            this.showInventoryDialog(detail.id, detail.isCast)
         })
         EventHelper.on(EventHelper.HUD_CANCEL_OR_PAUSE, detail => {
             this.cancelOrPause()
@@ -146,6 +150,12 @@ export default class GameHud extends cc.Component {
         })
         EventHelper.on(EventHelper.HUD_QUEST_BOARD_SHOW, detail => {
             this.showQuestBoardDialog()
+        })
+        EventHelper.on(EventHelper.DIALOG_ALERT_SHOW, detail => {
+            if (this.gameAlertDialog) {
+                this.gameAlertDialog.init(detail.msg, detail.ok, detail.cancel)
+                this.gameAlertDialog.show()
+            }
         })
         if (this.clock) {
             this.clock.string = `${Utils.getPlayTime(Logic.totalTime)}`
@@ -428,7 +438,7 @@ export default class GameHud extends cc.Component {
         this.showSettingsDialog()
     }
     //button
-    showInventoryDialog(id: string) {
+    showInventoryDialog(id: string, isCast: boolean) {
         if (!this.node) {
             return
         }
@@ -437,6 +447,8 @@ export default class GameHud extends cc.Component {
             this.inventoryDialog.dismiss()
         } else if (id && id.length > 0) {
             this.inventoryDialog.showFurniture(id)
+        } else if (isCast) {
+            this.inventoryDialog.showCast()
         } else {
             this.inventoryDialog.show()
         }

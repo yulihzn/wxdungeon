@@ -10,6 +10,7 @@ import ShadowOfSight from '../effect/ShadowOfSight'
 import { EventHelper } from '../logic/EventHelper'
 import Logic from '../logic/Logic'
 import Player from '../logic/Player'
+import Dialogue from '../ui/Dialogue'
 import Tips from '../ui/Tips'
 import AudioPlayer from '../utils/AudioPlayer'
 import Building from './Building'
@@ -27,17 +28,24 @@ export default class SavePoint extends Building {
         this.tips = this.getComponentInChildren(Tips)
         this.tips.onInteract((isLongPress: boolean, player: Player) => {
             if (this.node) {
-                if (player) {
-                    Logic.playerData = player.data.clone()
-                }
-                Logic.savePonit(this.data.defaultPos)
-                Logic.resetData()
-                EventHelper.emit(EventHelper.DUNGEON_DISAPPEAR)
-                AudioPlayer.play(AudioPlayer.EXIT)
-                this.scheduleOnce(() => {
-                    EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN, {})
-                    Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level))
-                }, 1)
+                Dialogue.play(Dialogue.DAILY_SAVE_POINT, (index: number) => {
+                    if (index == 0) {
+                    } else if (index == 1) {
+                        if (player) {
+                            Logic.playerData = player.data.clone()
+                        }
+                        Logic.savePonit(this.data.defaultPos)
+                        Logic.resetData()
+                        EventHelper.emit(EventHelper.DUNGEON_DISAPPEAR)
+                        AudioPlayer.play(AudioPlayer.EXIT)
+                        this.scheduleOnce(() => {
+                            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN, {})
+                            Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level))
+                        }, 1)
+                    } else {
+                        EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW, { isCast: true })
+                    }
+                })
             }
         })
     }

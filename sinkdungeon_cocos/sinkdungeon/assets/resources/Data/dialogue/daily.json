@@ -6,7 +6,7 @@
             { "id": "aside", "name": "旁白" },
             { "id": "player", "name": "查内姆" }
         ],
-        "list": [{ "id": 0, "actor": 0, "text": "zzzZZZ...", "next": [{ "jumpId": 1, "text": "醒来" }] }]
+        "list": [{ "id": 0, "actor": 0, "text": "zzzZZZ...", "next": [{ "jumpId": 1, "text": "起来" }] }]
     },
     "daily001": {
         "id": "daily001",
@@ -58,6 +58,26 @@
                 "actor": 1,
                 "text": "需要什么去货架挑选吧",
                 "next": [{ "jumpId": 1, "text": "闲聊" }]
+            }
+        ]
+    },
+    "daily004": {
+        "id": "daily004",
+        "isTalk": true,
+        "actors": [
+            { "id": "aside", "name": "旁白" },
+            { "id": "player", "name": "查内姆" }
+        ],
+        "list": [
+            {
+                "id": 0,
+                "actor": 0,
+                "text": "请选择",
+                "next": [
+                    { "jumpId": 1, "text": "离去" },
+                    { "jumpId": 1, "text": "醒来" },
+                    { "jumpId": 1, "text": "铸造与强化" }
+                ]
             }
         ]
     }

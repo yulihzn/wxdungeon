@@ -127,6 +127,7 @@ export default class AudioPlayer extends cc.Component {
     public static readonly ZOMBIE_SPITTING = 'zombiespitting'
     public static readonly ZOMBIE_SPITTING1 = 'zombiespitting1'
     public static readonly OPEN_CHEST = 'openchest'
+    public static readonly SHURIKEN = 'shuriken'
 
     public static readonly STOP_BG = 'STOP_BG'
     public static readonly PLAY_BG = 'PLAY_BG'

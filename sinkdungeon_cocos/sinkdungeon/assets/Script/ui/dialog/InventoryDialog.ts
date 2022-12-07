@@ -19,6 +19,7 @@ import Utils from '../../utils/Utils'
 import Talent from '../../talent/Talent'
 import EquipmentData from '../../data/EquipmentData'
 import ItemData from '../../data/ItemData'
+import GameAlertDialog from './GameAlertDialog'
 
 const { ccclass, property } = cc._decorator
 
@@ -37,7 +38,11 @@ export default class InventoryDialog extends BaseDialog {
     @property(cc.Node)
     layoutOther: cc.Node = null
     @property(cc.Node)
+    layoutCast: cc.Node = null
+    @property(cc.Node)
     otherDialog: cc.Node = null
+    @property(cc.Node)
+    castDialog: cc.Node = null
     @property(cc.ToggleContainer)
     toggleContainer: cc.ToggleContainer = null
     @property(cc.Prefab)
@@ -48,6 +53,12 @@ export default class InventoryDialog extends BaseDialog {
     dropButton: cc.Node = null
     @property(cc.Node)
     saleButton: cc.Node = null
+    @property(cc.Node)
+    castButton: cc.Node = null
+    @property(cc.Node)
+    strengthenButton: cc.Node = null
+    @property(cc.Node)
+    upgradeButton: cc.Node = null
     list: InventoryItem[] = []
     equipList: InventoryItem[] = []
     itemList: InventoryItem[] = []
@@ -57,7 +68,11 @@ export default class InventoryDialog extends BaseDialog {
     select: cc.Node = null
     @property(cc.Label)
     discountLabel: cc.Label = null
+    static readonly OPERATOR_CAST = 0
+    static readonly OPERATOR_STRENGTHEN = 1
+    static readonly OPERATOR_UPGRADE = 2
     currentSelectIndex: number
+    currentAffixSelectIndex: number = -1
     discount = 0.5
     equipmentAndItemDialog: EquipmentAndItemDialog = null
     onLoad() {
@@ -67,6 +82,7 @@ export default class InventoryDialog extends BaseDialog {
         this.initLayout(this.layoutEquip, this.equipList, InventoryManager.MAX_EQUIP, InventoryManager.MAX_BAG)
         this.initLayout(this.layoutItem, this.itemList, InventoryManager.MAX_ITEM, InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP)
         this.initLayout(this.layoutOther, this.otherList, 0, 0)
+        this.initCastLayout()
         EventHelper.on(EventHelper.HUD_INVENTORY_ALL_UPDATE, detail => {
             if (this.node) {
                 this.updateList(Logic.bagSortIndex)
@@ -124,6 +140,7 @@ export default class InventoryDialog extends BaseDialog {
             inventoryItemList.push(this.getItem(extraMax + i, data, layout))
         }
     }
+
     private getItem(index: number, data: InventoryData, layout: cc.Node) {
         let prefab = cc.instantiate(this.item)
         prefab.parent = layout
@@ -133,16 +150,20 @@ export default class InventoryDialog extends BaseDialog {
     }
 
     show() {
-        this._show('')
+        this._show('', false)
+    }
+    showCast() {
+        this._show('', true)
     }
     showFurniture(id: string) {
-        this._show(id)
+        this._show(id, false)
     }
-    private _show(id: string) {
+    private _show(id: string, isCast: boolean) {
         this.layer.x = 0
-        let isFuriniture = id && id.length > 0
+        let isFuriniture = id && id.length > 0 && !isCast
         this.otherDialog.active = isFuriniture
         this.furnitureId = isFuriniture ? id : ''
+        this.castDialog.active = isCast
         super.show()
         this.updateList(Logic.bagSortIndex)
         this.updateEquipList()
@@ -150,6 +171,8 @@ export default class InventoryDialog extends BaseDialog {
         this.updateOtherList(isFuriniture ? Logic.sortIndexs[id] : 0)
         if (isFuriniture) {
             cc.tween(this.layer).delay(0.3).to(0.5, { x: 145 }).start()
+        } else if (isCast) {
+            cc.tween(this.layer).delay(0.3).to(0.5, { x: -145 }).start()
         }
     }
     //toggle
@@ -167,6 +190,7 @@ export default class InventoryDialog extends BaseDialog {
         this.useButton.active = false
         this.dropButton.active = false
         this.saleButton.active = false
+        this.hideCastInfo()
         this.select.opacity = 0
     }
 
@@ -191,6 +215,7 @@ export default class InventoryDialog extends BaseDialog {
             this.useButton.active = true
             this.dropButton.active = true
             this.saleButton.active = true
+            this.showCastInfo(item.data.equipmentData)
             this.equipmentAndItemDialog.showDialog(cc.v3(420, 260), null, null, item.data.equipmentData, null)
         } else {
             this.discountLabel.string = `-${this.discount * 100}%(${Math.floor(
@@ -199,6 +224,7 @@ export default class InventoryDialog extends BaseDialog {
             this.useButton.active = true
             this.dropButton.active = true
             this.saleButton.active = true
+            this.hideCastInfo()
             this.equipmentAndItemDialog.showDialog(cc.v3(420, 160), null, item.data.itemData, null, null)
         }
     }
@@ -494,7 +520,7 @@ export default class InventoryDialog extends BaseDialog {
     }
 
     /**穿上装备或物品 */
-    private takeOnEquipOrItem(selectIndex: number, dataList: InventoryData[], inventoryItemList: InventoryItem[]) {
+    private takeOnEquipOrItem([selectIndex, dataList, inventoryItemList]: [number, InventoryData[], InventoryItem[]]) {
         if (inventoryItemList[selectIndex].data.type == InventoryItem.TYPE_EMPTY) {
             return
         }
@@ -621,7 +647,7 @@ export default class InventoryDialog extends BaseDialog {
         this.clearSelect()
     }
     /**放下装备或物品 */
-    private dropEquipOrItem(selectIndex: number, dataList: InventoryData[], inventoryItemList: InventoryItem[], isOther: boolean, isSale: boolean) {
+    private dropEquipOrItem([selectIndex, dataList, inventoryItemList]: [number, InventoryData[], InventoryItem[]], isOther: boolean, isSale: boolean) {
         if (inventoryItemList[selectIndex].data.type == InventoryItem.TYPE_EMPTY) {
             return
         }
@@ -688,6 +714,18 @@ export default class InventoryDialog extends BaseDialog {
         //清除选中
         this.clearSelect()
     }
+    private getSelectInfo(): [number, InventoryData[], InventoryItem[]] {
+        let inventoryItemList = this.list
+        let dataList = Logic.inventoryManager.inventoryList
+        let selectIndex = this.currentSelectIndex
+        let isOther = this.currentSelectIndex >= InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP + InventoryManager.MAX_ITEM
+        if (isOther) {
+            inventoryItemList = this.otherList
+            dataList = Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList
+            selectIndex = this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP - InventoryManager.MAX_ITEM
+        }
+        return [selectIndex, dataList, inventoryItemList]
+    }
     //button 装备或者脱下
     use() {
         //未选中或者为空直接返回
@@ -703,17 +741,9 @@ export default class InventoryDialog extends BaseDialog {
             return
         }
         //背包和储物箱物品装备
-        let inventoryItemList = this.list
-        let dataList = Logic.inventoryManager.inventoryList
-        let selectIndex = this.currentSelectIndex
-        let isOther = this.currentSelectIndex >= InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP + InventoryManager.MAX_ITEM
-        if (isOther) {
-            inventoryItemList = this.otherList
-            dataList = Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList
-            selectIndex = this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP - InventoryManager.MAX_ITEM
-        }
-        this.takeOnEquipOrItem(selectIndex, dataList, inventoryItemList)
+        this.takeOnEquipOrItem(this.getSelectInfo())
     }
+
     //button 放下 存取
     drop() {
         //未选中或者为空直接返回
@@ -729,16 +759,8 @@ export default class InventoryDialog extends BaseDialog {
             return
         }
         //背包放下
-        let inventoryItemList = this.list
-        let dataList = Logic.inventoryManager.inventoryList
-        let selectIndex = this.currentSelectIndex
         let isOther = this.currentSelectIndex >= InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP + InventoryManager.MAX_ITEM
-        if (isOther) {
-            inventoryItemList = this.otherList
-            dataList = Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList
-            selectIndex = this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP - InventoryManager.MAX_ITEM
-        }
-        this.dropEquipOrItem(selectIndex, dataList, inventoryItemList, isOther, false)
+        this.dropEquipOrItem(this.getSelectInfo(), isOther, false)
     }
     //button 出售
     sale() {
@@ -755,21 +777,119 @@ export default class InventoryDialog extends BaseDialog {
             return
         }
         //背包售出
-        let inventoryItemList = this.list
-        let dataList = Logic.inventoryManager.inventoryList
-        let selectIndex = this.currentSelectIndex
         let isOther = this.currentSelectIndex >= InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP + InventoryManager.MAX_ITEM
-        if (isOther) {
-            inventoryItemList = this.otherList
-            dataList = Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList
-            selectIndex = this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP - InventoryManager.MAX_ITEM
-        }
-        this.dropEquipOrItem(selectIndex, dataList, inventoryItemList, isOther, true)
+        this.dropEquipOrItem(this.getSelectInfo(), isOther, true)
     }
     // update (dt) {}
 
     close() {
         AudioPlayer.play(AudioPlayer.SELECT)
         this.dismiss()
+    }
+    /**重铸强化升级装备 */
+    private castUpgradeStrengthenEquip([selectIndex, dataList, inventoryItemList]: [number, InventoryData[], InventoryItem[]], operatorType: number) {
+        if (inventoryItemList[selectIndex].data.type == InventoryItem.TYPE_EMPTY) {
+            return
+        }
+        if (this.currentSelectIndex == -1) {
+            return
+        }
+        AudioPlayer.play(AudioPlayer.SELECT)
+        let current = inventoryItemList[selectIndex]
+        if (current.data.type == InventoryItem.TYPE_EQUIP) {
+            //佩戴装备
+            let equipData = new EquipmentData()
+            equipData.valueCopy(current.data.equipmentData)
+            if (equipData.equipmetType != InventoryManager.EMPTY) {
+                let msg = ''
+                switch (operatorType) {
+                    case InventoryDialog.OPERATOR_CAST:
+                        msg = '是否花费1000金币重铸该词缀'
+                        break
+                    case InventoryDialog.OPERATOR_STRENGTHEN:
+                        msg = '是否花费1000金币强化该词缀'
+                        break
+                    case InventoryDialog.OPERATOR_UPGRADE:
+                        msg = '是否花费1000金币升级该装备'
+                        break
+                }
+                GameAlertDialog.show(msg, '确定', '取消', (flag: boolean) => {
+                    if (flag) {
+                        switch (operatorType) {
+                            case InventoryDialog.OPERATOR_CAST:
+                                cc.log('重铸成功')
+                                break
+                            case InventoryDialog.OPERATOR_STRENGTHEN:
+                                cc.log('强化成功')
+                                break
+                            case InventoryDialog.OPERATOR_UPGRADE:
+                                cc.log('升级成功')
+                                break
+                        }
+                    }
+                })
+            }
+        }
+    }
+    private initCastLayout() {
+        for (let i = 0; i < this.layoutCast.children.length; i++) {
+            let affix = this.layoutCast.children[i]
+            affix.on(
+                cc.Node.EventType.TOUCH_END,
+                (event: cc.Event.EventTouch) => {
+                    AudioPlayer.play(AudioPlayer.SELECT)
+                    this.selectCastAffix(i)
+                },
+                affix
+            )
+        }
+    }
+    private selectCastAffix(index: number) {
+        this.currentAffixSelectIndex = index
+        for (let i = 0; i < this.layoutCast.children.length; i++) {
+            let affix = this.layoutCast.children[i]
+            if (index == i) {
+                affix.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes('itemselect')
+                this.castButton.active = true
+                this.strengthenButton.active = true
+            } else {
+                affix.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes('dialogbggray')
+            }
+        }
+    }
+
+    private showCastInfo(data: EquipmentData) {
+        for (let affix of this.layoutCast.children) {
+            affix.active = false
+            affix.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes('dialogbggray')
+            affix.getChildByName('label').getComponent(cc.Label).string = ''
+        }
+        for (let i = 0; i < data.affixs.length; i++) {
+            this.layoutCast.children[i].active = true
+            this.layoutCast.children[i].getChildByName('label').getComponent(cc.Label).string = data.affixs[i].desc
+        }
+        this.upgradeButton.active = data.requireLevel < Logic.playerData.OilGoldData.level
+        this.layoutCast.active = true
+    }
+    private hideCastInfo() {
+        this.castButton.active = false
+        this.upgradeButton.active = false
+        this.strengthenButton.active = false
+        this.layoutCast.active = false
+        this.currentAffixSelectIndex = -1
+    }
+    //button重铸
+    clickCast() {
+        this.castUpgradeStrengthenEquip(this.getSelectInfo(), InventoryDialog.OPERATOR_CAST)
+    }
+
+    //button强化
+    clickStrengthen() {
+        this.castUpgradeStrengthenEquip(this.getSelectInfo(), InventoryDialog.OPERATOR_STRENGTHEN)
+    }
+
+    //button升级
+    clickUpgrade() {
+        this.castUpgradeStrengthenEquip(this.getSelectInfo(), InventoryDialog.OPERATOR_UPGRADE)
     }
 }

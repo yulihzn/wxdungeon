@@ -18,6 +18,11 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class Dialogue extends cc.Component {
+    static readonly DAILY_WAKE_UP = 'daily000'
+    static readonly DAILY_SLEEP = 'daily001'
+    static readonly DAILY_SAVE_POINT = 'daily004'
+    static readonly COURSE_FIRST_PC = 'course000'
+    static readonly COURSE_FIRST_MOBILE = 'course001'
     @property(cc.Label)
     label: cc.Label = null
     @property(cc.Node)
@@ -219,7 +224,7 @@ export default class Dialogue extends cc.Component {
             return
         }
         button.node.active = current.next[index].text && current.next[index].text.length > 0
-        button.getComponentInChildren(cc.Label).string = current.next[index].text
+        button.getComponentInChildren(cc.Label).string = `${index + 1}.${current.next[index].text}`
     }
     private updateLabel(text: string, isTalk: boolean) {
         if (!isTalk) {
