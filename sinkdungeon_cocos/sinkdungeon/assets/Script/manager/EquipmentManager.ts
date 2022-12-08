@@ -245,7 +245,7 @@ export default class EquipmentManager extends BaseManager {
             //复制已有装备
             if (shopTable) {
                 equipment.shopTable = shopTable
-                equipData.price = 50 * (equipData.quality + 1)
+                // equipData.price = 50 * (equipData.quality + 1)
                 shopTable.data.equipdata = equipData.clone()
             }
             equipment.refresh(equipData)
@@ -309,7 +309,7 @@ export default class EquipmentManager extends BaseManager {
             AffixManager.buildAffixNameAndCommon(affix, map, data.requireLevel)
         }
         data.updateFinalCommon()
-        data.price += EquipmentManager.getPrice(data)
+        data.price = EquipmentManager.getPrice(data)
         data.infobase = EquipmentManager.getInfoBase(data.Common)
         data.info1 = EquipmentManager.getInfo1(data.Common)
         data.info2 = EquipmentManager.getInfo2(data.Common, data)
@@ -470,6 +470,9 @@ export default class EquipmentManager extends BaseManager {
         if (data.test > 0) {
             return 0
         }
+        let original = new EquipmentData()
+        original.valueCopy(Logic.equipments[data.equipmetType])
+        price += original.price
         price += data.FinalCommon.maxHealth * 5 //最大生命25
         price += data.FinalCommon.maxDream * 10 //最大梦境值25
         price += data.FinalCommon.damageMin * 10 //最小攻击50

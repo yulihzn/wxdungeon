@@ -16,8 +16,8 @@ export default class AffixManager {
     static readonly BASE_UPGRADE = [0, 1, 4, 5, 6, 7, 12, 13, 14, 15] //可以跟随等级提升的类型
     static getAffixMapCollection(equipmetType: string): [number[], number[], number[]] {
         const EQUIP: Map<string, number[]> = new Map() // //装备对应属性
-        EQUIP.set(InventoryManager.WEAPON, [1, 4, 5, 6, 9, 13, 14, 16, 17, 20])
-        EQUIP.set(InventoryManager.REMOTE, [1, 2, 3, 12, 22, 23, 24])
+        EQUIP.set(InventoryManager.WEAPON, [1, 4, 5, 6, 9, 13, 14, 17, 20])
+        EQUIP.set(InventoryManager.REMOTE, [1, 2, 3, 12, 16, 22, 23, 24])
         EQUIP.set(InventoryManager.SHIELD, [0, 1, 7, 15, 18, 19, 21])
         EQUIP.set(InventoryManager.HELMET, [0, 1, 7, 14, 17, 20, 22])
         EQUIP.set(InventoryManager.CLOTHES, [0, 1, 7, 21, 15])
@@ -58,23 +58,27 @@ export default class AffixManager {
     static recastEquipmentAffixs(data: EquipmentData, oldAffixIndex: number, rand4save: Random4Save) {
         const [GROUP, ELEMENT, TOTAL] = AffixManager.getAffixMapCollection(data.equipmetType)
         //移除已有词缀
+        for (let affix of data.affixs) {
+            AffixManager.removeHaveAffix(GROUP, ELEMENT, TOTAL, affix)
+        }
+        data.affixs[oldAffixIndex] = AffixManager.getRandomAffix(GROUP, ELEMENT, TOTAL, data.requireLevel, rand4save, data.affixs[oldAffixIndex].index)
+        EquipmentManager.updateUpgradeEquipment(data)
+    }
+    static removeHaveAffix(groups: number[], elements: number[], totals: number[], oldAffix: AffixData) {
         let arr = []
-        let oldAffix = data.affixs[oldAffixIndex]
-        if (data.affixs[oldAffixIndex].type == 0) {
-            arr = GROUP
-        } else if (data.affixs[oldAffixIndex].type == 1) {
-            arr = ELEMENT
-        } else if (data.affixs[oldAffixIndex].type == 2) {
-            arr = TOTAL
+        if (oldAffix.type == 0) {
+            arr = groups
+        } else if (oldAffix.type == 1) {
+            arr = elements
+        } else if (oldAffix.type == 2) {
+            arr = totals
         }
         for (let i = arr.length - 1; i >= 0; i--) {
-            if (data.affixs[oldAffixIndex].groupId == arr[i]) {
+            if (oldAffix.groupId == arr[i]) {
                 arr.splice(i, 1)
                 break
             }
         }
-        data.affixs[oldAffixIndex] = AffixManager.getRandomAffix(GROUP, ELEMENT, TOTAL, data.requireLevel, rand4save, oldAffix.index)
-        EquipmentManager.updateUpgradeEquipment(data)
     }
 
     /**
@@ -120,7 +124,7 @@ export default class AffixManager {
         data.groupId = map.id //下标是用来防止重复
         data.factor = map.factor //装备等级增加系数
         data.type = type //属性类别 基础 元素 总额
-        if (keepIndex != -1) {
+        if (keepIndex == -1) {
             let r = rand4save.rand()
             //词缀强度80% 15% 4% 1%
             if (r < 0.8) {

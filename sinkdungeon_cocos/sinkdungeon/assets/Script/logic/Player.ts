@@ -514,6 +514,7 @@ export default class Player extends PlayActor {
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y })
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y })
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_LIFE_BAR, { sanity: life.sanity, solid: life.solidSatiety, poo: life.poo, liquid: life.liquidSatiety, pee: life.pee })
+        this.inventoryManager.updateTotalEquipData()
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.TotalEquipData)
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { data: this.data })
     }

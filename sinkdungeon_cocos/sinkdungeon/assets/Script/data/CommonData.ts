@@ -64,7 +64,7 @@ export default class CommonData {
     magicDamagePercent = 0 //魔法伤害%
 
     private returnNumberValue(num: number, percent: number) {
-        let value = num * (1 + percent / 100)
+        let value = num * (1 + percent)
         if (value < 1) {
             return value
         } else {

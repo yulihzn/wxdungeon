@@ -821,20 +821,20 @@ export default class InventoryDialog extends BaseDialog {
                 //词缀重铸的金币消耗是词缀强度*100，强化的消耗是强度*1000，装备升级的消耗是装备等级*100
                 switch (operatorType) {
                     case InventoryDialog.OPERATOR_CAST:
-                        price = 100 * (affix.index + 1)
-                        msg = `是否花费${price}金币重铸该词缀`
+                        price = 1000 * (affix.index + 1)
+                        msg = `当前拥有${Logic.coins}金币\n是否花费${price}金币重铸该词缀`
                         break
                     case InventoryDialog.OPERATOR_STRENGTHEN:
                         price = 1000 * (affix.index + 1)
-                        msg = `是否花费${price}金币强化该词缀`
+                        msg = `当前拥有${Logic.coins}金币\n是否花费${price}金币强化该词缀`
                         if (affix.index >= 9) {
                             Utils.toast('强化等级已经最高', true, true)
                             return
                         }
                         break
                     case InventoryDialog.OPERATOR_UPGRADE:
-                        price = (equipData.requireLevel + 1) * 100
-                        msg = `是否花费${price}金币升级该装备`
+                        price = (equipData.requireLevel + 1) * 1000
+                        msg = `当前拥有${Logic.coins}金币\n是否花费${price}金币升级该装备`
                         if (equipData.requireLevel >= Logic.playerData.OilGoldData.level) {
                             Utils.toast('装备等级无法高于人物等级', true, true)
                             return
@@ -927,7 +927,7 @@ export default class InventoryDialog extends BaseDialog {
         for (let i = 0; i < data.affixs.length; i++) {
             this.layoutCast.children[i].active = true
             let affix = data.affixs[i]
-            this.layoutCast.children[i].getChildByName('label').getComponent(cc.Label).string = `Lv.${affix.index == 10 ? 'MAX' : affix.index} ${affix.desc}`
+            this.layoutCast.children[i].getChildByName('label').getComponent(cc.Label).string = `Lv.${affix.index == 9 ? 'MAX' : affix.index} ${affix.desc}`
         }
         this.upgradeButton.active = data.requireLevel < Logic.playerData.OilGoldData.level
         this.layoutCast.active = true
