@@ -13,6 +13,8 @@ import EquipmentData from '../../data/EquipmentData'
 import ItemData from '../../data/ItemData'
 import NonPlayerData from '../../data/NonPlayerData'
 import Logic from '../../logic/Logic'
+import AffixManager from '../../manager/AffixManager'
+import EquipmentManager from '../../manager/EquipmentManager'
 import InventoryManager from '../../manager/InventoryManager'
 
 const { ccclass, property } = cc._decorator
@@ -106,7 +108,12 @@ export default class EquipmentAndItemDialog extends cc.Component {
         this.infoSuit3.node.active = true
         this.requireLevel.string = `所需等级：${equipment.requireLevel}`
         this.price.string = `价格：${equipment.price}`
-        this.labelTitle.string = equipment.prefix + equipment.nameCn
+        //词缀
+        let prefix = AffixManager.QUALITY_NAMES[equipment.quality]
+        for (let affix of equipment.affixs) {
+            prefix += affix.name
+        }
+        this.labelTitle.string = prefix + equipment.nameCn
         this.labelTitle.node.color = this.labelTitle.node.color.fromHEX(equipment.titlecolor)
         this.infoBase.string = `${equipment.infobase}`
         this.infoBase.node.color = this.infoBase.node.color.fromHEX(equipment.infobasecolor)

@@ -6,7 +6,8 @@ export default class AffixData {
     desc = '' //描述
     index = 0 //下标 强度需要+1
     groupId = 0 //组id
-    factor = 0 //等级系数
+    factor = 0 //等级系数额外百分比
+    type = 0 //0：基础属性 1：元素属性 2：全局属性
     common: CommonData = new CommonData()
     public valueCopy(data: AffixData): AffixData {
         if (!data) {

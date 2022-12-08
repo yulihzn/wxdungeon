@@ -24,13 +24,11 @@ export default class EquipmentData extends BaseData {
     nameEn: string = ''
     equipmetType: string = 'empty'
     equipmetTypeCn: string = ''
-    prefix: string = ''
     desc: string = ''
     color: string = '#ffffff'
     lightcolor: string = '#ffffff' //刀光的颜色
     titlecolor: string = '#ffffff'
     img: string = 'emptyequipment'
-    level: number = 0 //白绿蓝紫金橙 红
     requireLevel = 0
     stab = 0 //是否突刺
     far = 0 //是否远距离

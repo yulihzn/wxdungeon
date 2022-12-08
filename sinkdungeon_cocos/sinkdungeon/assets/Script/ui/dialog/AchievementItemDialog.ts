@@ -63,7 +63,7 @@ export default class AchievementItemDialog extends BaseDialog {
             this.infoLabel.node.color = cc.Color.WHITE.fromHEX(AchievementItemDialog.COLORS[i])
         }
         if (equipData) {
-            equipData = EquipmentManager.getOriginEquipData(equipData.img)
+            equipData = EquipmentManager.getNewEquipData(equipData.img, true)
         }
         this.equipmentAndItemDialog.showDialog(cc.v3(80, 150), nonPlayerData, itemData, equipData, furnitureData)
     }

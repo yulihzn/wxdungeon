@@ -14,6 +14,7 @@ import DataUtils from '../utils/DataUtils'
 import AffixManager from './AffixManager'
 import AffixData from '../data/AffixData'
 import MapManager from './MapManager'
+import AffixMapData from '../data/AffixMapData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -244,13 +245,13 @@ export default class EquipmentManager extends BaseManager {
             //复制已有装备
             if (shopTable) {
                 equipment.shopTable = shopTable
-                equipData.price = 30 * (equipData.quality + 1)
+                equipData.price = 50 * (equipData.quality + 1)
                 shopTable.data.equipdata = equipData.clone()
             }
             equipment.refresh(equipData)
         } else {
             //添加新装备
-            let data = EquipmentManager.getNewEquipData(equipType, chestQuality)
+            let data = EquipmentManager.getNewEquipData(equipType, false, chestQuality)
             if (shopTable) {
                 equipment.shopTable = shopTable
                 shopTable.data.equipdata = data.clone()
@@ -261,7 +262,14 @@ export default class EquipmentManager extends BaseManager {
         this.groundList.push(equipment)
         return equipment
     }
-    static getNewEquipData(equipType: string, chestQuality?: number): EquipmentData {
+    /**
+     * 获取新的装备数据
+     * @param equipType 装备类别
+     * @param isOriginal 是否初始无随机词缀
+     * @param chestQuality 最低品质 isOriginal为true的时候无效
+     * @returns
+     */
+    static getNewEquipData(equipType: string, isOriginal?: boolean, chestQuality?: number): EquipmentData {
         if (equipType.length == 0) {
             return
         }
@@ -275,11 +283,33 @@ export default class EquipmentManager extends BaseManager {
         for (let ex of data.exTriggers) {
             ex.uuid = data.genNonDuplicateID()
         }
-        let rand4save = Logic.mapManager.getCurrentRoomRandom4Save(MapManager.RANDOM_EQUIP)
-        //获取品质
-        data.quality = EquipmentManager.getRandomQuality(chestQuality, rand4save)
-        //根据品质生成随机属性
-        AffixManager.buildEquipmentAffixs(data, rand4save)
+        if (!isOriginal) {
+            let rand4save = Logic.mapManager.getCurrentRoomRandom4Save(MapManager.RANDOM_EQUIP)
+            //获取品质
+            data.quality = EquipmentManager.getRandomQuality(chestQuality, rand4save)
+            //根据品质生成随机属性
+            AffixManager.buildEquipmentAffixs(data, rand4save)
+        }
+        //升级装备和价值
+        EquipmentManager.updateUpgradeEquipment(data)
+
+        return data.clone()
+    }
+    /**
+     * 装备升级信息更新 装备生成完毕需要调用这个来修正等级带来的加成
+     * @param data
+     */
+    static updateUpgradeEquipment(data: EquipmentData) {
+        for (let i of AffixManager.BASE_UPGRADE) {
+            let map = new AffixMapData().valueCopy(Logic.affixs[i])
+            data.Common[map.common] = data.Common[map.common] + data.Common[map.common] * map.factor * data.requireLevel
+        }
+        for (let affix of data.affixs) {
+            let map = new AffixMapData().valueCopy(Logic.affixs[affix.groupId])
+            AffixManager.buildAffixNameAndCommon(affix, map, data.requireLevel)
+        }
+        data.updateFinalCommon()
+        data.price += EquipmentManager.getPrice(data)
         data.infobase = EquipmentManager.getInfoBase(data.Common)
         data.info1 = EquipmentManager.getInfo1(data.Common)
         data.info2 = EquipmentManager.getInfo2(data.Common, data)
@@ -294,41 +324,19 @@ export default class EquipmentManager extends BaseManager {
         data.suitcolor1 = '#FFD700' //金
         data.suitcolor2 = '#FFD700' //金
         data.suitcolor3 = '#FFD700' //金
-        return data.clone()
     }
-    static getOriginEquipData(equipType: string) {
-        if (equipType.length == 0) {
+    /**
+     * 升级装备
+     * @param data
+     */
+    static upgradeEquipment(data: EquipmentData) {
+        if (data.requireLevel >= Logic.playerData.OilGoldData.level) {
             return
         }
-        let data = new EquipmentData()
-        data.valueCopy(Logic.equipments[equipType])
-        let tempid = data.img.substring(data.equipmetType.length)
-        if (tempid.length > 0) {
-            data.id = data.id + parseInt(tempid)
-        }
-        data.uuid = data.genNonDuplicateID()
-        for (let ex of data.exTriggers) {
-            ex.uuid = data.genNonDuplicateID()
-        }
-        let common = data.Common.clone()
-        data.infobase = EquipmentManager.getInfoBase(common)
-        data.info1 = EquipmentManager.getInfo1(common)
-        data.info2 = EquipmentManager.getInfo2(common, data)
-        data.info3 = EquipmentManager.getInfo3(data.affixs)
-        data.suit1 = EquipmentManager.getSuitDesc(data.suitType, 0)
-        data.suit2 = EquipmentManager.getSuitDesc(data.suitType, 1)
-        data.suit3 = EquipmentManager.getSuitDesc(data.suitType, 2)
-        data.infobasecolor = '#fffff0' //象牙
-        data.infocolor1 = '#9370DB' //适中的紫色
-        data.infocolor2 = '#87CEFA' //淡蓝色
-        data.infocolor3 = '#BC8F8F' //玫瑰棕色
-        data.suitcolor1 = '#FFD700' //金
-        data.suitcolor2 = '#FFD700' //金
-        data.suitcolor3 = '#FFD700' //金
-        data.titlecolor = '#FFFFFF'
-        data.price += EquipmentManager.getPrice(data)
-        return data
+        data.requireLevel++
+        this.updateUpgradeEquipment(data)
     }
+
     static getSuitDesc(suitType: string, suitIndex: number) {
         let suit = Logic.suits[suitType]
         if (!suit) {

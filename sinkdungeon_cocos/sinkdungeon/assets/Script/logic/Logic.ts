@@ -55,7 +55,7 @@ export default class Logic extends cc.Component {
 
     static readonly OIL_GOLD_LIST = [
         20, 50, 75, 100, 150, 200, 300, 450, 650, 1000, 1500, 2000, 3000, 5000, 10000, 15000, 20000, 30000, 50000, 100000, 150000, 200000, 300000, 500000, 1000000, 1500000,
-        2000000, 3000000, 5000000, 10000000
+        2000000, 3000000, 5000000, 7000000, 10000000
     ]
 
     /********************************静态资源 *********************************/
@@ -99,6 +99,7 @@ export default class Logic extends cc.Component {
     //对话资源
     static dialogues: { [key: string]: DialogueData } = null
     /******************************************************************************/
+    static cycle = 0 //周目
     static level = 0 //关卡
     static chapterIndex = 0 //章节
     static chapterMaxIndex = 0 //到达的最大章节
@@ -186,6 +187,7 @@ export default class Logic extends cc.Component {
         }
         Logic.profileManager.data.nonPlayerList = Logic.nonPlayerList
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon
+        Logic.profileManager.data.cycle = Logic.cycle
         Logic.profileManager.data.level = Logic.level
         Logic.profileManager.data.chapterIndex = Logic.chapterIndex
         Logic.profileManager.data.chapterMaxIndex = Logic.chapterMaxIndex
@@ -222,6 +224,7 @@ export default class Logic extends cc.Component {
             Logic.profileManager.data.chapterMaxIndex = Logic.profileManager.data.chapterIndex
         }
         //加载关卡等级
+        Logic.cycle = Logic.profileManager.data.cycle
         Logic.chapterIndex = Logic.profileManager.data.chapterIndex
         Logic.chapterMaxIndex = Logic.profileManager.data.chapterMaxIndex
         Logic.level = Logic.profileManager.data.level

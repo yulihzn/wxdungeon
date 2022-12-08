@@ -103,6 +103,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     protected comboMiss = false
     protected canMove = false
     protected playerData: PlayerData
+    protected isWallReflected = false
 
     get CanMove() {
         return this.canMove || !this.isAttacking
@@ -231,6 +232,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         this.isMiss = isMiss
         this.isAttacking = true
         this.canMove = false
+        this.isWallReflected = false
         this.updateCombo()
         let animname = this.getAttackAnimName()
         this.anim.play(animname)
@@ -337,6 +339,12 @@ export default class MeleeWeapon extends BaseColliderComponent {
         }
         if (isWall && this.player.sc.isJumping) {
             return
+        }
+        if (isWall) {
+            if (this.isWallReflected) {
+                return
+            }
+            this.isWallReflected = true
         }
         // let w1 = this.player.node.convertToWorldSpaceAR(this.hv.mul(this.weaponReflectPoint.position.mag()))
         let hv1 = other.w_center.sub(self.w_center).normalize()

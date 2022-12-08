@@ -6,7 +6,6 @@ import SavePointData from './SavePointData'
 import InventoryData from './InventoryData'
 import GroundOilGoldData from './GroundOilGoldData'
 import NonPlayerData from './NonPlayerData'
-import DialogueData from './DialogueData'
 
 /**存档保存数据
  * 玩家的属性 目前血量 攻防抗性等 位置
@@ -50,4 +49,5 @@ export default class ProfileData {
     coinCounts = 0
     lastSaveTime = 0 //最近游玩时间
     dreamCostTime = 0 //做梦需要消耗的时间
+    cycle = 0 //周目
 }

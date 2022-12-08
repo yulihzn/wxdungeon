@@ -2,7 +2,7 @@
     {
         "id": 0,
         "desc": "生命+@",
-        "factor": 0.2,
+        "factor": 0.1,
         "common": "maxHealth",
         "levels": [1, 2, 3, 7, 8, 9, 15, 16, 17, 20],
         "affixs": ["旺盛", "血牛", "血海"]
@@ -10,7 +10,7 @@
     {
         "id": 1,
         "desc": "梦境+@",
-        "factor": 0.2,
+        "factor": 0.1,
         "common": "maxDream",
         "levels": [1, 2, 3, 7, 8, 9, 15, 16, 17, 20],
         "affixs": ["梦见", "梦寐", "梦幻"]
@@ -34,7 +34,7 @@
     {
         "id": 4,
         "desc": "攻击+@",
-        "factor": 0.2,
+        "factor": 0.1,
         "common": "damageMin",
         "levels": [1, 2, 3, 7, 8, 9, 15, 16, 17, 20],
         "affixs": ["强力", "暴力", "毁灭"]
@@ -42,7 +42,7 @@
     {
         "id": 5,
         "desc": "暴击伤害+@",
-        "factor": 0.2,
+        "factor": 0.1,
         "common": "damageMax",
         "levels": [1, 2, 3, 7, 8, 9, 15, 16, 17, 20],
         "affixs": ["凝神", "聚气", "神驰"]
@@ -50,7 +50,7 @@
     {
         "id": 6,
         "desc": "背刺+@",
-        "factor": 0.2,
+        "factor": 0.1,
         "common": "damageBack",
         "levels": [1, 2, 3, 7, 8, 9, 15, 16, 17, 20],
         "affixs": ["刁钻", "诡诈", "藏刀"]
@@ -58,7 +58,7 @@
     {
         "id": 7,
         "desc": "防御+@",
-        "factor": 0.2,
+        "factor": 0.1,
         "common": "defence",
         "levels": [1, 2, 3, 7, 8, 9, 15, 16, 17, 20],
         "affixs": ["磐石", "铜墙", "不破"]
@@ -106,7 +106,7 @@
     {
         "id": 13,
         "desc": "伤口撕裂+@",
-        "factor": 0.2,
+        "factor": 0.1,
         "common": "realDamage",
         "levels": [0.5, 1, 1.5, 4, 4.5, 5, 5.5, 7, 7.5, 10],
         "affixs": ["锐利", "刮骨", "神锋"]
@@ -114,7 +114,7 @@
     {
         "id": 14,
         "desc": "元素伤害+@",
-        "factor": 0.2,
+        "factor": 0.1,
         "common": "magicDamage",
         "levels": [0.5, 1, 1.5, 4, 4.5, 5, 5.5, 7, 7.5, 10],
         "affixs": ["奥术", "神秘", "奇幻"]
@@ -122,7 +122,7 @@
     {
         "id": 15,
         "desc": "弹反伤害+@",
-        "factor": 0.2,
+        "factor": 0.1,
         "common": "blockDamage",
         "levels": [1, 2, 3, 10, 12, 14, 20, 22, 24, 30],
         "affixs": ["招架", "反扑", "反射"]

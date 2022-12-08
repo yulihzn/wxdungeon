@@ -337,7 +337,8 @@ export default class GameHud extends cc.Component {
             this.actionSettingDialog.node.active ||
             this.dollMachineDialog.node.active ||
             this.questBoardDialog.node.active ||
-            this.dialogue.isShow
+            this.dialogue.isShow ||
+            this.inventoryDialog.node.active
         )
     }
     get IsTimeCountDialogShow() {

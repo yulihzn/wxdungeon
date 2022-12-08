@@ -20,6 +20,9 @@ import Talent from '../../talent/Talent'
 import EquipmentData from '../../data/EquipmentData'
 import ItemData from '../../data/ItemData'
 import GameAlertDialog from './GameAlertDialog'
+import MapManager from '../../manager/MapManager'
+import AffixManager from '../../manager/AffixManager'
+import EquipmentManager from '../../manager/EquipmentManager'
 
 const { ccclass, property } = cc._decorator
 
@@ -350,7 +353,7 @@ export default class InventoryDialog extends BaseDialog {
                 return a.id - b.id
             })
             equiplist.sort((a, b) => {
-                return b.equipmentData.level - a.equipmentData.level
+                return b.equipmentData.quality - a.equipmentData.quality
             })
             list = equiplist.concat(itemlist)
         } else if (sortIndex == 3) {
@@ -790,6 +793,7 @@ export default class InventoryDialog extends BaseDialog {
     private castUpgradeStrengthenEquip(operatorType: number) {
         let isSelectEquip = this.currentSelectIndex >= InventoryManager.MAX_BAG && this.currentSelectIndex < InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP
         let current: InventoryItem
+        let currentData: InventoryData
         if (isSelectEquip) {
             current = this.equipList[this.currentSelectIndex - InventoryManager.MAX_BAG]
             if (current.data.type == InventoryItem.TYPE_EMPTY) {
@@ -802,42 +806,90 @@ export default class InventoryDialog extends BaseDialog {
                 return
             }
             current = inventoryItemList[selectIndex]
+            currentData = dataList[selectIndex]
         }
-        AudioPlayer.play(AudioPlayer.SELECT)
+        AudioPlayer.play(AudioPlayer.STRIKEIRON)
         if (current.data.type == InventoryItem.TYPE_EQUIP) {
             //佩戴装备
             let equipData = new EquipmentData()
             equipData.valueCopy(current.data.equipmentData)
             if (equipData.equipmetType != InventoryManager.EMPTY) {
+                let rand4save = Logic.mapManager.getCurrentRoomRandom4Save(MapManager.RANDOM_EQUIP)
                 let msg = ''
+                let price = 0
+                let affix = equipData.affixs[this.currentAffixSelectIndex]
+                //词缀重铸的金币消耗是词缀强度*100，强化的消耗是强度*1000，装备升级的消耗是装备等级*100
                 switch (operatorType) {
                     case InventoryDialog.OPERATOR_CAST:
-                        msg = '是否花费1000金币重铸该词缀'
+                        price = 100 * (affix.index + 1)
+                        msg = `是否花费${price}金币重铸该词缀`
                         break
                     case InventoryDialog.OPERATOR_STRENGTHEN:
-                        msg = '是否花费1000金币强化该词缀'
+                        price = 1000 * (affix.index + 1)
+                        msg = `是否花费${price}金币强化该词缀`
+                        if (affix.index >= 9) {
+                            Utils.toast('强化等级已经最高', true, true)
+                            return
+                        }
                         break
                     case InventoryDialog.OPERATOR_UPGRADE:
-                        msg = '是否花费1000金币升级该装备'
+                        price = (equipData.requireLevel + 1) * 100
+                        msg = `是否花费${price}金币升级该装备`
+                        if (equipData.requireLevel >= Logic.playerData.OilGoldData.level) {
+                            Utils.toast('装备等级无法高于人物等级', true, true)
+                            return
+                        }
                         break
                 }
-                GameAlertDialog.show(msg, '敬请期待', '取消', (flag: boolean) => {
+                GameAlertDialog.show(msg, '确定', '取消', (flag: boolean) => {
                     if (flag) {
+                        if (Logic.coins < price) {
+                            Utils.toast('金币不足', true, true)
+                            return
+                        }
+                        EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: -price })
+                        let arr = [AudioPlayer.COIN, AudioPlayer.COIN1, AudioPlayer.COIN2]
+                        AudioPlayer.play(arr[Logic.getRandomNum(0, arr.length - 1)])
                         switch (operatorType) {
                             case InventoryDialog.OPERATOR_CAST:
-                                cc.log('重铸成功')
+                                AffixManager.recastEquipmentAffixs(equipData, this.currentAffixSelectIndex, rand4save)
                                 break
                             case InventoryDialog.OPERATOR_STRENGTHEN:
-                                cc.log('强化成功')
+                                AffixManager.strengthenEquipmentAffixs(equipData, this.currentAffixSelectIndex)
                                 break
                             case InventoryDialog.OPERATOR_UPGRADE:
-                                cc.log('升级成功')
+                                EquipmentManager.upgradeEquipment(equipData)
                                 break
                         }
+                        this.updateSelectChangeEquipInfo(isSelectEquip, equipData, current, currentData)
+                        AudioPlayer.play(AudioPlayer.STRIKEIRON)
+                        this.scheduleOnce(() => {
+                            AudioPlayer.play(AudioPlayer.STRIKEIRON)
+                            this.scheduleOnce(() => {
+                                AudioPlayer.play(AudioPlayer.STRIKEIRON1)
+                                this.scheduleOnce(() => {
+                                    AudioPlayer.play(AudioPlayer.STRIKEIRON)
+                                }, 0.2)
+                            }, 0.2)
+                        }, 0.1)
                     }
                 })
             }
         }
+    }
+    private updateSelectChangeEquipInfo(isSelectEquip: boolean, equipmentData: EquipmentData, inventoryItem: InventoryItem, inventoryData: InventoryData) {
+        if (isSelectEquip) {
+            //装备栏更新ui
+            inventoryItem.data.equipmentData.valueCopy(equipmentData)
+            Logic.inventoryManager.equips[equipmentData.equipmetType].valueCopy(equipmentData)
+            EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmetType: equipmentData.equipmetType })
+        } else {
+            inventoryItem.data.equipmentData = equipmentData.clone()
+            inventoryData.equipmentData = equipmentData.clone()
+        }
+        this.equipmentAndItemDialog.showDialogEquipInfo(equipmentData)
+        this.showCastInfo(equipmentData)
+        this.selectCastAffix(this.currentAffixSelectIndex)
     }
     private initCastLayout() {
         for (let i = 0; i < this.layoutCast.children.length; i++) {
