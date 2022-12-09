@@ -2,7 +2,7 @@ import Logic from './Logic'
 import RectDungeon from '../rect/RectDungeon'
 import AudioPlayer from '../utils/AudioPlayer'
 import StartBackground from '../ui/StartBackground'
-import CursorArea from '../ui/CursorArea'
+// import CursorArea from '../ui/CursorArea'
 import LocalStorage from '../utils/LocalStorage'
 
 // Learn TypeScript:
@@ -35,7 +35,7 @@ export default class Chapter extends cc.Component {
     timeDelay = 0
 
     onLoad() {
-        CursorArea.init(this.cursorAreaPrefab)
+        // CursorArea.init(this.cursorAreaPrefab)
     }
 
     start() {}

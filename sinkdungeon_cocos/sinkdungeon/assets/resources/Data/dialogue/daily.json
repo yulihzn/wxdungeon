@@ -6,7 +6,17 @@
             { "id": "aside", "name": "旁白" },
             { "id": "player", "name": "查内姆" }
         ],
-        "list": [{ "id": 0, "actor": 0, "text": "zzzZZZ...", "next": [{ "jumpId": 1, "text": "起来" }] }]
+        "list": [
+            {
+                "id": 0,
+                "actor": 0,
+                "text": "zzzZZZ...",
+                "next": [
+                    { "jumpId": 1, "text": "起来" },
+                    { "jumpId": 1, "text": "继续睡" }
+                ]
+            }
+        ]
     },
     "daily001": {
         "id": "daily001",

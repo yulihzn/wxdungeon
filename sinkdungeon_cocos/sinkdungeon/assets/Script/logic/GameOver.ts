@@ -3,7 +3,7 @@ import AudioPlayer from '../utils/AudioPlayer'
 import Random from '../utils/Random'
 import ExitData from '../data/ExitData'
 import LocalStorage from '../utils/LocalStorage'
-import CursorArea from '../ui/CursorArea'
+// import CursorArea from '../ui/CursorArea'
 import Utils from '../utils/Utils'
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -50,7 +50,7 @@ export default class GameOver extends cc.Component {
     ]
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
-        CursorArea.init(this.cursorAreaPrefab)
+        // CursorArea.init(this.cursorAreaPrefab)
     }
 
     start() {

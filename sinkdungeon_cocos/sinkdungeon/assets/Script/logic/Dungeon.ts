@@ -62,7 +62,7 @@ export default class Dungeon extends cc.Component {
     static readonly TILE_SIZE: number = 128
     static readonly DEFAULT_ZOOM_MAX = 2
     static readonly DEFAULT_ZOOM_MIN = 0.6
-    static readonly DEFAULT_ZOOM = 1
+    static readonly DEFAULT_ZOOM = 0.8
     private timeDelay = 0
     private checkTimeDelay = 0
 

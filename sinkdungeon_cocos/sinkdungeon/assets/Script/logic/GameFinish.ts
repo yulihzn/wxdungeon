@@ -1,9 +1,8 @@
 import Logic from './Logic'
 import WxHelper from './WxHelper'
-import { EventHelper } from './EventHelper'
 import AudioPlayer from '../utils/AudioPlayer'
 import StartBackground from '../ui/StartBackground'
-import CursorArea from '../ui/CursorArea'
+// import CursorArea from '../ui/CursorArea'
 import Utils from '../utils/Utils'
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -29,7 +28,7 @@ export default class NewClass extends cc.Component {
     @property(cc.Prefab)
     cursorAreaPrefab: cc.Prefab = null
     onLoad() {
-        CursorArea.init(this.cursorAreaPrefab)
+        // CursorArea.init(this.cursorAreaPrefab)
     }
 
     start() {

@@ -11,7 +11,7 @@ import AudioPlayer from '../utils/AudioPlayer'
 import LocalStorage from '../utils/LocalStorage'
 import LoadingIcon from '../ui/LoadingIcon'
 import { EventHelper } from './EventHelper'
-import CursorArea from '../ui/CursorArea'
+// import CursorArea from '../ui/CursorArea'
 import BuildingData from '../data/BuildingData'
 
 // Learn TypeScript:
@@ -67,7 +67,7 @@ export default class Achievement extends cc.Component {
     data: AchievementData
 
     onLoad() {
-        CursorArea.init(this.cursorAreaPrefab)
+        // CursorArea.init(this.cursorAreaPrefab)
         this.loadingManager.init()
         this.removeContent()
         this.data = LocalStorage.getAchievementData()

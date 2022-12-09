@@ -234,18 +234,7 @@ export default class Inventory extends cc.Component {
 
     private addEquipSpriteTouchEvent(sprite: cc.Sprite, equipmetType: string) {
         sprite.node.parent.on(cc.Node.EventType.TOUCH_START, () => {
-            if (sprite.spriteFrame == null) {
-                return
-            }
-            let equipData = new EquipmentData()
-            if (this.inventoryManager.equips[equipmetType]) {
-                equipData = this.inventoryManager.equips[equipmetType].clone()
-            }
-            if (equipData.equipmetType == InventoryManager.EMPTY) {
-                return
-            }
-            let pos = this.node.convertToNodeSpaceAR(sprite.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO))
-            this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32, 0)), null, null, equipData, null, this.inventoryManager, EquipmentAndItemDialog.BG_TYPE_ARROW_RIGHT)
+            this.showDialog(equipmetType, sprite)
         })
         sprite.node.parent.on(cc.Node.EventType.TOUCH_END, () => {
             this.equipmentAndItemDialog.hideDialog()
@@ -253,6 +242,26 @@ export default class Inventory extends cc.Component {
         sprite.node.parent.on(cc.Node.EventType.TOUCH_CANCEL, () => {
             this.equipmentAndItemDialog.hideDialog()
         })
+        sprite.node.parent.on(cc.Node.EventType.MOUSE_ENTER, () => {
+            this.showDialog(equipmetType, sprite)
+        })
+        sprite.node.parent.on(cc.Node.EventType.MOUSE_LEAVE, () => {
+            this.equipmentAndItemDialog.hideDialog()
+        })
+    }
+    private showDialog(equipmetType: string, sprite: cc.Sprite) {
+        if (sprite.spriteFrame == null) {
+            return
+        }
+        let equipData = new EquipmentData()
+        if (this.inventoryManager.equips[equipmetType]) {
+            equipData = this.inventoryManager.equips[equipmetType].clone()
+        }
+        if (equipData.equipmetType == InventoryManager.EMPTY) {
+            return
+        }
+        let pos = this.node.convertToNodeSpaceAR(sprite.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO))
+        this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32, 0)), null, null, equipData, null, this.inventoryManager, EquipmentAndItemDialog.BG_TYPE_ARROW_RIGHT)
     }
     private addItemSpriteTouchEvent(sprite: cc.Sprite, node: cc.Node, itemIndex: number) {
         let isLongPress = false

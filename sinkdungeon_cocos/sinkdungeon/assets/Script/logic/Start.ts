@@ -2,7 +2,7 @@ import Logic from './Logic'
 import AudioPlayer from '../utils/AudioPlayer'
 import NoticeDialog from '../ui/dialog/NoticeDialog'
 import StartBackground from '../ui/StartBackground'
-import CursorArea from '../ui/CursorArea'
+// import CursorArea from '../ui/CursorArea'
 import SaveSlotDialog from '../ui/dialog/SaveSlotDialog'
 import LocalStorage from '../utils/LocalStorage'
 import ExitData from '../data/ExitData'
@@ -39,7 +39,7 @@ export default class Start extends cc.Component {
     debugClickCount = 0
     tourClickCount = 0
     onLoad(): void {
-        CursorArea.init(this.cursorAreaPrefab)
+        // CursorArea.init(this.cursorAreaPrefab)
         this.cheatButton.opacity = Logic.isCheatMode ? 255 : 0
         this.debugButton.opacity = Logic.isDebug ? 255 : 0
         this.noticeDialog.node.active = false

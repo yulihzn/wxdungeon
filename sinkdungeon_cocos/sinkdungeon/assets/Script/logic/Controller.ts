@@ -47,14 +47,14 @@ export default class Controller extends cc.Component {
     skillActionTouched1 = false
     @property(cc.Prefab)
     cursorAreaPrefab: cc.Prefab = null
-    cursorArea: CursorArea
+    cursorBackArea: CursorArea
     static mousePos: cc.Vec2
-    mouseInArea = false
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.cursorArea = CursorArea.init(this.cursorAreaPrefab)
+        this.cursorBackArea = CursorArea.init(this.cursorAreaPrefab)
+        this.cursorBackArea.node.parent = this.node
         this.coolDown.init(CoolDownView.PROFESSION)
         this.coolDown1.init(CoolDownView.ORGANIZATION)
         this.attackAction.on(
@@ -257,7 +257,7 @@ export default class Controller extends cc.Component {
                 this.shootAction.active = detail.isShow && !Controller.isMouseMode()
             }
         })
-        this.cursorArea.callback = (type: number, pos: cc.Vec2) => {
+        this.cursorBackArea.callback = (type: number, pos: cc.Vec2) => {
             if (!Controller.isMouseMode()) {
                 return
             }

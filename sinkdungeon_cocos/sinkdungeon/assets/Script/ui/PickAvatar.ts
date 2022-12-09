@@ -22,8 +22,7 @@ import LoadingManager from '../manager/LoadingManager'
 import LoadingIcon from './LoadingIcon'
 import Utils from '../utils/Utils'
 import EquipmentData from '../data/EquipmentData'
-import CursorArea from './CursorArea'
-import LocalStorage from '../utils/LocalStorage'
+// import CursorArea from './CursorArea'
 import ProfileManager from '../manager/ProfileManager'
 import ExitData from '../data/ExitData'
 import SavePointData from '../data/SavePointData'
@@ -116,7 +115,7 @@ export default class PickAvatar extends cc.Component {
     private loadingIcon: LoadingIcon
 
     onLoad() {
-        CursorArea.init(this.cursorAreaPrefab)
+        // CursorArea.init(this.cursorAreaPrefab)
         this.loadingManager.init()
         this.data = new AvatarData()
         this.bedSprite = this.getSpriteChildSprite(this.avatarTable, ['bed'])

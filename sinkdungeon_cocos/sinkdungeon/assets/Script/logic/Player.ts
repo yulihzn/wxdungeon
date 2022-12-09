@@ -64,6 +64,7 @@ import BaseAvatar from '../base/BaseAvatar'
 import Dialogue from '../ui/Dialogue'
 import EquipItemTalent from '../talent/EquipItemTalent'
 import OilGoldMetal from '../talent/OilGoldMetal'
+import ExitData from '../data/ExitData'
 @ccclass
 export default class Player extends PlayActor {
     @property(cc.Sprite)
@@ -1488,8 +1489,20 @@ export default class Player extends PlayActor {
         if (this.data.isWakeUp) {
             this.data.isWakeUp = false
             this.avatar.playSleep()
-            Dialogue.play(Dialogue.DAILY_WAKE_UP, () => {
-                this.avatar.playWakeUp()
+            Dialogue.play(Dialogue.DAILY_WAKE_UP, (index: number) => {
+                if (index == 0) {
+                    this.avatar.playWakeUp()
+                } else if (index == 1) {
+                    if (this.dungeon) {
+                        this.dungeon.cameraZoom = Dungeon.DEFAULT_ZOOM_MAX
+                    }
+                    this.scheduleOnce(() => {
+                        AudioPlayer.play(AudioPlayer.EXIT)
+                        //休息8小时
+                        Logic.dreamCostTime = 60000 * 60 * 8
+                        Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal())
+                    }, 1)
+                }
             })
         }
     }

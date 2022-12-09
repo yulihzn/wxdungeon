@@ -27,54 +27,62 @@ export default class CursorArea extends cc.Component {
         return cursorArea
     }
     onLoad() {
-        this.node.on(
-            cc.Node.EventType.MOUSE_DOWN,
-            (event: cc.Event.EventMouse) => {
-                if (event.getButton() == cc.Event.EventMouse.BUTTON_LEFT) {
-                    if (this.callback) {
-                        this.callback(CursorArea.CLICK_LEFT_DOWN)
-                    }
-                } else if (event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT) {
-                    if (this.callback) {
-                        this.callback(CursorArea.CLICK_RIGHT_DOWN)
-                    }
-                }
-            },
-            this
-        )
-        this.node.on(
-            cc.Node.EventType.MOUSE_UP,
-            (event: cc.Event.EventMouse) => {
-                if (event.getButton() == cc.Event.EventMouse.BUTTON_LEFT) {
-                    if (this.callback) {
-                        this.callback(CursorArea.CLICK_LEFT_UP)
-                    }
-                } else if (event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT) {
-                    if (this.callback) {
-                        this.callback(CursorArea.CLICK_RIGHT_UP)
-                    }
-                }
-            },
-            this
-        )
-        this.node.on(
-            cc.Node.EventType.MOUSE_LEAVE,
-            (event: cc.Event.EventMouse) => {
-                if (this.callback) {
-                    this.callback(CursorArea.MOUSE_LEAVE)
-                }
-            },
-            this
-        )
-        this.node.on(
-            cc.Node.EventType.MOUSE_MOVE,
-            (event: cc.Event.EventMouse) => {
-                this.cursor.position = cc.v3(this.node.convertToNodeSpaceAR(event.getLocation()))
-                if (this.callback) {
-                    this.callback(CursorArea.MOUSE_MOVE, event.getLocation())
-                }
-            },
-            this
-        )
+        this.cursor.active = false
+        this.node.on(cc.Node.EventType.MOUSE_DOWN, this.mouseDown, this)
+        this.node.on(cc.Node.EventType.MOUSE_UP, this.mouseUp, this)
+        this.node.on(cc.Node.EventType.MOUSE_LEAVE, this.mouseLeave, this)
+        this.node.on(cc.Node.EventType.MOUSE_MOVE, this.mouseMove, this)
+    }
+    offMouseEvent(type: number) {
+        switch (type) {
+            case 0:
+                this.node.off(cc.Node.EventType.MOUSE_DOWN, this.mouseDown, this)
+                break
+            case 1:
+                this.node.off(cc.Node.EventType.MOUSE_UP, this.mouseUp, this)
+                break
+            case 2:
+                this.node.off(cc.Node.EventType.MOUSE_LEAVE, this.mouseLeave, this)
+                break
+            case 3:
+                this.node.off(cc.Node.EventType.MOUSE_MOVE, this.mouseMove, this)
+                break
+        }
+    }
+    mouseDown(event: cc.Event.EventMouse) {
+        if (event.getButton() == cc.Event.EventMouse.BUTTON_LEFT) {
+            if (this.callback) {
+                this.callback(CursorArea.CLICK_LEFT_DOWN, event.getLocation())
+            }
+        } else if (event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT) {
+            if (this.callback) {
+                this.callback(CursorArea.CLICK_RIGHT_DOWN, event.getLocation())
+            }
+        }
+    }
+    mouseUp(event: cc.Event.EventMouse) {
+        if (event.getButton() == cc.Event.EventMouse.BUTTON_LEFT) {
+            if (this.callback) {
+                this.callback(CursorArea.CLICK_LEFT_UP, event.getLocation())
+            }
+        } else if (event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT) {
+            if (this.callback) {
+                this.callback(CursorArea.CLICK_RIGHT_UP, event.getLocation())
+            }
+        }
+    }
+    mouseLeave(event: cc.Event.EventMouse) {
+        if (this.callback) {
+            this.callback(CursorArea.MOUSE_LEAVE, event.getLocation())
+        }
+    }
+    mouseMove(event: cc.Event.EventMouse) {
+        this.cursor.position = cc.v3(this.cursor.parent.convertToNodeSpaceAR(event.getLocation()))
+        if (this.callback) {
+            this.callback(CursorArea.MOUSE_MOVE, event.getLocation())
+        }
+    }
+    setCursorParent(node: cc.Node) {
+        this.cursor.parent = node
     }
 }
