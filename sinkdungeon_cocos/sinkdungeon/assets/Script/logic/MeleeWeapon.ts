@@ -392,7 +392,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
     protected getWaveLight(dungeonNode: cc.Node, p: cc.Vec3, elementType: number, isStab: boolean, isFar: boolean) {
         let lights = [this.iceLight, this.fireLight, this.lighteningLight, this.toxicLight, this.curseLight]
-        let audios = [AudioPlayer.ELECTRIC_ATTACK, AudioPlayer.FIREBALL, AudioPlayer.ELECTRIC_ATTACK, AudioPlayer.ELECTRIC_ATTACK, AudioPlayer.ELECTRIC_ATTACK]
+        let audios = [AudioPlayer.ATTACK_ICE, AudioPlayer.ATTACK_FIRE, AudioPlayer.ATTACK_ELECTRIC, AudioPlayer.ATTACK_TOXIC, AudioPlayer.ATTACK_CURSE]
         if (elementType < 1 || elementType > lights.length || !this.dungeon) {
             return
         }

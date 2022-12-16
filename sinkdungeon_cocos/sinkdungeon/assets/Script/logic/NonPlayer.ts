@@ -740,7 +740,7 @@ export default class NonPlayer extends PlayActor {
     }
 
     private fall() {
-        AudioPlayer.play(AudioPlayer.BLEEDING)
+        AudioPlayer.play(AudioPlayer.ATTACK_BLEEDING)
         if (this.data.isStatic > 0 || this.data.isHeavy > 0 || this.IsVariation) {
             return
         }
@@ -815,9 +815,9 @@ export default class NonPlayer extends PlayActor {
                 this.showBloodEffect(pos)
             }
 
-            //100ms后恢复状态
+            //150ms后恢复状态
             this.unschedule(this.hurtReset)
-            this.scheduleOnce(this.hurtReset, 0.1)
+            this.scheduleOnce(this.hurtReset, 0.15)
         }
         //打破隐形
         this.sprite.opacity = 255
@@ -850,7 +850,7 @@ export default class NonPlayer extends PlayActor {
         if (!this.data) {
             return
         }
-        this.bodySprite.node.color = cc.color(255, 255, 255).fromHEX(this.data.bodyColor)
+        this.bodySprite.node.color = cc.Color.WHITE.fromHEX(this.data.StatusTotalData.color)
     }
     private getMixColor(color1: string, color2: string): string {
         let c1 = cc.color().fromHEX(color1)
@@ -894,7 +894,7 @@ export default class NonPlayer extends PlayActor {
     }
 
     private showBloodEffect(pos: cc.Vec3) {
-        AudioPlayer.play(AudioPlayer.BLEEDING)
+        AudioPlayer.play(AudioPlayer.ATTACK_BLEEDING)
         this.dungeon.addHitBlood(pos, this.node.position, Logic.getRandomNum(3, 6))
         this.particleBlood.resetSystem()
         this.scheduleOnce(() => {
@@ -1470,7 +1470,7 @@ export default class NonPlayer extends PlayActor {
         this.bodyStopAllActions()
         this.bodySprite.node.color = cc.Color.BLACK
         cc.tween(this.bodySprite.node)
-            .to(1, { color: cc.color(255, 255, 255).fromHEX(this.data.bodyColor) })
+            .to(1, { color: cc.Color.WHITE.fromHEX(this.data.StatusTotalData.color) })
             .call(() => {
                 this.sc.isShow = true
             })
@@ -1590,6 +1590,9 @@ export default class NonPlayer extends PlayActor {
     updateStatus(statusList: StatusData[], totalStatusData: StatusData): void {
         this.data.StatusTotalData.valueCopy(totalStatusData)
         this.data.StatusList = statusList
+        if (!this.sc.isHurting) {
+            this.resetBodyColor()
+        }
     }
     hideSelf(hideDuration: number): void {}
     updateDream(offset: number): number {

@@ -13,6 +13,7 @@ import DamageData from '../data/DamageData'
 import StatusData from '../data/StatusData'
 import Logic from '../logic/Logic'
 import EquipmentManager from '../manager/EquipmentManager'
+import StatusManager from '../manager/StatusManager'
 import StatusIcon from '../ui/StatusIcon'
 import DataUtils from '../utils/DataUtils'
 
@@ -65,6 +66,13 @@ export default class Status extends cc.Component {
             data.infocolor3 = '#BC8F8F' //玫瑰棕色
             data.extraInfo = this.getInfo(data)
             this.icon.showStatus(data)
+        }
+        if (this.isBaseStatus(this.data.spriteFrameName)) {
+            this.node.scale = 0
+            this.node.opacity = 0
+        } else {
+            this.node.scale = 1
+            this.node.opacity = 255
         }
     }
     private getInfo(data: StatusData) {
@@ -166,5 +174,15 @@ export default class Status extends cc.Component {
         dd.physicalDamage = this.data.physicalDamageOvertime ? this.data.physicalDamageOvertime : 0
         dd.magicDamage = this.data.magicDamageOvertime ? this.data.magicDamageOvertime : 0
         return dd
+    }
+    isBaseStatus(statusName: string) {
+        return (
+            StatusManager.FROZEN == statusName ||
+            StatusManager.BURNING == statusName ||
+            StatusManager.DIZZ == statusName ||
+            StatusManager.TOXICOSIS == statusName ||
+            StatusManager.CURSING == statusName ||
+            StatusManager.BLEEDING == statusName
+        )
     }
 }

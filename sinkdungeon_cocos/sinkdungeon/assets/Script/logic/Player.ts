@@ -396,6 +396,7 @@ export default class Player extends PlayActor {
         }
         this.data.StatusTotalData.valueCopy(totalStatusData)
         this.data.StatusList = statusList
+        this.changeLight(cc.Color.WHITE.fromHEX(this.data.StatusTotalData.color))
         this.updateInfoUi()
     }
     getWalkSmoke(parentNode: cc.Node, pos: cc.Vec3) {
@@ -1026,7 +1027,7 @@ export default class Player extends PlayActor {
             this.exTrigger(TriggerData.GROUP_HURT, TriggerData.TYPE_HURT, from, actor)
             this.changeLight(cc.color(255, 0, 0))
             this.scheduleOnce(() => {
-                this.changeLight(cc.Color.WHITE)
+                this.changeLight(cc.Color.WHITE.fromHEX(this.data.StatusTotalData.color))
             }, 0.2)
         }
         if (valid || blockLevel == Shield.BLOCK_PARRY) {

@@ -6,6 +6,7 @@ import Actor from '../base/Actor'
 import StatusIconList from '../ui/StatusIconList'
 import ActorUtils from '../utils/ActorUtils'
 import PlayActor from '../base/PlayActor'
+import Utils from '../utils/Utils'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -267,6 +268,10 @@ export default class StatusManager extends cc.Component {
                         this.totalStatusData.exOilGold += s.data.exOilGold ? s.data.exOilGold : 0
                         this.totalStatusData.clearHealth += s.data.clearHealth ? s.data.clearHealth : 0
                         this.totalStatusData.avoidDeath += s.data.avoidDeath ? s.data.avoidDeath : 0
+                        this.totalStatusData.color = Utils.getMixColor(
+                            this.totalStatusData.color == '#ffffff' ? '#000000' : this.totalStatusData.color,
+                            StatusManager.getStatusColor(s.data.spriteFrameName)
+                        )
                         this.totalStatusData.Common.add(s.data.Common)
                         dataList.push(s.data.clone())
                     }
@@ -312,5 +317,29 @@ export default class StatusManager extends cc.Component {
                 ally.addStatus(statusName, from)
             }
         }
+    }
+    static getStatusColor(statusName: string) {
+        let color = '#ffffff'
+        switch (statusName) {
+            case StatusManager.FROZEN:
+                color = '#E1FFFF' //	淡青色
+                break
+            case StatusManager.BURNING:
+                color = '#FFA500' //	橙色
+                break
+            case StatusManager.DIZZ:
+                color = '#87CEFA' //	淡蓝色
+                break
+            case StatusManager.TOXICOSIS:
+                color = '#ADFF2F' //	绿黄色
+                break
+            case StatusManager.CURSING:
+                color = '#DA70D6' //	兰花的紫色
+                break
+            case StatusManager.BLEEDING:
+                color = '#FF6347' //	番茄
+                break
+        }
+        return color
     }
 }

@@ -258,4 +258,17 @@ export default class Utils {
         }
         return newdata
     }
+    static getMixColor(color1: string, color2: string): string {
+        let c1 = cc.color().fromHEX(color1)
+        let c2 = cc.color().fromHEX(color2)
+        let c3 = cc.color()
+        let r = c1.getR() + c2.getR()
+        let g = c1.getG() + c2.getG()
+        let b = c1.getB() + c2.getB()
+
+        c3.setR(r > 255 ? 255 : r)
+        c3.setG(g > 255 ? 255 : g)
+        c3.setB(b > 255 ? 255 : b)
+        return '#' + c3.toHEX('#rrggbb')
+    }
 }

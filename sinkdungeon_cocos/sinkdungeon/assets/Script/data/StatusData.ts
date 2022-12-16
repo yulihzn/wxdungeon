@@ -68,6 +68,7 @@ export default class StatusData {
     liquidOvertime: number = 0 //持续解渴值增加
     stackable: number = 0 //可堆叠层数，超过层数会移除掉第一条，如果为0
     private from: FromData //来源
+    color: string = '#ffffff'
 
     constructor() {
         this.common = new CommonData()
