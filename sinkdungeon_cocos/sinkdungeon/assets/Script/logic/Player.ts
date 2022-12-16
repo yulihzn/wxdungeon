@@ -218,6 +218,8 @@ export default class Player extends PlayActor {
         EventHelper.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL, detail => {
             if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
                 this.shield.cancel()
+            } else {
+                this.sc.isShooting = false
             }
         })
         EventHelper.on(EventHelper.PLAYER_REMOTEATTACK, detail => {
@@ -678,6 +680,10 @@ export default class Player extends PlayActor {
             arcEx = 2
             lineEx = 1
         }
+        this.sc.isShooting = true
+        this.shooterEx.setHv(this.Hv.clone())
+        this.weaponLeft.shooter.setHv(this.Hv.clone())
+        this.weaponRight.shooter.setHv(this.Hv.clone())
         this.weaponLeft.shooter.data.bulletSize = this.IsVariation ? 0.5 : 0
         let fireSuccess = this.weaponLeft.remoteAttack(this.data, this.remoteCooldown, arcEx, lineEx)
         if (fireSuccess) {
@@ -764,6 +770,17 @@ export default class Player extends PlayActor {
             this.avatar.changeAvatarByDir(dir)
         }
     }
+    private currentTarget: Actor
+    private getNearestEnemyActor(needRefresh: boolean, distance: number) {
+        if (ActorUtils.getTargetDistance(this, this.currentTarget) > distance) {
+            this.currentTarget = null
+        }
+        if (!ActorUtils.isTargetCanTrack(this.currentTarget) || needRefresh) {
+            this.currentTarget = ActorUtils.getNearestEnemyActor(this.node.position, false, this.dungeon, distance)
+        }
+        return this.currentTarget
+    }
+
     updateHv(hv?: cc.Vec2) {
         if (Controller.isMouseMode() && Controller.mousePos && this.dungeon) {
             let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.node.position))
@@ -772,7 +789,7 @@ export default class Player extends PlayActor {
             this.updateAvatarFace(dir)
             return
         }
-        let pos = ActorUtils.getDirectionFromNearestEnemy(this.node.position, false, this.dungeon, false, 300)
+        let pos = ActorUtils.getTargetDirection(this.node.position, this.getNearestEnemyActor(false, this.sc.isShooting ? 800 : 300), false)
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.hv = cc.v2(pos).normalize()
         } else if (hv && !hv.equals(cc.Vec2.ZERO)) {

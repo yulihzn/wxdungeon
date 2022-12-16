@@ -69,7 +69,7 @@ export default class KeyboardController extends cc.Component {
                 this.isA = true
                 break
             case cc.macro.KEY.space:
-                if (!Controller.isMouseMode) {
+                if (!Controller.isMouseMode()) {
                     this.isB = true
                 } else {
                     this.isJ = true
@@ -79,6 +79,9 @@ export default class KeyboardController extends cc.Component {
                 this.isD = true
                 break
             case cc.macro.KEY.k:
+                this.isD = true
+                break
+            case cc.macro.KEY.l:
                 this.isJ = true
                 break
             case cc.macro.KEY.e:
@@ -190,7 +193,7 @@ export default class KeyboardController extends cc.Component {
                 this.isA = false
                 break
             case cc.macro.KEY.space:
-                if (!Controller.isMouseMode) {
+                if (!Controller.isMouseMode()) {
                     this.isB = false
                     EventHelper.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL)
                 } else {
@@ -200,11 +203,15 @@ export default class KeyboardController extends cc.Component {
                 if (Logic.isGamePause) {
                     EventHelper.emit(EventHelper.HUD_DIALOGUE_SKIP)
                 }
+                EventHelper.emit(EventHelper.GAMEOVER_WAKEUP)
                 break
             case cc.macro.KEY.shift:
                 this.isD = false
                 break
             case cc.macro.KEY.k:
+                this.isD = false
+                break
+            case cc.macro.KEY.l:
                 this.isJ = false
                 EventHelper.emit(EventHelper.PLAYER_JUMP_CANCEL)
                 break

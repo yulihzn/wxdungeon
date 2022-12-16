@@ -249,6 +249,13 @@ export default class PlayerInfoDialog extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, () => {
             this.isShow = false
         })
+        this.node.on(cc.Node.EventType.MOUSE_ENTER, () => {
+            this.isShow = true
+            this.refreshDialog(this.playerData, this.equipmentData, this.statusData, true)
+        })
+        this.node.on(cc.Node.EventType.MOUSE_LEAVE, () => {
+            this.isShow = false
+        })
     }
     update(dt) {
         this.layout.active = this.isShow

@@ -5,6 +5,7 @@ import ExitData from '../data/ExitData'
 import LocalStorage from '../utils/LocalStorage'
 // import CursorArea from '../ui/CursorArea'
 import Utils from '../utils/Utils'
+import { EventHelper } from './EventHelper'
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -50,7 +51,11 @@ export default class GameOver extends cc.Component {
     ]
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
-        // CursorArea.init(this.cursorAreaPrefab)
+        EventHelper.on(EventHelper.GAMEOVER_WAKEUP, detail => {
+            if (this.node) {
+                this.retry()
+            }
+        })
     }
 
     start() {

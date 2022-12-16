@@ -110,6 +110,8 @@ export class EventHelper extends cc.Component {
 
     public static readonly DIALOG_ALERT_SHOW = 'DIALOG_ALERT_SHOW'
 
+    public static readonly GAMEOVER_WAKEUP = 'GAMEOVER_WAKEUP'
+
     public static eventHandler: cc.Node = new cc.Node()
 
     /**

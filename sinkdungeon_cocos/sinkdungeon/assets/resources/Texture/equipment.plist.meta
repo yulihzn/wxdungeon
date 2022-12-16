@@ -408,7 +408,7 @@
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
-      "offsetX": 2.5,
+      "offsetX": -2.5,
       "offsetY": -1,
       "trimX": 1,
       "trimY": 26,

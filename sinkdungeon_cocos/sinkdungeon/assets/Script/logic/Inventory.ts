@@ -297,6 +297,17 @@ export default class Inventory extends cc.Component {
             touchStart = false
             isLongPress = false
         })
+        node.on(cc.Node.EventType.MOUSE_ENTER, () => {
+            let item = this.inventoryManager.itemList[itemIndex].clone()
+            if (item.resName == Item.EMPTY) {
+                return
+            }
+            let pos = this.node.convertToNodeSpaceAR(node.convertToWorldSpaceAR(cc.Vec3.ZERO))
+            this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(32, 0)), null, item, null, null, null, EquipmentAndItemDialog.BG_TYPE_ARROW_LEFT)
+        })
+        node.on(cc.Node.EventType.MOUSE_LEAVE, () => {
+            this.equipmentAndItemDialog.hideDialog()
+        })
     }
 
     refreshSuits() {

@@ -14,4 +14,5 @@ export default class StateContext {
     isVanishing = false //是否消失
     isTalking = false //是否对话
     isFlying = false //是否正在飞行
+    isShooting = false //是否正在射击
 }
