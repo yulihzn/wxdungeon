@@ -218,7 +218,7 @@ export default class Player extends PlayActor {
         EventHelper.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL, detail => {
             if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
                 this.shield.cancel()
-            } else {
+            } else if (this.sc) {
                 this.sc.isShooting = false
             }
         })
@@ -680,7 +680,9 @@ export default class Player extends PlayActor {
             arcEx = 2
             lineEx = 1
         }
-        this.sc.isShooting = true
+        if (this.sc) {
+            this.sc.isShooting = true
+        }
         this.shooterEx.setHv(this.Hv.clone())
         this.weaponLeft.shooter.setHv(this.Hv.clone())
         this.weaponRight.shooter.setHv(this.Hv.clone())
