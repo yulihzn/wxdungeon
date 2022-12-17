@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "fd2e505d-8d45-4310-ad7e-b8f725562e4a",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 24,
+  "height": 24,
+  "platformSettings": {},
+  "subMetas": {
+    "metalidle004": {
+      "ver": "1.0.6",
+      "uuid": "b9fa4d29-6c92-435e-b381-a924aff07ccf",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "fd2e505d-8d45-4310-ad7e-b8f725562e4a",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 24,
+      "height": 24,
+      "rawWidth": 24,
+      "rawHeight": 24,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

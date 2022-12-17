@@ -103,7 +103,8 @@ export default class Player extends PlayActor {
     waterSpark: cc.Prefab = null
     @property(cc.Prefab)
     aoe: cc.Prefab = null
-    @property(OilGoldMetal)
+    @property(cc.Prefab)
+    metalPrefab: cc.Prefab = null
     metal: OilGoldMetal = null
     professionTalent: ProfessionTalent = null
     equipmentTalent: EquipItemTalent = null
@@ -159,7 +160,6 @@ export default class Player extends PlayActor {
             this.exTrigger(group, type, null, null)
         })
         this.avatar = PlayerAvatar.create(this.avatarPrefab, this.root, Logic.playerData.AvatarData.clone(), this.node.group)
-        this.metal.init(this)
     }
     onLoad() {
         this.data = Logic.playerData.clone()
@@ -287,6 +287,8 @@ export default class Player extends PlayActor {
             this.playerSpriteframe = new cc.SpriteFrame(this.playerSpriteTexture)
             this.sprite.spriteFrame = this.playerSpriteframe
         }
+        this.metal = cc.instantiate(this.metalPrefab).getComponent(OilGoldMetal)
+        this.metal.init(this)
     }
 
     public initShadowList(isFromSave: boolean, count: number, lifeTime: number) {

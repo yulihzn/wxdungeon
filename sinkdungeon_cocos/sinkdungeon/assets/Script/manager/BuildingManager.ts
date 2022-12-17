@@ -991,38 +991,38 @@ export default class BuildingManager extends BaseManager {
 
             //判断当前墙壁下标是否在合并表里，如果有设置最初合并的墙
             let isCombine = this.colliderCombineMap.has(`i${indexPos.x}j${indexPos.y}`)
-            // if (isCombine) {
-            //     wall.combineWall = this.colliderCombineMap.get(`i${indexPos.x}j${indexPos.y}`)
-            // }
-            // //如果还未合并且非装饰的情况下往右遍历
-            // if (!isCombine && !onlyShow) {
-            //     for (let i = indexPos.x + 1; i < mapData.length; i++) {
-            //         let next = mapData[i][indexPos.y]
-            //         if (Utils.isFirstEqual(next, '#')) {
-            //             this.colliderCombineMap.set(`i${i}j${indexPos.y}`, wall)
-            //             combineCountX++
-            //             // let type = Wall.getType(next)
-            //             // if (Wall.typeNeedTransparent(type)) {
-            //             //     //下一个相同元素记录下标并存储当前元素
-            //             // } else {
-            //             //     break
-            //             // }
-            //         } else {
-            //             break
-            //         }
-            //     }
-            //     // if (combineCountX < 1) {
-            //     //     for (let j = indexPos.y + 1; j < mapData[indexPos.x].length; j++) {
-            //     //         let next = mapData[indexPos.x][j]
-            //     //         if (mapDataStr == next) {
-            //     //             this.colliderCombineMap.set(`i${indexPos.x}j${j}`, null)
-            //     //             combineCountY++
-            //     //         } else {
-            //     //             break
-            //     //         }
-            //     //     }
-            //     // }
-            // }
+            if (isCombine) {
+                wall.combineWall = this.colliderCombineMap.get(`i${indexPos.x}j${indexPos.y}`)
+            }
+            //如果还未合并且非装饰的情况下往右遍历
+            if (!isCombine && !onlyShow) {
+                for (let i = indexPos.x + 1; i < mapData.length; i++) {
+                    let next = mapData[i][indexPos.y]
+                    if (Utils.isFirstEqual(next, '#')) {
+                        this.colliderCombineMap.set(`i${i}j${indexPos.y}`, wall)
+                        combineCountX++
+                        // let type = Wall.getType(next)
+                        // if (Wall.typeNeedTransparent(type)) {
+                        //     //下一个相同元素记录下标并存储当前元素
+                        // } else {
+                        //     break
+                        // }
+                    } else {
+                        break
+                    }
+                }
+                // if (combineCountX < 1) {
+                //     for (let j = indexPos.y + 1; j < mapData[indexPos.x].length; j++) {
+                //         let next = mapData[indexPos.x][j]
+                //         if (mapDataStr == next) {
+                //             this.colliderCombineMap.set(`i${indexPos.x}j${j}`, null)
+                //             combineCountY++
+                //         } else {
+                //             break
+                //         }
+                //     }
+                // }
+            }
             wall.init(mapDataStr, levelData, onlyShow || isCombine, combineCountX, combineCountY)
         })
     }
