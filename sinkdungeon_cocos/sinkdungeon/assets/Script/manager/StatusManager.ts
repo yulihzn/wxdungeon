@@ -7,6 +7,7 @@ import StatusIconList from '../ui/StatusIconList'
 import ActorUtils from '../utils/ActorUtils'
 import PlayActor from '../base/PlayActor'
 import Utils from '../utils/Utils'
+import CommonData from '../data/CommonData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -341,5 +342,28 @@ export default class StatusManager extends cc.Component {
                 break
         }
         return color
+    }
+    static addBaseStatus(actor: Actor, data: CommonData, from: FromData) {
+        if (!actor) {
+            return
+        }
+        if (Logic.getRandomNum(0, 100) < data.iceRate) {
+            actor.addStatus(StatusManager.FROZEN, from)
+        }
+        if (Logic.getRandomNum(0, 100) < data.fireRate) {
+            actor.addStatus(StatusManager.BURNING, from)
+        }
+        if (Logic.getRandomNum(0, 100) < data.lighteningRate) {
+            actor.addStatus(StatusManager.DIZZ, from)
+        }
+        if (Logic.getRandomNum(0, 100) < data.toxicRate) {
+            actor.addStatus(StatusManager.TOXICOSIS, from)
+        }
+        if (Logic.getRandomNum(0, 100) < data.curseRate) {
+            actor.addStatus(StatusManager.CURSING, from)
+        }
+        if (Logic.getRandomNum(0, 100) < data.realRate) {
+            actor.addStatus(StatusManager.BLEEDING, from)
+        }
     }
 }

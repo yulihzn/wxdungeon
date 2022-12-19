@@ -297,6 +297,7 @@ export default class Dungeon extends cc.Component {
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player)
         this.player.statusIconList = this.statusIconList
         this.player.node.parent = this.node
+        this.player.dungeon = this
         this.cameraTargetActor = this.player
         this.fog.setPosition(this.player.node.position.clone())
         EventHelper.emit(EventHelper.CAMERA_LOOK, { pos: this.player.getCenterPosition(), isDirect: true })

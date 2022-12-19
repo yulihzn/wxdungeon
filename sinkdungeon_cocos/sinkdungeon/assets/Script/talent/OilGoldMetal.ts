@@ -6,7 +6,11 @@ import IndexZ from '../utils/IndexZ'
 import ActorUtils from '../utils/ActorUtils'
 import CCollider from '../collider/CCollider'
 import BaseColliderComponent from '../base/BaseColliderComponent'
-import Shooter from '../logic/Shooter'
+import Utils from '../utils/Utils'
+import Actor from '../base/Actor'
+import NextStep from '../utils/NextStep'
+import Logic from '../logic/Logic'
+import MetalDagger from './MetalDagger'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -30,30 +34,44 @@ const { ccclass, property } = cc._decorator
  */
 @ccclass
 export default class OilGoldMetal extends BaseColliderComponent {
+    static readonly MODE_NONE = 0
+    static readonly MODE_DAGGER = 1
+    static readonly MODE_ARM = 2
+    static readonly MODE_SHIELD = 3
+    static readonly ANIM_IDLE = 'MetalIdle'
+    static readonly ANIM_DAGGER_IDLE = 'MetalDaggerIdle'
+    static readonly ANIM_DAGGER_HIT = 'MetalDaggerHit'
     @property(cc.Animation)
     anim: cc.Animation = null
     @property(cc.Node)
     root: cc.Node = null
     @property(cc.Node)
+    sprite: cc.Node = null
+    @property(cc.Node)
     shadow: cc.Node = null
-    @property(Shooter)
-    shooter: Shooter = null
-
-    flyAngle = 0
+    idleAngle = 0
     player: Player
+    mode = OilGoldMetal.MODE_NONE
+    currentAngle = 0
+    dagger: MetalDagger
 
     onLoad() {
         super.onLoad()
+        this.dagger = new MetalDagger(this)
     }
 
     start() {}
-    init(player: Player) {
+    init(player: Player, mode: number) {
         this.player = player
         this.node.parent = this.player.node.parent
         this.node.setPosition(player.node.position.clone())
         this.entity.Transform.position = this.node.position.clone()
         this.entity.NodeRender.root = this.root
         this.node.zIndex = IndexZ.OVERHEAD
+        this.changeMode(mode)
+    }
+    changeMode(mode: number) {
+        this.mode = mode
     }
     getPlayerFarPosition(player: Player, distance: number, angleOffset: number): cc.Vec3 {
         let hv = player.Hv.clone()
@@ -66,74 +84,100 @@ export default class OilGoldMetal extends BaseColliderComponent {
         return player.node.position.clone().addSelf(cc.v3(8, 48).addSelf(pos))
     }
 
-    onColliderEnter(other: CCollider, self: CCollider) {
+    onColliderStay(other: CCollider, self: CCollider) {
         if (self.radius > 0) {
-            let target = ActorUtils.getEnemyCollisionTarget(other, true)
-            if (target) {
-                // this.attacking(other.node)
+            if (this.dagger && this.player && this.dagger.attackStep.IsExcuting) {
+                this.dagger.attacking(other, self)
             }
         }
     }
-    attacking(attackTarget: cc.Node) {
-        if (!attackTarget) {
-            return
-        }
-        let damage = new DamageData()
-        let status = StatusManager.BURNING
-        let d = 1
-        damage.magicDamage = d
-        let target = ActorUtils.getEnemyActorByNode(attackTarget, true)
-        if (target && !target.sc.isDied) {
-            target.takeDamage(damage)
-            target.addStatus(status, new FromData())
-        }
-    }
+
     checkTimeDelay = 0
     isCheckTimeDelay(dt: number): boolean {
         this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.2) {
+        if (this.checkTimeDelay > 0.1) {
             this.checkTimeDelay = 0
             return true
         }
         return false
     }
+
     updateLogic(dt: number) {
         if (!this.player) {
             return
         }
+        if (this.dagger) {
+            this.dagger.updateLogic(dt)
+        }
+
         if (this.isCheckTimeDelay(dt)) {
-            let pos = this.getPlayerFarPosition(this.player, -50, this.flyAngle)
-            this.flyAngle += 20
-            if (this.flyAngle > 360) {
-                this.flyAngle = 0
+            this.followPlayer()
+        }
+
+        this.entity.Transform.base = this.player.entity.Transform.base
+        let y = this.root.y - this.entity.Transform.base
+        if (y < 0) {
+            y = 0
+        }
+        let scale = 1 - y / 64
+        this.shadow.scale = scale < 0.5 ? 0.5 : scale
+        this.shadow.y = this.entity.Transform.base
+    }
+    private followPlayer() {
+        if (this.dagger.isAttacking) {
+            return
+        }
+        let pos = this.getPlayerFarPosition(this.player, -50, this.idleAngle)
+        this.idleAngle += 20
+        if (this.idleAngle > 360) {
+            this.idleAngle = 0
+        }
+        let offset = pos.sub(this.node.position)
+        let mag = offset.mag()
+        let speed = 1
+        if (mag < 50) {
+            speed = 1
+        } else if (mag < 100) {
+            speed = 1
+            if (this.dagger) {
+                this.dagger.isDaggerReady = true
             }
-            let offset = pos.sub(this.node.position)
-            let mag = offset.mag()
-            let speed = 1
-            if (mag < 50) {
-                speed = 1
-            } else if (mag < 200) {
-                speed = 4
-            } else {
-                speed = 8
-            }
-            let ps = offset.normalizeSelf().mulSelf(speed)
-            this.entity.Move.linearVelocity = cc.v2(ps.x, ps.y)
-            this.entity.Transform.base = this.player.entity.Transform.base
-            let y = this.root.y - this.entity.Transform.base
-            if (y < 0) {
-                y = 0
-            }
-            let scale = 1 - y / 64
-            this.shadow.scale = scale < 0.5 ? 0.5 : scale
-            this.shadow.y = this.entity.Transform.base
+        } else if (mag < 200) {
+            speed = 4
+        } else {
+            speed = 8
+        }
+        let ps = offset.normalizeSelf().mulSelf(speed)
+        this.entity.Move.linearVelocity = cc.v2(ps.x, ps.y)
+    }
+
+    rotateCollider(direction: cc.Vec2) {
+        if (direction.equals(cc.Vec2.ZERO)) {
+            return
+        }
+        //设置旋转角度
+        if (this.currentAngle < 0) {
+            this.currentAngle += 360
+        }
+        if (this.currentAngle >= 0 && this.currentAngle <= 90 && this.sprite.angle >= 225 && this.sprite.angle <= 360) {
+            this.sprite.angle -= 360
+            this.shadow.angle -= 360
+        } else if (this.sprite.angle >= 0 && this.sprite.angle <= 90 && this.currentAngle >= 225 && this.currentAngle <= 360) {
+            this.sprite.angle += 360
+            this.shadow.angle += 360
         }
     }
 
-    hasNearEnemy() {
-        if (!this.player) {
-            return cc.Vec3.ZERO
+    //Anim
+    AnimDaggerHit() {
+        if (this.dagger) {
+            this.dagger.hit()
         }
-        return ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.player.dungeon, false, 400)
+    }
+
+    playAnim(animName: string, immediate?: boolean) {
+        if ((!immediate && !this.anim.getAnimationState(animName).isPlaying) || immediate) {
+            this.anim.play(animName)
+        }
     }
 }

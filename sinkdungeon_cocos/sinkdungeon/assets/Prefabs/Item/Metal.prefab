@@ -31,10 +31,13 @@
       },
       {
         "__id__": 11
+      },
+      {
+        "__id__": 12
       }
     ],
     "_prefab": {
-      "__id__": 12
+      "__id__": 13
     },
     "_opacity": 255,
     "_color": {
@@ -386,6 +389,9 @@
     "root": {
       "__id__": 5
     },
+    "sprite": {
+      "__id__": 6
+    },
     "shadow": {
       "__id__": 2
     },
@@ -405,9 +411,42 @@
     "_clips": [
       {
         "__uuid__": "85b898e1-176b-4986-b635-f1e6d64eeea7"
+      },
+      {
+        "__uuid__": "4c0b73ee-4702-4771-bbcf-c6032740fdf3"
+      },
+      {
+        "__uuid__": "f37ad9e4-fc9e-4130-9764-8165793831c1"
       }
     ],
     "playOnLoad": true,
+    "_id": ""
+  },
+  {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 4,
+    "offsetX": 0,
+    "offsetY": 0,
+    "type": 0,
+    "radius": 8,
+    "w": 0,
+    "h": 0,
+    "zHeight": 66,
+    "bounce": 0,
+    "sensor": true,
+    "isStatic": true,
+    "ignoreSameTag": false,
+    "targetTagList": [],
+    "ignoreTagList": [
+      3,
+      4
+    ],
     "_id": ""
   },
   {

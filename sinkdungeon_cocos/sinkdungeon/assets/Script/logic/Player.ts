@@ -288,7 +288,7 @@ export default class Player extends PlayActor {
             this.sprite.spriteFrame = this.playerSpriteframe
         }
         this.metal = cc.instantiate(this.metalPrefab).getComponent(OilGoldMetal)
-        this.metal.init(this)
+        this.metal.init(this, OilGoldMetal.MODE_DAGGER)
     }
 
     public initShadowList(isFromSave: boolean, count: number, lifeTime: number) {

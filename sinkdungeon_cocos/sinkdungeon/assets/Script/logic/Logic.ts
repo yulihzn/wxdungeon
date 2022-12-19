@@ -145,14 +145,14 @@ export default class Logic extends cc.Component {
         if (Logic.settings.lowPower) {
             cc.game.setFrameRate(45)
         } else {
-            cc.game.setFrameRate(60)
+            cc.game.setFrameRate(59)
         }
         cc.game.addPersistRootNode(this.node)
         EventHelper.on(EventHelper.SETTINGS_LOW_POWER, () => {
             if (Logic.settings.lowPower) {
                 cc.game.setFrameRate(45)
             } else {
-                cc.game.setFrameRate(60)
+                cc.game.setFrameRate(59)
             }
         })
         // cc.view.enableAntiAlias(false);

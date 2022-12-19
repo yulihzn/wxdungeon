@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "f8544876-7648-4aba-b8a3-f10686304b60",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 24,
+  "height": 24,
+  "platformSettings": {},
+  "subMetas": {
+    "metaldaggeridle000": {
+      "ver": "1.0.6",
+      "uuid": "3c70c67f-3c8e-4bef-b32b-99df7f2a2b8d",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "f8544876-7648-4aba-b8a3-f10686304b60",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": -0.5,
+      "trimX": 1,
+      "trimY": 10,
+      "width": 22,
+      "height": 5,
+      "rawWidth": 24,
+      "rawHeight": 24,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

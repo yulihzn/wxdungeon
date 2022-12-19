@@ -132,32 +132,13 @@ export default class ActorAttackBox extends cc.Component {
                     dd.physicalDamage = dd.physicalDamage * 2
                 }
                 if (a.takeDamage(dd, from, this.actor)) {
-                    this.addBaseStatus(a, this.data, from)
+                    StatusManager.addBaseStatus(a, this.data.FinalCommon, from)
                 }
                 this.isSpecial = false
             }
         }
     }
-    addBaseStatus(actor: Actor, data: NonPlayerData, from: FromData) {
-        if (Logic.getRandomNum(0, 100) < data.FinalCommon.iceRate) {
-            actor.addStatus(StatusManager.FROZEN, from)
-        }
-        if (Logic.getRandomNum(0, 100) < data.FinalCommon.fireRate) {
-            actor.addStatus(StatusManager.BURNING, from)
-        }
-        if (Logic.getRandomNum(0, 100) < data.FinalCommon.lighteningRate) {
-            actor.addStatus(StatusManager.DIZZ, from)
-        }
-        if (Logic.getRandomNum(0, 100) < data.FinalCommon.toxicRate) {
-            actor.addStatus(StatusManager.TOXICOSIS, from)
-        }
-        if (Logic.getRandomNum(0, 100) < data.FinalCommon.curseRate) {
-            actor.addStatus(StatusManager.CURSING, from)
-        }
-        if (Logic.getRandomNum(0, 100) < data.FinalCommon.realRate) {
-            actor.addStatus(StatusManager.BLEEDING, from)
-        }
-    }
+
     setHv(hv: cc.Vec2) {
         this.hv = hv
         this.rotateCollider(this.hv)
