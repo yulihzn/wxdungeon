@@ -76,6 +76,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     protected anim: cc.Animation
     protected isAttacking: boolean = false
     protected hv: cc.Vec2 = cc.v2(1, 0)
+    protected lerpHv: cc.Vec2
     protected isStab = true //刺
     protected isFar = false //近程
     protected isFist = true //空手
@@ -96,7 +97,6 @@ export default class MeleeWeapon extends BaseColliderComponent {
     protected isComboing = false
     protected hasTargetMap: Map<number, number> = new Map()
     protected isSecond = false //是否是副手
-    protected currentAngle = 0
     protected fistCombo = 0
     protected exBeatBack: number = 0
     protected isAttackPressed = false
@@ -226,7 +226,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         return this.attackDo(data, isMiss, fistCombo)
     }
     protected attackDo(data: PlayerData, isMiss: boolean, fistCombo: number): boolean {
-        this.node.angle = this.currentAngle
+        this.rotateCollider(this.hv)
         this.hasTargetMap.clear()
         this.fistCombo = fistCombo
         this.isMiss = isMiss
@@ -572,15 +572,13 @@ export default class MeleeWeapon extends BaseColliderComponent {
     public updateLogic(dt: number) {
         this.hv = this.player.Hv.clone()
         if (this.CanMove) {
-            this.rotateCollider(this.hv)
+            if (!this.lerpHv) {
+                this.lerpHv = this.hv.clone()
+            } else {
+                this.lerpHv = Logic.lerpPos2(this.lerpHv, this.hv, dt * 5)
+            }
+            this.rotateCollider(this.lerpHv)
         }
-        this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 5)
-        // let z = this.player.Root.y
-        // this.node.y = -z
-        // if (this.spriteNode) {
-        //     let zpos = this.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO)
-        //     this.spriteNode.position = this.node.convertToNodeSpaceAR(zpos)
-        // }
     }
 
     protected rotateCollider(direction: cc.Vec2) {
@@ -593,15 +591,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         let sy = Math.abs(this.node.scaleY)
         this.node.scaleY = this.node.scaleX < 0 ? -sy : sy
         //设置旋转角度
-        this.currentAngle = Utils.getRotateAngle(direction, this.node.scaleX < 0)
-        if (this.currentAngle < 0) {
-            this.currentAngle += 360
-        }
-        if (this.currentAngle >= 0 && this.currentAngle <= 90 && this.node.angle >= 225 && this.node.angle <= 360) {
-            this.node.angle -= 360
-        } else if (this.node.angle >= 0 && this.node.angle <= 90 && this.currentAngle >= 225 && this.currentAngle <= 360) {
-            this.node.angle += 360
-        }
+        this.node.angle = Utils.getRotateAngle(direction, this.node.scaleX < 0)
     }
 
     onColliderStay(other: CCollider, self: CCollider) {

@@ -38,7 +38,7 @@ export default class HitBlood extends BaseNodeComponent {
         this.node.scale = 0.5 + Random.rand()
         this.spriteIndex = Logic.getRandomNum(0, HitBlood.SPRITES.length - 1)
         this.rotateAngle = 0
-        let r = Logic.getRandomNum(0, 255)
+        let r = Logic.getRandomNum(200, 255)
         let g = Logic.getRandomNum(0, 255)
         let b = Logic.getRandomNum(0, 255)
         this.sprite.node.color = cc.color(r, g, b)

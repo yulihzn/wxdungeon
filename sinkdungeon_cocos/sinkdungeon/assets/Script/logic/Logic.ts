@@ -302,9 +302,9 @@ export default class Logic extends cc.Component {
             }
         }
         data.fragments = value
-        data.Common.damageMin = data.level
-        data.Common.maxHealth = data.level
-        data.Common.maxDream = data.level
+        data.Common.damageMin = data.level / 2
+        data.Common.maxHealth = data.level / 2
+        data.Common.maxDream = data.level / 2
         data.Common.remoteDamage = data.level * 0.1
         return data
     }
@@ -472,6 +472,14 @@ export default class Logic extends cc.Component {
     }
     static lerpPos(self: cc.Vec3, to: cc.Vec3, ratio: number): cc.Vec3 {
         let out = cc.v3(0, 0)
+        let x = self.x
+        let y = self.y
+        out.x = x + (to.x - x) * ratio
+        out.y = y + (to.y - y) * ratio
+        return out
+    }
+    static lerpPos2(self: cc.Vec2, to: cc.Vec2, ratio: number): cc.Vec2 {
+        let out = cc.v2(0, 0)
         let x = self.x
         let y = self.y
         out.x = x + (to.x - x) * ratio

@@ -7,6 +7,8 @@ import Actor from '../base/Actor'
 import NextStep from '../utils/NextStep'
 import Logic from '../logic/Logic'
 import OilGoldMetal from './OilGoldMetal'
+import Utils from '../utils/Utils'
+import DamageData from '../data/DamageData'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -24,11 +26,12 @@ import OilGoldMetal from './OilGoldMetal'
 export default class MetalDagger {
     metal: OilGoldMetal
     attackStep: NextStep = new NextStep()
-    lastLinearVelocity: cc.Vec2
     private hasTargetMap: Map<number, number> = new Map()
     isDaggerReady = false
     isAttacking = false
     currentAngle = 0
+    direction: cc.Vec2 = cc.Vec2.ZERO
+
     constructor(metal: OilGoldMetal) {
         this.metal = metal
     }
@@ -48,13 +51,15 @@ export default class MetalDagger {
         let target = ActorUtils.getEnemyCollisionTarget(attackTarget, true)
         if (target) {
             let from = FromData.getClone(this.metal.player.data.name, '')
-            let dd = this.metal.player.data.getFinalAttackPoint()
+            let d = this.metal.player.data.OilGoldData.level / 2
+            let dd = new DamageData(d > 0 ? d : 1)
             this.attackStep.IsExcuting = false
             if (target.takeDamage(dd, from, this.metal.player)) {
                 StatusManager.addBaseStatus(target, this.metal.player.data.FinalCommon, from)
-                this.metal.playAnim('MetalDaggerHit', true)
-                this.lastLinearVelocity = this.metal.entity.Move.linearVelocity.clone()
-                this.metal.entity.Move.linearVelocity = cc.Vec2.ZERO
+                this.metal.scheduleOnce(() => {
+                    this.isAttacking = false
+                    this.playIdle()
+                }, 0.2)
             }
         }
     }
@@ -71,19 +76,22 @@ export default class MetalDagger {
     private currentTarget: Actor
     private getNearestEnemyActor(needRefresh?: boolean) {
         if (!ActorUtils.isTargetCanTrack(this.currentTarget) || needRefresh) {
-            this.currentTarget = ActorUtils.getNearestEnemyActor(this.metal.node.position, false, this.metal.player.dungeon, 1000)
+            this.currentTarget = ActorUtils.getNearestEnemyActor(this.metal.node.position, false, this.metal.player.dungeon, 600)
         }
         return this.currentTarget
     }
     private changeDirection() {
+        if (!this.metal.node) {
+            return
+        }
         let direction = ActorUtils.getTargetDirection(this.metal.node.position, this.getNearestEnemyActor(), false)
         if (!direction.equals(cc.Vec3.ZERO)) {
-            this.metal.entity.Move.linearVelocity = cc.v2(direction.mul(10))
+            this.metal.entity.Move.linearVelocity = cc.v2(direction.mul(15))
             this.playAttack()
             return true
         } else {
             this.playIdle()
-            this.attackStep.cutCoolDown(5)
+            this.attackStep.refreshCoolDown(3)
             return false
         }
     }
@@ -91,15 +99,17 @@ export default class MetalDagger {
         if (!this.metal.player) {
             return
         }
-        if (!this.attackStep.IsExcuting || this.isDaggerReady) {
+        if (!this.attackStep.IsExcuting && this.isDaggerReady) {
             this.attackStep.next(
                 () => {
                     this.hasTargetMap.clear()
-                    this.isDaggerReady = false
                     this.attackStep.IsExcuting = this.changeDirection()
                     this.isAttacking = this.attackStep.IsExcuting
+                    if (this.isAttacking) {
+                        this.isDaggerReady = false
+                    }
                 },
-                10,
+                2,
                 true,
                 () => {
                     if (this.attackStep.IsExcuting) {
@@ -108,9 +118,12 @@ export default class MetalDagger {
                 }
             )
         }
-        this.rotateCollider(this.metal.entity.Move.linearVelocity.normalize())
-        this.metal.sprite.angle = Logic.lerp(this.metal.sprite.angle, this.currentAngle, dt * 5)
-        this.metal.shadow.angle = Logic.lerp(this.metal.shadow.angle, this.currentAngle, dt * 5)
+        if (this.direction) {
+            this.direction = this.metal.entity.Move.linearVelocity
+        } else {
+            this.direction = Logic.lerpPos2(this.direction, this.metal.entity.Move.linearVelocity, dt * 5)
+        }
+        this.rotateCollider(this.direction)
     }
 
     rotateCollider(direction: cc.Vec2) {
@@ -118,16 +131,9 @@ export default class MetalDagger {
             return
         }
         //设置旋转角度
-        if (this.currentAngle < 0) {
-            this.currentAngle += 360
-        }
-        if (this.currentAngle >= 0 && this.currentAngle <= 90 && this.metal.sprite.angle >= 225 && this.metal.sprite.angle <= 360) {
-            this.metal.sprite.angle -= 360
-            this.metal.shadow.angle -= 360
-        } else if (this.metal.sprite.angle >= 0 && this.metal.sprite.angle <= 90 && this.currentAngle >= 225 && this.currentAngle <= 360) {
-            this.metal.sprite.angle += 360
-            this.metal.shadow.angle += 360
-        }
+        let angle = Utils.getRotateAngle(direction, false)
+        this.metal.sprite.angle = angle
+        this.metal.shadow.angle = angle
     }
 
     private playIdle() {
@@ -136,13 +142,12 @@ export default class MetalDagger {
     private playAttack() {
         this.metal.playAnim(OilGoldMetal.ANIM_DAGGER_IDLE)
     }
-    hit() {
-        this.metal.scheduleOnce(() => {
-            this.isAttacking = false
-            this.playIdle()
-        }, 0.2)
-        if (this.lastLinearVelocity) {
-            this.metal.entity.Move.linearVelocity = this.lastLinearVelocity.clone()
+
+    ready() {
+        if (!this.isDaggerReady) {
+            this.isDaggerReady = true
+            this.metal.sprite.color = cc.Color.RED
+            cc.tween(this.metal.sprite).to(0.1, { color: cc.Color.YELLOW }).start()
         }
     }
 }

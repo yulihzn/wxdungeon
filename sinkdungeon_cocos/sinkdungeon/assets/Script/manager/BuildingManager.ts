@@ -950,6 +950,9 @@ export default class BuildingManager extends BaseManager {
         for (let door of this.doors) {
             door.setOpen(isOpen, immediately)
         }
+        if (immediately) {
+            return
+        }
         for (let air of this.airExits) {
             air.changeStatus(isOpen ? AirExit.STATUS_OPEN : AirExit.STATUS_CLOSE)
         }

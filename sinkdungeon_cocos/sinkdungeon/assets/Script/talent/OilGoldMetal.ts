@@ -52,7 +52,6 @@ export default class OilGoldMetal extends BaseColliderComponent {
     idleAngle = 0
     player: Player
     mode = OilGoldMetal.MODE_NONE
-    currentAngle = 0
     dagger: MetalDagger
 
     onLoad() {
@@ -73,19 +72,9 @@ export default class OilGoldMetal extends BaseColliderComponent {
     changeMode(mode: number) {
         this.mode = mode
     }
-    getPlayerFarPosition(player: Player, distance: number, angleOffset: number): cc.Vec3 {
-        let hv = player.Hv.clone()
-        let pos = cc.v3(
-            cc
-                .v2(hv)
-                .rotateSelf((angleOffset * Math.PI) / 180)
-                .mul(distance)
-        )
-        return player.node.position.clone().addSelf(cc.v3(8, 48).addSelf(pos))
-    }
 
     onColliderStay(other: CCollider, self: CCollider) {
-        if (self.radius > 0) {
+        if (self.w > 0 && self.h > 0) {
             if (this.dagger && this.player && this.dagger.attackStep.IsExcuting) {
                 this.dagger.attacking(other, self)
             }
@@ -123,6 +112,16 @@ export default class OilGoldMetal extends BaseColliderComponent {
         this.shadow.scale = scale < 0.5 ? 0.5 : scale
         this.shadow.y = this.entity.Transform.base
     }
+    getPlayerFarPosition(player: Player, distance: number, angleOffset: number): cc.Vec3 {
+        let hv = player.Hv.clone()
+        let pos = cc.v3(
+            cc
+                .v2(hv)
+                .rotateSelf((angleOffset * Math.PI) / 180)
+                .mul(distance)
+        )
+        return player.node.position.clone().addSelf(pos)
+    }
     private followPlayer() {
         if (this.dagger.isAttacking) {
             return
@@ -137,11 +136,9 @@ export default class OilGoldMetal extends BaseColliderComponent {
         let speed = 1
         if (mag < 50) {
             speed = 1
+            this.dagger.ready()
         } else if (mag < 100) {
-            speed = 1
-            if (this.dagger) {
-                this.dagger.isDaggerReady = true
-            }
+            speed = 2
         } else if (mag < 200) {
             speed = 4
         } else {
@@ -149,30 +146,6 @@ export default class OilGoldMetal extends BaseColliderComponent {
         }
         let ps = offset.normalizeSelf().mulSelf(speed)
         this.entity.Move.linearVelocity = cc.v2(ps.x, ps.y)
-    }
-
-    rotateCollider(direction: cc.Vec2) {
-        if (direction.equals(cc.Vec2.ZERO)) {
-            return
-        }
-        //设置旋转角度
-        if (this.currentAngle < 0) {
-            this.currentAngle += 360
-        }
-        if (this.currentAngle >= 0 && this.currentAngle <= 90 && this.sprite.angle >= 225 && this.sprite.angle <= 360) {
-            this.sprite.angle -= 360
-            this.shadow.angle -= 360
-        } else if (this.sprite.angle >= 0 && this.sprite.angle <= 90 && this.currentAngle >= 225 && this.currentAngle <= 360) {
-            this.sprite.angle += 360
-            this.shadow.angle += 360
-        }
-    }
-
-    //Anim
-    AnimDaggerHit() {
-        if (this.dagger) {
-            this.dagger.hit()
-        }
     }
 
     playAnim(animName: string, immediate?: boolean) {
