@@ -42,8 +42,10 @@ export default class SavePoint extends Building {
                             EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN, {})
                             Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level))
                         }, 1)
-                    } else {
+                    } else if (index == 2) {
                         EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW, { isCast: true })
+                    } else {
+                        EventHelper.emit(EventHelper.HUD_METAL_TALENT_SHOW)
                     }
                 })
             }

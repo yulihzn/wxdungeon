@@ -15,6 +15,7 @@ import ActionSettingDialog from './dialog/ActionSettingDialog'
 import Utils from '../utils/Utils'
 import QuestBoardDialog from './dialog/QuestBoardDialog'
 import GameAlertDialog from './dialog/GameAlertDialog'
+import MetalTalentDialog from './dialog/MetalTalentDialog'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -74,6 +75,8 @@ export default class GameHud extends cc.Component {
     actionSettingDialog: ActionSettingDialog = null
     @property(QuestBoardDialog)
     questBoardDialog: QuestBoardDialog = null
+    @property(MetalTalentDialog)
+    metalTalentDialog: MetalTalentDialog = null
     @property(GameAlertDialog)
     gameAlertDialog: GameAlertDialog = null
 
@@ -150,6 +153,9 @@ export default class GameHud extends cc.Component {
         })
         EventHelper.on(EventHelper.HUD_QUEST_BOARD_SHOW, detail => {
             this.showQuestBoardDialog()
+        })
+        EventHelper.on(EventHelper.HUD_METAL_TALENT_SHOW, detail => {
+            this.showMetalTalentDialog()
         })
         EventHelper.on(EventHelper.DIALOG_ALERT_SHOW, detail => {
             if (this.gameAlertDialog) {
@@ -337,6 +343,7 @@ export default class GameHud extends cc.Component {
             this.actionSettingDialog.node.active ||
             this.dollMachineDialog.node.active ||
             this.questBoardDialog.node.active ||
+            this.metalTalentDialog.node.active ||
             this.dialogue.isShow ||
             this.inventoryDialog.node.active
         )
@@ -363,6 +370,10 @@ export default class GameHud extends cc.Component {
         }
         if (this.questBoardDialog.isShow) {
             this.questBoardDialog.dismiss()
+            return true
+        }
+        if (this.metalTalentDialog.isShow) {
+            this.metalTalentDialog.dismiss()
             return true
         }
         if (this.inventoryDialog.isShow) {
@@ -502,6 +513,16 @@ export default class GameHud extends cc.Component {
             this.questBoardDialog.dismiss()
         } else {
             this.questBoardDialog.show()
+        }
+    }
+    showMetalTalentDialog() {
+        if (!this.metalTalentDialog) {
+            return
+        }
+        if (this.metalTalentDialog.isShow) {
+            this.metalTalentDialog.dismiss()
+        } else {
+            this.metalTalentDialog.show()
         }
     }
 }

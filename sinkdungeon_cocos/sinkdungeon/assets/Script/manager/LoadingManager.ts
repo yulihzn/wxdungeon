@@ -49,6 +49,7 @@ export default class LoadingManager {
     public isBgmLoaded = false
     public isDialogueLoaded = false
     public isAffixsLoaded = false
+    public isMetalsLoaded = false
     // LIFE-CYCLE CALLBACKS:
     init() {
         this.setAllSpriteFramesUnload()
@@ -226,6 +227,21 @@ export default class LoadingManager {
                 Logic.talents = resource.json
                 this.isSkillsLoaded = true
                 cc.log(`加载技能完成`)
+            }
+        })
+    }
+    loadMetals() {
+        if (Logic.metals) {
+            this.isMetalsLoaded = true
+            return
+        }
+        cc.resources.load('Data/metal', (err: Error, resource: cc.JsonAsset) => {
+            if (err) {
+                cc.error(err)
+            } else {
+                Logic.metals = resource.json
+                this.isMetalsLoaded = true
+                cc.log(`加载天赋完成`)
             }
         })
     }

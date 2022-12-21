@@ -64,6 +64,7 @@ export default class Loading extends cc.Component {
             this.loadingManager.loadBullets()
             this.loadingManager.loadItems()
             this.loadingManager.loadTalents()
+            this.loadingManager.loadMetals()
             this.loadingManager.loadProfession()
             this.loadingManager.loadAffixs()
             this.loadingManager.loadNonplayer()
@@ -149,6 +150,7 @@ export default class Loading extends cc.Component {
             this.loadingManager.isBgmLoaded &&
             this.loadingManager.isNormalBuildingLoaded &&
             this.loadingManager.isDialogueLoaded &&
+            this.loadingManager.isMetalsLoaded &&
             this.cutScene.isSkip &&
             this.isTransportAnimFinished &&
             this.isElevatorAnimFinished

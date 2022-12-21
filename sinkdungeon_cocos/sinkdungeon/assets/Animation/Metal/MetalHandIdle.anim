@@ -1,11 +1,11 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "MetalIdle",
+  "_name": "MetalHandIdle",
   "_objFlags": 0,
   "_native": "",
   "_duration": 1.35,
   "sample": 60,
-  "speed": 2,
+  "speed": 1,
   "wrapMode": 2,
   "curveData": {
     "paths": {
@@ -16,54 +16,35 @@
               {
                 "frame": 0,
                 "value": {
-                  "__uuid__": "98cf1a05-b578-4d4b-9cc9-386c7e850650"
+                  "__uuid__": "b8abbb15-7550-450b-90d6-297ea62301dc"
                 }
               },
               {
                 "frame": 0.3333333333333333,
                 "value": {
-                  "__uuid__": "159456ac-9802-46f3-8285-949d5107822c"
+                  "__uuid__": "ba4b434a-b794-4dc7-90d3-2c29cbdea8b5"
                 }
               },
               {
                 "frame": 0.6666666666666666,
                 "value": {
-                  "__uuid__": "809b2107-9d75-44e9-9cff-c71dc82cbdf7"
+                  "__uuid__": "1725e30f-45d4-41a1-b74d-2f86c0834bb3"
                 }
               },
               {
                 "frame": 1,
                 "value": {
-                  "__uuid__": "6f850d4f-d0ac-4ce9-80c1-c9b0df8e2d7c"
+                  "__uuid__": "4a83c968-a6e9-421a-ba2e-f3df9f66611f"
                 }
               },
               {
                 "frame": 1.3333333333333333,
                 "value": {
-                  "__uuid__": "98cf1a05-b578-4d4b-9cc9-386c7e850650"
+                  "__uuid__": "b8abbb15-7550-450b-90d6-297ea62301dc"
                 }
               }
             ]
           }
-        },
-        "props": {
-          "scale": [
-            {
-              "frame": 0,
-              "value": {
-                "__type__": "cc.Vec3",
-                "x": 3,
-                "y": 3,
-                "z": 2
-              }
-            }
-          ],
-          "x": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
         }
       },
       "root/sprite": {
@@ -73,46 +54,41 @@
               {
                 "frame": 0,
                 "value": {
-                  "__uuid__": "98cf1a05-b578-4d4b-9cc9-386c7e850650"
+                  "__uuid__": "b8abbb15-7550-450b-90d6-297ea62301dc"
                 }
               },
               {
                 "frame": 0.3333333333333333,
                 "value": {
-                  "__uuid__": "159456ac-9802-46f3-8285-949d5107822c"
+                  "__uuid__": "ba4b434a-b794-4dc7-90d3-2c29cbdea8b5"
                 }
               },
               {
                 "frame": 0.6666666666666666,
                 "value": {
-                  "__uuid__": "809b2107-9d75-44e9-9cff-c71dc82cbdf7"
+                  "__uuid__": "1725e30f-45d4-41a1-b74d-2f86c0834bb3"
                 }
               },
               {
                 "frame": 1,
                 "value": {
-                  "__uuid__": "6f850d4f-d0ac-4ce9-80c1-c9b0df8e2d7c"
+                  "__uuid__": "4a83c968-a6e9-421a-ba2e-f3df9f66611f"
                 }
               },
               {
                 "frame": 1.3333333333333333,
                 "value": {
-                  "__uuid__": "98cf1a05-b578-4d4b-9cc9-386c7e850650"
+                  "__uuid__": "b8abbb15-7550-450b-90d6-297ea62301dc"
                 }
               }
             ]
           }
         },
         "props": {
-          "scale": [
+          "angle": [
             {
               "frame": 0,
-              "value": {
-                "__type__": "cc.Vec3",
-                "x": 3,
-                "y": 3,
-                "z": 2
-              }
+              "value": 0
             }
           ],
           "position": [
@@ -123,37 +99,25 @@
                 64,
                 0
               ]
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": [
+                0,
+                80,
+                0
+              ]
+            },
+            {
+              "frame": 1.3333333333333333,
+              "value": [
+                0,
+                64,
+                0
+              ]
             }
           ]
         }
-      }
-    },
-    "comps": {
-      "CCollider": {
-        "w": [
-          {
-            "frame": 0,
-            "value": 0
-          }
-        ],
-        "h": [
-          {
-            "frame": 0,
-            "value": 0
-          }
-        ],
-        "offsetX": [
-          {
-            "frame": 0,
-            "value": 0
-          }
-        ],
-        "offsetY": [
-          {
-            "frame": 0,
-            "value": 0
-          }
-        ]
       }
     }
   },

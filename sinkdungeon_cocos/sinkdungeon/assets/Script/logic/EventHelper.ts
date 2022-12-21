@@ -52,6 +52,7 @@ export class EventHelper extends cc.Component {
     public static readonly HUD_COMPLETE_SHOW = 'HUD_COMPLETE_SHOW'
     public static readonly HUD_DOLL_MACHINE_DIALOG = 'HUD_DOLL_MACHINE_DIALOG'
     public static readonly HUD_QUEST_BOARD_SHOW = 'HUD_QUEST_BOARD_SHOW'
+    public static readonly HUD_METAL_TALENT_SHOW = 'HUD_METAL_TALENT_SHOW'
     public static readonly HUD_MART_SHELVES_DIALOG = 'HUD_MART_SHELVES_DIALOG'
     public static readonly HUD_MART_SHELVES_DIALOG_PAY = 'HUD_MART_SHELVES_DIALOG_BUY'
     public static readonly HUD_CAMERA_ZOOM_IN = 'HUD_CAMERA_ZOOM_IN'
@@ -111,6 +112,7 @@ export class EventHelper extends cc.Component {
     public static readonly DIALOG_ALERT_SHOW = 'DIALOG_ALERT_SHOW'
 
     public static readonly GAMEOVER_WAKEUP = 'GAMEOVER_WAKEUP'
+    public static readonly SELECT_METAL_TALENT = 'SELECT_METAL_TALENT'
 
     public static eventHandler: cc.Node = new cc.Node()
 

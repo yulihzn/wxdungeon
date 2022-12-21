@@ -1,3 +1,4 @@
+import { EventHelper } from './../logic/EventHelper'
 import Player from '../logic/Player'
 import DamageData from '../data/DamageData'
 import StatusManager from '../manager/StatusManager'
@@ -11,6 +12,7 @@ import Actor from '../base/Actor'
 import NextStep from '../utils/NextStep'
 import Logic from '../logic/Logic'
 import MetalDagger from './MetalDagger'
+import MetalTalentData from '../data/MetalTalentData'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -36,7 +38,7 @@ const { ccclass, property } = cc._decorator
 export default class OilGoldMetal extends BaseColliderComponent {
     static readonly MODE_NONE = 0
     static readonly MODE_DAGGER = 1
-    static readonly MODE_ARM = 2
+    static readonly MODE_HAND = 2
     static readonly MODE_SHIELD = 3
     static readonly ANIM_IDLE = 'MetalIdle'
     static readonly ANIM_DAGGER_IDLE = 'MetalDaggerIdle'
@@ -53,24 +55,40 @@ export default class OilGoldMetal extends BaseColliderComponent {
     player: Player
     mode = OilGoldMetal.MODE_NONE
     dagger: MetalDagger
+    data: MetalTalentData = new MetalTalentData()
 
     onLoad() {
         super.onLoad()
         this.dagger = new MetalDagger(this)
+        EventHelper.on(EventHelper.SELECT_METAL_TALENT, detail => {
+            if (this.node) {
+                let data = new MetalTalentData().valueCopy(detail.data)
+                this.changeMode(data)
+            }
+        })
     }
 
     start() {}
-    init(player: Player, mode: number) {
+    init(player: Player, data: MetalTalentData) {
         this.player = player
         this.node.parent = this.player.node.parent
         this.node.setPosition(player.node.position.clone())
         this.entity.Transform.position = this.node.position.clone()
         this.entity.NodeRender.root = this.root
         this.node.zIndex = IndexZ.OVERHEAD
-        this.changeMode(mode)
+        this.changeMode(data)
     }
-    changeMode(mode: number) {
-        this.mode = mode
+    changeMode(data: MetalTalentData) {
+        this.data.valueCopy(data)
+        if (this.data.id.indexOf(MetalTalentData.METAL_DAGGER) != -1) {
+            this.mode = OilGoldMetal.MODE_DAGGER
+        } else if (this.data.id.indexOf(MetalTalentData.METAL_HAND) != -1) {
+            this.mode = OilGoldMetal.MODE_HAND
+        } else if (this.data.id.indexOf(MetalTalentData.METAL_SHIELD) != -1) {
+            this.mode = OilGoldMetal.MODE_SHIELD
+        } else {
+            this.mode = OilGoldMetal.MODE_NONE
+        }
     }
 
     onColliderStay(other: CCollider, self: CCollider) {

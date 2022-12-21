@@ -86,7 +86,8 @@
                 "next": [
                     { "jumpId": 1, "text": "离去" },
                     { "jumpId": 1, "text": "醒来" },
-                    { "jumpId": 1, "text": "铸造与强化" }
+                    { "jumpId": 1, "text": "铸造与强化" },
+                    { "jumpId": 1, "text": "翠金炼体" }
                 ]
             }
         ]

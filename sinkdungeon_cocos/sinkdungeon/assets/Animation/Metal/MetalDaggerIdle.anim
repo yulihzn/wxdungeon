@@ -45,6 +45,25 @@
               }
             ]
           }
+        },
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 3,
+                "y": 3,
+                "z": 2
+              }
+            }
+          ],
+          "x": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
         }
       },
       "root/sprite": {
@@ -83,7 +102,64 @@
               }
             ]
           }
+        },
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                64,
+                0
+              ]
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 3,
+                "y": 3,
+                "z": 2
+              }
+            }
+          ],
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
         }
+      }
+    },
+    "comps": {
+      "CCollider": {
+        "w": [
+          {
+            "frame": 0,
+            "value": 32
+          }
+        ],
+        "h": [
+          {
+            "frame": 0,
+            "value": 32
+          }
+        ],
+        "offsetX": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ],
+        "offsetY": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
       }
     }
   },

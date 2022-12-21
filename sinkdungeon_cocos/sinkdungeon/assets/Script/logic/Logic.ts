@@ -29,6 +29,7 @@ import BuildingData from '../data/BuildingData'
 import SettingsData from '../data/SettingsData'
 import Utils from '../utils/Utils'
 import AffixMapData from '../data/AffixMapData'
+import MetalTalentData from '../data/MetalTalentData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -83,6 +84,8 @@ export default class Logic extends cc.Component {
     static items: { [key: string]: ItemData } = null
     //技能json
     static talents: { [key: string]: TalentData } = null
+    //翠金技能json
+    static metals: { [key: string]: MetalTalentData } = null
     //家具json
     static furnitures: { [key: string]: BuildingData } = null
     //平台json
@@ -138,6 +141,7 @@ export default class Logic extends cc.Component {
     static sortIndexs: { [key: string]: number } = {} //0时间,1类别,2品质,3价格
     static settings: SettingsData = new SettingsData()
     static nonPlayerList: NonPlayerData[] = []
+    static metalData: MetalTalentData = new MetalTalentData()
 
     onLoad() {
         Logic.settings.valueCopy(LocalStorage.getSystemSettings())
@@ -203,6 +207,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.coins = Logic.coins
         Logic.profileManager.data.coinCounts = Logic.coinCounts
         Logic.profileManager.data.lastSaveTime = new Date().getTime()
+        Logic.profileManager.data.metal = Logic.metalData.clone()
         Logic.profileManager.saveData(Logic.jumpSlotIndex)
         LocalStorage.saveData(LocalStorage.KEY_REAL_COINS, Logic.realCoins)
         LocalStorage.setLastSaveSlotKey(Logic.jumpSlotIndex)
@@ -259,6 +264,7 @@ export default class Logic extends cc.Component {
         //加载对话出现次数
         Logic.dialogueCounts = Utils.cloneKeyValue(Logic.profileManager.data.dialogueCounts)
         Logic.playerData.OilGoldData.valueCopy(Logic.getOilGoldData(Logic.oilGolds))
+        Logic.metalData.valueCopy(Logic.profileManager.data.metal)
     }
     static resetInventoryAndOtherData() {
         Logic.inventoryManager = new InventoryManager()

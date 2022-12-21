@@ -113,8 +113,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 16,
-      "height": 16
+      "width": 24,
+      "height": 24
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -169,7 +169,7 @@
       "__uuid__": "98cf1a05-b578-4d4b-9cc9-386c7e850650"
     },
     "_type": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 2,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -284,8 +284,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 16,
-      "height": 16
+      "width": 24,
+      "height": 24
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -340,7 +340,7 @@
       "__uuid__": "98cf1a05-b578-4d4b-9cc9-386c7e850650"
     },
     "_type": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 2,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -376,28 +376,6 @@
     "sync": false
   },
   {
-    "__type__": "3de8drSUIxBqaz8jL9AIUhS",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "anim": {
-      "__id__": 11
-    },
-    "root": {
-      "__id__": 5
-    },
-    "sprite": {
-      "__id__": 6
-    },
-    "shadow": {
-      "__id__": 2
-    },
-    "_id": ""
-  },
-  {
     "__type__": "cc.Animation",
     "_name": "",
     "_objFlags": 0,
@@ -414,6 +392,12 @@
       },
       {
         "__uuid__": "4c0b73ee-4702-4771-bbcf-c6032740fdf3"
+      },
+      {
+        "__uuid__": "5be4d91b-3803-4a6a-8554-069dc6675507"
+      },
+      {
+        "__uuid__": "e0b79c26-0510-4af9-ab36-0126213dc9ec"
       }
     ],
     "playOnLoad": true,
@@ -432,8 +416,8 @@
     "offsetY": 0,
     "type": 1,
     "radius": 8,
-    "w": 16,
-    "h": 16,
+    "w": 24,
+    "h": 24,
     "zHeight": 66,
     "bounce": 0,
     "sensor": true,
@@ -444,6 +428,28 @@
       3,
       4
     ],
+    "_id": ""
+  },
+  {
+    "__type__": "3de8drSUIxBqaz8jL9AIUhS",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "anim": {
+      "__id__": 10
+    },
+    "root": {
+      "__id__": 5
+    },
+    "sprite": {
+      "__id__": 6
+    },
+    "shadow": {
+      "__id__": 2
+    },
     "_id": ""
   },
   {
