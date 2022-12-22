@@ -76,7 +76,7 @@ export default class Wall extends Building {
         return this.type == Wall.TYPE_EMPTY
     }
     changeRes(wallName: string) {
-        let rand4save = Logic.mapManager.getRandom4Save(this.seed, MapManager.RANDOM_BUILDING)
+        let rand4save = Logic.mapManager.getRandom4Save(this.seed, MapManager.RANDOM_WALL)
         let spriteframe = Logic.spriteFrameRes(wallName)
         if (this.type == Wall.TYPE_EMPTY) {
             this.node.opacity = 0
@@ -188,7 +188,7 @@ export default class Wall extends Building {
                 break
             case Wall.TYPE_TOP:
                 pos1 = cc.v2(1, 2)
-                pos2 = cc.v2(1, 3)
+                pos2 = cc.v2(rand4save.getRandomNum(1, 3), 3)
                 break
             case Wall.TYPE_INNER_CORNER_TOP_LEFT:
                 pos1 = cc.v2(2, 2)

@@ -288,7 +288,7 @@ export default class Player extends PlayActor {
             this.sprite.spriteFrame = this.playerSpriteframe
         }
         this.metal = cc.instantiate(this.metalPrefab).getComponent(OilGoldMetal)
-        this.metal.init(this, OilGoldMetal.MODE_DAGGER)
+        this.metal.init(this)
     }
 
     public initShadowList(isFromSave: boolean, count: number, lifeTime: number) {
@@ -885,13 +885,6 @@ export default class Player extends PlayActor {
         if (this.dashCooling || this.avatar?.isAniming) {
             return
         }
-        // if (this.data.currentDream <= 0) {
-        //     AudioPlayer.play(AudioPlayer.SELECT_FAIL)
-        //     EventHelper.emit(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR)
-        //     Utils.toast(`能量不足`)
-        //     return
-        // }
-        // this.updateDream(1)
         this.sc.isDashing = true
         this.dashCooling = true
         let speed = 20
@@ -901,7 +894,6 @@ export default class Player extends PlayActor {
         if (this.professionTalent && this.professionTalent.hashTalent(Talent.TALENT_015)) {
             speed += 10
         }
-        AudioPlayer.play(AudioPlayer.DASH)
         this.schedule(
             () => {
                 this.addDashGhost(this.shooterEx)
@@ -917,11 +909,14 @@ export default class Player extends PlayActor {
             pos = pos.normalizeSelf()
         }
         let posv2 = cc.v2(pos.x, pos.y)
+        let d = this.hv.dot(posv2)
+        let isBack = d < 0
+
         this.hv = posv2.clone()
         pos = pos.mul(speed)
         this.entity.Move.linearVelocity = pos
         this.entity.Move.damping = 50
-        this.playerAnim(BaseAvatar.STATE_WALK, this.currentDir)
+        this.playerAnim(isBack ? BaseAvatar.STATE_DASH1 : BaseAvatar.STATE_DASH, this.currentDir)
         this.highLight(true)
         this.scheduleOnce(() => {
             this.entity.Move.damping = 3
@@ -1248,7 +1243,7 @@ export default class Player extends PlayActor {
             this.jumpAbility.updateLogic()
         }
         this.statusManager.node.position = this.statusPos.clone().add(cc.v3(0, this.root.y))
-        if ((this.sc.isJumping || this.entity.Transform.z - this.entity.Transform.base > 0) && this.CanJump) {
+        if ((this.sc.isJumping || this.entity.Transform.z - this.entity.Transform.base > 0) && (this.CanJump || this.entity.Move.linearVelocityZ < 0)) {
             this.playerAnim(this.entity.Move.linearVelocityZ > 0 ? BaseAvatar.STATE_JUMP_UP : BaseAvatar.STATE_JUMP_DOWN, this.currentDir)
         }
         this.updateFlashLight()

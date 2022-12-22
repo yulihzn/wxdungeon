@@ -44,8 +44,7 @@ export default class MetalTalentItem extends cc.Component {
                     return
                 }
                 isLongPress = true
-                let pos = this.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.Vec3.ZERO))
-                this.metalTalentDialog.showInfoDialog(pos.add(cc.v3(32, 0)), '', '')
+                this.metalTalentDialog.showInfoDialog(this.data.name, this.data.content)
             }, 0.3)
         })
         this.node.on(cc.Node.EventType.TOUCH_END, () => {
@@ -62,8 +61,7 @@ export default class MetalTalentItem extends cc.Component {
             isLongPress = false
         })
         this.node.on(cc.Node.EventType.MOUSE_ENTER, () => {
-            let pos = this.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.Vec3.ZERO))
-            this.metalTalentDialog.showInfoDialog(pos.add(cc.v3(32, 0)), '', '')
+            this.metalTalentDialog.showInfoDialog(this.data.name, this.data.content)
         })
         this.node.on(cc.Node.EventType.MOUSE_LEAVE, () => {
             this.metalTalentDialog.hideInfoDialog()
@@ -74,9 +72,14 @@ export default class MetalTalentItem extends cc.Component {
         this.data.valueCopy(data)
         this.index = index
         this.sprite.spriteFrame = Logic.spriteFrameRes('iconmetal' + this.data.id)
+        this.lockToggle.isChecked = this.data.isUnlock
+        if (this.lockToggle.isChecked) {
+            this.lockToggle.interactable = false
+        }
     }
 
     switchOrUnlock() {
+        this.lockToggle.isChecked = this.data.isUnlock
         let count = this.metalTalentDialog.getUnlockCount()
         let left = Logic.playerData.OilGoldData.level - count
         if (this.data.isUnlock) {
@@ -86,6 +89,8 @@ export default class MetalTalentItem extends cc.Component {
                 GameAlertDialog.show(`是否花费一个翠金点解锁该天赋\n当前拥有${left}`, '确定', '取消', (flag: boolean) => {
                     if (flag) {
                         this.data.isUnlock = true
+                        this.lockToggle.isChecked = this.data.isUnlock
+                        Logic.playerMetals[this.data.id] = this.data.clone()
                     }
                 })
             } else {

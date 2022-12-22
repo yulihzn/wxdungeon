@@ -9,6 +9,7 @@ import TalentData from './TalentData'
 import Shield from '../logic/Shield'
 import LifeData from './LifeData'
 import DataUtils from '../utils/DataUtils'
+import MetalTalentData from './MetalTalentData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -36,6 +37,7 @@ export default class PlayerData {
     currentHealth: number = PlayerData.DEFAULT_HEALTH
     currentDream: number = PlayerData.DEFAULT_DREAM
     currentAmmo: number = 0
+    metalId = ''
 
     private common: CommonData
     private equipmentTotalData: EquipmentData
@@ -84,6 +86,7 @@ export default class PlayerData {
             this.statusList.push(data)
         }
     }
+
     get LifeData() {
         return this.lifeData
     }

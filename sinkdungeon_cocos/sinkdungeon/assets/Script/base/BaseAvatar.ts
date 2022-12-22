@@ -28,6 +28,8 @@ export default abstract class BaseAvatar extends cc.Component {
     public static readonly STATE_HIT = 8
     public static readonly STATE_SPECIAL = 9
     public static readonly STATE_DISGUISE = 10
+    public static readonly STATE_DASH = 11
+    public static readonly STATE_DASH1 = 12
     data: AvatarData
     status = BaseAvatar.STATE_IDLE
     dir = BaseAvatar.DIR_RIGHT

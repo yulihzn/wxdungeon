@@ -1,12 +1,12 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "AvatarIdle",
+  "_name": "AvatarDashBack",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 2,
+  "_duration": 1.3333333333333333,
   "sample": 60,
-  "speed": 1,
-  "wrapMode": 2,
+  "speed": 2.5,
+  "wrapMode": 1,
   "curveData": {
     "paths": {
       "sprite/cloak": {
@@ -18,25 +18,15 @@
             },
             {
               "frame": 0.5,
-              "value": 15
+              "value": -45
             },
             {
-              "frame": 1.5,
-              "value": -15
+              "frame": 1,
+              "value": -45
             },
             {
-              "frame": 2,
+              "frame": 1.3333333333333333,
               "value": 0
-            }
-          ],
-          "position": [
-            {
-              "frame": 0,
-              "value": [
-                0,
-                10,
-                0
-              ]
             }
           ]
         }
@@ -47,8 +37,8 @@
             {
               "frame": 0,
               "value": [
-                2,
-                5,
+                3.029,
+                4.37,
                 0
               ]
             }
@@ -56,7 +46,7 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0
+              "value": 30
             }
           ],
           "scale": [
@@ -77,15 +67,15 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0
+              "value": 60
             }
           ],
           "position": [
             {
               "frame": 0,
               "value": [
-                -2,
-                5,
+                -3.306,
+                4.526,
                 0
               ]
             }
@@ -108,30 +98,6 @@
           "scale": [
             {
               "frame": 0,
-              "value": {
-                "__type__": "cc.Vec2",
-                "x": 1,
-                "y": 1
-              }
-            },
-            {
-              "frame": 1,
-              "value": {
-                "__type__": "cc.Vec2",
-                "x": 1,
-                "y": 1
-              }
-            },
-            {
-              "frame": 1.0833333333333333,
-              "value": {
-                "__type__": "cc.Vec2",
-                "x": 1,
-                "y": 0
-              }
-            },
-            {
-              "frame": 1.1666666666666667,
               "value": {
                 "__type__": "cc.Vec2",
                 "x": 1,
@@ -176,14 +142,13 @@
         }
       },
       "sprite/avatar/legleft/foot": {
-        "comps": {},
         "props": {
           "position": [
             {
               "frame": 0,
               "value": [
                 0,
-                -2,
+                -2.5,
                 0
               ]
             }
@@ -205,17 +170,17 @@
               }
             }
           ]
-        }
+        },
+        "comps": {}
       },
       "sprite/avatar/legright/foot": {
-        "comps": {},
         "props": {
           "position": [
             {
               "frame": 0,
               "value": [
                 0,
-                -2,
+                -2.438,
                 0
               ]
             }
@@ -223,7 +188,7 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0
+              "value": -90
             }
           ],
           "scale": [
@@ -237,7 +202,8 @@
               }
             }
           ]
-        }
+        },
+        "comps": {}
       },
       "sprite/cup": {
         "props": {
@@ -274,7 +240,7 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0
+              "value": 5
             }
           ]
         }

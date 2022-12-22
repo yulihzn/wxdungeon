@@ -240,6 +240,9 @@ export default class LoadingManager {
                 cc.error(err)
             } else {
                 Logic.metals = resource.json
+                for (let key in Logic.metals) {
+                    Logic.metals[key].id = key
+                }
                 this.isMetalsLoaded = true
                 cc.log(`加载天赋完成`)
             }

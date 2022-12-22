@@ -3,7 +3,7 @@
   "_name": "AvatarAttackHorizontal",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.5,
+  "_duration": 0.5166666666666667,
   "sample": 60,
   "speed": 1,
   "wrapMode": 0,
@@ -29,30 +29,32 @@
             {
               "frame": 0,
               "value": [
+                2.54,
+                4.511,
+                0
+              ],
+              "curve": "linear"
+            },
+            {
+              "frame": 0.5,
+              "value": [
                 3,
                 5,
                 0
               ],
               "curve": "constant"
-            },
-            {
-              "frame": 0.5,
-              "value": [
-                2,
-                5,
-                0
-              ]
             }
           ],
           "angle": [
             {
               "frame": 0,
-              "value": 30,
-              "curve": "constant"
+              "value": 90,
+              "curve": "linear"
             },
             {
               "frame": 0.5,
-              "value": 60
+              "value": 30,
+              "curve": "constant"
             }
           ]
         }
@@ -62,20 +64,21 @@
           "angle": [
             {
               "frame": 0,
-              "value": -15,
+              "value": -30,
               "curve": "constant"
             },
             {
               "frame": 0.5,
-              "value": -45
+              "value": -15,
+              "curve": "constant"
             }
           ],
           "position": [
             {
               "frame": 0,
               "value": [
-                -2,
-                5.5,
+                -2.871,
+                4.425,
                 0
               ],
               "curve": "constant"
@@ -84,9 +87,10 @@
               "frame": 0.5,
               "value": [
                 -2,
-                5,
+                5.5,
                 0
-              ]
+              ],
+              "curve": "constant"
             }
           ]
         }
@@ -144,20 +148,21 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0,
+              "value": -60,
               "curve": "constant"
             },
             {
               "frame": 0.5,
-              "value": -60
+              "value": 0,
+              "curve": "constant"
             }
           ],
           "position": [
             {
               "frame": 0,
               "value": [
-                0,
-                -2,
+                0.379,
+                -2.593,
                 0
               ],
               "curve": "constant"
@@ -165,10 +170,11 @@
             {
               "frame": 0.5,
               "value": [
-                0.318,
-                -2.377,
+                0,
+                -2,
                 0
-              ]
+              ],
+              "curve": "constant"
             }
           ]
         }
@@ -178,17 +184,27 @@
           "angle": [
             {
               "frame": 0,
-              "value": -30,
+              "value": -5,
               "curve": "constant"
             },
             {
               "frame": 0.5,
-              "value": 5
+              "value": -30,
+              "curve": "constant"
             }
           ],
           "position": [
             {
               "frame": 0,
+              "value": [
+                0,
+                -2.781,
+                0
+              ],
+              "curve": "constant"
+            },
+            {
+              "frame": 0.5,
               "value": [
                 0.173,
                 -2.452,
@@ -197,12 +213,26 @@
               "curve": "constant"
             },
             {
-              "frame": 0.5,
+              "frame": 0.5166666666666667,
               "value": [
-                0,
-                -2,
+                0.049,
+                -2.721,
                 0
               ]
+            }
+          ]
+        }
+      },
+      "sprite": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -15
+            },
+            {
+              "frame": 0.5,
+              "value": 0
             }
           ]
         }

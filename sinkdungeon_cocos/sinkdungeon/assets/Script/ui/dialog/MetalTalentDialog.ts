@@ -33,6 +33,7 @@ export default class MetalTalentDialog extends BaseDialog {
     @property(cc.Label)
     infoContent: cc.Label = null
     list: MetalTalentItem[][] = []
+    currentIndex = 0
 
     onLoad() {}
 
@@ -43,12 +44,14 @@ export default class MetalTalentDialog extends BaseDialog {
     show(): void {
         super.show()
         this.clearUi()
+        let current = new MetalTalentData().valueCopy(Logic.playerMetals[Logic.metalId])
         this.list = [[], [], []]
         for (let key in Logic.metals) {
             let data = new MetalTalentData()
             data.valueCopy(Logic.metals[key])
-            if (Logic.metalData.id.length > 0 && Logic.metalData.id == data.id) {
-                data.isUnlock = Logic.metalData.isUnlock
+            data.valueCopy(Logic.playerMetals[key])
+            if (current.id.length > 0 && current.id == data.id) {
+                data.isUnlock = current.isUnlock
             }
             if (key.indexOf(MetalTalentData.METAL_DAGGER) != -1) {
                 this.buildItem(data, this.list[0], this.daggerNode)
@@ -58,19 +61,20 @@ export default class MetalTalentDialog extends BaseDialog {
                 this.buildItem(data, this.list[2], this.shieldNode)
             }
         }
-        if (Logic.metalData.id.indexOf(MetalTalentData.METAL_DAGGER) != -1) {
-            this.toggleContainer.toggleItems[0].uncheck()
+        this.toggleContainer.toggleItems[0].uncheck()
+        this.toggleContainer.toggleItems[1].uncheck()
+        this.toggleContainer.toggleItems[2].uncheck()
+        if (current.id.indexOf(MetalTalentData.METAL_DAGGER) != -1) {
+            this.toggleContainer.toggleItems[0].check()
+            this.currentIndex = 0
+        } else if (current.id.indexOf(MetalTalentData.METAL_HAND) != -1) {
             this.toggleContainer.toggleItems[1].check()
-            this.toggleContainer.toggleItems[2].uncheck()
-        } else if (Logic.metalData.id.indexOf(MetalTalentData.METAL_HAND) != -1) {
-            this.toggleContainer.toggleItems[0].uncheck()
-            this.toggleContainer.toggleItems[1].check()
-            this.toggleContainer.toggleItems[2].uncheck()
-        } else if (Logic.metalData.id.indexOf(MetalTalentData.METAL_SHIELD) != -1) {
-            this.toggleContainer.toggleItems[0].uncheck()
-            this.toggleContainer.toggleItems[1].uncheck()
+            this.currentIndex = 1
+        } else if (current.id.indexOf(MetalTalentData.METAL_SHIELD) != -1) {
             this.toggleContainer.toggleItems[2].check()
+            this.currentIndex = 2
         }
+        this.selectItem(current)
     }
     private clearUi() {
         this.daggerNode.removeAllChildren()
@@ -86,23 +90,26 @@ export default class MetalTalentDialog extends BaseDialog {
         parent.addChild(item.node)
     }
     selectTalentGroup(toggle: cc.Toggle, index: number) {
+        if (index == this.currentIndex) {
+            return
+        }
+        this.currentIndex = index
         if (index == 0) {
-            Logic.metalData.valueCopy(this.list[0][0].data)
+            Logic.metalId = this.list[0][0].data.id
             EventHelper.emit(EventHelper.SELECT_METAL_TALENT)
         } else if (index == 1) {
-            Logic.metalData.valueCopy(this.list[1][0].data)
+            Logic.metalId = this.list[1][0].data.id
             EventHelper.emit(EventHelper.SELECT_METAL_TALENT)
         } else if (index == 2) {
-            Logic.metalData.valueCopy(this.list[2][0].data)
+            Logic.metalId = this.list[2][0].data.id
             EventHelper.emit(EventHelper.SELECT_METAL_TALENT)
         }
     }
 
-    showInfoDialog(pos: cc.Vec3, title: string, content: string) {
+    showInfoDialog(title: string, content: string) {
         this.infoDialog.active = true
-        this.infoDialog.position = pos.clone()
-        this.infoDialog.getChildByName('title').getComponent(cc.Label).string = title
-        this.infoDialog.getChildByName('content').getComponent(cc.Label).string = content
+        this.infoDialog.getChildByName('layout').getChildByName('title').getComponent(cc.Label).string = title
+        this.infoDialog.getChildByName('layout').getChildByName('content').getComponent(cc.Label).string = content
     }
     hideInfoDialog() {
         this.infoDialog.active = false
@@ -124,7 +131,7 @@ export default class MetalTalentDialog extends BaseDialog {
                 d1.selectNode.active = false
                 if (data.id == d1.data.id) {
                     d1.selectNode.active = true
-                    Logic.metalData.valueCopy(data)
+                    Logic.metalId = data.id
                     EventHelper.emit(EventHelper.SELECT_METAL_TALENT)
                 }
             }

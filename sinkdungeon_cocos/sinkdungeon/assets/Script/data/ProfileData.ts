@@ -27,6 +27,8 @@ export default class ProfileData {
     //玩家装备列表
     playerEquips: { [key: string]: EquipmentData } = {}
     playerEquipsReality: { [key: string]: EquipmentData } = {}
+    //玩家翠金天赋点
+    playerMetals: { [key: string]: MetalTalentData } = {}
     //玩家物品列表
     playerItemList: ItemData[] = new Array()
     playerItemListReality: ItemData[] = new Array()
@@ -51,5 +53,5 @@ export default class ProfileData {
     lastSaveTime = 0 //最近游玩时间
     dreamCostTime = 0 //做梦需要消耗的时间
     cycle = 0 //周目
-    metal: MetalTalentData = new MetalTalentData()
+    metalId = ''
 }

@@ -163,6 +163,12 @@ export default class PlayerAvatar extends BaseAvatar {
             case BaseAvatar.STATE_SPECIAL:
                 this.playSpecial(scale)
                 break
+            case BaseAvatar.STATE_DASH:
+                this.playDash(false)
+                break
+            case BaseAvatar.STATE_DASH1:
+                this.playDash(true)
+                break
         }
         this.status = status
         if (dir != 4) {
@@ -305,6 +311,10 @@ export default class PlayerAvatar extends BaseAvatar {
                 this.playAnim(BaseAvatar.STATE_IDLE, this.dir)
             })
             .start()
+    }
+    public playDash(reverse: boolean) {
+        this.anim.play(reverse ? 'AvatarDashBack' : 'AvatarDash')
+        AudioPlayer.play(AudioPlayer.DASH)
     }
     public playCooking() {
         this.isAniming = true

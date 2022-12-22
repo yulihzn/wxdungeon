@@ -1,15 +1,8 @@
 import { EventHelper } from './../logic/EventHelper'
 import Player from '../logic/Player'
-import DamageData from '../data/DamageData'
-import StatusManager from '../manager/StatusManager'
-import FromData from '../data/FromData'
 import IndexZ from '../utils/IndexZ'
-import ActorUtils from '../utils/ActorUtils'
 import CCollider from '../collider/CCollider'
 import BaseColliderComponent from '../base/BaseColliderComponent'
-import Utils from '../utils/Utils'
-import Actor from '../base/Actor'
-import NextStep from '../utils/NextStep'
 import Logic from '../logic/Logic'
 import MetalDagger from './MetalDagger'
 import MetalTalentData from '../data/MetalTalentData'
@@ -62,21 +55,20 @@ export default class OilGoldMetal extends BaseColliderComponent {
         this.dagger = new MetalDagger(this)
         EventHelper.on(EventHelper.SELECT_METAL_TALENT, detail => {
             if (this.node) {
-                let data = new MetalTalentData().valueCopy(detail.data)
-                this.changeMode(data)
+                this.changeMode(Logic.playerMetals[Logic.metalId])
             }
         })
     }
 
     start() {}
-    init(player: Player, data: MetalTalentData) {
+    init(player: Player) {
         this.player = player
         this.node.parent = this.player.node.parent
         this.node.setPosition(player.node.position.clone())
         this.entity.Transform.position = this.node.position.clone()
         this.entity.NodeRender.root = this.root
         this.node.zIndex = IndexZ.OVERHEAD
-        this.changeMode(data)
+        this.changeMode(Logic.playerMetals[Logic.metalId])
     }
     changeMode(data: MetalTalentData) {
         this.data.valueCopy(data)

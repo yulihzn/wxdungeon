@@ -28,6 +28,7 @@ export default class MapManager {
     static readonly RANDOM_DEFAULT = 'RANDOM_DEFAULT'
     static readonly RANDOM_EQUIP = 'RANDOM_EQUIP'
     static readonly RANDOM_BUILDING = 'RANDOM_BUILDING'
+    static readonly RANDOM_WALL = 'RANDOM_WALL'
     static readonly RANDOM_NONPLAYER = 'RANDOM_NONPLAYER'
     static readonly RANDOM_BOSS = 'RANDOM_BOSS'
     constructor() {

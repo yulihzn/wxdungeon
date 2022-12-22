@@ -141,7 +141,8 @@ export default class Logic extends cc.Component {
     static sortIndexs: { [key: string]: number } = {} //0时间,1类别,2品质,3价格
     static settings: SettingsData = new SettingsData()
     static nonPlayerList: NonPlayerData[] = []
-    static metalData: MetalTalentData = new MetalTalentData()
+    static playerMetals: { [key: string]: MetalTalentData } = {} //玩家翠金天赋点
+    static metalId = ''
 
     onLoad() {
         Logic.settings.valueCopy(LocalStorage.getSystemSettings())
@@ -203,11 +204,12 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.groundOilGoldData = Logic.groundOilGoldData.clone()
         Logic.profileManager.data.killPlayerCounts = Utils.cloneKeyValueNumber(Logic.killPlayerCounts)
         Logic.profileManager.data.dialogueCounts = Utils.cloneKeyValue(Logic.dialogueCounts)
+        Logic.profileManager.data.playerMetals = Utils.cloneKeyValue(Logic.playerMetals)
         Logic.profileManager.data.oilGolds = Logic.oilGolds
         Logic.profileManager.data.coins = Logic.coins
         Logic.profileManager.data.coinCounts = Logic.coinCounts
         Logic.profileManager.data.lastSaveTime = new Date().getTime()
-        Logic.profileManager.data.metal = Logic.metalData.clone()
+        Logic.profileManager.data.metalId = Logic.metalId
         Logic.profileManager.saveData(Logic.jumpSlotIndex)
         LocalStorage.saveData(LocalStorage.KEY_REAL_COINS, Logic.realCoins)
         LocalStorage.setLastSaveSlotKey(Logic.jumpSlotIndex)
@@ -263,8 +265,9 @@ export default class Logic extends cc.Component {
         Logic.killPlayerCounts = Utils.cloneKeyValueNumber(Logic.profileManager.data.killPlayerCounts)
         //加载对话出现次数
         Logic.dialogueCounts = Utils.cloneKeyValue(Logic.profileManager.data.dialogueCounts)
+        Logic.playerMetals = Utils.cloneKeyValue(Logic.profileManager.data.playerMetals)
         Logic.playerData.OilGoldData.valueCopy(Logic.getOilGoldData(Logic.oilGolds))
-        Logic.metalData.valueCopy(Logic.profileManager.data.metal)
+        Logic.metalId = Logic.profileManager.data.metalId
     }
     static resetInventoryAndOtherData() {
         Logic.inventoryManager = new InventoryManager()

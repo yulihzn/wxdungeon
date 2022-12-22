@@ -99,29 +99,36 @@ export default class MetalDagger {
         if (!this.metal.player) {
             return
         }
-        if (!this.attackStep.IsExcuting && this.isDaggerReady) {
-            this.attackStep.next(
-                () => {
+        this.attackStep.next(
+            () => {
+                if (!this.attackStep.IsExcuting && this.isDaggerReady) {
                     this.hasTargetMap.clear()
                     this.attackStep.IsExcuting = this.changeDirection()
                     this.isAttacking = this.attackStep.IsExcuting
                     if (this.isAttacking) {
                         this.isDaggerReady = false
                     }
-                },
-                2,
-                true,
-                () => {
-                    if (this.attackStep.IsExcuting) {
-                        this.changeDirection()
-                    }
                 }
-            )
-        }
-        if (this.direction) {
-            this.direction = this.metal.entity.Move.linearVelocity
+            },
+            2,
+            false,
+            () => {
+                if (this.attackStep.IsExcuting) {
+                    this.changeDirection()
+                } else {
+                    this.isAttacking = false
+                }
+            }
+        )
+
+        if (this.attackStep.IsExcuting) {
+            if (this.direction) {
+                this.direction = this.metal.entity.Move.linearVelocity
+            } else {
+                this.direction = Logic.lerpPos2(this.direction, this.metal.entity.Move.linearVelocity, dt * 5)
+            }
         } else {
-            this.direction = Logic.lerpPos2(this.direction, this.metal.entity.Move.linearVelocity, dt * 5)
+            this.direction = Logic.lerpPos2(this.direction, cc.v2(1, 0), dt * 5)
         }
         this.rotateCollider(this.direction)
     }
