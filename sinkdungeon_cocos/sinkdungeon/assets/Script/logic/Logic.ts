@@ -555,4 +555,7 @@ export default class Logic extends cc.Component {
     static getTickTime() {
         return Logic.isDreaming() ? Logic.dreamTime : Logic.realTime
     }
+    static getCurrentMetal() {
+        return new MetalTalentData().valueCopy(Logic.metals[Logic.metalId]).valueCopy(Logic.playerMetals[Logic.metalId])
+    }
 }

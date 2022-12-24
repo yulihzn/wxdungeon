@@ -543,16 +543,10 @@ export default class Player extends PlayActor {
         this.avatar.spriteNode.x = 0
         this.avatar.spriteNode.y = 0
         this.pos = pos
-        this.changeZIndex()
+        ActorUtils.changeZIndex(this)
         this.updatePlayerPos()
     }
-    changeZIndex() {
-        let offsetY = this.entity.Transform.base
-        if (offsetY > 0) {
-            offsetY += 500
-        }
-        this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.node.position.x, this.node.position.y - offsetY))
-    }
+
     addStatus(statusType: string, from: FromData, isFromSave?: boolean) {
         if (!this.node || this.sc.isDied) {
             return
@@ -758,7 +752,8 @@ export default class Player extends PlayActor {
             !this.shield.isDefendOrParrying &&
             !this.avatar?.isAniming &&
             this.weaponLeft.meleeWeapon.CanMove &&
-            this.weaponRight.meleeWeapon.CanMove
+            this.weaponRight.meleeWeapon.CanMove &&
+            !this.sc.isDashing
         ) {
             this.isFaceRight = this.hv.x > 0
             this.isFaceUp = this.hv.y > 0
@@ -840,7 +835,7 @@ export default class Player extends PlayActor {
         }
         this.updateStatus(this.data.StatusList, this.data.StatusTotalData)
         this.addSaveStatusList()
-        this.changeZIndex()
+        ActorUtils.changeZIndex(this)
         this.updateInfoUi()
         this.playWakeUpInit()
     }
@@ -908,11 +903,10 @@ export default class Player extends PlayActor {
         } else {
             pos = pos.normalizeSelf()
         }
-        let posv2 = cc.v2(pos.x, pos.y)
-        let d = this.hv.dot(posv2)
+        let d = this.hv.dot(pos)
         let isBack = d < 0
 
-        this.hv = posv2.clone()
+        this.hv = pos.clone()
         pos = pos.mul(speed)
         this.entity.Move.linearVelocity = pos
         this.entity.Move.damping = 50
@@ -1237,13 +1231,13 @@ export default class Player extends PlayActor {
         this.shadow.y = this.entity.Transform.base
         this.bottomDir.node.y = this.entity.Transform.base
         this.bottomDir.node.opacity = this.isInWater() ? 128 : 255
-        this.changeZIndex()
+        ActorUtils.changeZIndex(this)
         this.showWaterSpark()
         if (this.jumpAbility) {
             this.jumpAbility.updateLogic()
         }
         this.statusManager.node.position = this.statusPos.clone().add(cc.v3(0, this.root.y))
-        if ((this.sc.isJumping || this.entity.Transform.z - this.entity.Transform.base > 0) && (this.CanJump || this.entity.Move.linearVelocityZ < 0)) {
+        if ((this.sc.isJumping || this.entity.Transform.z - this.entity.Transform.base > 0) && this.CanJump) {
             this.playerAnim(this.entity.Move.linearVelocityZ > 0 ? BaseAvatar.STATE_JUMP_UP : BaseAvatar.STATE_JUMP_DOWN, this.currentDir)
         }
         this.updateFlashLight()

@@ -21,19 +21,30 @@ import DamageData from '../data/DamageData'
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 /**
- * 翠金匕首
+ * 翠金手掌
  */
-export default class MetalDagger {
+export default class MetalShield {
     metal: OilGoldMetal
     attackStep: NextStep = new NextStep()
     private hasTargetMap: Map<number, number> = new Map()
-    isPositionReady = false
+    isDaggerReady = false
     isAttacking = false
     currentAngle = 0
     direction: cc.Vec2 = cc.Vec2.ZERO
 
     constructor(metal: OilGoldMetal) {
         this.metal = metal
+    }
+
+    getPlayerFarPosition(player: Player, distance: number, angleOffset: number): cc.Vec3 {
+        let hv = player.Hv.clone()
+        let pos = cc.v3(
+            cc
+                .v2(hv)
+                .rotateSelf((angleOffset * Math.PI) / 180)
+                .mul(distance)
+        )
+        return player.node.position.clone().addSelf(cc.v3(8, 48).addSelf(pos))
     }
 
     public attacking(attackTarget: CCollider, self: CCollider): void {
@@ -53,11 +64,27 @@ export default class MetalDagger {
         }
     }
 
-    private changeDirection(needRefresh: boolean) {
+    checkTimeDelay = 0
+    isCheckTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt
+        if (this.checkTimeDelay > 0.1) {
+            this.checkTimeDelay = 0
+            return true
+        }
+        return false
+    }
+    private currentTarget: Actor
+    private getNearestEnemyActor(needRefresh?: boolean) {
+        if (!ActorUtils.isTargetCanTrack(this.currentTarget) || needRefresh) {
+            this.currentTarget = ActorUtils.getNearestEnemyActor(this.metal.node.position, false, this.metal.player.dungeon, 600)
+        }
+        return this.currentTarget
+    }
+    private changeDirection() {
         if (!this.metal.node) {
             return
         }
-        let direction = ActorUtils.getTargetDirection(this.metal.node.position, this.metal.getNearestEnemyActor(600, needRefresh), false)
+        let direction = ActorUtils.getTargetDirection(this.metal.node.position, this.getNearestEnemyActor(), false)
         if (!direction.equals(cc.Vec3.ZERO)) {
             this.metal.entity.Move.linearVelocity = cc.v2(direction.mul(15))
             this.playAttack()
@@ -74,12 +101,12 @@ export default class MetalDagger {
         }
         this.attackStep.next(
             () => {
-                if (!this.attackStep.IsExcuting && this.isPositionReady) {
+                if (!this.attackStep.IsExcuting && this.isDaggerReady) {
                     this.hasTargetMap.clear()
-                    this.attackStep.IsExcuting = this.changeDirection(true)
+                    this.attackStep.IsExcuting = this.changeDirection()
                     this.isAttacking = this.attackStep.IsExcuting
                     if (this.isAttacking) {
-                        this.isPositionReady = false
+                        this.isDaggerReady = false
                     }
                 }
             },
@@ -87,7 +114,7 @@ export default class MetalDagger {
             false,
             () => {
                 if (this.attackStep.IsExcuting) {
-                    this.changeDirection(false)
+                    this.changeDirection()
                 } else {
                     this.isAttacking = false
                 }
@@ -124,8 +151,8 @@ export default class MetalDagger {
     }
 
     ready() {
-        if (!this.isPositionReady) {
-            this.isPositionReady = true
+        if (!this.isDaggerReady) {
+            this.isDaggerReady = true
             this.metal.sprite.color = cc.Color.RED
             cc.tween(this.metal.sprite).to(0.1, { color: cc.Color.YELLOW }).start()
         }

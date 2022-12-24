@@ -21,7 +21,7 @@ export default class BuildingData {
     quality = 0 //宝箱品质
     equipdata: EquipmentData //携带装备数据
     itemdata: ItemData //携带物品数据
-    price = 60 //商品价格
+    price = 0 //商品价格
     shopType = 0 //0:装备 1:物品
     isSaled = false //是否卖出
     maxHealth = 1 //最大生命,默认1

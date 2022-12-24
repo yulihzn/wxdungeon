@@ -220,7 +220,7 @@ export default class NonPlayer extends PlayActor {
     }
 
     start() {
-        this.changeZIndex()
+        ActorUtils.changeZIndex(this)
         this.healthBar.refreshHealth(this.data.getHealth().x, this.data.getHealth().y)
         this.healthBar.hideWhenFull = true
         if (this.data.lifeTime > 0) {
@@ -425,15 +425,8 @@ export default class NonPlayer extends PlayActor {
         this.sprite.y = 0
         this.pos.x = x
         this.pos.y = y
-        this.changeZIndex()
+        ActorUtils.changeZIndex(this)
         this.updatePlayerPos()
-    }
-    changeZIndex() {
-        let offsetY = this.entity.Transform.base
-        if (offsetY > 0) {
-            offsetY += 500
-        }
-        this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.node.position.x, this.node.position.y - offsetY))
     }
 
     private remoteAttack(target: Actor, isSpecial: boolean) {
@@ -732,7 +725,7 @@ export default class NonPlayer extends PlayActor {
             }, 2.5)
         }
         this.setLinearVelocity(movement)
-        this.changeZIndex()
+        ActorUtils.changeZIndex(this)
     }
     setLinearVelocity(movement: cc.Vec2) {
         this.currentlinearVelocitySpeed = movement
@@ -1173,7 +1166,7 @@ export default class NonPlayer extends PlayActor {
         if (this.isInWaterTile) {
             this.lastWaterPos = Dungeon.getIndexInMap(this.entity.Transform.position)
         }
-        this.changeZIndex()
+        ActorUtils.changeZIndex(this)
         this.trackStep.next(() => {
             this.getNearestEnemyActor(true)
         }, 10)

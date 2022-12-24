@@ -7,6 +7,8 @@ import Logic from '../logic/Logic'
 import NonPlayer from '../logic/NonPlayer'
 import Player from '../logic/Player'
 import Utils from './Utils'
+import IndexZ from './IndexZ'
+import BaseColliderComponent from '../base/BaseColliderComponent'
 
 const { ccclass, property } = cc._decorator
 
@@ -227,5 +229,13 @@ export default class ActorUtils {
     }
     static getDashTime(actor: Actor, speed: number) {
         return Utils.getDashTime(speed, actor.entity.Move.damping)
+    }
+
+    static changeZIndex(actor: Actor | BaseColliderComponent) {
+        let offsetY = actor.entity.Transform.base
+        if (offsetY > 0) {
+            offsetY += 500
+        }
+        actor.node.zIndex = IndexZ.getActorZIndex(cc.v3(actor.node.position.x, actor.node.position.y - offsetY))
     }
 }
