@@ -14,10 +14,11 @@ import androidx.core.content.ContextCompat
  * @author yuli.he
  */
 class MainActivity : AppCompatActivity() {
+    lateinit var  webView:WebView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val webView: WebView = findViewById(R.id.wv_content)
+        webView = findViewById(R.id.wv_content)
         val webSettings = webView.getSettings()
         webSettings.javaScriptCanOpenWindowsAutomatically = true
         webSettings.javaScriptEnabled = true
@@ -95,5 +96,11 @@ class MainActivity : AppCompatActivity() {
                     or View.SYSTEM_UI_FLAG_FULLSCREEN
                     or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        webView.requestFocus()
+
     }
 }
