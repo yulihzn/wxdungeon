@@ -14,9 +14,10 @@ import androidx.core.content.ContextCompat
  * @author yuli.he
  */
 class MainActivity : AppCompatActivity() {
-    lateinit var  webView:WebView
+    lateinit var webView: TestWebView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
         webView = findViewById(R.id.wv_content)
         val webSettings = webView.getSettings()
@@ -98,9 +99,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        webView.requestFocus()
-
-    }
 }

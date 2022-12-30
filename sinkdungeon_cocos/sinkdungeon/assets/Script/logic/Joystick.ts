@@ -15,7 +15,7 @@ import Logic from './Logic'
 const { ccclass, property } = cc._decorator
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class Joystick extends cc.Component {
     @property(cc.Integer)
     anglePreDirQuadrant: number = 23 //每个象限的大小
 
