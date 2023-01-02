@@ -59,6 +59,17 @@ export default class Start extends cc.Component {
                 }
             }, 0.5)
         })
+        this.test()
+    }
+    private test() {
+        // World.loadRaw('resources/data/world/map/chapter00.ldtk').then(async world => {
+        //     // You have access to the raw `LDtk` JSON file here
+        //     let currentLevel = world.levels[0]
+        //     for (const layer of currentLevel.layerInstances) {
+        //         console.log(layer)
+        //         // the world is your oyster
+        //     }
+        // })
     }
 
     start() {
