@@ -783,7 +783,7 @@ export default class Player extends PlayActor {
     updateHv(hv?: cc.Vec2) {
         if (Controller.isMouseMode() && Controller.mousePos && this.dungeon) {
             let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.node.position))
-            this.hv = Controller.mousePos.add(cc.v2(this.dungeon.mainCamera.node.position)).sub(p).normalize()
+            this.hv = Controller.mousePos.add(cc.v2(this.dungeon.cameraControl.node.position)).sub(p).normalize()
             let dir = Utils.getDirByHv(this.hv)
             this.updateAvatarFace(dir)
             return
@@ -871,10 +871,15 @@ export default class Player extends PlayActor {
         return true
     }
     vanish(duration: number) {
+        if (this.sc.isVanishing) {
+            return
+        }
         this.sc.isVanishing = true
-        this.scheduleOnce(() => {
-            this.sc.isVanishing = false
-        }, duration)
+        if (duration > 0) {
+            this.scheduleOnce(() => {
+                this.sc.isVanishing = false
+            }, duration)
+        }
     }
     dash() {
         if (this.dashCooling || this.avatar?.isAniming) {
@@ -894,7 +899,7 @@ export default class Player extends PlayActor {
                 this.addDashGhost(this.shooterEx)
             },
             0.05,
-            6
+            12
         )
         let pos = this.entity.Move.linearVelocity.clone()
         this.sc.isMoving = false
@@ -1467,6 +1472,14 @@ export default class Player extends PlayActor {
     sleep() {
         this.avatar.playSleep()
     }
+    drive() {
+        this.avatar.playDrive()
+        this.node.opacity = 0
+    }
+    driveOff() {
+        this.avatar.playDriveOff()
+        this.node.opacity = 255
+    }
     toilet() {
         this.avatar.playToilet()
         cc.tween(this.data.LifeData)
@@ -1504,9 +1517,7 @@ export default class Player extends PlayActor {
                 if (index == 0) {
                     this.avatar.playWakeUp()
                 } else if (index == 1) {
-                    if (this.dungeon) {
-                        this.dungeon.cameraZoom = Dungeon.DEFAULT_ZOOM_MAX
-                    }
+                    EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN)
                     this.scheduleOnce(() => {
                         AudioPlayer.play(AudioPlayer.EXIT)
                         //休息8小时

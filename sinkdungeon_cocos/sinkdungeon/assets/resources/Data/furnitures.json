@@ -68,8 +68,9 @@
         "resName": "roomdollmachine",
         "info": "",
         "desc": "一元一次，每次一元",
-        "scale": 6,
-        "collider": "0,0,128,128,168",
+        "scale": 8,
+        "spritePos": "-64,-14",
+        "collider": "0,26,120,75,175",
         "price": 0,
         "height": 28
     },

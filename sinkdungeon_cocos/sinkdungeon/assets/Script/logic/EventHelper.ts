@@ -57,6 +57,7 @@ export class EventHelper extends cc.Component {
     public static readonly HUD_MART_SHELVES_DIALOG_PAY = 'HUD_MART_SHELVES_DIALOG_BUY'
     public static readonly HUD_CAMERA_ZOOM_IN = 'HUD_CAMERA_ZOOM_IN'
     public static readonly HUD_CAMERA_ZOOM_OUT = 'HUD_CAMERA_ZOOM_OUT'
+    public static readonly HUD_CAMERA_ZOOM_IN_LOCK = 'HUD_CAMERA_ZOOM_IN_LOCK'
     public static readonly HUD_CANCEL_OR_PAUSE = 'HUD_CANCEL_OR_PAUSE'
     public static readonly HUD_DIALOGUE_SKIP = 'HUD_DIALOGUE_SKIP'
     public static readonly HUD_DIALOGUE_BUTTON = 'HUD_DIALOGUE_BUTTON'

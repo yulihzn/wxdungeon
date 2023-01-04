@@ -57,4 +57,14 @@ export default class ExitData {
         data.toPos = chapterdata ? cc.v3(chapterdata.x, chapterdata.y) : cc.v3(Logic.savePoinitData.x, Logic.savePoinitData.y)
         return data
     }
+    static getRealWorldExitDataFirst() {
+        let data = new ExitData()
+        data.fromChapter = Logic.CHAPTER099
+        data.fromLevel = 6
+        data.toChapter = Logic.CHAPTER099
+        //此处固定跳转到现实的公路，该地图调整的时候相应位置也要调整
+        data.toLevel = 6
+        data.toPos = cc.v3(0, 0)
+        return data
+    }
 }

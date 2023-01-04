@@ -51,6 +51,7 @@ import Stairs from '../building/Stairs'
 import DecorationWall from '../building/DecorationWall'
 import Ladder from '../building/Ladder'
 import MapManager from './MapManager'
+import Vehicle from '../building/Vehicle'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -147,6 +148,7 @@ export default class BuildingManager extends BaseManager {
     static readonly STAIRS2 = 'Stairs2'
     static readonly STAIRS3 = 'Stairs3'
     static readonly STAIRS4 = 'Stairs4'
+    static readonly VEHICLE = 'Vehicle'
 
     // LIFE-CYCLE CALLBACKS:
     footboards: FootBoard[] = new Array()
@@ -474,6 +476,8 @@ export default class BuildingManager extends BaseManager {
                 //生成家具
                 this.addFurnitures(dungeon, mapDataStr, indexPos)
             }
+        } else if (this.hasThe(mapDataStr, 'car')) {
+            this.addVehicle(dungeon, mapDataStr, indexPos)
         }
     }
     private addLadder(mapDataStr: string, indexPos: cc.Vec3) {
@@ -644,6 +648,13 @@ export default class BuildingManager extends BaseManager {
             }
         }
     }
+    private addVehicle(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
+        Logic.getBuildings(BuildingManager.VEHICLE, (prefab: cc.Prefab) => {
+            let n = this.addBuilding(prefab, indexPos, CCollider.AUDIO_MATERIAL.METAL, '', true)
+            let vehicle = n.getComponent(Vehicle)
+            vehicle.init(dungeon, mapDataStr)
+        })
+    }
     private addDecorate(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
         if (mapDataStr == '+++0') {
             Logic.getBuildings(BuildingManager.GRASS01, (prefab: cc.Prefab) => {
@@ -687,6 +698,8 @@ export default class BuildingManager extends BaseManager {
                     df.init(dungeon, 'floor_exitarrow1', 4, 180)
                 } else if (mapDataStr == '+11') {
                     df.init(dungeon, 'floor_exitarrow1', 4, 90)
+                } else if (mapDataStr == '+12') {
+                    df.init(dungeon, 'floor_whiteline', 4, 90)
                 } else if (mapDataStr == '++0') {
                     df.init(dungeon, 'floor_roomoutside0', 32, 0, 1, cc.v3(0.7, 0.5), 255, IndexZ.BASE)
                 } else if (mapDataStr == '++1') {

@@ -26,6 +26,7 @@ import Dialogue from '../ui/Dialogue'
 import Controller from './Controller'
 import WeatherManager from '../manager/WeatherManager'
 import EffectItemManager from '../manager/EffectItemManager'
+import CameraControl from './CameraControl'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -48,8 +49,8 @@ export default class Dungeon extends cc.Component {
     fog: cc.Node = null
     @property(StatusIconList)
     statusIconList: StatusIconList = null
-    @property(cc.Camera)
-    mainCamera: cc.Camera = null
+    @property(CameraControl)
+    cameraControl: CameraControl = null
     mapData: string[][] = [] //地图数据
     tilesmap: Tile[][] = new Array() //地面列表
     floorCombineMap: Map<string, Tile> = new Map()
@@ -77,14 +78,11 @@ export default class Dungeon extends cc.Component {
     weatherManager: WeatherManager = null //天气管理器
     effectItemManager: EffectItemManager = null //特效物体管理器
     anim: cc.Animation
-    cameraZoom = Dungeon.DEFAULT_ZOOM
-    needZoomIn = false
     isInitFinish = false
     isClear = false
     isComplete = false
     currentPos = cc.v3(0, 0)
     isDisappeared = false
-    cameraTargetActor: Actor = null
 
     rootSystem: GameWorldSystem = null
 
@@ -192,7 +190,7 @@ export default class Dungeon extends cc.Component {
         this.weatherManager.clear()
         //设置雾气层级
         this.fog.zIndex = IndexZ.FOG
-        this.fog.scale = 2
+        this.fog.scale = 2.5
         this.fog.opacity = 255
         this.lightManager.shadow.node.zIndex = IndexZ.SHADOW
         this.lightManager.shadow1.node.zIndex = IndexZ.SHADOW
@@ -298,10 +296,14 @@ export default class Dungeon extends cc.Component {
         this.player.statusIconList = this.statusIconList
         this.player.node.parent = this.node
         this.player.dungeon = this
-        this.cameraTargetActor = this.player
-        this.fog.setPosition(this.player.node.position.clone())
+        this.changeCameraTarget(this.player)
+        this.fog.setPosition(this.cameraControl.Target.node.position.clone())
         EventHelper.emit(EventHelper.CAMERA_LOOK, { pos: this.player.getCenterPosition(), isDirect: true })
     }
+    public changeCameraTarget(actor: Actor, offset?: cc.Vec3) {
+        this.cameraControl?.changeCameraTarget(actor, offset)
+    }
+
     public fogScaleNormal() {
         cc.tween(this.fog).to(3, { scale: 2.5 }).start()
     }
@@ -577,8 +579,7 @@ export default class Dungeon extends cc.Component {
     }
 
     public shakeForKraken() {
-        this.cameraZoom = Dungeon.DEFAULT_ZOOM_MIN
-        this.needZoomIn = true
+        EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN_LOCK)
         this.anim.playAdditive('DungeonShakeOnce')
         this.scheduleOnce(() => {
             this.anim.playAdditive('DungeonShakeOnce')
@@ -735,9 +736,9 @@ export default class Dungeon extends cc.Component {
         if (!this.tilesmap || !this.player || !this.node) {
             return
         }
-        let p = this.player.node.position.clone()
-        if (this.player.entity) {
-            p.y += this.player.entity.Transform.z
+        let p = this.cameraControl.Target.node.position.add(this.cameraControl.TargetOffset)
+        if (this.cameraControl.Target.entity) {
+            p.y += this.cameraControl.Target.entity.Transform.z
         }
         this.fog.setPosition(this.lerp(this.fog.position, p, dt * 3))
         let pos = Dungeon.getIndexInMap(this.player.node.position)

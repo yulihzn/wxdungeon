@@ -998,7 +998,8 @@
     "isStatic": true,
     "ignoreSameTag": false,
     "targetTagList": [
-      3
+      3,
+      24
     ],
     "ignoreTagList": [],
     "_id": ""

@@ -372,7 +372,7 @@ export default class PickAvatar extends cc.Component {
                 data = SavePointData.chapter04()
                 break
         }
-        Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal(data), true)
+        Logic.loadingNextLevel(data.chapter > 0 ? ExitData.getDreamExitDataFromReal(data) : ExitData.getRealWorldExitDataFirst(), true)
         Logic.jumpChapter = 0
         this.addPorfessionEquipment()
     }

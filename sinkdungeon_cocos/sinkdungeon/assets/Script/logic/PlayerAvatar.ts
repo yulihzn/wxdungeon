@@ -364,7 +364,12 @@ export default class PlayerAvatar extends BaseAvatar {
             this.isAniming = false
         }, 5)
     }
-
+    public playDrive() {
+        this.isAniming = true
+    }
+    public playDriveOff() {
+        this.isAniming = false
+    }
     start() {}
     checkTimeDelay = 0
     isAnimTimeDelay(dt: number): boolean {

@@ -667,7 +667,7 @@ export default class Shooter extends cc.Component {
     updateLogic(dt: number) {
         if (!this.isAI && Controller.isMouseMode() && Controller.mousePos && this.dungeon) {
             let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.player.node.position))
-            let pos = Controller.mousePos.add(cc.v2(this.dungeon.mainCamera.node.position)).sub(p).normalize()
+            let pos = Controller.mousePos.add(cc.v2(this.dungeon.cameraControl.node.position)).sub(p).normalize()
             if (!pos.equals(cc.Vec2.ZERO)) {
                 this.hv = pos
                 this.rotateCollider(cc.v2(this.hv.x, this.hv.y))

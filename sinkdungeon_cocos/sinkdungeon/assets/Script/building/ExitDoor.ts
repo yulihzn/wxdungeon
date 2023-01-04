@@ -8,6 +8,7 @@ import ExitData from '../data/ExitData'
 import Dungeon from '../logic/Dungeon'
 import CCollider from '../collider/CCollider'
 import Random from '../utils/Random'
+import Vehicle from './Vehicle'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -159,12 +160,20 @@ export default class ExitDoor extends Building {
     onColliderEnter(other: CCollider, self: CCollider) {
         if (self.sensor && other.tag == CCollider.TAG.PLAYER) {
             let player = other.node.getComponent(Player)
-            if (player && this.isOpen) {
-                this.isOpen = false
-                AudioPlayer.play(AudioPlayer.EXIT)
-                Logic.playerData = player.data.clone()
-                Logic.loadingNextLevel(this.exitData)
+            this.loadingNextLevel(player)
+        } else if (self.sensor && other.tag == CCollider.TAG.VEHICLE) {
+            let v = other.node.getComponent(Vehicle)
+            if (v.dungeon && v.isPlayerIn) {
+                this.loadingNextLevel(v.dungeon.player)
             }
+        }
+    }
+    loadingNextLevel(player: Player) {
+        if (player && this.isOpen) {
+            this.isOpen = false
+            AudioPlayer.play(AudioPlayer.EXIT)
+            Logic.playerData = player.data.clone()
+            Logic.loadingNextLevel(this.exitData)
         }
     }
     // update (dt) {}

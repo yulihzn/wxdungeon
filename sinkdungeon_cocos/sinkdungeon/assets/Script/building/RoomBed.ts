@@ -15,6 +15,7 @@ import AudioPlayer from '../utils/AudioPlayer'
 import Building from './Building'
 import CCollider from '../collider/CCollider'
 import Dialogue from '../ui/Dialogue'
+import { EventHelper } from '../logic/EventHelper'
 
 const { ccclass, property } = cc._decorator
 
@@ -67,9 +68,7 @@ export default class RoomBed extends Building {
                     return
                 }
                 this.isFirst = false
-                if (this.dungeon) {
-                    this.dungeon.cameraZoom = Dungeon.DEFAULT_ZOOM_MAX
-                }
+                EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN)
                 player.sleep()
                 this.scheduleOnce(() => {
                     Logic.playerData = player.data.clone()

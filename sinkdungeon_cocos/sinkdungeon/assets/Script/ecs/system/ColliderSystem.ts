@@ -5,6 +5,7 @@ import CCollider from '../../collider/CCollider'
 import ActorEntity from '../entity/ActorEntity'
 import RayCastResult from './RayCastResult'
 import Logic from '../../logic/Logic'
+import { ColliderTag } from '../../actor/ColliderTag'
 
 export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
     private quadTree: Quadtree
@@ -115,6 +116,9 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
             let colliders = this.quadTree.retrieve(collider)
             for (let other of colliders) {
                 allCount++
+                if (collider.tag == CCollider.TAG.VEHICLE || other.tag == CCollider.TAG.VEHICLE) {
+                    collider
+                }
                 // if (
                 //     (collider.tag == CCollider.TAG.PLAYER && other.tag == CCollider.TAG.BUILDING) ||
                 //     (other.tag == CCollider.TAG.PLAYER && collider.tag == CCollider.TAG.BUILDING)

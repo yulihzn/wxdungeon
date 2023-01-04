@@ -73,7 +73,7 @@ export default class WorldLoader {
                 cc.log('加载地图块完成')
                 let tileset: { [key: string]: string[] } = {}
                 for (let value of resource.json.tiles) {
-                    tileset[value.id] = value.type
+                    tileset[value.id] = value.class
                 }
                 this.loadTiledMaps(tileset)
             }

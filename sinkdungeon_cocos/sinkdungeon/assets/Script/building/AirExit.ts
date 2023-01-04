@@ -90,7 +90,7 @@ export default class AirExit extends Building {
                 this.scheduleOnce(() => {
                     Logic.playerData = player.data.clone()
                     Logic.loadingNextRoom(this.dir)
-                }, 0.1)
+                })
             }
         }
     }

@@ -1,3 +1,4 @@
+import Actor from '../base/Actor'
 import Dungeon from './Dungeon'
 import { EventHelper } from './EventHelper'
 
@@ -15,17 +16,30 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class CameraControl extends cc.Component {
-    @property(Dungeon)
-    dungeon: Dungeon = null
+    @property(cc.Node)
+    nodeSpace: cc.Node = null
+    static readonly DEFAULT_ZOOM_MAX = 2
+    static readonly DEFAULT_ZOOM_MIN = 0.6
+    static readonly DEFAULT_ZOOM = 1
+    private camera: cc.Camera
+    private isShaking = false
+    private isHeavyShaking = false
+    private offsetIndex = 0
+    private offsetArr = [cc.v3(0, 2), cc.v3(0, 2), cc.v3(0, -3), cc.v3(0, -3), cc.v3(1, 2), cc.v3(1, 2), cc.v3(-1, -1), cc.v3(-1, -1)]
+    private offsetArr1 = [cc.v3(0, 3), cc.v3(0, 3), cc.v3(0, -6), cc.v3(0, -6), cc.v3(3, 6), cc.v3(3, 6), cc.v3(-3, -3), cc.v3(-3, -3)]
 
-    camera: cc.Camera
-    isShaking = false
-    isHeavyShaking = false
-    addOffset: cc.Vec3 = cc.v3(0, 0)
-    offsetIndex = 0
-    offsetArr = [cc.v3(0, 2), cc.v3(0, 2), cc.v3(0, -3), cc.v3(0, -3), cc.v3(1, 2), cc.v3(1, 2), cc.v3(-1, -1), cc.v3(-1, -1)]
-    offsetArr1 = [cc.v3(0, 3), cc.v3(0, 3), cc.v3(0, -6), cc.v3(0, -6), cc.v3(3, 6), cc.v3(3, 6), cc.v3(-3, -3), cc.v3(-3, -3)]
+    private cameraTargetActor: Actor = null
+    private cameraTargetOffset = cc.Vec3.ZERO
 
+    cameraZoom = CameraControl.DEFAULT_ZOOM
+    needZoomIn = false
+
+    get Target() {
+        return this.cameraTargetActor
+    }
+    get TargetOffset() {
+        return this.cameraTargetOffset
+    }
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -34,39 +48,39 @@ export default class CameraControl extends cc.Component {
             this.shakeCamera(detail.isHeavyShaking)
         })
         EventHelper.on(EventHelper.CAMERA_LOOK, detail => {
-            this.addOffset = cc.v3(0, 0)
             this.followTarget(true)
         })
         EventHelper.on(EventHelper.HUD_CAMERA_ZOOM_IN, detail => {
-            if (this.dungeon) {
-                this.dungeon.cameraZoom = Dungeon.DEFAULT_ZOOM_MAX
+            if (this.node) {
+                this.cameraZoom = CameraControl.DEFAULT_ZOOM_MAX
+            }
+        })
+        EventHelper.on(EventHelper.HUD_CAMERA_ZOOM_IN_LOCK, detail => {
+            if (this.node) {
+                this.needZoomIn = !detail.unlock
+                this.cameraZoom = this.needZoomIn ? CameraControl.DEFAULT_ZOOM_MIN : CameraControl.DEFAULT_ZOOM
             }
         })
         EventHelper.on(EventHelper.HUD_CAMERA_ZOOM_OUT, detail => {
-            if (this.dungeon) {
-                this.dungeon.cameraZoom = this.dungeon.needZoomIn ? Dungeon.DEFAULT_ZOOM_MIN : Dungeon.DEFAULT_ZOOM
+            if (this.node) {
+                this.cameraZoom = this.needZoomIn ? CameraControl.DEFAULT_ZOOM_MIN : CameraControl.DEFAULT_ZOOM
             }
         })
     }
-    onEnable() {
-        // cc.director.getPhysicsManager().attachDebugDrawToCamera(this.camera);
-    }
-    onDisable() {
-        // cc.director.getPhysicsManager().detachDebugDrawFromCamera(this.camera);
+    public changeCameraTarget(actor: Actor, offset?: cc.Vec3) {
+        this.cameraTargetActor = actor
+        this.cameraTargetOffset = offset ? offset.clone() : cc.Vec3.ZERO
     }
 
     start() {}
     lateUpdate() {
-        if (this.dungeon.cameraTargetActor) {
+        if (this.cameraTargetActor) {
             this.followTarget(false)
         }
-        this.camera.zoomRatio = this.lerpNumber(this.camera.zoomRatio, this.dungeon.cameraZoom, 0.05)
-        // this.node.position = this.node.parent.convertToNodeSpaceAR(targetPos);
-        // let ratio = targetPos.y / cc.winSize.height;
-        // this.camera.zoomRatio = 1 + (0.5 - ratio) * 0.5;
+        this.camera.zoomRatio = this.lerpNumber(this.camera.zoomRatio, this.cameraZoom, 0.05)
     }
     followTarget(isDirect: boolean) {
-        if (!this.dungeon || !this.dungeon.cameraTargetActor) {
+        if (!this.nodeSpace || !this.cameraTargetActor) {
             return
         }
         // let xmax = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE - 4, 0)).x
@@ -86,10 +100,11 @@ export default class CameraControl extends cc.Component {
         // if (this.dungeon.cameraTargetNode.y > ymax) {
         //     offset.y = ymax - this.dungeon.cameraTargetNode.y
         // }
-        let targetPos = this.dungeon.node.convertToWorldSpaceAR(this.dungeon.cameraTargetActor.node.position.clone().addSelf(offset))
+
+        let targetPos = this.nodeSpace.convertToWorldSpaceAR(this.cameraTargetActor.node.position.clone().addSelf(offset.add(this.cameraTargetOffset)))
         let pos = this.node.parent.convertToNodeSpaceAR(targetPos)
-        if (this.dungeon.cameraTargetActor.entity && this.dungeon.cameraTargetActor.entity.Transform.z > Dungeon.TILE_SIZE * 2) {
-            pos.y += this.dungeon.cameraTargetActor.entity.Transform.z
+        if (this.cameraTargetActor.entity && this.cameraTargetActor.entity.Transform.base > Dungeon.TILE_SIZE * 2) {
+            pos.y += this.cameraTargetActor.entity.Transform.base
         }
         if (isDirect) {
             this.node.position = pos
