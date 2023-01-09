@@ -39,6 +39,7 @@ export default class Achievement extends cc.Component {
     static readonly TYPE_MONSTER = 5
     static readonly TYPE_EQUIP = 6
     static readonly TYPE_ITEM = 7
+    static readonly TYPE_ROOM = 8
     @property(cc.Node)
     content: cc.Node = null
     @property(cc.Prefab)

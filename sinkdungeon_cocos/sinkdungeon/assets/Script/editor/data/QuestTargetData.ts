@@ -40,7 +40,7 @@ export default class QuestTargetData {
     static readonly ROOM_CLEAR = 'room_clear'
 
     static readonly TARGET_ROOM = 'target_room'
-    static readonly TARGET_FURNITURE = 'target_furniture'
+    static readonly TARGET_FURNITURE = 'target_building'
     static readonly TARGET_NPC = 'target_npc'
     static readonly TARGET_BOSS = 'target_boss'
     static readonly TARGET_MONSTER = 'target_monster'
@@ -99,6 +99,7 @@ export default class QuestTargetData {
         let trigger = ''
         let title = ''
         let count = this.count
+        let isRoom = false
         switch (this.triggerType) {
             case QuestTargetData.BUILDING_TRIGGER:
                 title = '建筑'
@@ -159,18 +160,21 @@ export default class QuestTargetData {
             case QuestTargetData.ROOM_ENTER:
                 title = '地点'
                 trigger = count > 1 ? `进入${count}一次` : `进入`
+                isRoom = true
                 break
             case QuestTargetData.ROOM_LEAVE:
                 title = '地点'
-                trigger = count > 1 ? `离开${count}一次` : `进入`
+                trigger = count > 1 ? `离开${count}一次` : `离开`
+                isRoom = true
                 break
             case QuestTargetData.ROOM_CLEAR:
                 title = '地点'
                 trigger = count > 1 ? `清理${count}一次` : `清理`
+                isRoom = true
                 break
         }
         if (isEditMode) {
-            str = `类型：${title}\n触发条件：${trigger}\n资源名：${this.resId}\n`
+            str = `类型：${title}\n触发条件：${trigger}\n${isRoom ? `地点[${this.chapter},${this.level},${this.x},${this.y},${this.z}]` : '资源名：' + this.resId}\n`
         } else {
             str = `${trigger}${this.getTargetName()}`
         }

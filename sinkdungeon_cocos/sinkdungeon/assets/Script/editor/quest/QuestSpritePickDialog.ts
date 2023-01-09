@@ -25,16 +25,20 @@ export default class QuestSpritePickDialog extends cc.Component {
     title: cc.Label = null
     @property(cc.Node)
     content: cc.Node = null
-    @property(cc.Label)
-    countLabel: cc.Label = null
+    @property(cc.EditBox)
+    countEditBox: cc.EditBox = null
     @property(cc.ToggleContainer)
     typeContainer: cc.ToggleContainer = null
     @property(cc.ToggleContainer)
     titleList: cc.ToggleContainer = null
     @property(cc.Prefab)
     prefab: cc.Prefab = null
+    @property(cc.Node)
+    roomLayout: cc.Node = null
+    @property(cc.EditBox)
+    roomEditBox: cc.EditBox = null
     spriteList: QuestSpriteItem[] = []
-    callback: Function
+    callback: (flag: boolean, data: QuestTargetData) => void
     currentSprite: QuestSpriteItem
     currentListIndex = 0
     currentItemIndex = -1
@@ -72,7 +76,7 @@ export default class QuestSpritePickDialog extends cc.Component {
     private hideAnim() {
         this.node.active = false
     }
-    public show(targetData: QuestTargetData, callback?: Function) {
+    public show(targetData: QuestTargetData, callback?: (flag: boolean, data: QuestTargetData) => void) {
         this.targetData.valueCopy(targetData)
         this.callback = callback
         this.showAnim()
@@ -84,7 +88,7 @@ export default class QuestSpritePickDialog extends cc.Component {
         let icon = cc.instantiate(this.prefab).getComponent(QuestSpriteItem)
         icon.init(this.currentListIndex, index++, targetData, false)
         this.addItem(icon)
-        let type1 = targetData.resId
+        let type1 = this.targetData.resId
         let type2 = targetData.resId
         if (type1 == type2) {
             if (this.currentSprite) {
@@ -92,6 +96,11 @@ export default class QuestSpritePickDialog extends cc.Component {
             }
             this.currentSprite = icon
             this.currentSprite.select.active = true
+            this.countEditBox.string = `${this.targetData.count}`
+            this.roomEditBox.string = ''
+            if (this.targetData.targetType == QuestTargetData.TARGET_ROOM) {
+                this.roomEditBox.string = `${this.targetData.chapter},${this.targetData.level},${this.targetData.x},${this.targetData.y},${this.targetData.z}`
+            }
             this.typeUpdate(this.currentSprite.targetData.triggerType)
         }
         icon.clickCallback = (value: QuestSpriteItem) => {
@@ -128,7 +137,17 @@ export default class QuestSpritePickDialog extends cc.Component {
                     targetType = this.currentTypeArr[i].split(',')[2]
                 }
             }
-            let d = QuestTargetData.build(this.currentSprite.targetData.resId, targetType, triggerType, parseInt(this.countLabel.string))
+            let d = QuestTargetData.build(this.currentSprite.targetData.resId, targetType, triggerType, parseInt(this.countEditBox.string))
+            if (this.targetData.targetType == QuestTargetData.TARGET_ROOM) {
+                let arr = this.roomEditBox.string.split(',')
+                if (arr.length > 4) {
+                    d.chapter = parseInt(arr[0])
+                    d.level = parseInt(arr[1])
+                    d.x = parseInt(arr[2])
+                    d.y = parseInt(arr[3])
+                    d.z = parseInt(arr[4])
+                }
+            }
             this.currentSprite.targetData.valueCopy(d)
             this.callback(true, this.currentSprite.targetData)
         }
@@ -143,7 +162,7 @@ export default class QuestSpritePickDialog extends cc.Component {
     }
     //button
     countUp() {
-        let count = parseInt(this.countLabel.string)
+        let count = parseInt(this.countEditBox.string)
         if (isNaN(count)) {
             count = 1
         }
@@ -151,11 +170,11 @@ export default class QuestSpritePickDialog extends cc.Component {
         if (count < 1) {
             count = 1
         }
-        this.countLabel.string = `${this.countLabel.string}`
+        this.countEditBox.string = `${count}`
     }
     //button
     countDown() {
-        let count = parseInt(this.countLabel.string)
+        let count = parseInt(this.countEditBox.string)
         if (isNaN(count)) {
             count = 1
         }
@@ -163,7 +182,7 @@ export default class QuestSpritePickDialog extends cc.Component {
         if (count < 1) {
             count = 1
         }
-        this.countLabel.string = `${this.countLabel.string}`
+        this.countEditBox.string = `${count}`
     }
     getChangeIndex(targetData: QuestTargetData) {
         let text = targetData ? targetData.targetType : ''
@@ -183,6 +202,8 @@ export default class QuestSpritePickDialog extends cc.Component {
             return '6'
         } else if (text.indexOf('item') != -1) {
             return '7'
+        } else if (text.indexOf('room') != -1) {
+            return '8'
         } else {
             return '0'
         }
@@ -219,6 +240,9 @@ export default class QuestSpritePickDialog extends cc.Component {
             case Achievement.TYPE_ITEM:
                 this.showItemList()
                 break
+            case Achievement.TYPE_ROOM:
+                this.showRoomContent()
+                break
         }
     }
     private typeUpdate(triggerType: string) {
@@ -242,11 +266,20 @@ export default class QuestSpritePickDialog extends cc.Component {
                 break
             case QuestConditionData.NPC_ALIVE:
             case QuestConditionData.NPC_KILL:
+                this.activeToggles(QuestSpritePickDialog.TYPES_NPC, triggerType)
+                break
             case QuestConditionData.MONSTER_ALIVE:
             case QuestConditionData.MONSTER_KILL:
+                this.activeToggles(QuestSpritePickDialog.TYPES_MONSTER, triggerType)
+                break
             case QuestConditionData.BOSS_ALIVE:
             case QuestConditionData.BOSS_KILL:
-                this.activeToggles(QuestSpritePickDialog.TYPES_NPC, triggerType)
+                this.activeToggles(QuestSpritePickDialog.TYPES_BOSS, triggerType)
+                break
+            case QuestConditionData.ROOM_ENTER:
+            case QuestConditionData.ROOM_LEAVE:
+            case QuestConditionData.ROOM_CLEAR:
+                this.activeToggles(QuestSpritePickDialog.TYPES_ROOM, triggerType)
                 break
         }
     }
@@ -263,6 +296,7 @@ export default class QuestSpritePickDialog extends cc.Component {
     }
     private removeContent() {
         this.content.removeAllChildren()
+        this.roomLayout.active = false
     }
     private addItem(item: QuestSpriteItem) {
         this.content.addChild(item.node)
@@ -321,6 +355,37 @@ export default class QuestSpritePickDialog extends cc.Component {
         let index = 0
         for (let key in Logic.furnitures) {
             this.getSprite(QuestTargetData.build(key, QuestTargetData.TARGET_FURNITURE, QuestTargetData.BUILDING_TRIGGER, 1), index++)
+        }
+    }
+    private showRoomContent() {
+        this.removeContent()
+        this.roomLayout.active = true
+        this.getSprite(QuestTargetData.build('roomsxyz', QuestTargetData.TARGET_ROOM, QuestTargetData.ROOM_ENTER, 1), 0)
+    }
+
+    onTextChanged(text: string, editbox: cc.EditBox, customEventData) {
+        if (editbox == this.countEditBox) {
+            let count = parseInt(this.countEditBox.string)
+            if (count < 1) {
+                count = 1
+                this.countEditBox.string = `1`
+            }
+        } else if (editbox == this.roomEditBox) {
+            let str = editbox.string
+            let count = 0
+            for (let s of str) {
+                if (s == ',') {
+                    count++
+                }
+            }
+            let left = 4 - count
+            for (let i = 0; i < left; i++) {
+                str += ',0'
+            }
+            if (str.indexOf(',') == 0) {
+                str = '0' + str
+            }
+            editbox.string = str
         }
     }
 }

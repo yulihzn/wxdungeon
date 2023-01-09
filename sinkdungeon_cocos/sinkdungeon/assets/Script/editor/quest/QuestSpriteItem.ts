@@ -76,6 +76,8 @@ export default class QuestSpriteItem extends cc.Component {
                 this.sprite.node.height = size
                 this.sprite.node.width = (size / spriteFrame.getOriginalSize().height) * spriteFrame.getOriginalSize().width
             }
+            this.select.width = this.sprite.node.width / this.select.scale
+            this.select.height = this.sprite.node.height / this.select.scale
         } else {
             this.scheduleOnce(() => {
                 this.updateSpriteFrame()
@@ -103,6 +105,8 @@ export default class QuestSpriteItem extends cc.Component {
             spriteFrame = Logic.spriteFrameRes('icon' + id)
         } else if ((id.indexOf('monster') != -1 || id.indexOf('nonplayer') != -1) && id.indexOf('food') == -1) {
             spriteFrame = Logic.spriteFrameRes(id + 'anim000')
+        } else if (id.indexOf('roomsxyz') != -1) {
+            spriteFrame = Logic.spriteFrameRes(id)
         } else {
             let itemData = new ItemData()
             itemData.valueCopy(Logic.items[id])

@@ -154,7 +154,7 @@
     "hide",
     "shadow1"
   ],
-  "last-module-event-record-time": 1672040172690,
+  "last-module-event-record-time": 1673286630216,
   "simulator-orientation": false,
   "simulator-resolution": {
     "width": 960,
@@ -167,5 +167,5 @@
   ],
   "preview-port": 7456,
   "clear-simulator-cache": true,
-  "start-scene": "2d2f792f-a40c-49bb-a189-ed176a246e49"
+  "start-scene": "270f6b7f-35d4-485e-9e19-a9be65ef6173"
 }

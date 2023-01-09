@@ -31,6 +31,9 @@ export default class QuestConditionData {
     static readonly BOSS_KILL = 'boss_kill'
     static readonly BOSS_ALIVE = 'boss_alive'
     static readonly BUILDING_TRIGGER = 'building_trigger'
+    static readonly ROOM_ENTER = 'room_enter'
+    static readonly ROOM_CLEAR = 'room_clear'
+    static readonly ROOM_LEAVE = 'room_leave'
     /**
      *
      * 拾取/使用/放下 指定物品列表，每次拾取的时候判断背包和拾取物品是否满足条件item000,pick,1;equip000,use,1;equip000,drop分号隔开，逗号后面是use模式时候指使用次数,是pick模式时指拥有数量,不填代表1

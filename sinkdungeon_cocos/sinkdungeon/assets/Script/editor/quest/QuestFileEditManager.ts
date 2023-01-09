@@ -390,7 +390,7 @@ export default class QuestFileEditManager extends cc.Component {
             this.fileOperator.clear()
         })
     }
-    public showSpritePickDialog(targetData: QuestTargetData, callback: Function) {
+    public showSpritePickDialog(targetData: QuestTargetData, callback: (flag: boolean, data: QuestTargetData) => void) {
         this.spritePickDialog.show(targetData, callback)
     }
     private loadFileTreeFinish(jsonText: string) {

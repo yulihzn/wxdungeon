@@ -155,9 +155,9 @@ export default class QuestConditionItem extends cc.Component {
         return list
     }
     pick(targetData: QuestTargetData) {
-        this.editor.editManager.showSpritePickDialog(targetData, (flag: boolean, text: string) => {
+        this.editor.editManager.showSpritePickDialog(targetData, (flag: boolean, data: QuestTargetData) => {
             if (flag) {
-                this.currentSprite.targetData.valueCopy(targetData)
+                this.currentSprite.targetData.valueCopy(data)
                 this.currentSprite.updateSpriteFrame()
             }
         })
