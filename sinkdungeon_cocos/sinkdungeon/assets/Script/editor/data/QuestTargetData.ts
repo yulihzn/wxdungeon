@@ -91,7 +91,7 @@ export default class QuestTargetData {
         return data
     }
 
-    getDesc(isEditMode?: boolean) {
+    getDesc(isEditMode?: boolean, isPickMode?: boolean) {
         if (this.desc.length > 0) {
             return this.desc
         }
@@ -174,7 +174,11 @@ export default class QuestTargetData {
                 break
         }
         if (isEditMode) {
-            str = `类型：${title}\n触发条件：${trigger}\n${isRoom ? `地点[${this.chapter},${this.level},${this.x},${this.y},${this.z}]` : '资源名：' + this.resId}\n`
+            if (isPickMode) {
+                str = `类型：${title}\n${isRoom ? `地点[${this.chapter},${this.level},${this.x},${this.y},${this.z}]` : '资源名：' + this.resId}\n`
+            } else {
+                str = `类型：${title}\n触发条件：${trigger}\n${isRoom ? `地点[${this.chapter},${this.level},${this.x},${this.y},${this.z}]` : '资源名：' + this.resId}\n`
+            }
         } else {
             str = `${trigger}${this.getTargetName()}`
         }

@@ -117,7 +117,7 @@ export default class QuestSpriteItem extends cc.Component {
         return spriteFrame
     }
     showInfo(flag: boolean, wpos: cc.Vec2) {
-        let str = this.targetData.getDesc(true)
+        let str = this.targetData.getDesc(true, !this.isSmall)
         EventHelper.emit(EventHelper.EDITOR_SHOW_SPRITE_INFO, { isShow: flag, text: str, wpos: wpos })
     }
 

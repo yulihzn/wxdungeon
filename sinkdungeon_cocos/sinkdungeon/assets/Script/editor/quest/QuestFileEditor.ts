@@ -30,7 +30,6 @@ export default class QuestFileEditor extends cc.Component {
     data: QuestData = new QuestData()
     private inputName: QuestInputItem
     private inputContent: QuestInputItem
-    private inputMapThings: QuestInputItem
     private conditionTriggerItem: QuestConditionItem
     private conditionSuccessItem: QuestConditionItem
     private conditionFailItem: QuestConditionItem
@@ -44,7 +43,6 @@ export default class QuestFileEditor extends cc.Component {
     onLoad() {
         this.inputName = QuestFileEditor.addInputItem(this.content, this.inputPrefab, '名称：', '请输入任务名称')
         this.inputContent = QuestFileEditor.addInputItem(this.content, this.inputPrefab, '描述：', '请输入任务描述', 500, 200)
-        this.inputMapThings = QuestFileEditor.addInputItem(this.content, this.inputPrefab, '生成：', 'chapter,index,x,y,z,count', 500, 100)
         this.conditionTriggerItem = this.addQuestConditionItem('触发条件')
         this.conditionSuccessItem = this.addQuestConditionItem('完成条件')
         this.conditionFailItem = this.addQuestConditionItem('失败条件')
@@ -103,7 +101,6 @@ export default class QuestFileEditor extends cc.Component {
     private updateData() {
         this.data.name = this.inputName.Value
         this.data.content = this.inputContent.Value
-        this.data.mapThingsList = this.inputMapThings.Value
         this.conditionTriggerItem.updateInputData()
         this.conditionSuccessItem.updateInputData()
         this.conditionFailItem.updateInputData()
@@ -124,7 +121,6 @@ export default class QuestFileEditor extends cc.Component {
         }
         this.inputName.Value = this.data.name
         this.inputContent.Value = this.data.content
-        this.inputMapThings.Value = this.data.mapThingsList
         this.conditionTriggerItem.updateData(this.data.triggerCondition, true, true, true)
         this.conditionSuccessItem.updateData(this.data.successCondition, true, false, true)
         this.conditionFailItem.updateData(this.data.failCondition, true, false, true)

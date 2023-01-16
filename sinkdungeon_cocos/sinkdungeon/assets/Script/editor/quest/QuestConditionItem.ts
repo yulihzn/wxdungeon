@@ -9,6 +9,7 @@ import QuestConditionData from '../data/QuestConditionData'
 import QuestTargetData from '../data/QuestTargetData'
 import QuestDateInputItem from './QuestDateInputItem'
 import QuestFileEditor from './QuestFileEditor'
+import QuestInputItem from './QuestInputItem'
 import QuestSpriteItem from './QuestSpriteItem'
 
 const { ccclass, property } = cc._decorator
@@ -40,7 +41,7 @@ export default class QuestConditionItem extends cc.Component {
     isExpand = true
     editor: QuestFileEditor
     data: QuestConditionData = new QuestConditionData()
-
+    private inputMapThings: QuestInputItem
     private inputStartTime: QuestDateInputItem
     private inputEndTime: QuestDateInputItem
 
@@ -61,6 +62,7 @@ export default class QuestConditionItem extends cc.Component {
         if (this.inputEndTime.node.active) {
             this.data.endTime = this.inputEndTime.Value
         }
+        this.data.mapThingsList = this.inputMapThings.Value
     }
     updateData(data: QuestConditionData, showRoom: boolean, showStart: boolean, showEnd: boolean) {
         this.data.valueCopy(data)
@@ -78,10 +80,12 @@ export default class QuestConditionItem extends cc.Component {
         this.inputEndTime.Value = this.data.endTime
         this.inputStartTime.node.active = showStart
         this.inputEndTime.node.active = showEnd
+        this.inputMapThings.Value = this.data.mapThingsList
     }
 
     onLoad() {
         this.collapseExpand()
+        this.inputMapThings = QuestFileEditor.addInputItem(this.layout, this.inputItem, '生成：', 'resId,chapter,index,x,y,z,count分号隔开', 200, 100)
         this.inputStartTime = QuestFileEditor.addDateInputItem(this.layout, this.inputDateItem, '开始：')
         this.inputEndTime = QuestFileEditor.addDateInputItem(this.layout, this.inputDateItem, '结束：')
     }
@@ -147,7 +151,7 @@ export default class QuestConditionItem extends cc.Component {
     }
     getFinalList() {
         let str = ''
-        let list = []
+        let list: QuestTargetData[] = []
         for (let i = 0; i < this.spriteList.length; i++) {
             let t = this.spriteList[i]
             list.push(t.targetData)
@@ -159,6 +163,7 @@ export default class QuestConditionItem extends cc.Component {
             if (flag) {
                 this.currentSprite.targetData.valueCopy(data)
                 this.currentSprite.updateSpriteFrame()
+                this.data.copyList(this.getFinalList())
             }
         })
     }

@@ -42,7 +42,7 @@ export default class QuestConditionData {
      * //进入/离开/清理 指定房间触发0,0,0,0,0章节，层数，房间xy坐标，最后第二位0代表进入，1代表离开，2代表清理最后一位代表次数
      */
     list: QuestTargetData[] = []
-    roomList = ''
+    mapThingsList = '' //指定地图刷出物品.npc以及地图元素列表item000,0,0,0,0,0,0;npc000,0,0,0,0,0,0;z1,0,0,0,0,0
     startTime = 0 //开始时间
     endTime = 0 //开始时间
     isExpand = false //editor 是否展开

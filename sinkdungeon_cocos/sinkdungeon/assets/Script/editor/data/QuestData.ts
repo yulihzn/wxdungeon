@@ -32,7 +32,7 @@ export default class QuestData {
     content = '' //内容
     icon = '' //任务图标
     iconLarge = '' //任务图标
-    mapThingsList = '' //指定地图刷出物品和npc列表item000,0,0,0,0,0,0;npc000,0,0,0,0,0,0;
+    mapThingsList = '' //指定地图刷出物品.npc以及地图元素列表item000,0,0,0,0,0,0;npc000,0,0,0,0,0,0;z1,0,0,0,0,0
     startTime = 0 //任务开始时间
     mapThingsCreated = false //地图物品npc已刷新
     reward: QuestConditionData = new QuestConditionData()

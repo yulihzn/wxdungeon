@@ -81,7 +81,6 @@ export default class QuestSpritePickDialog extends cc.Component {
         this.callback = callback
         this.showAnim()
         this.changeList(null, this.getChangeIndex(targetData))
-        this.typeUpdate('')
     }
 
     getSprite(targetData: QuestTargetData, index: number) {
@@ -104,17 +103,20 @@ export default class QuestSpritePickDialog extends cc.Component {
             this.typeUpdate(this.currentSprite.targetData.triggerType)
         }
         icon.clickCallback = (value: QuestSpriteItem) => {
-            if (this.currentSprite == value) {
-            } else {
-                if (this.currentSprite) {
-                    this.currentSprite.select.active = false
-                }
-                this.currentSprite = value
-                this.currentSprite.select.active = true
-                this.typeUpdate(this.currentSprite.targetData.triggerType)
-            }
+            this.iconClick(value)
         }
         return icon
+    }
+    private iconClick(value: QuestSpriteItem) {
+        if (this.currentSprite == value) {
+        } else {
+            if (this.currentSprite) {
+                this.currentSprite.select.active = false
+            }
+            this.currentSprite = value
+            this.currentSprite.select.active = true
+            this.typeUpdate(this.currentSprite.targetData.triggerType)
+        }
     }
     public hide() {
         this.hideAnim()
@@ -295,6 +297,7 @@ export default class QuestSpritePickDialog extends cc.Component {
         this.currentTypeArr = list
     }
     private removeContent() {
+        this.typeUpdate('')
         this.content.removeAllChildren()
         this.roomLayout.active = false
     }
@@ -360,7 +363,10 @@ export default class QuestSpritePickDialog extends cc.Component {
     private showRoomContent() {
         this.removeContent()
         this.roomLayout.active = true
-        this.getSprite(QuestTargetData.build('roomsxyz', QuestTargetData.TARGET_ROOM, QuestTargetData.ROOM_ENTER, 1), 0)
+        let icon = this.getSprite(QuestTargetData.build('roomsxyz', QuestTargetData.TARGET_ROOM, QuestTargetData.ROOM_ENTER, 1), 0)
+        if (!this.currentSprite) {
+            this.iconClick(icon)
+        }
     }
 
     onTextChanged(text: string, editbox: cc.EditBox, customEventData) {
