@@ -369,7 +369,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 pos = pos.normalizeSelf()
             }
             this.hv = pos.clone()
-            pos = pos.mul(-3)
+            pos = pos.mul(-0.1)
             this.player.entity.Move.linearVelocity = pos
             this.scheduleOnce(() => {
                 this.player.isWeaponDashing = false

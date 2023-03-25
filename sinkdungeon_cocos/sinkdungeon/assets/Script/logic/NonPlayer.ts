@@ -1354,7 +1354,7 @@ export default class NonPlayer extends PlayActor {
         }
         this.statusManager.node.position = this.statusPos.clone().add(cc.v3(0, this.root.y))
         if (this.icon) {
-            this.icon.updateLogic(this.data)
+            this.icon.updateLogic(this.data, cc.v2(this.node.convertToWorldSpaceAR(cc.Vec2.ZERO)).sub(cc.v2(this.dungeon.cameraControl.node.position)))
         }
     }
     private setInWaterMat(sprite: cc.Sprite, inWater: boolean) {

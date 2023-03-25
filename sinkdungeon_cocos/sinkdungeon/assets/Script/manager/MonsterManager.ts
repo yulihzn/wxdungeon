@@ -13,6 +13,7 @@ import Utils from '../utils/Utils'
 import AudioPlayer from '../utils/AudioPlayer'
 import ActorIconList from '../ui/ActorIconList'
 import MapManager from './MapManager'
+import ActorIconView from '../ui/ActorIconView'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -145,6 +146,8 @@ export default class MonsterManager extends BaseManager {
     dragon = null
     @property(ActorIconList)
     actorIconList: ActorIconList = null
+    @property(ActorIconView)
+    actorIconView: ActorIconView = null
     readonly maxHealth00 = 200
     readonly maxHealth01 = 400
     readonly maxHealth02 = 600
@@ -349,7 +352,7 @@ export default class MonsterManager extends BaseManager {
                 monster.changeBodyRes(resName, NonPlayer.RES_IDLE000)
             }
             monster.addAttrIcon()
-            monster.icon = this.actorIconList.getIcon(data.resName)
+            monster.icon = this.actorIconView.getIcon(data.resName)
             callBack(monster)
         })
     }

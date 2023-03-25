@@ -9,7 +9,7 @@ import ActorIcon from './ActorIcon'
 const { ccclass, property } = cc._decorator
 
 @ccclass
-export default class ActorIconList extends cc.Component {
+export default class ActorIconView extends cc.Component {
     @property(cc.Prefab)
     iconPrefab: cc.Prefab = null
     @property(cc.Node)
@@ -23,7 +23,7 @@ export default class ActorIconList extends cc.Component {
         let node: cc.Node = cc.instantiate(this.iconPrefab)
         node.parent = this.layout
         let icon = node.getComponent(ActorIcon)
-        icon.show(resName, true)
+        icon.show(resName, false)
         return icon
     }
 
