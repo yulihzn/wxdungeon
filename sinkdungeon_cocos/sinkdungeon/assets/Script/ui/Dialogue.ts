@@ -212,6 +212,9 @@ export default class Dialogue extends cc.Component {
         }
         this.nameLabel.string = this.data.actors[current.actor].name
         this.avatarSprite.spriteFrame = Logic.spriteFrameRes(this.data.actors[current.actor].resName)
+        if (this.avatarSprite.spriteFrame == null) {
+            this.avatarSprite.spriteFrame = Logic.spriteFrameRes('dialoguedefault')
+        }
         this.updateLabel(this.splitArr.pop(), this.data.isTalk)
         for (let i = 0; i < this.buttons.length; i++) {
             this.updateButton(this.buttons[i], i, this.splitArr.length > 0 ? undefined : current)

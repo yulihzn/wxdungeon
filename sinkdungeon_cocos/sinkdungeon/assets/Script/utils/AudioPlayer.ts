@@ -62,6 +62,7 @@ export default class AudioPlayer extends cc.Component {
     public static readonly FLASHLIGHT = 'flashlight'
     public static readonly ICEBOOM = 'iceboom'
     public static readonly JUMP = 'jump'
+    public static readonly JUMP_FALL = 'jumpfall'
     public static readonly JUMP_WATER = 'jumpwater'
     public static readonly LASER = 'laser'
     public static readonly LEVELUP = 'levelup'

@@ -61,7 +61,7 @@ export default class EffectItemManager extends BaseManager {
         paper.node.active = true
         paper.node.position = targetPos.clone()
         paper.entity.Transform.position = targetPos.clone()
-        paper.entity.Transform.z = 64
+        paper.entity.Transform.z = 32
         paper.fly(fromPos, false)
     }
     // update (dt) {}

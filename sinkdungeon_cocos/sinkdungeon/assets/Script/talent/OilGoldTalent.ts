@@ -321,7 +321,7 @@ export default class OilGoldTalent extends Talent {
     }
 
     private jump(shooterEx: Shooter) {
-        AudioPlayer.play(AudioPlayer.JUMP)
+        AudioPlayer.play(AudioPlayer.JUMP_FALL)
         this.player.talentJump(() => {
             AudioPlayer.play(AudioPlayer.BOOM)
             let d = this.player.data.getFinalAttackPoint()

@@ -53,35 +53,34 @@ export default class ActorIcon extends cc.Component {
         if (this.node && this.node.isValid) {
             if (data.currentHealth <= 0) {
                 this.hide()
+            } else if (!this.isListItem) {
+                let p = this.node.parent.convertToNodeSpaceAR(pos)
+                let pw = this.node.parent.width / 2
+                let ph = this.node.parent.height / 2
+                let w = this.node.width
+                let h = this.node.height
+                let x = p.x
+                let y = p.y
+                let isOut = false
+                if (x > pw) {
+                    x = pw - w
+                    isOut = true
+                }
+                if (x < -pw) {
+                    x = -pw + w
+                    isOut = true
+                }
+                if (y > ph) {
+                    y = ph - h
+                    isOut = true
+                }
+                if (y < -ph) {
+                    y = -ph + h
+                    isOut = true
+                }
+                this.sprite.node.position = cc.v3(x, y)
+                this.sprite.node.opacity = isOut ? 255 : 0
             }
-        }
-        if (!this.isListItem) {
-            let p = this.node.parent.convertToNodeSpaceAR(pos)
-            let pw = this.node.parent.width / 2
-            let ph = this.node.parent.height / 2
-            let w = this.node.width / 2
-            let h = this.node.height / 2
-            let x = p.x
-            let y = p.y
-            let isOut = false
-            if (x > pw) {
-                x = pw - w
-                isOut = true
-            }
-            if (x < -pw) {
-                x = -pw + w
-                isOut = true
-            }
-            if (y > ph) {
-                y = ph - h
-                isOut = true
-            }
-            if (y < -ph) {
-                y = -ph + h
-                isOut = true
-            }
-            this.sprite.node.position = cc.v3(x, y)
-            this.sprite.node.opacity = isOut ? 255 : 0
         }
     }
     // update (dt) {}

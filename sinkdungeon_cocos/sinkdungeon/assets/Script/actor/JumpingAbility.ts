@@ -62,7 +62,7 @@ export default class JumpingAbility extends cc.Component {
         this.currentJumpCount--
         this.isJumpPressed = true
         this.isAirPause = false
-        AudioPlayer.play(AudioPlayer.DASH)
+        AudioPlayer.play(AudioPlayer.JUMP)
         let second = Utils.getJumpTimeBySpeedDistance(maxJumpHeightUnit, ajustSpeed, this.actor.entity.Move.gravity)
         this.unscheduleAllCallbacks()
         this.scheduleOnce(() => {
