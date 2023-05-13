@@ -170,9 +170,19 @@ export default class CCollider extends cc.Component {
     setEntityNode(node: cc.Node) {
         this.entity.NodeRender.node = node
     }
+    private _isFirst = false
+    private _lastTransform: cc.Vec3
     public fixCenterAndScale() {
         this.isStaying = false
         this.baseChangedCount = 0
+        let skip = false
+        if (!this._isFirst && this.isStatic && !this.sensor && this._lastTransform && this._lastTransform.equals(this.entity.Transform.position)) {
+            skip = true
+        }
+        if (this.entity && this.entity.Transform) this._lastTransform = this.entity.Transform.position.clone()
+        if (skip) {
+            return
+        }
         let offset = cc.v3(this.offsetX, this.offsetY)
         let woffset = this.node.convertToWorldSpaceAR(offset)
         this._center = this.node.convertToWorldSpaceAR(cc.v3(this.offsetX, this.offsetY))
@@ -180,7 +190,6 @@ export default class CCollider extends cc.Component {
             .convertToWorldSpaceAR(offset.add(cc.v3(1, 0)))
             .sub(woffset)
             .mag()
-
         this._radius = this.radius * wScale
         let wlen = this.w * wScale
         let hlen = this.h * wScale

@@ -58,6 +58,7 @@ export default class SlimeVenom extends Actor {
         }
         this.damagePlayer(this.from)
     }
+    updateData(): void {}
     addStatus(statusType: string, from: FromData) {}
     /**获取玩家距离 */
     getNearPlayerDistance(playerNode: cc.Node): number {

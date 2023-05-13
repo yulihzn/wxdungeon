@@ -35,6 +35,7 @@ export default abstract class Building extends Actor {
     actorName() {
         return ''
     }
+    updateData(): void {}
     takeDizz(dizzDuration: number): void {}
 
     updateStatus(statusList: StatusData[], totalStatusData: StatusData): void {}

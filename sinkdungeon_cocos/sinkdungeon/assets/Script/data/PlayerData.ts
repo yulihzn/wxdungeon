@@ -9,7 +9,6 @@ import TalentData from './TalentData'
 import Shield from '../logic/Shield'
 import LifeData from './LifeData'
 import DataUtils from '../utils/DataUtils'
-import MetalTalentData from './MetalTalentData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -49,6 +48,8 @@ export default class PlayerData {
     private statusList: StatusData[]
     private shadowList: number[]
     private lifeData: LifeData
+    private finalCommon: CommonData
+    private needUpdateFinalCommon = true
 
     constructor() {
         this.equipmentTotalData = new EquipmentData()
@@ -67,6 +68,7 @@ export default class PlayerData {
         this.common.damageMin = PlayerData.DEFAULT_ATTACK
         this.common.damageBack = PlayerData.DEFAULT_BACK_ATTACK
         this.common.maxDream = PlayerData.DEFAULT_DREAM
+        this.needUpdateFinalCommon = true
         this.shadowList = []
     }
     get ShadowList() {
@@ -114,14 +116,20 @@ export default class PlayerData {
     get Common() {
         return this.common
     }
+    updateFinalCommon() {
+        this.needUpdateFinalCommon = true
+    }
     get FinalCommon() {
-        let data = new CommonData()
-            .add(this.common)
-            .add(this.statusTotalData.Common)
-            .add(this.equipmentTotalData.FinalCommon)
-            .add(this.avatarData.professionData.Common)
-            .add(this.oilGoldData.Common)
-        return data
+        if (this.needUpdateFinalCommon) {
+            this.needUpdateFinalCommon = false
+            this.finalCommon = new CommonData()
+                .add(this.common)
+                .add(this.statusTotalData.Common)
+                .add(this.equipmentTotalData.FinalCommon)
+                .add(this.avatarData.professionData.Common)
+                .add(this.oilGoldData.Common)
+        }
+        return this.finalCommon
     }
 
     public valueCopy(data: PlayerData): void {
@@ -140,6 +148,7 @@ export default class PlayerData {
         this.organizationTalentData.valueCopy(data.organizationTalentData)
         this.professionTalentData.valueCopy(data.professionTalentData)
         this.shadowList = data.shadowList
+        this.needUpdateFinalCommon = true
     }
 
     public clone(): PlayerData {

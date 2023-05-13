@@ -47,6 +47,9 @@ export default abstract class Boss extends Actor {
             this.statusManager.addStatus(statusType, from)
         }
     }
+    updateData(): void {
+        this.data.updateFinalCommon()
+    }
     /**获取玩家距离 */
     getNearPlayerDistance(playerNode: cc.Node, offset?: cc.Vec3): number {
         let p = this.node.position.clone()
@@ -127,6 +130,7 @@ export default abstract class Boss extends Actor {
     takeDizz(dizzDuration: number): void {}
     updateStatus(statusList: StatusData[], totalStatusData: StatusData): void {
         this.data.StatusTotalData.valueCopy(totalStatusData)
+        this.updateData()
     }
     hideSelf(hideDuration: number): void {}
     updateDream(offset: number): number {

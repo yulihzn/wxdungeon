@@ -403,11 +403,13 @@ export default class IceDemon extends Boss {
                 this.anim.play('IceDemonDefence')
                 this.data.Common.defence = 9999
                 this.data.Common.magicDefenceRate = 9999
+                this.updateData()
                 AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_DEFEND)
                 this.scheduleOnce(() => {
                     this.defenceSkill.IsExcuting = false
                     this.data.Common.defence = 0
                     this.data.Common.magicDefenceRate = 0
+                    this.updateData()
                 }, 3)
                 if (isHalf) {
                     if (this.magicice.isShow) {

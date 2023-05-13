@@ -207,6 +207,7 @@ export default class Player extends PlayActor {
         EventHelper.on(EventHelper.PLAYER_UPDATE_OILGOLD_DATA, detail => {
             if (this.node) {
                 this.data.OilGoldData.valueCopy(Logic.playerData.OilGoldData)
+                this.updateData()
             }
         })
         EventHelper.on(EventHelper.PLAYER_ATTACK, detail => {
@@ -523,6 +524,7 @@ export default class Player extends PlayActor {
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_LIFE_BAR, { sanity: life.sanity, solid: life.solidSatiety, poo: life.poo, liquid: life.liquidSatiety, pee: life.pee })
         this.inventoryManager.updateTotalEquipData()
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.TotalEquipData)
+        this.updateData()
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { data: this.data })
     }
     /**获取中心位置 */
@@ -900,7 +902,7 @@ export default class Player extends PlayActor {
                 this.addDashGhost(this.shooterEx)
             },
             0.05,
-            6
+            3
         )
         let pos = this.entity.Move.linearVelocity.clone()
         this.sc.isMoving = false
@@ -939,6 +941,9 @@ export default class Player extends PlayActor {
             true
         )
         shooterEx.updateCustomAoe(aoe, [this.sprite.spriteFrame], false, true, 1, cc.color(189, 183, 107), 200, true, true, 48, 32)
+    }
+    updateData(): void {
+        this.data.updateFinalCommon()
     }
     jump() {
         if (!this.CanJump) {

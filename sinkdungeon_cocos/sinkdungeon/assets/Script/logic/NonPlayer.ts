@@ -178,6 +178,9 @@ export default class NonPlayer extends PlayActor {
     get Root(): cc.Node {
         return this.root
     }
+    updateData(): void {
+        this.data.updateFinalCommon()
+    }
     playerAnim(status: number, dir: number): void {}
     getWalkSmoke(parentNode: cc.Node, pos: cc.Vec3): void {}
     onLoad() {
@@ -1583,6 +1586,7 @@ export default class NonPlayer extends PlayActor {
     updateStatus(statusList: StatusData[], totalStatusData: StatusData): void {
         this.data.StatusTotalData.valueCopy(totalStatusData)
         this.data.StatusList = statusList
+        this.updateData()
         if (!this.sc.isHurting) {
             this.resetBodyColor()
         }

@@ -56,6 +56,7 @@ export default abstract class PlayActor extends Actor {
             }, hideDuration)
         }
     }
+    updateData(): void {}
     stopHiding() {
         this.invisible = false
         this.statusMgr.stopStatus(StatusManager.TALENT_INVISIBLE)

@@ -86,11 +86,14 @@ export default class NonPlayerData {
     private common: CommonData
     private statusList: StatusData[]
     private avatar: AvatarData
+    private finalCommon: CommonData
+    private needUpdateFinalCommon = true
     constructor() {
         this.statusTotalData = new StatusData()
         this.common = new CommonData()
         this.statusList = new Array()
         this.avatar = new AvatarData()
+        this.needUpdateFinalCommon = true
     }
 
     get StatusTotalData() {
@@ -99,9 +102,15 @@ export default class NonPlayerData {
     get Common() {
         return this.common
     }
+    updateFinalCommon() {
+        this.needUpdateFinalCommon = true
+    }
     get FinalCommon() {
-        let data = new CommonData().add(this.common).add(this.statusTotalData.Common)
-        return data
+        if (this.needUpdateFinalCommon) {
+            this.needUpdateFinalCommon = false
+            this.finalCommon = new CommonData().add(this.common).add(this.statusTotalData.Common)
+        }
+        return this.finalCommon
     }
     get StatusList() {
         return this.statusList
@@ -144,6 +153,7 @@ export default class NonPlayerData {
         this.attackFrameKeyEnd = data.attackFrameKeyEnd ? data.attackFrameKeyEnd : 2
         this.specialFrameKeyEnd = data.specialFrameKeyEnd ? data.specialFrameKeyEnd : 2
         this.bodyColor = data.bodyColor ? data.bodyColor : '#ffffff'
+        this.needUpdateFinalCommon = true
     }
     public clone(): NonPlayerData {
         let e = new NonPlayerData()
