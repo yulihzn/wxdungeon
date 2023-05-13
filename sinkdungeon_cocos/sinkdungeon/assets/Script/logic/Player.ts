@@ -284,6 +284,7 @@ export default class Player extends PlayActor {
             this.playerSpriteTexture.setFilters(cc.Texture2D.Filter.NEAREST, cc.Texture2D.Filter.NEAREST)
             this.shadowCamera.targetTexture = this.playerSpriteTexture
             this.shadowCamera.zoomRatio = cc.winSize.height / width
+            this.shadowCamera.enabled = false
             this.playerSpriteframe = new cc.SpriteFrame(this.playerSpriteTexture)
             this.sprite.spriteFrame = this.playerSpriteframe
         }
@@ -899,7 +900,7 @@ export default class Player extends PlayActor {
                 this.addDashGhost(this.shooterEx)
             },
             0.05,
-            12
+            6
         )
         let pos = this.entity.Move.linearVelocity.clone()
         this.sc.isMoving = false
@@ -1173,6 +1174,9 @@ export default class Player extends PlayActor {
     update(dt) {
         if (Logic.isGamePause) {
             return
+        }
+        if (this.shadowCamera) {
+            this.shadowCamera.render(this.node)
         }
         if (this.metal) {
             this.metal.updateLogic(dt)
