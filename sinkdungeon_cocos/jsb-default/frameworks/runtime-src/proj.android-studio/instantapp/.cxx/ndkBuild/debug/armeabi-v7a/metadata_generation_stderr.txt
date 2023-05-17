@@ -1,1 +1,0 @@
-D:/cocosprojects/wxdungeon/sinkdungeon_cocos/jsb-default/frameworks/runtime-src/proj.android-studio/instantapp/jni/../../jni/CocosAndroid.mk:23: *** Android NDK: Aborting.    .  Stop.

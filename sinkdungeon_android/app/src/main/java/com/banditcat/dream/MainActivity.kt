@@ -1,5 +1,6 @@
 package com.banditcat.dream
 
+import android.annotation.SuppressLint
 import android.net.http.SslError
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +16,7 @@ import androidx.core.content.ContextCompat
  */
 class MainActivity : AppCompatActivity() {
     lateinit var webView: TestWebView
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         webView.setBackgroundResource(R.color.black)
         webView.webChromeClient = WebChromeClient()
         webView.webViewClient = object : WebViewClient() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             override fun shouldOverrideUrlLoading(
                 view: WebView,
                 request: WebResourceRequest
@@ -52,11 +53,13 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
 
+            @Deprecated("Deprecated in Java")
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 view.loadUrl(url)
                 return true
             }
 
+            @SuppressLint("WebViewClientOnReceivedSslError")
             override fun onReceivedSslError(
                 view: WebView,
                 handler: SslErrorHandler,
@@ -65,6 +68,11 @@ class MainActivity : AppCompatActivity() {
                 handler.proceed()
             }
 
+            @Deprecated("Deprecated in Java", ReplaceWith(
+                "super.onReceivedError(view, errorCode, description, failingUrl)",
+                "android.webkit.WebViewClient"
+            )
+            )
             override fun onReceivedError(
                 view: WebView,
                 errorCode: Int,
@@ -88,7 +96,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (hasFocus && Build.VERSION.SDK_INT >= 19) {
+        if (hasFocus) {
             val decorView = window.decorView
             decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION

@@ -8,7 +8,91 @@
   },
   {
     "level": "INFO",
-    "message": "JSON \u0027E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\.cxx\\ndkBuild\\release\\armeabi-v7a\\android_gradle_build.json\u0027 was up-to-date",
+    "message": "rebuilding JSON E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\.cxx\\ndkBuild\\release\\armeabi-v7a\\android_gradle_build.json due to:",
+    "file": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk",
+    "tag": "release|armeabi-v7a",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "- command changed from previous, will remove stale json folder",
+    "file": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk",
+    "tag": "release|armeabi-v7a",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "- a dependent build file changed",
+    "file": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk",
+    "tag": "release|armeabi-v7a",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "  - E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk",
+    "file": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk",
+    "tag": "release|armeabi-v7a",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "  - E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Application.mk",
+    "file": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk",
+    "tag": "release|armeabi-v7a",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "removing stale contents from \u0027E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\.cxx\\ndkBuild\\release\\armeabi-v7a\u0027",
+    "file": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk",
+    "tag": "release|armeabi-v7a",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "created folder \u0027E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\.cxx\\ndkBuild\\release\\armeabi-v7a\u0027",
+    "file": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk",
+    "tag": "release|armeabi-v7a",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "executing ndkBuild Executable : D:\\android-sdk-windows\\ndk\\25.0.8775105\\ndk-build.cmd\narguments : \nNDK_PROJECT_PATH\u003dnull\nAPP_BUILD_SCRIPT\u003dE:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk\nNDK_APPLICATION_MK\u003dE:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Application.mk\nAPP_ABI\u003darmeabi-v7a\nNDK_ALL_ABIS\u003darmeabi-v7a\nNDK_DEBUG\u003d0\nAPP_PLATFORM\u003dandroid-19\nNDK_OUT\u003dE:/cocosproject/wxdungeon/sinkdungeon_cocos/jsb-default/frameworks/runtime-src/proj.android-studio/app/build/intermediates/ndkBuild/release/obj\nNDK_LIBS_OUT\u003dE:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\build\\intermediates\\ndkBuild\\release\\lib\nNDK_TOOLCHAIN_VERSION\u003dclang\nNDK_MODULE_PATH\u003dE:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\cocos2d-x;E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\cocos2d-x\\cocos;E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\cocos2d-x\\external\n-j8\nNDK_DEBUG\u003d0\nAPP_SHORT_COMMANDS\u003dfalse\nLOCAL_SHORT_COMMANDS\u003dfalse\n-B\n-n\njvmArgs : \n\n",
+    "file": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk",
+    "tag": "release|armeabi-v7a",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "Executable : D:\\android-sdk-windows\\ndk\\25.0.8775105\\ndk-build.cmd\narguments : \nNDK_PROJECT_PATH\u003dnull\nAPP_BUILD_SCRIPT\u003dE:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk\nNDK_APPLICATION_MK\u003dE:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Application.mk\nAPP_ABI\u003darmeabi-v7a\nNDK_ALL_ABIS\u003darmeabi-v7a\nNDK_DEBUG\u003d0\nAPP_PLATFORM\u003dandroid-19\nNDK_OUT\u003dE:/cocosproject/wxdungeon/sinkdungeon_cocos/jsb-default/frameworks/runtime-src/proj.android-studio/app/build/intermediates/ndkBuild/release/obj\nNDK_LIBS_OUT\u003dE:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\build\\intermediates\\ndkBuild\\release\\lib\nNDK_TOOLCHAIN_VERSION\u003dclang\nNDK_MODULE_PATH\u003dE:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\cocos2d-x;E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\cocos2d-x\\cocos;E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\cocos2d-x\\external\n-j8\nNDK_DEBUG\u003d0\nAPP_SHORT_COMMANDS\u003dfalse\nLOCAL_SHORT_COMMANDS\u003dfalse\n-B\n-n\njvmArgs : \n\n",
+    "file": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk",
+    "tag": "release|armeabi-v7a",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "parse and convert ndk-build output to build configuration JSON",
+    "file": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk",
+    "tag": "release|armeabi-v7a",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "found application make file E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Application.mk",
+    "file": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk",
+    "tag": "release|armeabi-v7a",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "done executing ndkBuild",
+    "file": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk",
+    "tag": "release|armeabi-v7a",
+    "diagnosticCode": "UNKNOWN"
+  },
+  {
+    "level": "INFO",
+    "message": "write command file E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\.cxx\\ndkBuild\\release\\armeabi-v7a\\build_command.txt",
     "file": "E:\\cocosproject\\wxdungeon\\sinkdungeon_cocos\\jsb-default\\frameworks\\runtime-src\\proj.android-studio\\app\\jni\\Android.mk",
     "tag": "release|armeabi-v7a",
     "diagnosticCode": "UNKNOWN"

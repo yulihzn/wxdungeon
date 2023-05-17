@@ -170,42 +170,54 @@ export default class CCollider extends cc.Component {
     setEntityNode(node: cc.Node) {
         this.entity.NodeRender.node = node
     }
-    private _isFirst = false
-    private _lastTransform: cc.Vec3
+    private _lastTransWorldMatrix: cc.Mat4
+    private _lastOffsetX: number = 0
+    private _lastOffsetY: number = 0
+    private _lastW: number = 0
+    private _lastH: number = 0
+    private _lastR: number = 0
+    private isChanged() {
+        return this._lastH != this.h || this._lastW != this.w || this._lastR != this.radius || this._lastOffsetX != this.offsetX || this._lastOffsetY != this.offsetY
+    }
     public fixCenterAndScale() {
         this.isStaying = false
         this.baseChangedCount = 0
-        let skip = false
-        if (!this._isFirst && this.isStatic && !this.sensor && this._lastTransform && this._lastTransform.equals(this.entity.Transform.position)) {
-            skip = true
-        }
-        if (this.entity && this.entity.Transform) this._lastTransform = this.entity.Transform.position.clone()
-        if (skip) {
+        let worldMatrix = new cc.Mat4()
+        this.node.getWorldMatrix(worldMatrix)
+        if (!this.isChanged() && this._lastTransWorldMatrix && this._lastTransWorldMatrix.equals(worldMatrix)) {
             return
         }
         let offset = cc.v3(this.offsetX, this.offsetY)
-        let woffset = this.node.convertToWorldSpaceAR(offset)
-        this._center = this.node.convertToWorldSpaceAR(cc.v3(this.offsetX, this.offsetY))
-        let wScale = this.node
-            .convertToWorldSpaceAR(offset.add(cc.v3(1, 0)))
-            .sub(woffset)
-            .mag()
-        this._radius = this.radius * wScale
-        let wlen = this.w * wScale
-        let hlen = this.h * wScale
-
+        this._center = cc.v3(this.offsetX, this.offsetY).transformMat4(worldMatrix)
+        this._lastTransWorldMatrix = worldMatrix.clone()
+        this._lastW = this.w
+        this._lastH = this.h
+        this._lastR = this.radius
+        this._lastOffsetX = this.offsetX
+        this._lastOffsetY = this.offsetY
+        let worldScale = cc.v3(1, 1)
+        worldMatrix.getScale(worldScale)
+        this._radius = this.radius * Math.abs(worldScale.x)
+        let wlen = this.w * Math.abs(worldScale.x)
+        let hlen = this.h * Math.abs(worldScale.y)
         if (this.isCircle) {
             this.isRotate = false
             this._points = []
             this._aabb = cc.rect(this._center.x - this._radius, this._center.y - this._radius, this._radius * 2, this._radius * 2)
         } else {
             this._aabb = cc.rect(this._center.x - wlen / 2, this._center.y - hlen / 2, wlen, hlen)
-            let p0 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(-this.w / 2, -this.h / 2)))
-            let p1 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(-this.w / 2, this.h / 2)))
-            let p2 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w / 2, this.h / 2)))
-            let p3 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w / 2, -this.h / 2)))
+            let p0 = offset.add(cc.v3(-this.w / 2, -this.h / 2)).transformMat4(worldMatrix)
+            let p1 = offset.add(cc.v3(-this.w / 2, this.h / 2)).transformMat4(worldMatrix)
+            let p2 = offset.add(cc.v3(this.w / 2, this.h / 2)).transformMat4(worldMatrix)
+            let p3 = offset.add(cc.v3(this.w / 2, -this.h / 2)).transformMat4(worldMatrix)
             this._points = [cc.v2(p0), cc.v2(p1), cc.v2(p2), cc.v2(p3)]
             this.isRotate = p0.x != p1.x
+            // if (this.isRotate) {
+            //     let sortedPoints = this._points.slice().sort((a, b) => a.x - b.x)
+            //     let w = Math.abs(sortedPoints[0].x - sortedPoints[2].x)
+            //     let h = Math.abs(sortedPoints[1].y - sortedPoints[3].y)
+            //     this._aabb = cc.rect(sortedPoints[0].x, sortedPoints[1].y < sortedPoints[3].y ? sortedPoints[1].y : sortedPoints[3].y, w, h)
+            // }
             if (this.isRotate) {
                 let ps = []
                 let tp0 = this._points[0].clone()

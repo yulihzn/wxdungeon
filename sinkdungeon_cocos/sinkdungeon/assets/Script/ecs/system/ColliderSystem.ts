@@ -29,7 +29,6 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
     }
     init() {
         this.isDebug = Logic.isDebug
-        // this.isDebug = true;
     }
 
     filter(): ecs.IMatcher {

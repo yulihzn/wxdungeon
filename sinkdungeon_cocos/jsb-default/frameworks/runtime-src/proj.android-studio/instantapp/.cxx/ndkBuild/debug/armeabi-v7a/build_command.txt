@@ -1,4 +1,4 @@
-Executable : D:\android-sdk-windows\ndk\25.0.8775105\ndk-build.cmd
+                    Executable : D:\android-sdk-windows\ndk\25.0.8775105\ndk-build.cmd
 arguments : 
 NDK_PROJECT_PATH=null
 APP_BUILD_SCRIPT=E:\cocosproject\wxdungeon\sinkdungeon_cocos\jsb-default\frameworks\runtime-src\proj.android-studio\instantapp\jni\Android.mk
@@ -19,3 +19,6 @@ LOCAL_SHORT_COMMANDS=false
 -n
 jvmArgs : 
 
+
+                    Build command args: []
+                    Version: 1
