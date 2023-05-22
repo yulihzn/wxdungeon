@@ -1,5 +1,4 @@
 import Dungeon from './Dungeon'
-import Player from './Player'
 import NonPlayer from './NonPlayer'
 import { EventHelper } from './EventHelper'
 import Box from '../building/Box'
@@ -28,7 +27,6 @@ import PlayActor from '../base/PlayActor'
 import BaseAvatar from '../base/BaseAvatar'
 import ReflectLight from '../effect/ReflectLight'
 import NormalBuilding from '../building/NormalBuilding'
-import ColliderSystem from '../ecs/system/ColliderSystem'
 import GameWorldSystem from '../ecs/system/GameWorldSystem'
 
 // Learn TypeScript:
