@@ -48,6 +48,7 @@ export default class LoadingManager {
     public isSoundLoaded = false
     public isBgmLoaded = false
     public isDialogueLoaded = false
+    public isBehaviorsLoaded = false
     public isAffixsLoaded = false
     public isMetalsLoaded = false
     // LIFE-CYCLE CALLBACKS:
@@ -88,6 +89,7 @@ export default class LoadingManager {
         this.isBgmLoaded = false
         this.isNormalBuildingLoaded = false
         this.isDialogueLoaded = false
+        this.isBehaviorsLoaded = false
         this.isAffixsLoaded = false
     }
 
@@ -161,6 +163,26 @@ export default class LoadingManager {
                 }
                 this.isDialogueLoaded = true
                 cc.log(`加载对话完成`)
+            }
+        })
+    }
+    loadBehaviors() {
+        if (Logic.behaviors) {
+            this.isBehaviorsLoaded = true
+            return
+        }
+        cc.resources.loadDir('Data/behaviors', cc.JsonAsset, (err: Error, assert: cc.JsonAsset[]) => {
+            if (err) {
+                cc.error(err)
+            } else {
+                Logic.behaviors = {}
+                for (let resource of assert) {
+                    for (let key in resource.json) {
+                        Logic.behaviors[key] = resource.json[key]
+                    }
+                }
+                this.isBehaviorsLoaded = true
+                cc.log(`加载AI完成`)
             }
         })
     }

@@ -101,6 +101,7 @@ export default class Logic extends cc.Component {
     static bgmClips: { [key: string]: cc.AudioClip } = {}
     //对话资源
     static dialogues: { [key: string]: DialogueData } = null
+    static behaviors: { [key: string]: string } = null
     /******************************************************************************/
     static cycle = 0 //周目
     static level = 0 //关卡

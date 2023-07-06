@@ -15,4 +15,6 @@ export default class StateContext {
     isTalking = false //是否对话
     isFlying = false //是否正在飞行
     isShooting = false //是否正在射击
+    isOtherAniming = false //是否正在杂项动画
+    isBlocking = false //是否正在防御
 }

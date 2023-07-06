@@ -10,9 +10,6 @@
 
 import { EventHelper } from '../logic/EventHelper'
 
-const { ccclass, property } = cc._decorator
-
-@ccclass
 export default class Utils {
     static showLog = false
     static log(msg: String): void {

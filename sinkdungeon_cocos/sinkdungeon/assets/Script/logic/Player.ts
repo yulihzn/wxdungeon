@@ -65,6 +65,8 @@ import Dialogue from '../ui/Dialogue'
 import EquipItemTalent from '../talent/EquipItemTalent'
 import OilGoldMetal from '../talent/OilGoldMetal'
 import ExitData from '../data/ExitData'
+import DefaultStateMachine from '../base/fsm/DefaultStateMachine'
+import PlayerActorState from '../actor/PlayerActorState'
 @ccclass
 export default class Player extends PlayActor {
     @property(cc.Sprite)
@@ -192,9 +194,7 @@ export default class Player extends PlayActor {
         EventHelper.on(EventHelper.PLAYER_TRIGGER, detail => {
             if (this.node) this.triggerThings(detail && detail.isLongPress)
         })
-        EventHelper.on(EventHelper.PLAYER_EXIT_FROM_SETTINGS, detail => {
-            cc.director.loadScene('start')
-        })
+
         EventHelper.on(EventHelper.PLAYER_USEITEM, detail => {
             if (this.node) this.useItem(detail.itemData)
         })

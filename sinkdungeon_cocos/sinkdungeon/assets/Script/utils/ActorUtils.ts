@@ -10,9 +10,6 @@ import Utils from './Utils'
 import IndexZ from './IndexZ'
 import BaseColliderComponent from '../base/BaseColliderComponent'
 
-const { ccclass, property } = cc._decorator
-
-@ccclass
 export default class ActorUtils {
     static getEnemyCollisionTarget(other: CCollider, isPlayer?: boolean): Actor {
         if (isPlayer) {

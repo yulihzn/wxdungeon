@@ -12,12 +12,9 @@ import LocalStorage from '../utils/LocalStorage'
 // Learn life-cycle callbacks:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
-
-const { ccclass, property } = cc._decorator
 /**
  * 存档管理，挂载Logic节点的时候就读取存档
  */
-@ccclass
 export default class ProfileManager {
     data: ProfileData = new ProfileData()
     hasSaveData: boolean = false

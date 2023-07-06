@@ -12,9 +12,6 @@ import AchievementData from '../data/AchievementData'
 import BuildingData from '../data/BuildingData'
 import SettingsData from '../data/SettingsData'
 
-const { ccclass, property } = cc._decorator
-
-@ccclass
 export default class LocalStorage {
     public static SAVE_NAME = 'SINKDUNGEON_SAVE'
     public static SAVE_DUNGEON = 'SAVE_DUNGEON'

@@ -1,0 +1,31 @@
+{
+    "version": "0.3.0",
+    "scope": "tree",
+    "id": "7bac651a-75b8-4d44-9def-15c0e8cd3818",
+    "title": "A behavior tree",
+    "description": "",
+    "root": "3de926cb-8ead-4dce-9636-d03243a2dd7f",
+    "properties": {},
+    "nodes": {
+        "3de926cb-8ead-4dce-9636-d03243a2dd7f": {
+            "id": "3de926cb-8ead-4dce-9636-d03243a2dd7f",
+            "name": "Sequence",
+            "title": "Sequence",
+            "description": "",
+            "properties": {},
+            "display": {
+                "x": 108,
+                "y": 0
+            },
+            "children": []
+        }
+    },
+    "display": {
+        "camera_x": 960,
+        "camera_y": 468,
+        "camera_z": 1,
+        "x": 0,
+        "y": 0
+    },
+    "custom_nodes": []
+}
