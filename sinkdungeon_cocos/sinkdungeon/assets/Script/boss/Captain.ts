@@ -99,7 +99,7 @@ export default class Captain extends Boss {
         if (!this.dungeon || !this.exshooter) {
             return
         }
-        let hv = this.dungeon.Player.getCenterPosition().sub(this.node.position)
+        let hv = this.dungeon.player.getCenterPosition().sub(this.node.position)
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf()
             this.exshooter.setHv(cc.v2(hv))
@@ -120,7 +120,7 @@ export default class Captain extends Boss {
         if (!this.dungeon || !this.shooter) {
             return
         }
-        let hv = this.dungeon.Player.getCenterPosition().sub(this.entity.Transform.position)
+        let hv = this.dungeon.player.getCenterPosition().sub(this.entity.Transform.position)
         if (!hv.equals(cc.Vec3.ZERO)) {
             this.shooter.setHv(cc.v2(hv).normalize())
             this.shooter.dungeon = this.dungeon
@@ -169,7 +169,7 @@ export default class Captain extends Boss {
             this.JumpMove()
         }
         if (this.dungeon) {
-            let playerDis = this.getNearPlayerDistance(this.dungeon.Player.node)
+            let playerDis = this.getNearPlayerDistance(this.dungeon.player.node)
             if (playerDis < 96) {
                 this.entity.Move.linearVelocity = cc.Vec2.ZERO
             }
@@ -223,9 +223,9 @@ export default class Captain extends Boss {
         this.entity.Transform.position = Dungeon.fixOuterMap(this.entity.Transform.position)
         this.pos = Dungeon.getIndexInMap(this.entity.Transform.position)
         this.changeZIndex()
-        let newPos = this.dungeon.Player.pos.clone()
+        let newPos = this.dungeon.player.pos.clone()
         let pos = Dungeon.getPosInMap(newPos).sub(this.entity.Transform.position)
-        let playerDis = this.getNearPlayerDistance(this.dungeon.Player.node)
+        let playerDis = this.getNearPlayerDistance(this.dungeon.player.node)
         let isPlayJump = this.anim.getAnimationState('CaptainJump').isPlaying
         let isPlayFire = this.anim.getAnimationState('CaptainFire').isPlaying
         let h = pos.x
@@ -243,7 +243,7 @@ export default class Captain extends Boss {
                 this.anim.play('CaptainFire')
             }, 5)
         }
-        if (playerDis < 140 && !this.dungeon.Player.sc.isDied) {
+        if (playerDis < 140 && !this.dungeon.player.sc.isDied) {
             this.attackSkill.next(() => {
                 this.attackSkill.IsExcuting = true
                 this.anim.play('CaptainAttack')
@@ -267,7 +267,7 @@ export default class Captain extends Boss {
         if (!this.dungeon || !this.jumpSkill.IsExcuting) {
             return
         }
-        let newPos = this.dungeon.Player.pos.clone()
+        let newPos = this.dungeon.player.pos.clone()
         let pos = Dungeon.getPosInMap(newPos).sub(this.entity.Transform.position)
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.entity.Transform.position)

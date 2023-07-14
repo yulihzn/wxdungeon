@@ -75,6 +75,7 @@ export default class Loading extends cc.Component {
             this.loadingManager.loadNormalBuildings()
             this.loadingManager.loadDialogue()
             this.loadingManager.loadBehaviors()
+            this.loadingManager.loadPlayer()
             this.showLoadingLabel()
         })
         //显示过场
@@ -138,6 +139,7 @@ export default class Loading extends cc.Component {
             this.loadingManager.isAllSpriteFramesLoaded() &&
             this.loadingManager.isMonsterLoaded &&
             this.loadingManager.isNonplayerLoaded &&
+            this.loadingManager.isPlayerLoaded &&
             this.loadingManager.isBuffsLoaded &&
             this.loadingManager.isProfessionLoaded &&
             this.loadingManager.isBulletsLoaded &&

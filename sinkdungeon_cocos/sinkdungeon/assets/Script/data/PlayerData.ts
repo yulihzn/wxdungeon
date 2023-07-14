@@ -28,15 +28,20 @@ export default class PlayerData {
     static DEFAULT_ATTACK = 1
     static DEFAULT_BACK_ATTACK = 0
     static DEFAULT_DREAM = 5
+    id = ''
     name: string = ''
     pos: cc.Vec3 = cc.v3(5, 5)
     posZ: number = 0
+    roomPos: cc.Vec3 = cc.v3(0, 0)
     isWakeUp = false
 
     currentHealth: number = PlayerData.DEFAULT_HEALTH
     currentDream: number = PlayerData.DEFAULT_DREAM
     currentAmmo: number = 0
     metalId = ''
+    chapterIndex = 999
+    chapterLevel = 999
+    isEnemy = false
 
     private common: CommonData
     private equipmentTotalData: EquipmentData
@@ -149,6 +154,9 @@ export default class PlayerData {
         this.professionTalentData.valueCopy(data.professionTalentData)
         this.shadowList = data.shadowList
         this.needUpdateFinalCommon = true
+        this.roomPos = data.roomPos ? cc.v3(data.roomPos.x, data.roomPos.y) : cc.v3(0, 0)
+        this.chapterIndex = data.chapterIndex ? data.chapterIndex : 999
+        this.chapterLevel = data.chapterLevel ? data.chapterLevel : 999
     }
 
     public clone(): PlayerData {

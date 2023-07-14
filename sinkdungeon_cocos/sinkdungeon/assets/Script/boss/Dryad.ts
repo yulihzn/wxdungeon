@@ -139,7 +139,7 @@ export default class Dryad extends Boss {
             () => {
                 this.schedule(
                     () => {
-                        this.dungeon.buildingManager.addTwineGrass(this.dungeon.Player.pos.clone(), true)
+                        this.dungeon.buildingManager.addTwineGrass(this.dungeon.player.pos.clone(), true)
                     },
                     1,
                     2
@@ -182,7 +182,7 @@ export default class Dryad extends Boss {
                 this.anim.play('DryadStone')
                 this.scheduleOnce(() => {
                     let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position)
-                    let hv = this.dungeon.Player.getCenterPosition().sub(pos)
+                    let hv = this.dungeon.player.getCenterPosition().sub(pos)
                     if (!hv.equals(cc.Vec3.ZERO)) {
                         this.shooter01.setHv(cc.v2(hv).normalize())
                         this.fireShooter(this.shooter01, 'bullet022', 0, 0)

@@ -68,8 +68,10 @@ export default class Logic extends cc.Component {
     static dollNameList: string[] = []
     //怪物json
     static monsters: { [key: string]: NonPlayerData } = null
-    //npc json
+    //非人形npc json
     static nonplayers: { [key: string]: NonPlayerData } = null
+    //人形npc json
+    static players: { [key: string]: PlayerData } = null
     //boss json
     static bosses: { [key: string]: NonPlayerData } = null
     //图片资源
@@ -142,6 +144,7 @@ export default class Logic extends cc.Component {
     static sortIndexs: { [key: string]: number } = {} //0时间,1类别,2品质,3价格
     static settings: SettingsData = new SettingsData()
     static nonPlayerList: NonPlayerData[] = []
+    static aiPlayerList: PlayerData[] = []
     static playerMetals: { [key: string]: MetalTalentData } = {} //玩家翠金天赋点
     static metalId = ''
 
@@ -192,6 +195,7 @@ export default class Logic extends cc.Component {
             Logic.profileManager.data.playerInventoryList = Logic.inventoryManager.inventoryList
         }
         Logic.profileManager.data.nonPlayerList = Logic.nonPlayerList
+        Logic.profileManager.data.aiPlayerList = Logic.aiPlayerList
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon
         Logic.profileManager.data.cycle = Logic.cycle
         Logic.profileManager.data.level = Logic.level
@@ -249,6 +253,12 @@ export default class Logic extends cc.Component {
             let data = new NonPlayerData()
             data.valueCopy(Logic.profileManager.data.nonPlayerList[i])
             Logic.nonPlayerList.push(data)
+        }
+        Logic.aiPlayerList = []
+        for (let i = 0; i < Logic.profileManager.data.aiPlayerList.length; i++) {
+            let data = new PlayerData()
+            data.valueCopy(Logic.profileManager.data.aiPlayerList[i])
+            Logic.aiPlayerList.push(data)
         }
         //加载背包和装备
         Logic.resetInventoryAndOtherData()
@@ -432,6 +442,9 @@ export default class Logic extends cc.Component {
             let roomY = Math.floor(ty / levelData.roomHeight)
             Logic.playerData.pos = cc.v3(exitData.toPos.x % levelData.roomWidth, ty % levelData.roomHeight)
             Logic.playerData.posZ = exitData.toPosZ
+            Logic.playerData.roomPos = cc.v3(roomX, roomY)
+            Logic.playerData.chapterIndex = Logic.chapterIndex
+            Logic.playerData.chapterLevel = Logic.level
             Logic.mapManager.reset()
             Logic.mapManager.changePos(cc.v3(roomX, roomY))
             Logic.changeDungeonSize()

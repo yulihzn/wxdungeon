@@ -1,3 +1,4 @@
+import BaseController from './BaseController'
 import Dungeon from './Dungeon'
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -10,19 +11,10 @@ import Dungeon from './Dungeon'
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const { ccclass, property } = cc._decorator
-import Player from './Player'
 @ccclass
-export default class AiController extends cc.Component {
-    player: Player
-    dungeon: Dungeon
-    // LIFE-CYCLE CALLBACKS:
-
-    onLoad() {}
-    private get CanControl() {
-        return this.dungeon && this.player && this.player.sc.isShow
-    }
+export default class AiController extends BaseController {
     ctrlPlayerMove(dir: number, pos: cc.Vec3, dt: number, dungeon: Dungeon) {
-        if (this.CanControl) this.player.ctrlMove(dir, pos, dt, this.dungeon)
+        if (this.CanControl) this.player.ctrlMove(dir, pos, dt, dungeon)
     }
 
     ctrlPlayerTrigger(isLongPress: boolean) {

@@ -29,6 +29,7 @@ import EffectItemManager from '../manager/EffectItemManager'
 import CameraControl from './CameraControl'
 import PlayerController from './PlayerController'
 import FromData from '../data/FromData'
+import AiPlayerManager from '../manager/AiPlayerManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -71,6 +72,7 @@ export default class Dungeon extends cc.Component {
 
     monsterManager: MonsterManager = null //怪物管理
     nonPlayerManager: NonPlayerManager = null //npc管理
+    aiPlayerManager: AiPlayerManager = null //player管理
     equipmentManager: EquipmentManager = null //装备管理
     dungeonStyleManager: DungeonStyleManager = null //装饰管理
     itemManager: ItemManager = null //金币和物品管理
@@ -84,7 +86,7 @@ export default class Dungeon extends cc.Component {
     isComplete = false
     currentPos = cc.v3(0, 0)
     isDisappeared = false
-    private playerController: PlayerController
+    player: Player
 
     rootSystem: GameWorldSystem = null
 
@@ -167,6 +169,7 @@ export default class Dungeon extends cc.Component {
         })
         this.monsterManager = this.getComponent(MonsterManager)
         this.nonPlayerManager = this.getComponent(NonPlayerManager)
+        this.aiPlayerManager = this.getComponent(AiPlayerManager)
         this.equipmentManager = this.getComponent(EquipmentManager)
         this.itemManager = this.getComponent(ItemManager)
         this.dungeonStyleManager = this.getComponent(DungeonStyleManager)
@@ -182,6 +185,7 @@ export default class Dungeon extends cc.Component {
         AudioPlayer.play(AudioPlayer.PLAY_BG, true)
         this.monsterManager.clear()
         this.nonPlayerManager.clear()
+        this.aiPlayerManager.clear()
         this.equipmentManager.clear()
         this.itemManager.clear()
         this.dungeonStyleManager.clear()
@@ -261,9 +265,13 @@ export default class Dungeon extends cc.Component {
                         this.monsterManager.addRandomMonsters(this, Logic.mapManager.getCurrentRoom().reborn)
                     }
                     //加载跟随npc
-                    let list = new Array().concat(Logic.nonPlayerList)
+                    let nonList = new Array().concat(Logic.nonPlayerList)
                     this.scheduleOnce(() => {
-                        this.nonPlayerManager.addNonPlayerListFromSave(this, list, this.Player.node.position, this.Player.entity.Transform.z)
+                        this.nonPlayerManager.addNonPlayerListFromSave(this, nonList, this.player.node.position, this.player.entity.Transform.z)
+                    }, 1)
+                    let aiList = new Array().concat(Logic.aiPlayerList)
+                    this.scheduleOnce(() => {
+                        this.aiPlayerManager.addAiPlayerListFromSave(this, aiList)
                     }, 1)
                     //设置门开关
                     this.setDoors(true, true)
@@ -292,22 +300,17 @@ export default class Dungeon extends cc.Component {
         }
 
         //初始化玩家和控制器
-        this.playerController = this.addComponent(PlayerController)
-        this.playerController.dungeon = this
-        this.playerController.player = cc.instantiate(this.playerPrefab).getComponent(Player)
-        this.Player.statusIconList = this.statusIconList
-        this.Player.node.parent = this.node
-        this.Player.dungeon = this
-        this.changeCameraTarget(this.Player)
+        this.player = cc.instantiate(this.playerPrefab).getComponent(Player)
+        let controller = this.player.addComponent(PlayerController)
+        this.player.statusIconList = this.statusIconList
+        this.player.node.parent = this.node
+        this.player.controller = controller
+        this.player.dungeon = this
+        this.changeCameraTarget(this.player)
         this.fog.setPosition(this.cameraControl.Target.node.position.clone())
-        EventHelper.emit(EventHelper.CAMERA_LOOK, { pos: this.Player.getCenterPosition(), isDirect: true })
+        EventHelper.emit(EventHelper.CAMERA_LOOK, { pos: this.player.getCenterPosition(), isDirect: true })
     }
-    get Player(): Player {
-        return this.playerController?.player
-    }
-    get PlayerController() {
-        return this.playerController
-    }
+
     public changeCameraTarget(actor: Actor, offset?: cc.Vec3) {
         this.cameraControl?.changeCameraTarget(actor, offset)
     }
@@ -470,7 +473,7 @@ export default class Dungeon extends cc.Component {
     addItem(pos: cc.Vec3, resName: string, count?: number, shopTable?: ShopTable) {
         if (this.itemManager) {
             if (!pos) {
-                pos = this.Player.node.position.clone()
+                pos = this.player.node.position.clone()
             }
             this.itemManager.addItem(pos, resName, count, shopTable)
         }
@@ -545,7 +548,7 @@ export default class Dungeon extends cc.Component {
     addEquipment(equipType: string, pos: cc.Vec3, equipData?: EquipmentData, chestQuality?: number, shopTable?: ShopTable) {
         if (this.equipmentManager) {
             if (!pos) {
-                pos = this.Player.node.position.clone()
+                pos = this.player.node.position.clone()
             }
             let data = this.equipmentManager.getEquipment(equipType, pos, this.node, equipData, chestQuality, shopTable).data
             if (shopTable) {
@@ -717,9 +720,9 @@ export default class Dungeon extends cc.Component {
         if (this.isClear) {
             if (this.monsterManager.isRoomInitWithEnemy && Logic.mapManager.getCurrentRoomType().isNotEqual(RoomType.TEST_ROOM)) {
                 EventHelper.emit(EventHelper.HUD_COMPLETE_SHOW, { map: this.buildingManager.getReachDir() })
-                if (!this.isComplete && this.Player && this.Player.data && this.Player.data.StatusTotalData.clearHealth > 0) {
+                if (!this.isComplete && this.player && this.player.data && this.player.data.StatusTotalData.clearHealth > 0) {
                     this.isComplete = true
-                    this.Player.takeDamage(new DamageData(-this.Player.data.StatusTotalData.clearHealth), FromData.getClone(this.Player.actorName(), '', this.Player.node.position))
+                    this.player.takeDamage(new DamageData(-this.player.data.StatusTotalData.clearHealth), FromData.getClone(this.player.actorName(), '', this.player.node.position))
                 }
             }
             if (this.buildingManager.savePointS) {
@@ -735,7 +738,7 @@ export default class Dungeon extends cc.Component {
         this.buildingManager.setDoors(isClear, immediately)
     }
     checkPlayerPos(dt: number) {
-        if (!this.tilesmap || !this.Player || !this.node) {
+        if (!this.tilesmap || !this.player || !this.node) {
             return
         }
         let p = this.cameraControl.Target.node.position.add(this.cameraControl.TargetOffset)
@@ -743,19 +746,19 @@ export default class Dungeon extends cc.Component {
             p.y += this.cameraControl.Target.entity.Transform.z
         }
         this.fog.setPosition(this.lerp(this.fog.position, p, dt * 3))
-        let pos = Dungeon.getIndexInMap(this.Player.node.position)
+        let pos = Dungeon.getIndexInMap(this.player.node.position)
         EventHelper.emit(EventHelper.CHANGE_MINIMAP, { x: pos.x, y: pos.y })
         if (!this.tilesmap[pos.x] || !this.tilesmap[pos.x][pos.y]) {
             return
         }
         let tile = this.tilesmap[pos.x][pos.y]
         if (tile && tile.isBroken) {
-            this.Player.fall()
+            this.player.fall()
         }
         if (tile && tile.isAutoShow) {
             this.breakTile(pos)
         }
-        this.Player.isInWaterTile = this.isActorPosInWater(this.Player)
+        this.player.isInWaterTile = this.isActorPosInWater(this.player)
     }
     isActorPosInWater(actor: Actor) {
         if (this.waterIndexMap.length < 1) {
@@ -811,10 +814,10 @@ export default class Dungeon extends cc.Component {
                 this.checkPlayerPos(dt)
                 this.monsterManager.updateLogic(dt)
                 this.nonPlayerManager.updateLogic(dt)
-                this.buildingManager.updateLogic(dt, this.Player)
-                this.equipmentManager.updateLogic(dt, this.Player)
-                this.itemManager.updateLogic(dt, this.Player)
-                this.weatherManager.updateLogic(dt, this.Player)
+                this.buildingManager.updateLogic(dt, this.player)
+                this.equipmentManager.updateLogic(dt, this.player)
+                this.itemManager.updateLogic(dt, this.player)
+                this.weatherManager.updateLogic(dt, this.player)
             }
             if (this.isCheckTimeDelay(dt)) {
                 this.checkRoomClear()

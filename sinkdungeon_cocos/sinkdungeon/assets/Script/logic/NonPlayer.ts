@@ -987,8 +987,8 @@ export default class NonPlayer extends PlayActor {
             if (this.killPlayerCount > 0) {
                 count = 5
             }
-            if (this.dungeon.Player.data.StatusTotalData.exOilGold > 0) {
-                count += this.dungeon.Player.data.StatusTotalData.exOilGold
+            if (this.dungeon.player.data.StatusTotalData.exOilGold > 0) {
+                count += this.dungeon.player.data.StatusTotalData.exOilGold
             }
             EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.node.position, count: count })
             if (rand < equipPercent && !this.isSummon) {
@@ -1222,8 +1222,8 @@ export default class NonPlayer extends PlayActor {
 
         //npc移动在没有敌对目标的时候转变目标为玩家
         if (!isTracking && this.data.isFollow > 0 && this.data.isEnemy < 1) {
-            target = this.dungeon.Player
-            targetDis = ActorUtils.getTargetDistance(this, this.dungeon.Player)
+            target = this.dungeon.player
+            targetDis = ActorUtils.getTargetDistance(this, this.dungeon.player)
             isTracking = true
         }
 

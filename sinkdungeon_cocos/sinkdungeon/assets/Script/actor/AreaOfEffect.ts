@@ -147,12 +147,12 @@ export default class AreaOfEffect extends BaseColliderComponent {
         } else if (tag == CCollider.TAG.BUILDING) {
             let interactBuilding = attackTarget.getComponent(InteractBuilding)
             if (this.data.canBreakBuilding && interactBuilding) {
-                interactBuilding.takeDamage(damage)
+                interactBuilding.takeDamage(damage, this.data.from)
                 return
             }
             let hitBuilding = attackTarget.getComponent(NormalBuilding)
             if (this.data.canBreakBuilding && hitBuilding) {
-                hitBuilding.takeDamage(damage)
+                hitBuilding.takeDamage(damage, this.data.from)
             }
         }
     }

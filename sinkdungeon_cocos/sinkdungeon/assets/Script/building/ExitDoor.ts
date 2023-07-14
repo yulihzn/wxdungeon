@@ -1,5 +1,4 @@
 import Player from '../logic/Player'
-import { EventHelper } from '../logic/EventHelper'
 import Logic from '../logic/Logic'
 import Building from './Building'
 import AudioPlayer from '../utils/AudioPlayer'
@@ -164,7 +163,7 @@ export default class ExitDoor extends Building {
         } else if (self.sensor && other.tag == CCollider.TAG.VEHICLE) {
             let v = other.node.getComponent(Vehicle)
             if (v.dungeon && v.isPlayerIn) {
-                this.loadingNextLevel(v.dungeon.Player)
+                this.loadingNextLevel(v.dungeon.player)
             }
         }
     }

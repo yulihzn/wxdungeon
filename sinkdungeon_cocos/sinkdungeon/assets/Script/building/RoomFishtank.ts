@@ -53,7 +53,7 @@ export default class RoomFishtank extends cc.Component {
         } else {
             this.showAudio = false
             if (this.dungeon) {
-                this.dungeon.changeCameraTarget(this.dungeon.Player)
+                this.dungeon.changeCameraTarget(this.dungeon.player)
             }
         }
         EventHelper.emit(zoomIn ? EventHelper.HUD_CAMERA_ZOOM_IN : EventHelper.HUD_CAMERA_ZOOM_OUT)

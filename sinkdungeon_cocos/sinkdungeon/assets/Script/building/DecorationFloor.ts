@@ -44,8 +44,8 @@ export default class DecorationFloor extends Building {
         this.originPos = this.node.position.clone()
     }
     update(dt: number) {
-        if (this.dungeon && this.dungeon.Player && this.parallexLevel > 0) {
-            let pos = this.dungeon.Player.node.position.sub(this.node.position)
+        if (this.dungeon && this.dungeon.player && this.parallexLevel > 0) {
+            let pos = this.dungeon.player.node.position.sub(this.node.position)
             if (pos.x > this.RANGE) {
                 pos.x = this.RANGE
             }

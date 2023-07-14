@@ -36,7 +36,7 @@ export default class RoomStool extends cc.Component {
         this.mosaic.opacity = 255
         this.unscheduleAllCallbacks()
         if (this.dungeon) {
-            this.dungeon.Player.toilet()
+            this.dungeon.player.toilet()
         }
         this.scheduleOnce(() => {
             this.mosaic.opacity = 0

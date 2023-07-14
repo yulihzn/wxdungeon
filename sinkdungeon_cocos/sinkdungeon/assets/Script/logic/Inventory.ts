@@ -388,8 +388,8 @@ export default class Inventory extends cc.Component {
                 break
         }
         //更新玩家装备贴图和状态
-        if (this.dungeon && this.dungeon.Player) {
-            this.dungeon.Player.changeEquipment(equipmetType, equip, spriteFrame)
+        if (this.dungeon && this.dungeon.player) {
+            this.dungeon.player.changeEquipment(equipmetType, equip, spriteFrame)
             // if (equip.statusInterval > 0 && equip.statusName.length > 0) {
             //     this.dungeon.player.addStatus(equip.statusName, FromData.getClone(equip.nameCn, equip.img));
             // }
@@ -483,12 +483,12 @@ export default class Inventory extends cc.Component {
             let totalData = this.inventoryManager.TotalEquipData
             for (let d of totalData.exTriggers) {
                 if (this.isTimeDelay(dt, d.uuid, d.autoInterval)) {
-                    if (this.dungeon && this.dungeon.Player) {
-                        this.dungeon.Player.exTriggerDo(
+                    if (this.dungeon && this.dungeon.player) {
+                        this.dungeon.player.exTriggerDo(
                             d,
                             TriggerData.GROUP_AUTO,
                             TriggerData.TYPE_AUTO,
-                            FromData.getClone(totalData.nameCn, totalData.img, this.dungeon.Player.node.position),
+                            FromData.getClone(totalData.nameCn, totalData.img, this.dungeon.player.node.position),
                             null
                         )
                     }
@@ -519,12 +519,12 @@ export default class Inventory extends cc.Component {
                 let data = this.inventoryManager.itemList[i]
                 for (let d of data.exTriggers) {
                     if (this.isTimeDelay(dt, `itemIndex${i}`, d.autoInterval)) {
-                        if (this.dungeon && this.dungeon.Player) {
-                            this.dungeon.Player.exTriggerDo(
+                        if (this.dungeon && this.dungeon.player) {
+                            this.dungeon.player.exTriggerDo(
                                 d,
                                 TriggerData.GROUP_AUTO,
                                 TriggerData.TYPE_AUTO,
-                                FromData.getClone(data.nameCn, data.resName, this.dungeon.Player.node.position),
+                                FromData.getClone(data.nameCn, data.resName, this.dungeon.player.node.position),
                                 null
                             )
                         }
@@ -547,7 +547,7 @@ export default class Inventory extends cc.Component {
         if (item.resName == Item.EMPTY) {
             return
         }
-        if (!this.dungeon.Player.canEatOrDrink(item)) {
+        if (!this.dungeon.player.canEatOrDrink(item)) {
             return
         }
         let currentTime = Date.now()

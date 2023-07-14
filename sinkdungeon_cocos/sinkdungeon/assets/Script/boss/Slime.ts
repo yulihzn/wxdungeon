@@ -126,7 +126,7 @@ export default class Slime extends Boss {
         venomPrefab.parent = parentNode
         venomPrefab.position = pos
         venomPrefab.scale = this.slimeType == 0 ? 1.5 : 1
-        venomPrefab.getComponent(SlimeVenom).target = this.dungeon.Player
+        venomPrefab.getComponent(SlimeVenom).target = this.dungeon.player
         venomPrefab.zIndex = IndexZ.getActorZIndex(this.entity.Transform.position)
         venomPrefab.opacity = 255
         venomPrefab.active = true
@@ -193,7 +193,7 @@ export default class Slime extends Boss {
             this.entity.Move.linearVelocity = this.currentlinearVelocitySpeed.clone()
         }
         if (this.dungeon) {
-            let playerDis = this.getNearPlayerDistance(this.dungeon.Player.node)
+            let playerDis = this.getNearPlayerDistance(this.dungeon.player.node)
             if (playerDis < 64 && !this.isHurt) {
                 this.entity.Move.linearVelocity = cc.v2(0, 0)
             }
@@ -294,7 +294,7 @@ export default class Slime extends Boss {
         let newPos = cc.v3(0, 0)
         newPos.x += Logic.getRandomNum(0, 2000) - 1000
         newPos.y += Logic.getRandomNum(0, 2000) - 1000
-        let playerDis = this.getNearPlayerDistance(this.dungeon.Player.node)
+        let playerDis = this.getNearPlayerDistance(this.dungeon.player.node)
         this.entity.Transform.position = Dungeon.fixOuterMap(this.entity.Transform.position)
         this.pos = Dungeon.getIndexInMap(this.entity.Transform.position)
         this.changeZIndex()
@@ -302,8 +302,8 @@ export default class Slime extends Boss {
 
         //近战
         let attackRange = 64 + 50 * this.scaleSize
-        if (playerDis < attackRange && !this.dungeon.Player.sc.isDied && !this.isDashing && this.sc.isShow && this.scaleSize >= 1) {
-            pos = this.dungeon.Player.getCenterPosition().sub(this.entity.Transform.position)
+        if (playerDis < attackRange && !this.dungeon.player.sc.isDied && !this.isDashing && this.sc.isShow && this.scaleSize >= 1) {
+            pos = this.dungeon.player.getCenterPosition().sub(this.entity.Transform.position)
             if (!pos.equals(cc.Vec3.ZERO)) {
                 pos = pos.normalizeSelf()
             }
@@ -319,10 +319,10 @@ export default class Slime extends Boss {
         }
         //冲刺
         let dashRange = 128 + 35 * this.scaleSize
-        if (playerDis > dashRange && !this.dungeon.Player.sc.isDied && !this.isDashing && this.sc.isShow && Logic.getHalfChance()) {
+        if (playerDis > dashRange && !this.dungeon.player.sc.isDied && !this.isDashing && this.sc.isShow && Logic.getHalfChance()) {
             AudioPlayer.play(AudioPlayer.MELEE)
             if (Logic.getHalfChance()) {
-                pos = this.dungeon.Player.getCenterPosition().sub(this.entity.Transform.position)
+                pos = this.dungeon.player.getCenterPosition().sub(this.entity.Transform.position)
             }
             this.move(pos, speed * 1.5)
             this.isDashing = true

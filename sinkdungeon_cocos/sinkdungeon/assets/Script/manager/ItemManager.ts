@@ -82,7 +82,7 @@ export default class ItemManager extends BaseManager {
         let player
         let dungeon = parentNode.getComponent(Dungeon)
         if (dungeon) {
-            player = dungeon.Player
+            player = dungeon.player
         }
         let itemPrefab: cc.Node = null
         if (pool.size() > 0) {

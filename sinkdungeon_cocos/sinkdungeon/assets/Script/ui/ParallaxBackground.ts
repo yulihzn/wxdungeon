@@ -29,7 +29,7 @@ export default class ParallexBackground extends cc.Component {
     }
     getPlayer(): Player {
         if (!this.player) {
-            this.player = this.node.parent.getComponent(Dungeon).Player
+            this.player = this.node.parent.getComponent(Dungeon).player
         }
         return this.player
     }

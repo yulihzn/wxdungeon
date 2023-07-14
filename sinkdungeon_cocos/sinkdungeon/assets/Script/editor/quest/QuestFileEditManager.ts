@@ -170,6 +170,7 @@ export default class QuestFileEditManager extends cc.Component {
             this.loadingManager.isAllSpriteFramesLoaded() &&
             this.loadingManager.isMonsterLoaded &&
             this.loadingManager.isNonplayerLoaded &&
+            this.loadingManager.isPlayerLoaded &&
             this.loadingManager.isItemsLoaded &&
             this.loadingManager.isFurnituresLoaded &&
             this.loadingManager.isSuitsLoaded

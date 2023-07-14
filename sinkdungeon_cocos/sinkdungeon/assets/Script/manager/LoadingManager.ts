@@ -34,6 +34,7 @@ export default class LoadingManager {
     public isEquipmentLoaded = false
     public isMonsterLoaded = false
     public isNonplayerLoaded = false
+    public isPlayerLoaded = false
     public isBossLoaded = false
     public isBuffsLoaded = false
     public isSuitsLoaded = false
@@ -64,6 +65,7 @@ export default class LoadingManager {
         this.isMonsterLoaded = false
         this.isBuffsLoaded = false
         this.isNonplayerLoaded = false
+        this.isPlayerLoaded = false
         this.isBuildingLoaded = false
         this.isFurnituresLoaded = false
         this.isSoundLoaded = false
@@ -79,6 +81,7 @@ export default class LoadingManager {
         this.isBulletsLoaded = false
         this.isMonsterLoaded = false
         this.isNonplayerLoaded = false
+        this.isPlayerLoaded = false
         this.isItemsLoaded = false
         this.isSkillsLoaded = false
         this.isBuildingLoaded = false
@@ -398,7 +401,22 @@ export default class LoadingManager {
             } else {
                 Logic.nonplayers = resource.json
                 this.isNonplayerLoaded = true
-                cc.log('加载npc完成')
+                cc.log('加载非人形npc完成')
+            }
+        })
+    }
+    loadPlayer() {
+        if (Logic.players) {
+            this.isPlayerLoaded = true
+            return
+        }
+        cc.resources.load('Data/players', (err: Error, resource: cc.JsonAsset) => {
+            if (err) {
+                cc.error(err)
+            } else {
+                Logic.nonplayers = resource.json
+                this.isPlayerLoaded = true
+                cc.log('加载人形npc完成')
             }
         })
     }

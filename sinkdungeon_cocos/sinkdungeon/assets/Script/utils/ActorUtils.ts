@@ -136,7 +136,7 @@ export default class ActorUtils {
         let targetList: Actor[] = []
         for (let targetType of targetTypes) {
             if (targetType == Actor.TARGET_PLAYER) {
-                targetList.push(dungeon.Player)
+                targetList.push(dungeon.player)
             } else if (targetType == Actor.TARGET_MONSTER) {
                 targetList = targetList.concat(dungeon.monsterManager.monsterList)
             } else if (targetType == Actor.TARGET_BOSS) {

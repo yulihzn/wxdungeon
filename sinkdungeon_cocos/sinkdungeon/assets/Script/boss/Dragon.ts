@@ -116,7 +116,7 @@ export default class Dragon extends Boss {
             }, 15)
             this.schedule(
                 () => {
-                    this.dungeon.addFallStone(this.dungeon.Player.node.position, true, true)
+                    this.dungeon.addFallStone(this.dungeon.player.node.position, true, true)
                     this.dungeon.addFallStone(
                         Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))),
                         true,

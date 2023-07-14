@@ -65,6 +65,7 @@ import Dialogue from '../ui/Dialogue'
 import EquipItemTalent from '../talent/EquipItemTalent'
 import OilGoldMetal from '../talent/OilGoldMetal'
 import ExitData from '../data/ExitData'
+import BaseController from './BaseController'
 @ccclass
 export default class Player extends PlayActor {
     @property(cc.Sprite)
@@ -137,6 +138,7 @@ export default class Player extends PlayActor {
     statusPos: cc.Vec3 = cc.v3(0, 0)
     dashCooling = false
     stateMachine: StateMachine<Player, State<Player>>
+    controller: BaseController
     // LIFE-CYCLE CALLBACKS:
     get Root(): cc.Node {
         return this.root

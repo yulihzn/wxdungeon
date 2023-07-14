@@ -1,3 +1,4 @@
+import BaseController from './BaseController'
 import Dungeon from './Dungeon'
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -11,16 +12,11 @@ import Dungeon from './Dungeon'
 
 const { ccclass, property } = cc._decorator
 import { EventHelper } from './EventHelper'
-import Player from './Player'
 @ccclass
-export default class PlayerController extends cc.Component {
-    player: Player
-    dungeon: Dungeon
-    // LIFE-CYCLE CALLBACKS:
-
+export default class PlayerController extends BaseController {
     onLoad() {
         EventHelper.on(EventHelper.PLAYER_MOVE, detail => {
-            if (this.CanControl) this.player.ctrlMove(detail.dir, detail.pos, detail.dt, this.dungeon)
+            if (this.CanControl) this.player.ctrlMove(detail.dir, detail.pos, detail.dt, this.player.dungeon)
         })
         EventHelper.on(EventHelper.PLAYER_TRIGGER, detail => {
             if (this.CanControl) this.player.ctrlTriggerThings(detail && detail.isLongPress)
@@ -52,8 +48,5 @@ export default class PlayerController extends cc.Component {
         EventHelper.on(EventHelper.PLAYER_JUMP_CANCEL, detail => {
             if (this.CanControl) this.player.ctrlJumpCancel()
         })
-    }
-    private get CanControl() {
-        return this.dungeon && this.player && this.player.sc.isShow
     }
 }

@@ -106,7 +106,7 @@ export default class IceDemon extends Boss {
         this.pos = Dungeon.getIndexInMap(this.entity.Transform.position)
         this.changeZIndex()
         let pos = this.getMovePos()
-        let playerDis = this.getNearPlayerDistance(this.dungeon.Player.node)
+        let playerDis = this.getNearPlayerDistance(this.dungeon.player.node)
         let isHalf = this.data.currentHealth < this.data.Common.MaxHealth / 2
         if (playerDis < 100) {
             this.entity.Move.linearVelocity = cc.Vec2.ZERO
@@ -136,7 +136,7 @@ export default class IceDemon extends Boss {
         }
     }
     getMovePos(): cc.Vec3 {
-        let newPos = this.dungeon.Player.pos.clone()
+        let newPos = this.dungeon.player.pos.clone()
         // if (this.dungeon.player.pos.x > this.pos.x) {
         //     newPos = newPos.addSelf(cc.v3(1, -1));
         // } else {

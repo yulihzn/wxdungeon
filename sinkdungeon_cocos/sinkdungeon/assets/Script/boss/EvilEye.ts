@@ -135,7 +135,7 @@ export default class EvilEye extends Boss {
         this.pos = Dungeon.getIndexInMap(this.entity.Transform.position)
         this.changeZIndex()
         let pos = this.getMovePos()
-        let playerDis = this.getNearPlayerDistance(this.dungeon.Player.node)
+        let playerDis = this.getNearPlayerDistance(this.dungeon.player.node)
         let isHalf = this.data.currentHealth < this.data.Common.MaxHealth / 2
         if (playerDis < 100) {
             this.entity.Move.linearVelocity = cc.Vec2.ZERO
@@ -154,7 +154,7 @@ export default class EvilEye extends Boss {
         }
     }
     getMovePos(): cc.Vec3 {
-        let newPos = this.dungeon.Player.pos.clone()
+        let newPos = this.dungeon.player.pos.clone()
         // if (this.dungeon.player.pos.x > this.pos.x) {
         //     newPos = newPos.addSelf(cc.v3(1, 1));
         // } else {
@@ -193,7 +193,7 @@ export default class EvilEye extends Boss {
             p = this.node.convertToNodeSpaceAR(p)
             this.viceShooters[i].node.setPosition(p)
             let pos = this.entity.Transform.position.clone().add(p)
-            let hv = this.dungeon.Player.getCenterPosition().sub(pos)
+            let hv = this.dungeon.player.getCenterPosition().sub(pos)
             if (!hv.equals(cc.Vec3.ZERO)) {
                 this.viceShooters[i].setHv(cc.v2(hv).normalize())
                 this.fireShooter(this.viceShooters[i], 'bullet101', 0, 0, 0, cc.v3(0, 0))
@@ -210,7 +210,7 @@ export default class EvilEye extends Boss {
             p = this.node.convertToNodeSpaceAR(p)
             this.shooter.node.setPosition(p)
             let pos = this.entity.Transform.position.clone().add(p)
-            let hv = this.dungeon.Player.getCenterPosition().sub(pos)
+            let hv = this.dungeon.player.getCenterPosition().sub(pos)
             if (!hv.equals(cc.Vec3.ZERO)) {
                 this.shooter.setHv(cc.v2(hv).normalize())
                 this.shooter.data.isLineAim = 1
