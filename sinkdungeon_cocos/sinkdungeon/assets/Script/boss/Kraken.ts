@@ -52,7 +52,7 @@ export default class Kraken extends Boss {
         this.sc.isDied = false
         this.sc.isShow = false
         this.shooter = this.getComponentInChildren(Shooter)
-        this.shooter.from.valueCopy(FromData.getClone(this.actorName(), 'boss001'))
+        this.shooter.from.valueCopy(FromData.getClone(this.actorName(), 'boss001', this.node.position))
         this.anim = this.getComponent(cc.Animation)
     }
     //anim
@@ -109,7 +109,7 @@ export default class Kraken extends Boss {
         let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2]
         AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)])
         this.nearHandSkill.next(() => {
-            if (this.dungeon.player.pos.x > Dungeon.WIDTH_SIZE / 2) {
+            if (this.dungeon.Player.pos.x > Dungeon.WIDTH_SIZE / 2) {
                 if (this.hand03) {
                     this.hand03.swing()
                 }
@@ -198,15 +198,15 @@ export default class Kraken extends Boss {
         }
 
         if (this.hand01) {
-            this.hand01.node.parent.y = Logic.lerp(this.hand01.node.y, this.dungeon.player.node.y, 0.1)
+            this.hand01.node.parent.y = Logic.lerp(this.hand01.node.y, this.dungeon.Player.node.y, 0.1)
         }
         if (this.hand02) {
-            this.hand02.node.parent.y = Logic.lerp(this.hand02.node.y, this.dungeon.player.node.y, 0.1)
+            this.hand02.node.parent.y = Logic.lerp(this.hand02.node.y, this.dungeon.Player.node.y, 0.1)
         }
         if (this.shooter) {
             this.remoteSkill.next(() => {
                 let pos = this.entity.Transform.position.clone().add(this.shooter.node.position)
-                let hv = this.dungeon.player.getCenterPosition().sub(pos)
+                let hv = this.dungeon.Player.getCenterPosition().sub(pos)
                 if (!hv.equals(cc.Vec3.ZERO)) {
                     this.shooter.setHv(cc.v2(hv).normalize())
                     this.shooter.dungeon = this.dungeon
@@ -218,7 +218,7 @@ export default class Kraken extends Boss {
                     this.shooter.fireBullet(-30)
                 }
                 if (this.data.currentHealth < this.data.Common.MaxHealth / 2) {
-                    this.dungeon.addFallStone(this.dungeon.player.node.position, true)
+                    this.dungeon.addFallStone(this.dungeon.Player.node.position, true)
                     this.shooter.fireBullet(30)
                     this.shooter.fireBullet(-30)
                     this.shooter.fireBullet(15)
@@ -227,7 +227,7 @@ export default class Kraken extends Boss {
             }, 3)
         }
         this.handSkill.next(() => {
-            if (this.dungeon.player.pos.x > Dungeon.WIDTH_SIZE / 2) {
+            if (this.dungeon.Player.pos.x > Dungeon.WIDTH_SIZE / 2) {
                 if (this.hand01) {
                     this.hand01.swing()
                 }

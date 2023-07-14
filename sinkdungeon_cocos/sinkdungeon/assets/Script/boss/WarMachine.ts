@@ -57,7 +57,7 @@ export default class WarMachine extends Boss {
         this.shooter04 = this.node.getChildByName('Shooter04').getComponent(Shooter)
         this.shooter05 = this.node.getChildByName('Shooter05').getComponent(Shooter)
         this.statusManager = this.node.getChildByName('StatusManager').getComponent(StatusManager)
-        let from = FromData.getClone(this.actorName(), 'bossmachinehead')
+        let from = FromData.getClone(this.actorName(), 'bossmachinehead', this.node.position)
         this.shooter01.from.valueCopy(from)
         this.shooter02.from.valueCopy(from)
         this.shooter03.from.valueCopy(from)
@@ -111,7 +111,7 @@ export default class WarMachine extends Boss {
                 this.fireMainGun()
             }
         }
-        let playerDis = this.getNearPlayerDistance(this.dungeon.player.node)
+        let playerDis = this.getNearPlayerDistance(this.dungeon.Player.node)
         if (playerDis < 300) {
             this.fireMissile(isHalf)
         } else if (Logic.getChance(20)) {
@@ -134,7 +134,7 @@ export default class WarMachine extends Boss {
         }
         this.shooter01.setHv(cc.v2(0, -1))
         let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position)
-        let hv = this.dungeon.player.getCenterPosition().sub(pos)
+        let hv = this.dungeon.Player.getCenterPosition().sub(pos)
         if (!hv.equals(cc.Vec3.ZERO)) {
             this.shooter01.setHv(cc.v2(hv).normalize())
         }
@@ -149,7 +149,7 @@ export default class WarMachine extends Boss {
         this.shooter04.setHv(cc.v2(0, -1))
         this.shooter05.setHv(cc.v2(0, -1))
         let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position)
-        let hv = this.dungeon.player.getCenterPosition().sub(pos)
+        let hv = this.dungeon.Player.getCenterPosition().sub(pos)
         if (!hv.equals(cc.Vec3.ZERO)) {
             this.shooter01.setHv(cc.v2(hv).normalize())
         }
@@ -168,7 +168,7 @@ export default class WarMachine extends Boss {
     MainGunShootFinish() {
         this.shooter01.setHv(cc.v2(0, -1))
         let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position)
-        let hv = this.dungeon.player.getCenterPosition().sub(pos)
+        let hv = this.dungeon.Player.getCenterPosition().sub(pos)
         if (!hv.equals(cc.Vec3.ZERO)) {
             this.shooter01.setHv(cc.v2(hv).normalize())
             this.fireShooter(this.shooter01, 'bullet016', 0, 0, 0, cc.v3(48, 0))
@@ -283,7 +283,7 @@ export default class WarMachine extends Boss {
             if (target && !this.sc.isDied) {
                 let d = new DamageData()
                 d.physicalDamage = 8
-                target.takeDamage(d, FromData.getClone(this.actorName(), 'bossmachinehead'), this)
+                target.takeDamage(d, FromData.getClone(this.actorName(), 'bossmachinehead', this.node.position), this)
             }
         }
     }

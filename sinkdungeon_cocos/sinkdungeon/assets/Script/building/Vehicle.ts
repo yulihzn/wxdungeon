@@ -53,9 +53,9 @@ export default class Vehicle extends Building {
         this.entity.Transform.position = this.startPos.clone()
         this.entity.NodeRender.root = this.root
         this.scheduleOnce(() => {
-            if (this.dungeon && this.dungeon.player) {
+            if (this.dungeon && this.dungeon.Player) {
                 this.isRepeat = false
-                this.dungeon.player.drive()
+                this.dungeon.Player.drive()
                 this.dungeon.changeCameraTarget(this, cc.v3(500, 0))
                 EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN_LOCK)
                 this.isPlayerIn = true

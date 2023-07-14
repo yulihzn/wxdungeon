@@ -86,8 +86,9 @@ export default class IceThron extends BaseColliderComponent {
         damage.magicDamage = d
         let target = ActorUtils.getEnemyActorByNode(attackTarget, true)
         if (target && !target.sc.isDied) {
-            target.takeDamage(damage)
-            target.addStatus(status, new FromData())
+            let fromData = FromData.getClone('冰刺', 'bossicethron02', this.node.position)
+            target.takeDamage(damage, fromData)
+            target.addStatus(status, fromData)
         }
     }
     checkTimeDelay = 0

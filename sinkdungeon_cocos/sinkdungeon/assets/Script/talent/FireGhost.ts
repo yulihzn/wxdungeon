@@ -78,7 +78,7 @@ export default class FireGhost extends BaseColliderComponent {
         damage.magicDamage = d
         let target = ActorUtils.getEnemyActorByNode(attackTarget, true)
         if (target && !target.sc.isDied) {
-            target.takeDamage(damage)
+            target.takeDamage(damage, FromData.getClone('鬼火', '', this.node.position))
             target.addStatus(status, new FromData())
         }
         this.isDied = true

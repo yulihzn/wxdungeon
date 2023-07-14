@@ -130,13 +130,13 @@ export default class TalentShield extends Talent {
             statusType == StatusManager.BLEEDING
         return !cant
     }
-    takeDamage(damageData: DamageData, actor?: Actor) {
+    takeDamage(damageData: DamageData, from: FromData, actor?: Actor) {
         //反弹伤害
         if (actor && this.IsExcuting) {
             if (this.hashTalent(TalentShield.SHIELD_05)) {
-                return actor.takeDamage(new DamageData(5))
+                return actor.takeDamage(new DamageData(5), from)
             } else if (this.hashTalent(TalentShield.SHIELD_02)) {
-                return actor.takeDamage(new DamageData(1))
+                return actor.takeDamage(new DamageData(1), from)
             }
         }
         return false

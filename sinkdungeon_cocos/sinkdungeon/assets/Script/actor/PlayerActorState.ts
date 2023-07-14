@@ -6,7 +6,7 @@ import Player from '../logic/Player'
 export class IDLE extends BasePlayerActorState {
     enter(entity: Player): void {
         super.enter(entity)
-        entity.enterIdle()
+        // entity.enterIdle()
     }
     update(entity: Player): void {
         super.update(entity)
@@ -36,7 +36,7 @@ export class IDLE extends BasePlayerActorState {
 export class MOVE extends BasePlayerActorState {
     enter(entity: Player): void {
         super.enter(entity)
-        entity.enterMove()
+        // entity.enterMove()
     }
     update(entity: Player): void {
         super.update(entity)
@@ -67,7 +67,7 @@ export class MOVE extends BasePlayerActorState {
 export class ATTACK extends BasePlayerActorState {
     enter(entity: Player): void {
         super.enter(entity)
-        entity.enterAttack()
+        // entity.enterAttack()
     }
     update(entity: Player): void {
         super.update(entity)
@@ -162,7 +162,7 @@ export class HURT extends BasePlayerActorState {
 export class DASH extends BasePlayerActorState {
     enter(entity: Player): void {
         super.enter(entity)
-        entity.enterDash()
+        // entity.enterDash()
     }
     update(entity: Player): void {
         super.update(entity)
@@ -183,7 +183,7 @@ export class DASH extends BasePlayerActorState {
 export class BLOCK extends BasePlayerActorState {
     enter(entity: Player): void {
         super.enter(entity)
-        entity.enterDefend()
+        // entity.enterDefend()
     }
     update(entity: Player): void {
         super.update(entity)
@@ -204,7 +204,7 @@ export class BLOCK extends BasePlayerActorState {
 export class SHOOT extends BasePlayerActorState {
     enter(entity: Player): void {
         super.enter(entity)
-        entity.enterShoot()
+        // entity.enterShoot()
     }
     update(entity: Player): void {
         super.update(entity)
@@ -225,7 +225,7 @@ export class SHOOT extends BasePlayerActorState {
 export class OTHER extends BasePlayerActorState {
     enter(entity: Player): void {
         super.enter(entity)
-        entity.enterOther()
+        // entity.enterOther()
     }
     update(entity: Player): void {
         super.update(entity)

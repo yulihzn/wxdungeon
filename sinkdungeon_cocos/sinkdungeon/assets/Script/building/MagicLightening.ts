@@ -84,8 +84,8 @@ export default class MagicLightening extends Building {
         status = StatusManager.DIZZ
         let target = ActorUtils.getEnemyActorByNode(attackTarget, !this.needPrepare)
         if (target && !target.sc.isDied) {
-            target.takeDamage(damage)
-            let fd = FromData.getClone('闪电', 'magiclighteningdown1')
+            let fd = FromData.getClone('闪电', 'magiclighteningdown1', this.node.position)
+            target.takeDamage(damage, fd)
             target.addStatus(status, fd)
             this.isAttacked = true
         }

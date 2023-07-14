@@ -529,8 +529,8 @@ export default class Logic extends cc.Component {
         }
     }
     static setKillPlayerCounts(dieFrom: FromData, isAdd: boolean) {
-        if (dieFrom && dieFrom.id) {
-            Logic.killPlayerCounts[dieFrom.id] = Logic.getKillPlayerCount(dieFrom.id) + (isAdd ? 1 : -1)
+        if (dieFrom && dieFrom.seed) {
+            Logic.killPlayerCounts[dieFrom.seed] = Logic.getKillPlayerCount(dieFrom.seed) + (isAdd ? 1 : -1)
             let counts = Logic.killPlayerCounts
             Logic.killPlayerCounts = {}
             for (let key in counts) {

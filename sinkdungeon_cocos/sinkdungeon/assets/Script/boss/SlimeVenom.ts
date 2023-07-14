@@ -27,7 +27,7 @@ export default class SlimeVenom extends Actor {
     sprite: cc.Node
     isHide = false
     isForever = false
-    from: FromData = FromData.getClone('史莱姆毒液', 'venom')
+    from: FromData = FromData.getClone('史莱姆毒液', 'venom', this.node.position)
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {

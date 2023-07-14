@@ -55,7 +55,7 @@ export default class Dryad extends Boss {
         this.shooter01 = this.node.getChildByName('Shooter01').getComponent(Shooter)
         this.shooter02 = this.node.getChildByName('Shooter02').getComponent(Shooter)
         this.shooter03 = this.node.getChildByName('Shooter03').getComponent(Shooter)
-        let from = FromData.getClone(this.actorName(), 'dryadflower04')
+        let from = FromData.getClone(this.actorName(), 'dryadflower04', this.node.position)
         this.shooter01.from.valueCopy(from)
         this.shooter02.from.valueCopy(from)
         this.shooter03.from.valueCopy(from)
@@ -139,7 +139,7 @@ export default class Dryad extends Boss {
             () => {
                 this.schedule(
                     () => {
-                        this.dungeon.buildingManager.addTwineGrass(this.dungeon.player.pos.clone(), true)
+                        this.dungeon.buildingManager.addTwineGrass(this.dungeon.Player.pos.clone(), true)
                     },
                     1,
                     2
@@ -182,7 +182,7 @@ export default class Dryad extends Boss {
                 this.anim.play('DryadStone')
                 this.scheduleOnce(() => {
                     let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position)
-                    let hv = this.dungeon.player.getCenterPosition().sub(pos)
+                    let hv = this.dungeon.Player.getCenterPosition().sub(pos)
                     if (!hv.equals(cc.Vec3.ZERO)) {
                         this.shooter01.setHv(cc.v2(hv).normalize())
                         this.fireShooter(this.shooter01, 'bullet022', 0, 0)

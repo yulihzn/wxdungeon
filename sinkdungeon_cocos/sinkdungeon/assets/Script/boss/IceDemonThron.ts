@@ -66,7 +66,7 @@ export default class IceDemonThron extends BaseColliderComponent {
         if (target) {
             if (this.isUp && this.isValid) {
                 this.isUp = false
-                let from = FromData.getClone('冰刺', 'bossicethron02')
+                let from = FromData.getClone('冰刺', 'bossicethron02', this.node.position)
                 if (target.takeDamage(new DamageData(3), from)) {
                     target.addStatus(StatusManager.FROZEN, from)
                 }

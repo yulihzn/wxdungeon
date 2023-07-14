@@ -1,5 +1,6 @@
 import CCollider from '../collider/CCollider'
 import DamageData from '../data/DamageData'
+import FromData from '../data/FromData'
 import Player from '../logic/Player'
 import AudioPlayer from '../utils/AudioPlayer'
 import IndexZ from '../utils/IndexZ'
@@ -83,7 +84,7 @@ export default class EnergyShield extends Building {
         return rect.contains(cc.v2(targetNode.position.x, targetNode.position.y))
     }
 
-    takeDamage(damage: DamageData): boolean {
+    takeDamage(damage: DamageData, from: FromData): boolean {
         if (!this.isShow || this.data.currentHealth <= 0) {
             return false
         }

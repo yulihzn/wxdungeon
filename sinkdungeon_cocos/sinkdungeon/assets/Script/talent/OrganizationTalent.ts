@@ -162,16 +162,16 @@ export default class OrganizationTalent extends Talent {
         }
     }
 
-    takeDamage(damageData: DamageData, actor?: Actor) {
-        let success = this.energyShieldBlock(damageData)
+    takeDamage(damageData: DamageData, from: FromData, actor?: Actor) {
+        let success = this.energyShieldBlock(damageData, from)
         return success
     }
 
-    energyShieldBlock(damageData: DamageData) {
+    energyShieldBlock(damageData: DamageData, from: FromData) {
         for (let i = this.energyShieldList.length - 1; i >= 0; i--) {
             let shield = this.energyShieldList[i]
             if (shield.node && shield.node.isValid) {
-                let isSuccess = shield.isShow && shield.checkTargetIn(this.player.node) && shield.takeDamage(damageData)
+                let isSuccess = shield.isShow && shield.checkTargetIn(this.player.node) && shield.takeDamage(damageData, from)
                 if (isSuccess) {
                     return true
                 }

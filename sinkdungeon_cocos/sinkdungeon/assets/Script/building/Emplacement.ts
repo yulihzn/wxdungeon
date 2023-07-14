@@ -67,7 +67,7 @@ export default class Emplacement extends Building {
         this.setShooterHv(this.shooterBottom, cc.v2(0, -1))
         this.setShooterHv(this.shooterLeft, cc.v2(-1, 0))
         this.setShooterHv(this.shooterRight, cc.v2(1, 0))
-        let from = FromData.getClone('炮台', 'emplacement')
+        let from = FromData.getClone('炮台', 'emplacement', this.node.position)
         this.shooterTop.from.valueCopy(from)
         this.shooterBottom.from.valueCopy(from)
         this.shooterLeft.from.valueCopy(from)
@@ -240,7 +240,7 @@ export default class Emplacement extends Building {
             this.anim.play()
         }
     }
-    takeDamage(damage: DamageData, from?: FromData, actor?: Actor): boolean {
+    takeDamage(damage: DamageData, from: FromData, actor?: Actor): boolean {
         if (this.data.currentHealth <= 0 || this.data.currentHealth >= 9999) {
             return false
         }

@@ -187,7 +187,7 @@ export default class TalentMagic extends Talent {
         }
         return false
     }
-    takeDamage(damageData: DamageData, actor?: Actor) {
+    takeDamage(damageData: DamageData, from: FromData, actor?: Actor) {
         return false
     }
     addLighteningFall(isArea: boolean, damagePoint: number) {

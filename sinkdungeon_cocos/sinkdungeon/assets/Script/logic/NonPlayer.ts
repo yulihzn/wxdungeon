@@ -437,7 +437,7 @@ export default class NonPlayer extends PlayActor {
         this.hv = cc.v2(target.getCenterPosition().sub(this.node.position)).normalize()
         if (!this.hv.equals(cc.Vec2.ZERO)) {
             this.shooter.setHv(this.hv.clone())
-            this.shooter.from.valueCopy(FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed))
+            this.shooter.from.valueCopy(FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.node.position, this.seed))
             if (this.IsVariation) {
                 this.shooter.data.bulletSize = 0.5
             }
@@ -590,7 +590,7 @@ export default class NonPlayer extends PlayActor {
                             this.data.specialType,
                             this.data.specialDistance,
                             this.isFaceRight,
-                            FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed),
+                            FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.node.position, this.seed),
                             this.IsVariation
                         )
                     }
@@ -616,7 +616,7 @@ export default class NonPlayer extends PlayActor {
                             this.data.specialType,
                             this.data.specialDistance,
                             this.isFaceRight,
-                            FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed),
+                            FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.node.position, this.seed),
                             this.IsVariation
                         )
                     }
@@ -735,13 +735,13 @@ export default class NonPlayer extends PlayActor {
         this.entity.Move.linearVelocity = this.currentlinearVelocitySpeed.clone()
     }
 
-    private fall() {
+    private fall(from: FromData) {
         AudioPlayer.play(AudioPlayer.ATTACK_BLEEDING)
         if (this.data.isStatic > 0 || this.data.isHeavy > 0 || this.IsVariation) {
             return
         }
         this.sc.isFalling = true
-        this.bodySprite.node.angle = ActorUtils.isBehindTarget(this.dungeon.player, this) ? -75 : 105
+        this.bodySprite.node.angle = ActorUtils.isPosBehindTarget(from.pos, this) ? -75 : 105
         if (this.jumpAbility) {
             this.jumpAbility.airPause(4, 0.3, JumpingAbility.CALLBACK_AIR_PAUSE, (group: number, type: number) => {
                 if (type == TriggerData.TYPE_JUMP_END) {
@@ -756,7 +756,7 @@ export default class NonPlayer extends PlayActor {
         this.bodySprite.node.angle = 0
         this.sprite.x = 0
     }
-    public takeDamage(damageData: DamageData, from?: FromData, actor?: Actor): boolean {
+    public takeDamage(damageData: DamageData, from: FromData, actor?: Actor): boolean {
         if (!this.sc.isShow || this.sc.isDied) {
             return false
         }
@@ -789,7 +789,7 @@ export default class NonPlayer extends PlayActor {
             this.meleeStep.refreshCoolDown(this.data.melee)
             this.remoteStep.refreshCoolDown(this.data.remote)
             if (damageData.isCriticalStrike) {
-                this.fall()
+                this.fall(from)
             }
             this.sprite.stopAllActions()
             this.bodyStopAllActions()
@@ -917,7 +917,7 @@ export default class NonPlayer extends PlayActor {
             this.getLoot()
         }
         Achievement.addMonsterKillAchievement(this.data.resName)
-        Logic.setKillPlayerCounts(FromData.getClone(this.actorName(), this.data.resName + 'anim000', this.seed), false)
+        Logic.setKillPlayerCounts(FromData.getClone(this.actorName(), this.data.resName + 'anim000', this.node.position, this.seed), false)
         this.scheduleOnce(() => {
             if (this.node) {
                 this.setLinearVelocity(cc.Vec2.ZERO)
@@ -941,7 +941,7 @@ export default class NonPlayer extends PlayActor {
                                 false,
                                 false,
                                 new DamageData(2),
-                                FromData.getClone('爆炸', 'boom000anim004'),
+                                FromData.getClone('爆炸', 'boom000anim004', this.node.position),
                                 []
                             )
                         )
@@ -987,8 +987,8 @@ export default class NonPlayer extends PlayActor {
             if (this.killPlayerCount > 0) {
                 count = 5
             }
-            if (this.dungeon.player.data.StatusTotalData.exOilGold > 0) {
-                count += this.dungeon.player.data.StatusTotalData.exOilGold
+            if (this.dungeon.Player.data.StatusTotalData.exOilGold > 0) {
+                count += this.dungeon.Player.data.StatusTotalData.exOilGold
             }
             EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.node.position, count: count })
             if (rand < equipPercent && !this.isSummon) {
@@ -1222,8 +1222,8 @@ export default class NonPlayer extends PlayActor {
 
         //npc移动在没有敌对目标的时候转变目标为玩家
         if (!isTracking && this.data.isFollow > 0 && this.data.isEnemy < 1) {
-            target = this.dungeon.player
-            targetDis = ActorUtils.getTargetDistance(this, this.dungeon.player)
+            target = this.dungeon.Player
+            targetDis = ActorUtils.getTargetDistance(this, this.dungeon.Player)
             isTracking = true
         }
 

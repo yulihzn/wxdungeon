@@ -319,10 +319,11 @@ export default class Laser extends BaseColliderComponent {
         let damageSuccess = false
         damage.valueCopy(this.data.damage)
         damage.isRemote = true
+        this.data.from.pos = this.node.position
         if (tag == CCollider.TAG.NONPLAYER || tag == CCollider.TAG.GOODNONPLAYER) {
             let monster = attackTarget.getComponent(NonPlayer)
             if (monster && !monster.sc.isDied) {
-                damageSuccess = monster.takeDamage(damage)
+                damageSuccess = monster.takeDamage(damage, this.data.from)
                 if (damageSuccess) {
                     this.addTargetAllStatus(monster, new FromData())
                 }
@@ -345,7 +346,7 @@ export default class Laser extends BaseColliderComponent {
         } else if (tag == CCollider.TAG.BOSS) {
             let boss = attackTarget.getComponent(Boss)
             if (boss && !boss.sc.isDied) {
-                damageSuccess = boss.takeDamage(damage)
+                damageSuccess = boss.takeDamage(damage, this.data.from)
                 if (damageSuccess) {
                     this.addTargetAllStatus(boss, new FromData())
                 }
@@ -375,19 +376,19 @@ export default class Laser extends BaseColliderComponent {
             let interactBuilding = attackTarget.getComponent(InteractBuilding)
             if (this.data.canBreakBuilding == 1 && interactBuilding) {
                 damageSuccess = true
-                interactBuilding.takeDamage(damage)
+                interactBuilding.takeDamage(damage, this.data.from)
             }
             if (!damageSuccess) {
                 let hitBuilding = attackTarget.getComponent(NormalBuilding)
                 if (this.data.canBreakBuilding == 1 && hitBuilding) {
                     damageSuccess = true
-                    hitBuilding.takeDamage(damage)
+                    hitBuilding.takeDamage(damage, this.data.from)
                 }
             }
         } else if (!this.isFromPlayer && tag == CCollider.TAG.ENERGY_SHIELD) {
             let shield = attackTarget.getComponent(EnergyShield)
             if (shield && shield.isValid) {
-                damageSuccess = shield.takeDamage(damage)
+                damageSuccess = shield.takeDamage(damage, this.data.from)
             }
         }
     }

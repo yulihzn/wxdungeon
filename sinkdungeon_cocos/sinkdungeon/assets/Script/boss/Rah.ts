@@ -48,7 +48,7 @@ export default class Rah extends Boss {
         this.anim = this.getComponent(cc.Animation)
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter)
         this.statusManager = this.node.getChildByName('StatusManager').getComponent(StatusManager)
-        this.shooter.from.valueCopy(FromData.getClone(this.actorName(), 'bossrahhead'))
+        this.shooter.from.valueCopy(FromData.getClone(this.actorName(), 'bossrahhead', this.node.position))
     }
 
     start() {
@@ -91,9 +91,9 @@ export default class Rah extends Boss {
         this.entity.Transform.position = Dungeon.fixOuterMap(this.entity.Transform.position)
         this.pos = Dungeon.getIndexInMap(this.entity.Transform.position)
         this.changeZIndex()
-        let newPos = this.dungeon.player.pos.clone()
+        let newPos = this.dungeon.Player.pos.clone()
         let pos = Dungeon.getPosInMap(newPos).sub(this.entity.Transform.position)
-        let playerDis = this.getNearPlayerDistance(this.dungeon.player.node)
+        let playerDis = this.getNearPlayerDistance(this.dungeon.Player.node)
         let h = pos.x
         let v = pos.y
         let absh = Math.abs(h)
@@ -132,7 +132,7 @@ export default class Rah extends Boss {
             cc.tween(this.node)
                 .to(1, { opacity: 0 })
                 .call(() => {
-                    let p = this.dungeon.player.pos.clone()
+                    let p = this.dungeon.Player.pos.clone()
                     if (p.y > Dungeon.HEIGHT_SIZE - 1) {
                         p.y -= 1
                     } else {
@@ -178,7 +178,7 @@ export default class Rah extends Boss {
         this.snakeSkill.next(() => {
             this.shooter.setHv(cc.v2(0, -1))
             let pos = this.entity.Transform.position.clone().add(this.shooter.node.position)
-            let hv = this.dungeon.player.getCenterPosition().sub(pos)
+            let hv = this.dungeon.Player.getCenterPosition().sub(pos)
             if (!hv.equals(cc.Vec3.ZERO)) {
                 this.shooter.setHv(cc.v2(hv).normalize())
                 this.fireShooter(this.shooter, 'bullet014', 1, 0)
@@ -194,7 +194,7 @@ export default class Rah extends Boss {
         this.bugsSkill.next(() => {
             this.shooter.data.bulletLineInterval = 0.5
             let pos = this.entity.Transform.position.clone().add(this.shooter.node.position)
-            let hv = this.dungeon.player.getCenterPosition().sub(pos)
+            let hv = this.dungeon.Player.getCenterPosition().sub(pos)
             if (!hv.equals(cc.Vec3.ZERO)) {
                 this.shooter.setHv(cc.v2(hv).normalize())
             }
@@ -283,7 +283,7 @@ export default class Rah extends Boss {
             if (target && this.meleeSkill.IsExcuting && !this.sc.isDied) {
                 let d = new DamageData()
                 d.physicalDamage = 15
-                target.takeDamage(d, FromData.getClone(this.actorName(), 'bossrahhead'), this)
+                target.takeDamage(d, FromData.getClone(this.actorName(), 'bossrahhead', this.node.position), this)
             }
         }
     }

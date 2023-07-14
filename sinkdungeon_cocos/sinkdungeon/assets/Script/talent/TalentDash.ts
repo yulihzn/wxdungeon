@@ -110,7 +110,7 @@ export default class TalentDash extends Talent {
         let damageSuccess = false
         let target = ActorUtils.getEnemyActorByNode(attackTarget.node, true)
         if (target && !target.sc.isDied) {
-            damageSuccess = target.takeDamage(damage)
+            damageSuccess = target.takeDamage(damage, FromData.getClone(this.player.actorName(), '', this.player.node.position))
             if (damageSuccess) {
                 this.beatBack(target)
                 this.addTargetAllStatus(target)

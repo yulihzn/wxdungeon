@@ -12,6 +12,7 @@ import CoolDownView from '../ui/CoolDownView'
 import Utils from '../utils/Utils'
 import CCollider from '../collider/CCollider'
 import AudioPlayer from '../utils/AudioPlayer'
+import FromData from '../data/FromData'
 
 const { ccclass, property } = cc._decorator
 
@@ -192,7 +193,7 @@ export default abstract class Talent extends cc.Component {
         return this.data?.resName == resName
     }
 
-    abstract takeDamage(damageData: DamageData, actor?: Actor): boolean
+    abstract takeDamage(damageData: DamageData, from: FromData, actor?: Actor): boolean
 
     shoot(shooter: Shooter, bulletArcExNum: number, bulletLineExNum: number, bulletType: string, prefab: cc.Prefab, data: AreaOfEffectData) {
         shooter.data.bulletType = bulletType

@@ -134,7 +134,7 @@ export default class InteractBuilding extends Building {
         }
         this.mat.setProperty('openOutline', isHigh ? 1 : 0)
     }
-    takeDamage(damage: DamageData, from?: FromData, actor?: Actor): boolean {
+    takeDamage(damage: DamageData, from: FromData, actor?: Actor): boolean {
         if (this.data.currentHealth <= 0) {
             return
         }
@@ -463,7 +463,7 @@ export default class InteractBuilding extends Building {
                 if (damage.isBackAttack) {
                     damage.realDamage += common.DamageBack
                 }
-                damageSuccess = monster.takeDamage(damage)
+                damageSuccess = monster.takeDamage(damage, FromData.getClone(this.actorName(), this.resName, this.node.position))
                 if (damageSuccess) {
                     this.beatBack(monster, this.player.Hv.clone(), 200)
                     this.addTargetAllStatus(common, monster)
@@ -472,7 +472,7 @@ export default class InteractBuilding extends Building {
         } else if (attackTarget.tag == CCollider.TAG.BOSS) {
             let boss = attackTarget.node.getComponent(Boss)
             if (boss && !boss.sc.isDied) {
-                damageSuccess = boss.takeDamage(damage)
+                damageSuccess = boss.takeDamage(damage, FromData.getClone(this.actorName(), this.resName, this.node.position))
                 if (damageSuccess) {
                     this.addTargetAllStatus(common, boss)
                 }
@@ -487,7 +487,7 @@ export default class InteractBuilding extends Building {
                 let hitBuilding = attackTarget.node.getComponent(NormalBuilding)
                 if (hitBuilding) {
                     attackSuccess = true
-                    hitBuilding.takeDamage(damage)
+                    hitBuilding.takeDamage(damage, FromData.getClone(this.actorName(), this.resName, this.node.position))
                 }
             }
         }

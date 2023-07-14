@@ -37,7 +37,7 @@ export default class MetalHand {
     public attacking(attackTarget: CCollider, self: CCollider): void {
         let target = ActorUtils.getEnemyCollisionTarget(attackTarget, true)
         if (target) {
-            let from = FromData.getClone(this.metal.player.data.name, '')
+            let from = FromData.getClone(this.metal.player.data.name, '', this.metal.node.position)
             let dd = this.metal.player.data.getFinalAttackPoint()
             this.attackStep.IsExcuting = false
             if (target.takeDamage(dd, from, this.metal.player)) {

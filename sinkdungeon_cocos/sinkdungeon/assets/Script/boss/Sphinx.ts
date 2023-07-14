@@ -43,7 +43,7 @@ export default class Sphinx extends Boss {
         this.anim = this.getComponent(cc.Animation)
         this.shooter01 = this.node.getChildByName('Shooter01').getComponent(Shooter)
         this.statusManager = this.node.getChildByName('StatusManager').getComponent(StatusManager)
-        this.shooter01.from.valueCopy(FromData.getClone(this.actorName(), 'sphinxhead'))
+        this.shooter01.from.valueCopy(FromData.getClone(this.actorName(), 'sphinxhead', this.node.position))
     }
 
     start() {}
@@ -110,7 +110,7 @@ export default class Sphinx extends Boss {
                 this.anim.play('SphinxStorm')
                 this.scheduleOnce(() => {
                     let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position)
-                    let hv = this.dungeon.player.getCenterPosition().sub(pos)
+                    let hv = this.dungeon.Player.getCenterPosition().sub(pos)
                     if (!hv.equals(cc.Vec3.ZERO)) {
                         this.shooter01.setHv(cc.v2(hv).normalize())
                         this.fireShooter(this.shooter01, 'bullet023', 0, -20)

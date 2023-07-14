@@ -50,7 +50,7 @@ export default class MetalShield {
     public attacking(attackTarget: CCollider, self: CCollider): void {
         let target = ActorUtils.getEnemyCollisionTarget(attackTarget, true)
         if (target) {
-            let from = FromData.getClone(this.metal.player.data.name, '')
+            let from = FromData.getClone(this.metal.player.data.name, '', this.metal.node.position)
             let d = this.metal.player.data.OilGoldData.level / 2
             let dd = new DamageData(d > 0 ? d : 1)
             this.attackStep.IsExcuting = false

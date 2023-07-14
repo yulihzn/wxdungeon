@@ -42,7 +42,7 @@ export default class CaptainSword extends BaseColliderComponent {
             this.isShow = false
             let dd = new DamageData()
             dd.physicalDamage = this.damage
-            target.takeDamage(dd, FromData.getClone(this.actorName(), 'captain_head'), this.parentNode.getComponent(Captain))
+            target.takeDamage(dd, FromData.getClone(this.actorName(), 'captain_head', this.node.position), this.parentNode.getComponent(Captain))
         }
     }
     actorName() {

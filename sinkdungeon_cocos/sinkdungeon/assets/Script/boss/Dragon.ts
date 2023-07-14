@@ -44,7 +44,7 @@ export default class Dragon extends Boss {
         this.sc.isShow = false
         this.anim = this.getComponent(cc.Animation)
         this.shooter01 = this.node.getChildByName('Shooter01').getComponent(Shooter)
-        this.shooter01.from.valueCopy(FromData.getClone(this.actorName(), 'dragonhead'))
+        this.shooter01.from.valueCopy(FromData.getClone(this.actorName(), 'dragonhead', this.node.position))
         this.statusManager = this.node.getChildByName('StatusManager').getComponent(StatusManager)
         this.physicBox = this.getComponent(CCollider)
     }
@@ -116,7 +116,7 @@ export default class Dragon extends Boss {
             }, 15)
             this.schedule(
                 () => {
-                    this.dungeon.addFallStone(this.dungeon.player.node.position, true, true)
+                    this.dungeon.addFallStone(this.dungeon.Player.node.position, true, true)
                     this.dungeon.addFallStone(
                         Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))),
                         true,
@@ -230,7 +230,7 @@ export default class Dragon extends Boss {
             if (target && !this.sc.isDied && !this.physicBox.sensor) {
                 let d = new DamageData()
                 d.physicalDamage = 15
-                target.takeDamage(d, FromData.getClone(this.actorName(), 'dragonhead'), this)
+                target.takeDamage(d, FromData.getClone(this.actorName(), 'dragonhead', this.node.position), this)
             }
         }
     }

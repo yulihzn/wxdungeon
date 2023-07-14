@@ -44,7 +44,7 @@ export default class KrakenSwingHand extends BaseColliderComponent {
             this.node.stopAllActions()
             let dd = new DamageData()
             dd.physicalDamage = this.damage
-            target.takeDamage(dd, FromData.getClone(this.actorName(), 'boss001'), this.node.parent.getComponent(Kraken))
+            target.takeDamage(dd, FromData.getClone(this.actorName(), 'boss001', this.node.position), this.node.parent.getComponent(Kraken))
         }
     }
     actorName() {

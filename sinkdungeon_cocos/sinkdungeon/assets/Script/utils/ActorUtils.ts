@@ -136,7 +136,7 @@ export default class ActorUtils {
         let targetList: Actor[] = []
         for (let targetType of targetTypes) {
             if (targetType == Actor.TARGET_PLAYER) {
-                targetList.push(dungeon.player)
+                targetList.push(dungeon.Player)
             } else if (targetType == Actor.TARGET_MONSTER) {
                 targetList = targetList.concat(dungeon.monsterManager.monsterList)
             } else if (targetType == Actor.TARGET_BOSS) {
@@ -209,7 +209,16 @@ export default class ActorUtils {
      * 是否在目标背面
      */
     static isBehindTarget(self: Actor, target: Actor): boolean {
-        let isTargetOnRight = target.node.position.x > self.node.position.x
+        if (!self || !target) {
+            return false
+        }
+        return ActorUtils.isPosBehindTarget(self.node.position, target)
+    }
+    static isPosBehindTarget(pos: cc.Vec3, target: Actor): boolean {
+        if (!pos || !target) {
+            return false
+        }
+        let isTargetOnRight = target.node.position.x > pos.x
         let isTargetFaceRight = target.isFaceRight
         return (isTargetOnRight && isTargetFaceRight) || (!isTargetOnRight && !isTargetFaceRight)
     }

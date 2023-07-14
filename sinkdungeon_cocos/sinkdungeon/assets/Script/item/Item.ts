@@ -168,7 +168,7 @@ export default class Item extends BaseNodeComponent {
         EventHelper.emit(EventHelper.HUD_GROUND_ITEM_INFO_HIDE)
     }
     static userIt(data: ItemData, player: Player) {
-        let from = FromData.getClone(data.nameCn, data.resName)
+        let from = FromData.getClone(data.nameCn, data.resName, player.node.position)
         if (data.resName != Item.EMPTY && data.canSave) {
             AudioPlayer.play(AudioPlayer.PICK_ITEM)
         }

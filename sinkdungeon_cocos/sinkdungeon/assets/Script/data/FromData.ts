@@ -1,31 +1,27 @@
 import DataUtils from '../utils/DataUtils'
 
 export default class FromData {
-    name: string = ''
-    res: string = ''
-    id: number = 0
+    name: string = '' //名字
+    res: string = '' //贴图名
+    seed: number = 0 //随机种子（主要用来统计每一个nonplayer击杀玩家次数
+    pos: cc.Vec3 //伤害来源的坐标
     public valueCopy(data: FromData): void {
         if (!data) {
             return
         }
         DataUtils.baseCopy(this, data)
-        // this.name = data.name ? data.name : '';
-        // this.res = data.res ? data.res : '';
-        // this.id = data.id?data.id:0;
     }
-    public static getClone(name: string, res: string, id?: number): FromData {
+    public static getClone(name: string, res: string, pos: cc.Vec3, seed?: number): FromData {
         let e = new FromData()
         e.name = name
         e.res = res
-        e.id = id
+        e.seed = seed
+        e.pos = cc.v3(pos.x, pos.y)
         return e
     }
     public clone(): FromData {
         let e = new FromData()
         e.valueCopy(this)
-        // e.name = this.name;
-        // e.res = this.res;
-        // e.id = this.id;
         return e
     }
 }

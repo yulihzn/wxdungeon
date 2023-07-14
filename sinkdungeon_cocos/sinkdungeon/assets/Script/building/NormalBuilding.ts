@@ -138,7 +138,7 @@ export default class NormalBuilding extends Building {
             this.sprite.node.height = spriteFrame.getOriginalSize().height
         }
     }
-    takeDamage(damage: DamageData, from?: FromData, actor?: Actor): boolean {
+    takeDamage(damage: DamageData, from: FromData, actor?: Actor): boolean {
         if (!this.breakable) {
             return false
         }

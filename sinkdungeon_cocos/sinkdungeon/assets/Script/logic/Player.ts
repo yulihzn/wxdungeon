@@ -65,8 +65,6 @@ import Dialogue from '../ui/Dialogue'
 import EquipItemTalent from '../talent/EquipItemTalent'
 import OilGoldMetal from '../talent/OilGoldMetal'
 import ExitData from '../data/ExitData'
-import DefaultStateMachine from '../base/fsm/DefaultStateMachine'
-import PlayerActorState from '../actor/PlayerActorState'
 @ccclass
 export default class Player extends PlayActor {
     @property(cc.Sprite)
@@ -191,61 +189,10 @@ export default class Player extends PlayActor {
         this.weaponRight.init(this, false, false)
         this.remoteCooldown.width = 0
         this.remoteCooldown.opacity = 200
-        EventHelper.on(EventHelper.PLAYER_TRIGGER, detail => {
-            if (this.node) this.triggerThings(detail && detail.isLongPress)
-        })
-
-        EventHelper.on(EventHelper.PLAYER_USEITEM, detail => {
-            if (this.node) this.useItem(detail.itemData)
-        })
-        EventHelper.on(EventHelper.PLAYER_SKILL, detail => {
-            if (this.node) this.useSkill()
-        })
-        EventHelper.on(EventHelper.PLAYER_SKILL1, detail => {
-            if (this.node) this.useSkill1()
-        })
         EventHelper.on(EventHelper.PLAYER_UPDATE_OILGOLD_DATA, detail => {
             if (this.node) {
                 this.data.OilGoldData.valueCopy(Logic.playerData.OilGoldData)
                 this.updateData()
-            }
-        })
-        EventHelper.on(EventHelper.PLAYER_ATTACK, detail => {
-            if (!this.node || this.useInteractBuilding(true) || this.avatar?.isAniming) {
-                return
-            }
-            this.meleeAttack()
-        })
-        EventHelper.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL, detail => {
-            if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
-                this.shield.cancel()
-            } else if (this.sc) {
-                this.sc.isShooting = false
-            }
-        })
-        EventHelper.on(EventHelper.PLAYER_REMOTEATTACK, detail => {
-            if (this.useInteractBuilding(false) || this.avatar?.isAniming) {
-                return
-            }
-            if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
-                this.shield.use(this)
-            } else {
-                if (this.node) this.remoteAttack()
-            }
-        })
-        EventHelper.on(EventHelper.PLAYER_JUMP, detail => {
-            if (this.node) {
-                this.jump()
-            }
-        })
-        EventHelper.on(EventHelper.PLAYER_DASH, detail => {
-            if (this.node) {
-                this.dash()
-            }
-        })
-        EventHelper.on(EventHelper.PLAYER_JUMP_CANCEL, detail => {
-            if (this.node) {
-                this.jumpCancel()
             }
         })
         EventHelper.on(EventHelper.PLAYER_USEDREAM, detail => {
@@ -291,6 +238,13 @@ export default class Player extends PlayActor {
         }
         this.metal = cc.instantiate(this.metalPrefab).getComponent(OilGoldMetal)
         this.metal.init(this)
+    }
+    ctrlRemoteCancel() {
+        if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
+            this.shield.cancel()
+        } else if (this.sc) {
+            this.sc.isShooting = false
+        }
     }
 
     public initShadowList(isFromSave: boolean, count: number, lifeTime: number) {
@@ -574,7 +528,7 @@ export default class Player extends PlayActor {
     get isInteractBuildingAniming() {
         return this.interactBuilding && this.interactBuilding.isTaken && this.interactBuilding.isAniming
     }
-    meleeAttack() {
+    ctrlMeleeAttack() {
         if (
             !this.weaponRight ||
             this.sc.isDizzing ||
@@ -585,7 +539,8 @@ export default class Player extends PlayActor {
             this.isInteractBuildingAniming ||
             (this.weaponLeft.meleeWeapon.IsAttacking && this.weaponLeft.meleeWeapon.IsFist) ||
             (this.weaponRight.meleeWeapon.IsAttacking && this.weaponRight.meleeWeapon.IsFist) ||
-            this.shield.isDefendOrParrying
+            this.shield.isDefendOrParrying ||
+            this.useInteractBuilding(true)
         ) {
             return
         }
@@ -669,7 +624,14 @@ export default class Player extends PlayActor {
         }
         return true
     }
-    remoteAttack() {
+    ctrlRemoteAttack() {
+        if (this.useInteractBuilding(false) || this.avatar?.isAniming) {
+            return
+        }
+        if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
+            this.shield.use(this)
+            return
+        }
         if (!this.data || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling || this.sc.isVanishing || !this.weaponLeft.shooter || this.avatar.isAniming) {
             return
         }
@@ -853,7 +815,7 @@ export default class Player extends PlayActor {
             this.playerAnim(BaseAvatar.STATE_IDLE, 1)
             let dd = new DamageData()
             dd.realDamage = 1
-            this.takeDamage(dd, FromData.getClone('跌落', ''))
+            this.takeDamage(dd, FromData.getClone('跌落', '', this.node.position))
             this.sc.isFalling = false
         }, 2)
     }
@@ -884,7 +846,7 @@ export default class Player extends PlayActor {
             }, duration)
         }
     }
-    dash() {
+    ctrlDash() {
         if (this.dashCooling || this.avatar?.isAniming) {
             return
         }
@@ -945,7 +907,7 @@ export default class Player extends PlayActor {
     updateData(): void {
         this.data.updateFinalCommon()
     }
-    jump() {
+    ctrlJump() {
         if (!this.CanJump) {
             return
         }
@@ -953,7 +915,7 @@ export default class Player extends PlayActor {
             this.jumpAbility.jump(this.data.getJumpSpeed(), this.data.getJumpHeight())
         }
     }
-    jumpCancel() {
+    ctrlJumpCancel() {
         if (this.jumpAbility) {
             this.jumpAbility.cancel()
         }
@@ -984,7 +946,7 @@ export default class Player extends PlayActor {
      * @param from 来源信息
      * @param actor 来源单位(目前只有monster和boss)
      */
-    takeDamage(damageData: DamageData, from?: FromData, actor?: Actor): boolean {
+    takeDamage(damageData: DamageData, from: FromData, actor?: Actor): boolean {
         if (!this.data || this.sc.isDied || this.sc.isVanishing) {
             return false
         }
@@ -1001,7 +963,7 @@ export default class Player extends PlayActor {
         }
         //幽光护盾
         let isBlock = false
-        if (dd.getTotalDamage() > 0 && this.organizationTalent.takeDamage(dd, actor)) {
+        if (dd.getTotalDamage() > 0 && this.organizationTalent.takeDamage(dd, from, actor)) {
             dd = new DamageData()
             isBlock = true
         }
@@ -1108,7 +1070,7 @@ export default class Player extends PlayActor {
         this.dungeon.darkAfterKill()
     }
     //玩家行动
-    playerAction(dir: number, pos: cc.Vec3, dt: number, dungeon: Dungeon) {
+    ctrlMove(dir: number, pos: cc.Vec3, dt: number, dungeon: Dungeon) {
         this.dungeon = dungeon
         if (this.weaponLeft.meleeWeapon && !this.weaponLeft.meleeWeapon.dungeon) {
             this.weaponLeft.meleeWeapon.dungeon = dungeon
@@ -1273,12 +1235,12 @@ export default class Player extends PlayActor {
         let sn = this.IsVariation ? 1.5 : 1
         return sn
     }
-    private useSkill(): void {
+    ctrlUseSkill(): void {
         if (this.professionTalent && !this.sc.isAttacking && !this.sc.isVanishing && !this.avatar?.isAniming) {
             this.professionTalent.useSKill()
         }
     }
-    private useSkill1(): void {
+    ctrlUseSkill1(): void {
         if (this.organizationTalent && !this.sc.isAttacking && !this.sc.isVanishing && !this.avatar?.isAniming) {
             this.organizationTalent.useSKill()
         }
@@ -1293,7 +1255,7 @@ export default class Player extends PlayActor {
         return true
     }
 
-    triggerThings(isLongPress: boolean) {
+    ctrlTriggerThings(isLongPress: boolean) {
         if (this.sc.isJumping || !this.dungeon || this.avatar.isAniming) {
             return
         }
@@ -1381,7 +1343,7 @@ export default class Player extends PlayActor {
         }
     }
 
-    useItem(data: ItemData) {
+    ctrlUseItem(data: ItemData) {
         if (this.avatar?.isAniming) {
             return
         }

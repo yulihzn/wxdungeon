@@ -365,12 +365,13 @@ export default class Bullet extends BaseColliderComponent {
         damage.valueCopy(this.data.damage)
         damage.isRemote = true
         let isDestory = false
+        this.data.from.pos = this.node.position
         if (this.data.isInvincible > 0) {
             isDestory = false
         } else if (tag == CCollider.TAG.NONPLAYER || tag == CCollider.TAG.GOODNONPLAYER) {
             let monster = attackTarget.getComponent(NonPlayer)
             if (monster && !monster.sc.isDied) {
-                damageSuccess = monster.takeDamage(damage)
+                damageSuccess = monster.takeDamage(damage, this.data.from)
                 if (damageSuccess) {
                     this.addTargetAllStatus(monster, new FromData())
                     if (this.shooter.player) {
@@ -408,7 +409,7 @@ export default class Bullet extends BaseColliderComponent {
         } else if (tag == CCollider.TAG.BOSS) {
             let boss = attackTarget.getComponent(Boss)
             if (boss && !boss.sc.isDied) {
-                damageSuccess = boss.takeDamage(damage)
+                damageSuccess = boss.takeDamage(damage, this.data.from)
                 if (damageSuccess) {
                     this.addTargetAllStatus(boss, new FromData())
                     if (this.shooter.player) {
@@ -451,13 +452,13 @@ export default class Bullet extends BaseColliderComponent {
             let interactBuilding = attackTarget.getComponent(InteractBuilding)
             if (this.data.canBreakBuilding == 1 && interactBuilding) {
                 damageSuccess = true
-                interactBuilding.takeDamage(damage)
+                interactBuilding.takeDamage(damage, this.data.from)
             }
             if (!damageSuccess) {
                 let hitBuilding = attackTarget.getComponent(NormalBuilding)
                 if (this.data.canBreakBuilding == 1 && hitBuilding) {
                     damageSuccess = true
-                    hitBuilding.takeDamage(damage)
+                    hitBuilding.takeDamage(damage, this.data.from)
                 }
             }
             if (!damageSuccess) {
@@ -480,7 +481,7 @@ export default class Bullet extends BaseColliderComponent {
         } else if (!this.isFromPlayer && tag == CCollider.TAG.ENERGY_SHIELD) {
             let shield = attackTarget.getComponent(EnergyShield)
             if (shield && shield.isValid) {
-                damageSuccess = shield.takeDamage(damage)
+                damageSuccess = shield.takeDamage(damage, this.data.from)
             }
             if (damageSuccess) {
                 isDestory = true
@@ -539,7 +540,7 @@ export default class Bullet extends BaseColliderComponent {
                     false,
                     false,
                     new DamageData(2),
-                    FromData.getClone('爆炸', 'boom000anim004'),
+                    FromData.getClone('爆炸', 'boom000anim004', pos),
                     []
                 ),
                 pos,

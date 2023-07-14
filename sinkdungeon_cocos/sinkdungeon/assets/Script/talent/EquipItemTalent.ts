@@ -390,7 +390,7 @@ export default class EquipItemTalent extends Talent {
 
     changePerformance() {}
 
-    takeDamage(damageData: DamageData, actor?: Actor) {
+    takeDamage(damageData: DamageData, from: FromData, actor?: Actor) {
         return false
     }
     private addLighteningFall(isArea: boolean, damagePoint: number) {

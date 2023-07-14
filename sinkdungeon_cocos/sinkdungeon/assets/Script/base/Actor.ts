@@ -32,7 +32,7 @@ export default abstract class Actor extends cc.Component implements OnContactLis
     static readonly TARGET_BOSS = 2
     static readonly TARGET_NONPLAYER = 3
     static readonly TARGET_NONPLAYER_ENEMY = 4
-    abstract takeDamage(damage: DamageData, from?: FromData, actor?: Actor): boolean
+    abstract takeDamage(damage: DamageData, from: FromData, actor?: Actor): boolean
     abstract actorName(): string
     abstract addStatus(statusType: string, from: FromData): void
     abstract getCenterPosition(): cc.Vec3

@@ -651,6 +651,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (this.isFist) {
             damage.comboType = this.fistCombo
         }
+        let fromData = FromData.getClone(this.player.actorName(), '', this.player.node.position)
         let damageSuccess = false
         let attackSuccess = false
         if (attackTarget.tag == CCollider.TAG.NONPLAYER) {
@@ -660,7 +661,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 if (damage.isBackAttack) {
                     damage.realDamage += common.DamageBack
                 }
-                damageSuccess = monster.takeDamage(damage, new FromData(), this.player)
+                damageSuccess = monster.takeDamage(damage, fromData, this.player)
                 if (damageSuccess) {
                     this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
                     this.beatBack(monster)
@@ -671,7 +672,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         } else if (attackTarget.tag == CCollider.TAG.BOSS) {
             let boss = attackTarget.node.getComponent(Boss)
             if (boss && !boss.sc.isDied && !this.isMiss) {
-                damageSuccess = boss.takeDamage(damage, new FromData(), this.player)
+                damageSuccess = boss.takeDamage(damage, fromData, this.player)
                 if (damageSuccess) {
                     this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
                     this.addTargetAllStatus(common, boss)
@@ -690,21 +691,21 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 let interactBuilding = attackTarget.node.getComponent(InteractBuilding)
                 if (interactBuilding && interactBuilding.data.currentHealth > 0) {
                     attackSuccess = true
-                    interactBuilding.takeDamage(damage, new FromData(), this.player)
+                    interactBuilding.takeDamage(damage, fromData, this.player)
                 }
             }
             if (!attackSuccess) {
                 let hitBuilding = attackTarget.node.getComponent(NormalBuilding)
                 if (hitBuilding) {
                     attackSuccess = true
-                    hitBuilding.takeDamage(damage, new FromData(), this.player)
+                    hitBuilding.takeDamage(damage, fromData, this.player)
                 }
             }
             if (!attackSuccess) {
                 let hitBuilding = attackTarget.node.getComponent(Emplacement)
                 if (hitBuilding && hitBuilding.data.currentHealth > 0) {
                     attackSuccess = true
-                    hitBuilding.takeDamage(damage, new FromData(), this.player)
+                    hitBuilding.takeDamage(damage, fromData, this.player)
                 }
             }
             this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)
@@ -718,7 +719,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 () => {
                     let drain = this.player.playerData.getLifeDrain()
                     if (drain > 0) {
-                        this.player.takeDamage(new DamageData(-drain))
+                        this.player.takeDamage(new DamageData(-drain), fromData)
                     }
                 },
                 1,

@@ -4,7 +4,6 @@ import ActorUtils from '../utils/ActorUtils'
 import Utils from '../utils/Utils'
 import CCollider from '../collider/CCollider'
 import NonPlayerData from '../data/NonPlayerData'
-import Logic from '../logic/Logic'
 import StatusManager from '../manager/StatusManager'
 
 // Learn TypeScript:
@@ -121,7 +120,7 @@ export default class ActorAttackBox extends cc.Component {
             if (target) {
                 this.actor.sc.isDashing = false
                 this.isAttacking = false
-                let from = FromData.getClone(this.data.nameCn, this.data.resName + 'anim000')
+                let from = FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.node.position)
                 let dd = this.data.getAttackPoint()
                 dd.isBackAttack = ActorUtils.isBehindTarget(m, a) && this.data.FinalCommon.DamageBack > 0
                 if (dd.isBackAttack) {

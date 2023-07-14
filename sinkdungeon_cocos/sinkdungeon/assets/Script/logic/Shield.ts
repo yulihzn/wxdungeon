@@ -83,7 +83,7 @@ export default class Shield extends cc.Component {
         if (actor) {
             if (this.status == Shield.STATUS_PARRY) {
                 actor.addStatus(StatusManager.SHIELD_PARRY, new FromData())
-                actor.takeDamage(new DamageData(this.data.FinalCommon.blockDamage))
+                actor.takeDamage(new DamageData(this.data.FinalCommon.blockDamage), FromData.getClone(player.actorName(), '', player.node.position))
                 player.exTrigger(TriggerData.GROUP_HURT, TriggerData.TYPE_HURT_PARRAY, from, actor)
             }
             if (this.status == Shield.STATUS_DEFEND) {

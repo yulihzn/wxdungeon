@@ -129,6 +129,7 @@ export default class AreaOfEffect extends BaseColliderComponent {
         if (tag == CCollider.TAG.PLAYER || tag == CCollider.TAG.NONPLAYER || tag == CCollider.TAG.GOODNONPLAYER || tag == CCollider.TAG.BOSS) {
             let normal = attackTarget.convertToWorldSpaceAR(cc.Vec2.ZERO).subSelf(this.node.convertToWorldSpaceAR(cc.Vec2.ZERO)).normalizeSelf()
             let target = ActorUtils.getEnemyActorByNode(attackTarget, !this.data.isFromEnemy)
+            this.data.from.pos = this.node.position
             if (target && !target.sc.isDied) {
                 let damageSuccess = target.takeDamage(damage, this.data.from)
                 if (damageSuccess) {
