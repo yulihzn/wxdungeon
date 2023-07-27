@@ -332,6 +332,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
         }
     }
     protected getReflectLight(dungeon: Dungeon, other: CCollider, self: CCollider, isFar: boolean, isStab: boolean, isWall: boolean, hv: cc.Vec2, color: cc.Color) {
+        if (!dungeon) {
+            return
+        }
         if (!this.weaponReflectPoint) {
             return
         }

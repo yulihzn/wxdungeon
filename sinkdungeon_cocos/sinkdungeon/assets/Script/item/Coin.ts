@@ -3,7 +3,6 @@ import Logic from '../logic/Logic'
 import { EventHelper } from '../logic/EventHelper'
 import Random from '../utils/Random'
 import AudioPlayer from '../utils/AudioPlayer'
-import BaseColliderComponent from '../base/BaseColliderComponent'
 import BaseNodeComponent from '../base/BaseNodeComponent'
 
 // Learn TypeScript:

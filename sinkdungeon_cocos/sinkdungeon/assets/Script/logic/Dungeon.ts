@@ -92,23 +92,35 @@ export default class Dungeon extends cc.Component {
 
     /**
      * 初始化
+     * 监听：放置装备，放置金币，放置经验球，放置物品，放置落石，放置碎纸屑，放置闪电，摇晃场景，放置BOSS，打印节点信息，场景消失动画
+     * 播放BGM
+     * 初始化管理器
      * 设置雾气层级和大小
-     * 获取地图数组
-     * 添加背景和周边
-     * 添加玩家
+     * 设置光源层级
+     * 地图初始化 获取地图下标，获取地图数组 重置地图宽高 设置场景位置（//TODO 这里需要记录上次镜头位置）
+     * //TODO添加背景和周边
+     * 初始化ECS和物理碰撞
      * 放置当前房间保存的物品和装备
+     * ---------------等待空气墙和墙还有门的预制加载完成-------------------
      * 放置建筑
-     * 放置地面装饰
-     * 放置宝箱，读取当前房间保存的宝箱状态信息
-     * 放置盒子，读取当前房间保存的盒子位置
-     * 放置可破坏装饰建筑，读取当前房间保存的可破坏装饰的状态和位置
-     * 放置商店，读取当前房间包的商店状态信息
-     * 放置物品
-     * 放置怪物
-     * 放置boss
-     * 保存宝箱盒子可破坏装饰商店信息
-     * 加载小地图
-     * 打开门
+     * 放置房间未清理预设物品
+     * 放置房间未清理预设敌人和BOSS
+     * 放置预设NPC
+     * 放置边缘建筑
+     * 放置随机敌人
+     * 延迟1s放置跟随NPC
+     * 开门
+     * 延迟0.3s播放黑雾散去动画，动画结束后检测对话框弹出对话框
+     * 延迟0.3s打印节点信息
+     * 延迟0.3s回复掉落的翠金
+     * 延迟0.3s初始化完成
+     * ------------------------------------------------------------------
+     * 添加天气
+     * 添加玩家
+     * 移动迷雾和镜头
+     * 0.1s后检测房间状态和控制门的开关
+     * 0.1s加载小地图
+     *
      */
     onLoad(): void {
         //初始化动画
@@ -228,6 +240,11 @@ export default class Dungeon extends cc.Component {
         Logic.getBuildings(BuildingManager.AIREXIT, (prefab: cc.Prefab) => {
             Logic.getBuildings(BuildingManager.WALL, (prefab: cc.Prefab) => {
                 Logic.getBuildings(BuildingManager.DOOR, (prefab: cc.Prefab) => {
+                    //加载天气
+                    if ((leveldata.isOutside && !Logic.mapManager.getCurrentRoom().isOutside) || (!leveldata.isOutside && Logic.mapManager.getCurrentRoom().isOutside)) {
+                        this.weatherManager.addRain(cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.WIDTH_SIZE / 2)), 0)
+                    }
+                    //添加空气墙
                     this.buildingManager.addAirExit(mapData)
                     for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
                         this.tilesmap[i] = new Array(i)
@@ -256,6 +273,14 @@ export default class Dungeon extends cc.Component {
                     for (let offset of offsets) {
                         this.addBuildingsFromSideMap(offset)
                     }
+                    //初始化玩家和控制器
+                    this.initPlayer()
+                    this.initCameraAndFog(this.player)
+                    //加载跟随npc
+                    let nonList = new Array().concat(Logic.nonPlayerList)
+                    this.nonPlayerManager.addNonPlayerListFromSave(this, nonList, this.player.node.position, this.player.entity.Transform.z)
+                    let aiList = new Array().concat(Logic.aiPlayerList)
+                    this.aiPlayerManager.addAiPlayerListFromSave(this, aiList)
                     //加载随机怪物
                     if (
                         (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoom().isReborn) &&
@@ -264,17 +289,6 @@ export default class Dungeon extends cc.Component {
                     ) {
                         this.monsterManager.addRandomMonsters(this, Logic.mapManager.getCurrentRoom().reborn)
                     }
-                    //加载跟随npc
-                    let nonList = new Array().concat(Logic.nonPlayerList)
-                    this.scheduleOnce(() => {
-                        this.nonPlayerManager.addNonPlayerListFromSave(this, nonList, this.player.node.position, this.player.entity.Transform.z)
-                    }, 1)
-                    let aiList = new Array().concat(Logic.aiPlayerList)
-                    this.scheduleOnce(() => {
-                        this.aiPlayerManager.addAiPlayerListFromSave(this, aiList)
-                    }, 1)
-                    //设置门开关
-                    this.setDoors(true, true)
                     cc.log('load finished')
                     this.scheduleOnce(() => {
                         this.isInitFinish = true
@@ -295,11 +309,8 @@ export default class Dungeon extends cc.Component {
                 })
             })
         })
-        if ((leveldata.isOutside && !Logic.mapManager.getCurrentRoom().isOutside) || (!leveldata.isOutside && Logic.mapManager.getCurrentRoom().isOutside)) {
-            this.weatherManager.addRain(cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.WIDTH_SIZE / 2)), 0)
-        }
-
-        //初始化玩家和控制器
+    }
+    private initPlayer() {
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player)
         let controller = this.player.addComponent(PlayerController)
         controller.player = this.player
@@ -307,9 +318,13 @@ export default class Dungeon extends cc.Component {
         this.player.node.parent = this.node
         this.player.controller = controller
         this.player.dungeon = this
-        this.changeCameraTarget(this.player)
+    }
+    private initCameraAndFog(target: Actor) {
+        this.changeCameraTarget(target)
         this.fog.setPosition(this.cameraControl.Target.node.position.clone())
-        EventHelper.emit(EventHelper.CAMERA_LOOK, { pos: this.player.getCenterPosition(), isDirect: true })
+        this.scheduleOnce(() => {
+            EventHelper.emit(EventHelper.CAMERA_LOOK, { pos: target.getCenterPosition(), isDirect: true })
+        })
     }
 
     public changeCameraTarget(actor: Actor, offset?: cc.Vec3) {

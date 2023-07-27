@@ -34,6 +34,7 @@ export default class ItemManager extends BaseManager {
     // LIFE-CYCLE CALLBACKS:
     groundList: Item[] = []
     lastGroundItem: Item
+    dungeon: Dungeon
 
     onLoad() {
         this.coinPool = new cc.NodePool()
@@ -79,10 +80,8 @@ export default class ItemManager extends BaseManager {
     private getCoinItem(value: number, pos: cc.Vec3, parentNode: cc.Node, isCoin: boolean, isReal: boolean) {
         let pool = isCoin ? this.coinPool : this.oilPool
         let prefab = isCoin ? this.coin : this.oilGold
-        let player
-        let dungeon = parentNode.getComponent(Dungeon)
-        if (dungeon) {
-            player = dungeon.player
+        if (!this.dungeon) {
+            this.dungeon = parentNode.getComponent(Dungeon)
         }
         let itemPrefab: cc.Node = null
         if (pool.size() > 0) {
@@ -98,7 +97,7 @@ export default class ItemManager extends BaseManager {
         itemPrefab.position = p
         let item = isCoin ? itemPrefab.getComponent(Coin) : itemPrefab.getComponent(OilGold)
         item.entity.Transform.position = p
-        item.player = player
+        item.player = this.dungeon.player
         item.isReal = isReal
         item.changeValue(value)
         item.node.zIndex = IndexZ.OVERHEAD

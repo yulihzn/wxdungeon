@@ -956,6 +956,7 @@ export default class BuildingManager extends BaseManager {
             door.isTransparent = type == 3
             door.isHidden = type == 4
             door.isDecorate = isDecorate
+            door.setOpen(true, true)
             this.doors.push(door)
         })
     }
