@@ -302,6 +302,7 @@ export default class Dungeon extends cc.Component {
         //初始化玩家和控制器
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player)
         let controller = this.player.addComponent(PlayerController)
+        controller.player = this.player
         this.player.statusIconList = this.statusIconList
         this.player.node.parent = this.node
         this.player.controller = controller

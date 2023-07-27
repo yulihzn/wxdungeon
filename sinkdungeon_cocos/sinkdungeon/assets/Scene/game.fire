@@ -17,13 +17,13 @@
         "__id__": 2
       },
       {
-        "__id__": 1851
+        "__id__": 1852
       },
       {
         "__id__": 259
       },
       {
-        "__id__": 1857
+        "__id__": 1858
       },
       {
         "__id__": 1768
@@ -84,31 +84,31 @@
         "__id__": 3
       },
       {
-        "__id__": 1836
+        "__id__": 1837
       },
       {
         "__id__": 10
       },
       {
-        "__id__": 1840
+        "__id__": 1841
       },
       {
         "__id__": 41
       },
       {
-        "__id__": 1846
+        "__id__": 1847
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 1848
-      },
-      {
         "__id__": 1849
       },
       {
         "__id__": 1850
+      },
+      {
+        "__id__": 1851
       }
     ],
     "_prefab": null,
@@ -543,6 +543,9 @@
       },
       {
         "__id__": 1835
+      },
+      {
+        "__id__": 1836
       }
     ],
     "_prefab": null,
@@ -84840,6 +84843,19 @@
     "_id": "7bMB3gZS5KralFrRZcn8Rz"
   },
   {
+    "__type__": "8038fBTh+dOxqkqEKLB2G6q",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 10
+    },
+    "_enabled": true,
+    "playerPrefab": {
+      "__uuid__": "58cadd35-a65d-4992-953b-791418fb7bde"
+    },
+    "_id": "882fH5OytBg6amnLSFAz0U"
+  },
+  {
     "__type__": "cc.Node",
     "_name": "Background",
     "_objFlags": 0,
@@ -84850,13 +84866,13 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 1837
-      },
-      {
         "__id__": 1838
       },
       {
         "__id__": 1839
+      },
+      {
+        "__id__": 1840
       }
     ],
     "_prefab": null,
@@ -84912,7 +84928,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1836
+      "__id__": 1837
     },
     "_enabled": true,
     "_materials": [
@@ -84946,7 +84962,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1836
+      "__id__": 1837
     },
     "_enabled": true,
     "_layoutSize": {
@@ -84978,7 +84994,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1836
+      "__id__": 1837
     },
     "_enabled": true,
     "alignMode": 0,
@@ -85009,16 +85025,16 @@
     },
     "_children": [
       {
-        "__id__": 1841
+        "__id__": 1842
       },
       {
-        "__id__": 1843
+        "__id__": 1844
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 1845
+        "__id__": 1846
       }
     ],
     "_prefab": null,
@@ -85074,13 +85090,13 @@
     "_name": "joystickbg",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 1840
+      "__id__": 1841
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 1842
+        "__id__": 1843
       }
     ],
     "_prefab": null,
@@ -85136,7 +85152,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1841
+      "__id__": 1842
     },
     "_enabled": true,
     "_materials": [
@@ -85168,13 +85184,13 @@
     "_name": "joystickbar",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 1840
+      "__id__": 1841
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 1844
+        "__id__": 1845
       }
     ],
     "_prefab": null,
@@ -85230,7 +85246,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1843
+      "__id__": 1844
     },
     "_enabled": true,
     "_materials": [
@@ -85262,15 +85278,15 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1840
+      "__id__": 1841
     },
     "_enabled": true,
     "anglePreDirQuadrant": 23,
     "fixedPoint": {
-      "__id__": 1841
+      "__id__": 1842
     },
     "movePoint": {
-      "__id__": 1843
+      "__id__": 1844
     },
     "movePointMoveRadius": 100,
     "_id": "6crppfkhFOBKE8+byM3L0A"
@@ -85286,7 +85302,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 1847
+        "__id__": 1848
       }
     ],
     "_prefab": null,
@@ -85342,7 +85358,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1846
+      "__id__": 1847
     },
     "_enabled": true,
     "_cullingMask": 16,
@@ -85436,16 +85452,16 @@
     },
     "_children": [
       {
-        "__id__": 1852
+        "__id__": 1853
       },
       {
-        "__id__": 1854
+        "__id__": 1855
       }
     ],
     "_active": false,
     "_components": [
       {
-        "__id__": 1856
+        "__id__": 1857
       }
     ],
     "_prefab": null,
@@ -85501,13 +85517,13 @@
     "_name": "joystickbg",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 1851
+      "__id__": 1852
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 1853
+        "__id__": 1854
       }
     ],
     "_prefab": null,
@@ -85563,7 +85579,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1852
+      "__id__": 1853
     },
     "_enabled": true,
     "_materials": [],
@@ -85591,13 +85607,13 @@
     "_name": "joystickbar",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 1851
+      "__id__": 1852
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 1855
+        "__id__": 1856
       }
     ],
     "_prefab": null,
@@ -85653,7 +85669,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1854
+      "__id__": 1855
     },
     "_enabled": true,
     "_materials": [],
@@ -85681,15 +85697,15 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1851
+      "__id__": 1852
     },
     "_enabled": true,
     "anglePreDirQuadrant": 23,
     "fixedPoint": {
-      "__id__": 1852
+      "__id__": 1853
     },
     "movePoint": {
-      "__id__": 1854
+      "__id__": 1855
     },
     "movePointMoveRadius": 100,
     "_id": "26ftwOIN1AlbMDDNd6gV2S"
@@ -85703,16 +85719,16 @@
     },
     "_children": [
       {
-        "__id__": 1858
+        "__id__": 1859
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 1860
+        "__id__": 1861
       },
       {
-        "__id__": 1861
+        "__id__": 1862
       }
     ],
     "_prefab": null,
@@ -85768,13 +85784,13 @@
     "_name": "label",
     "_objFlags": 512,
     "_parent": {
-      "__id__": 1857
+      "__id__": 1858
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 1859
+        "__id__": 1860
       }
     ],
     "_prefab": null,
@@ -85830,7 +85846,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1858
+      "__id__": 1859
     },
     "_enabled": true,
     "_materials": [
@@ -85863,7 +85879,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1857
+      "__id__": 1858
     },
     "_enabled": true,
     "_materials": [
@@ -85895,11 +85911,11 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 1857
+      "__id__": 1858
     },
     "_enabled": true,
     "label": {
-      "__id__": 1859
+      "__id__": 1860
     },
     "_id": "7cRIyk6BBJwLh2wGrncYwV"
   }

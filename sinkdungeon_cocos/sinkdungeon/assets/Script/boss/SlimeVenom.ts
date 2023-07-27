@@ -19,6 +19,9 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class SlimeVenom extends Actor {
+    takeDamage(damage: DamageData, from: FromData, actor?: Actor): boolean {
+        return false
+    }
     venom1: cc.Node
     venom2: cc.Node
     venom3: cc.Node
@@ -27,7 +30,7 @@ export default class SlimeVenom extends Actor {
     sprite: cc.Node
     isHide = false
     isForever = false
-    from: FromData = FromData.getClone('史莱姆毒液', 'venom', this.node.position)
+    from: FromData = FromData.getClone('史莱姆毒液', 'venom', cc.Vec3.ZERO)
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -92,9 +95,7 @@ export default class SlimeVenom extends Actor {
     getCenterPosition(): cc.Vec3 {
         return this.node.position.clone()
     }
-    takeDamage(damge: DamageData) {
-        return false
-    }
+
     actorName() {
         return '史莱姆毒液'
     }

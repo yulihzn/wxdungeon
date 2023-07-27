@@ -16,6 +16,6 @@ export default class BaseController extends cc.Component {
     player: Player
     // LIFE-CYCLE CALLBACKS:
     protected get CanControl() {
-        return this.player.dungeon && this.player && this.player.sc.isShow
+        return this.player && this.player.dungeon && this.player.sc.isShow
     }
 }

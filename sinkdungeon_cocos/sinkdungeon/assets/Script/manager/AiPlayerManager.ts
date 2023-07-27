@@ -52,7 +52,7 @@ export default class AiPlayerManager extends BaseManager {
         data.valueCopy(playerData)
         player.data = data
         let controller = player.addComponent(AiController)
-        controller.player = cc.instantiate(this.playerPrefab).getComponent(Player)
+        controller.player = player
         player.controller = controller
         player.node.parent = dungeon.node
         player.dungeon = dungeon
