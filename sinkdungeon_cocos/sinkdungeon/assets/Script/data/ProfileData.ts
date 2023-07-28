@@ -56,4 +56,6 @@ export default class ProfileData {
     dreamCostTime = 0 //做梦需要消耗的时间
     cycle = 0 //周目
     metalId = ''
+
+    lastPlayerId = '' //最后被控制的Player
 }

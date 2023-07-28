@@ -1,7 +1,7 @@
-import InventoryData from "../data/InventoryData";
-import Logic from "../logic/Logic";
-import InventoryManager from "../manager/InventoryManager";
-import InventoryDialog from "./dialog/InventoryDialog";
+import InventoryData from '../data/InventoryData'
+import Logic from '../logic/Logic'
+import InventoryManager from '../manager/InventoryManager'
+import InventoryDialog from './dialog/InventoryDialog'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -13,79 +13,83 @@ import InventoryDialog from "./dialog/InventoryDialog";
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const { ccclass, property } = cc._decorator;
+const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class InventoryItem extends cc.Component {
-    static readonly TYPE_EMPTY = 0;
-    static readonly TYPE_EQUIP = 1;
-    static readonly TYPE_ITEM = 2;
-    isSelect = false;
+    static readonly TYPE_EMPTY = 0
+    static readonly TYPE_EQUIP = 1
+    static readonly TYPE_ITEM = 2
+    static readonly FIELD_EQUIP = 0 //装备栏位
+    static readonly FIELD_ITEM = 1 //物品栏位
+    static readonly FIELD_BAG = 2 //背包栏位
+    static readonly FIELD_CONTAINER = 3 //容器栏位
+    isSelect = false
     @property(cc.Sprite)
-    sprite: cc.Sprite = null;
+    sprite: cc.Sprite = null
     @property(cc.Label)
-    label: cc.Label = null;
-    index = 0;//列表里的下标
-    data: InventoryData = new InventoryData();
-    dialog: InventoryDialog;
+    label: cc.Label = null
+    index = 0 //列表里的下标
+    data: InventoryData = new InventoryData()
+    dialog: InventoryDialog
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
-            if (this.isSelect && this.index == this.dialog.currentSelectIndex) {
-                this.isSelect = false;
-            } else {
-                this.isSelect = this.data.type != InventoryItem.TYPE_EMPTY;
-            }
-            this.dialog.clearSelect();
-            if (this.isSelect) {
-                this.dialog.showSelect(this);
-            }
-
-        }, this)
-
+        this.node.on(
+            cc.Node.EventType.TOUCH_END,
+            (event: cc.Event.EventTouch) => {
+                if (this.isSelect && this.index == this.dialog.currentSelectIndex) {
+                    this.isSelect = false
+                } else {
+                    this.isSelect = this.data.type != InventoryItem.TYPE_EMPTY
+                }
+                this.dialog.clearSelect()
+                if (this.isSelect) {
+                    this.dialog.showSelect(this)
+                }
+            },
+            this
+        )
     }
     init(inventoryDialog: InventoryDialog, index: number, data: InventoryData) {
-        this.dialog = inventoryDialog;
-        this.index = index;
-        this.isSelect = false;
-        this.updateData(data);
+        this.dialog = inventoryDialog
+        this.index = index
+        this.isSelect = false
+        this.updateData(data)
     }
     updateData(data: InventoryData) {
-        this.isSelect = false;
-        this.data.valueCopy(data);
-        this.label.string = ``;
-        this.sprite.spriteFrame = null;
-        this.node.color = cc.Color.WHITE;
+        this.isSelect = false
+        this.data.valueCopy(data)
+        this.label.string = ``
+        this.sprite.spriteFrame = null
+        this.node.color = cc.Color.WHITE
         if (this.data.type == InventoryItem.TYPE_ITEM && this.data.itemData) {
-            this.label.string = `${data.itemData.count > 0 ? ('x' + data.itemData.count) : ''}`;
-            this.sprite.spriteFrame = Logic.spriteFrameRes(this.data.itemData.resName);
+            this.label.string = `${data.itemData.count > 0 ? 'x' + data.itemData.count : ''}`
+            this.sprite.spriteFrame = Logic.spriteFrameRes(this.data.itemData.resName)
         } else if (this.data.equipmentData) {
-            let spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img);
+            let spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img)
             if (this.data.equipmentData.equipmetType == InventoryManager.CLOTHES) {
-                spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img + 'anim0');
+                spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img + 'anim0')
             } else if (this.data.equipmentData.equipmetType == InventoryManager.HELMET) {
-                spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img + 'anim0');
+                spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img + 'anim0')
             } else if (this.data.equipmentData.equipmetType == InventoryManager.REMOTE) {
-                spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img + 'anim0');
+                spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img + 'anim0')
             }
-            this.sprite.spriteFrame = spriteFrame;
-            let color1 = cc.color(255, 255, 255).fromHEX(this.data.equipmentData.color);
-            let color2 = cc.color(255, 255, 255).fromHEX(this.data.equipmentData.titlecolor);
-            this.sprite.node.color = color1;
-            this.node.color = color2;
+            this.sprite.spriteFrame = spriteFrame
+            let color1 = cc.color(255, 255, 255).fromHEX(this.data.equipmentData.color)
+            let color2 = cc.color(255, 255, 255).fromHEX(this.data.equipmentData.titlecolor)
+            this.sprite.node.color = color1
+            this.node.color = color2
         }
     }
     setEmpty() {
-        this.data.setEmpty();
-        this.label.string = ``;
-        this.sprite.spriteFrame = null;
-        this.node.color = cc.Color.WHITE;
+        this.data.setEmpty()
+        this.label.string = ``
+        this.sprite.spriteFrame = null
+        this.node.color = cc.Color.WHITE
     }
-    start() {
-
-    }
+    start() {}
 
     // update (dt) {}
 }

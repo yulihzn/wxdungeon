@@ -20,6 +20,11 @@ import DataUtils from '../utils/DataUtils'
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
+/**
+ * 整改计划
+ * 每个角色有独立的两套装备物品和背包且额外封装起来，但是两个角色的容貌是一样的每次梦境结束的时候可以同步部分数据
+ * 现实的npc也会有对应的梦境复制体，
+ */
 export default class PlayerData {
     static DEFAULT_HEALTH = 10
     static DEFAULT_SPEED = 6
