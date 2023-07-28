@@ -121,7 +121,7 @@ export default class EquipmentData extends BaseData {
                 this.exTriggers.push(d)
             }
         }
-        this.affixs = DataUtils.copyListValue(this.affixs, data.affixs, arg0 => {
+        this.affixs = DataUtils.copyListValue(data.affixs, arg0 => {
             return new AffixData().valueCopy(arg0)
         })
         this.updateFinalCommon()

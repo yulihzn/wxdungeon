@@ -37,29 +37,37 @@ export default class DataUtils {
             }
         }
     }
-    static copyMapValue<T, K>(map1: Map<T, K>, map2: Map<T, K>, callback: (arg0: K) => K) {
-        if (!map1) {
-            map1 = new Map<T, K>()
-        }
-        if (map1 && map2) {
-            map1.clear()
-            map2.forEach((element, key) => {
-                map1.set(key, callback(element))
+    static copyMapValue<T, K>(map: Map<T, K>, callback: (arg0: K) => K) {
+        let returnMap: Map<T, K> = new Map()
+        if (map) {
+            map.forEach((element, key) => {
+                returnMap.set(key, callback(element))
             })
         }
-        return map1
+        return returnMap
     }
-    static copyListValue<T>(list1: T[], list2: T[], callback: (arg0: T) => T) {
-        if (!list1) {
-            list1 = []
-        }
-        if (list1 && list2) {
-            list1 = []
-            for (let c of list2) {
-                list1.push(callback(c))
+    static copyListValue<T>(list: T[], callback: (arg0: T) => T) {
+        let returnList: T[] = []
+        if (list) {
+            for (let c of list) {
+                returnList.push(callback(c))
             }
         }
-        return list1
+        return returnList
+    }
+    static cloneKeyValue(data: { [key: string]: any }): { [key: string]: any } {
+        let newdata = {}
+        for (let key in data) {
+            newdata[key] = data[key]
+        }
+        return newdata
+    }
+    static cloneNumberKeyValue(data: { [key: number]: any }): { [key: number]: any } {
+        let newdata = {}
+        for (let key in data) {
+            newdata[key] = data[key]
+        }
+        return newdata
     }
     /**几率相加 范围0-100 */
     public static addRateFixed(origin: number, target: number): number {

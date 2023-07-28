@@ -30,6 +30,7 @@ import SettingsData from '../data/SettingsData'
 import Utils from '../utils/Utils'
 import AffixMapData from '../data/AffixMapData'
 import MetalTalentData from '../data/MetalTalentData'
+import DataUtils from '../utils/DataUtils'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -207,9 +208,9 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.dreamCostTime = Logic.dreamCostTime
         Logic.profileManager.data.savePointData = Logic.savePoinitData.clone()
         Logic.profileManager.data.groundOilGoldData = Logic.groundOilGoldData.clone()
-        Logic.profileManager.data.killPlayerCounts = Utils.cloneKeyValueNumber(Logic.killPlayerCounts)
-        Logic.profileManager.data.dialogueCounts = Utils.cloneKeyValue(Logic.dialogueCounts)
-        Logic.profileManager.data.playerMetals = Utils.cloneKeyValue(Logic.playerMetals)
+        Logic.profileManager.data.killPlayerCounts = DataUtils.cloneNumberKeyValue(Logic.killPlayerCounts)
+        Logic.profileManager.data.dialogueCounts = DataUtils.cloneKeyValue(Logic.dialogueCounts)
+        Logic.profileManager.data.playerMetals = DataUtils.cloneKeyValue(Logic.playerMetals)
         Logic.profileManager.data.oilGolds = Logic.oilGolds
         Logic.profileManager.data.coins = Logic.coins
         Logic.profileManager.data.coinCounts = Logic.coinCounts
@@ -273,10 +274,10 @@ export default class Logic extends cc.Component {
         //重置bgm
         Logic.lastBgmIndex = 0
         //加载怪物击杀玩家数据
-        Logic.killPlayerCounts = Utils.cloneKeyValueNumber(Logic.profileManager.data.killPlayerCounts)
+        Logic.killPlayerCounts = DataUtils.cloneNumberKeyValue(Logic.profileManager.data.killPlayerCounts)
         //加载对话出现次数
-        Logic.dialogueCounts = Utils.cloneKeyValue(Logic.profileManager.data.dialogueCounts)
-        Logic.playerMetals = Utils.cloneKeyValue(Logic.profileManager.data.playerMetals)
+        Logic.dialogueCounts = DataUtils.cloneKeyValue(Logic.profileManager.data.dialogueCounts)
+        Logic.playerMetals = DataUtils.cloneKeyValue(Logic.profileManager.data.playerMetals)
         Logic.playerData.OilGoldData.valueCopy(Logic.getOilGoldData(Logic.oilGolds))
         Logic.metalId = Logic.profileManager.data.metalId
     }

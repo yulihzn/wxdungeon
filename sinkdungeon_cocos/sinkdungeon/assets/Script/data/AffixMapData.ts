@@ -12,10 +12,10 @@ export default class AffixMapData {
             return this
         }
         DataUtils.baseCopy(this, data)
-        this.affixs = DataUtils.copyListValue(this.affixs, data.affixs, arg0 => {
+        this.affixs = DataUtils.copyListValue(data.affixs, arg0 => {
             return arg0 ? arg0 : ''
         })
-        this.levels = DataUtils.copyListValue(this.levels, data.levels, arg0 => {
+        this.levels = DataUtils.copyListValue(data.levels, arg0 => {
             return arg0 ? arg0 : 0
         })
         return this

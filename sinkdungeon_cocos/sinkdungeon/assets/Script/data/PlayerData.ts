@@ -9,6 +9,9 @@ import TalentData from './TalentData'
 import Shield from '../logic/Shield'
 import LifeData from './LifeData'
 import DataUtils from '../utils/DataUtils'
+import ItemData from './ItemData'
+import InventoryData from './InventoryData'
+import Utils from '../utils/Utils'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -61,6 +64,16 @@ export default class PlayerData {
     private lifeData: LifeData
     private finalCommon: CommonData
     private needUpdateFinalCommon = true
+
+    //玩家装备列表
+    playerEquips: { [key: string]: EquipmentData } = {}
+    playerEquipsReality: { [key: string]: EquipmentData } = {}
+    //玩家物品列表
+    playerItemList: ItemData[] = new Array()
+    playerItemListReality: ItemData[] = new Array()
+    //玩家背包列表
+    playerInventoryList: InventoryData[] = new Array()
+    playerInventoryListReality: InventoryData[] = new Array()
 
     constructor() {
         this.equipmentTotalData = new EquipmentData()
@@ -163,6 +176,20 @@ export default class PlayerData {
         this.roomPos = data.roomPos ? cc.v3(data.roomPos.x, data.roomPos.y) : cc.v3(0, 0)
         this.chapterIndex = data.chapterIndex ? data.chapterIndex : 999
         this.chapterLevel = data.chapterLevel ? data.chapterLevel : 999
+        this.playerEquips = DataUtils.cloneKeyValue(data.playerEquips)
+        this.playerEquipsReality = DataUtils.cloneKeyValue(data.playerEquipsReality)
+        this.playerItemList = DataUtils.copyListValue(data.playerItemList, arg0 => {
+            return new ItemData().valueCopy(arg0)
+        })
+        this.playerItemListReality = DataUtils.copyListValue(data.playerItemListReality, arg0 => {
+            return new ItemData().valueCopy(arg0)
+        })
+        this.playerInventoryList = DataUtils.copyListValue(data.playerInventoryList, arg0 => {
+            return new InventoryData().valueCopy(arg0)
+        })
+        this.playerInventoryListReality = DataUtils.copyListValue(data.playerInventoryListReality, arg0 => {
+            return new InventoryData().valueCopy(arg0)
+        })
     }
 
     public clone(): PlayerData {

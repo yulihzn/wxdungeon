@@ -241,20 +241,7 @@ export default class Utils {
             }
         }
     }
-    static cloneKeyValue(data: { [key: string]: any }): { [key: string]: any } {
-        let newdata = {}
-        for (let key in data) {
-            newdata[key] = data[key]
-        }
-        return newdata
-    }
-    static cloneKeyValueNumber(data: { [key: number]: any }): { [key: number]: any } {
-        let newdata = {}
-        for (let key in data) {
-            newdata[key] = data[key]
-        }
-        return newdata
-    }
+
     static getMixColor(color1: string, color2: string): string {
         let c1 = cc.color().fromHEX(color1)
         let c2 = cc.color().fromHEX(color2)

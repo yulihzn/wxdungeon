@@ -22,9 +22,9 @@ export default class InventoryData extends BaseData {
     price: number
     type: number = 0
 
-    public valueCopy(data: InventoryData): void {
+    public valueCopy(data: InventoryData): InventoryData {
         if (!data) {
-            return
+            return this
         }
         DataUtils.baseCopy(this, data)
         // this.type = data.type ? data.type : 0;
@@ -46,6 +46,7 @@ export default class InventoryData extends BaseData {
         }
         this.itemData = data.itemData
         // this.createTime = data.createTime ? data.createTime : 0;
+        return this
     }
     public clone(): InventoryData {
         let e = new InventoryData()
