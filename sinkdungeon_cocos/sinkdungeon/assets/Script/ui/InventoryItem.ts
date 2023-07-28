@@ -20,10 +20,6 @@ export default class InventoryItem extends cc.Component {
     static readonly TYPE_EMPTY = 0
     static readonly TYPE_EQUIP = 1
     static readonly TYPE_ITEM = 2
-    static readonly FIELD_EQUIP = 0 //装备栏位
-    static readonly FIELD_ITEM = 1 //物品栏位
-    static readonly FIELD_BAG = 2 //背包栏位
-    static readonly FIELD_CONTAINER = 3 //容器栏位
     isSelect = false
     @property(cc.Sprite)
     sprite: cc.Sprite = null

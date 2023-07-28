@@ -21,7 +21,6 @@ export default class InventoryData extends BaseData {
     itemData: ItemData
     price: number
     type: number = 0
-    fieldType: number = 0
 
     public valueCopy(data: InventoryData): void {
         if (!data) {

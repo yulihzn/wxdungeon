@@ -150,4 +150,8 @@ export default class EquipmentData extends BaseData {
         }
         return this
     }
+    toJSON(): any {
+        const { finalCommon, ...rest } = this
+        return rest
+    }
 }

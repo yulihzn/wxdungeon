@@ -39,6 +39,7 @@ export default class PlayerData {
     posZ: number = 0
     roomPos: cc.Vec3 = cc.v3(0, 0)
     isWakeUp = false
+    isPrimary = false //是否是主角
 
     currentHealth: number = PlayerData.DEFAULT_HEALTH
     currentDream: number = PlayerData.DEFAULT_DREAM
@@ -311,5 +312,9 @@ export default class PlayerData {
             return cc.v3(1, 1)
         }
         return cc.v3(maxDream * rate, maxDream)
+    }
+    toJSON(): any {
+        const { equipmentTotalData, statusTotalData, ...rest } = this
+        return rest
     }
 }

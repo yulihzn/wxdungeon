@@ -24,6 +24,7 @@ export default class ProfileData {
     chapterIndex: number = 0 //当前章节
     chapterMaxIndex: number = 0 //到达过的最大章节
     playerData: PlayerData = new PlayerData()
+    playerDatas: { [key: string]: PlayerData } = {}
     //玩家装备列表
     playerEquips: { [key: string]: EquipmentData } = {}
     playerEquipsReality: { [key: string]: EquipmentData } = {}
