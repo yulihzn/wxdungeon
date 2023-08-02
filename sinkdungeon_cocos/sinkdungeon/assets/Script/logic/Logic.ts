@@ -148,6 +148,7 @@ export default class Logic extends cc.Component {
     static aiPlayerList: PlayerData[] = []
     static playerMetals: { [key: string]: MetalTalentData } = {} //玩家翠金天赋点
     static metalId = ''
+    static furnitureMap: Map<String, BuildingData> = new Map()
 
     onLoad() {
         Logic.settings.valueCopy(LocalStorage.getSystemSettings())
@@ -219,7 +220,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.saveData(Logic.jumpSlotIndex)
         LocalStorage.saveData(LocalStorage.KEY_REAL_COINS, Logic.realCoins)
         LocalStorage.setLastSaveSlotKey(Logic.jumpSlotIndex)
-        Logic.inventoryManager.furnitureMap.forEach(value => {
+        Logic.furnitureMap.forEach(value => {
             LocalStorage.saveFurnitureData(value)
         })
     }
@@ -280,6 +281,8 @@ export default class Logic extends cc.Component {
         Logic.playerMetals = DataUtils.cloneKeyValue(Logic.profileManager.data.playerMetals)
         Logic.playerData.OilGoldData.valueCopy(Logic.getOilGoldData(Logic.oilGolds))
         Logic.metalId = Logic.profileManager.data.metalId
+        //清空家具信息,家具信息在添加家具的时候会添加
+        Logic.furnitureMap = new Map()
     }
     static resetInventoryAndOtherData() {
         Logic.inventoryManager = new InventoryManager()

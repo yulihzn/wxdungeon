@@ -111,7 +111,7 @@ export default class InventoryDialog extends BaseDialog {
                 let data = Logic.inventoryManager.inventoryList[detail.index]
                 let furnitureId: string = detail.furnitureId
                 if (furnitureId && furnitureId.length > 0) {
-                    data = Logic.inventoryManager.furnitureMap.get(furnitureId).storageList[detail.index]
+                    data = Logic.furnitureMap.get(furnitureId).storageList[detail.index]
                     this.otherList[detail.index].updateData(data)
                 } else {
                     this.list[detail.index].updateData(data)
@@ -287,7 +287,7 @@ export default class InventoryDialog extends BaseDialog {
         if (this.furnitureId.length < 1) {
             return
         }
-        let furnitureData = Logic.inventoryManager.furnitureMap.get(this.furnitureId)
+        let furnitureData = Logic.furnitureMap.get(this.furnitureId)
         if (!furnitureData) {
             return
         }
@@ -457,7 +457,7 @@ export default class InventoryDialog extends BaseDialog {
             }
             //背包已满检查是否打开储物箱，添加到储物箱
             if (!isAdded && this.furnitureId && this.furnitureId.length > 0) {
-                list = Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList
+                list = Logic.furnitureMap.get(this.furnitureId).storageList
                 isAdded = InventoryDialog.addEquipOrItemToBag(current.data, list, this.otherList.length, false, this.otherList)
             }
             //背包已满，或者打开的储物箱已满，直接放置到地上
@@ -503,7 +503,7 @@ export default class InventoryDialog extends BaseDialog {
             }
             //背包已满检查是否打开储物箱，添加到储物箱
             if (!isAdded && this.furnitureId && this.furnitureId.length > 0) {
-                list = Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList
+                list = Logic.furnitureMap.get(this.furnitureId).storageList
                 isAdded = InventoryDialog.addEquipOrItemToBag(current.data, list, this.otherList.length, true, this.otherList)
             }
             //背包已满，或者打开的储物箱已满，直接放置到地上
@@ -671,7 +671,7 @@ export default class InventoryDialog extends BaseDialog {
                     } else if (this.furnitureId && this.furnitureId.length > 0) {
                         isAdded = InventoryDialog.addEquipOrItemToBag(
                             current.data,
-                            Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList,
+                            Logic.furnitureMap.get(this.furnitureId).storageList,
                             this.otherList.length,
                             false,
                             this.otherList
@@ -698,7 +698,7 @@ export default class InventoryDialog extends BaseDialog {
                     } else if (this.furnitureId && this.furnitureId.length > 0) {
                         isAdded = InventoryDialog.addEquipOrItemToBag(
                             current.data,
-                            Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList,
+                            Logic.furnitureMap.get(this.furnitureId).storageList,
                             this.otherList.length,
                             true,
                             this.otherList
@@ -724,7 +724,7 @@ export default class InventoryDialog extends BaseDialog {
         let isOther = this.currentSelectIndex >= InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP + InventoryManager.MAX_ITEM
         if (isOther) {
             inventoryItemList = this.otherList
-            dataList = Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList
+            dataList = Logic.furnitureMap.get(this.furnitureId).storageList
             selectIndex = this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP - InventoryManager.MAX_ITEM
         }
         return [selectIndex, dataList, inventoryItemList]

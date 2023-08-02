@@ -17,12 +17,12 @@ import Dungeon from './Dungeon'
 import FromData from '../data/FromData'
 import ItemData from '../data/ItemData'
 import Item from '../item/Item'
-import SuitData from '../data/SuitData'
 import EquipmentAndItemDialog from '../ui/dialog/EquipmentAndItemDialog'
 import LocalStorage from '../utils/LocalStorage'
 import Utils from '../utils/Utils'
 import InventoryDialog from '../ui/dialog/InventoryDialog'
 import TriggerData from '../data/TriggerData'
+import InventoryData from '../data/InventoryData'
 @ccclass
 export default class Inventory extends cc.Component {
     @property(Dungeon)
@@ -90,6 +90,7 @@ export default class Inventory extends cc.Component {
 
     itemPositions: cc.Vec3[] = []
     itemCovers: cc.Node[] = []
+    isInitFinish = false
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -103,20 +104,20 @@ export default class Inventory extends cc.Component {
         EventHelper.on(EventHelper.PLAYER_CHANGEEQUIPMENT, detail => {
             if (this.node) {
                 this.refreshEquipment(detail.equipmetType, detail.equipData, false, detail.isReplace)
-                this.refreshSuits()
-                Logic.inventoryManager.updateTotalEquipData()
+                this.inventoryManager.refreshSuits()
+                this.inventoryManager.updateTotalEquipData()
             }
         })
         EventHelper.on(EventHelper.PLAYER_EQUIPMENT_REFRESH, detail => {
             if (this.node) {
                 this.refreshEquipmentRes(detail.equipmetType)
-                this.refreshSuits()
-                Logic.inventoryManager.updateTotalEquipData()
+                this.inventoryManager.refreshSuits()
+                this.inventoryManager.updateTotalEquipData()
             }
         })
         EventHelper.on(EventHelper.PLAYER_ITEM_REFRESH, detail => {
             if (this.node) {
-                this.refreshItemRes()
+                this.refreshItemRes(this.inventoryManager.itemList)
             }
         })
         if (this.equipmentGroundDialog) {
@@ -177,6 +178,11 @@ export default class Inventory extends cc.Component {
         this.equipSprites.set(InventoryManager.GLOVES, this.gloves)
         this.equipSprites.set(InventoryManager.SHOES, this.shoes)
         this.equipSprites.set(InventoryManager.CLOAK, this.cloak)
+        this.isInitFinish = true
+    }
+    /**重置装备和物品栏 */
+    reset(inventoryManager: InventoryManager) {
+        this.inventoryManager = inventoryManager
     }
     private initDialog(isGround: boolean) {
         let node = cc.instantiate(this.equipmentAndItemDialogPrefab)
@@ -220,7 +226,7 @@ export default class Inventory extends cc.Component {
         for (let key in this.inventoryManager.equips) {
             this.refreshEquipment(key, this.inventoryManager.equips[key].clone(), true, false)
         }
-        this.refreshItemRes()
+        this.refreshItemRes(this.inventoryManager.itemList)
         let itemSpriteList = [this.itemsprite1, this.itemsprite2, this.itemsprite3, this.itemsprite4, this.itemsprite5, this.itemsprite6]
         let itemLabelList = [this.itemlabel1, this.itemlabel2, this.itemlabel3, this.itemlabel4, this.itemlabel5, this.itemlabel6]
         for (let i = 0; i < itemLabelList.length; i++) {
@@ -228,13 +234,13 @@ export default class Inventory extends cc.Component {
             this.addItemSpriteTouchEvent(itemSpriteList[i], itemLabelList[i].node.parent, i)
             this.itemCovers.push(itemLabelList[i].node.parent.getChildByName('cover'))
         }
-        this.refreshSuits()
+        this.inventoryManager.refreshSuits()
         Logic.inventoryManager.updateTotalEquipData()
     }
 
     private addEquipSpriteTouchEvent(sprite: cc.Sprite, equipmetType: string) {
         sprite.node.parent.on(cc.Node.EventType.TOUCH_START, () => {
-            this.showDialog(equipmetType, sprite)
+            this.showEquipDialog(equipmetType, sprite)
         })
         sprite.node.parent.on(cc.Node.EventType.TOUCH_END, () => {
             this.equipmentAndItemDialog.hideDialog()
@@ -243,13 +249,13 @@ export default class Inventory extends cc.Component {
             this.equipmentAndItemDialog.hideDialog()
         })
         sprite.node.parent.on(cc.Node.EventType.MOUSE_ENTER, () => {
-            this.showDialog(equipmetType, sprite)
+            this.showEquipDialog(equipmetType, sprite)
         })
         sprite.node.parent.on(cc.Node.EventType.MOUSE_LEAVE, () => {
             this.equipmentAndItemDialog.hideDialog()
         })
     }
-    private showDialog(equipmetType: string, sprite: cc.Sprite) {
+    private showEquipDialog(equipmetType: string, sprite: cc.Sprite) {
         if (sprite.spriteFrame == null) {
             return
         }
@@ -310,38 +316,6 @@ export default class Inventory extends cc.Component {
         })
     }
 
-    refreshSuits() {
-        this.inventoryManager.suitMap = {}
-        this.inventoryManager.suitEquipMap = {}
-        //遍历列表计算相应套装集齐数
-        for (let key in this.inventoryManager.equips) {
-            let equip = this.inventoryManager.equips[key]
-            if (equip.suitType.length < 1) {
-                continue
-            }
-            if (!this.inventoryManager.suitMap[equip.suitType]) {
-                let data = new SuitData()
-                data.valueCopy(Logic.suits[equip.suitType])
-                data.count = 1
-                this.inventoryManager.suitMap[equip.suitType] = data
-            } else {
-                this.inventoryManager.suitMap[equip.suitType].count++
-            }
-        }
-        //遍历套装列表 添加玩家状态 生成对应装备的套装属性表
-        for (let key in this.inventoryManager.suitMap) {
-            let suit = this.inventoryManager.suitMap[key]
-            let e = new EquipmentData()
-            if (suit) {
-                for (let i = 0; i < suit.count - 1; i++) {
-                    if (i < suit.EquipList.length) {
-                        e.add(suit.EquipList[i]) //叠加套装各种几率
-                    }
-                }
-                this.inventoryManager.suitEquipMap[key] = e
-            }
-        }
-    }
     private refreshEquipmentRes(equipmetType: string) {
         if (!equipmetType) {
             return
@@ -414,13 +388,13 @@ export default class Inventory extends cc.Component {
         //1.如果是捡起到背包或者购买（非替换非初始化），且对应位置有装备，则直接放置到背包
         //2.如果当前装备等级高于玩家，则直接放置到背包
         if ((!isReplace && !isInit && equip && hasEquip) || equipDataNew.requireLevel > Logic.playerData.OilGoldData.level) {
-            this.setEquipmentToBag(equipDataNew, isInit)
+            this.setEquipmentToBag(equipDataNew, isInit, this.inventoryManager.inventoryList)
             return
         }
         //2.如果是长按的替换操作，替换新的，移出旧的到背包
         //更新当前装备数据
         if (equip) {
-            this.setEquipmentToBag(equip, isInit)
+            this.setEquipmentToBag(equip, isInit, this.inventoryManager.inventoryList)
             equip.valueCopy(equipDataNew)
             if (!isInit) {
                 EventHelper.emit(EventHelper.HUD_INVENTORY_EQUIP_UPDATE)
@@ -431,7 +405,7 @@ export default class Inventory extends cc.Component {
             case InventoryManager.REMOTE:
                 if (this.inventoryManager.equips[equipmetType].equipmetType != InventoryManager.EMPTY) {
                     //替换盾牌到背包
-                    this.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.SHIELD], isInit)
+                    this.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.SHIELD], isInit, this.inventoryManager.inventoryList)
                     //清空盾牌数据
                     this.inventoryManager.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData())
                     this.refreshEquipmentRes(InventoryManager.SHIELD)
@@ -441,7 +415,7 @@ export default class Inventory extends cc.Component {
                 //如果当前盾牌不为空清空远程并展示盾牌栏，否则显示远程隐藏盾牌栏
                 if (this.inventoryManager.equips[equipmetType].equipmetType != InventoryManager.EMPTY) {
                     //替换远程到背包
-                    this.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.REMOTE], isInit)
+                    this.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.REMOTE], isInit, this.inventoryManager.inventoryList)
                     this.inventoryManager.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData())
                     this.refreshEquipmentRes(InventoryManager.REMOTE)
                 }
@@ -495,16 +469,6 @@ export default class Inventory extends cc.Component {
                 }
             }
             let currentTime = Date.now()
-            this.equipCovers.forEach((node, key) => {
-                let data = this.inventoryManager.equips[key]
-                if (data) {
-                    let percent = (currentTime - data.lastTime) / (data.cooldown * 1000) //当前百分比
-                    if (percent > 1) {
-                        percent = 1
-                    }
-                    node.height = node.width * (1 - percent)
-                }
-            })
             for (let key in this.equipCovers) {
                 let data = this.inventoryManager.equips[key]
                 if (data) {
@@ -561,7 +525,7 @@ export default class Inventory extends cc.Component {
             } else {
                 this.inventoryManager.itemList[itemIndex].valueCopy(item)
             }
-            this.refreshItemRes()
+            this.refreshItemRes(this.inventoryManager.itemList)
             if (item.resName != Item.EMPTY) {
                 EventHelper.emit(EventHelper.PLAYER_USEITEM, { itemData: item })
             }
@@ -610,42 +574,40 @@ export default class Inventory extends cc.Component {
                 for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
                     this.inventoryManager.itemList[i].valueCopy(arr[i])
                 }
-                this.setItemToBag(item0)
+                this.setItemToBag(item0, this.inventoryManager.inventoryList)
             } else {
                 //2.如果是捡起到背包或者购买，直接放置到背包
-                this.setItemToBag(itemDataNew)
+                this.setItemToBag(itemDataNew, this.inventoryManager.inventoryList)
             }
         }
-        this.refreshItemRes()
+        this.refreshItemRes(this.inventoryManager.itemList)
     }
-    private refreshItemRes() {
+    private refreshItemRes(itemList: ItemData[]) {
         let itemSpriteList = [this.itemsprite1, this.itemsprite2, this.itemsprite3, this.itemsprite4, this.itemsprite5, this.itemsprite6]
         let itemLabelList = [this.itemlabel1, this.itemlabel2, this.itemlabel3, this.itemlabel4, this.itemlabel5, this.itemlabel6]
         for (let i = 0; i < itemSpriteList.length; i++) {
-            let item = this.inventoryManager.itemList[i]
+            let item = itemList[i]
             itemSpriteList[i].spriteFrame = Logic.spriteFrameRes(item.resName)
             itemLabelList[i].string = `${item.count > 0 ? 'x' + item.count : ''}`
         }
     }
-    private setEquipmentToBag(equipData: EquipmentData, isInit: boolean) {
+    private setEquipmentToBag(equipData: EquipmentData, isInit: boolean, inventoryList: InventoryData[]) {
         //来自初始化或者空装备直接返回
         if (isInit || equipData.equipmetType == InventoryManager.EMPTY) {
             return
         }
-        let list = Logic.inventoryManager.inventoryList
         let data = InventoryManager.buildEquipInventoryData(equipData)
         //添加到背包
-        let isAdded = InventoryDialog.addEquipOrItemToBag(data, list, InventoryManager.MAX_BAG, false, null)
+        let isAdded = InventoryDialog.addEquipOrItemToBag(data, inventoryList, InventoryManager.MAX_BAG, false, null)
         if (!isAdded) {
             Utils.toast('物品栏已满！')
             EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: equipData.img, equipmentData: equipData })
         }
     }
-    private setItemToBag(itemData: ItemData) {
-        let list = Logic.inventoryManager.inventoryList
+    private setItemToBag(itemData: ItemData, inventoryList: InventoryData[]) {
         let data = InventoryManager.buildItemInventoryData(itemData)
         //添加到背包
-        let isAdded = InventoryDialog.addEquipOrItemToBag(data, list, InventoryManager.MAX_BAG, true, null)
+        let isAdded = InventoryDialog.addEquipOrItemToBag(data, inventoryList, InventoryManager.MAX_BAG, true, null)
         if (!isAdded) {
             Utils.toast('物品栏已满！')
             EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: itemData.resName, count: itemData.count })

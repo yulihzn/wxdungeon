@@ -253,7 +253,7 @@ export default class Furniture extends Building {
             furnitureData.purchased = true
         }
         this.data.valueCopy(furnitureData)
-        Logic.inventoryManager.furnitureMap.set(furnitureData.id, this.data)
+        Logic.furnitureMap.set(furnitureData.id, this.data)
         if (this.data.purchased) {
             this.sprite.node.color = cc.color(255, 255, 255, 255)
             this.sprite.node.opacity = 255

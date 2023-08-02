@@ -6,6 +6,7 @@ import InventoryItem from '../ui/InventoryItem'
 import NextStep from '../utils/NextStep'
 import Item from '../item/Item'
 import BuildingData from '../data/BuildingData'
+import Logic from '../logic/Logic'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -57,7 +58,6 @@ export default class InventoryManager {
     equips: { [key: string]: EquipmentData } = {}
     suitMap: { [key: string]: SuitData } = {}
     suitEquipMap: { [key: string]: EquipmentData } = {}
-    furnitureMap: Map<String, BuildingData> = new Map()
     emptyEquipData = new EquipmentData()
     private totalEquipData = new EquipmentData()
     clear(): void {}
@@ -70,7 +70,6 @@ export default class InventoryManager {
         this.totalEquipData = new EquipmentData()
         this.suitMap = {}
         this.suitEquipMap = {}
-        this.furnitureMap = new Map()
         for (let name of InventoryManager.EQUIP_TAGS) {
             this.equips[name] = new EquipmentData()
         }
@@ -120,6 +119,40 @@ export default class InventoryManager {
         e.updateFinalCommon()
         this.totalEquipData = e
     }
+
+    refreshSuits() {
+        this.suitMap = {}
+        this.suitEquipMap = {}
+        //遍历列表计算相应套装集齐数
+        for (let key in this.equips) {
+            let equip = this.equips[key]
+            if (equip.suitType.length < 1) {
+                continue
+            }
+            if (!this.suitMap[equip.suitType]) {
+                let data = new SuitData()
+                data.valueCopy(Logic.suits[equip.suitType])
+                data.count = 1
+                this.suitMap[equip.suitType] = data
+            } else {
+                this.suitMap[equip.suitType].count++
+            }
+        }
+        //遍历套装列表 添加玩家状态 生成对应装备的套装属性表
+        for (let key in this.suitMap) {
+            let suit = this.suitMap[key]
+            let e = new EquipmentData()
+            if (suit) {
+                for (let i = 0; i < suit.count - 1; i++) {
+                    if (i < suit.EquipList.length) {
+                        e.add(suit.EquipList[i]) //叠加套装各种几率
+                    }
+                }
+                this.suitEquipMap[key] = e
+            }
+        }
+    }
+
     static isEquipTag(str: string) {
         if (!str || str.length < 1) {
             return false
