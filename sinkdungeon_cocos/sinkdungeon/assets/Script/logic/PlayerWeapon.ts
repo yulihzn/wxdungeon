@@ -143,7 +143,7 @@ export default class PlayerWeapon extends cc.Component {
         this.meleeWeapon.attack(data, fistCombo)
     }
     remoteAttack(data: PlayerData, cooldownNode: cc.Node, bulletArcExNum: number, bulletLineExNum: number): boolean {
-        if (this.player.inventoryManager.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.REMOTE) {
+        if (this.player.inventoryMgr.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.REMOTE) {
             return false
         }
         if (this.isCooling) {

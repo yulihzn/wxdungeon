@@ -190,7 +190,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         this.isReflect = equipData.isReflect == 1
         this.isFist = InventoryManager.WEAPON != equipData.equipmetType
         this.isBlunt = equipData.blunt == 1
-        this.exBeatBack = Logic.inventoryManager.getEquipBySuit(equipData).exBeatBack
+        this.exBeatBack = this.player.inventoryMgr.getEquipBySuit(equipData).exBeatBack
         this.changeSprite(equipData, spriteFrame)
     }
     protected updateCombo() {

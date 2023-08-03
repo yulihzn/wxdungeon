@@ -108,7 +108,7 @@ export default class InventoryDialog extends BaseDialog {
         })
         EventHelper.on(EventHelper.HUD_INVENTORY_SELECT_UPDATE, detail => {
             if (this.node) {
-                let data = Logic.inventoryManager.inventoryList[detail.index]
+                let data = Logic.inventoryMgr.inventoryList[detail.index]
                 let furnitureId: string = detail.furnitureId
                 if (furnitureId && furnitureId.length > 0) {
                     data = Logic.furnitureMap.get(furnitureId).storageList[detail.index]
@@ -234,7 +234,7 @@ export default class InventoryDialog extends BaseDialog {
 
     private updateItemList() {
         let list: InventoryData[] = []
-        for (let itemdata of Logic.inventoryManager.itemList) {
+        for (let itemdata of Logic.inventoryMgr.itemList) {
             let data = InventoryManager.buildItemInventoryData(itemdata)
             list.push(data)
         }
@@ -249,14 +249,14 @@ export default class InventoryDialog extends BaseDialog {
     }
     private updateEquipList() {
         let list: InventoryData[] = []
-        for (let key in Logic.inventoryManager.equips) {
-            let equipdata = Logic.inventoryManager.equips[key]
+        for (let key in Logic.inventoryMgr.equips) {
+            let equipdata = Logic.inventoryMgr.equips[key]
             let needAdd = false
             if (key != InventoryManager.REMOTE && key != InventoryManager.SHIELD) {
                 needAdd = true
             } else {
                 if (key == InventoryManager.REMOTE) {
-                    if (equipdata.equipmetType == InventoryManager.REMOTE || Logic.inventoryManager.equips[InventoryManager.SHIELD].equipmetType == InventoryManager.EMPTY) {
+                    if (equipdata.equipmetType == InventoryManager.REMOTE || Logic.inventoryMgr.equips[InventoryManager.SHIELD].equipmetType == InventoryManager.EMPTY) {
                         needAdd = true
                     }
                 } else if (key == InventoryManager.SHIELD) {
@@ -311,7 +311,7 @@ export default class InventoryDialog extends BaseDialog {
     }
     private updateList(sortIndex: number) {
         this.clearSelect()
-        let list = this.getSortList(sortIndex, Logic.inventoryManager.inventoryList)
+        let list = this.getSortList(sortIndex, Logic.inventoryMgr.inventoryList)
         for (let i = 0; i < InventoryManager.MAX_BAG; i++) {
             if (i < list.length && list[i].type != InventoryItem.TYPE_EMPTY) {
                 let data = list[i]
@@ -320,7 +320,8 @@ export default class InventoryDialog extends BaseDialog {
                 this.list[i].setEmpty()
             }
         }
-        Logic.inventoryManager.inventoryList = list
+        Logic.inventoryMgr.inventoryList.splice(0)
+        Logic.inventoryMgr.inventoryList.push(...list)
     }
     private getSortList(sortIndex: number, inventoryList: InventoryData[]) {
         let itemlist: InventoryData[] = []
@@ -444,7 +445,7 @@ export default class InventoryDialog extends BaseDialog {
         }
         let equipData = new EquipmentData()
         equipData.valueCopy(current.data.equipmentData)
-        let list = Logic.inventoryManager.inventoryList
+        let list = Logic.inventoryMgr.inventoryList
         if (isSale) {
             EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(equipData.price * this.discount) })
             AudioPlayer.play(AudioPlayer.COIN)
@@ -469,7 +470,7 @@ export default class InventoryDialog extends BaseDialog {
             }
         }
         //清空该装备栏并更新ui
-        Logic.inventoryManager.equips[equipData.equipmetType] = new EquipmentData()
+        Logic.inventoryMgr.equips[equipData.equipmetType] = new EquipmentData()
         EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmetType: equipData.equipmetType })
         current.setEmpty()
         this.clearSelect()
@@ -490,7 +491,7 @@ export default class InventoryDialog extends BaseDialog {
         }
         let itemData = new ItemData()
         itemData.valueCopy(current.data.itemData)
-        let list = Logic.inventoryManager.inventoryList
+        let list = Logic.inventoryMgr.inventoryList
         if (isSale) {
             EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(itemData.count > 1 ? itemData.price * itemData.count * this.discount : itemData.price * this.discount) })
             AudioPlayer.play(AudioPlayer.COIN)
@@ -515,7 +516,7 @@ export default class InventoryDialog extends BaseDialog {
             }
         }
         //清空该装备栏并更新ui
-        Logic.inventoryManager.itemList[this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP] = new ItemData()
+        Logic.inventoryMgr.itemList[this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP] = new ItemData()
         EventHelper.emit(EventHelper.PLAYER_ITEM_REFRESH)
         current.setEmpty()
         this.clearSelect()
@@ -547,44 +548,44 @@ export default class InventoryDialog extends BaseDialog {
                 if (equipData.equipmetType == InventoryManager.REMOTE) {
                     //替换当前远程或盾牌到背包
                     InventoryDialog.addEquipOrItemToBag(
-                        InventoryManager.buildEquipInventoryData(Logic.inventoryManager.equips[InventoryManager.REMOTE]),
+                        InventoryManager.buildEquipInventoryData(Logic.inventoryMgr.equips[InventoryManager.REMOTE]),
                         dataList,
                         inventoryItemList.length,
                         false,
                         inventoryItemList
                     )
                     InventoryDialog.addEquipOrItemToBag(
-                        InventoryManager.buildEquipInventoryData(Logic.inventoryManager.equips[InventoryManager.SHIELD]),
+                        InventoryManager.buildEquipInventoryData(Logic.inventoryMgr.equips[InventoryManager.SHIELD]),
                         dataList,
                         inventoryItemList.length,
                         false,
                         inventoryItemList
                     )
                     //清空盾牌数据
-                    Logic.inventoryManager.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData())
+                    Logic.inventoryMgr.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData())
                     EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmetType: InventoryManager.SHIELD })
                 } else if (equipData.equipmetType == InventoryManager.SHIELD) {
                     //替换当前远程或盾牌到背包
                     InventoryDialog.addEquipOrItemToBag(
-                        InventoryManager.buildEquipInventoryData(Logic.inventoryManager.equips[InventoryManager.REMOTE]),
+                        InventoryManager.buildEquipInventoryData(Logic.inventoryMgr.equips[InventoryManager.REMOTE]),
                         dataList,
                         inventoryItemList.length,
                         false,
                         inventoryItemList
                     )
                     InventoryDialog.addEquipOrItemToBag(
-                        InventoryManager.buildEquipInventoryData(Logic.inventoryManager.equips[InventoryManager.SHIELD]),
+                        InventoryManager.buildEquipInventoryData(Logic.inventoryMgr.equips[InventoryManager.SHIELD]),
                         dataList,
                         inventoryItemList.length,
                         false,
                         inventoryItemList
                     )
                     //清空远程数据
-                    Logic.inventoryManager.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData())
+                    Logic.inventoryMgr.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData())
                     EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmetType: InventoryManager.REMOTE })
                 } else {
                     InventoryDialog.addEquipOrItemToBag(
-                        InventoryManager.buildEquipInventoryData(Logic.inventoryManager.equips[equipData.equipmetType]),
+                        InventoryManager.buildEquipInventoryData(Logic.inventoryMgr.equips[equipData.equipmetType]),
                         dataList,
                         inventoryItemList.length,
                         false,
@@ -592,7 +593,7 @@ export default class InventoryDialog extends BaseDialog {
                     )
                 }
                 //设置装备栏数据并更新ui
-                Logic.inventoryManager.equips[equipData.equipmetType] = equipData
+                Logic.inventoryMgr.equips[equipData.equipmetType] = equipData
                 this.updateEquipList()
                 EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmetType: equipData.equipmetType })
             }
@@ -606,8 +607,8 @@ export default class InventoryDialog extends BaseDialog {
                 //设置物品栏数据并更新ui
                 let isRefreshed = false
                 //填补相同可叠加
-                for (let i = 0; i < Logic.inventoryManager.itemList.length; i++) {
-                    let item = Logic.inventoryManager.itemList[i]
+                for (let i = 0; i < Logic.inventoryMgr.itemList.length; i++) {
+                    let item = Logic.inventoryMgr.itemList[i]
                     if (InventoryManager.isItemEqualCanAdd(item, itemData)) {
                         let count = item.count + itemData.count
                         item.valueCopy(itemData)
@@ -618,8 +619,8 @@ export default class InventoryDialog extends BaseDialog {
                 }
                 //填补空缺位置
                 if (!isRefreshed) {
-                    for (let i = 0; i < Logic.inventoryManager.itemList.length; i++) {
-                        let item = Logic.inventoryManager.itemList[i]
+                    for (let i = 0; i < Logic.inventoryMgr.itemList.length; i++) {
+                        let item = Logic.inventoryMgr.itemList[i]
                         if (item.resName == Item.EMPTY) {
                             item.valueCopy(itemData)
                             isRefreshed = true
@@ -630,14 +631,14 @@ export default class InventoryDialog extends BaseDialog {
                 //列表已满
                 if (!isRefreshed) {
                     //移出第一个到背包，新的放在末尾
-                    let item0 = Logic.inventoryManager.itemList[0].clone()
+                    let item0 = Logic.inventoryMgr.itemList[0].clone()
                     let arr = new Array()
-                    for (let i = 1; i < Logic.inventoryManager.itemList.length; i++) {
-                        arr.push(Logic.inventoryManager.itemList[i])
+                    for (let i = 1; i < Logic.inventoryMgr.itemList.length; i++) {
+                        arr.push(Logic.inventoryMgr.itemList[i])
                     }
                     arr.push(itemData)
-                    for (let i = 0; i < Logic.inventoryManager.itemList.length; i++) {
-                        Logic.inventoryManager.itemList[i].valueCopy(arr[i])
+                    for (let i = 0; i < Logic.inventoryMgr.itemList.length; i++) {
+                        Logic.inventoryMgr.itemList[i].valueCopy(arr[i])
                     }
                     //交换当前物品
                     InventoryDialog.addEquipOrItemToBag(InventoryManager.buildItemInventoryData(item0), dataList, inventoryItemList.length, true, inventoryItemList)
@@ -667,7 +668,7 @@ export default class InventoryDialog extends BaseDialog {
                     AudioPlayer.play(AudioPlayer.COIN)
                 } else {
                     if (isOther) {
-                        isAdded = InventoryDialog.addEquipOrItemToBag(current.data, Logic.inventoryManager.inventoryList, this.list.length, false, this.list)
+                        isAdded = InventoryDialog.addEquipOrItemToBag(current.data, Logic.inventoryMgr.inventoryList, this.list.length, false, this.list)
                     } else if (this.furnitureId && this.furnitureId.length > 0) {
                         isAdded = InventoryDialog.addEquipOrItemToBag(
                             current.data,
@@ -694,7 +695,7 @@ export default class InventoryDialog extends BaseDialog {
                     AudioPlayer.play(AudioPlayer.COIN)
                 } else {
                     if (isOther) {
-                        isAdded = InventoryDialog.addEquipOrItemToBag(current.data, Logic.inventoryManager.inventoryList, this.list.length, true, this.list)
+                        isAdded = InventoryDialog.addEquipOrItemToBag(current.data, Logic.inventoryMgr.inventoryList, this.list.length, true, this.list)
                     } else if (this.furnitureId && this.furnitureId.length > 0) {
                         isAdded = InventoryDialog.addEquipOrItemToBag(
                             current.data,
@@ -719,7 +720,7 @@ export default class InventoryDialog extends BaseDialog {
     }
     private getSelectInfo(): [number, InventoryData[], InventoryItem[]] {
         let inventoryItemList = this.list
-        let dataList = Logic.inventoryManager.inventoryList
+        let dataList = Logic.inventoryMgr.inventoryList
         let selectIndex = this.currentSelectIndex
         let isOther = this.currentSelectIndex >= InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP + InventoryManager.MAX_ITEM
         if (isOther) {
@@ -881,7 +882,7 @@ export default class InventoryDialog extends BaseDialog {
         if (isSelectEquip) {
             //装备栏更新ui
             inventoryItem.data.equipmentData.valueCopy(equipmentData)
-            Logic.inventoryManager.equips[equipmentData.equipmetType].valueCopy(equipmentData)
+            Logic.inventoryMgr.equips[equipmentData.equipmetType].valueCopy(equipmentData)
             EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmetType: equipmentData.equipmetType })
         } else {
             inventoryItem.data.equipmentData = equipmentData.clone()

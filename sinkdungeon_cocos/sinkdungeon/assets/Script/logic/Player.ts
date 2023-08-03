@@ -66,6 +66,7 @@ import EquipItemTalent from '../talent/EquipItemTalent'
 import OilGoldMetal from '../talent/OilGoldMetal'
 import ExitData from '../data/ExitData'
 import BaseController from './BaseController'
+import InventoryData from '../data/InventoryData'
 @ccclass
 export default class Player extends PlayActor {
     @property(cc.Sprite)
@@ -144,6 +145,7 @@ export default class Player extends PlayActor {
         return this.root
     }
     init(): void {
+        this.inventoryMgr = Logic.inventoryMgrs[this.data.id]
         this.triggerShooter = this.shooterEx
         this.handLeft = this.weaponLeft
         this.handRight = this.weaponRight
@@ -172,8 +174,6 @@ export default class Player extends PlayActor {
         this.entity.Move.linearVelocity = cc.v2(0, 0)
         this.statusManager.statusIconList = this.statusIconList
         this.statusPos = this.statusManager.node.position.clone()
-        this.inventoryManager = Logic.inventoryManager
-
         this.pos = cc.v3(0, 0)
         this.sc.isDied = false
         this.sc.isShow = false
@@ -303,6 +303,7 @@ export default class Player extends PlayActor {
         this.equipmentTalent = this.getComponent(EquipItemTalent)
         this.equipmentTalent.init(new TalentData())
     }
+
     private updateFlashLight() {
         if (this.lights) {
             for (let light of this.lights) {
@@ -353,7 +354,7 @@ export default class Player extends PlayActor {
     }
 
     public updateStatus(statusList: StatusData[], totalStatusData: StatusData) {
-        if (!this.inventoryManager) {
+        if (!this.inventoryMgr) {
             return
         }
         this.data.StatusTotalData.valueCopy(totalStatusData)
@@ -410,7 +411,7 @@ export default class Player extends PlayActor {
                     this.shield.data = new EquipmentData()
                     this.updateEquipment(
                         this.shield.sprite,
-                        this.inventoryManager.equips[InventoryManager.SHIELD].color,
+                        this.inventoryMgr.equips[InventoryManager.SHIELD].color,
                         Logic.spriteFrameRes(InventoryManager.EMPTY),
                         this.shield.data.isHeavy == 1 ? 80 : 64
                     )
@@ -457,7 +458,7 @@ export default class Player extends PlayActor {
                 this.updateEquipment(this.avatar.cloakSprite, equipData.color, spriteFrame)
                 break
         }
-        this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, this.currentDir)
+        this.avatar.changeEquipDirSpriteFrame(this.inventoryMgr, this.currentDir)
         this.shield.changeZIndexByDir(this.avatar.node.zIndex, this.currentDir)
         this.updateInfoUi()
     }
@@ -478,8 +479,8 @@ export default class Player extends PlayActor {
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y })
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y })
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_LIFE_BAR, { sanity: life.sanity, solid: life.solidSatiety, poo: life.poo, liquid: life.liquidSatiety, pee: life.pee })
-        this.inventoryManager.updateTotalEquipData()
-        this.data.EquipmentTotalData.valueCopy(this.inventoryManager.TotalEquipData)
+        this.inventoryMgr.updateTotalEquipData()
+        this.data.EquipmentTotalData.valueCopy(this.inventoryMgr.TotalEquipData)
         this.updateData()
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { data: this.data })
     }
@@ -1219,6 +1220,9 @@ export default class Player extends PlayActor {
             this.playerAnim(this.entity.Move.linearVelocityZ > 0 ? BaseAvatar.STATE_JUMP_UP : BaseAvatar.STATE_JUMP_DOWN, this.currentDir)
         }
         this.updateFlashLight()
+        if (this.inventoryMgr) {
+            this.inventoryMgr.updateLogic(dt, this)
+        }
     }
 
     showWaterSpark() {

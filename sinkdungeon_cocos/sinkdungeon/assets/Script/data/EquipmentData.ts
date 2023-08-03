@@ -93,9 +93,9 @@ export default class EquipmentData extends BaseData {
     get Common() {
         return this.common
     }
-    public valueCopy(data: EquipmentData): void {
+    public valueCopy(data: EquipmentData): EquipmentData {
         if (!data) {
-            return
+            return this
         }
         DataUtils.baseCopy(this, data)
         // this.uuid = data.uuid ? data.uuid : '';
@@ -125,6 +125,7 @@ export default class EquipmentData extends BaseData {
             return new AffixData().valueCopy(arg0)
         })
         this.updateFinalCommon()
+        return this
     }
     updateFinalCommon() {
         this.finalCommon = new CommonData()

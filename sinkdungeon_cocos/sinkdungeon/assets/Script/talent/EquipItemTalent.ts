@@ -468,7 +468,7 @@ export default class EquipItemTalent extends Talent {
             this.swordLightPrefab,
             new AreaOfEffectData().init(0, 0.35, 0, scale, IndexZ.OVERHEAD, false, true, true, false, true, d, new FromData(), [StatusManager.FROZEN])
         )
-        let color = cc.color(255, 255, 255).fromHEX(this.player.inventoryManager.equips[InventoryManager.WEAPON].lightcolor)
+        let color = cc.color(255, 255, 255).fromHEX(this.player.inventoryMgr.equips[InventoryManager.WEAPON].lightcolor)
         swordlight.node.getChildByName('sprite').color = color
         this.scheduleOnce(() => {
             this.talentSkill.IsExcuting = false
@@ -501,7 +501,7 @@ export default class EquipItemTalent extends Talent {
             new AreaOfEffectData().init(0, duration / 10, 0, scale, IndexZ.OVERHEAD, false, true, true, false, false, d, new FromData(), [StatusManager.FROZEN]),
             cc.Vec3.ZERO
         )
-        let color = cc.color(255, 255, 255).fromHEX(this.player.inventoryManager.equips[InventoryManager.WEAPON].lightcolor)
+        let color = cc.color(255, 255, 255).fromHEX(this.player.inventoryMgr.equips[InventoryManager.WEAPON].lightcolor)
         for (let sprite of swordlight.node.getComponentsInChildren(cc.Sprite)) {
             sprite.node.color = shadowPlayer ? cc.Color.BLACK : color
             sprite.node.opacity = 200

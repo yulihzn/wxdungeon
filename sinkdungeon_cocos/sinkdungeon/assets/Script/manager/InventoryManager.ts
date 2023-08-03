@@ -3,10 +3,11 @@ import InventoryData from '../data/InventoryData'
 import ItemData from '../data/ItemData'
 import SuitData from '../data/SuitData'
 import InventoryItem from '../ui/InventoryItem'
-import NextStep from '../utils/NextStep'
 import Item from '../item/Item'
-import BuildingData from '../data/BuildingData'
 import Logic from '../logic/Logic'
+import Player from '../logic/Player'
+import TriggerData from '../data/TriggerData'
+import FromData from '../data/FromData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -52,34 +53,53 @@ export default class InventoryManager {
 
     //buffer效果
     buffer: EquipmentData = new EquipmentData()
-    itemList: ItemData[] = []
-    inventoryList: InventoryData[] = []
-    itemCoolDownList: NextStep[] = []
-    equips: { [key: string]: EquipmentData } = {}
+    get itemList(): ItemData[] {
+        if (Logic.chapterIndex == Logic.CHAPTER099) {
+            return Logic.playerDatas[this.id].playerItemListReality
+        } else {
+            return Logic.playerDatas[this.id].playerItemList
+        }
+    }
+    get inventoryList(): InventoryData[] {
+        if (Logic.chapterIndex == Logic.CHAPTER099) {
+            return Logic.playerDatas[this.id].playerInventoryListReality
+        } else {
+            return Logic.playerDatas[this.id].playerInventoryList
+        }
+    }
+    get equips(): { [key: string]: EquipmentData } {
+        if (Logic.chapterIndex == Logic.CHAPTER099) {
+            return Logic.playerDatas[this.id].playerEquipsReality
+        } else {
+            return Logic.playerDatas[this.id].playerEquips
+        }
+    }
+    id = ''
     suitMap: { [key: string]: SuitData } = {}
     suitEquipMap: { [key: string]: EquipmentData } = {}
     emptyEquipData = new EquipmentData()
     private totalEquipData = new EquipmentData()
-    clear(): void {}
-    constructor() {
-        this.itemList = []
-        this.equips = {}
-        this.inventoryList = []
-        this.itemCoolDownList = []
+    equipAndItemTimeDelays: Map<string, number> = new Map()
+    constructor(id: string) {
+        this.id = id
         this.emptyEquipData = new EquipmentData()
         this.totalEquipData = new EquipmentData()
         this.suitMap = {}
         this.suitEquipMap = {}
         for (let name of InventoryManager.EQUIP_TAGS) {
-            this.equips[name] = new EquipmentData()
+            if (!this.equips[name]) {
+                this.equips[name] = new EquipmentData()
+            }
         }
         for (let i = 0; i < InventoryManager.MAX_ITEM; i++) {
-            let data = new ItemData()
-            data.count = -1
-            this.itemList.push(data)
-            this.itemCoolDownList.push(new NextStep())
+            if (i >= this.itemList.length) {
+                let data = new ItemData()
+                data.count = -1
+                this.itemList.push(data)
+            }
         }
     }
+    clear(): void {}
     getEquipBySuit(e: EquipmentData): EquipmentData {
         if (e && this.suitEquipMap[e.suitType]) {
             return this.suitEquipMap[e.suitType]
@@ -186,5 +206,48 @@ export default class InventoryManager {
 
     static isItemEqualCanAdd(item1: ItemData, item2: ItemData): boolean {
         return item1 && item2 && item1.resName != Item.EMPTY && item1.resName == item2.resName && item1.count > 0 && item2.count > 0
+    }
+    getTimeDelay(timeDelay: number, interval: number, dt: number): number {
+        if (!timeDelay) {
+            timeDelay = 0
+        }
+        timeDelay += dt
+        if (timeDelay > interval) {
+            timeDelay = 0
+            return timeDelay
+        }
+        return timeDelay
+    }
+    isTimeDelay(dt: number, key: string, interval: number): boolean {
+        if (interval <= 0) {
+            return false
+        }
+        let timeDelay = -1
+        this.equipAndItemTimeDelays.set(key, this.getTimeDelay(this.equipAndItemTimeDelays.get(key), interval, dt))
+        timeDelay = this.equipAndItemTimeDelays.get(key)
+        return timeDelay == 0
+    }
+    updateLogic(dt: number, player: Player) {
+        if (!Logic.isGamePause && player) {
+            let totalData = this.TotalEquipData
+            for (let d of totalData.exTriggers) {
+                if (this.isTimeDelay(dt, d.uuid, d.autoInterval)) {
+                    if (player) {
+                        player.exTriggerDo(d, TriggerData.GROUP_AUTO, TriggerData.TYPE_AUTO, FromData.getClone(totalData.nameCn, totalData.img, player.node.position), null)
+                    }
+                }
+            }
+
+            for (let i = 0; i < this.itemList.length; i++) {
+                let data = this.itemList[i]
+                for (let d of data.exTriggers) {
+                    if (this.isTimeDelay(dt, `itemIndex${i}`, d.autoInterval)) {
+                        if (player) {
+                            player.exTriggerDo(d, TriggerData.GROUP_AUTO, TriggerData.TYPE_AUTO, FromData.getClone(data.nameCn, data.resName, player.node.position), null)
+                        }
+                    }
+                }
+            }
+        }
     }
 }

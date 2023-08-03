@@ -15,6 +15,7 @@ import PlayerAvatar from '../logic/PlayerAvatar'
 import FrameAvatar from '../logic/FrameAvatar'
 import { EventHelper } from '../logic/EventHelper'
 import FloatingLabelData from '../data/FloatingLabelData'
+import Logic from '../logic/Logic'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -32,7 +33,6 @@ const { ccclass, property } = cc._decorator
 export default abstract class PlayActor extends Actor {
     dungeon: Dungeon
     triggerShooter: Shooter
-    inventoryManager: InventoryManager
     statusMgr: StatusManager
     shadowList: ShadowPlayer[]
     handLeft: PlayerWeapon
@@ -48,6 +48,8 @@ export default abstract class PlayActor extends Actor {
     abstract isInWater(): boolean
     abstract playerAnim(status: number, dir: number): void
     abstract getWalkSmoke(parentNode: cc.Node, pos: cc.Vec3): void
+    inventoryMgr: InventoryManager
+
     hideSelf(hideDuration: number) {
         if (hideDuration > 0) {
             this.invisible = true
@@ -88,14 +90,14 @@ export default abstract class PlayActor extends Actor {
      * @param onlyItem 仅物品
      */
     exTrigger(group: number, type: number, from?: FromData, actor?: Actor, onlyItem?: boolean): void {
-        if (this.inventoryManager) {
+        if (this.inventoryMgr) {
             if (!onlyItem) {
-                let data = this.inventoryManager.TotalEquipData
+                let data = this.inventoryMgr.TotalEquipData
                 for (let d of data.exTriggers) {
                     this.exTriggerDo(d, group, type, from, actor)
                 }
             }
-            for (let data of this.inventoryManager.itemList) {
+            for (let data of this.inventoryMgr.itemList) {
                 for (let d of data.exTriggers) {
                     this.exTriggerDo(d, group, type, from, actor)
                 }

@@ -111,7 +111,9 @@ export default class Logic extends cc.Component {
     static chapterIndex = 0 //章节
     static chapterMaxIndex = 0 //到达的最大章节
     static playerData: PlayerData = new PlayerData() //玩家数据
-    static inventoryManager: InventoryManager = new InventoryManager() //装备数据
+    static currentPlayerId = ''
+    static playerDatas: { [key: string]: PlayerData } = {}
+    static inventoryMgrs: { [key: string]: InventoryManager } = {}
     static mapManager: MapManager = new MapManager()
     static worldLoader: WorldLoader = new WorldLoader()
     static realCoins = 0 //真实货币，真是货币无法从梦境里获得，但是会出现对应的npc会进行这样的交易
@@ -187,15 +189,6 @@ export default class Logic extends cc.Component {
     start() {}
     static saveData() {
         Logic.profileManager.data.playerData = Logic.playerData.clone()
-        if (Logic.chapterIndex == this.CHAPTER099) {
-            Logic.profileManager.data.playerEquipsReality = Logic.inventoryManager.equips
-            Logic.profileManager.data.playerItemListReality = Logic.inventoryManager.itemList
-            Logic.profileManager.data.playerInventoryListReality = Logic.inventoryManager.inventoryList
-        } else {
-            Logic.profileManager.data.playerEquips = Logic.inventoryManager.equips
-            Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList
-            Logic.profileManager.data.playerInventoryList = Logic.inventoryManager.inventoryList
-        }
         Logic.profileManager.data.nonPlayerList = Logic.nonPlayerList
         Logic.profileManager.data.aiPlayerList = Logic.aiPlayerList
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon
@@ -249,6 +242,7 @@ export default class Logic extends cc.Component {
         Logic.oilGolds = Logic.profileManager.data.oilGolds
         //加载玩家数据
         Logic.playerData = Logic.profileManager.data.playerData.clone()
+        Logic.initInventoryManager()
         //加载保存的npc
         Logic.nonPlayerList = []
         for (let i = 0; i < Logic.profileManager.data.nonPlayerList.length; i++) {
@@ -262,8 +256,6 @@ export default class Logic extends cc.Component {
             data.valueCopy(Logic.profileManager.data.aiPlayerList[i])
             Logic.aiPlayerList.push(data)
         }
-        //加载背包和装备
-        Logic.resetInventoryAndOtherData()
         //重置地牢宽高
         Dungeon.WIDTH_SIZE = 15
         Dungeon.HEIGHT_SIZE = 9
@@ -284,34 +276,7 @@ export default class Logic extends cc.Component {
         //清空家具信息,家具信息在添加家具的时候会添加
         Logic.furnitureMap = new Map()
     }
-    static resetInventoryAndOtherData() {
-        Logic.inventoryManager = new InventoryManager()
-        if (Logic.chapterIndex == this.CHAPTER099) {
-            for (let key in Logic.profileManager.data.playerEquipsReality) {
-                Logic.inventoryManager.equips[key].valueCopy(Logic.profileManager.data.playerEquipsReality[key])
-            }
-            for (let i = 0; i < Logic.profileManager.data.playerItemListReality.length; i++) {
-                Logic.inventoryManager.itemList[i].valueCopy(Logic.profileManager.data.playerItemListReality[i])
-            }
-            for (let i = 0; i < Logic.profileManager.data.playerInventoryListReality.length; i++) {
-                let data = new InventoryData()
-                data.valueCopy(Logic.profileManager.data.playerInventoryListReality[i])
-                Logic.inventoryManager.inventoryList.push(data)
-            }
-        } else {
-            for (let key in Logic.profileManager.data.playerEquips) {
-                Logic.inventoryManager.equips[key].valueCopy(Logic.profileManager.data.playerEquips[key])
-            }
-            for (let i = 0; i < Logic.profileManager.data.playerItemList.length; i++) {
-                Logic.inventoryManager.itemList[i].valueCopy(Logic.profileManager.data.playerItemList[i])
-            }
-            for (let i = 0; i < Logic.profileManager.data.playerInventoryList.length; i++) {
-                let data = new InventoryData()
-                data.valueCopy(Logic.profileManager.data.playerInventoryList[i])
-                Logic.inventoryManager.inventoryList.push(data)
-            }
-        }
-    }
+
     static getOilGoldData(oilGolds: number) {
         let value = oilGolds
         let data = new OilGoldData()
@@ -467,10 +432,41 @@ export default class Logic extends cc.Component {
                 }
             }
             Logic.playerData.isWakeUp = exitData.fromChapter != Logic.CHAPTER099 && exitData.toChapter == Logic.CHAPTER099
-            //重置装备和跟随的npc
-            Logic.resetInventoryAndOtherData()
         })
         cc.director.loadScene('loading')
+    }
+    static initInventoryManager() {
+        this.inventoryMgrs = {}
+        for (let key in Logic.playerDatas) {
+            let playerData = Logic.playerData[key]
+            let inventoryManager = new InventoryManager(playerData.id)
+            if (Logic.chapterIndex == Logic.CHAPTER099) {
+                for (let key in playerData.playerEquipsReality) {
+                    inventoryManager.equips[key].valueCopy(playerData.playerEquipsReality[key])
+                }
+                for (let i = 0; i < playerData.playerItemListReality.length; i++) {
+                    inventoryManager.itemList[i].valueCopy(playerData.playerItemListReality[i])
+                }
+                for (let i = 0; i < playerData.playerInventoryListReality.length; i++) {
+                    let data = new InventoryData()
+                    data.valueCopy(playerData.playerInventoryListReality[i])
+                    inventoryManager.inventoryList.push(data)
+                }
+            } else {
+                for (let key in playerData.playerEquips) {
+                    inventoryManager.equips[key].valueCopy(playerData.playerEquips[key])
+                }
+                for (let i = 0; i < playerData.playerItemList.length; i++) {
+                    inventoryManager.itemList[i].valueCopy(playerData.playerItemList[i])
+                }
+                for (let i = 0; i < playerData.playerInventoryList.length; i++) {
+                    let data = new InventoryData()
+                    data.valueCopy(playerData.playerInventoryList[i])
+                    inventoryManager.inventoryList.push(data)
+                }
+            }
+            this.inventoryMgrs[key] = inventoryManager
+        }
     }
 
     static getRandomNum(min, max): number {
@@ -575,5 +571,8 @@ export default class Logic extends cc.Component {
     }
     static getCurrentMetal() {
         return new MetalTalentData().valueCopy(Logic.metals[Logic.metalId]).valueCopy(Logic.playerMetals[Logic.metalId])
+    }
+    static get inventoryMgr() {
+        return Logic.inventoryMgrs[Logic.currentPlayerId]
     }
 }

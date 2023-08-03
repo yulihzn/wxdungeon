@@ -381,14 +381,11 @@ export default class PickAvatar extends cc.Component {
         AudioPlayer.play(AudioPlayer.SELECT)
     }
     addPorfessionEquipment() {
-        let equips: { [key: string]: EquipmentData } = {}
-        for (let key in Logic.inventoryManager.equips) {
-            Logic.inventoryManager.equips[key].valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.equips[key] ? this.data.professionData.equips[key] : ''))
-            if (key == InventoryManager.TROUSERS) {
-                equips[key] = Logic.inventoryManager.equips[key].clone()
-            }
+        for (let name of InventoryManager.EQUIP_TAGS) {
+            let equipType = this.data.professionData.equips[name] ? this.data.professionData.equips[name] : ''
+            Logic.playerData.playerEquips[name] = new EquipmentData().valueCopy(EquipmentManager.getNewEquipData(equipType))
+            Logic.playerData.playerEquipsReality[name] = new EquipmentData().valueCopy(EquipmentManager.getNewEquipData(equipType))
         }
-        Logic.profileManager.data.playerEquipsReality = equips
     }
     addBrightnessBar(): BrightnessBar {
         let prefab = cc.instantiate(this.brightnessBarPrefab)

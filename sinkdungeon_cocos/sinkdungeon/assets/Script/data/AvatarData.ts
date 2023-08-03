@@ -53,4 +53,8 @@ export default class AvatarData extends BaseData {
 
         return e
     }
+    toJSON(): any {
+        const { idleFrames, walkFrames, hitFrames, dieFrames, attackFrames, specialFrames, disguiseFrames, ...rest } = this
+        return rest
+    }
 }

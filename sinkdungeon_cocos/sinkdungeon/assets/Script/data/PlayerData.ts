@@ -11,7 +11,6 @@ import LifeData from './LifeData'
 import DataUtils from '../utils/DataUtils'
 import ItemData from './ItemData'
 import InventoryData from './InventoryData'
-import Utils from '../utils/Utils'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -95,6 +94,7 @@ export default class PlayerData {
         this.needUpdateFinalCommon = true
         this.shadowList = []
     }
+
     get ShadowList() {
         return this.shadowList
     }
@@ -156,9 +156,9 @@ export default class PlayerData {
         return this.finalCommon
     }
 
-    public valueCopy(data: PlayerData): void {
+    public valueCopy(data: PlayerData): PlayerData {
         if (!data) {
-            return
+            return this
         }
         DataUtils.baseCopy(this, data)
         this.common.valueCopy(data.common)
@@ -190,6 +190,7 @@ export default class PlayerData {
         this.playerInventoryListReality = DataUtils.copyListValue(data.playerInventoryListReality, arg0 => {
             return new InventoryData().valueCopy(arg0)
         })
+        return this
     }
 
     public clone(): PlayerData {

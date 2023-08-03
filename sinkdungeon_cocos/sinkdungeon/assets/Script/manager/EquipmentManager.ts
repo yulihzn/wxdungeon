@@ -271,7 +271,7 @@ export default class EquipmentManager extends BaseManager {
      */
     static getNewEquipData(equipType: string, isOriginal?: boolean, chestQuality?: number): EquipmentData {
         if (equipType.length == 0) {
-            return
+            return null
         }
         let data = new EquipmentData()
         data.valueCopy(Logic.equipments[equipType])

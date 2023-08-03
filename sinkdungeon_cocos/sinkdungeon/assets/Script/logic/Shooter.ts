@@ -361,7 +361,7 @@ export default class Shooter extends cc.Component {
         if (!this.dungeon) {
             return
         }
-        if (splitBulletType.length < 1 && !this.isAI && !this.isEx && this.player.inventoryManager.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.REMOTE) {
+        if (splitBulletType.length < 1 && !this.isAI && !this.isEx && this.player.inventoryMgr.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.REMOTE) {
             return
         }
         if (splitBulletType.length < 1) {

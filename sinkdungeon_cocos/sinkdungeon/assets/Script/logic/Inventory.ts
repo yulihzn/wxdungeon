@@ -81,7 +81,6 @@ export default class Inventory extends cc.Component {
     equipmentGroundDialog: EquipmentAndItemDialog = null
     itemGroundDialog: EquipmentAndItemDialog = null
 
-    inventoryManager: InventoryManager
     graphics: cc.Graphics = null
 
     equipAndItemTimeDelays: Map<string, number> = new Map()
@@ -100,24 +99,23 @@ export default class Inventory extends cc.Component {
         this.itemGroundDialog = this.initDialog(true)
         this.equipmentAndItemDialog = this.initDialog(false)
         this.graphics = this.getComponent(cc.Graphics)
-        this.inventoryManager = Logic.inventoryManager
         EventHelper.on(EventHelper.PLAYER_CHANGEEQUIPMENT, detail => {
             if (this.node) {
                 this.refreshEquipment(detail.equipmetType, detail.equipData, false, detail.isReplace)
-                this.inventoryManager.refreshSuits()
-                this.inventoryManager.updateTotalEquipData()
+                Logic.inventoryMgr.refreshSuits()
+                Logic.inventoryMgr.updateTotalEquipData()
             }
         })
         EventHelper.on(EventHelper.PLAYER_EQUIPMENT_REFRESH, detail => {
             if (this.node) {
                 this.refreshEquipmentRes(detail.equipmetType)
-                this.inventoryManager.refreshSuits()
-                this.inventoryManager.updateTotalEquipData()
+                Logic.inventoryMgr.refreshSuits()
+                Logic.inventoryMgr.updateTotalEquipData()
             }
         })
         EventHelper.on(EventHelper.PLAYER_ITEM_REFRESH, detail => {
             if (this.node) {
-                this.refreshItemRes(this.inventoryManager.itemList)
+                this.refreshItemRes(Logic.inventoryMgr.itemList)
             }
         })
         if (this.equipmentGroundDialog) {
@@ -180,10 +178,7 @@ export default class Inventory extends cc.Component {
         this.equipSprites.set(InventoryManager.CLOAK, this.cloak)
         this.isInitFinish = true
     }
-    /**重置装备和物品栏 */
-    reset(inventoryManager: InventoryManager) {
-        this.inventoryManager = inventoryManager
-    }
+
     private initDialog(isGround: boolean) {
         let node = cc.instantiate(this.equipmentAndItemDialogPrefab)
         node.parent = this.node
@@ -223,10 +218,10 @@ export default class Inventory extends cc.Component {
             this.equipCovers.set(key, sprite.node.parent.getChildByName('cover'))
         })
 
-        for (let key in this.inventoryManager.equips) {
-            this.refreshEquipment(key, this.inventoryManager.equips[key].clone(), true, false)
+        for (let key in Logic.inventoryMgr.equips) {
+            this.refreshEquipment(key, Logic.inventoryMgr.equips[key].clone(), true, false)
         }
-        this.refreshItemRes(this.inventoryManager.itemList)
+        this.refreshItemRes(Logic.inventoryMgr.itemList)
         let itemSpriteList = [this.itemsprite1, this.itemsprite2, this.itemsprite3, this.itemsprite4, this.itemsprite5, this.itemsprite6]
         let itemLabelList = [this.itemlabel1, this.itemlabel2, this.itemlabel3, this.itemlabel4, this.itemlabel5, this.itemlabel6]
         for (let i = 0; i < itemLabelList.length; i++) {
@@ -234,8 +229,8 @@ export default class Inventory extends cc.Component {
             this.addItemSpriteTouchEvent(itemSpriteList[i], itemLabelList[i].node.parent, i)
             this.itemCovers.push(itemLabelList[i].node.parent.getChildByName('cover'))
         }
-        this.inventoryManager.refreshSuits()
-        Logic.inventoryManager.updateTotalEquipData()
+        Logic.inventoryMgr.refreshSuits()
+        Logic.inventoryMgr.updateTotalEquipData()
     }
 
     private addEquipSpriteTouchEvent(sprite: cc.Sprite, equipmetType: string) {
@@ -260,14 +255,14 @@ export default class Inventory extends cc.Component {
             return
         }
         let equipData = new EquipmentData()
-        if (this.inventoryManager.equips[equipmetType]) {
-            equipData = this.inventoryManager.equips[equipmetType].clone()
+        if (Logic.inventoryMgr.equips[equipmetType]) {
+            equipData = Logic.inventoryMgr.equips[equipmetType].clone()
         }
         if (equipData.equipmetType == InventoryManager.EMPTY) {
             return
         }
         let pos = this.node.convertToNodeSpaceAR(sprite.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO))
-        this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32, 0)), null, null, equipData, null, this.inventoryManager, EquipmentAndItemDialog.BG_TYPE_ARROW_RIGHT)
+        this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32, 0)), null, null, equipData, null, Logic.inventoryMgr, EquipmentAndItemDialog.BG_TYPE_ARROW_RIGHT)
     }
     private addItemSpriteTouchEvent(sprite: cc.Sprite, node: cc.Node, itemIndex: number) {
         let isLongPress = false
@@ -278,11 +273,11 @@ export default class Inventory extends cc.Component {
             }
             touchStart = true
             this.scheduleOnce(() => {
-                if (!touchStart || !this.inventoryManager || !this.inventoryManager.itemList || itemIndex > this.inventoryManager.itemList.length - 1) {
+                if (!touchStart || !Logic.inventoryMgr || !Logic.inventoryMgr.itemList || itemIndex > Logic.inventoryMgr.itemList.length - 1) {
                     return
                 }
                 isLongPress = true
-                let item = this.inventoryManager.itemList[itemIndex].clone()
+                let item = Logic.inventoryMgr.itemList[itemIndex].clone()
                 if (item.resName == Item.EMPTY) {
                     return
                 }
@@ -304,7 +299,7 @@ export default class Inventory extends cc.Component {
             isLongPress = false
         })
         node.on(cc.Node.EventType.MOUSE_ENTER, () => {
-            let item = this.inventoryManager.itemList[itemIndex].clone()
+            let item = Logic.inventoryMgr.itemList[itemIndex].clone()
             if (item.resName == Item.EMPTY) {
                 return
             }
@@ -320,7 +315,7 @@ export default class Inventory extends cc.Component {
         if (!equipmetType) {
             return
         }
-        let equip = this.inventoryManager.equips[equipmetType]
+        let equip = Logic.inventoryMgr.equips[equipmetType]
         let color = cc.color(255, 255, 255).fromHEX(equip.color)
         let spriteFrame = Logic.spriteFrameRes(equip.img)
         if (equip.equipmetType == InventoryManager.CLOTHES) {
@@ -344,7 +339,7 @@ export default class Inventory extends cc.Component {
                 this.remote.node.parent.active = true
                 this.shield.node.parent.active = true
                 //远程不为空隐藏盾牌栏
-                if (this.inventoryManager.equips[equipmetType].equipmetType != InventoryManager.EMPTY) {
+                if (equip.equipmetType != InventoryManager.EMPTY) {
                     this.shield.node.parent.active = false
                 }
                 break
@@ -352,7 +347,7 @@ export default class Inventory extends cc.Component {
                 this.remote.node.parent.active = true
                 this.shield.node.parent.active = true
                 //如果当前盾牌不为空隐藏远程栏并展示盾牌栏，否则显示远程隐藏盾牌栏
-                if (this.inventoryManager.equips[equipmetType].equipmetType != InventoryManager.EMPTY) {
+                if (equip.equipmetType != InventoryManager.EMPTY) {
                     this.remote.node.parent.active = false
                     this.shield.node.parent.active = true
                 } else {
@@ -374,13 +369,13 @@ export default class Inventory extends cc.Component {
         if (!equipDataNew || !this.weapon || !equipmetType) {
             return
         }
-        let equip = this.inventoryManager.equips[equipmetType]
+        let equip = Logic.inventoryMgr.equips[equipmetType]
         let hasEquip = equip && equip.equipmetType != InventoryManager.EMPTY
         if (!hasEquip) {
-            if (equipmetType == InventoryManager.REMOTE && this.inventoryManager.equips[InventoryManager.SHIELD].equipmetType != InventoryManager.EMPTY) {
+            if (equipmetType == InventoryManager.REMOTE && Logic.inventoryMgr.equips[InventoryManager.SHIELD].equipmetType != InventoryManager.EMPTY) {
                 hasEquip = true
             }
-            if (equipmetType == InventoryManager.SHIELD && this.inventoryManager.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.EMPTY) {
+            if (equipmetType == InventoryManager.SHIELD && Logic.inventoryMgr.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.EMPTY) {
                 hasEquip = true
             }
         }
@@ -388,13 +383,13 @@ export default class Inventory extends cc.Component {
         //1.如果是捡起到背包或者购买（非替换非初始化），且对应位置有装备，则直接放置到背包
         //2.如果当前装备等级高于玩家，则直接放置到背包
         if ((!isReplace && !isInit && equip && hasEquip) || equipDataNew.requireLevel > Logic.playerData.OilGoldData.level) {
-            this.setEquipmentToBag(equipDataNew, isInit, this.inventoryManager.inventoryList)
+            this.setEquipmentToBag(equipDataNew, isInit, Logic.inventoryMgr.inventoryList)
             return
         }
         //2.如果是长按的替换操作，替换新的，移出旧的到背包
         //更新当前装备数据
         if (equip) {
-            this.setEquipmentToBag(equip, isInit, this.inventoryManager.inventoryList)
+            this.setEquipmentToBag(equip, isInit, Logic.inventoryMgr.inventoryList)
             equip.valueCopy(equipDataNew)
             if (!isInit) {
                 EventHelper.emit(EventHelper.HUD_INVENTORY_EQUIP_UPDATE)
@@ -403,20 +398,20 @@ export default class Inventory extends cc.Component {
 
         switch (equipmetType) {
             case InventoryManager.REMOTE:
-                if (this.inventoryManager.equips[equipmetType].equipmetType != InventoryManager.EMPTY) {
+                if (Logic.inventoryMgr.equips[equipmetType].equipmetType != InventoryManager.EMPTY) {
                     //替换盾牌到背包
-                    this.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.SHIELD], isInit, this.inventoryManager.inventoryList)
+                    this.setEquipmentToBag(Logic.inventoryMgr.equips[InventoryManager.SHIELD], isInit, Logic.inventoryMgr.inventoryList)
                     //清空盾牌数据
-                    this.inventoryManager.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData())
+                    Logic.inventoryMgr.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData())
                     this.refreshEquipmentRes(InventoryManager.SHIELD)
                 }
                 break
             case InventoryManager.SHIELD:
                 //如果当前盾牌不为空清空远程并展示盾牌栏，否则显示远程隐藏盾牌栏
-                if (this.inventoryManager.equips[equipmetType].equipmetType != InventoryManager.EMPTY) {
+                if (Logic.inventoryMgr.equips[equipmetType].equipmetType != InventoryManager.EMPTY) {
                     //替换远程到背包
-                    this.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.REMOTE], isInit, this.inventoryManager.inventoryList)
-                    this.inventoryManager.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData())
+                    this.setEquipmentToBag(Logic.inventoryMgr.equips[InventoryManager.REMOTE], isInit, Logic.inventoryMgr.inventoryList)
+                    Logic.inventoryMgr.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData())
                     this.refreshEquipmentRes(InventoryManager.REMOTE)
                 }
                 break
@@ -454,23 +449,9 @@ export default class Inventory extends cc.Component {
     }
     update(dt) {
         if (!Logic.isGamePause) {
-            let totalData = this.inventoryManager.TotalEquipData
-            for (let d of totalData.exTriggers) {
-                if (this.isTimeDelay(dt, d.uuid, d.autoInterval)) {
-                    if (this.dungeon && this.dungeon.player) {
-                        this.dungeon.player.exTriggerDo(
-                            d,
-                            TriggerData.GROUP_AUTO,
-                            TriggerData.TYPE_AUTO,
-                            FromData.getClone(totalData.nameCn, totalData.img, this.dungeon.player.node.position),
-                            null
-                        )
-                    }
-                }
-            }
             let currentTime = Date.now()
             for (let key in this.equipCovers) {
-                let data = this.inventoryManager.equips[key]
+                let data = Logic.inventoryMgr.equips[key]
                 if (data) {
                     let percent = (currentTime - data.lastTime) / (data.cooldown * 1000) //当前百分比
                     if (percent > 1) {
@@ -479,21 +460,8 @@ export default class Inventory extends cc.Component {
                     this.equipCovers.get(key).height = this.equipCovers.get(key).width * (1 - percent)
                 }
             }
-            for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
-                let data = this.inventoryManager.itemList[i]
-                for (let d of data.exTriggers) {
-                    if (this.isTimeDelay(dt, `itemIndex${i}`, d.autoInterval)) {
-                        if (this.dungeon && this.dungeon.player) {
-                            this.dungeon.player.exTriggerDo(
-                                d,
-                                TriggerData.GROUP_AUTO,
-                                TriggerData.TYPE_AUTO,
-                                FromData.getClone(data.nameCn, data.resName, this.dungeon.player.node.position),
-                                null
-                            )
-                        }
-                    }
-                }
+            for (let i = 0; i < Logic.inventoryMgr.itemList.length; i++) {
+                let data = Logic.inventoryMgr.itemList[i]
                 let percent = (currentTime - data.lastTime) / (data.cooldown * 1000) //当前百分比
                 if (percent > 1) {
                     percent = 1
@@ -504,10 +472,10 @@ export default class Inventory extends cc.Component {
     }
 
     userItem(itemIndex: number) {
-        if (!this.inventoryManager || !this.inventoryManager.itemList || itemIndex > this.inventoryManager.itemList.length - 1) {
+        if (!Logic.inventoryMgr || !Logic.inventoryMgr.itemList || itemIndex > Logic.inventoryMgr.itemList.length - 1) {
             return
         }
-        let item = this.inventoryManager.itemList[itemIndex].clone()
+        let item = Logic.inventoryMgr.itemList[itemIndex].clone()
         if (item.resName == Item.EMPTY) {
             return
         }
@@ -521,11 +489,11 @@ export default class Inventory extends cc.Component {
                 item.count--
             }
             if (item.count <= 0 && item.count != -1) {
-                this.inventoryManager.itemList[itemIndex].valueCopy(Logic.items[Item.EMPTY])
+                Logic.inventoryMgr.itemList[itemIndex].valueCopy(Logic.items[Item.EMPTY])
             } else {
-                this.inventoryManager.itemList[itemIndex].valueCopy(item)
+                Logic.inventoryMgr.itemList[itemIndex].valueCopy(item)
             }
-            this.refreshItemRes(this.inventoryManager.itemList)
+            this.refreshItemRes(Logic.inventoryMgr.itemList)
             if (item.resName != Item.EMPTY) {
                 EventHelper.emit(EventHelper.PLAYER_USEITEM, { itemData: item })
             }
@@ -540,8 +508,8 @@ export default class Inventory extends cc.Component {
         let isRefreshed = false
 
         //填补相同可叠加
-        for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
-            let item = this.inventoryManager.itemList[i]
+        for (let i = 0; i < Logic.inventoryMgr.itemList.length; i++) {
+            let item = Logic.inventoryMgr.itemList[i]
             if (InventoryManager.isItemEqualCanAdd(item, itemDataNew)) {
                 let count = item.count + itemDataNew.count
                 item.valueCopy(itemDataNew)
@@ -552,8 +520,8 @@ export default class Inventory extends cc.Component {
         }
         //填补空缺位置
         if (!isRefreshed) {
-            for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
-                let item = this.inventoryManager.itemList[i]
+            for (let i = 0; i < Logic.inventoryMgr.itemList.length; i++) {
+                let item = Logic.inventoryMgr.itemList[i]
                 if (item.resName == Item.EMPTY) {
                     item.valueCopy(itemDataNew)
                     isRefreshed = true
@@ -565,22 +533,22 @@ export default class Inventory extends cc.Component {
         if (!isRefreshed) {
             if (isReplace) {
                 //1.如果是长按或者来自背包装备的替换操作，移出第一个到背包，新的放在末尾
-                let item0 = this.inventoryManager.itemList[0].clone()
+                let item0 = Logic.inventoryMgr.itemList[0].clone()
                 let arr = new Array()
-                for (let i = 1; i < this.inventoryManager.itemList.length; i++) {
-                    arr.push(this.inventoryManager.itemList[i])
+                for (let i = 1; i < Logic.inventoryMgr.itemList.length; i++) {
+                    arr.push(Logic.inventoryMgr.itemList[i])
                 }
                 arr.push(itemDataNew)
-                for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
-                    this.inventoryManager.itemList[i].valueCopy(arr[i])
+                for (let i = 0; i < Logic.inventoryMgr.itemList.length; i++) {
+                    Logic.inventoryMgr.itemList[i].valueCopy(arr[i])
                 }
-                this.setItemToBag(item0, this.inventoryManager.inventoryList)
+                this.setItemToBag(item0, Logic.inventoryMgr.inventoryList)
             } else {
                 //2.如果是捡起到背包或者购买，直接放置到背包
-                this.setItemToBag(itemDataNew, this.inventoryManager.inventoryList)
+                this.setItemToBag(itemDataNew, Logic.inventoryMgr.inventoryList)
             }
         }
-        this.refreshItemRes(this.inventoryManager.itemList)
+        this.refreshItemRes(Logic.inventoryMgr.itemList)
     }
     private refreshItemRes(itemList: ItemData[]) {
         let itemSpriteList = [this.itemsprite1, this.itemsprite2, this.itemsprite3, this.itemsprite4, this.itemsprite5, this.itemsprite6]
