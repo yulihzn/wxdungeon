@@ -26,6 +26,7 @@ import EquipmentData from '../data/EquipmentData'
 import ProfileManager from '../manager/ProfileManager'
 import ExitData from '../data/ExitData'
 import SavePointData from '../data/SavePointData'
+import ColorPicker from './ColorPicker'
 
 const { ccclass, property } = cc._decorator
 
@@ -62,6 +63,8 @@ export default class PickAvatar extends cc.Component {
     randomLabelSkillDesc: cc.Label = null
     @property(cc.Node)
     randomButton: cc.Node = null
+    @property(ColorPicker)
+    colorPicker: ColorPicker = null
     @property(cc.Prefab)
     selectorPrefab: cc.Prefab = null
     @property(cc.Prefab)
@@ -99,7 +102,7 @@ export default class PickAvatar extends cc.Component {
 
     private organizationSelector: AttributeSelector
     private professionSelector: AttributeSelector
-    private skinSelector: BrightnessBar
+    private skinSelector: AttributeSelector
     private hairSelector: AttributeSelector
     private hairColorSelector: PaletteSelector
     private eyesSelector: AttributeSelector
@@ -154,6 +157,7 @@ export default class PickAvatar extends cc.Component {
         this.loadingManager.loadSuits()
         this.loadingManager.loadAffixs()
         this.attributeLayout.active = false
+        this.colorPicker.hide()
         this.randomButton.on(
             cc.Node.EventType.TOUCH_START,
             (event: cc.Event.EventTouch) => {
@@ -202,8 +206,8 @@ export default class PickAvatar extends cc.Component {
         for (let i = 0; i < AvatarData.ORGANIZATION.length; i++) {
             organList.push(new AttributeData(i, AvatarData.ORGANIZATION[i], '', '', '', ''))
         }
-        this.organizationSelector = this.addAttributeSelector('组织：', organList)
-        this.organizationSelector.selectorCallback = (data: AttributeData) => {
+        this.organizationSelector = this.addAttributeSelector('组织：', organList, 0, false, [])
+        this.organizationSelector.selectorCallback = (data: AttributeData, color: cc.Color) => {
             this.data.organizationIndex = data.id
             this.bedSprite.spriteFrame = Logic.spriteFrameRes(`avatarbed00${data.id}`)
             this.coverSprite.spriteFrame = Logic.spriteFrameRes(`avatarcover00${data.id}`)
@@ -220,8 +224,8 @@ export default class PickAvatar extends cc.Component {
             let talent = Logic.talents[data.talent]
             professionList.push(new AttributeData(data.id, data.nameCn, '', data.desc, `技能：${talent.nameCn}`, `${talent.desc}`))
         }
-        this.professionSelector = this.addAttributeSelector('职业：', professionList)
-        this.professionSelector.selectorCallback = (data: AttributeData) => {
+        this.professionSelector = this.addAttributeSelector('职业：', professionList, 0, false, [])
+        this.professionSelector.selectorCallback = (data: AttributeData, color: cc.Color) => {
             this.data.professionData.valueCopy(Logic.professionList[data.id])
             this.randomLabelName.string = `${data.name}`
             this.randomLabelDesc.string = `${data.desc}`
@@ -231,8 +235,14 @@ export default class PickAvatar extends cc.Component {
         }
 
         //皮肤颜色
-        this.skinSelector = this.addBrightnessBar()
-        this.skinSelector.setSelectorCallback((color: cc.Color) => {
+        this.skinSelector = this.addAttributeSelector(
+            '肤色',
+            [new AttributeData(0, '默认', '', '', ``, ``), new AttributeData(1, '随机', '', '', ``, ``)],
+            0,
+            true,
+            BrightnessBar.SKIN_COLORS
+        )
+        this.skinSelector.selectorCallback = (data: AttributeData, color: cc.Color) => {
             this.bodySprite.node.color = color
             this.headSprite.node.color = color
             this.handSprite1.node.color = color
@@ -240,56 +250,63 @@ export default class PickAvatar extends cc.Component {
             this.legSprite1.node.color = color
             this.legSprite2.node.color = color
             this.data.skinColor = color.toHEX('#rrggbb')
-        })
+        }
         //发型
         let hairList = []
         for (let i = 0; i < 10; i++) {
             hairList.push(new AttributeData(i, `样式${i}`, `avatarhair${Utils.getNumberStr3(i)}`, '', '', ''))
         }
-        this.hairSelector = this.addAttributeSelector('发型：', hairList)
-        this.hairSelector.selectorCallback = (data: AttributeData) => {
+        this.hairSelector = this.addAttributeSelector('发型：', hairList, 0, true, PaletteSelector.HAIRCOLORS)
+        this.hairSelector.selectorCallback = (data: AttributeData, color: cc.Color) => {
             this.hairSprite.spriteFrame = Logic.spriteFrameRes(data.resName + 'anim0')
             this.data.hairResName = data.resName
-        }
-        //头发颜色
-        this.hairColorSelector = this.addPaletteSelector(PaletteSelector.TYPE_HAIR)
-        this.hairColorSelector.setSelectorCallback((color: cc.Color) => {
             this.hairSprite.node.color = color
             this.data.hairColor = color.toHEX('#rrggbb')
-        })
+        }
+        //头发颜色
+        // this.hairColorSelector = this.addPaletteSelector(PaletteSelector.TYPE_HAIR)
+        // this.hairColorSelector.setSelectorCallback((color: cc.Color) => {
+        //     this.hairSprite.node.color = color
+        //     this.data.hairColor = color.toHEX('#rrggbb')
+        // })
         //眼睛
         let eyesList = []
         for (let i = 0; i < 22; i++) {
             eyesList.push(new AttributeData(i, `样式${i}`, `avatareyes${Utils.getNumberStr3(i)}`, '', '', ''))
         }
-        this.eyesSelector = this.addAttributeSelector('眼睛：', eyesList)
-        this.eyesSelector.selectorCallback = (data: AttributeData) => {
+        this.eyesSelector = this.addAttributeSelector('眼睛：', eyesList, 0, true, PaletteSelector.EYESCOLORS)
+        this.eyesSelector.selectorCallback = (data: AttributeData, color: cc.Color) => {
             this.eyesSprite.spriteFrame = Logic.spriteFrameRes(data.resName + 'anim0')
             this.data.eyesResName = data.resName
-        }
-        //眼睛颜色
-        this.eyesColorSelector = this.addPaletteSelector(PaletteSelector.TYPE_EYES)
-        this.eyesColorSelector.setSelectorCallback((color: cc.Color) => {
             this.eyesSprite.getMaterial(0).setProperty('eyeColor', color)
             this.data.eyesColor = color.toHEX('#rrggbb')
-        })
+        }
+        //眼睛颜色
+        // this.eyesColorSelector = this.addPaletteSelector(PaletteSelector.TYPE_EYES)
+        // this.eyesColorSelector.setSelectorCallback((color: cc.Color) => {
+        //     this.eyesSprite.getMaterial(0).setProperty('eyeColor', color)
+        //     this.data.eyesColor = color.toHEX('#rrggbb')
+        // })
         //面颊
         let faceList = []
         for (let i = 0; i < 15; i++) {
             faceList.push(new AttributeData(i, `样式${i}`, `avatarface${Utils.getNumberStr3(i)}`, '', '', ''))
         }
-        this.faceSelector = this.addAttributeSelector('面颊：', faceList)
-        this.faceSelector.selectorCallback = (data: AttributeData) => {
+        this.faceSelector = this.addAttributeSelector('面颊：', faceList, 0, true, PaletteSelector.FACECOLORS)
+        this.faceSelector.selectorCallback = (data: AttributeData, color: cc.Color) => {
             this.faceSprite.spriteFrame = Logic.spriteFrameRes(data.resName + 'anim0')
             this.data.faceResName = data.resName
-        }
-        //脸部颜色
-        this.faceColorSelector = this.addPaletteSelector(PaletteSelector.TYPE_FACE)
-        this.faceColorSelector.setSelectorCallback((color: cc.Color) => {
             this.faceSprite.node.color = color
             this.faceSprite.node.opacity = 128
             this.data.faceColor = color.toHEX('#rrggbb')
-        })
+        }
+        //脸部颜色
+        // this.faceColorSelector = this.addPaletteSelector(PaletteSelector.TYPE_FACE)
+        // this.faceColorSelector.setSelectorCallback((color: cc.Color) => {
+        //     this.faceSprite.node.color = color
+        //     this.faceSprite.node.opacity = 128
+        //     this.data.faceColor = color.toHEX('#rrggbb')
+        // })
         //宠物
         // let petNames = ['柯基', '鹦鹉', '橘子鱼', '天竺鼠', '巴西龟', '变色龙', '刺猬', '火玫瑰蜘蛛', '安哥拉兔', '科尔鸭', '巴马香猪'];
         let petNames = ['柯基', '家猫', '橙子鱼']
@@ -297,8 +314,8 @@ export default class PickAvatar extends cc.Component {
         for (let i = 0; i < petNames.length; i++) {
             petList.push(new AttributeData(i, `${petNames[i]}`, `nonplayer1${Utils.getNumberStr2(i)}`, '', '', ''))
         }
-        this.petSelector = this.addAttributeSelector('宠物：', petList)
-        this.petSelector.selectorCallback = (data: AttributeData) => {
+        this.petSelector = this.addAttributeSelector('宠物：', petList, 0, false, [])
+        this.petSelector.selectorCallback = (data: AttributeData, color: cc.Color) => {
             LoadingManager.loadNpcSpriteAtlas(data.resName, () => {
                 this.petSprite.spriteFrame = Logic.spriteFrameRes(data.resName + 'anim000')
             })
@@ -393,11 +410,11 @@ export default class PickAvatar extends cc.Component {
         this.attributeLayout.addChild(prefab)
         return script
     }
-    addAttributeSelector(title: string, nameList: AttributeData[], defaultIndex?: number): AttributeSelector {
+    addAttributeSelector(title: string, nameList: AttributeData[], defaultIndex: number, colorPick: boolean, defaultColors: string[]): AttributeSelector {
         let prefab = cc.instantiate(this.selectorPrefab)
         let script = prefab.getComponent(AttributeSelector)
         this.attributeLayout.addChild(prefab)
-        script.init(title, nameList, defaultIndex)
+        script.init(title, nameList, defaultIndex, colorPick ? this.colorPicker : null, defaultColors)
         return script
     }
     addPaletteSelector(colorType: number, defaultIndex?: number): PaletteSelector {
@@ -452,13 +469,13 @@ export default class PickAvatar extends cc.Component {
         }
         this.organizationSelector.selectRandom()
         this.professionSelector.selectRandom()
-        this.skinSelector.selectRandom()
+        this.skinSelector.selectRandom(this.skinSelector.currentIndex == 0)
         this.hairSelector.selectRandom()
-        this.hairColorSelector.selectRandom()
+        // this.hairColorSelector.selectRandom()
         this.eyesSelector.selectRandom()
-        this.eyesColorSelector.selectRandom()
+        // this.eyesColorSelector.selectRandom()
         this.faceSelector.selectRandom()
-        this.faceColorSelector.selectRandom()
+        // this.faceColorSelector.selectRandom()
         this.petSelector.selectRandom()
         AudioPlayer.play(AudioPlayer.SELECT)
     }
