@@ -8,6 +8,8 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import BaseData from '../data/BaseData'
+
 export default class DataUtils {
     static baseCopy(self: any, other: any, keepDefault?: boolean) {
         if (!other) {
@@ -55,17 +57,17 @@ export default class DataUtils {
         }
         return returnList
     }
-    static cloneKeyValue(data: { [key: string]: any }): { [key: string]: any } {
+    static cloneKeyValue<T>(data: { [key: string]: T }, callback: (arg0: T) => T): { [key: string]: T } {
         let newdata = {}
         for (let key in data) {
-            newdata[key] = data[key]
+            newdata[key] = callback(data[key])
         }
         return newdata
     }
-    static cloneNumberKeyValue(data: { [key: number]: any }): { [key: number]: any } {
+    static cloneNumberKeyValue<T>(data: { [key: number]: any }, callback: (arg0: T) => T): { [key: number]: any } {
         let newdata = {}
         for (let key in data) {
-            newdata[key] = data[key]
+            newdata[key] = callback(data[key])
         }
         return newdata
     }

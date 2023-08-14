@@ -1,5 +1,6 @@
 import AvatarData from '../data/AvatarData'
 import PlayerData from '../data/PlayerData'
+import { EventHelper } from '../logic/EventHelper'
 import Logic from '../logic/Logic'
 import ProfileManager from '../manager/ProfileManager'
 import AudioPlayer from '../utils/AudioPlayer'
@@ -61,14 +62,14 @@ export default class SaveSlotItem extends cc.Component {
     }
     updateUi(index: number, isEdit: boolean) {
         let data = ProfileManager.getSaveData(index)
-        if (data && data.playerData) {
+        if (data && data.playerDatas && data.lastPlayerId.length > 0) {
             this.hasSaveData = true
         } else {
             this.hasSaveData = false
         }
         if (this.hasSaveData) {
             let playerData = new PlayerData()
-            playerData.valueCopy(data.playerData)
+            playerData.valueCopy(data.playerDatas[data.lastPlayerId])
             this.label.string = `${index} ${playerData.AvatarData.professionData.nameCn} ${AvatarData.ORGANIZATION[playerData.AvatarData.organizationIndex]} Lv.${
                 Logic.getOilGoldData(data.oilGolds).level
             }\n${Utils.getFullFormatTime(data.lastSaveTime)}`
@@ -124,6 +125,7 @@ export default class SaveSlotItem extends cc.Component {
             this.deleteCover.width = Logic.lerp(this.deleteCover.width, this.isPressing ? SaveSlotItem.PRESSINGWIDTH : 0, dt * 3)
             if (this.isPressing && this.deleteCover.width > SaveSlotItem.PRESSINGWIDTH - 5) {
                 ProfileManager.clearData(this.index)
+                EventHelper.emit(EventHelper.DELETE_SAVE_SLOT)
                 this.updateUi(this.index, false)
             }
         } else {

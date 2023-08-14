@@ -11,6 +11,7 @@ import LifeData from './LifeData'
 import DataUtils from '../utils/DataUtils'
 import ItemData from './ItemData'
 import InventoryData from './InventoryData'
+import BaseData from './BaseData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -27,7 +28,7 @@ import InventoryData from './InventoryData'
  * 每个角色有独立的两套装备物品和背包且额外封装起来，但是两个角色的容貌是一样的每次梦境结束的时候可以同步部分数据
  * 现实的npc也会有对应的梦境复制体，
  */
-export default class PlayerData {
+export default class PlayerData extends BaseData {
     static DEFAULT_HEALTH = 10
     static DEFAULT_SPEED = 6
     static DEFAULT_JUMP_SPEED = 6
@@ -75,6 +76,8 @@ export default class PlayerData {
     playerInventoryListReality: InventoryData[] = new Array()
 
     constructor() {
+        super()
+        this.id = this.genNonDuplicateID()
         this.equipmentTotalData = new EquipmentData()
         this.statusTotalData = new StatusData()
         this.avatarData = new AvatarData()
@@ -176,8 +179,8 @@ export default class PlayerData {
         this.roomPos = data.roomPos ? cc.v3(data.roomPos.x, data.roomPos.y) : cc.v3(0, 0)
         this.chapterIndex = data.chapterIndex ? data.chapterIndex : 999
         this.chapterLevel = data.chapterLevel ? data.chapterLevel : 999
-        this.playerEquips = DataUtils.cloneKeyValue(data.playerEquips)
-        this.playerEquipsReality = DataUtils.cloneKeyValue(data.playerEquipsReality)
+        this.playerEquips = DataUtils.cloneKeyValue(data.playerEquips, value => new EquipmentData().valueCopy(value))
+        this.playerEquipsReality = DataUtils.cloneKeyValue(data.playerEquipsReality, value => new EquipmentData().valueCopy(value))
         this.playerItemList = DataUtils.copyListValue(data.playerItemList, arg0 => {
             return new ItemData().valueCopy(arg0)
         })

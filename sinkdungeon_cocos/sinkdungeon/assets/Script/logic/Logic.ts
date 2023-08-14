@@ -110,7 +110,6 @@ export default class Logic extends cc.Component {
     static level = 0 //关卡
     static chapterIndex = 0 //章节
     static chapterMaxIndex = 0 //到达的最大章节
-    static playerData: PlayerData = new PlayerData() //玩家数据
     static currentPlayerId = ''
     static playerDatas: { [key: string]: PlayerData } = {}
     static inventoryMgrs: { [key: string]: InventoryManager } = {}
@@ -188,7 +187,8 @@ export default class Logic extends cc.Component {
 
     start() {}
     static saveData() {
-        Logic.profileManager.data.playerData = Logic.playerData.clone()
+        Logic.profileManager.data.lastPlayerId = Logic.currentPlayerId
+        Logic.profileManager.data.playerDatas = DataUtils.cloneKeyValue(Logic.playerDatas, value => new PlayerData().valueCopy(value))
         Logic.profileManager.data.nonPlayerList = Logic.nonPlayerList
         Logic.profileManager.data.aiPlayerList = Logic.aiPlayerList
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon
@@ -202,9 +202,9 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.dreamCostTime = Logic.dreamCostTime
         Logic.profileManager.data.savePointData = Logic.savePoinitData.clone()
         Logic.profileManager.data.groundOilGoldData = Logic.groundOilGoldData.clone()
-        Logic.profileManager.data.killPlayerCounts = DataUtils.cloneNumberKeyValue(Logic.killPlayerCounts)
-        Logic.profileManager.data.dialogueCounts = DataUtils.cloneKeyValue(Logic.dialogueCounts)
-        Logic.profileManager.data.playerMetals = DataUtils.cloneKeyValue(Logic.playerMetals)
+        Logic.profileManager.data.killPlayerCounts = DataUtils.cloneNumberKeyValue(Logic.killPlayerCounts, value => value)
+        Logic.profileManager.data.dialogueCounts = DataUtils.cloneKeyValue(Logic.dialogueCounts, value => value)
+        Logic.profileManager.data.playerMetals = DataUtils.cloneKeyValue(Logic.playerMetals, value => value)
         Logic.profileManager.data.oilGolds = Logic.oilGolds
         Logic.profileManager.data.coins = Logic.coins
         Logic.profileManager.data.coinCounts = Logic.coinCounts
@@ -241,7 +241,11 @@ export default class Logic extends cc.Component {
         Logic.groundOilGoldData = Logic.profileManager.data.groundOilGoldData.clone()
         Logic.oilGolds = Logic.profileManager.data.oilGolds
         //加载玩家数据
-        Logic.playerData = Logic.profileManager.data.playerData.clone()
+        Logic.currentPlayerId = Logic.profileManager.data.lastPlayerId
+        Logic.playerDatas = DataUtils.cloneKeyValue(Logic.profileManager.data.playerDatas, value => new PlayerData().valueCopy(value))
+        if (!Logic.playerData) {
+            Logic.playerData = new PlayerData()
+        }
         Logic.initInventoryManager()
         //加载保存的npc
         Logic.nonPlayerList = []
@@ -267,10 +271,10 @@ export default class Logic extends cc.Component {
         //重置bgm
         Logic.lastBgmIndex = 0
         //加载怪物击杀玩家数据
-        Logic.killPlayerCounts = DataUtils.cloneNumberKeyValue(Logic.profileManager.data.killPlayerCounts)
+        Logic.killPlayerCounts = DataUtils.cloneNumberKeyValue(Logic.profileManager.data.killPlayerCounts, value => value)
         //加载对话出现次数
-        Logic.dialogueCounts = DataUtils.cloneKeyValue(Logic.profileManager.data.dialogueCounts)
-        Logic.playerMetals = DataUtils.cloneKeyValue(Logic.profileManager.data.playerMetals)
+        Logic.dialogueCounts = DataUtils.cloneKeyValue(Logic.profileManager.data.dialogueCounts, value => value)
+        Logic.playerMetals = DataUtils.cloneKeyValue(Logic.profileManager.data.playerMetals, value => value)
         Logic.playerData.OilGoldData.valueCopy(Logic.getOilGoldData(Logic.oilGolds))
         Logic.metalId = Logic.profileManager.data.metalId
         //清空家具信息,家具信息在添加家具的时候会添加
@@ -438,7 +442,7 @@ export default class Logic extends cc.Component {
     static initInventoryManager() {
         this.inventoryMgrs = {}
         for (let key in Logic.playerDatas) {
-            let playerData = Logic.playerData[key]
+            let playerData = Logic.playerDatas[key]
             let inventoryManager = new InventoryManager(playerData.id)
             if (Logic.chapterIndex == Logic.CHAPTER099) {
                 for (let key in playerData.playerEquipsReality) {
@@ -574,5 +578,19 @@ export default class Logic extends cc.Component {
     }
     static get inventoryMgr() {
         return Logic.inventoryMgrs[Logic.currentPlayerId]
+    }
+    static get playerData() {
+        return Logic.playerDatas[Logic.currentPlayerId]
+    }
+    static set playerData(value: PlayerData) {
+        Logic.currentPlayerId = value.id
+        Logic.playerDatas[value.id] = value
+    }
+    static getOtherPlayerData(id: number) {
+        let data = Logic.playerDatas[id]
+        if (!data) {
+            data = new PlayerData().valueCopy(Logic.players[id])
+        }
+        return data
     }
 }

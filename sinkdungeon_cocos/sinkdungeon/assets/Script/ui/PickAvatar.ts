@@ -27,6 +27,8 @@ import ProfileManager from '../manager/ProfileManager'
 import ExitData from '../data/ExitData'
 import SavePointData from '../data/SavePointData'
 import ColorPicker from './ColorPicker'
+import Log from '../base/behavior3/custom/actions/CustomAction'
+import PlayerData from '../data/PlayerData'
 
 const { ccclass, property } = cc._decorator
 

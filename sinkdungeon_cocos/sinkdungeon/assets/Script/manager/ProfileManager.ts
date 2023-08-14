@@ -1,3 +1,4 @@
+import PlayerData from '../data/PlayerData'
 import ProfileData from '../data/ProfileData'
 import RectDungeon from '../rect/RectDungeon'
 import DataUtils from '../utils/DataUtils'
@@ -48,7 +49,7 @@ export default class ProfileManager {
             this.hasSaveData = false
             return false
         }
-        if (!data.savePointData || !data.playerData || !data.playerEquips || !data.playerItemList || !data.rectDungeons) {
+        if (!data.savePointData || !data.playerDatas || !data.playerEquips || !data.playerItemList || !data.rectDungeons) {
             this.hasSaveData = false
             return false
         }
@@ -57,7 +58,7 @@ export default class ProfileManager {
         DataUtils.baseCopy(this.data, data)
         this.hasSaveData = true
         //玩家数据
-        this.data.playerData.valueCopy(data.playerData)
+        this.data.playerDatas = DataUtils.cloneKeyValue(data.playerDatas, value => new PlayerData().valueCopy(value))
         //章节名称
         // this.data.chapterIndex = data.chapterIndex
         // this.data.chapterMaxIndex = data.chapterMaxIndex

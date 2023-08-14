@@ -7,6 +7,8 @@ import SaveSlotDialog from '../ui/dialog/SaveSlotDialog'
 import LocalStorage from '../utils/LocalStorage'
 import ExitData from '../data/ExitData'
 import LdtkUtils from '../utils/LdtkUtils'
+import { EventHelper } from './EventHelper'
+import ProfileManager from '../manager/ProfileManager'
 
 const { ccclass, property } = cc._decorator
 
@@ -41,6 +43,9 @@ export default class Start extends cc.Component {
     tourClickCount = 0
     onLoad(): void {
         // CursorArea.init(this.cursorAreaPrefab)
+        EventHelper.on(EventHelper.DELETE_SAVE_SLOT, detail => {
+            this.showButtons()
+        })
         this.cheatButton.opacity = Logic.isCheatMode ? 255 : 0
         this.debugButton.opacity = Logic.isDebug ? 255 : 0
         this.noticeDialog.node.active = false
@@ -75,6 +80,9 @@ export default class Start extends cc.Component {
 
     start() {
         // init logic
+        this.showButtons()
+    }
+    private showButtons() {
         if (this.continueButton) {
             Logic.jumpSlotIndex = LocalStorage.getLastSaveSlotKey()
             Logic.resetData()

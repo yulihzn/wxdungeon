@@ -113,6 +113,7 @@ export class EventHelper extends cc.Component {
 
     public static readonly GAMEOVER_WAKEUP = 'GAMEOVER_WAKEUP'
     public static readonly SELECT_METAL_TALENT = 'SELECT_METAL_TALENT'
+    public static readonly DELETE_SAVE_SLOT = 'DELETE_SAVE_SLOT'
 
     public static eventHandler: cc.Node = new cc.Node()
 
