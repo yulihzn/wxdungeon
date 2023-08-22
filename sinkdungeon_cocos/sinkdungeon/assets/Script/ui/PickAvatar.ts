@@ -29,6 +29,7 @@ import SavePointData from '../data/SavePointData'
 import ColorPicker from './ColorPicker'
 import Log from '../base/behavior3/custom/actions/CustomAction'
 import PlayerData from '../data/PlayerData'
+import ItemData from '../data/ItemData'
 
 const { ccclass, property } = cc._decorator
 
@@ -404,6 +405,14 @@ export default class PickAvatar extends cc.Component {
             let equipType = this.data.professionData.equips[name] ? this.data.professionData.equips[name] : ''
             Logic.playerData.playerEquips[name] = new EquipmentData().valueCopy(EquipmentManager.getNewEquipData(equipType))
             Logic.playerData.playerEquipsReality[name] = new EquipmentData().valueCopy(EquipmentManager.getNewEquipData(equipType))
+        }
+        Logic.playerData.playerItemList = []
+            Logic.playerData.playerItemListReality = []
+            for (let i = 0; i < InventoryManager.MAX_ITEM; i++) {
+                let data = new ItemData()
+                data.count = -1
+                Logic.playerData.playerItemList.push(new ItemData().valueCopy(data))
+                Logic.playerData.playerItemListReality.push(new ItemData().valueCopy(data))
         }
     }
     addBrightnessBar(): BrightnessBar {

@@ -351,6 +351,7 @@ export default class Logic extends cc.Component {
         Logic.mapManager.randMap.clear()
         //保存数据
         Logic.saveData()
+        Logic.initInventoryManager()
         AudioPlayer.play(AudioPlayer.EXIT)
         let room = Logic.mapManager.loadingNextRoom(dir)
         if (room) {
@@ -403,6 +404,7 @@ export default class Logic extends cc.Component {
                 }
             }
             Logic.saveData()
+            Logic.initInventoryManager()
             /**************加载exitData关卡数据***************** */
             Logic.chapterIndex = exitData.toChapter
             Logic.level = exitData.toLevel
