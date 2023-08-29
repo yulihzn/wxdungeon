@@ -21,6 +21,7 @@ export class EventHelper extends cc.Component {
     public static readonly PLAYER_CHANGEITEM = 'PLAYER_CHANGEITEM'
     public static readonly PLAYER_CHANGEEQUIPMENT = 'PLAYER_CHANGEEQUIPMENT'
     public static readonly PLAYER_EQUIPMENT_REFRESH = 'PLAYER_EQUIPMENT_REFRESH'
+    public static readonly PLAYER_EQUIPMENT_REFRESH_ALL = 'PLAYER_EQUIPMENT_REFRESH_ALL'
     public static readonly PLAYER_ITEM_REFRESH = 'PLAYER_ITEM_REFRESH'
     public static readonly PLAYER_STATUSUPDATE = 'PLAYER_STATUSUPDATE'
     public static readonly PLAYER_UPDATE_OILGOLD_DATA = 'PLAYER_UPDATE_OILGOLD_DATA'

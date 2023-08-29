@@ -746,7 +746,9 @@ export default class NonPlayer extends PlayActor {
             this.jumpAbility.airPause(4, 0.3, JumpingAbility.CALLBACK_AIR_PAUSE, (group: number, type: number) => {
                 if (type == TriggerData.TYPE_JUMP_END) {
                     this.jumpAbility.removeCallback(JumpingAbility.CALLBACK_AIR_PAUSE)
-                    this.fallFinish()
+                    this.scheduleOnce(() => {
+                        this.fallFinish()
+                    }, 0.5)
                 }
             })
         }

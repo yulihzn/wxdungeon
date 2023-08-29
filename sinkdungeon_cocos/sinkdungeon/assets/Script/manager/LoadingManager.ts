@@ -414,7 +414,7 @@ export default class LoadingManager {
             if (err) {
                 cc.error(err)
             } else {
-                Logic.nonplayers = resource.json
+                Logic.players = resource.json
                 this.isPlayerLoaded = true
                 cc.log('加载人形npc完成')
             }

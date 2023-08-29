@@ -189,6 +189,11 @@ export default class Player extends PlayActor {
         this.initCollider()
         this.weaponLeft.init(this, true, false)
         this.weaponRight.init(this, false, false)
+        if (this.data.id == Logic.currentPlayerId) {
+            this.scheduleOnce(() => {
+                EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH_ALL)
+            })
+        }
         this.remoteCooldown.width = 0
         this.remoteCooldown.opacity = 200
         EventHelper.on(EventHelper.PLAYER_UPDATE_OILGOLD_DATA, detail => {

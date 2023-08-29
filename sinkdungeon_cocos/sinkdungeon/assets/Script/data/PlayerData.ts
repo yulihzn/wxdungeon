@@ -42,7 +42,6 @@ export default class PlayerData extends BaseData {
     posZ: number = 0
     roomPos: cc.Vec3 = cc.v3(0, 0)
     isWakeUp = false
-    isPrimary = false //是否是主角
 
     currentHealth: number = PlayerData.DEFAULT_HEALTH
     currentDream: number = PlayerData.DEFAULT_DREAM

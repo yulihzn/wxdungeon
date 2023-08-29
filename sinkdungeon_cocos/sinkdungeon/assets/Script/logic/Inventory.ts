@@ -162,6 +162,11 @@ export default class Inventory extends cc.Component {
         EventHelper.on(EventHelper.HUD_FADE_OUT, detail => {
             this.fadeOut()
         })
+        EventHelper.on(EventHelper.PLAYER_EQUIPMENT_REFRESH_ALL, detail => {
+            for (let key in Logic.inventoryMgr.equips) {
+                this.refreshEquipment(key, Logic.inventoryMgr.equips[key].clone(), true, false)
+            }
+        })
         this.remote.node.parent.active = true
         this.shield.node.parent.active = false
         for (let name of InventoryManager.EQUIP_TAGS) {
@@ -218,9 +223,6 @@ export default class Inventory extends cc.Component {
             this.equipCovers.set(key, sprite.node.parent.getChildByName('cover'))
         })
 
-        for (let key in Logic.inventoryMgr.equips) {
-            this.refreshEquipment(key, Logic.inventoryMgr.equips[key].clone(), true, false)
-        }
         this.refreshItemRes(Logic.inventoryMgr.itemList)
         let itemSpriteList = [this.itemsprite1, this.itemsprite2, this.itemsprite3, this.itemsprite4, this.itemsprite5, this.itemsprite6]
         let itemLabelList = [this.itemlabel1, this.itemlabel2, this.itemlabel3, this.itemlabel4, this.itemlabel5, this.itemlabel6]
@@ -365,7 +367,7 @@ export default class Inventory extends cc.Component {
         }
     }
 
-    refreshEquipment(equipmetType: string, equipDataNew: EquipmentData, isInit: boolean, isReplace: boolean) {
+    private refreshEquipment(equipmetType: string, equipDataNew: EquipmentData, isInit: boolean, isReplace: boolean) {
         if (!equipDataNew || !this.weapon || !equipmetType) {
             return
         }
@@ -450,16 +452,16 @@ export default class Inventory extends cc.Component {
     update(dt) {
         if (!Logic.isGamePause) {
             let currentTime = Date.now()
-            for (let key in this.equipCovers) {
+            this.equipCovers.forEach((value, key) => {
                 let data = Logic.inventoryMgr.equips[key]
                 if (data) {
                     let percent = (currentTime - data.lastTime) / (data.cooldown * 1000) //当前百分比
                     if (percent > 1) {
                         percent = 1
                     }
-                    this.equipCovers.get(key).height = this.equipCovers.get(key).width * (1 - percent)
+                    value.height = value.width * (1 - percent)
                 }
-            }
+            })
             for (let i = 0; i < Logic.inventoryMgr.itemList.length; i++) {
                 let data = Logic.inventoryMgr.itemList[i]
                 let percent = (currentTime - data.lastTime) / (data.cooldown * 1000) //当前百分比
