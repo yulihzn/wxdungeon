@@ -157,7 +157,6 @@ export default class NonPlayer extends PlayActor {
         // this.handLeft = this.weaponLeft
         // this.handRight = this.weaponRight
         this.statusMgr = this.statusManager
-        this.nonPlayerData = this.data
         this.jumpAbility = this.addComponent(JumpingAbility)
         this.jumpAbility.init(this, 1, 0, (group: number, type: number) => {
             if (TriggerData.TYPE_JUMP_END == type) {

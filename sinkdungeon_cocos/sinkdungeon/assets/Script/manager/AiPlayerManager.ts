@@ -35,22 +35,21 @@ export default class AiPlayerManager extends BaseManager {
     clear(): void {
         Utils.clearComponentArray(this.players)
     }
-    public addAiPlayerListFromSave(dungeon: Dungeon, list: PlayerData[]) {
+    public addAiPlayerListFromSave(dungeon: Dungeon, list: string[]) {
         let room = Logic.mapManager.getCurrentRoom()
-        for (let data of list) {
-            if (data.roomPos.x == room.x && data.roomPos.y == room.y && data.chapterIndex == Logic.chapterIndex && data.chapterLevel == Logic.level) this.getPlayer(data, dungeon)
+        for (let key of list) {
+            let data = Logic.getPlayerDataById(key)
+            if (data.roomPos.x == room.x && data.roomPos.y == room.y && data.chapterIndex == Logic.chapterIndex && data.chapterLevel == Logic.level)
+                this.getPlayer(data.id, dungeon)
         }
     }
     /**添加npc */
-    public addNonPlayerFromData(data: PlayerData, dungeon: Dungeon) {
-        this.getPlayer(data, dungeon)
+    public addNonPlayerFromData(dataId: string, dungeon: Dungeon) {
+        this.getPlayer(dataId, dungeon)
     }
-    private getPlayer(playerData: PlayerData, dungeon: Dungeon): Player {
+    private getPlayer(dataId: string, dungeon: Dungeon): Player {
         let player = cc.instantiate(this.playerPrefab).getComponent(Player)
-        let data = new PlayerData()
-        data.valueCopy(Logic.players[playerData.id])
-        data.valueCopy(playerData)
-        player.data = data
+        player.dataId = dataId
         let controller = player.addComponent(AiController)
         controller.player = player
         player.controller = controller

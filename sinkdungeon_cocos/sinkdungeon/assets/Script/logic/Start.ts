@@ -6,9 +6,7 @@ import StartBackground from '../ui/StartBackground'
 import SaveSlotDialog from '../ui/dialog/SaveSlotDialog'
 import LocalStorage from '../utils/LocalStorage'
 import ExitData from '../data/ExitData'
-import LdtkUtils from '../utils/LdtkUtils'
 import { EventHelper } from './EventHelper'
-import ProfileManager from '../manager/ProfileManager'
 
 const { ccclass, property } = cc._decorator
 

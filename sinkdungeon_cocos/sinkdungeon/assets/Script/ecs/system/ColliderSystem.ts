@@ -5,7 +5,6 @@ import CCollider from '../../collider/CCollider'
 import ActorEntity from '../entity/ActorEntity'
 import RayCastResult from './RayCastResult'
 import Logic from '../../logic/Logic'
-import { ColliderTag } from '../../actor/ColliderTag'
 
 export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
     private quadTree: Quadtree

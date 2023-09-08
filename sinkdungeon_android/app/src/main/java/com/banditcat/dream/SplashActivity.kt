@@ -1,7 +1,9 @@
 package com.banditcat.dream
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
@@ -11,9 +13,13 @@ import android.view.View
 import android.widget.Button
 import android.widget.RadioGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.banditcat.dream.SpUtils.put
+import com.banditcat.dream.avatar.AvatarActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,6 +44,10 @@ class SplashActivity : AppCompatActivity(), DownloadProgressListener {
                 radioGroup.checkedRadioButtonId == R.id.rb_default
             )
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            finish()
+        }
+        findViewById<Button>(R.id.btn_avatar).setOnClickListener {
+            startActivity(Intent(this@SplashActivity,AvatarActivity::class.java))
             finish()
         }
         mBtnCheck = findViewById(R.id.btn_check)
@@ -97,5 +107,38 @@ class SplashActivity : AppCompatActivity(), DownloadProgressListener {
     @SuppressLint("SetTextI18n")
     private fun updateProgressTextView(progress: Int) {
         mBtnCheck.text = "${getString(R.string.button_check)}... $progress%"
+    }
+    private val manageStoragePermissionCode = 1
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun gotAvatarListPage(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            // 如果没有权限，请求权限
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.MANAGE_EXTERNAL_STORAGE),
+                manageStoragePermissionCode
+            )
+        } else {
+            // 已经具有权限，可以执行你的操作
+            // ...
+        }
+    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == manageStoragePermissionCode) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 用户授予了权限，可以执行你的操作
+                // ...
+            } else {
+                // 用户拒绝了权限请求，可以显示一个提示或采取其他操作
+                Toast.makeText(this,"没有文件权限！", Toast.LENGTH_LONG).show()
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

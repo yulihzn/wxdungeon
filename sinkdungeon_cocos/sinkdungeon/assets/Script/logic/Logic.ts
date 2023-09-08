@@ -27,7 +27,6 @@ import LoadingManager from '../manager/LoadingManager'
 import DialogueData from '../data/DialogueData'
 import BuildingData from '../data/BuildingData'
 import SettingsData from '../data/SettingsData'
-import Utils from '../utils/Utils'
 import AffixMapData from '../data/AffixMapData'
 import MetalTalentData from '../data/MetalTalentData'
 import DataUtils from '../utils/DataUtils'
@@ -146,7 +145,7 @@ export default class Logic extends cc.Component {
     static sortIndexs: { [key: string]: number } = {} //0时间,1类别,2品质,3价格
     static settings: SettingsData = new SettingsData()
     static nonPlayerList: NonPlayerData[] = []
-    static aiPlayerList: PlayerData[] = []
+    static aiPlayerIdList: string[] = []
     static playerMetals: { [key: string]: MetalTalentData } = {} //玩家翠金天赋点
     static metalId = ''
     static furnitureMap: Map<String, BuildingData> = new Map()
@@ -190,7 +189,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.lastPlayerId = Logic.currentPlayerId
         Logic.profileManager.data.playerDatas = DataUtils.cloneKeyValue(Logic.playerDatas, value => new PlayerData().valueCopy(value))
         Logic.profileManager.data.nonPlayerList = Logic.nonPlayerList
-        Logic.profileManager.data.aiPlayerList = Logic.aiPlayerList
+        Logic.profileManager.data.aiPlayerIdList = Logic.aiPlayerIdList
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon
         Logic.profileManager.data.cycle = Logic.cycle
         Logic.profileManager.data.level = Logic.level
@@ -248,18 +247,8 @@ export default class Logic extends cc.Component {
         }
         Logic.initInventoryManager()
         //加载保存的npc
-        Logic.nonPlayerList = []
-        for (let i = 0; i < Logic.profileManager.data.nonPlayerList.length; i++) {
-            let data = new NonPlayerData()
-            data.valueCopy(Logic.profileManager.data.nonPlayerList[i])
-            Logic.nonPlayerList.push(data)
-        }
-        Logic.aiPlayerList = []
-        for (let i = 0; i < Logic.profileManager.data.aiPlayerList.length; i++) {
-            let data = new PlayerData()
-            data.valueCopy(Logic.profileManager.data.aiPlayerList[i])
-            Logic.aiPlayerList.push(data)
-        }
+        Logic.nonPlayerList = DataUtils.copyListValue(Logic.profileManager.data.nonPlayerList, value => new NonPlayerData().valueCopy(value))
+        Logic.aiPlayerIdList = DataUtils.copyListValue(Logic.profileManager.data.aiPlayerIdList, value => value)
         //重置地牢宽高
         Dungeon.WIDTH_SIZE = 15
         Dungeon.HEIGHT_SIZE = 9
@@ -588,10 +577,16 @@ export default class Logic extends cc.Component {
         Logic.currentPlayerId = value.id
         Logic.playerDatas[value.id] = value
     }
-    static getOtherPlayerData(id: number) {
+    static getPlayerDataById(id: string) {
         let data = Logic.playerDatas[id]
         if (!data) {
-            data = new PlayerData().valueCopy(Logic.players[id])
+            data = new PlayerData()
+            if (Logic.players[id]) {
+                data.valueCopy(Logic.players[id])
+            } else {
+                data.id = id
+            }
+            Logic.playerDatas[id] = data
         }
         return data
     }

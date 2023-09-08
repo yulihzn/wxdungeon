@@ -137,9 +137,9 @@ export default class NonPlayerData {
         this.common.maxHealth = maxHealth
         this.common.damageMin = attackPoint
     }
-    public valueCopy(data: NonPlayerData): void {
+    public valueCopy(data: NonPlayerData): NonPlayerData {
         if (!data) {
-            return
+            return this
         }
         DataUtils.baseCopy(this, data)
         this.common.valueCopy(data.common)
@@ -154,6 +154,7 @@ export default class NonPlayerData {
         this.specialFrameKeyEnd = data.specialFrameKeyEnd ? data.specialFrameKeyEnd : 2
         this.bodyColor = data.bodyColor ? data.bodyColor : '#ffffff'
         this.needUpdateFinalCommon = true
+        return this
     }
     public clone(): NonPlayerData {
         let e = new NonPlayerData()

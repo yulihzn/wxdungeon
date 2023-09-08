@@ -15,7 +15,6 @@ import PlayerAvatar from '../logic/PlayerAvatar'
 import FrameAvatar from '../logic/FrameAvatar'
 import { EventHelper } from '../logic/EventHelper'
 import FloatingLabelData from '../data/FloatingLabelData'
-import Logic from '../logic/Logic'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -31,6 +30,7 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default abstract class PlayActor extends Actor {
+    dataId = ''
     dungeon: Dungeon
     triggerShooter: Shooter
     statusMgr: StatusManager
@@ -76,8 +76,6 @@ export default abstract class PlayActor extends Actor {
     get Hv(): cc.Vec2 {
         return this.hv
     }
-    playerData: PlayerData
-    nonPlayerData: NonPlayerData
     protected onLoad(): void {
         this.init()
     }

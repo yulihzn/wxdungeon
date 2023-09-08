@@ -31,9 +31,6 @@ export default class SavePoint extends Building {
                 Dialogue.play(Dialogue.DAILY_SAVE_POINT, (index: number) => {
                     if (index == 0) {
                     } else if (index == 1) {
-                        if (player) {
-                            Logic.playerData = player.data.clone()
-                        }
                         Logic.savePonit(this.data.defaultPos)
                         Logic.resetData()
                         EventHelper.emit(EventHelper.DUNGEON_DISAPPEAR)

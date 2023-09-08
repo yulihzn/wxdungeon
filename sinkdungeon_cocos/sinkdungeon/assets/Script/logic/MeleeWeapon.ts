@@ -23,11 +23,11 @@ import CCollider from '../collider/CCollider'
 import BaseColliderComponent from '../base/BaseColliderComponent'
 import TriggerData from '../data/TriggerData'
 import Emplacement from '../building/Emplacement'
-import PlayActor from '../base/PlayActor'
 import BaseAvatar from '../base/BaseAvatar'
 import ReflectLight from '../effect/ReflectLight'
 import NormalBuilding from '../building/NormalBuilding'
 import GameWorldSystem from '../ecs/system/GameWorldSystem'
+import Player from './Player'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -54,7 +54,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
 
     @property(cc.Node)
     playerNode: cc.Node = null
-    player: PlayActor = null
+    player: Player = null
     @property(cc.Prefab)
     iceLight: cc.Prefab = null
     @property(cc.Prefab)
@@ -100,7 +100,6 @@ export default class MeleeWeapon extends BaseColliderComponent {
     protected isAttackPressed = false
     protected comboMiss = false
     protected canMove = false
-    protected playerData: PlayerData
     protected isWallReflected = false
 
     get CanMove() {
@@ -137,7 +136,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     onLoad() {
         super.onLoad()
         this.anim = this.getComponent(cc.Animation)
-        this.player = this.playerNode.getComponent(PlayActor)
+        this.player = this.playerNode.getComponent(Player)
         this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos))
         this.meleeLightRightPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightRightPos))
         this.initSprite()
@@ -208,7 +207,6 @@ export default class MeleeWeapon extends BaseColliderComponent {
         }
     }
     public attack(data: PlayerData, fistCombo: number): boolean {
-        this.playerData = data.clone()
         let isMiss = Logic.getRandomNum(0, 100) < data.StatusTotalData.missRate
         if (this.isAttacking || !this.anim) {
             if (this.isComboing) {
@@ -221,9 +219,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (isMiss) {
             this.player.showFloatFont(0, false, true, false, false, false, false)
         }
-        return this.attackDo(data, isMiss, fistCombo)
+        return this.attackDo(isMiss, fistCombo)
     }
-    protected attackDo(data: PlayerData, isMiss: boolean, fistCombo: number): boolean {
+    protected attackDo(isMiss: boolean, fistCombo: number): boolean {
         this.rotateCollider(this.hv)
         this.hasTargetMap.clear()
         this.fistCombo = fistCombo
@@ -234,7 +232,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         this.updateCombo()
         let animname = this.getAttackAnimName()
         this.anim.play(animname)
-        this.anim.getAnimationState(animname).speed = this.getAnimSpeed(data.FinalCommon)
+        this.anim.getAnimationState(animname).speed = this.getAnimSpeed(this.player.data.FinalCommon)
         if (this.player.sc.isJumping) {
             this.player.jumpAbility.acceleratedFall(2)
         }
@@ -447,7 +445,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
             if (this.comboMiss) {
                 this.player.showFloatFont(0, false, true, false, false, false, false)
             }
-            this.attackDo(this.playerData, this.comboMiss, this.fistCombo)
+            this.attackDo(this.comboMiss, this.fistCombo)
             this.player.playerAnim(this.player.sc.isJumping ? BaseAvatar.STATE_AIRKICK : BaseAvatar.STATE_ATTACK, this.player.currentDir)
             this.player.stopHiding()
             this.isComboing = false
@@ -546,7 +544,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     EffectTime() {
         let p = this.weaponFirePoint.position.clone()
         let ran = Logic.getRandomNum(0, 100)
-        let finalCommon = this.playerData.FinalCommon
+        let finalCommon = this.player.data.FinalCommon
         let waves = [
             finalCommon.MagicDamage > 0 && ran < finalCommon.iceRate ? MeleeWeapon.ELEMENT_TYPE_ICE : 0,
             finalCommon.MagicDamage > 0 && ran < finalCommon.fireRate ? MeleeWeapon.ELEMENT_TYPE_FIRE : 0,
@@ -642,8 +640,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
         let damage = new DamageData()
         let common = new CommonData()
         if (this.player) {
-            damage = this.player.playerData.getFinalAttackPoint()
-            common = this.player.playerData.FinalCommon
+            damage = this.player.data.getFinalAttackPoint()
+            common = this.player.data.FinalCommon
         }
         damage.isStab = this.isStab
         damage.isFist = this.isFist
@@ -720,7 +718,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         if (damageSuccess) {
             this.drainSkill.next(
                 () => {
-                    let drain = this.player.playerData.getLifeDrain()
+                    let drain = this.player.data.getLifeDrain()
                     if (drain > 0) {
                         this.player.takeDamage(new DamageData(-drain), fromData)
                     }
@@ -756,7 +754,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 anim.resume()
             }, 0.1)
         }
-        if (damageSuccess && this.player.playerData.AvatarData.organizationIndex == AvatarData.TECH) {
+        if (damageSuccess && this.player.data.AvatarData.organizationIndex == AvatarData.TECH) {
             this.player.updateDream(-1)
         }
         return damageSuccess || attackSuccess

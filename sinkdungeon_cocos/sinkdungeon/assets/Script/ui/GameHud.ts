@@ -87,9 +87,7 @@ export default class GameHud extends cc.Component {
 
     onLoad() {
         EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, detail => {
-            let data = new PlayerData()
-            data.valueCopy(detail.data)
-            this.statusUpdate(data)
+            this.statusUpdate(detail.dataId)
         })
         EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, detail => {
             this.healthBarUpdate(detail.x, detail.y)
@@ -286,10 +284,11 @@ export default class GameHud extends cc.Component {
         this.node.opacity = 0
         cc.tween(this.node).to(3, { opacity: 255 }).start()
     }
-    private statusUpdate(data: PlayerData) {
+    private statusUpdate(dataId: string) {
         if (!this.playerInfoDialog) {
             return
         }
+        let data = Logic.getPlayerDataById(dataId)
         this.playerInfoDialog.refreshDialog(data, data.EquipmentTotalData, data.StatusTotalData)
     }
 

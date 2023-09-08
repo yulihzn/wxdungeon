@@ -25,12 +25,12 @@ export default class CCollider extends cc.Component {
         DEFAULT: 0, //默认
         WALL: 1, //墙
         WALL_TOP: 2,
-        PLAYER: 3, //玩家（唯一）
+        PLAYER: 3, //玩家
         PLAYER_HIT: 4,
         NONPLAYER: 5, //敌人或者坏的npc
-        NONPLAYER_HIT: 6,
+        NONPLAYER_HIT: 6, //敌人攻击盒
         GOODNONPLAYER: 7, //好的npc
-        GOODNONPLAYER_HIT: 8, //好的npc
+        GOODNONPLAYER_HIT: 8, //好的npc攻击盒
         BOSS: 9, //头目
         BOSS_HIT: 10, //boss攻击部分
         BULLET: 11, //子弹
@@ -46,7 +46,9 @@ export default class CCollider extends cc.Component {
         PLAYER_INTERACT: 21, //玩家触碰范围用来触发交互
         INTERACT: 22, //触碰范围用来触发
         EFFECT: 23, //特效
-        VEHICLE: 24 //载具
+        VEHICLE: 24, //载具
+        BADPLAYER: 25, //坏的玩家
+        BADPLAYER_HIT: 26 //坏的玩家攻击盒
     })
     static readonly AUDIO_MATERIAL = cc.Enum({
         METAL: 0,

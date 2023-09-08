@@ -72,7 +72,6 @@ export default class Portal extends Building {
         if (player) {
             if (this.isOpen) {
                 this.closeGate()
-                Logic.playerData = player.data.clone()
                 AudioPlayer.play(AudioPlayer.EXIT)
                 Logic.loadingNextLevel(this.exitData)
             }

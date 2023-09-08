@@ -71,7 +71,6 @@ export default class RoomBed extends Building {
                 EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN)
                 player.sleep()
                 this.scheduleOnce(() => {
-                    Logic.playerData = player.data.clone()
                     if (Logic.playerData.pos.equals(this.data.defaultPos)) {
                         Logic.playerData.pos.y = this.data.defaultPos.y
                     }

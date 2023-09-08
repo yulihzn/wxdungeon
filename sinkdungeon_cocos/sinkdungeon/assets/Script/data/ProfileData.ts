@@ -35,10 +35,10 @@ export default class ProfileData {
     //玩家背包列表
     playerInventoryList: InventoryData[] = new Array()
     playerInventoryListReality: InventoryData[] = new Array()
-    //跟随的npc列表
+    //跟随的非人形npc列表
     nonPlayerList: NonPlayerData[] = new Array()
-    //其它npc列表
-    aiPlayerList: PlayerData[] = new Array()
+    //跟随的人形npc id列表
+    aiPlayerIdList: string[] = new Array()
     level = 0 //当前层级
     //游玩时间
     totalTime = 0

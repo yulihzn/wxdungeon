@@ -279,8 +279,7 @@ export default class Dungeon extends cc.Component {
                     //加载跟随npc
                     let nonList = new Array().concat(Logic.nonPlayerList)
                     this.nonPlayerManager.addNonPlayerListFromSave(this, nonList, this.player.node.position, this.player.entity.Transform.z)
-                    let aiList = new Array().concat(Logic.aiPlayerList)
-                    this.aiPlayerManager.addAiPlayerListFromSave(this, aiList)
+                    this.aiPlayerManager.addAiPlayerListFromSave(this, Logic.aiPlayerIdList)
                     //加载随机怪物
                     if (
                         (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoom().isReborn) &&
@@ -318,6 +317,7 @@ export default class Dungeon extends cc.Component {
         this.player.node.parent = this.node
         this.player.controller = controller
         this.player.dungeon = this
+        this.player.dataId = Logic.playerData.id
     }
     private initCameraAndFog(target: Actor) {
         this.changeCameraTarget(target)

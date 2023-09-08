@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".avatar.AvatarActivity">
+
+    <com.banditcat.dream.avatar.AvatarView
+        android:id="@+id/view_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="btn_hair,btn_eyes,btn_face,btn_skin,btn_helmet,btn_clothes,btn_trousers,btn_gloves,btn_shoes,btn_weapon,btn_weapon_second,btn_pet,btn_organization"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_avatar"
+        app:flow_wrapMode="aligned"/>
+
+    <Button
+        android:id="@+id/btn_hair"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="头发" />
+
+    <Button
+        android:id="@+id/btn_eyes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="眼睛" />
+
+    <Button
+        android:id="@+id/btn_face"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="脸部" />
+
+    <Button
+        android:id="@+id/btn_skin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="肤色" />
+
+    <Button
+        android:id="@+id/btn_helmet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="头饰" />
+    <Button
+        android:id="@+id/btn_clothes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="衣服" />
+    <Button
+        android:id="@+id/btn_trousers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="裤子" />
+    <Button
+        android:id="@+id/btn_gloves"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="手套" />
+    <Button
+        android:id="@+id/btn_shoes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="鞋子" />
+    <Button
+        android:id="@+id/btn_weapon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="主武器" />
+    <Button
+        android:id="@+id/btn_weapon_second"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="副武器" />
+    <Button
+        android:id="@+id/btn_pet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="宠物" />
+    <Button
+        android:id="@+id/btn_organization"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="阵营" />
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="名字"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flow" />
+
+    <EditText
+        android:id="@+id/et_message"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="top"
+        android:hint="说明"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_name" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

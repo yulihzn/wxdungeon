@@ -66,7 +66,6 @@ import EquipItemTalent from '../talent/EquipItemTalent'
 import OilGoldMetal from '../talent/OilGoldMetal'
 import ExitData from '../data/ExitData'
 import BaseController from './BaseController'
-import InventoryData from '../data/InventoryData'
 @ccclass
 export default class Player extends PlayActor {
     @property(cc.Sprite)
@@ -114,7 +113,9 @@ export default class Player extends PlayActor {
     //触碰到的提示
     touchedTips: Tips
     private touchDelay = false
-    data: PlayerData
+    get data(): PlayerData {
+        return Logic.getPlayerDataById(this.dataId)
+    }
 
     defaultPos = cc.v3(0, 0)
 
@@ -150,7 +151,6 @@ export default class Player extends PlayActor {
         this.handLeft = this.weaponLeft
         this.handRight = this.weaponRight
         this.statusMgr = this.statusManager
-        this.playerData = this.data
         this.jumpAbility = this.addComponent(JumpingAbility)
         this.jumpAbility.init(this, 2, 0, (group: number, type: number) => {
             if (TriggerData.TYPE_JUMP_END == type) {
@@ -166,7 +166,6 @@ export default class Player extends PlayActor {
         this.avatar = PlayerAvatar.create(this.avatarPrefab, this.root, Logic.playerData.AvatarData.clone(), this.node.group)
     }
     onLoad() {
-        this.data = Logic.playerData.clone()
         this.init()
         this.shield = this.shieldNode.getComponent(Shield)
         this.lastConsumeTime = Logic.realTime
@@ -487,7 +486,7 @@ export default class Player extends PlayActor {
         this.inventoryMgr.updateTotalEquipData()
         this.data.EquipmentTotalData.valueCopy(this.inventoryMgr.TotalEquipData)
         this.updateData()
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { data: this.data })
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { dataId: this.dataId })
     }
     /**获取中心位置 */
     getCenterPosition(): cc.Vec3 {

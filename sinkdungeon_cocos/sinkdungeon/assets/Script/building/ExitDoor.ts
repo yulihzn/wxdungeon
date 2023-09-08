@@ -171,7 +171,6 @@ export default class ExitDoor extends Building {
         if (player && this.isOpen) {
             this.isOpen = false
             AudioPlayer.play(AudioPlayer.EXIT)
-            Logic.playerData = player.data.clone()
             Logic.loadingNextLevel(this.exitData)
         }
     }
