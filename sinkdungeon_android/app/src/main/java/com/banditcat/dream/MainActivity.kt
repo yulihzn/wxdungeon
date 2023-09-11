@@ -2,20 +2,24 @@ package com.banditcat.dream
 
 import android.annotation.SuppressLint
 import android.net.http.SslError
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.webkit.*
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.banditcat.dream.utils.JsCallHelper
 
 /**
  * @author yuli.he
  */
 class MainActivity : AppCompatActivity() {
-    lateinit var webView: TestWebView
+    companion object {
+        const val KEY_URL = "KEY_URL"
+    }
+
+    private lateinit var webView: TestWebView
+
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         CookieManager.setAcceptFileSchemeCookies(true)
         webView.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
         webView.setBackgroundResource(R.color.black)
+        webView.addJavascriptInterface(JsCallHelper(this), "android")
         webView.webChromeClient = WebChromeClient()
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(
@@ -68,10 +73,11 @@ class MainActivity : AppCompatActivity() {
                 handler.proceed()
             }
 
-            @Deprecated("Deprecated in Java", ReplaceWith(
-                "super.onReceivedError(view, errorCode, description, failingUrl)",
-                "android.webkit.WebViewClient"
-            )
+            @Deprecated(
+                "Deprecated in Java", ReplaceWith(
+                    "super.onReceivedError(view, errorCode, description, failingUrl)",
+                    "android.webkit.WebViewClient"
+                )
             )
             override fun onReceivedError(
                 view: WebView,
@@ -90,8 +96,7 @@ class MainActivity : AppCompatActivity() {
                 super.onReceivedError(view, request, error)
             }
         }
-        val isDefault = SpUtils[this@MainActivity, SpUtils.KEY_IS_DEFAULT, true] as Boolean
-        webView.loadUrl(if (isDefault) "file:///android_asset/web-mobile/index.html" else "http://banditcatstudio.com/web-mobile")
+        webView.loadUrl(intent.getStringExtra(KEY_URL).toString())
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

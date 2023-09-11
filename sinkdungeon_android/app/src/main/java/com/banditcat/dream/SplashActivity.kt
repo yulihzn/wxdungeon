@@ -2,24 +2,28 @@ package com.banditcat.dream
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.Button
-import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.banditcat.dream.SpUtils.put
-import com.banditcat.dream.avatar.AvatarActivity
+import com.banditcat.dream.databinding.ActivitySplashBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,25 +33,39 @@ import kotlinx.coroutines.launch
  */
 class SplashActivity : AppCompatActivity(), DownloadProgressListener {
     private lateinit var mBtnCheck: Button
+    private lateinit var binding: ActivitySplashBinding
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
-        val radioGroup = findViewById<RadioGroup>(R.id.rg_group)
-        val isDefault = SpUtils[this@SplashActivity, SpUtils.KEY_IS_DEFAULT, true] as Boolean
-        radioGroup.check(if (isDefault) R.id.rb_default else R.id.rb_new)
-        findViewById<View>(R.id.btn_next).setOnClickListener {
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        var isDefault = SpUtils[this@SplashActivity, SpUtils.KEY_IS_DEFAULT, true] as Boolean
+        binding.rgGroup.check(if (isDefault) R.id.rb_default else R.id.rb_new)
+        binding.btnNext.setOnClickListener {
             put(
                 this@SplashActivity,
                 SpUtils.KEY_IS_DEFAULT,
-                radioGroup.checkedRadioButtonId == R.id.rb_default
+                binding.rgGroup.checkedRadioButtonId == R.id.rb_default
             )
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            isDefault = SpUtils[this@SplashActivity, SpUtils.KEY_IS_DEFAULT, true] as Boolean
+            startActivity(
+                Intent(this@SplashActivity, MainActivity::class.java).putExtra(
+                    MainActivity.KEY_URL,
+                    if (isDefault) "file:///android_asset/web-mobile/index.html" else "http://banditcatstudio.com/web-mobile"
+                )
+            )
             finish()
         }
-        findViewById<Button>(R.id.btn_avatar).setOnClickListener {
-            startActivity(Intent(this@SplashActivity,AvatarActivity::class.java))
+        binding.btnAvatar.setOnClickListener {
+            gotAvatarListPage()
+        }
+        binding.btnQuestEditor.setOnClickListener {
+            startActivity(
+                Intent(this@SplashActivity, MainActivity::class.java).putExtra(
+                    MainActivity.KEY_URL, "http://banditcatstudio.com/questeditor"
+                )
+            )
             finish()
         }
         mBtnCheck = findViewById(R.id.btn_check)
@@ -108,23 +126,50 @@ class SplashActivity : AppCompatActivity(), DownloadProgressListener {
     private fun updateProgressTextView(progress: Int) {
         mBtnCheck.text = "${getString(R.string.button_check)}... $progress%"
     }
+
     private val manageStoragePermissionCode = 1
-    @RequiresApi(Build.VERSION_CODES.R)
-    private fun gotAvatarListPage(){
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            // 如果没有权限，请求权限
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.MANAGE_EXTERNAL_STORAGE),
-                manageStoragePermissionCode
-            )
+    private var permissionCallback: ((isSuccess: Boolean) -> Unit)? = null
+
+
+    private fun checkPermission(method: (isSuccess: Boolean) -> Unit) {
+        permissionCallback = method
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val isHasStoragePermission = Environment.isExternalStorageManager()
+            if (!isHasStoragePermission) {
+                showStoragePermissionDialog()
+            } else {
+                permissionCallback?.invoke(true)
+            }
         } else {
-            // 已经具有权限，可以执行你的操作
-            // ...
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    manageStoragePermissionCode
+                )
+            } else {
+                permissionCallback?.invoke(true)
+            }
         }
     }
+
+    private fun gotAvatarListPage() {
+        checkPermission {
+            if (it) {
+                startActivity(
+                    Intent(this@SplashActivity, MainActivity::class.java).putExtra(
+                        MainActivity.KEY_URL, "file:///android_asset/test.html"
+                    )
+                )
+                finish()
+            } else {
+                Toast.makeText(this, "没有文件权限！", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -132,13 +177,32 @@ class SplashActivity : AppCompatActivity(), DownloadProgressListener {
     ) {
         if (requestCode == manageStoragePermissionCode) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 用户授予了权限，可以执行你的操作
-                // ...
+                permissionCallback?.invoke(true)
             } else {
-                // 用户拒绝了权限请求，可以显示一个提示或采取其他操作
-                Toast.makeText(this,"没有文件权限！", Toast.LENGTH_LONG).show()
+                permissionCallback?.invoke(false)
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun showStoragePermissionDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("开启文件访问权限")
+            .setCancelable(false)
+            .setPositiveButton("去设置") { _: DialogInterface?, _: Int ->
+                val intent = Intent()
+                intent.action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
+                launchStoragePermission.launch(intent)
+            }
+            .setNegativeButton("取消") { dialog: DialogInterface, _: Int ->
+                dialog.cancel()
+                finish()
+            }.create().show()
+    }
+
+    private val launchStoragePermission =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            gotAvatarListPage()
+        }
 }

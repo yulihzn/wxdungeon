@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html" charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS交互</title>
+</head>
+<body>
+<p><input type="button" value="toast" onclick="toast()"/></p>
+<p><input type="button" value="getImageList" onclick="getImageList()"/></p>
+<p><input type="button" value="getJsonData" onclick="getJsonData()"/></p>
+<div id="imageContainer"></div>
+<p id ="json"></p>
+</body>
+<script type="text/javascript">
+    function toast(){
+        window.android.toast("nothing is true,everything is permitted.")
+    }
+    function getImageList(){
+    // 调用Android接口以获取本地图片列表
+        var imageList = window.android.getLocalImageList("equipment");
+        // 将获取到的图片列表分割成数组
+        var imageArray = imageList.split(",");
+        // 获取图像容器
+        var imageContainer = document.getElementById("imageContainer");
+        // 在页面上显示图片
+        imageArray.forEach(function(imagePath) {
+            var img = document.createElement("img");
+            img.src = "file://" + imagePath; // 设置图片路径
+            img.style.width = "64px"; // 设置图片宽度
+            img.style.height = "auto"; // 设置图片高度自适应
+            imageContainer.appendChild(img); // 将图片添加到图像容器
+        });
+    }
+    function getJsonData(){
+       var jsonData = JSON.parse(window.android.getLocalJson("players.json"));
+       var p = document.getElementById("json")
+       p.innerHTML = jsonData
+       }
+</script>
+</html>
