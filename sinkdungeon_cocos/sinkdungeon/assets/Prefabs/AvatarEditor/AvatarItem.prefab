@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "item",
+    "_name": "AvatarItem",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -34,10 +34,13 @@
       },
       {
         "__id__": 86
+      },
+      {
+        "__id__": 87
       }
     ],
     "_prefab": {
-      "__id__": 87
+      "__id__": 88
     },
     "_opacity": 255,
     "_color": {
@@ -61,7 +64,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        360,
+        0,
         -50,
         0,
         0,
@@ -3191,7 +3194,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "item<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 1
@@ -3219,6 +3222,17 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": null,
+    "_id": ""
+  },
+  {
+    "__type__": "4632a3QsppObbW5yBs5Qwnk",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "content": null,
     "_id": ""
   },
   {

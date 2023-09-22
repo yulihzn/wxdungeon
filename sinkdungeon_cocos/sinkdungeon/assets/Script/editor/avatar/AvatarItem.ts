@@ -1,4 +1,3 @@
-
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -13,19 +12,15 @@
 const { ccclass, property } = cc._decorator
 
 @ccclass
-export default class AvatarList extends cc.Component {
-    @property(cc.Prefab)
-    avatarPrefab:cc.Prefab=null
+export default class AvatarItem extends cc.Component {
     @property(cc.Node)
     content: cc.Node = null
-    
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-       this.content.removeAllChildren()
-       for(let i =0;i<100;i++){
-        this.content.addChild(cc.instantiate(this.avatarPrefab))
-       }
+        this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
+            cc.director.loadScene('avatareditor')
+        })
     }
-   
 }
