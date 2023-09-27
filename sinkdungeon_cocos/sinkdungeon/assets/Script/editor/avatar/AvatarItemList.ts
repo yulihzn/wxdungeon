@@ -8,6 +8,7 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import PlayerData from '../../data/PlayerData'
 import Logic from '../../logic/Logic'
 import LoadingManager from '../../manager/LoadingManager'
 import AvatarItem from './AvatarItem'
@@ -25,6 +26,7 @@ export default class AvatarItemList extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.content.removeAllChildren()
         this.loadingManager.init()
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor')
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_EQUIPMENT, 'emptyequipment')
@@ -53,9 +55,8 @@ export default class AvatarItemList extends cc.Component {
         }
     }
     show() {
-        this.content.removeAllChildren()
         for (let key in Logic.players) {
-            AvatarItem.create(this.avatarPrefab, this.content, Logic.players[key])
+            AvatarItem.create(this.avatarPrefab, this.content, new PlayerData().valueCopy(Logic.players[key]))
         }
     }
 }

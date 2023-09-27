@@ -10294,6 +10294,21 @@
       "__id__": 2
     },
     "_enabled": true,
+    "avatarTable": {
+      "__id__": 150
+    },
+    "randomButton": {
+      "__id__": 33
+    },
+    "colorPicker": {
+      "__id__": 147
+    },
+    "selectorPrefab": {
+      "__uuid__": "432dbd89-9dc1-4e18-9377-e79f4a82c1b2"
+    },
+    "attributeLayout": {
+      "__id__": 8
+    },
     "_id": "a2I2xXkZdMBKe1I+lK1M21"
   }
 ]

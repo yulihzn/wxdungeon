@@ -1,8 +1,6 @@
 {
     "player001": {
-        "nameCn": "店主",
-        "nameEn": "merchant",
-        "resName": "nonplayer002",
+        "name": "店主",
         "chapter": 0,
         "stageLevel": 0,
         "common": {
@@ -10,7 +8,7 @@
             "maxHealth": 999,
             "damageMin": 999
         },
-        "avatar": {},
+        "avatarData": {},
         "currentHealth": 999,
         "invisible": 0,
         "remote": 0,

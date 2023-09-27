@@ -17,8 +17,8 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class AvatarItem extends cc.Component {
-    @property(cc.Node)
-    content: cc.Node = null
+    @property(cc.Label)
+    label: cc.Label = null
     cloakSprite: cc.Sprite = null
     legLeftSprite: cc.Sprite = null
     legRightSprite: cc.Sprite = null
@@ -47,25 +47,6 @@ export default class AvatarItem extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             cc.director.loadScene('avatareditor')
         })
-        this.cloakSprite = this.getSpriteChildSprite(['sprite', 'cloak'])
-        this.legLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legleft'])
-        this.legRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legright'])
-        this.footLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legleft', 'foot'])
-        this.footRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legright', 'foot'])
-        this.shoesLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legleft', 'foot', 'shoes'])
-        this.shoesRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legright', 'foot', 'shoes'])
-        this.handLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'handleft'])
-        this.handRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'handright'])
-        this.glovesLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'handleft', 'gloves'])
-        this.glovesRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'handright', 'gloves'])
-        this.headSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'head'])
-        this.faceSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'head', 'face'])
-        this.eyesSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'head', 'eyes'])
-        this.hairSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'head', 'hair'])
-        this.helmetSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'head', 'helmet'])
-        this.bodySprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body'])
-        this.pantsSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body', 'pants'])
-        this.clothesSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body', 'clothes'])
     }
     static create(prefab: cc.Prefab, parent: cc.Node, data: PlayerData): AvatarItem {
         let avatar = cc.instantiate(prefab).getComponent(AvatarItem)
@@ -81,25 +62,25 @@ export default class AvatarItem extends cc.Component {
         this.isInit = true
         this.data = new PlayerData()
         this.data.valueCopy(data)
-        this.cloakSprite = this.getSpriteChildSprite(['sprite', 'cloak'])
-        this.legLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legleft'])
-        this.legRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legright'])
-        this.footLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legleft', 'foot'])
-        this.footRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legright', 'foot'])
-        this.shoesLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legleft', 'foot', 'shoes'])
-        this.shoesRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legright', 'foot', 'shoes'])
-        this.handLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'handleft'])
-        this.handRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'handright'])
-        this.glovesLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'handleft', 'gloves'])
-        this.glovesRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'handright', 'gloves'])
-        this.headSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'head'])
-        this.faceSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'head', 'face'])
-        this.eyesSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'head', 'eyes'])
-        this.hairSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'head', 'hair'])
-        this.helmetSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'head', 'helmet'])
-        this.bodySprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body'])
-        this.pantsSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body', 'pants'])
-        this.clothesSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body', 'clothes'])
+        this.cloakSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'cloak'])
+        this.legLeftSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'legleft'])
+        this.legRightSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'legright'])
+        this.footLeftSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'legleft', 'foot'])
+        this.footRightSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'legright', 'foot'])
+        this.shoesLeftSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'legleft', 'foot', 'shoes'])
+        this.shoesRightSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'legright', 'foot', 'shoes'])
+        this.handLeftSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'handleft'])
+        this.handRightSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'handright'])
+        this.glovesLeftSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'handleft', 'gloves'])
+        this.glovesRightSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'handright', 'gloves'])
+        this.headSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'head'])
+        this.faceSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'head', 'face'])
+        this.eyesSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'head', 'eyes'])
+        this.hairSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'head', 'hair'])
+        this.helmetSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'head', 'helmet'])
+        this.bodySprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'body'])
+        this.pantsSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'body', 'pants'])
+        this.clothesSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'body', 'clothes'])
         this.headSprite.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor)
         this.faceSprite.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.faceColor)
         this.faceSprite.node.opacity = 128
@@ -117,6 +98,7 @@ export default class AvatarItem extends cc.Component {
         this.updateSpriteFrameAnim(this.faceSprite, this.data.AvatarData.faceResName, 1)
         this.updateSpriteFrameAnim(this.hairSprite, this.data.AvatarData.hairResName, 2)
         this.updateSpriteFrameAnim(this.eyesSprite, this.data.AvatarData.eyesResName, 1)
+        this.label.string = this.data.name
     }
     getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node
