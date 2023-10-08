@@ -78,6 +78,7 @@ export default class Rah extends Boss {
         this.sc.isDied = true
         this.dungeon.fogScaleNormal()
         this.scheduleOnce(() => {
+            this.dungeon.fogScaleNormal()
             if (this.node) {
                 this.node.active = false
             }

@@ -14,7 +14,6 @@ import ItemData from '../../data/ItemData'
 import NonPlayerData from '../../data/NonPlayerData'
 import Logic from '../../logic/Logic'
 import AffixManager from '../../manager/AffixManager'
-import EquipmentManager from '../../manager/EquipmentManager'
 import InventoryManager from '../../manager/InventoryManager'
 
 const { ccclass, property } = cc._decorator
