@@ -160,8 +160,9 @@ class SplashActivity : AppCompatActivity(), DownloadProgressListener {
             if (it) {
                 startActivity(
                     Intent(this@SplashActivity, MainActivity::class.java).putExtra(
-                        MainActivity.KEY_URL, "file:///android_asset/test.html"
-                    )
+                        MainActivity.KEY_URL, "file:///android_asset/avatareditor/index.html"
+//                        MainActivity.KEY_URL, "file:///android_asset/test.html"
+                    ).putExtra(MainActivity.KEY_SCREEN_ORIENTATION_PORTRAIT, true)
                 )
                 finish()
             } else {

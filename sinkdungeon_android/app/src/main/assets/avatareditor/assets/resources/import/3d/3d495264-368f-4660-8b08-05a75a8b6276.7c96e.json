@@ -1,0 +1,51 @@
+[
+  1,
+  [
+    "1cc445b38"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    {
+      "name": "weaponlightanim010",
+      "rect": [
+        533,
+        785,
+        30,
+        21
+      ],
+      "offset": [
+        15,
+        -1.5
+      ],
+      "originalSize": [
+        64,
+        64
+      ],
+      "capInsets": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  [
+    0
+  ],
+  0,
+  [
+    0
+  ],
+  [
+    0
+  ],
+  [
+    0
+  ]
+]

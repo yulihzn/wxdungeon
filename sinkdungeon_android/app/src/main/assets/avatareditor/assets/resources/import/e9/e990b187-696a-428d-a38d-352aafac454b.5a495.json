@@ -1,0 +1,52 @@
+[
+  1,
+  [
+    "23iWbCFZdG/o2IjQfNjR+c"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    {
+      "name": "outertips1",
+      "rect": [
+        1018,
+        196,
+        16,
+        5
+      ],
+      "offset": [
+        0,
+        -5.5
+      ],
+      "originalSize": [
+        16,
+        16
+      ],
+      "rotated": 1,
+      "capInsets": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  [
+    0
+  ],
+  0,
+  [
+    0
+  ],
+  [
+    0
+  ],
+  [
+    0
+  ]
+]

@@ -1,6 +1,7 @@
 package com.banditcat.dream
 
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.net.http.SslError
 import android.os.Bundle
 import android.util.Log
@@ -16,14 +17,19 @@ import com.banditcat.dream.utils.JsCallHelper
 class MainActivity : AppCompatActivity() {
     companion object {
         const val KEY_URL = "KEY_URL"
+        const val KEY_SCREEN_ORIENTATION_PORTRAIT="KEY_SCREEN_ORIENTATION_PORTRAIT"
     }
 
     private lateinit var webView: TestWebView
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
+        if(intent.getBooleanExtra(KEY_SCREEN_ORIENTATION_PORTRAIT,false)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+        }else{
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+        }
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
         webView = findViewById(R.id.wv_content)
         val webSettings = webView.getSettings()

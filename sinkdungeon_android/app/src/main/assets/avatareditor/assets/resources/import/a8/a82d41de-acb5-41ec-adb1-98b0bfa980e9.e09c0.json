@@ -1,0 +1,51 @@
+[
+  1,
+  [
+    "1cc445b38"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    {
+      "name": "bossicepart03",
+      "rect": [
+        126,
+        1014,
+        16,
+        8
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "originalSize": [
+        16,
+        8
+      ],
+      "capInsets": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  [
+    0
+  ],
+  0,
+  [
+    0
+  ],
+  [
+    0
+  ],
+  [
+    0
+  ]
+]

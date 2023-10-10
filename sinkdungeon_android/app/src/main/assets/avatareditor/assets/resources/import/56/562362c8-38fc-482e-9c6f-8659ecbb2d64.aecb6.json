@@ -1,0 +1,51 @@
+[
+  1,
+  [
+    "1cc445b38"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    {
+      "name": "weaponlightfaranim011",
+      "rect": [
+        153,
+        562,
+        11,
+        10
+      ],
+      "offset": [
+        20.5,
+        0
+      ],
+      "originalSize": [
+        64,
+        64
+      ],
+      "capInsets": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  [
+    0
+  ],
+  0,
+  [
+    0
+  ],
+  [
+    0
+  ],
+  [
+    0
+  ]
+]

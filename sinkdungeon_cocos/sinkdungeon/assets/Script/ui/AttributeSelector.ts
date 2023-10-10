@@ -61,6 +61,18 @@ export default class AttributeSelector extends cc.Component {
         }
         this.updateAttribute()
     }
+    selectTarget(resName: string, defaultColor?: cc.Color) {
+        if (resName && resName.length > 0) {
+            let index = this.nameList.findIndex(item => item.resName == resName)
+            if (index > -1) {
+                this.currentIndex = index
+            }
+        }
+        if (defaultColor) {
+            this.palette.color = defaultColor
+        }
+        this.updateAttribute()
+    }
     selectNext(isLeft: boolean) {
         if (isLeft) {
             this.currentIndex--

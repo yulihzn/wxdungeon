@@ -1,0 +1,5061 @@
+[
+  1,
+  [
+    "3dzKDElFtIjaqSXjl4+pg8",
+    "aal7BtdrJHrZS7bafIaAF3",
+    "5bOerOrTBGz58RV9o+JHLT",
+    "d36aAGPhRDLJbEvv9k0E+3",
+    "b7Q+9h2sdLkr5sWtt+cOJM",
+    "cf6a2C839IoI+KCSgjAo+F",
+    "5bDuKBmfxMM5DS0rtG49X8",
+    "89UyKz41NHI4onV7RLf8Rs",
+    "aeXiK8xZFKyr8vJ0W6AYzd",
+    "20O1x2oYpAibL2asZCQh8y",
+    "5eEvSFc6ZHTqjCpbV4kDHu",
+    "d8axYTe/FLPrVvC4NHourW",
+    "332871h6VMXohKmEVMpWEH",
+    "aeLeFO2aBEXrTgPO+Rr1ZM",
+    "09fYvhQSlF4aM5fc1/cmEk"
+  ],
+  [
+    "value",
+    "_effectAsset"
+  ],
+  [
+    [
+      "cc.AnimationClip",
+      [
+        "_name",
+        "_duration",
+        "speed",
+        "wrapMode",
+        "curveData"
+      ],
+      -1,
+      11
+    ],
+    [
+      "cc.EffectAsset",
+      [
+        "_name",
+        "shaders",
+        "techniques"
+      ],
+      0
+    ],
+    [
+      "cc.AnimationClip",
+      [
+        "_name",
+        "_duration",
+        "curveData"
+      ],
+      0
+    ],
+    [
+      "cc.Material",
+      [
+        "_name",
+        "_techniqueData"
+      ],
+      2,
+      11
+    ],
+    [
+      "cc.Material",
+      [
+        "_name",
+        "_techniqueData"
+      ],
+      1
+    ]
+  ],
+  [
+    [
+      0,
+      0,
+      1,
+      3,
+      4,
+      4
+    ],
+    [
+      0,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    [
+      1,
+      0,
+      1,
+      2,
+      4
+    ],
+    [
+      0,
+      0,
+      1,
+      2,
+      4,
+      4
+    ],
+    [
+      0,
+      0,
+      1,
+      4,
+      3
+    ],
+    [
+      2,
+      0,
+      1,
+      2,
+      4
+    ],
+    [
+      3,
+      0,
+      1,
+      2
+    ],
+    [
+      4,
+      0,
+      1,
+      3
+    ]
+  ],
+  [
+    [
+      [
+        [
+          2,
+          "WaterColorEffect",
+          [
+            {
+              "hash": 1821309816,
+              "record": null,
+              "name": "WaterColorEffect|vs|fs",
+              "glsl3": {
+                "vert": "\nprecision highp float;\nuniform CCGlobal {\n  mat4 cc_matView;\n  mat4 cc_matViewInv;\n  mat4 cc_matProj;\n  mat4 cc_matProjInv;\n  mat4 cc_matViewProj;\n  mat4 cc_matViewProjInv;\n  vec4 cc_cameraPos;\n  vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_screenScale;\n};\nuniform CCLocal {\n  mat4 cc_matWorld;\n  mat4 cc_matWorldIT;\n};\nin vec3 a_position;\nin vec4 a_color;\nout vec4 v_color;\n#if USE_TEXTURE\nin vec2 a_uv0;\nout vec2 v_uv0;\n#endif\nvoid main () {\n  vec4 pos = vec4(a_position, 1);\n  #if CC_USE_MODEL\n  pos = cc_matViewProj * cc_matWorld * pos;\n  #else\n  pos = cc_matViewProj * pos;\n  #endif\n  #if USE_TEXTURE\n  v_uv0 = a_uv0;\n  #endif\n  v_color = a_color;\n  gl_Position = pos;\n}",
+                "frag": "\nprecision highp float;\n#if USE_ALPHA_TEST\n  uniform ALPHA_TEST {\n    float alphaThreshold;\n  };\n#endif\nvoid ALPHA_TEST (in vec4 color) {\n  #if USE_ALPHA_TEST\n      if (color.a < alphaThreshold) discard;\n  #endif\n}\nvoid ALPHA_TEST (in float alpha) {\n  #if USE_ALPHA_TEST\n      if (alpha < alphaThreshold) discard;\n  #endif\n}\nuniform CCGlobal {\n  mat4 cc_matView;\n  mat4 cc_matViewInv;\n  mat4 cc_matProj;\n  mat4 cc_matProjInv;\n  mat4 cc_matViewProj;\n  mat4 cc_matViewProjInv;\n  vec4 cc_cameraPos;\n  vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_screenScale;\n};\nin vec4 v_color;\n#if USE_TEXTURE\nin vec2 v_uv0;\nuniform sampler2D texture;\n#endif\nuniform Properties{\n  vec4 addColor;\n  vec4 rect;\n  float hidebottom;\n  float isRotated;\n  float isFlipY;\n  float waterPercent;\n  float amplitude;\n  float angularVelocity;\n  float frequency;\n  float offset;\n};\nvoid main () {\n  vec4 o = vec4(1, 1, 1, 1);\n  #if USE_TEXTURE\n  o *= texture(texture, v_uv0);\n    #if CC_USE_ALPHA_ATLAS_TEXTURE\n    o.a *= texture2D(texture, v_uv0 + vec2(0, 0.5)).r;\n    #endif\n  #endif\n  o *= v_color;\n  ALPHA_TEST(o);\n  o.rgb = o.rgb + addColor.rgb;\n  if(hidebottom > 0.9){\n    float initiaPhase = frequency * cc_time.x;\n    if(isRotated>0.9){\n      float x = amplitude * sin(angularVelocity * v_uv0.y + initiaPhase) + offset;\n        if(v_uv0.x < rect.x+(rect.z+x)*0.5){\n          if(o.a != 0.0){\n            o.a = 0.1;\n          }\n        }else if(v_uv0.x < rect.x+(rect.z+x)*(0.5+waterPercent)){\n            o = vec4(1, 1, 1, o.a);\n        }\n    }else{\n      float y = amplitude * sin(angularVelocity * v_uv0.x + initiaPhase) + offset;\n      if(isFlipY>0.9){\n        if(v_uv0.y -rect.y< (rect.w+y)*0.5){\n          if(o.a != 0.0){\n              o.a = 0.1;\n              }\n        }else if(v_uv0.y -rect.y< (rect.w+y)*(0.5+waterPercent)){\n          o = vec4(1, 1, 1, o.a);\n        }\n      }else{\n        if(v_uv0.y -rect.y> (rect.w+y)*0.5){\n          if(o.a != 0.0){\n              o.a = 0.1;\n              }\n        }else if(v_uv0.y -rect.y> (rect.w+y)*(0.5-waterPercent)){\n          o = vec4(1, 1, 1, o.a);\n        }\n      }\n    }\n  }\n  gl_FragColor = o;\n}"
+              },
+              "glsl1": {
+                "vert": "\nprecision highp float;\nuniform mat4 cc_matViewProj;\nuniform mat4 cc_matWorld;\nattribute vec3 a_position;\nattribute vec4 a_color;\nvarying vec4 v_color;\n#if USE_TEXTURE\nattribute vec2 a_uv0;\nvarying vec2 v_uv0;\n#endif\nvoid main () {\n  vec4 pos = vec4(a_position, 1);\n  #if CC_USE_MODEL\n  pos = cc_matViewProj * cc_matWorld * pos;\n  #else\n  pos = cc_matViewProj * pos;\n  #endif\n  #if USE_TEXTURE\n  v_uv0 = a_uv0;\n  #endif\n  v_color = a_color;\n  gl_Position = pos;\n}",
+                "frag": "\nprecision highp float;\n#if USE_ALPHA_TEST\n  uniform float alphaThreshold;\n#endif\nvoid ALPHA_TEST (in vec4 color) {\n  #if USE_ALPHA_TEST\n      if (color.a < alphaThreshold) discard;\n  #endif\n}\nvoid ALPHA_TEST (in float alpha) {\n  #if USE_ALPHA_TEST\n      if (alpha < alphaThreshold) discard;\n  #endif\n}\nuniform vec4 cc_time;\nvarying vec4 v_color;\n#if USE_TEXTURE\nvarying vec2 v_uv0;\nuniform sampler2D texture;\n#endif\nuniform vec4 addColor;\nuniform vec4 rect;\nuniform float hidebottom;\nuniform float isRotated;\nuniform float isFlipY;\nuniform float waterPercent;\nuniform float amplitude;\nuniform float angularVelocity;\nuniform float frequency;\nuniform float offset;\nvoid main () {\n  vec4 o = vec4(1, 1, 1, 1);\n  #if USE_TEXTURE\n  o *= texture2D(texture, v_uv0);\n    #if CC_USE_ALPHA_ATLAS_TEXTURE\n    o.a *= texture2D(texture, v_uv0 + vec2(0, 0.5)).r;\n    #endif\n  #endif\n  o *= v_color;\n  ALPHA_TEST(o);\n  o.rgb = o.rgb + addColor.rgb;\n  if(hidebottom > 0.9){\n    float initiaPhase = frequency * cc_time.x;\n    if(isRotated>0.9){\n      float x = amplitude * sin(angularVelocity * v_uv0.y + initiaPhase) + offset;\n        if(v_uv0.x < rect.x+(rect.z+x)*0.5){\n          if(o.a != 0.0){\n            o.a = 0.1;\n          }\n        }else if(v_uv0.x < rect.x+(rect.z+x)*(0.5+waterPercent)){\n            o = vec4(1, 1, 1, o.a);\n        }\n    }else{\n      float y = amplitude * sin(angularVelocity * v_uv0.x + initiaPhase) + offset;\n      if(isFlipY>0.9){\n        if(v_uv0.y -rect.y< (rect.w+y)*0.5){\n          if(o.a != 0.0){\n              o.a = 0.1;\n              }\n        }else if(v_uv0.y -rect.y< (rect.w+y)*(0.5+waterPercent)){\n          o = vec4(1, 1, 1, o.a);\n        }\n      }else{\n        if(v_uv0.y -rect.y> (rect.w+y)*0.5){\n          if(o.a != 0.0){\n              o.a = 0.1;\n              }\n        }else if(v_uv0.y -rect.y> (rect.w+y)*(0.5-waterPercent)){\n          o = vec4(1, 1, 1, o.a);\n        }\n      }\n    }\n  }\n  gl_FragColor = o;\n}"
+              },
+              "builtins": {
+                "globals": {
+                  "blocks": [
+                    {
+                      "name": "CCGlobal",
+                      "defines": []
+                    }
+                  ],
+                  "samplers": []
+                },
+                "locals": {
+                  "blocks": [
+                    {
+                      "name": "CCLocal",
+                      "defines": []
+                    }
+                  ],
+                  "samplers": []
+                }
+              },
+              "defines": [
+                {
+                  "name": "USE_TEXTURE",
+                  "type": "boolean",
+                  "defines": []
+                },
+                {
+                  "name": "CC_USE_MODEL",
+                  "type": "boolean",
+                  "defines": []
+                },
+                {
+                  "name": "USE_ALPHA_TEST",
+                  "type": "boolean",
+                  "defines": []
+                },
+                {
+                  "name": "CC_USE_ALPHA_ATLAS_TEXTURE",
+                  "type": "boolean",
+                  "defines": [
+                    "USE_TEXTURE"
+                  ]
+                }
+              ],
+              "blocks": [
+                {
+                  "name": "ALPHA_TEST",
+                  "binding": 0,
+                  "members": [
+                    {
+                      "name": "alphaThreshold",
+                      "type": 13,
+                      "count": 1
+                    }
+                  ],
+                  "defines": [
+                    "USE_ALPHA_TEST"
+                  ]
+                },
+                {
+                  "name": "Properties",
+                  "binding": 1,
+                  "members": [
+                    {
+                      "name": "addColor",
+                      "type": 16,
+                      "count": 1
+                    },
+                    {
+                      "name": "rect",
+                      "type": 16,
+                      "count": 1
+                    },
+                    {
+                      "name": "hidebottom",
+                      "type": 13,
+                      "count": 1
+                    },
+                    {
+                      "name": "isRotated",
+                      "type": 13,
+                      "count": 1
+                    },
+                    {
+                      "name": "isFlipY",
+                      "type": 13,
+                      "count": 1
+                    },
+                    {
+                      "name": "waterPercent",
+                      "type": 13,
+                      "count": 1
+                    },
+                    {
+                      "name": "amplitude",
+                      "type": 13,
+                      "count": 1
+                    },
+                    {
+                      "name": "angularVelocity",
+                      "type": 13,
+                      "count": 1
+                    },
+                    {
+                      "name": "frequency",
+                      "type": 13,
+                      "count": 1
+                    },
+                    {
+                      "name": "offset",
+                      "type": 13,
+                      "count": 1
+                    }
+                  ],
+                  "defines": []
+                }
+              ],
+              "samplers": [
+                {
+                  "name": "texture",
+                  "type": 29,
+                  "count": 1,
+                  "binding": 30,
+                  "defines": [
+                    "USE_TEXTURE"
+                  ]
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "passes": [
+                {
+                  "program": "WaterColorEffect|vs|fs",
+                  "blendState": {
+                    "targets": [
+                      {
+                        "blend": true
+                      }
+                    ]
+                  },
+                  "rasterizerState": {
+                    "cullMode": 0
+                  },
+                  "properties": {
+                    "texture": {
+                      "value": "white",
+                      "type": 29
+                    },
+                    "alphaThreshold": {
+                      "type": 13,
+                      "value": [
+                        0.5
+                      ]
+                    },
+                    "addColor": {
+                      "type": 16,
+                      "value": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "inspector": {
+                        "type": "color"
+                      }
+                    },
+                    "hidebottom": {
+                      "type": 13,
+                      "value": [
+                        0
+                      ]
+                    },
+                    "isRotated": {
+                      "type": 13,
+                      "value": [
+                        0
+                      ]
+                    },
+                    "isFlipY": {
+                      "type": 13,
+                      "value": [
+                        0
+                      ]
+                    },
+                    "waterPercent": {
+                      "type": 13,
+                      "value": [
+                        0.02
+                      ]
+                    },
+                    "amplitude": {
+                      "type": 13,
+                      "value": [
+                        0.004
+                      ]
+                    },
+                    "angularVelocity": {
+                      "type": 13,
+                      "value": [
+                        50
+                      ]
+                    },
+                    "frequency": {
+                      "type": 13,
+                      "value": [
+                        10
+                      ]
+                    },
+                    "offset": {
+                      "type": 13,
+                      "value": [
+                        0
+                      ]
+                    },
+                    "rect": {
+                      "type": 16,
+                      "value": [
+                        0,
+                        0,
+                        1,
+                        1
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        ]
+      ],
+      0,
+      0,
+      [],
+      [],
+      []
+    ],
+    [
+      [
+        [
+          1,
+          "AvatarAirKick",
+          0.5,
+          0.5,
+          0,
+          [
+            {},
+            "paths",
+            11,
+            [
+              {
+                "sprite/cloak": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 45
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": -45
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/body": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          7,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          0,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 15
+                      },
+                      {
+                        "frame": 0.3333333333333333,
+                        "value": 15
+                      }
+                    ]
+                  }
+                }
+              },
+              "sprite/avatar/legleft",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          2.926,
+                          4.471,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 30
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          0.5,
+                          1
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 0.3333333333333333
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          2,
+                          1.1,
+                          1
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 0.5
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11,
+                    11,
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legright",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -45
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          -2,
+                          5,
+                          0
+                        ]
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/head/eyes",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {},
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legleft/foot",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0.001,
+                          -2.948,
+                          0
+                        ]
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 0.3333333333333333
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1.5,
+                          1,
+                          1
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 0.5
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11,
+                    11,
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legright/foot",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 90
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          -0.158,
+                          -2.475,
+                          0
+                        ]
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      0,
+      0,
+      [],
+      [],
+      []
+    ],
+    [
+      [
+        [
+          0,
+          "AvatarIdle",
+          2,
+          2,
+          [
+            {},
+            "paths",
+            11,
+            [
+              {
+                "sprite/cloak": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": 15
+                      },
+                      {
+                        "frame": 1.5,
+                        "value": -15
+                      },
+                      {
+                        "frame": 2,
+                        "value": 0
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          10,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/body": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          7,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          0,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/cup": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/bubble0": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/head/mouth": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                }
+              },
+              "sprite/avatar/legleft",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          2,
+                          5,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legright",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          -2,
+                          5,
+                          0
+                        ]
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/head/eyes",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {},
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          1
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 1
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          1
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 1.0833333333333333
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          0
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 1.1666666666666667
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11,
+                    11,
+                    11,
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legleft/foot",
+              11,
+              [
+                {
+                  "comps": {}
+                },
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legright/foot",
+              11,
+              [
+                {
+                  "comps": {}
+                },
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      0,
+      0,
+      [],
+      [],
+      []
+    ],
+    [
+      [
+        [
+          2,
+          "ColorEyesEffect",
+          [
+            {
+              "hash": 2937965741,
+              "record": null,
+              "name": "ColorEyesEffect|vs|fs",
+              "glsl3": {
+                "vert": "\nprecision highp float;\nuniform CCGlobal {\n  mat4 cc_matView;\n  mat4 cc_matViewInv;\n  mat4 cc_matProj;\n  mat4 cc_matProjInv;\n  mat4 cc_matViewProj;\n  mat4 cc_matViewProjInv;\n  vec4 cc_cameraPos;\n  vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_screenScale;\n};\nuniform CCLocal {\n  mat4 cc_matWorld;\n  mat4 cc_matWorldIT;\n};\nin vec3 a_position;\nin vec4 a_color;\nout vec4 v_color;\n#if USE_TEXTURE\nin vec2 a_uv0;\nout vec2 v_uv0;\n#endif\nvoid main () {\n  vec4 pos = vec4(a_position, 1);\n  #if CC_USE_MODEL\n  pos = cc_matViewProj * cc_matWorld * pos;\n  #else\n  pos = cc_matViewProj * pos;\n  #endif\n  #if USE_TEXTURE\n  v_uv0 = a_uv0;\n  #endif\n  v_color = a_color;\n  gl_Position = pos;\n}",
+                "frag": "\nprecision highp float;\n#if USE_ALPHA_TEST\n  uniform ALPHA_TEST {\n    float alphaThreshold;\n  };\n#endif\nvoid ALPHA_TEST (in vec4 color) {\n  #if USE_ALPHA_TEST\n      if (color.a < alphaThreshold) discard;\n  #endif\n}\nvoid ALPHA_TEST (in float alpha) {\n  #if USE_ALPHA_TEST\n      if (alpha < alphaThreshold) discard;\n  #endif\n}\nin vec4 v_color;\n#if USE_TEXTURE\nin vec2 v_uv0;\nuniform sampler2D texture;\n#endif\nuniform Properties{\n  vec4 addColor;\n  vec4 eyeColor;\n};\nvoid main () {\n  vec4 o = vec4(1, 1, 1, 1);\n  bool isEye = false;\n  bool isEyebrow = false;\n  bool isEyeLight = false;\n  #if USE_TEXTURE\n  vec4 t = texture(texture, v_uv0);\n  if(t.r==1.0&&t.g==0.0&&t.b==0.0){\n    isEyebrow = true;\n  }else if(t.r==0.0&&t.g==0.0&&t.b==1.0){\n    isEye = true;\n  }else if(t.r==0.0&&t.g==1.0&&t.b==0.0){\n    isEyeLight = true;\n  }\n  o *= t;\n    #if CC_USE_ALPHA_ATLAS_TEXTURE\n    o.a *= texture2D(texture, v_uv0 + vec2(0, 0.5)).r;\n    #endif\n  #endif\n  if(isEyebrow){\n    o.rgb = eyeColor.rgb*0.6;\n  }else if(isEye){\n    o.rgb = eyeColor.rgb*0.4;\n  }else if(isEyeLight){\n    o.rgb = eyeColor.rgb;\n  }\n  o *= v_color;\n  ALPHA_TEST(o);\n  o.rgb = o.rgb + addColor.rgb;\n  gl_FragColor = o;\n}"
+              },
+              "glsl1": {
+                "vert": "\nprecision highp float;\nuniform mat4 cc_matViewProj;\nuniform mat4 cc_matWorld;\nattribute vec3 a_position;\nattribute vec4 a_color;\nvarying vec4 v_color;\n#if USE_TEXTURE\nattribute vec2 a_uv0;\nvarying vec2 v_uv0;\n#endif\nvoid main () {\n  vec4 pos = vec4(a_position, 1);\n  #if CC_USE_MODEL\n  pos = cc_matViewProj * cc_matWorld * pos;\n  #else\n  pos = cc_matViewProj * pos;\n  #endif\n  #if USE_TEXTURE\n  v_uv0 = a_uv0;\n  #endif\n  v_color = a_color;\n  gl_Position = pos;\n}",
+                "frag": "\nprecision highp float;\n#if USE_ALPHA_TEST\n  uniform float alphaThreshold;\n#endif\nvoid ALPHA_TEST (in vec4 color) {\n  #if USE_ALPHA_TEST\n      if (color.a < alphaThreshold) discard;\n  #endif\n}\nvoid ALPHA_TEST (in float alpha) {\n  #if USE_ALPHA_TEST\n      if (alpha < alphaThreshold) discard;\n  #endif\n}\nvarying vec4 v_color;\n#if USE_TEXTURE\nvarying vec2 v_uv0;\nuniform sampler2D texture;\n#endif\nuniform vec4 addColor;\nuniform vec4 eyeColor;\nvoid main () {\n  vec4 o = vec4(1, 1, 1, 1);\n  bool isEye = false;\n  bool isEyebrow = false;\n  bool isEyeLight = false;\n  #if USE_TEXTURE\n  vec4 t = texture2D(texture, v_uv0);\n  if(t.r==1.0&&t.g==0.0&&t.b==0.0){\n    isEyebrow = true;\n  }else if(t.r==0.0&&t.g==0.0&&t.b==1.0){\n    isEye = true;\n  }else if(t.r==0.0&&t.g==1.0&&t.b==0.0){\n    isEyeLight = true;\n  }\n  o *= t;\n    #if CC_USE_ALPHA_ATLAS_TEXTURE\n    o.a *= texture2D(texture, v_uv0 + vec2(0, 0.5)).r;\n    #endif\n  #endif\n  if(isEyebrow){\n    o.rgb = eyeColor.rgb*0.6;\n  }else if(isEye){\n    o.rgb = eyeColor.rgb*0.4;\n  }else if(isEyeLight){\n    o.rgb = eyeColor.rgb;\n  }\n  o *= v_color;\n  ALPHA_TEST(o);\n  o.rgb = o.rgb + addColor.rgb;\n  gl_FragColor = o;\n}"
+              },
+              "builtins": {
+                "globals": {
+                  "blocks": [
+                    {
+                      "name": "CCGlobal",
+                      "defines": []
+                    }
+                  ],
+                  "samplers": []
+                },
+                "locals": {
+                  "blocks": [
+                    {
+                      "name": "CCLocal",
+                      "defines": []
+                    }
+                  ],
+                  "samplers": []
+                }
+              },
+              "defines": [
+                {
+                  "name": "USE_TEXTURE",
+                  "type": "boolean",
+                  "defines": []
+                },
+                {
+                  "name": "CC_USE_MODEL",
+                  "type": "boolean",
+                  "defines": []
+                },
+                {
+                  "name": "USE_ALPHA_TEST",
+                  "type": "boolean",
+                  "defines": []
+                },
+                {
+                  "name": "CC_USE_ALPHA_ATLAS_TEXTURE",
+                  "type": "boolean",
+                  "defines": [
+                    "USE_TEXTURE"
+                  ]
+                }
+              ],
+              "blocks": [
+                {
+                  "name": "ALPHA_TEST",
+                  "binding": 0,
+                  "members": [
+                    {
+                      "name": "alphaThreshold",
+                      "type": 13,
+                      "count": 1
+                    }
+                  ],
+                  "defines": [
+                    "USE_ALPHA_TEST"
+                  ]
+                },
+                {
+                  "name": "Properties",
+                  "binding": 1,
+                  "members": [
+                    {
+                      "name": "addColor",
+                      "type": 16,
+                      "count": 1
+                    },
+                    {
+                      "name": "eyeColor",
+                      "type": 16,
+                      "count": 1
+                    }
+                  ],
+                  "defines": []
+                }
+              ],
+              "samplers": [
+                {
+                  "name": "texture",
+                  "type": 29,
+                  "count": 1,
+                  "binding": 30,
+                  "defines": [
+                    "USE_TEXTURE"
+                  ]
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "passes": [
+                {
+                  "program": "ColorEyesEffect|vs|fs",
+                  "blendState": {
+                    "targets": [
+                      {
+                        "blend": true
+                      }
+                    ]
+                  },
+                  "rasterizerState": {
+                    "cullMode": 0
+                  },
+                  "properties": {
+                    "texture": {
+                      "value": "white",
+                      "type": 29
+                    },
+                    "alphaThreshold": {
+                      "type": 13,
+                      "value": [
+                        0.5
+                      ]
+                    },
+                    "addColor": {
+                      "type": 16,
+                      "value": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "inspector": {
+                        "type": "color"
+                      }
+                    },
+                    "eyeColor": {
+                      "type": 16,
+                      "value": [
+                        0,
+                        0,
+                        0,
+                        1
+                      ],
+                      "inspector": {
+                        "type": "color"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        ]
+      ],
+      0,
+      0,
+      [],
+      [],
+      []
+    ],
+    [
+      [
+        [
+          3,
+          "AvatarDash",
+          1.3333333333333333,
+          2.5,
+          [
+            {},
+            "paths",
+            11,
+            [
+              {
+                "sprite/cloak": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": -45
+                      },
+                      {
+                        "frame": 1,
+                        "value": -45
+                      },
+                      {
+                        "frame": 1.3333333333333333,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/body": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          7,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          0,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/cup": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/bubble0": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/head/mouth": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -15
+                      }
+                    ]
+                  }
+                }
+              },
+              "sprite/avatar/legleft",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          2.5,
+                          5,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 60
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legright",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -30
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          -2.5,
+                          4.5,
+                          0
+                        ]
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/head/eyes",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {},
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legleft/foot",
+              11,
+              [
+                {
+                  "comps": {}
+                },
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2.5,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -90
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legright/foot",
+              11,
+              [
+                {
+                  "comps": {}
+                },
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2.438,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -15
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      0,
+      0,
+      [],
+      [],
+      []
+    ],
+    [
+      [
+        [
+          4,
+          "AvatarFall",
+          0.8333333333333334,
+          [
+            {},
+            "paths",
+            11,
+            [
+              {
+                "sprite/avatar": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          0,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              "sprite",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "y": [
+                      {
+                        "frame": 0.26666666666666666,
+                        "value": 0
+                      },
+                      {
+                        "frame": 0.8333333333333334,
+                        "value": -32
+                      }
+                    ],
+                    "opacity": [
+                      {
+                        "frame": 0.26666666666666666,
+                        "value": 255
+                      },
+                      {
+                        "frame": 0.8333333333333334,
+                        "value": 0
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      },
+                      {
+                        "frame": 0.03333333333333333,
+                        "value": -10
+                      },
+                      {
+                        "frame": 0.06666666666666667,
+                        "value": 0
+                      },
+                      {
+                        "frame": 0.1,
+                        "value": 10
+                      },
+                      {
+                        "frame": 0.13333333333333333,
+                        "value": 0
+                      },
+                      {
+                        "frame": 0.16666666666666666,
+                        "value": -10
+                      },
+                      {
+                        "frame": 0.2,
+                        "value": 0
+                      },
+                      {
+                        "frame": 0.23333333333333334,
+                        "value": 10
+                      },
+                      {
+                        "frame": 0.26666666666666666,
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0.26666666666666666
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          5,
+                          5
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 0.8333333333333334
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11,
+                    11
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      0,
+      0,
+      [],
+      [],
+      []
+    ],
+    [
+      [
+        [
+          6,
+          "ColorEyesMat",
+          [
+            {},
+            "0",
+            11,
+            [
+              {
+                "defines": {
+                  "USE_TEXTURE": true
+                }
+              },
+              "props",
+              11,
+              [
+                {},
+                "addColor",
+                8,
+                [
+                  4,
+                  0
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      0,
+      0,
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        [
+          1,
+          "AvatarWalkHorizontal",
+          1.3333333333333333,
+          2.5,
+          2,
+          [
+            {},
+            "paths",
+            11,
+            [
+              {
+                "sprite/cloak": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": 15
+                      },
+                      {
+                        "frame": 1,
+                        "value": -45
+                      },
+                      {
+                        "frame": 1.3333333333333333,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/body": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          7,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          0,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.3333333333333333,
+                        "value": [
+                          0,
+                          1,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.6666666666666666,
+                        "value": [
+                          0,
+                          0,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 1,
+                        "value": [
+                          0,
+                          1,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 1.3333333333333333,
+                        "value": [
+                          0,
+                          0,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/cup": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/bubble0": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/head/mouth": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                }
+              },
+              "sprite/avatar/legleft",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "curve": "constant",
+                        "value": [
+                          2.5,
+                          4.5,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.3333333333333333,
+                        "curve": "constant",
+                        "value": [
+                          2,
+                          7,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.6666666666666666,
+                        "curve": "constant",
+                        "value": [
+                          2,
+                          7,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 1,
+                        "curve": "constant",
+                        "value": [
+                          2,
+                          7,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 1.3333333333333333,
+                        "value": [
+                          2.5,
+                          4.5,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 45,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 0.3333333333333333,
+                        "value": -10,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 0.6666666666666666,
+                        "value": -30,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 1,
+                        "value": 5,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 1.3333333333333333,
+                        "value": 45,
+                        "curve": "constant"
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legright",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -30,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 0.3333333333333333,
+                        "value": 10,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 0.6666666666666666,
+                        "value": 30,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 1,
+                        "value": 0,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 1.3333333333333333,
+                        "value": -30
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "curve": "constant",
+                        "value": [
+                          -2,
+                          5,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.3333333333333333,
+                        "curve": "constant",
+                        "value": [
+                          -2,
+                          7,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.6666666666666666,
+                        "curve": "constant",
+                        "value": [
+                          -1,
+                          5,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 1,
+                        "curve": "constant",
+                        "value": [
+                          -2,
+                          7,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 1.3333333333333333,
+                        "curve": "constant",
+                        "value": [
+                          -2,
+                          5,
+                          0
+                        ]
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/head/eyes",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {},
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legleft/foot",
+              11,
+              [
+                {
+                  "comps": {}
+                },
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -15,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 0.3333333333333333,
+                        "value": 0,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 0.6666666666666666,
+                        "value": 0,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 1.3333333333333333,
+                        "value": -15,
+                        "curve": "constant"
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legright/foot",
+              11,
+              [
+                {
+                  "comps": {}
+                },
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0.171,
+                          -2.406,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 1.3333333333333333,
+                        "value": [
+                          0.171,
+                          -2.406,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -45,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 0.3333333333333333,
+                        "value": 5,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 0.6666666666666666,
+                        "value": 5,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 1.3333333333333333,
+                        "value": -45
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      0,
+      0,
+      [],
+      [],
+      []
+    ],
+    [
+      [
+        [
+          1,
+          "AvatarJumpUp",
+          1.3333333333333333,
+          2.5,
+          2,
+          [
+            {},
+            "paths",
+            11,
+            [
+              {
+                "sprite/cloak": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": 15
+                      },
+                      {
+                        "frame": 1,
+                        "value": -45
+                      },
+                      {
+                        "frame": 1.3333333333333333,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/body": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          7,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          0,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/cup": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/bubble0": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/head/mouth": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                }
+              },
+              "sprite/avatar/legleft",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          2.5,
+                          5,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 60
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legright",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -15
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          -2,
+                          4.5,
+                          0
+                        ]
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/head/eyes",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {},
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legleft/foot",
+              11,
+              [
+                {
+                  "comps": {}
+                },
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2.5,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -90
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legright/foot",
+              11,
+              [
+                {
+                  "comps": {}
+                },
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2.438,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -15
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      0,
+      0,
+      [],
+      [],
+      []
+    ],
+    [
+      [
+        [
+          3,
+          "AvatarDashBack",
+          1.3333333333333333,
+          2.5,
+          [
+            {},
+            "paths",
+            11,
+            [
+              {
+                "sprite/cloak": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": -45
+                      },
+                      {
+                        "frame": 1,
+                        "value": -45
+                      },
+                      {
+                        "frame": 1.3333333333333333,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/body": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          7,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          0,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/cup": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/bubble0": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/head/mouth": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 5
+                      }
+                    ]
+                  }
+                }
+              },
+              "sprite/avatar/legleft",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          3.029,
+                          4.37,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 30
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legright",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 60
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          -3.306,
+                          4.526,
+                          0
+                        ]
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/head/eyes",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {},
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legleft/foot",
+              11,
+              [
+                {
+                  "comps": {}
+                },
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2.5,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legright/foot",
+              11,
+              [
+                {
+                  "comps": {}
+                },
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2.438,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -90
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      0,
+      0,
+      [],
+      [],
+      []
+    ],
+    [
+      [
+        [
+          0,
+          "AvatarWakeUp",
+          1.0166666666666666,
+          0,
+          [
+            {},
+            "paths",
+            11,
+            [
+              {
+                "sprite/cloak": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          10,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legleft": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          2,
+                          5,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": [
+                          2,
+                          5,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 60
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": 60
+                      },
+                      {
+                        "frame": 1,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legright": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -15
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": -15
+                      },
+                      {
+                        "frame": 1,
+                        "value": 0
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          -2,
+                          5,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": [
+                          -2,
+                          5,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/body": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          7,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          0,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legleft/foot": {
+                  "comps": {},
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2.5,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": [
+                          0,
+                          -2.5,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 1,
+                        "value": [
+                          0,
+                          -2,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -60
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": -60
+                      },
+                      {
+                        "frame": 1,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legright/foot": {
+                  "comps": {},
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2.5,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": [
+                          0,
+                          -2.5,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 1,
+                        "value": [
+                          0,
+                          -2,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -45
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": -45
+                      },
+                      {
+                        "frame": 1,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/handleft": {
+                  "props": {
+                    "position": []
+                  }
+                },
+                "sprite": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                }
+              },
+              "sprite/avatar/head/eyes",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {},
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          0.1,
+                          0
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 0.5
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          0.1,
+                          0
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 0.6666666666666666
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          0
+                        ]
+                      ]
+                    ],
+                    11,
+                    11,
+                    11
+                  ]
+                ]
+              ],
+              "sprite/bubble0",
+              11,
+              [
+                {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 255
+                      }
+                    ]
+                  }
+                },
+                "comps",
+                11,
+                [
+                  {},
+                  "cc.Sprite",
+                  11,
+                  [
+                    {},
+                    "spriteFrame",
+                    12,
+                    [
+                      [
+                        [
+                          {
+                            "frame": 0
+                          },
+                          "value",
+                          6,
+                          0
+                        ],
+                        [
+                          {
+                            "frame": 0.3333333333333333
+                          },
+                          "value",
+                          6,
+                          1
+                        ],
+                        [
+                          {
+                            "frame": 0.6666666666666666
+                          },
+                          "value",
+                          6,
+                          2
+                        ],
+                        {
+                          "frame": 1,
+                          "value": null
+                        }
+                      ],
+                      11,
+                      11,
+                      11,
+                      0
+                    ]
+                  ]
+                ]
+              ],
+              "sprite/avatar/head/mouth",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 255
+                      },
+                      {
+                        "frame": 0.6666666666666666,
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          2,
+                          1,
+                          1
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 0.6666666666666666
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          0.5,
+                          1
+                        ]
+                      ]
+                    ],
+                    11,
+                    11
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      0,
+      0,
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        2,
+        3
+      ]
+    ],
+    [
+      [
+        [
+          0,
+          "AvatarSleep",
+          1.35,
+          2,
+          [
+            {},
+            "paths",
+            11,
+            [
+              {
+                "sprite/cloak": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          10,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legleft": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          2,
+                          5,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 60
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legright": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -15
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          -2,
+                          5,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/body": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          7,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          0,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legleft/foot": {
+                  "comps": {},
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2.5,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -60
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legright/foot": {
+                  "comps": {},
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2.5,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -45
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/handleft": {
+                  "props": {
+                    "position": []
+                  }
+                },
+                "sprite": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                }
+              },
+              "sprite/avatar/head/eyes",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {},
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          0.1,
+                          0
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/bubble0",
+              11,
+              [
+                {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 255
+                      }
+                    ]
+                  }
+                },
+                "comps",
+                11,
+                [
+                  {},
+                  "cc.Sprite",
+                  11,
+                  [
+                    {},
+                    "spriteFrame",
+                    12,
+                    [
+                      [
+                        [
+                          {
+                            "frame": 0
+                          },
+                          "value",
+                          6,
+                          0
+                        ],
+                        [
+                          {
+                            "frame": 0.3333333333333333
+                          },
+                          "value",
+                          6,
+                          1
+                        ],
+                        [
+                          {
+                            "frame": 0.6666666666666666
+                          },
+                          "value",
+                          6,
+                          2
+                        ],
+                        [
+                          {
+                            "frame": 1
+                          },
+                          "value",
+                          6,
+                          3
+                        ],
+                        [
+                          {
+                            "frame": 1.3333333333333333
+                          },
+                          "value",
+                          6,
+                          4
+                        ]
+                      ],
+                      11,
+                      11,
+                      11,
+                      11,
+                      11
+                    ]
+                  ]
+                ]
+              ],
+              "sprite/avatar/head/mouth",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 255
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          2,
+                          1,
+                          1
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 0.6666666666666666
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          0.5,
+                          1
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 1.3333333333333333
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          2,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11,
+                    11,
+                    11
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      0,
+      0,
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    ],
+    [
+      [
+        [
+          0,
+          "AvatarDrink",
+          2,
+          0,
+          [
+            {},
+            "paths",
+            11,
+            [
+              {
+                "sprite/cloak": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": 15
+                      },
+                      {
+                        "frame": 1.5,
+                        "value": -15
+                      },
+                      {
+                        "frame": 2,
+                        "value": 0
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          10,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legleft": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          2,
+                          5,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legright": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          -2,
+                          5,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/body": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          7,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          0,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legleft/foot": {
+                  "comps": {},
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legright/foot": {
+                  "comps": {},
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/handleft": {
+                  "props": {
+                    "position": []
+                  }
+                },
+                "sprite": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                }
+              },
+              "sprite/avatar/head/eyes",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {},
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          1
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 1
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          1
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 1.0833333333333333
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          0
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 1.1666666666666667
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11,
+                    11,
+                    11,
+                    11
+                  ]
+                ]
+              ],
+              "sprite/cup",
+              11,
+              [
+                {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 255
+                      },
+                      {
+                        "frame": 1.6666666666666667,
+                        "value": 255
+                      },
+                      {
+                        "frame": 1.8333333333333333,
+                        "value": 0
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": 0
+                      },
+                      {
+                        "frame": 1,
+                        "value": 80
+                      },
+                      {
+                        "frame": 1.5,
+                        "value": 80
+                      },
+                      {
+                        "frame": 1.8333333333333333,
+                        "value": 0
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          4,
+                          8,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": [
+                          3,
+                          12,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 1,
+                        "value": [
+                          1.463,
+                          11.139,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 1.5,
+                        "value": [
+                          1.408,
+                          11.149,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 1.8333333333333333,
+                        "value": [
+                          4,
+                          8,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "comps",
+                11,
+                [
+                  {},
+                  "cc.Sprite",
+                  11,
+                  [
+                    {},
+                    "spriteFrame",
+                    12,
+                    [
+                      [
+                        [
+                          {
+                            "frame": 0
+                          },
+                          "value",
+                          6,
+                          0
+                        ],
+                        [
+                          {
+                            "frame": 0.6666666666666666
+                          },
+                          "value",
+                          6,
+                          1
+                        ],
+                        [
+                          {
+                            "frame": 1
+                          },
+                          "value",
+                          6,
+                          2
+                        ],
+                        [
+                          {
+                            "frame": 1.3333333333333333
+                          },
+                          "value",
+                          6,
+                          3
+                        ],
+                        [
+                          {
+                            "frame": 1.6666666666666667
+                          },
+                          "value",
+                          6,
+                          4
+                        ]
+                      ],
+                      11,
+                      11,
+                      11,
+                      11,
+                      11
+                    ]
+                  ]
+                ]
+              ],
+              "sprite/avatar/head/mouth",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 255
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          2,
+                          1,
+                          1
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 0.5
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          2,
+                          2,
+                          1
+                        ]
+                      ],
+                      [
+                        {
+                          "frame": 2
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          2,
+                          0.1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11,
+                    11,
+                    11
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      0,
+      0,
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    ],
+    [
+      [
+        [
+          7,
+          "WaterColorMat",
+          {
+            "0": {
+              "props": {
+                "hidebottom": 0
+              },
+              "defines": {
+                "USE_TEXTURE": true,
+                "USE_ALPHA_TEST": false
+              }
+            }
+          }
+        ]
+      ],
+      0,
+      0,
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        14
+      ]
+    ],
+    [
+      [
+        [
+          1,
+          "AvatarJumpDown",
+          1.3333333333333333,
+          2.5,
+          2,
+          [
+            {},
+            "paths",
+            11,
+            [
+              {
+                "sprite/cloak": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": 15
+                      },
+                      {
+                        "frame": 1,
+                        "value": -45
+                      },
+                      {
+                        "frame": 1.3333333333333333,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/body": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          7,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          0,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/cup": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/bubble0": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/head/mouth": {
+                  "props": {
+                    "opacity": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                }
+              },
+              "sprite/avatar/legleft",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "curve": "constant",
+                        "value": [
+                          2.5,
+                          4.5,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -15
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legright",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 10
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          -2,
+                          4.5,
+                          0
+                        ]
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/head/eyes",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {},
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legleft/foot",
+              11,
+              [
+                {
+                  "comps": {}
+                },
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2.5,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -30
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ],
+              "sprite/avatar/legright/foot",
+              11,
+              [
+                {
+                  "comps": {}
+                },
+                "props",
+                11,
+                [
+                  {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          -2.438,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          1,
+                          1,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      0,
+      0,
+      [],
+      [],
+      []
+    ],
+    [
+      [
+        [
+          0,
+          "AvatarAttackHorizontal",
+          0.5166666666666667,
+          0,
+          [
+            {},
+            "paths",
+            11,
+            [
+              {
+                "sprite/cloak": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 45
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": -45
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legleft": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "curve": "linear",
+                        "value": [
+                          2.54,
+                          4.511,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.5,
+                        "curve": "constant",
+                        "value": [
+                          3,
+                          5,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 90,
+                        "curve": "linear"
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": 30,
+                        "curve": "constant"
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legright": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -30,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": -15,
+                        "curve": "constant"
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "curve": "constant",
+                        "value": [
+                          -2.871,
+                          4.425,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.5,
+                        "curve": "constant",
+                        "value": [
+                          -2,
+                          5.5,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/body": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          7,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar": {
+                  "props": {
+                    "position": [
+                      {
+                        "frame": 0,
+                        "value": [
+                          0,
+                          0,
+                          0
+                        ]
+                      }
+                    ],
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": 0
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legleft/foot": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -60,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": 0,
+                        "curve": "constant"
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "curve": "constant",
+                        "value": [
+                          0.379,
+                          -2.593,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.5,
+                        "curve": "constant",
+                        "value": [
+                          0,
+                          -2,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite/avatar/legright/foot": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -5,
+                        "curve": "constant"
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": -30,
+                        "curve": "constant"
+                      }
+                    ],
+                    "position": [
+                      {
+                        "frame": 0,
+                        "curve": "constant",
+                        "value": [
+                          0,
+                          -2.781,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.5,
+                        "curve": "constant",
+                        "value": [
+                          0.173,
+                          -2.452,
+                          0
+                        ]
+                      },
+                      {
+                        "frame": 0.5166666666666667,
+                        "value": [
+                          0.049,
+                          -2.721,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "sprite": {
+                  "props": {
+                    "angle": [
+                      {
+                        "frame": 0,
+                        "value": -15
+                      },
+                      {
+                        "frame": 0.5,
+                        "value": 0
+                      }
+                    ]
+                  }
+                }
+              },
+              "sprite/avatar/head/eyes",
+              11,
+              [
+                {},
+                "props",
+                11,
+                [
+                  {},
+                  "scale",
+                  12,
+                  [
+                    [
+                      [
+                        {
+                          "frame": 0
+                        },
+                        "value",
+                        8,
+                        [
+                          0,
+                          1,
+                          1
+                        ]
+                      ]
+                    ],
+                    11
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      0,
+      0,
+      [],
+      [],
+      []
+    ],
+    [
+      [
+        [
+          5,
+          "AvatarDie",
+          1,
+          {
+            "paths": {
+              "sprite": {
+                "props": {
+                  "angle": [
+                    {
+                      "frame": 0,
+                      "value": 0
+                    },
+                    {
+                      "frame": 0.5166666666666667,
+                      "value": -90
+                    },
+                    {
+                      "frame": 0.6666666666666666,
+                      "value": -80
+                    },
+                    {
+                      "frame": 0.75,
+                      "value": -90
+                    },
+                    {
+                      "frame": 0.8333333333333334,
+                      "value": -85
+                    },
+                    {
+                      "frame": 1,
+                      "value": -90
+                    }
+                  ]
+                }
+              },
+              "MeleeWeapon/sprite": {
+                "props": {
+                  "opacity": [
+                    {
+                      "frame": 0,
+                      "value": 255
+                    },
+                    {
+                      "frame": 0.08333333333333333,
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              "sprite/avatar": {
+                "props": {
+                  "angle": [
+                    {
+                      "frame": 0,
+                      "value": 0
+                    }
+                  ],
+                  "position": [
+                    {
+                      "frame": 0,
+                      "value": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      ],
+      0,
+      0,
+      [],
+      [],
+      []
+    ]
+  ]
+]

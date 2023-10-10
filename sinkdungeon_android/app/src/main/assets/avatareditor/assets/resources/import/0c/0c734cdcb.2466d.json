@@ -1,0 +1,530 @@
+[
+  1,
+  [
+    "58zygnB6dE1L3HgQSoXS6n",
+    "5du2Zyev9CGaACxebmFR60",
+    "15ZTToaS5JNrNUG1EKALoS",
+    "25/4AtdnFCdZtiBU3ITxsW",
+    "c9hATUi7ZK5J2Arpk/t6US",
+    "59DcGNNdRID5OjQS+J36Zv",
+    "abCZfFkHxBeb7xwVkxJEV+",
+    "89zhDp061GSJrlhUtb3RmX",
+    "8fSSssdg5AoKRhjUxIjw0r",
+    "28vgCgHDRIg7hZBPPsMSvF",
+    "8a4n0ONANOkI9myasU9xlN"
+  ],
+  [
+    "_textureSetter",
+    "iconboss000",
+    "iconboss001",
+    "iconboss002",
+    "iconboss003",
+    "iconboss004",
+    "iconboss005",
+    "iconboss006",
+    "iconboss007",
+    "iconboss008",
+    "iconboss009"
+  ],
+  [
+    "cc.SpriteFrame",
+    [
+      "cc.SpriteAtlas",
+      [
+        "_name",
+        "_spriteFrames"
+      ],
+      2,
+      11
+    ]
+  ],
+  [
+    [
+      1,
+      0,
+      1,
+      2
+    ]
+  ],
+  [
+    [
+      [
+        {
+          "name": "iconboss001",
+          "rect": [
+            200,
+            0,
+            200,
+            200
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            200,
+            200
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "iconboss002",
+          "rect": [
+            400,
+            0,
+            200,
+            200
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            200,
+            200
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "iconboss008",
+          "rect": [
+            600,
+            200,
+            200,
+            200
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            200,
+            200
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        [
+          0,
+          "bossicons.plist",
+          [
+            {},
+            "iconboss000",
+            6,
+            0,
+            "iconboss001",
+            6,
+            1,
+            "iconboss002",
+            6,
+            2,
+            "iconboss003",
+            6,
+            3,
+            "iconboss004",
+            6,
+            4,
+            "iconboss005",
+            6,
+            5,
+            "iconboss006",
+            6,
+            6,
+            "iconboss007",
+            6,
+            7,
+            "iconboss008",
+            6,
+            8,
+            "iconboss009",
+            6,
+            9
+          ]
+        ]
+      ],
+      0,
+      0,
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    ],
+    [
+      [
+        {
+          "name": "iconboss004",
+          "rect": [
+            800,
+            0,
+            200,
+            200
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            200,
+            200
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "iconboss000",
+          "rect": [
+            0,
+            0,
+            200,
+            200
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            200,
+            200
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "iconboss006",
+          "rect": [
+            200,
+            200,
+            200,
+            200
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            200,
+            200
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "iconboss009",
+          "rect": [
+            800,
+            200,
+            200,
+            200
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            200,
+            200
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "iconboss007",
+          "rect": [
+            400,
+            200,
+            200,
+            200
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            200,
+            200
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "iconboss005",
+          "rect": [
+            0,
+            200,
+            200,
+            200
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            200,
+            200
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "iconboss003",
+          "rect": [
+            600,
+            0,
+            200,
+            200
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            200,
+            200
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ]
+  ]
+]

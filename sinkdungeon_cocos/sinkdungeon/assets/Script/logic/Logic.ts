@@ -149,6 +149,7 @@ export default class Logic extends cc.Component {
     static playerMetals: { [key: string]: MetalTalentData } = {} //玩家翠金天赋点
     static metalId = ''
     static furnitureMap: Map<String, BuildingData> = new Map()
+    static currentEditPlayerData = new PlayerData()
 
     onLoad() {
         Logic.settings.valueCopy(LocalStorage.getSystemSettings())

@@ -407,12 +407,12 @@ export default class PickAvatar extends cc.Component {
             Logic.playerData.playerEquipsReality[name] = new EquipmentData().valueCopy(EquipmentManager.getNewEquipData(equipType))
         }
         Logic.playerData.playerItemList = []
-            Logic.playerData.playerItemListReality = []
-            for (let i = 0; i < InventoryManager.MAX_ITEM; i++) {
-                let data = new ItemData()
-                data.count = -1
-                Logic.playerData.playerItemList.push(new ItemData().valueCopy(data))
-                Logic.playerData.playerItemListReality.push(new ItemData().valueCopy(data))
+        Logic.playerData.playerItemListReality = []
+        for (let i = 0; i < InventoryManager.MAX_ITEM; i++) {
+            let data = new ItemData()
+            data.count = -1
+            Logic.playerData.playerItemList.push(new ItemData().valueCopy(data))
+            Logic.playerData.playerItemListReality.push(new ItemData().valueCopy(data))
         }
     }
     addBrightnessBar(): BrightnessBar {

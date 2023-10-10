@@ -1,0 +1,728 @@
+[
+  1,
+  [
+    "79PcVD31lBVbBVM+Q+nk0h",
+    "abAp7MBelPaaQEzAE3r9PJ",
+    "4769xH4PlJyZ8+R6brDGgX",
+    "33OmuLeTxLiZWBFD7k3uFM",
+    "f3iWuvyA1Phrvl292nODlm",
+    "52XjQyVx9GMZANYJhrQYhj",
+    "59U6Pk6SlLRoKy8p2XEER7",
+    "88uWuSEyVNO596mQYhAD7Q",
+    "fcwI/Oz9BMJYSs+6mCUpi/",
+    "39f5jrksdBdbJLcaRkDm99",
+    "99XPO/eXNJ94I5KX5gEVM5",
+    "5faYST5p9P0rpSyJLXurKY",
+    "fdhytBaj5M1KFDqxjPDFba",
+    "63AA7DYLBK+arn3Q9DFgbg",
+    "0euxQYwKlDvL2iABevRr6C"
+  ],
+  [
+    "_textureSetter",
+    "monster009anim007",
+    "monster009anim003",
+    "monster009anim006",
+    "monster009anim009",
+    "monster009anim000",
+    "monster009anim001",
+    "monster009anim010",
+    "monster009anim008",
+    "monster009disguise",
+    "monster009anim002",
+    "monster009anim004",
+    "monster009anim005",
+    "monster009anim011",
+    "monster009anim012"
+  ],
+  [
+    "cc.SpriteFrame",
+    [
+      "cc.SpriteAtlas",
+      [
+        "_name",
+        "_spriteFrames"
+      ],
+      2,
+      11
+    ]
+  ],
+  [
+    [
+      1,
+      0,
+      1,
+      2
+    ]
+  ],
+  [
+    [
+      [
+        {
+          "name": "monster009anim012",
+          "rect": [
+            21,
+            38,
+            17,
+            16
+          ],
+          "offset": [
+            0,
+            -2.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster009anim006",
+          "rect": [
+            47,
+            1,
+            16,
+            21
+          ],
+          "offset": [
+            -0.5,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster009disguise",
+          "rect": [
+            40,
+            44,
+            16,
+            15
+          ],
+          "offset": [
+            -0.5,
+            -3
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster009anim003",
+          "rect": [
+            24,
+            1,
+            17,
+            21
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster009anim000",
+          "rect": [
+            47,
+            24,
+            16,
+            18
+          ],
+          "offset": [
+            -0.5,
+            -1.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster009anim001",
+          "rect": [
+            1,
+            22,
+            16,
+            18
+          ],
+          "offset": [
+            -0.5,
+            -1.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster009anim004",
+          "rect": [
+            47,
+            24,
+            16,
+            18
+          ],
+          "offset": [
+            -0.5,
+            -1.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster009anim011",
+          "rect": [
+            24,
+            20,
+            16,
+            21
+          ],
+          "offset": [
+            -0.5,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        [
+          0,
+          "monster009.plist",
+          [
+            {},
+            "monster009anim007",
+            6,
+            0,
+            "monster009anim003",
+            6,
+            1,
+            "monster009anim006",
+            6,
+            2,
+            "monster009anim009",
+            6,
+            3,
+            "monster009anim000",
+            6,
+            4,
+            "monster009anim001",
+            6,
+            5,
+            "monster009anim010",
+            6,
+            6,
+            "monster009anim008",
+            6,
+            7,
+            "monster009disguise",
+            6,
+            8,
+            "monster009anim002",
+            6,
+            9,
+            "monster009anim004",
+            6,
+            10,
+            "monster009anim005",
+            6,
+            11,
+            "monster009anim011",
+            6,
+            12,
+            "monster009anim012",
+            6,
+            13
+          ]
+        ]
+      ],
+      0,
+      0,
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster009anim010",
+          "rect": [
+            21,
+            38,
+            17,
+            16
+          ],
+          "offset": [
+            0,
+            -2.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster009anim002",
+          "rect": [
+            47,
+            24,
+            16,
+            18
+          ],
+          "offset": [
+            -0.5,
+            -1.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster009anim007",
+          "rect": [
+            1,
+            1,
+            19,
+            21
+          ],
+          "offset": [
+            1,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster009anim009",
+          "rect": [
+            24,
+            20,
+            16,
+            21
+          ],
+          "offset": [
+            -0.5,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster009anim008",
+          "rect": [
+            1,
+            40,
+            16,
+            16
+          ],
+          "offset": [
+            -0.5,
+            -2.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster009anim005",
+          "rect": [
+            24,
+            1,
+            17,
+            21
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ]
+  ]
+]

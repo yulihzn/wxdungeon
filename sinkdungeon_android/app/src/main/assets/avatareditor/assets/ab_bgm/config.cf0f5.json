@@ -1,0 +1,49 @@
+{
+    "paths": {
+        "a6AaJdq8tCuZ5YL4z+pOvJ": [
+            "bgm001",
+            "cc.AudioClip"
+        ],
+        "ccMMslMIdF1K+eP4Lwf+JR": [
+            "bgm002",
+            "cc.AudioClip"
+        ],
+        "3fZrgPyU1KG7Z1bDSqBdz2": [
+            "bgm003",
+            "cc.AudioClip"
+        ]
+    },
+    "uuids": [
+        "3fZrgPyU1KG7Z1bDSqBdz2",
+        "a6AaJdq8tCuZ5YL4z+pOvJ",
+        "ccMMslMIdF1K+eP4Lwf+JR"
+    ],
+    "scenes": {},
+    "redirect": [],
+    "deps": [],
+    "packs": {},
+    "name": "ab_bgm",
+    "importBase": "import",
+    "nativeBase": "native",
+    "debug": true,
+    "isZip": false,
+    "encrypted": false,
+    "versions": {
+        "import": [
+            "3fZrgPyU1KG7Z1bDSqBdz2",
+            "594c0",
+            "a6AaJdq8tCuZ5YL4z+pOvJ",
+            "8ab89",
+            "ccMMslMIdF1K+eP4Lwf+JR",
+            "7bea1"
+        ],
+        "native": [
+            "3fZrgPyU1KG7Z1bDSqBdz2",
+            "b1aec",
+            "a6AaJdq8tCuZ5YL4z+pOvJ",
+            "8a9a1",
+            "ccMMslMIdF1K+eP4Lwf+JR",
+            "a433d"
+        ]
+    }
+}

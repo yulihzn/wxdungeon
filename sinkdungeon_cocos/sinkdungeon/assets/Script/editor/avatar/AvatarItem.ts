@@ -10,7 +10,9 @@
 
 import AvatarData from '../../data/AvatarData'
 import PlayerData from '../../data/PlayerData'
+import ProfessionData from '../../data/ProfessionData'
 import Logic from '../../logic/Logic'
+import InventoryManager from '../../manager/InventoryManager'
 
 //任务卡片
 const { ccclass, property } = cc._decorator
@@ -39,12 +41,16 @@ export default class AvatarItem extends cc.Component {
     pantsSprite: cc.Sprite = null
     clothesSprite: cc.Sprite = null
     private petSprite: cc.Sprite = null
+    private weaponSprite: cc.Sprite = null
+    private remoteSprite: cc.Sprite = null
+    private shieldSprite: cc.Sprite = null
     private isInit = false
     private data: PlayerData = new PlayerData()
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
+            Logic.currentEditPlayerData.valueCopy(this.data)
             cc.director.loadScene('avatareditor')
         })
     }
@@ -81,6 +87,9 @@ export default class AvatarItem extends cc.Component {
         this.bodySprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'body'])
         this.pantsSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'body', 'pants'])
         this.clothesSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'body', 'clothes'])
+        this.weaponSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'weapon'])
+        this.remoteSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'remote'])
+        this.shieldSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'shield'])
         this.headSprite.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor)
         this.faceSprite.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.faceColor)
         this.faceSprite.node.opacity = 128
@@ -99,6 +108,7 @@ export default class AvatarItem extends cc.Component {
         this.updateSpriteFrameAnim(this.hairSprite, this.data.AvatarData.hairResName, 2)
         this.updateSpriteFrameAnim(this.eyesSprite, this.data.AvatarData.eyesResName, 1)
         this.label.string = this.data.name
+        this.changeEquipment(this.data.AvatarData.professionData)
     }
     getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node
@@ -123,5 +133,41 @@ export default class AvatarItem extends cc.Component {
             cc.macro.REPEAT_FOREVER,
             0.1
         )
+    }
+    private changeEquipment(data: ProfessionData) {
+        this.changeRes(this.helmetSprite, data.equips[InventoryManager.HELMET], 'anim0')
+        this.changeRes(this.pantsSprite, data.equips[InventoryManager.TROUSERS])
+        this.changeRes(this.cloakSprite, data.equips[InventoryManager.CLOAK])
+        this.changeRes(this.weaponSprite, data.equips[InventoryManager.WEAPON])
+        this.changeRes(this.remoteSprite, data.equips[InventoryManager.REMOTE], 'anim0')
+        this.changeRes(this.shieldSprite, data.equips[InventoryManager.SHIELD])
+        this.changeRes(this.clothesSprite, data.equips[InventoryManager.CLOTHES], 'anim0')
+        this.changeRes(this.glovesLeftSprite, data.equips[InventoryManager.GLOVES])
+        this.changeRes(this.glovesRightSprite, data.equips[InventoryManager.GLOVES])
+        this.changeRes(this.shoesLeftSprite, data.equips[InventoryManager.SHOES])
+        this.changeRes(this.shoesRightSprite, data.equips[InventoryManager.SHOES])
+        this.resetSpriteSize(this.weaponSprite)
+        this.resetSpriteSize(this.remoteSprite)
+        this.resetSpriteSize(this.shieldSprite)
+    }
+    private changeRes(sprite: cc.Sprite, resName: string, subfix?: string) {
+        if (!sprite) {
+            return false
+        }
+        let spriteFrame = Logic.spriteFrameRes(resName)
+        if (subfix && Logic.spriteFrameRes(resName + subfix)) {
+            spriteFrame = Logic.spriteFrameRes(resName + subfix)
+        }
+        if (spriteFrame) {
+            sprite.spriteFrame = spriteFrame
+        } else {
+            sprite.spriteFrame = null
+        }
+    }
+    private resetSpriteSize(sprite: cc.Sprite) {
+        if (sprite.spriteFrame) {
+            sprite.node.width = sprite.spriteFrame.getOriginalSize().width
+            sprite.node.height = sprite.spriteFrame.getOriginalSize().height
+        }
     }
 }

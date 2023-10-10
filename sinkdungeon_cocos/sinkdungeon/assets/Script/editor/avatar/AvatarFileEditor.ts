@@ -10,6 +10,7 @@
 
 import AttributeData from '../../data/AttributeData'
 import AvatarData from '../../data/AvatarData'
+import PlayerData from '../../data/PlayerData'
 import ProfessionData from '../../data/ProfessionData'
 import Logic from '../../logic/Logic'
 import InventoryManager from '../../manager/InventoryManager'
@@ -19,6 +20,7 @@ import BrightnessBar from '../../ui/BrightnessBar'
 import ColorPicker from '../../ui/ColorPicker'
 import PaletteSelector from '../../ui/PaletteSelector'
 import Utils from '../../utils/Utils'
+import JsCallAndroid from '../utils/JsCallAndroid'
 
 const { ccclass, property } = cc._decorator
 
@@ -34,6 +36,16 @@ export default class AvatarFileEditor extends cc.Component {
     selectorPrefab: cc.Prefab = null
     @property(cc.Node)
     attributeLayout: cc.Node = null
+    @property(cc.EditBox)
+    editTitle: cc.Label = null
+    @property(cc.Label)
+    labelName: cc.Label = null
+    @property(cc.Label)
+    labelDesc: cc.Label = null
+    @property(cc.Label)
+    labelSkillName: cc.Label = null
+    @property(cc.Label)
+    labelSkillDesc: cc.Label = null
     private bodySprite: cc.Sprite
     private headSprite: cc.Sprite
     private hairSprite: cc.Sprite
@@ -63,31 +75,35 @@ export default class AvatarFileEditor extends cc.Component {
     private eyesSelector: AttributeSelector
     private faceSelector: AttributeSelector
     private petSelector: AttributeSelector
-    private data: AvatarData = new AvatarData()
+    private data: PlayerData = new PlayerData()
     private randomTouched = false
+    private jsCallAndroid: JsCallAndroid = new JsCallAndroid()
 
     onLoad() {
+        this.jsCallAndroid.loadPlayers()
+        this.data.valueCopy(Logic.currentEditPlayerData)
         this.petSprite = this.getSpriteChildSprite(this.avatarTable, ['pet'])
-        this.bodySprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body'])
-        this.handSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'hand1'])
-        this.handSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'hand2'])
-        this.legSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'leg1'])
-        this.legSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'leg2'])
-        this.headSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'head'])
-        this.hairSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'head', 'hair'])
-        this.faceSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'head', 'face'])
-        this.eyesSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'head', 'eyes'])
-        this.helmetSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'head', 'helmet'])
-        this.pantsSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'pants'])
-        this.cloakSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'cloak'])
-        this.weaponSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'weapon'])
-        this.remoteSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'remote'])
-        this.shieldSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'shield'])
-        this.clothesSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'clothes'])
-        this.glovesSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'hand1', 'gloves'])
-        this.glovesSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'hand2', 'gloves'])
-        this.shoesSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'leg1', 'shoes'])
-        this.shoesSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'leg2', 'shoes'])
+        this.bodySprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'body'])
+        this.handSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'handleft'])
+        this.handSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'handright'])
+        this.legSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'legleft'])
+        this.legSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'legright'])
+        this.headSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'head'])
+        this.hairSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'head', 'hair'])
+        this.faceSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'head', 'face'])
+        this.eyesSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'head', 'eyes'])
+        this.helmetSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'head', 'helmet'])
+        this.pantsSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'body', 'pants'])
+        this.cloakSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'cloak'])
+        this.weaponSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'weapon'])
+        this.remoteSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'remote'])
+        this.shieldSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'shield'])
+        this.clothesSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'body', 'clothes'])
+        this.glovesSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'handleft', 'gloves'])
+        this.glovesSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'handright', 'gloves'])
+        this.shoesSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'legleft', 'foot', 'shoes'])
+        this.shoesSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'legright', 'foot', 'shoes'])
+        this.editTitle.string = this.data.name
         this.randomButton.on(
             cc.Node.EventType.TOUCH_START,
             (event: cc.Event.EventTouch) => {
@@ -118,7 +134,7 @@ export default class AvatarFileEditor extends cc.Component {
         }
         this.organizationSelector = this.addAttributeSelector('组织：', organList, 0, false, [])
         this.organizationSelector.selectorCallback = (data: AttributeData, color: cc.Color) => {
-            this.data.organizationIndex = data.id
+            this.data.AvatarData.organizationIndex = data.id
             if (this.petSelector) {
                 this.petSelector.node.active = data.id == AvatarData.HUNTER
             }
@@ -129,15 +145,15 @@ export default class AvatarFileEditor extends cc.Component {
         for (let i = 0; i < Logic.professionList.length; i++) {
             let data = Logic.professionList[i]
             let talent = Logic.talents[data.talent]
-            professionList.push(new AttributeData(data.id, data.nameCn, '', data.desc, `技能：${talent.nameCn}`, `${talent.desc}`))
+            professionList.push(new AttributeData(data.id, data.nameCn, data.id + '', data.desc, `技能：${talent.nameCn}`, `${talent.desc}`))
         }
         this.professionSelector = this.addAttributeSelector('职业：', professionList, 0, false, [])
         this.professionSelector.selectorCallback = (data: AttributeData, color: cc.Color) => {
-            this.data.professionData.valueCopy(Logic.professionList[data.id])
-            // this.randomLabelName.string = `${data.name}`
-            // this.randomLabelDesc.string = `${data.desc}`
-            // this.randomLabelSkillName.string = `${data.name1}`
-            // this.randomLabelSkillDesc.string = `${data.desc1}`
+            this.data.AvatarData.professionData.valueCopy(Logic.professionList[data.id])
+            this.labelName.string = `${data.name}`
+            this.labelDesc.string = `${data.desc}`
+            this.labelSkillName.string = `${data.name1}`
+            this.labelSkillDesc.string = `${data.desc1}`
             this.changeEquipment(Logic.professionList[data.id])
         }
 
@@ -150,13 +166,7 @@ export default class AvatarFileEditor extends cc.Component {
             BrightnessBar.SKIN_COLORS
         )
         this.skinSelector.selectorCallback = (data: AttributeData, color: cc.Color) => {
-            this.bodySprite.node.color = color
-            this.headSprite.node.color = color
-            this.handSprite1.node.color = color
-            this.handSprite2.node.color = color
-            this.legSprite1.node.color = color
-            this.legSprite2.node.color = color
-            this.data.skinColor = color.toHEX('#rrggbb')
+            this.changeSkinColor(color)
         }
         //发型
         let hairList = []
@@ -166,9 +176,9 @@ export default class AvatarFileEditor extends cc.Component {
         this.hairSelector = this.addAttributeSelector('发型：', hairList, 0, true, PaletteSelector.HAIRCOLORS)
         this.hairSelector.selectorCallback = (data: AttributeData, color: cc.Color) => {
             this.hairSprite.spriteFrame = Logic.spriteFrameRes(data.resName + 'anim0')
-            this.data.hairResName = data.resName
+            this.data.AvatarData.hairResName = data.resName
             this.hairSprite.node.color = color
-            this.data.hairColor = color.toHEX('#rrggbb')
+            this.data.AvatarData.hairColor = color.toHEX('#rrggbb')
         }
         //眼睛
         let eyesList = []
@@ -178,9 +188,9 @@ export default class AvatarFileEditor extends cc.Component {
         this.eyesSelector = this.addAttributeSelector('眼睛：', eyesList, 0, true, PaletteSelector.EYESCOLORS)
         this.eyesSelector.selectorCallback = (data: AttributeData, color: cc.Color) => {
             this.eyesSprite.spriteFrame = Logic.spriteFrameRes(data.resName + 'anim0')
-            this.data.eyesResName = data.resName
+            this.data.AvatarData.eyesResName = data.resName
             this.eyesSprite.getMaterial(0).setProperty('eyeColor', color)
-            this.data.eyesColor = color.toHEX('#rrggbb')
+            this.data.AvatarData.eyesColor = color.toHEX('#rrggbb')
         }
         //面颊
         let faceList = []
@@ -190,10 +200,10 @@ export default class AvatarFileEditor extends cc.Component {
         this.faceSelector = this.addAttributeSelector('面颊：', faceList, 0, true, PaletteSelector.FACECOLORS)
         this.faceSelector.selectorCallback = (data: AttributeData, color: cc.Color) => {
             this.faceSprite.spriteFrame = Logic.spriteFrameRes(data.resName + 'anim0')
-            this.data.faceResName = data.resName
+            this.data.AvatarData.faceResName = data.resName
             this.faceSprite.node.color = color
             this.faceSprite.node.opacity = 128
-            this.data.faceColor = color.toHEX('#rrggbb')
+            this.data.AvatarData.faceColor = color.toHEX('#rrggbb')
         }
         //宠物
         // let petNames = ['柯基', '鹦鹉', '橘子鱼', '天竺鼠', '巴西龟', '变色龙', '刺猬', '火玫瑰蜘蛛', '安哥拉兔', '科尔鸭', '巴马香猪'];
@@ -207,12 +217,21 @@ export default class AvatarFileEditor extends cc.Component {
             LoadingManager.loadNpcSpriteAtlas(data.resName, () => {
                 this.petSprite.spriteFrame = Logic.spriteFrameRes(data.resName + 'anim000')
             })
-            this.data.petName = `nonplayer1${Utils.getNumberStr2(data.id)}`
+            this.data.AvatarData.petName = `nonplayer1${Utils.getNumberStr2(data.id)}`
         }
         this.petSelector.node.active = this.organizationSelector.CurrentData.id == AvatarData.HUNTER
         this.petSprite.node.active = this.organizationSelector.CurrentData.id == AvatarData.HUNTER
 
-        this.ButtonRandom()
+        this.selectTarget()
+    }
+    private changeSkinColor(color: cc.Color) {
+        this.bodySprite.node.color = color
+        this.headSprite.node.color = color
+        this.handSprite1.node.color = color
+        this.handSprite2.node.color = color
+        this.legSprite1.node.color = color
+        this.legSprite2.node.color = color
+        this.data.AvatarData.skinColor = color.toHEX('#rrggbb')
     }
     private getSpriteChildSprite(node: cc.Node, childNames: string[]): cc.Sprite {
         for (let name of childNames) {
@@ -283,16 +302,29 @@ export default class AvatarFileEditor extends cc.Component {
     backToList() {
         cc.director.loadScene('avatarlist')
     }
+    //button
     ButtonRandom() {
         this.organizationSelector.selectRandom()
         this.professionSelector.selectRandom()
         this.skinSelector.selectRandom(this.skinSelector.currentIndex == 0)
         this.hairSelector.selectRandom()
-        // this.hairColorSelector.selectRandom()
         this.eyesSelector.selectRandom()
-        // this.eyesColorSelector.selectRandom()
         this.faceSelector.selectRandom()
-        // this.faceColorSelector.selectRandom()
         this.petSelector.selectRandom()
+    }
+    selectTarget() {
+        this.organizationSelector.selectTarget(AvatarData.ORGANIZATION[this.data.AvatarData.organizationIndex])
+        this.professionSelector.selectTarget(this.data.AvatarData.professionData.id + '')
+        this.skinSelector.selectTarget('', cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor))
+        this.hairSelector.selectTarget(this.data.AvatarData.hairResName, cc.Color.WHITE.fromHEX(this.data.AvatarData.hairColor))
+        this.eyesSelector.selectTarget(this.data.AvatarData.eyesResName, cc.Color.WHITE.fromHEX(this.data.AvatarData.eyesColor))
+        this.faceSelector.selectTarget(this.data.AvatarData.faceResName, cc.Color.WHITE.fromHEX(this.data.AvatarData.faceColor))
+        this.petSelector.selectTarget(this.data.AvatarData.petName)
+    }
+    //button
+    saveData() {
+        this.data.name = this.editTitle.string
+        this.jsCallAndroid.savePlayerDataById(this.data)
+        this.backToList()
     }
 }

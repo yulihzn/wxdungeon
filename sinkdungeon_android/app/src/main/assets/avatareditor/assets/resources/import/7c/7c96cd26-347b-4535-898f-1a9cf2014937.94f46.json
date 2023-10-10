@@ -1,0 +1,51 @@
+[
+  1,
+  [
+    "1cc445b38"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    {
+      "name": "weaponlightfarstabanim004",
+      "rect": [
+        254,
+        301,
+        50,
+        22
+      ],
+      "offset": [
+        5,
+        0
+      ],
+      "originalSize": [
+        64,
+        64
+      ],
+      "capInsets": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  [
+    0
+  ],
+  0,
+  [
+    0
+  ],
+  [
+    0
+  ],
+  [
+    0
+  ]
+]

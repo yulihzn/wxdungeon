@@ -1,0 +1,685 @@
+[
+  1,
+  [
+    "0fm+ZQTK5OTJQtr4n6ITl5",
+    "53QJCEJeZLQLYVUCSad78P",
+    "f5kSIreBRPZarqNW+tZfqJ",
+    "a00fQgX4dMBonivBUt9Kya",
+    "83RzSn191PAqHuzMNXBBw7",
+    "d958jj7kBNvq4kqqO3g4qR",
+    "83iID4yvtPRrz86R/PxShj",
+    "4dyUzSR+5Kp5bBTLFgSH/d",
+    "29/8hagmdKAp2LwcJZsgxs",
+    "90BS3x+jNJLKRvPCHbhlIy",
+    "21AACscSxEbLgQdtlDud/x",
+    "2dzUKBaepMy4atHuS0EHA+",
+    "a2BlenJ0dPa6crOSJdXz/7",
+    "11LiiJdsNKmaodER0eXmeg"
+  ],
+  [
+    "_textureSetter",
+    "monster035anim010",
+    "monster035anim007",
+    "monster035anim000",
+    "monster035anim001",
+    "monster035anim002",
+    "monster035anim003",
+    "monster035anim006",
+    "monster035anim009",
+    "monster035anim008",
+    "monster035anim004",
+    "monster035anim005",
+    "monster035anim011",
+    "monster035anim012"
+  ],
+  [
+    "cc.SpriteFrame",
+    [
+      "cc.SpriteAtlas",
+      [
+        "_name",
+        "_spriteFrames"
+      ],
+      2,
+      11
+    ]
+  ],
+  [
+    [
+      1,
+      0,
+      1,
+      2
+    ]
+  ],
+  [
+    [
+      [
+        {
+          "name": "monster035anim012",
+          "rect": [
+            1,
+            1,
+            21,
+            18
+          ],
+          "offset": [
+            0,
+            0.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster035anim004",
+          "rect": [
+            24,
+            18,
+            14,
+            17
+          ],
+          "offset": [
+            -2.5,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster035anim009",
+          "rect": [
+            20,
+            34,
+            14,
+            17
+          ],
+          "offset": [
+            -2.5,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster035anim005",
+          "rect": [
+            43,
+            33,
+            14,
+            17
+          ],
+          "offset": [
+            -1.5,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster035anim006",
+          "rect": [
+            1,
+            21,
+            14,
+            17
+          ],
+          "offset": [
+            -2.5,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster035anim010",
+          "rect": [
+            1,
+            1,
+            21,
+            18
+          ],
+          "offset": [
+            0,
+            0.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        [
+          0,
+          "monster035.plist",
+          [
+            {},
+            "monster035anim010",
+            6,
+            0,
+            "monster035anim007",
+            6,
+            1,
+            "monster035anim000",
+            6,
+            2,
+            "monster035anim001",
+            6,
+            3,
+            "monster035anim002",
+            6,
+            4,
+            "monster035anim003",
+            6,
+            5,
+            "monster035anim006",
+            6,
+            6,
+            "monster035anim009",
+            6,
+            7,
+            "monster035anim008",
+            6,
+            8,
+            "monster035anim004",
+            6,
+            9,
+            "monster035anim005",
+            6,
+            10,
+            "monster035anim011",
+            6,
+            11,
+            "monster035anim012",
+            6,
+            12
+          ]
+        ]
+      ],
+      0,
+      0,
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster035anim001",
+          "rect": [
+            43,
+            17,
+            14,
+            17
+          ],
+          "offset": [
+            -1.5,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster035anim003",
+          "rect": [
+            43,
+            33,
+            14,
+            17
+          ],
+          "offset": [
+            -1.5,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster035anim008",
+          "rect": [
+            1,
+            37,
+            13,
+            17
+          ],
+          "offset": [
+            -2,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster035anim000",
+          "rect": [
+            43,
+            1,
+            14,
+            17
+          ],
+          "offset": [
+            -2.5,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster035anim011",
+          "rect": [
+            20,
+            34,
+            14,
+            17
+          ],
+          "offset": [
+            -2.5,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster035anim002",
+          "rect": [
+            24,
+            18,
+            14,
+            17
+          ],
+          "offset": [
+            -2.5,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "monster035anim007",
+          "rect": [
+            24,
+            1,
+            15,
+            17
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ]
+  ]
+]

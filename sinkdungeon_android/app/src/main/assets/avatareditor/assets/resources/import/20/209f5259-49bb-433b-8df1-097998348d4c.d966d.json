@@ -1,0 +1,59 @@
+[
+  1,
+  0,
+  0,
+  [
+    [
+      "cc.JsonAsset",
+      [
+        "_name",
+        "json"
+      ],
+      1
+    ]
+  ],
+  [
+    [
+      0,
+      0,
+      1,
+      3
+    ]
+  ],
+  [
+    [
+      0,
+      "players",
+      {
+        "player001": {
+          "name": "店主",
+          "chapter": 0,
+          "stageLevel": 0,
+          "currentHealth": 999,
+          "invisible": 0,
+          "remote": 0,
+          "melee": 0,
+          "boxType": 1,
+          "isHeavy": 1,
+          "scale": 1.2,
+          "isEnemy": 0,
+          "isFollow": 1,
+          "bodyRect": "0,0,48,32,105",
+          "attackRect": "-32,0,112,32,80",
+          "lifeTime": 0,
+          "common": {
+            "moveSpeed": 0,
+            "maxHealth": 999,
+            "damageMin": 999
+          },
+          "avatarData": {}
+        }
+      }
+    ]
+  ],
+  0,
+  0,
+  [],
+  [],
+  []
+]

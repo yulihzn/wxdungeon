@@ -33,9 +33,15 @@
         });
     }
     function getJsonData(){
-       var jsonData = JSON.parse(window.android.getLocalJson("players.json"));
+       var jsonData = window.android.getLocalJson("players.json");
        var p = document.getElementById("json")
        p.innerHTML = jsonData
+       window.android.toast(jsonData)
+       var data = JSON.parse(jsonData)
+       for (let key in data) {
+       console.log(key)
+       console.log(data[key].nameCn)
+        }
        }
 </script>
 </html>

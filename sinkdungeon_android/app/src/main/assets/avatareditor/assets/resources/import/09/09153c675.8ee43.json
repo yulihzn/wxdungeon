@@ -1,0 +1,1320 @@
+[
+  1,
+  [
+    "a3qW/7DL9ON4ZY3UzDSWyn",
+    "493VgSH49KNphImJZX1z8x",
+    "dbmE5N5YdLDZrbm/wp9lpL",
+    "83qRlef2dN2JqgrrPOsGrH",
+    "59GYiDpD1Gn4VHfKOQXKea",
+    "8bOX15gjpO+5PI/ustFMkl",
+    "f407Epw0NMT6jhoqaSZzYL",
+    "f3pj5auVFN54SsWMaHkngO",
+    "df8PUT0DNEEIbyHlAE+ovB",
+    "d53smD0HpC94/gtZRRTKoN",
+    "2aAyrLK0NJDZQAijLip8yH",
+    "35c37f56xKl6G9Qft2vudg",
+    "4cN3VwaJZA0rYPxVEcPdCg",
+    "16IMSvAdJBa5drTdJvNc6o",
+    "86tZppEkNEu4egejwHBIDY",
+    "5c/5NijVtOCYxpizngts+g",
+    "1bnPFwZ45IHIet0/UVHejn",
+    "74VYzBcipK3qrFgrxUdFzw",
+    "3eZIsTa3RIvLKRpsmjl0gK",
+    "c2U5qECFZLT6XZIvhFA7wL",
+    "125HHASKBCW7o8GD3N2CyB",
+    "9bw3NWY/FFFbQq5h7ELE2V",
+    "92KHh1J81Ev4ZrPB+It+/e",
+    "d99eQpPv9H9IgzwOB3PgyU",
+    "e9c0yVZKNBq4uzNaoW4oqF",
+    "57s0OZi01LY56u+onIAfNB",
+    "b1iLYgOd5AaKWgoWLpW66x"
+  ],
+  [
+    "_textureSetter",
+    "nonplayer002anim010",
+    "nonplayer002anim110",
+    "nonplayer002anim007",
+    "nonplayer002anim107",
+    "nonplayer002anim012",
+    "nonplayer002anim112",
+    "nonplayer002anim011",
+    "nonplayer002anim111",
+    "nonplayer002anim109",
+    "nonplayer002anim009",
+    "nonplayer002anim000",
+    "nonplayer002anim005",
+    "nonplayer002anim100",
+    "nonplayer002anim105",
+    "nonplayer002anim106",
+    "nonplayer002anim002",
+    "nonplayer002anim003",
+    "nonplayer002anim006",
+    "nonplayer002anim102",
+    "nonplayer002anim103",
+    "nonplayer002anim004",
+    "nonplayer002anim104",
+    "nonplayer002anim008",
+    "nonplayer002anim108",
+    "nonplayer002anim001",
+    "nonplayer002anim101"
+  ],
+  [
+    "cc.SpriteFrame",
+    [
+      "cc.SpriteAtlas",
+      [
+        "_name",
+        "_spriteFrames"
+      ],
+      2,
+      11
+    ]
+  ],
+  [
+    [
+      1,
+      0,
+      1,
+      2
+    ]
+  ],
+  [
+    [
+      [
+        {
+          "name": "nonplayer002anim103",
+          "rect": [
+            36,
+            69,
+            8,
+            15
+          ],
+          "offset": [
+            0.5,
+            -3
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim100",
+          "rect": [
+            19,
+            57,
+            8,
+            16
+          ],
+          "offset": [
+            0.5,
+            -2.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim002",
+          "rect": [
+            55,
+            59,
+            8,
+            15
+          ],
+          "offset": [
+            0.5,
+            -2
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim009",
+          "rect": [
+            23,
+            40,
+            15,
+            19
+          ],
+          "offset": [
+            -3,
+            -1
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim000",
+          "rect": [
+            44,
+            49,
+            8,
+            16
+          ],
+          "offset": [
+            0.5,
+            -2.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim006",
+          "rect": [
+            19,
+            77,
+            8,
+            15
+          ],
+          "offset": [
+            0.5,
+            -3
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        [
+          0,
+          "nonplayer002.plist",
+          [
+            {},
+            "nonplayer002anim010",
+            6,
+            0,
+            "nonplayer002anim110",
+            6,
+            1,
+            "nonplayer002anim007",
+            6,
+            2,
+            "nonplayer002anim107",
+            6,
+            3,
+            "nonplayer002anim012",
+            6,
+            4,
+            "nonplayer002anim112",
+            6,
+            5,
+            "nonplayer002anim011",
+            6,
+            6,
+            "nonplayer002anim111",
+            6,
+            7,
+            "nonplayer002anim109",
+            6,
+            8,
+            "nonplayer002anim009",
+            6,
+            9,
+            "nonplayer002anim000",
+            6,
+            10,
+            "nonplayer002anim005",
+            6,
+            11,
+            "nonplayer002anim100",
+            6,
+            12,
+            "nonplayer002anim105",
+            6,
+            13,
+            "nonplayer002anim106",
+            6,
+            14,
+            "nonplayer002anim002",
+            6,
+            15,
+            "nonplayer002anim003",
+            6,
+            16,
+            "nonplayer002anim006",
+            6,
+            17,
+            "nonplayer002anim102",
+            6,
+            18,
+            "nonplayer002anim103",
+            6,
+            19,
+            "nonplayer002anim004",
+            6,
+            20,
+            "nonplayer002anim104",
+            6,
+            21,
+            "nonplayer002anim008",
+            6,
+            22,
+            "nonplayer002anim108",
+            6,
+            23,
+            "nonplayer002anim001",
+            6,
+            24,
+            "nonplayer002anim101",
+            6,
+            25
+          ]
+        ]
+      ],
+      0,
+      0,
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim010",
+          "rect": [
+            1,
+            1,
+            18,
+            20
+          ],
+          "offset": [
+            1.5,
+            -0.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim005",
+          "rect": [
+            1,
+            54,
+            8,
+            16
+          ],
+          "offset": [
+            0.5,
+            -2.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim001",
+          "rect": [
+            44,
+            49,
+            8,
+            16
+          ],
+          "offset": [
+            0.5,
+            -2.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim107",
+          "rect": [
+            45,
+            12,
+            9,
+            18
+          ],
+          "offset": [
+            -1,
+            -1.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim106",
+          "rect": [
+            37,
+            59,
+            8,
+            16
+          ],
+          "offset": [
+            0.5,
+            -2.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim003",
+          "rect": [
+            19,
+            67,
+            8,
+            15
+          ],
+          "offset": [
+            0.5,
+            -3
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim007",
+          "rect": [
+            45,
+            1,
+            9,
+            18
+          ],
+          "offset": [
+            -1,
+            -1.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim105",
+          "rect": [
+            1,
+            64,
+            8,
+            16
+          ],
+          "offset": [
+            0.5,
+            -2.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim012",
+          "rect": [
+            1,
+            21,
+            20,
+            17
+          ],
+          "offset": [
+            0.5,
+            -2
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim104",
+          "rect": [
+            36,
+            79,
+            8,
+            14
+          ],
+          "offset": [
+            0.5,
+            -2.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim004",
+          "rect": [
+            53,
+            76,
+            8,
+            14
+          ],
+          "offset": [
+            0.5,
+            -2.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim101",
+          "rect": [
+            19,
+            57,
+            8,
+            16
+          ],
+          "offset": [
+            0.5,
+            -2.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim102",
+          "rect": [
+            1,
+            77,
+            8,
+            15
+          ],
+          "offset": [
+            0.5,
+            -2
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim109",
+          "rect": [
+            1,
+            40,
+            12,
+            20
+          ],
+          "offset": [
+            -1.5,
+            -0.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim008",
+          "rect": [
+            1,
+            87,
+            8,
+            11
+          ],
+          "offset": [
+            0.5,
+            -5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim110",
+          "rect": [
+            23,
+            1,
+            18,
+            20
+          ],
+          "offset": [
+            1.5,
+            -0.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim111",
+          "rect": [
+            45,
+            36,
+            11,
+            16
+          ],
+          "offset": [
+            0,
+            -2.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim108",
+          "rect": [
+            14,
+            87,
+            8,
+            11
+          ],
+          "offset": [
+            0.5,
+            -5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim011",
+          "rect": [
+            45,
+            23,
+            11,
+            16
+          ],
+          "offset": [
+            0,
+            -2.5
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "nonplayer002anim112",
+          "rect": [
+            23,
+            21,
+            20,
+            17
+          ],
+          "offset": [
+            0.5,
+            -2
+          ],
+          "originalSize": [
+            21,
+            21
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ]
+  ]
+]

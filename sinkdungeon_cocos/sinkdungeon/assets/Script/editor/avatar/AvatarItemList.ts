@@ -11,9 +11,9 @@
 import PlayerData from '../../data/PlayerData'
 import Logic from '../../logic/Logic'
 import LoadingManager from '../../manager/LoadingManager'
+import JsCallAndroid from '../utils/JsCallAndroid'
 import AvatarItem from './AvatarItem'
 
-//任务卡片
 const { ccclass, property } = cc._decorator
 
 @ccclass
@@ -23,6 +23,7 @@ export default class AvatarItemList extends cc.Component {
     @property(cc.Node)
     content: cc.Node = null
     private loadingManager: LoadingManager = new LoadingManager()
+    private jsCallAndroid: JsCallAndroid = new JsCallAndroid()
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -37,6 +38,7 @@ export default class AvatarItemList extends cc.Component {
         this.loadingManager.loadSuits()
         this.loadingManager.loadAffixs()
         this.loadingManager.loadPlayer()
+        this.jsCallAndroid.loadPlayers()
     }
     update(dt) {
         if (
@@ -56,7 +58,9 @@ export default class AvatarItemList extends cc.Component {
     }
     show() {
         for (let key in Logic.players) {
-            AvatarItem.create(this.avatarPrefab, this.content, new PlayerData().valueCopy(Logic.players[key]))
+            let data = new PlayerData().valueCopy(Logic.players[key])
+            data.valueCopy(this.jsCallAndroid.getPlayerDataById(data.id))
+            AvatarItem.create(this.avatarPrefab, this.content, data)
         }
     }
 }

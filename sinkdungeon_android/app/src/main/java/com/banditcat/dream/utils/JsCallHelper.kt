@@ -2,6 +2,7 @@ package com.banditcat.dream.utils
 
 import android.content.Context
 import android.os.Environment
+import android.util.Log
 import android.webkit.JavascriptInterface
 import android.widget.Toast
 import java.io.File
@@ -44,12 +45,13 @@ class JsCallHelper(val context: Context) {
 
     // 提供一个方法，用于保存修改后的JSON数据
     @JavascriptInterface
-    fun saveJsonData(suffix: String?, jsonData: String) {
-        saveJsonFile("$BASE_PATH${File.separator}$suffix", jsonData)
+    fun saveJsonData(suffix: String?, jsonData: String): Boolean {
+        return saveJsonFile("$BASE_PATH${File.separator}$suffix", jsonData)
     }
 
     // 读取SD卡上的JSON文件内容
     private fun readJsonFile(fileName: String): String {
+        Log.i("",fileName)
         val file = File(fileName)
         var json = ""
         try {
@@ -59,6 +61,7 @@ class JsCallHelper(val context: Context) {
             inputStream.read(buffer)
             inputStream.close()
             json = String(buffer, Charset.defaultCharset())
+            Log.i("",json)
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -66,14 +69,16 @@ class JsCallHelper(val context: Context) {
     }
 
     // 保存JSON数据到SD卡上的文件
-    private fun saveJsonFile(fileName: String, jsonData: String) {
+    private fun saveJsonFile(fileName: String, jsonData: String): Boolean {
         val file = File(fileName)
-        try {
+        return try {
             val outputStream = file.outputStream()
             outputStream.write(jsonData.toByteArray(Charset.defaultCharset()))
             outputStream.close()
+            true
         } catch (e: IOException) {
             e.printStackTrace()
+            false
         }
     }
 }

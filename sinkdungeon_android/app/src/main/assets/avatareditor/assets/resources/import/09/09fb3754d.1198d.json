@@ -1,0 +1,179 @@
+[
+  1,
+  [
+    "23iWbCFZdG/o2IjQfNjR+c"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    [
+      [
+        {
+          "name": "roomkitchentable1",
+          "rect": [
+            174,
+            167,
+            32,
+            30
+          ],
+          "offset": [
+            0,
+            1
+          ],
+          "originalSize": [
+            32,
+            32
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "roomkitchentable",
+          "rect": [
+            174,
+            481,
+            22,
+            30
+          ],
+          "offset": [
+            5,
+            1
+          ],
+          "originalSize": [
+            32,
+            32
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "roomkitchentable2",
+          "rect": [
+            174,
+            201,
+            32,
+            30
+          ],
+          "offset": [
+            0,
+            1
+          ],
+          "originalSize": [
+            32,
+            32
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "roomkitchentable3",
+          "rect": [
+            174,
+            235,
+            32,
+            30
+          ],
+          "offset": [
+            0,
+            1
+          ],
+          "originalSize": [
+            32,
+            32
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ]
+  ]
+]
