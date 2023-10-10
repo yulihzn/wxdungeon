@@ -11,6 +11,7 @@
 import PlayerData from '../../data/PlayerData'
 import Logic from '../../logic/Logic'
 import LoadingManager from '../../manager/LoadingManager'
+import Utils from '../../utils/Utils'
 import JsCallAndroid from '../utils/JsCallAndroid'
 import AvatarItem from './AvatarItem'
 
@@ -22,8 +23,12 @@ export default class AvatarItemList extends cc.Component {
     avatarPrefab: cc.Prefab = null
     @property(cc.Node)
     content: cc.Node = null
+    @property(cc.Button)
+    addButton: cc.Button = null
     private loadingManager: LoadingManager = new LoadingManager()
     private jsCallAndroid: JsCallAndroid = new JsCallAndroid()
+    private isShowed = false
+    players: { [key: string]: PlayerData } = {}
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -39,6 +44,7 @@ export default class AvatarItemList extends cc.Component {
         this.loadingManager.loadAffixs()
         this.loadingManager.loadPlayer()
         this.jsCallAndroid.loadPlayers()
+        this.addButton.getComponentInChildren(cc.Label).string = '加载中，请稍候...'
     }
     update(dt) {
         if (
@@ -57,10 +63,42 @@ export default class AvatarItemList extends cc.Component {
         }
     }
     show() {
+        this.players = {}
         for (let key in Logic.players) {
             let data = new PlayerData().valueCopy(Logic.players[key])
+            this.players[key] = data
+        }
+        for (let key in this.jsCallAndroid.players) {
+            let data = new PlayerData().valueCopy(this.jsCallAndroid.players[key])
+            this.players[key] = data
+        }
+        for (let key in this.players) {
+            let data = new PlayerData().valueCopy(this.players[key])
             data.valueCopy(this.jsCallAndroid.getPlayerDataById(data.id))
             AvatarItem.create(this.avatarPrefab, this.content, data)
         }
+        this.isShowed = true
+        this.addButton.getComponentInChildren(cc.Label).string = '新增'
+    }
+    addNew() {
+        if (!this.isShowed) {
+            cc.log('加载中')
+            return
+        }
+        let last = new PlayerData()
+        for (let key in this.players) {
+            last = this.players[key]
+        }
+        let id = last.id.substring('player'.length)
+        if (id.length < 1) {
+            id = 'player001'
+        } else {
+            id = 'player' + Utils.getNumberStr3(parseInt(id) + 1)
+        }
+        console.log(id)
+        let data = new PlayerData()
+        data.id = id
+        Logic.currentEditPlayerData.valueCopy(data)
+        cc.director.loadScene('avatareditor')
     }
 }

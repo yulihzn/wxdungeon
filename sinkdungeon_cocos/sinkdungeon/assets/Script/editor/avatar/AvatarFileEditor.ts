@@ -323,8 +323,12 @@ export default class AvatarFileEditor extends cc.Component {
     }
     //button
     saveData() {
-        this.data.name = this.editTitle.string
-        this.jsCallAndroid.savePlayerDataById(this.data)
-        this.backToList()
+        if (this.editTitle.string.length > 0) {
+            this.data.name = this.editTitle.string
+            this.jsCallAndroid.savePlayerDataById(this.data)
+            this.backToList()
+        } else {
+            cc.tween(this.editTitle.node).to(0.2, { scale: 1.2 }).to(0.2, { scale: 1 }).start()
+        }
     }
 }

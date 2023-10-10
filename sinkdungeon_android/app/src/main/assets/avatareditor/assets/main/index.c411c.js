@@ -3342,9 +3342,15 @@ window.__require = function e(t, n, r) {
         this.petSelector.selectTarget(this.data.AvatarData.petName);
       };
       AvatarFileEditor.prototype.saveData = function() {
-        this.data.name = this.editTitle.string;
-        this.jsCallAndroid.savePlayerDataById(this.data);
-        this.backToList();
+        if (this.editTitle.string.length > 0) {
+          this.data.name = this.editTitle.string;
+          this.jsCallAndroid.savePlayerDataById(this.data);
+          this.backToList();
+        } else cc.tween(this.editTitle.node).to(.2, {
+          scale: 1.2
+        }).to(.2, {
+          scale: 1
+        }).start();
       };
       __decorate([ property(cc.Node) ], AvatarFileEditor.prototype, "avatarTable", void 0);
       __decorate([ property(cc.Node) ], AvatarFileEditor.prototype, "randomButton", void 0);
@@ -3409,6 +3415,7 @@ window.__require = function e(t, n, r) {
     var PlayerData_1 = require("../../data/PlayerData");
     var Logic_1 = require("../../logic/Logic");
     var LoadingManager_1 = require("../../manager/LoadingManager");
+    var Utils_1 = require("../../utils/Utils");
     var JsCallAndroid_1 = require("../utils/JsCallAndroid");
     var AvatarItem_1 = require("./AvatarItem");
     var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
@@ -3418,8 +3425,11 @@ window.__require = function e(t, n, r) {
         var _this = null !== _super && _super.apply(this, arguments) || this;
         _this.avatarPrefab = null;
         _this.content = null;
+        _this.addButton = null;
         _this.loadingManager = new LoadingManager_1.default();
         _this.jsCallAndroid = new JsCallAndroid_1.default();
+        _this.isShowed = false;
+        _this.players = {};
         return _this;
       }
       AvatarItemList.prototype.onLoad = function() {
@@ -3435,6 +3445,7 @@ window.__require = function e(t, n, r) {
         this.loadingManager.loadAffixs();
         this.loadingManager.loadPlayer();
         this.jsCallAndroid.loadPlayers();
+        this.addButton.getComponentInChildren(cc.Label).string = "\u52a0\u8f7d\u4e2d\uff0c\u8bf7\u7a0d\u5019...";
       };
       AvatarItemList.prototype.update = function(dt) {
         if (this.loadingManager.isSpriteFramesLoaded(LoadingManager_1.default.KEY_TEXTURES) && this.loadingManager.isSpriteFramesLoaded(LoadingManager_1.default.KEY_EQUIPMENT) && this.loadingManager.isProfessionLoaded && this.loadingManager.isEquipmentLoaded && this.loadingManager.isSkillsLoaded && this.loadingManager.isItemsLoaded && this.loadingManager.isSuitsLoaded && this.loadingManager.isPlayerLoaded && this.loadingManager.isAffixsLoaded) {
@@ -3443,14 +3454,41 @@ window.__require = function e(t, n, r) {
         }
       };
       AvatarItemList.prototype.show = function() {
+        this.players = {};
         for (var key in Logic_1.default.players) {
           var data = new PlayerData_1.default().valueCopy(Logic_1.default.players[key]);
+          this.players[key] = data;
+        }
+        for (var key in this.jsCallAndroid.players) {
+          var data = new PlayerData_1.default().valueCopy(this.jsCallAndroid.players[key]);
+          this.players[key] = data;
+        }
+        for (var key in this.players) {
+          var data = new PlayerData_1.default().valueCopy(this.players[key]);
           data.valueCopy(this.jsCallAndroid.getPlayerDataById(data.id));
           AvatarItem_1.default.create(this.avatarPrefab, this.content, data);
         }
+        this.isShowed = true;
+        this.addButton.getComponentInChildren(cc.Label).string = "\u65b0\u589e";
+      };
+      AvatarItemList.prototype.addNew = function() {
+        if (!this.isShowed) {
+          cc.log("\u52a0\u8f7d\u4e2d");
+          return;
+        }
+        var last = new PlayerData_1.default();
+        for (var key in this.players) last = this.players[key];
+        var id = last.id.substring("player".length);
+        id = id.length < 1 ? "player001" : "player" + Utils_1.default.getNumberStr3(parseInt(id) + 1);
+        console.log(id);
+        var data = new PlayerData_1.default();
+        data.id = id;
+        Logic_1.default.currentEditPlayerData.valueCopy(data);
+        cc.director.loadScene("avatareditor");
       };
       __decorate([ property(cc.Prefab) ], AvatarItemList.prototype, "avatarPrefab", void 0);
       __decorate([ property(cc.Node) ], AvatarItemList.prototype, "content", void 0);
+      __decorate([ property(cc.Button) ], AvatarItemList.prototype, "addButton", void 0);
       AvatarItemList = __decorate([ ccclass ], AvatarItemList);
       return AvatarItemList;
     }(cc.Component);
@@ -3460,6 +3498,7 @@ window.__require = function e(t, n, r) {
     "../../data/PlayerData": "PlayerData",
     "../../logic/Logic": "Logic",
     "../../manager/LoadingManager": "LoadingManager",
+    "../../utils/Utils": "Utils",
     "../utils/JsCallAndroid": "JsCallAndroid",
     "./AvatarItem": "AvatarItem"
   } ],
@@ -3494,9 +3533,11 @@ window.__require = function e(t, n, r) {
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
+    var AvatarData_1 = require("../../data/AvatarData");
     var PlayerData_1 = require("../../data/PlayerData");
     var Logic_1 = require("../../logic/Logic");
     var InventoryManager_1 = require("../../manager/InventoryManager");
+    var LoadingManager_1 = require("../../manager/LoadingManager");
     var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
     var AvatarItem = function(_super) {
       __extends(AvatarItem, _super);
@@ -3546,10 +3587,12 @@ window.__require = function e(t, n, r) {
         return avatar;
       };
       AvatarItem.prototype.init = function(data) {
+        var _this = this;
         if (this.isInit) return;
         this.isInit = true;
         this.data = new PlayerData_1.default();
         this.data.valueCopy(data);
+        this.petSprite = this.getSpriteChildSprite([ "pet" ]);
         this.cloakSprite = this.getSpriteChildSprite([ "avatar", "sprite", "cloak" ]);
         this.legLeftSprite = this.getSpriteChildSprite([ "avatar", "sprite", "avatar", "legleft" ]);
         this.legRightSprite = this.getSpriteChildSprite([ "avatar", "sprite", "avatar", "legright" ]);
@@ -3591,6 +3634,9 @@ window.__require = function e(t, n, r) {
         this.updateSpriteFrameAnim(this.eyesSprite, this.data.AvatarData.eyesResName, 1);
         this.label.string = this.data.name;
         this.changeEquipment(this.data.AvatarData.professionData);
+        this.data.AvatarData.organizationIndex == AvatarData_1.default.HUNTER && LoadingManager_1.default.loadNpcSpriteAtlas(this.data.AvatarData.petName, function() {
+          _this.petSprite.spriteFrame = Logic_1.default.spriteFrameRes(_this.data.AvatarData.petName + "anim000");
+        });
       };
       AvatarItem.prototype.getSpriteChildSprite = function(childNames) {
         var node = this.node;
@@ -3646,9 +3692,11 @@ window.__require = function e(t, n, r) {
     exports.default = AvatarItem;
     cc._RF.pop();
   }, {
+    "../../data/AvatarData": "AvatarData",
     "../../data/PlayerData": "PlayerData",
     "../../logic/Logic": "Logic",
-    "../../manager/InventoryManager": "InventoryManager"
+    "../../manager/InventoryManager": "InventoryManager",
+    "../../manager/LoadingManager": "LoadingManager"
   } ],
   B3ActionsClsRegister: [ function(require, module, exports) {
     "use strict";

@@ -13,6 +13,7 @@ import PlayerData from '../../data/PlayerData'
 import ProfessionData from '../../data/ProfessionData'
 import Logic from '../../logic/Logic'
 import InventoryManager from '../../manager/InventoryManager'
+import LoadingManager from '../../manager/LoadingManager'
 
 //任务卡片
 const { ccclass, property } = cc._decorator
@@ -68,6 +69,7 @@ export default class AvatarItem extends cc.Component {
         this.isInit = true
         this.data = new PlayerData()
         this.data.valueCopy(data)
+        this.petSprite = this.getSpriteChildSprite(['pet'])
         this.cloakSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'cloak'])
         this.legLeftSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'legleft'])
         this.legRightSprite = this.getSpriteChildSprite(['avatar', 'sprite', 'avatar', 'legright'])
@@ -109,6 +111,11 @@ export default class AvatarItem extends cc.Component {
         this.updateSpriteFrameAnim(this.eyesSprite, this.data.AvatarData.eyesResName, 1)
         this.label.string = this.data.name
         this.changeEquipment(this.data.AvatarData.professionData)
+        if (this.data.AvatarData.organizationIndex == AvatarData.HUNTER) {
+            LoadingManager.loadNpcSpriteAtlas(this.data.AvatarData.petName, () => {
+                this.petSprite.spriteFrame = Logic.spriteFrameRes(this.data.AvatarData.petName + 'anim000')
+            })
+        }
     }
     getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node

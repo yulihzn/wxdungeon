@@ -136,6 +136,6 @@ window._CCSettings = {
         ab_bgm: "cf0f5",
         ab_sound: "acda0",
         resources: "7995a",
-        main: "a206c"
+        main: "c411c"
     }
 };
