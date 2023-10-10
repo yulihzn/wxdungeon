@@ -3343,7 +3343,8 @@ window.__require = function e(t, n, r) {
       };
       AvatarFileEditor.prototype.saveData = function() {
         this.data.name = this.editTitle.string;
-        this.jsCallAndroid.savePlayerDataById(this.data) && this.backToList();
+        this.jsCallAndroid.savePlayerDataById(this.data);
+        this.backToList();
       };
       __decorate([ property(cc.Node) ], AvatarFileEditor.prototype, "avatarTable", void 0);
       __decorate([ property(cc.Node) ], AvatarFileEditor.prototype, "randomButton", void 0);
@@ -3408,6 +3409,7 @@ window.__require = function e(t, n, r) {
     var PlayerData_1 = require("../../data/PlayerData");
     var Logic_1 = require("../../logic/Logic");
     var LoadingManager_1 = require("../../manager/LoadingManager");
+    var JsCallAndroid_1 = require("../utils/JsCallAndroid");
     var AvatarItem_1 = require("./AvatarItem");
     var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
     var AvatarItemList = function(_super) {
@@ -3417,6 +3419,7 @@ window.__require = function e(t, n, r) {
         _this.avatarPrefab = null;
         _this.content = null;
         _this.loadingManager = new LoadingManager_1.default();
+        _this.jsCallAndroid = new JsCallAndroid_1.default();
         return _this;
       }
       AvatarItemList.prototype.onLoad = function() {
@@ -3431,6 +3434,7 @@ window.__require = function e(t, n, r) {
         this.loadingManager.loadSuits();
         this.loadingManager.loadAffixs();
         this.loadingManager.loadPlayer();
+        this.jsCallAndroid.loadPlayers();
       };
       AvatarItemList.prototype.update = function(dt) {
         if (this.loadingManager.isSpriteFramesLoaded(LoadingManager_1.default.KEY_TEXTURES) && this.loadingManager.isSpriteFramesLoaded(LoadingManager_1.default.KEY_EQUIPMENT) && this.loadingManager.isProfessionLoaded && this.loadingManager.isEquipmentLoaded && this.loadingManager.isSkillsLoaded && this.loadingManager.isItemsLoaded && this.loadingManager.isSuitsLoaded && this.loadingManager.isPlayerLoaded && this.loadingManager.isAffixsLoaded) {
@@ -3439,7 +3443,11 @@ window.__require = function e(t, n, r) {
         }
       };
       AvatarItemList.prototype.show = function() {
-        for (var key in Logic_1.default.players) AvatarItem_1.default.create(this.avatarPrefab, this.content, new PlayerData_1.default().valueCopy(Logic_1.default.players[key]));
+        for (var key in Logic_1.default.players) {
+          var data = new PlayerData_1.default().valueCopy(Logic_1.default.players[key]);
+          data.valueCopy(this.jsCallAndroid.getPlayerDataById(data.id));
+          AvatarItem_1.default.create(this.avatarPrefab, this.content, data);
+        }
       };
       __decorate([ property(cc.Prefab) ], AvatarItemList.prototype, "avatarPrefab", void 0);
       __decorate([ property(cc.Node) ], AvatarItemList.prototype, "content", void 0);
@@ -3452,6 +3460,7 @@ window.__require = function e(t, n, r) {
     "../../data/PlayerData": "PlayerData",
     "../../logic/Logic": "Logic",
     "../../manager/LoadingManager": "LoadingManager",
+    "../utils/JsCallAndroid": "JsCallAndroid",
     "./AvatarItem": "AvatarItem"
   } ],
   AvatarItem: [ function(require, module, exports) {
@@ -3487,6 +3496,7 @@ window.__require = function e(t, n, r) {
     });
     var PlayerData_1 = require("../../data/PlayerData");
     var Logic_1 = require("../../logic/Logic");
+    var InventoryManager_1 = require("../../manager/InventoryManager");
     var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
     var AvatarItem = function(_super) {
       __extends(AvatarItem, _super);
@@ -3513,6 +3523,9 @@ window.__require = function e(t, n, r) {
         _this.pantsSprite = null;
         _this.clothesSprite = null;
         _this.petSprite = null;
+        _this.weaponSprite = null;
+        _this.remoteSprite = null;
+        _this.shieldSprite = null;
         _this.isInit = false;
         _this.data = new PlayerData_1.default();
         return _this;
@@ -3556,6 +3569,9 @@ window.__require = function e(t, n, r) {
         this.bodySprite = this.getSpriteChildSprite([ "avatar", "sprite", "avatar", "body" ]);
         this.pantsSprite = this.getSpriteChildSprite([ "avatar", "sprite", "avatar", "body", "pants" ]);
         this.clothesSprite = this.getSpriteChildSprite([ "avatar", "sprite", "avatar", "body", "clothes" ]);
+        this.weaponSprite = this.getSpriteChildSprite([ "avatar", "sprite", "avatar", "weapon" ]);
+        this.remoteSprite = this.getSpriteChildSprite([ "avatar", "sprite", "avatar", "remote" ]);
+        this.shieldSprite = this.getSpriteChildSprite([ "avatar", "sprite", "avatar", "shield" ]);
         this.headSprite.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor);
         this.faceSprite.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.faceColor);
         this.faceSprite.node.opacity = 128;
@@ -3574,6 +3590,7 @@ window.__require = function e(t, n, r) {
         this.updateSpriteFrameAnim(this.hairSprite, this.data.AvatarData.hairResName, 2);
         this.updateSpriteFrameAnim(this.eyesSprite, this.data.AvatarData.eyesResName, 1);
         this.label.string = this.data.name;
+        this.changeEquipment(this.data.AvatarData.professionData);
       };
       AvatarItem.prototype.getSpriteChildSprite = function(childNames) {
         var node = this.node;
@@ -3593,6 +3610,34 @@ window.__require = function e(t, n, r) {
           index > resLength - 1 && (index = 0);
         }, .2, cc.macro.REPEAT_FOREVER, .1);
       };
+      AvatarItem.prototype.changeEquipment = function(data) {
+        this.changeRes(this.helmetSprite, data.equips[InventoryManager_1.default.HELMET], "anim0");
+        this.changeRes(this.pantsSprite, data.equips[InventoryManager_1.default.TROUSERS]);
+        this.changeRes(this.cloakSprite, data.equips[InventoryManager_1.default.CLOAK]);
+        this.changeRes(this.weaponSprite, data.equips[InventoryManager_1.default.WEAPON]);
+        this.changeRes(this.remoteSprite, data.equips[InventoryManager_1.default.REMOTE], "anim0");
+        this.changeRes(this.shieldSprite, data.equips[InventoryManager_1.default.SHIELD]);
+        this.changeRes(this.clothesSprite, data.equips[InventoryManager_1.default.CLOTHES], "anim0");
+        this.changeRes(this.glovesLeftSprite, data.equips[InventoryManager_1.default.GLOVES]);
+        this.changeRes(this.glovesRightSprite, data.equips[InventoryManager_1.default.GLOVES]);
+        this.changeRes(this.shoesLeftSprite, data.equips[InventoryManager_1.default.SHOES]);
+        this.changeRes(this.shoesRightSprite, data.equips[InventoryManager_1.default.SHOES]);
+        this.resetSpriteSize(this.weaponSprite);
+        this.resetSpriteSize(this.remoteSprite);
+        this.resetSpriteSize(this.shieldSprite);
+      };
+      AvatarItem.prototype.changeRes = function(sprite, resName, subfix) {
+        if (!sprite) return false;
+        var spriteFrame = Logic_1.default.spriteFrameRes(resName);
+        subfix && Logic_1.default.spriteFrameRes(resName + subfix) && (spriteFrame = Logic_1.default.spriteFrameRes(resName + subfix));
+        sprite.spriteFrame = spriteFrame || null;
+      };
+      AvatarItem.prototype.resetSpriteSize = function(sprite) {
+        if (sprite.spriteFrame) {
+          sprite.node.width = sprite.spriteFrame.getOriginalSize().width;
+          sprite.node.height = sprite.spriteFrame.getOriginalSize().height;
+        }
+      };
       var AvatarItem_1;
       __decorate([ property(cc.Label) ], AvatarItem.prototype, "label", void 0);
       AvatarItem = AvatarItem_1 = __decorate([ ccclass ], AvatarItem);
@@ -3602,7 +3647,8 @@ window.__require = function e(t, n, r) {
     cc._RF.pop();
   }, {
     "../../data/PlayerData": "PlayerData",
-    "../../logic/Logic": "Logic"
+    "../../logic/Logic": "Logic",
+    "../../manager/InventoryManager": "InventoryManager"
   } ],
   B3ActionsClsRegister: [ function(require, module, exports) {
     "use strict";
@@ -25284,13 +25330,15 @@ window.__require = function e(t, n, r) {
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
+    var LocalStorage_1 = require("../../utils/LocalStorage");
     var JsCallAndroid = function() {
       function JsCallAndroid() {
         this.players = {};
       }
       JsCallAndroid.prototype.loadPlayers = function() {
-        if (!window.android) return;
-        var json = window.android.getLocalJson("players.json");
+        var json = "";
+        window.android && (json = window.android.getLocalJson(JsCallAndroid.FILENAME));
+        (!json || json.length < 1) && (json = LocalStorage_1.default.getValue(JsCallAndroid.FILENAME));
         if (json && json.length > 0) {
           this.players = JSON.parse(json);
           for (var key in this.players) this.players[key].id = key;
@@ -25300,15 +25348,17 @@ window.__require = function e(t, n, r) {
         return this.players && this.players[id] ? this.players[id] : null;
       };
       JsCallAndroid.prototype.savePlayerDataById = function(data) {
-        if (!window.android) return false;
         this.players[data.id] = data;
-        return window.android.saveJsonData("players.json", JSON.stringify(this.players));
+        window.android ? window.android.saveJsonData(JsCallAndroid.FILENAME, JSON.stringify(this.players)) : LocalStorage_1.default.putValue(JsCallAndroid.FILENAME, this.players);
       };
+      JsCallAndroid.FILENAME = "players.json";
       return JsCallAndroid;
     }();
     exports.default = JsCallAndroid;
     cc._RF.pop();
-  }, {} ],
+  }, {
+    "../../utils/LocalStorage": "LocalStorage"
+  } ],
   JumpingAbility: [ function(require, module, exports) {
     "use strict";
     cc._RF.push(module, "564dcom86FNkLRCoy3EfPyP", "JumpingAbility");
