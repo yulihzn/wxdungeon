@@ -10,8 +10,11 @@
 
 import AttributeData from '../../data/AttributeData'
 import AvatarData from '../../data/AvatarData'
+import EquipmentData from '../../data/EquipmentData'
+import ItemData from '../../data/ItemData'
 import PlayerData from '../../data/PlayerData'
 import ProfessionData from '../../data/ProfessionData'
+import Item from '../../item/Item'
 import Logic from '../../logic/Logic'
 import InventoryManager from '../../manager/InventoryManager'
 import LoadingManager from '../../manager/LoadingManager'
@@ -20,7 +23,9 @@ import BrightnessBar from '../../ui/BrightnessBar'
 import ColorPicker from '../../ui/ColorPicker'
 import PaletteSelector from '../../ui/PaletteSelector'
 import Utils from '../../utils/Utils'
+import AvatarSpriteData from '../data/AvatarSpriteData'
 import JsCallAndroid from '../utils/JsCallAndroid'
+import AvatarSpritePickDialog from './AvatarSpritePickDialog'
 
 const { ccclass, property } = cc._decorator
 
@@ -46,15 +51,20 @@ export default class AvatarFileEditor extends cc.Component {
     labelSkillName: cc.Label = null
     @property(cc.Label)
     labelSkillDesc: cc.Label = null
-    private bodySprite: cc.Sprite
-    private headSprite: cc.Sprite
-    private hairSprite: cc.Sprite
-    private eyesSprite: cc.Sprite
-    private faceSprite: cc.Sprite
-    private handSprite1: cc.Sprite
-    private handSprite2: cc.Sprite
-    private legSprite1: cc.Sprite
-    private legSprite2: cc.Sprite
+    @property(cc.Label)
+    equipItemLayout: cc.Node = null
+    @property(AvatarSpritePickDialog)
+    spritePickDialog: AvatarSpritePickDialog = null
+
+    private bodySprite: cc.Sprite = null
+    private headSprite: cc.Sprite = null
+    private hairSprite: cc.Sprite = null
+    private eyesSprite: cc.Sprite = null
+    private faceSprite: cc.Sprite = null
+    private handSprite1: cc.Sprite = null
+    private handSprite2: cc.Sprite = null
+    private legSprite1: cc.Sprite = null
+    private legSprite2: cc.Sprite = null
     private cloakSprite: cc.Sprite = null
     private shoesSprite1: cc.Sprite = null
     private shoesSprite2: cc.Sprite = null
@@ -68,6 +78,22 @@ export default class AvatarFileEditor extends cc.Component {
     private shieldSprite: cc.Sprite = null
     private petSprite: cc.Sprite = null
 
+    private editCloakSprite: cc.Sprite = null
+    private editShoesSprite: cc.Sprite = null
+    private editHelmetSprite: cc.Sprite = null
+    private editpantsSprite: cc.Sprite = null
+    private editClothesSprite: cc.Sprite = null
+    private editGlovesSprite: cc.Sprite = null
+    private editWeaponSprite: cc.Sprite = null
+    private editRemoteSprite: cc.Sprite = null
+    private editShieldSprite: cc.Sprite = null
+    private editItem1: cc.Sprite = null
+    private editItem2: cc.Sprite = null
+    private editItem3: cc.Sprite = null
+    private editItem4: cc.Sprite = null
+    private editItem5: cc.Sprite = null
+    private editItem6: cc.Sprite = null
+
     private organizationSelector: AttributeSelector
     private professionSelector: AttributeSelector
     private skinSelector: AttributeSelector
@@ -78,8 +104,11 @@ export default class AvatarFileEditor extends cc.Component {
     private data: PlayerData = new PlayerData()
     private randomTouched = false
     private jsCallAndroid: JsCallAndroid = new JsCallAndroid()
+    private currentResId = ''
+    private currentCount = 0
 
     onLoad() {
+        cc.game.setFrameRate(45)
         this.jsCallAndroid.loadPlayers()
         this.data.valueCopy(Logic.currentEditPlayerData)
         this.petSprite = this.getSpriteChildSprite(this.avatarTable, ['pet'])
@@ -103,7 +132,26 @@ export default class AvatarFileEditor extends cc.Component {
         this.glovesSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'handright', 'gloves'])
         this.shoesSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'legleft', 'foot', 'shoes'])
         this.shoesSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'legright', 'foot', 'shoes'])
+
+        this.editCloakSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.CLOCK])
+        this.editShoesSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.SHOES])
+        this.editHelmetSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.HELMET])
+        this.editpantsSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.PANTS])
+        this.editClothesSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.CLOTHES])
+        this.editGlovesSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.GLOVES])
+        this.editWeaponSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.WEAPON])
+        this.editRemoteSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.REMOTE])
+        this.editShieldSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.SHIELD])
+        this.editItem1 = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.ITEM1])
+        this.editItem2 = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.ITEM2])
+        this.editItem3 = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.ITEM3])
+        this.editItem4 = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.ITEM4])
+        this.editItem5 = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.ITEM5])
+        this.editItem6 = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.ITEM6])
         this.editTitle.string = this.data.name
+        for (let node of this.equipItemLayout.children) {
+        }
+
         this.randomButton.on(
             cc.Node.EventType.TOUCH_START,
             (event: cc.Event.EventTouch) => {
@@ -221,7 +269,7 @@ export default class AvatarFileEditor extends cc.Component {
         }
         this.petSelector.node.active = this.organizationSelector.CurrentData.id == AvatarData.HUNTER
         this.petSprite.node.active = this.organizationSelector.CurrentData.id == AvatarData.HUNTER
-
+        this.spritePickDialog.node.active = false
         this.selectTarget()
     }
     private changeSkinColor(color: cc.Color) {
@@ -329,6 +377,45 @@ export default class AvatarFileEditor extends cc.Component {
             this.backToList()
         } else {
             cc.tween(this.editTitle.node).to(0.2, { scale: 1.2 }).to(0.2, { scale: 1 }).start()
+        }
+    }
+    //button
+    showSpritePickDialog() {
+        this.spritePickDialog.show(this.currentResId, this.currentCount, (flag: boolean, resId: string, count: number) => {
+            this.currentResId = resId
+            this.currentCount = count
+        })
+    }
+    setSpriteFrame(id: string, sprite: cc.Sprite) {
+        let spriteFrame = Logic.spriteFrameRes(id)
+        let data = new EquipmentData()
+        data.valueCopy(Logic.equipments[id])
+        if (data.equipmetType == InventoryManager.CLOTHES) {
+            spriteFrame = Logic.spriteFrameRes(data.img + 'anim0')
+        } else if (data.equipmetType == InventoryManager.HELMET) {
+            spriteFrame = Logic.spriteFrameRes(data.img + 'anim0')
+        } else if (data.equipmetType == InventoryManager.REMOTE) {
+            spriteFrame = Logic.spriteFrameRes(data.img + 'anim0')
+        } else if (data.equipmetType != InventoryManager.EMPTY) {
+            spriteFrame = Logic.spriteFrameRes(data.img)
+        } else {
+            let itemData = new ItemData()
+            itemData.valueCopy(Logic.items[id])
+            if (itemData.resName != Item.EMPTY) {
+                spriteFrame = Logic.spriteFrameRes(itemData.resName)
+            }
+        }
+        if (spriteFrame) {
+            sprite.spriteFrame = spriteFrame
+            let w = spriteFrame.getOriginalSize().width
+            let h = spriteFrame.getOriginalSize().height
+            sprite.node.width = w * 4
+            sprite.node.height = h * 4
+            let size = 48
+            if (sprite.node.height > size) {
+                sprite.node.height = size
+                sprite.node.width = (size / spriteFrame.getOriginalSize().height) * spriteFrame.getOriginalSize().width
+            }
         }
     }
 }

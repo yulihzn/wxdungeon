@@ -40,7 +40,7 @@ export default class AttributeSelector extends cc.Component {
             this.currentIndex++
             this.updateAttribute()
         })
-        this.palette.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
+        this.palette.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             if (this.colorPicker) {
                 this.colorPicker.show(this.palette.color, this.defaultColors, (color: cc.Color) => {
                     this.palette.color = color

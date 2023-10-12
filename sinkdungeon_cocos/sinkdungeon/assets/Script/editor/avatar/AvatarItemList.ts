@@ -32,6 +32,7 @@ export default class AvatarItemList extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        cc.game.setFrameRate(45)
         this.content.removeAllChildren()
         this.loadingManager.init()
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor')
