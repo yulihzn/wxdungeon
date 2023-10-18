@@ -25,6 +25,7 @@ import PaletteSelector from '../../ui/PaletteSelector'
 import Utils from '../../utils/Utils'
 import AvatarSpriteData from '../data/AvatarSpriteData'
 import JsCallAndroid from '../utils/JsCallAndroid'
+import AvatarSimpleSpriteItem from './AvatarSimpleSpriteItem'
 import AvatarSpritePickDialog from './AvatarSpritePickDialog'
 
 const { ccclass, property } = cc._decorator
@@ -39,6 +40,8 @@ export default class AvatarFileEditor extends cc.Component {
     colorPicker: ColorPicker = null
     @property(cc.Prefab)
     selectorPrefab: cc.Prefab = null
+    @property(cc.Prefab)
+    simpleSpritePrefab:cc.Prefab=null
     @property(cc.Node)
     attributeLayout: cc.Node = null
     @property(cc.EditBox)
@@ -77,22 +80,6 @@ export default class AvatarFileEditor extends cc.Component {
     private remoteSprite: cc.Sprite = null
     private shieldSprite: cc.Sprite = null
     private petSprite: cc.Sprite = null
-
-    private editCloakSprite: cc.Sprite = null
-    private editShoesSprite: cc.Sprite = null
-    private editHelmetSprite: cc.Sprite = null
-    private editpantsSprite: cc.Sprite = null
-    private editClothesSprite: cc.Sprite = null
-    private editGlovesSprite: cc.Sprite = null
-    private editWeaponSprite: cc.Sprite = null
-    private editRemoteSprite: cc.Sprite = null
-    private editShieldSprite: cc.Sprite = null
-    private editItem1: cc.Sprite = null
-    private editItem2: cc.Sprite = null
-    private editItem3: cc.Sprite = null
-    private editItem4: cc.Sprite = null
-    private editItem5: cc.Sprite = null
-    private editItem6: cc.Sprite = null
 
     private organizationSelector: AttributeSelector
     private professionSelector: AttributeSelector
@@ -133,21 +120,6 @@ export default class AvatarFileEditor extends cc.Component {
         this.shoesSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'legleft', 'foot', 'shoes'])
         this.shoesSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'legright', 'foot', 'shoes'])
 
-        this.editCloakSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.CLOCK])
-        this.editShoesSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.SHOES])
-        this.editHelmetSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.HELMET])
-        this.editpantsSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.PANTS])
-        this.editClothesSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.CLOTHES])
-        this.editGlovesSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.GLOVES])
-        this.editWeaponSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.WEAPON])
-        this.editRemoteSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.REMOTE])
-        this.editShieldSprite = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.SHIELD])
-        this.editItem1 = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.ITEM1])
-        this.editItem2 = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.ITEM2])
-        this.editItem3 = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.ITEM3])
-        this.editItem4 = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.ITEM4])
-        this.editItem5 = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.ITEM5])
-        this.editItem6 = this.getSpriteChildSprite(this.equipItemLayout, [AvatarSpriteData.ITEM6])
         this.editTitle.string = this.data.name
         for (let node of this.equipItemLayout.children) {
         }
@@ -175,6 +147,8 @@ export default class AvatarFileEditor extends cc.Component {
             },
             this
         )
+        for(let key in AvatarSimpleSpriteItem.TYPE_NAME){
+        }
         //组织
         let organList = new Array()
         for (let i = 0; i < AvatarData.ORGANIZATION.length; i++) {
@@ -288,11 +262,16 @@ export default class AvatarFileEditor extends cc.Component {
         return node.getComponent(cc.Sprite)
     }
     addAttributeSelector(title: string, nameList: AttributeData[], defaultIndex: number, colorPick: boolean, defaultColors: string[]): AttributeSelector {
-        let prefab = cc.instantiate(this.selectorPrefab)
-        let script = prefab.getComponent(AttributeSelector)
-        this.attributeLayout.addChild(prefab)
+        let node = cc.instantiate(this.selectorPrefab)
+        let script = node.getComponent(AttributeSelector)
+        this.attributeLayout.addChild(node)
         script.init(title, nameList, defaultIndex, colorPick ? this.colorPicker : null, defaultColors)
         return script
+    }
+    addSimpleSpriteItem(resId:string,type:string,count:number){
+        let node = cc.instantiate(this.simpleSpritePrefab)
+        node.getComponent(AvatarSimpleSpriteItem).init(resId,type,count)
+        this.equipItemLayout.addChild(node)
     }
     private changeEquipment(data: ProfessionData) {
         this.changeRes(this.helmetSprite, data.equips[InventoryManager.HELMET], 'anim0')

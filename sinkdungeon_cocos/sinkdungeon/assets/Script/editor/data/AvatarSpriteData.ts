@@ -10,19 +10,16 @@
 
 import DataUtils from '../../utils/DataUtils'
 
-/**
- * 任务奖励
- */
+
 export default class AvatarSpriteData {
-    static readonly CLOCK = 'clock'
+    static readonly CLOAK = 'cloak'
     static readonly SHOES = 'shoes'
     static readonly HELMET = 'helmet'
     static readonly PANTS = 'pants'
     static readonly CLOTHES = 'clothes'
     static readonly GLOVES = 'gloves'
-    static readonly WEAPON = 'weapon'
-    static readonly REMOTE = 'remote'
-    static readonly SHIELD = 'shield'
+    static readonly PRIMARY = 'primary'
+    static readonly SECONDARY = 'secondary'
     static readonly ITEM1 = 'item1'
     static readonly ITEM2 = 'item2'
     static readonly ITEM3 = 'item3'
