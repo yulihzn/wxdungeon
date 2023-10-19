@@ -10,7 +10,6 @@
 
 import DataUtils from '../../utils/DataUtils'
 
-
 export default class AvatarSpriteData {
     static readonly CLOAK = 'cloak'
     static readonly SHOES = 'shoes'

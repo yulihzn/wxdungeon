@@ -30,9 +30,9 @@ export default class AffixManager {
         const GROUP = EQUIP.get(equipmetType)
         return [GROUP, ELEMENT, TOTAL]
     }
-    static buildEquipmentAffixs(data: EquipmentData, rand4save: Random4Save) {
+    static buildEquipmentAffixs(data: EquipmentData, level: number, rand4save: Random4Save) {
         const [GROUP, ELEMENT, TOTAL] = AffixManager.getAffixMapCollection(data.equipmetType)
-        data.requireLevel = Logic.playerData.OilGoldData.level
+        data.requireLevel = level
         data.affixs = []
         data.titlecolor = this.QUALITY_COLORS[data.quality]
         for (let i = 0; i < data.quality; i++) {

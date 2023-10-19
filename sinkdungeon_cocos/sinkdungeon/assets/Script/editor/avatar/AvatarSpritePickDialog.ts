@@ -11,7 +11,6 @@
 import Achievement from '../../logic/Achievement'
 import Logic from '../../logic/Logic'
 import AvatarSpriteItem from './AvatarSpriteItem'
-import QuestSpriteItem from './AvatarSpriteItem'
 
 //任务卡片
 const { ccclass, property } = cc._decorator
@@ -26,12 +25,10 @@ export default class AvatarSpritePickDialog extends cc.Component {
     prefab: cc.Prefab = null
     spriteList: AvatarSpriteItem[] = []
     callback: (flag: boolean, resId: string, count: number) => void
-    currentSprite: QuestSpriteItem
-    currentListIndex = 0
-    currentItemIndex = -1
+    currentSprite: AvatarSpriteItem
+    type = ''
     resId = ''
     count = 0
-    isItem = false
     onLoad() {}
 
     private showAnim() {
@@ -40,16 +37,18 @@ export default class AvatarSpritePickDialog extends cc.Component {
     private hideAnim() {
         this.node.active = false
     }
-    public show(resId: string, count: number, callback?: (flag: boolean, resId: string, count: number) => void) {
-        this.resId = resId
+    public show(resId: string, type: string, count: number, callback?: (flag: boolean, resId: string, count: number) => void) {
+        this.type = type
         this.count = count
         this.callback = callback
         this.showAnim()
-        this.changeList(this.getChangeIndex(resId))
+        this.resId = resId
+        this.showList(type)
     }
 
     getSprite(resId: string, index: number) {
         let icon = AvatarSpriteItem.create(this.prefab, this.content, resId, index)
+        icon.select.active = false
         let type1 = this.resId
         let type2 = resId
         if (type1 == type2) {
@@ -57,8 +56,9 @@ export default class AvatarSpritePickDialog extends cc.Component {
                 this.currentSprite.select.active = false
             }
             this.currentSprite = icon
+            this.countEditBox.string = this.count > 0 ? `${this.count}` : ''
+            this.currentSprite = icon
             this.currentSprite.select.active = true
-            this.countEditBox.string = `${this.count}`
         }
         icon.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             this.iconClick(icon)
@@ -74,6 +74,7 @@ export default class AvatarSpritePickDialog extends cc.Component {
             this.currentSprite = value
             this.currentSprite.select.active = true
         }
+        this.clickOk()
     }
     public hide() {
         this.hideAnim()
@@ -123,26 +124,12 @@ export default class AvatarSpritePickDialog extends cc.Component {
         }
         this.countEditBox.string = `${count}`
     }
-    getChangeIndex(resId: string) {
-        let text = resId
-        if (text.indexOf('equip') != -1) {
-            return '0'
-        } else if (text.indexOf('item') != -1) {
-            return '1'
+
+    showList(type: string) {
+        if (type.startsWith('item')) {
+            this.showItemList()
         } else {
-            return '0'
-        }
-    }
-    changeList(index: string) {
-        this.currentListIndex = parseInt(index)
-        this.unscheduleAllCallbacks()
-        switch (this.currentListIndex) {
-            case Achievement.TYPE_EQUIP:
-                this.showEquipList()
-                break
-            case Achievement.TYPE_ITEM:
-                this.showItemList()
-                break
+            this.showEquipList(type)
         }
     }
 
@@ -160,13 +147,15 @@ export default class AvatarSpritePickDialog extends cc.Component {
             }
         }
     }
-    private showEquipList() {
+    private showEquipList(type: string) {
         this.removeContent()
         let index = 0
         for (let key in Logic.equipments) {
             index++
             if (index > 1) {
-                this.getSprite(key, index)
+                if (key.startsWith(type)) {
+                    this.getSprite(key, index)
+                }
             }
         }
     }

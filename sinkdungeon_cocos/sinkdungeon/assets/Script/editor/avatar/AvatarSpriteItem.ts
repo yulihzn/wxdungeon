@@ -40,7 +40,7 @@ export default class AvatarSpriteItem extends cc.Component {
         this.resId = resId
         this.updateSpriteFrame()
         if (this.isItem) {
-            this.label.string = `${this.itemData.nameCn} x${this.itemData.count}\n${this.itemData.desc}`
+            this.label.string = `${this.itemData.nameCn} \n${this.itemData.desc}`
         } else {
             this.label.string = `${this.equipData.nameCn}\n${this.equipData.desc}`
         }
@@ -53,7 +53,7 @@ export default class AvatarSpriteItem extends cc.Component {
             let h = spriteFrame.getOriginalSize().height
             this.sprite.node.width = w * 4
             this.sprite.node.height = h * 4
-            let size = 96
+            let size = 32
             if (this.sprite.node.height > size) {
                 this.sprite.node.height = size
                 this.sprite.node.width = (size / spriteFrame.getOriginalSize().height) * spriteFrame.getOriginalSize().width

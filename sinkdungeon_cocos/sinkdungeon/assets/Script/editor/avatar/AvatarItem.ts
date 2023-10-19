@@ -110,12 +110,13 @@ export default class AvatarItem extends cc.Component {
         this.updateSpriteFrameAnim(this.hairSprite, this.data.AvatarData.hairResName, 2)
         this.updateSpriteFrameAnim(this.eyesSprite, this.data.AvatarData.eyesResName, 1)
         this.label.string = this.data.name
-        this.changeEquipment(this.data.AvatarData.professionData)
+        this.changeEquipmentByProfession(this.data.AvatarData.professionData)
         if (this.data.AvatarData.organizationIndex == AvatarData.HUNTER) {
             LoadingManager.loadNpcSpriteAtlas(this.data.AvatarData.petName, () => {
                 this.petSprite.spriteFrame = Logic.spriteFrameRes(this.data.AvatarData.petName + 'anim000')
             })
         }
+        this.changeEquipment()
     }
     getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node
@@ -141,7 +142,7 @@ export default class AvatarItem extends cc.Component {
             0.1
         )
     }
-    private changeEquipment(data: ProfessionData) {
+    private changeEquipmentByProfession(data: ProfessionData) {
         this.changeRes(this.helmetSprite, data.equips[InventoryManager.HELMET], 'anim0')
         this.changeRes(this.pantsSprite, data.equips[InventoryManager.TROUSERS])
         this.changeRes(this.cloakSprite, data.equips[InventoryManager.CLOAK])
@@ -153,6 +154,22 @@ export default class AvatarItem extends cc.Component {
         this.changeRes(this.glovesRightSprite, data.equips[InventoryManager.GLOVES])
         this.changeRes(this.shoesLeftSprite, data.equips[InventoryManager.SHOES])
         this.changeRes(this.shoesRightSprite, data.equips[InventoryManager.SHOES])
+        this.resetSpriteSize(this.weaponSprite)
+        this.resetSpriteSize(this.remoteSprite)
+        this.resetSpriteSize(this.shieldSprite)
+    }
+    private changeEquipment() {
+        this.changeRes(this.helmetSprite, this.data.playerEquips[InventoryManager.HELMET]?.img, 'anim0')
+        this.changeRes(this.pantsSprite, this.data.playerEquips[InventoryManager.TROUSERS]?.img)
+        this.changeRes(this.cloakSprite, this.data.playerEquips[InventoryManager.CLOAK]?.img)
+        this.changeRes(this.weaponSprite, this.data.playerEquips[InventoryManager.WEAPON]?.img)
+        this.changeRes(this.remoteSprite, this.data.playerEquips[InventoryManager.REMOTE]?.img, 'anim0')
+        this.changeRes(this.shieldSprite, this.data.playerEquips[InventoryManager.SHIELD]?.img)
+        this.changeRes(this.clothesSprite, this.data.playerEquips[InventoryManager.CLOTHES]?.img, 'anim0')
+        this.changeRes(this.glovesLeftSprite, this.data.playerEquips[InventoryManager.GLOVES]?.img)
+        this.changeRes(this.glovesRightSprite, this.data.playerEquips[InventoryManager.GLOVES]?.img)
+        this.changeRes(this.shoesLeftSprite, this.data.playerEquips[InventoryManager.SHOES]?.img)
+        this.changeRes(this.shoesRightSprite, this.data.playerEquips[InventoryManager.SHOES]?.img)
         this.resetSpriteSize(this.weaponSprite)
         this.resetSpriteSize(this.remoteSprite)
         this.resetSpriteSize(this.shieldSprite)

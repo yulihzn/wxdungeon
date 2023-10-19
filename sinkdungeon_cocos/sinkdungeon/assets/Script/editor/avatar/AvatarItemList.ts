@@ -37,6 +37,7 @@ export default class AvatarItemList extends cc.Component {
         this.loadingManager.init()
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor')
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_EQUIPMENT, 'emptyequipment')
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_ITEM, 'ammo')
         this.loadingManager.loadProfession()
         this.loadingManager.loadEquipment()
         this.loadingManager.loadTalents()

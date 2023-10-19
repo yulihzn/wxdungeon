@@ -1649,9 +1649,9 @@ window.__require = function e(t, n, r) {
         var GROUP = EQUIP.get(equipmetType);
         return [ GROUP, ELEMENT, TOTAL ];
       };
-      AffixManager.buildEquipmentAffixs = function(data, rand4save) {
+      AffixManager.buildEquipmentAffixs = function(data, level, rand4save) {
         var _a = AffixManager.getAffixMapCollection(data.equipmetType), GROUP = _a[0], ELEMENT = _a[1], TOTAL = _a[2];
-        data.requireLevel = Logic_1.default.playerData.OilGoldData.level;
+        data.requireLevel = level;
         data.affixs = [];
         data.titlecolor = this.QUALITY_COLORS[data.quality];
         for (var i = 0; i < data.quality; i++) data.affixs.push(AffixManager.getRandomAffix(GROUP, ELEMENT, TOTAL, data.requireLevel, rand4save, -1));
@@ -2641,7 +2641,7 @@ window.__require = function e(t, n, r) {
           _this.currentIndex++;
           _this.updateAttribute();
         });
-        this.palette.on(cc.Node.EventType.TOUCH_START, function(event) {
+        this.palette.on(cc.Node.EventType.TOUCH_END, function(event) {
           _this.colorPicker && _this.colorPicker.show(_this.palette.color, _this.defaultColors, function(color) {
             _this.palette.color = color;
             _this.selectorCallback && _this.selectorCallback(_this.nameList[_this.currentIndex], _this.palette.color);
@@ -3105,7 +3105,10 @@ window.__require = function e(t, n, r) {
     });
     var AttributeData_1 = require("../../data/AttributeData");
     var AvatarData_1 = require("../../data/AvatarData");
+    var EquipmentData_1 = require("../../data/EquipmentData");
+    var ItemData_1 = require("../../data/ItemData");
     var PlayerData_1 = require("../../data/PlayerData");
+    var Item_1 = require("../../item/Item");
     var Logic_1 = require("../../logic/Logic");
     var InventoryManager_1 = require("../../manager/InventoryManager");
     var LoadingManager_1 = require("../../manager/LoadingManager");
@@ -3115,6 +3118,8 @@ window.__require = function e(t, n, r) {
     var PaletteSelector_1 = require("../../ui/PaletteSelector");
     var Utils_1 = require("../../utils/Utils");
     var JsCallAndroid_1 = require("../utils/JsCallAndroid");
+    var AvatarSimpleSpriteItem_1 = require("./AvatarSimpleSpriteItem");
+    var AvatarSpritePickDialog_1 = require("./AvatarSpritePickDialog");
     var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
     var AvatarFileEditor = function(_super) {
       __extends(AvatarFileEditor, _super);
@@ -3124,12 +3129,24 @@ window.__require = function e(t, n, r) {
         _this.randomButton = null;
         _this.colorPicker = null;
         _this.selectorPrefab = null;
+        _this.simpleSpritePrefab = null;
         _this.attributeLayout = null;
         _this.editTitle = null;
         _this.labelName = null;
         _this.labelDesc = null;
         _this.labelSkillName = null;
         _this.labelSkillDesc = null;
+        _this.equipItemLayout = null;
+        _this.spritePickDialog = null;
+        _this.bodySprite = null;
+        _this.headSprite = null;
+        _this.hairSprite = null;
+        _this.eyesSprite = null;
+        _this.faceSprite = null;
+        _this.handSprite1 = null;
+        _this.handSprite2 = null;
+        _this.legSprite1 = null;
+        _this.legSprite2 = null;
         _this.cloakSprite = null;
         _this.shoesSprite1 = null;
         _this.shoesSprite2 = null;
@@ -3150,6 +3167,7 @@ window.__require = function e(t, n, r) {
       }
       AvatarFileEditor.prototype.onLoad = function() {
         var _this = this;
+        cc.game.setFrameRate(45);
         this.jsCallAndroid.loadPlayers();
         this.data.valueCopy(Logic_1.default.currentEditPlayerData);
         this.petSprite = this.getSpriteChildSprite(this.avatarTable, [ "pet" ]);
@@ -3204,7 +3222,7 @@ window.__require = function e(t, n, r) {
           _this.labelDesc.string = "" + data.desc;
           _this.labelSkillName.string = "" + data.name1;
           _this.labelSkillDesc.string = "" + data.desc1;
-          _this.changeEquipment(Logic_1.default.professionList[data.id]);
+          _this.changeEquipmentByProfession(Logic_1.default.professionList[data.id]);
         };
         this.skinSelector = this.addAttributeSelector("\u80a4\u8272", [ new AttributeData_1.default(0, "\u9ed8\u8ba4", "", "", "", ""), new AttributeData_1.default(1, "\u968f\u673a", "", "", "", "") ], 0, true, BrightnessBar_1.default.SKIN_COLORS);
         this.skinSelector.selectorCallback = function(data, color) {
@@ -3250,7 +3268,15 @@ window.__require = function e(t, n, r) {
         };
         this.petSelector.node.active = this.organizationSelector.CurrentData.id == AvatarData_1.default.HUNTER;
         this.petSprite.node.active = this.organizationSelector.CurrentData.id == AvatarData_1.default.HUNTER;
+        this.spritePickDialog.node.active = false;
         this.selectTarget();
+        this.equipItemLayout.removeAllChildren();
+        for (var _i = 0, _a = InventoryManager_1.default.EQUIP_TAGS; _i < _a.length; _i++) {
+          var key = _a[_i];
+          var equip = this.data.playerEquips[key];
+          equip ? this.addSimpleSpriteItem(equip.img, key, 0) : this.addSimpleSpriteItem("", key, 0);
+        }
+        for (var i = 0; i < InventoryManager_1.default.MAX_ITEM; i++) i < this.data.playerItemList.length ? this.addSimpleSpriteItem(this.data.playerItemList[0].resName, "item" + (i + 1), 0) : this.addSimpleSpriteItem("", "item" + (i + 1), 0);
       };
       AvatarFileEditor.prototype.changeSkinColor = function(color) {
         this.bodySprite.node.color = color;
@@ -3269,13 +3295,16 @@ window.__require = function e(t, n, r) {
         return node.getComponent(cc.Sprite);
       };
       AvatarFileEditor.prototype.addAttributeSelector = function(title, nameList, defaultIndex, colorPick, defaultColors) {
-        var prefab = cc.instantiate(this.selectorPrefab);
-        var script = prefab.getComponent(AttributeSelector_1.default);
-        this.attributeLayout.addChild(prefab);
+        var node = cc.instantiate(this.selectorPrefab);
+        var script = node.getComponent(AttributeSelector_1.default);
+        this.attributeLayout.addChild(node);
         script.init(title, nameList, defaultIndex, colorPick ? this.colorPicker : null, defaultColors);
         return script;
       };
-      AvatarFileEditor.prototype.changeEquipment = function(data) {
+      AvatarFileEditor.prototype.addSimpleSpriteItem = function(resId, type, count) {
+        AvatarSimpleSpriteItem_1.default.create(this.simpleSpritePrefab, this.equipItemLayout, resId, type, count, this);
+      };
+      AvatarFileEditor.prototype.changeEquipmentByProfession = function(data) {
         this.changeRes(this.helmetSprite, data.equips[InventoryManager_1.default.HELMET], "anim0");
         this.changeRes(this.pantsSprite, data.equips[InventoryManager_1.default.TROUSERS]);
         this.changeRes(this.cloakSprite, data.equips[InventoryManager_1.default.CLOAK]);
@@ -3287,6 +3316,23 @@ window.__require = function e(t, n, r) {
         this.changeRes(this.glovesSprite2, data.equips[InventoryManager_1.default.GLOVES]);
         this.changeRes(this.shoesSprite1, data.equips[InventoryManager_1.default.SHOES]);
         this.changeRes(this.shoesSprite2, data.equips[InventoryManager_1.default.SHOES]);
+        this.resetSpriteSize(this.weaponSprite);
+        this.resetSpriteSize(this.remoteSprite);
+        this.resetSpriteSize(this.shieldSprite);
+      };
+      AvatarFileEditor.prototype.changeEquipment = function() {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+        this.changeRes(this.helmetSprite, null === (_a = this.data.playerEquips[InventoryManager_1.default.HELMET]) || void 0 === _a ? void 0 : _a.img, "anim0");
+        this.changeRes(this.pantsSprite, null === (_b = this.data.playerEquips[InventoryManager_1.default.TROUSERS]) || void 0 === _b ? void 0 : _b.img);
+        this.changeRes(this.cloakSprite, null === (_c = this.data.playerEquips[InventoryManager_1.default.CLOAK]) || void 0 === _c ? void 0 : _c.img);
+        this.changeRes(this.weaponSprite, null === (_d = this.data.playerEquips[InventoryManager_1.default.WEAPON]) || void 0 === _d ? void 0 : _d.img);
+        this.changeRes(this.remoteSprite, null === (_e = this.data.playerEquips[InventoryManager_1.default.REMOTE]) || void 0 === _e ? void 0 : _e.img, "anim0");
+        this.changeRes(this.shieldSprite, null === (_f = this.data.playerEquips[InventoryManager_1.default.SHIELD]) || void 0 === _f ? void 0 : _f.img);
+        this.changeRes(this.clothesSprite, null === (_g = this.data.playerEquips[InventoryManager_1.default.CLOTHES]) || void 0 === _g ? void 0 : _g.img, "anim0");
+        this.changeRes(this.glovesSprite1, null === (_h = this.data.playerEquips[InventoryManager_1.default.GLOVES]) || void 0 === _h ? void 0 : _h.img);
+        this.changeRes(this.glovesSprite2, null === (_j = this.data.playerEquips[InventoryManager_1.default.GLOVES]) || void 0 === _j ? void 0 : _j.img);
+        this.changeRes(this.shoesSprite1, null === (_k = this.data.playerEquips[InventoryManager_1.default.SHOES]) || void 0 === _k ? void 0 : _k.img);
+        this.changeRes(this.shoesSprite2, null === (_l = this.data.playerEquips[InventoryManager_1.default.SHOES]) || void 0 === _l ? void 0 : _l.img);
         this.resetSpriteSize(this.weaponSprite);
         this.resetSpriteSize(this.remoteSprite);
         this.resetSpriteSize(this.shieldSprite);
@@ -3352,16 +3398,41 @@ window.__require = function e(t, n, r) {
           scale: 1
         }).start();
       };
+      AvatarFileEditor.prototype.setSpriteFrame = function(id, sprite) {
+        var spriteFrame = Logic_1.default.spriteFrameRes(id);
+        var data = new EquipmentData_1.default();
+        data.valueCopy(Logic_1.default.equipments[id]);
+        if (data.equipmetType == InventoryManager_1.default.CLOTHES) spriteFrame = Logic_1.default.spriteFrameRes(data.img + "anim0"); else if (data.equipmetType == InventoryManager_1.default.HELMET) spriteFrame = Logic_1.default.spriteFrameRes(data.img + "anim0"); else if (data.equipmetType == InventoryManager_1.default.REMOTE) spriteFrame = Logic_1.default.spriteFrameRes(data.img + "anim0"); else if (data.equipmetType != InventoryManager_1.default.EMPTY) spriteFrame = Logic_1.default.spriteFrameRes(data.img); else {
+          var itemData = new ItemData_1.default();
+          itemData.valueCopy(Logic_1.default.items[id]);
+          itemData.resName != Item_1.default.EMPTY && (spriteFrame = Logic_1.default.spriteFrameRes(itemData.resName));
+        }
+        if (spriteFrame) {
+          sprite.spriteFrame = spriteFrame;
+          var w = spriteFrame.getOriginalSize().width;
+          var h = spriteFrame.getOriginalSize().height;
+          sprite.node.width = 4 * w;
+          sprite.node.height = 4 * h;
+          var size = 48;
+          if (sprite.node.height > size) {
+            sprite.node.height = size;
+            sprite.node.width = size / spriteFrame.getOriginalSize().height * spriteFrame.getOriginalSize().width;
+          }
+        }
+      };
       __decorate([ property(cc.Node) ], AvatarFileEditor.prototype, "avatarTable", void 0);
       __decorate([ property(cc.Node) ], AvatarFileEditor.prototype, "randomButton", void 0);
       __decorate([ property(ColorPicker_1.default) ], AvatarFileEditor.prototype, "colorPicker", void 0);
       __decorate([ property(cc.Prefab) ], AvatarFileEditor.prototype, "selectorPrefab", void 0);
+      __decorate([ property(cc.Prefab) ], AvatarFileEditor.prototype, "simpleSpritePrefab", void 0);
       __decorate([ property(cc.Node) ], AvatarFileEditor.prototype, "attributeLayout", void 0);
       __decorate([ property(cc.EditBox) ], AvatarFileEditor.prototype, "editTitle", void 0);
       __decorate([ property(cc.Label) ], AvatarFileEditor.prototype, "labelName", void 0);
       __decorate([ property(cc.Label) ], AvatarFileEditor.prototype, "labelDesc", void 0);
       __decorate([ property(cc.Label) ], AvatarFileEditor.prototype, "labelSkillName", void 0);
       __decorate([ property(cc.Label) ], AvatarFileEditor.prototype, "labelSkillDesc", void 0);
+      __decorate([ property(cc.Node) ], AvatarFileEditor.prototype, "equipItemLayout", void 0);
+      __decorate([ property(AvatarSpritePickDialog_1.default) ], AvatarFileEditor.prototype, "spritePickDialog", void 0);
       AvatarFileEditor = __decorate([ ccclass ], AvatarFileEditor);
       return AvatarFileEditor;
     }(cc.Component);
@@ -3370,7 +3441,10 @@ window.__require = function e(t, n, r) {
   }, {
     "../../data/AttributeData": "AttributeData",
     "../../data/AvatarData": "AvatarData",
+    "../../data/EquipmentData": "EquipmentData",
+    "../../data/ItemData": "ItemData",
     "../../data/PlayerData": "PlayerData",
+    "../../item/Item": "Item",
     "../../logic/Logic": "Logic",
     "../../manager/InventoryManager": "InventoryManager",
     "../../manager/LoadingManager": "LoadingManager",
@@ -3379,7 +3453,9 @@ window.__require = function e(t, n, r) {
     "../../ui/ColorPicker": "ColorPicker",
     "../../ui/PaletteSelector": "PaletteSelector",
     "../../utils/Utils": "Utils",
-    "../utils/JsCallAndroid": "JsCallAndroid"
+    "../utils/JsCallAndroid": "JsCallAndroid",
+    "./AvatarSimpleSpriteItem": "AvatarSimpleSpriteItem",
+    "./AvatarSpritePickDialog": "AvatarSpritePickDialog"
   } ],
   AvatarItemList: [ function(require, module, exports) {
     "use strict";
@@ -3433,10 +3509,12 @@ window.__require = function e(t, n, r) {
         return _this;
       }
       AvatarItemList.prototype.onLoad = function() {
+        cc.game.setFrameRate(45);
         this.content.removeAllChildren();
         this.loadingManager.init();
         this.loadingManager.loadSpriteAtlas(LoadingManager_1.default.KEY_TEXTURES, "singleColor");
         this.loadingManager.loadSpriteAtlas(LoadingManager_1.default.KEY_EQUIPMENT, "emptyequipment");
+        this.loadingManager.loadSpriteAtlas(LoadingManager_1.default.KEY_ITEM, "ammo");
         this.loadingManager.loadProfession();
         this.loadingManager.loadEquipment();
         this.loadingManager.loadTalents();
@@ -3633,10 +3711,11 @@ window.__require = function e(t, n, r) {
         this.updateSpriteFrameAnim(this.hairSprite, this.data.AvatarData.hairResName, 2);
         this.updateSpriteFrameAnim(this.eyesSprite, this.data.AvatarData.eyesResName, 1);
         this.label.string = this.data.name;
-        this.changeEquipment(this.data.AvatarData.professionData);
+        this.changeEquipmentByProfession(this.data.AvatarData.professionData);
         this.data.AvatarData.organizationIndex == AvatarData_1.default.HUNTER && LoadingManager_1.default.loadNpcSpriteAtlas(this.data.AvatarData.petName, function() {
           _this.petSprite.spriteFrame = Logic_1.default.spriteFrameRes(_this.data.AvatarData.petName + "anim000");
         });
+        this.changeEquipment();
       };
       AvatarItem.prototype.getSpriteChildSprite = function(childNames) {
         var node = this.node;
@@ -3656,7 +3735,7 @@ window.__require = function e(t, n, r) {
           index > resLength - 1 && (index = 0);
         }, .2, cc.macro.REPEAT_FOREVER, .1);
       };
-      AvatarItem.prototype.changeEquipment = function(data) {
+      AvatarItem.prototype.changeEquipmentByProfession = function(data) {
         this.changeRes(this.helmetSprite, data.equips[InventoryManager_1.default.HELMET], "anim0");
         this.changeRes(this.pantsSprite, data.equips[InventoryManager_1.default.TROUSERS]);
         this.changeRes(this.cloakSprite, data.equips[InventoryManager_1.default.CLOAK]);
@@ -3668,6 +3747,23 @@ window.__require = function e(t, n, r) {
         this.changeRes(this.glovesRightSprite, data.equips[InventoryManager_1.default.GLOVES]);
         this.changeRes(this.shoesLeftSprite, data.equips[InventoryManager_1.default.SHOES]);
         this.changeRes(this.shoesRightSprite, data.equips[InventoryManager_1.default.SHOES]);
+        this.resetSpriteSize(this.weaponSprite);
+        this.resetSpriteSize(this.remoteSprite);
+        this.resetSpriteSize(this.shieldSprite);
+      };
+      AvatarItem.prototype.changeEquipment = function() {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+        this.changeRes(this.helmetSprite, null === (_a = this.data.playerEquips[InventoryManager_1.default.HELMET]) || void 0 === _a ? void 0 : _a.img, "anim0");
+        this.changeRes(this.pantsSprite, null === (_b = this.data.playerEquips[InventoryManager_1.default.TROUSERS]) || void 0 === _b ? void 0 : _b.img);
+        this.changeRes(this.cloakSprite, null === (_c = this.data.playerEquips[InventoryManager_1.default.CLOAK]) || void 0 === _c ? void 0 : _c.img);
+        this.changeRes(this.weaponSprite, null === (_d = this.data.playerEquips[InventoryManager_1.default.WEAPON]) || void 0 === _d ? void 0 : _d.img);
+        this.changeRes(this.remoteSprite, null === (_e = this.data.playerEquips[InventoryManager_1.default.REMOTE]) || void 0 === _e ? void 0 : _e.img, "anim0");
+        this.changeRes(this.shieldSprite, null === (_f = this.data.playerEquips[InventoryManager_1.default.SHIELD]) || void 0 === _f ? void 0 : _f.img);
+        this.changeRes(this.clothesSprite, null === (_g = this.data.playerEquips[InventoryManager_1.default.CLOTHES]) || void 0 === _g ? void 0 : _g.img, "anim0");
+        this.changeRes(this.glovesLeftSprite, null === (_h = this.data.playerEquips[InventoryManager_1.default.GLOVES]) || void 0 === _h ? void 0 : _h.img);
+        this.changeRes(this.glovesRightSprite, null === (_j = this.data.playerEquips[InventoryManager_1.default.GLOVES]) || void 0 === _j ? void 0 : _j.img);
+        this.changeRes(this.shoesLeftSprite, null === (_k = this.data.playerEquips[InventoryManager_1.default.SHOES]) || void 0 === _k ? void 0 : _k.img);
+        this.changeRes(this.shoesRightSprite, null === (_l = this.data.playerEquips[InventoryManager_1.default.SHOES]) || void 0 === _l ? void 0 : _l.img);
         this.resetSpriteSize(this.weaponSprite);
         this.resetSpriteSize(this.remoteSprite);
         this.resetSpriteSize(this.shieldSprite);
@@ -3697,6 +3793,461 @@ window.__require = function e(t, n, r) {
     "../../logic/Logic": "Logic",
     "../../manager/InventoryManager": "InventoryManager",
     "../../manager/LoadingManager": "LoadingManager"
+  } ],
+  AvatarSimpleSpriteItem: [ function(require, module, exports) {
+    "use strict";
+    cc._RF.push(module, "88b00vjjrpPdJgBuQLLklER", "AvatarSimpleSpriteItem");
+    "use strict";
+    var __extends = this && this.__extends || function() {
+      var extendStatics = function(d, b) {
+        extendStatics = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function(d, b) {
+          d.__proto__ = b;
+        } || function(d, b) {
+          for (var p in b) Object.prototype.hasOwnProperty.call(b, p) && (d[p] = b[p]);
+        };
+        return extendStatics(d, b);
+      };
+      return function(d, b) {
+        extendStatics(d, b);
+        function __() {
+          this.constructor = d;
+        }
+        d.prototype = null === b ? Object.create(b) : (__.prototype = b.prototype, new __());
+      };
+    }();
+    var __decorate = this && this.__decorate || function(decorators, target, key, desc) {
+      var c = arguments.length, r = c < 3 ? target : null === desc ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+      if ("object" === typeof Reflect && "function" === typeof Reflect.decorate) r = Reflect.decorate(decorators, target, key, desc); else for (var i = decorators.length - 1; i >= 0; i--) (d = decorators[i]) && (r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r);
+      return c > 3 && r && Object.defineProperty(target, key, r), r;
+    };
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    var EquipmentData_1 = require("../../data/EquipmentData");
+    var ItemData_1 = require("../../data/ItemData");
+    var Item_1 = require("../../item/Item");
+    var Logic_1 = require("../../logic/Logic");
+    var EquipmentManager_1 = require("../../manager/EquipmentManager");
+    var InventoryManager_1 = require("../../manager/InventoryManager");
+    var AvatarSpriteData_1 = require("../data/AvatarSpriteData");
+    var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+    var AvatarSimpleSpriteItem = function(_super) {
+      __extends(AvatarSimpleSpriteItem, _super);
+      function AvatarSimpleSpriteItem() {
+        var _this = null !== _super && _super.apply(this, arguments) || this;
+        _this.sprite = null;
+        _this.titleLabel = null;
+        _this.countLabel = null;
+        _this.type = "";
+        _this.resId = "";
+        _this.count = 0;
+        _this.equipData = new EquipmentData_1.default();
+        _this.itemData = new ItemData_1.default();
+        _this.isItem = false;
+        _this.avatarEditor = null;
+        return _this;
+      }
+      AvatarSimpleSpriteItem_1 = AvatarSimpleSpriteItem;
+      AvatarSimpleSpriteItem.prototype.onLoad = function() {
+        var _this = this;
+        this.node.on(cc.Node.EventType.TOUCH_END, function(event) {
+          _this.avatarEditor && _this.avatarEditor.spritePickDialog && _this.avatarEditor.spritePickDialog.show(_this.resId, _this.type, _this.count, function(flag, resId, count) {
+            if (flag) {
+              _this.init(resId, count);
+              if (!_this.type.startsWith("item")) {
+                _this.avatarEditor.data.playerEquips[_this.type] = new EquipmentData_1.default().valueCopy(EquipmentManager_1.default.getNewEquipData(resId, true));
+                _this.avatarEditor.data.playerEquipsReality[_this.type] = new EquipmentData_1.default().valueCopy(EquipmentManager_1.default.getNewEquipData(resId, true));
+                if (_this.type == InventoryManager_1.default.REMOTE) {
+                  _this.avatarEditor.data.playerEquips[InventoryManager_1.default.SHIELD] = null;
+                  _this.avatarEditor.data.playerEquipsReality[InventoryManager_1.default.SHIELD] = null;
+                } else if (_this.type == InventoryManager_1.default.SHIELD) {
+                  _this.avatarEditor.data.playerEquips[InventoryManager_1.default.REMOTE] = null;
+                  _this.avatarEditor.data.playerEquipsReality[InventoryManager_1.default.REMOTE] = null;
+                }
+                _this.avatarEditor.changeEquipment();
+              }
+            }
+          });
+        }, this);
+      };
+      AvatarSimpleSpriteItem.create = function(prefab, parent, resId, type, count, avatarEditor) {
+        var item = cc.instantiate(prefab).getComponent(AvatarSimpleSpriteItem_1);
+        item.node.parent = parent;
+        item.node.zIndex = 0;
+        item.avatarEditor = avatarEditor;
+        item.type = type;
+        item.titleLabel.string = AvatarSimpleSpriteItem_1.TYPE_NAME.get(type);
+        item.init(resId, count);
+        return item;
+      };
+      AvatarSimpleSpriteItem.prototype.init = function(resId, count) {
+        this.resId = resId;
+        this.updateSpriteFrame();
+        this.isItem ? this.countLabel.string = " x" + count : this.countLabel.string = "";
+      };
+      AvatarSimpleSpriteItem.prototype.updateSpriteFrame = function() {
+        var _this = this;
+        var spriteFrame = this.getSpriteFrameByType();
+        if (spriteFrame) {
+          this.sprite.spriteFrame = spriteFrame;
+          var w = spriteFrame.getOriginalSize().width;
+          var h = spriteFrame.getOriginalSize().height;
+          this.sprite.node.width = 4 * w;
+          this.sprite.node.height = 4 * h;
+          var size = 48;
+          if (this.sprite.node.height > size) {
+            this.sprite.node.height = size;
+            this.sprite.node.width = size / spriteFrame.getOriginalSize().height * spriteFrame.getOriginalSize().width;
+          }
+        } else this.scheduleOnce(function() {
+          _this.updateSpriteFrame();
+        }, 2);
+      };
+      AvatarSimpleSpriteItem.prototype.getSpriteFrameByType = function() {
+        var id = this.resId;
+        var spriteFrame = Logic_1.default.spriteFrameRes(id);
+        var data = new EquipmentData_1.default();
+        this.isItem = false;
+        data.valueCopy(Logic_1.default.equipments[id]);
+        this.equipData.valueCopy(data);
+        if (data.equipmetType == InventoryManager_1.default.CLOTHES) spriteFrame = Logic_1.default.spriteFrameRes(data.img + "anim0"); else if (data.equipmetType == InventoryManager_1.default.HELMET) spriteFrame = Logic_1.default.spriteFrameRes(data.img + "anim0"); else if (data.equipmetType == InventoryManager_1.default.REMOTE) spriteFrame = Logic_1.default.spriteFrameRes(data.img + "anim0"); else if (data.equipmetType != InventoryManager_1.default.EMPTY) spriteFrame = Logic_1.default.spriteFrameRes(data.img); else {
+          var itemData = new ItemData_1.default();
+          itemData.valueCopy(Logic_1.default.items[id]);
+          itemData.resName != Item_1.default.EMPTY && (spriteFrame = Logic_1.default.spriteFrameRes(itemData.resName));
+          this.isItem = true;
+          this.itemData.valueCopy(itemData);
+        }
+        return spriteFrame;
+      };
+      var AvatarSimpleSpriteItem_1;
+      AvatarSimpleSpriteItem.TYPE_NAME = new Map([ [ InventoryManager_1.default.CLOAK, "\u7bf7" ], [ InventoryManager_1.default.WEAPON, "\u4e3b" ], [ InventoryManager_1.default.REMOTE, "\u5c04" ], [ InventoryManager_1.default.SHIELD, "\u76fe" ], [ InventoryManager_1.default.HELMET, "\u76d4" ], [ InventoryManager_1.default.SHOES, "\u978b" ], [ InventoryManager_1.default.TROUSERS, "\u88e4" ], [ InventoryManager_1.default.GLOVES, "\u624b" ], [ InventoryManager_1.default.CLOTHES, "\u8863" ], [ AvatarSpriteData_1.default.ITEM1, "\u7269" ], [ AvatarSpriteData_1.default.ITEM2, "\u7269" ], [ AvatarSpriteData_1.default.ITEM3, "\u7269" ], [ AvatarSpriteData_1.default.ITEM4, "\u7269" ], [ AvatarSpriteData_1.default.ITEM5, "\u7269" ], [ AvatarSpriteData_1.default.ITEM6, "\u7269" ] ]);
+      __decorate([ property(cc.Sprite) ], AvatarSimpleSpriteItem.prototype, "sprite", void 0);
+      __decorate([ property(cc.Label) ], AvatarSimpleSpriteItem.prototype, "titleLabel", void 0);
+      __decorate([ property(cc.Label) ], AvatarSimpleSpriteItem.prototype, "countLabel", void 0);
+      AvatarSimpleSpriteItem = AvatarSimpleSpriteItem_1 = __decorate([ ccclass ], AvatarSimpleSpriteItem);
+      return AvatarSimpleSpriteItem;
+    }(cc.Component);
+    exports.default = AvatarSimpleSpriteItem;
+    cc._RF.pop();
+  }, {
+    "../../data/EquipmentData": "EquipmentData",
+    "../../data/ItemData": "ItemData",
+    "../../item/Item": "Item",
+    "../../logic/Logic": "Logic",
+    "../../manager/EquipmentManager": "EquipmentManager",
+    "../../manager/InventoryManager": "InventoryManager",
+    "../data/AvatarSpriteData": "AvatarSpriteData"
+  } ],
+  AvatarSpriteData: [ function(require, module, exports) {
+    "use strict";
+    cc._RF.push(module, "e2d8ampdPlHArbXnzbZvoYL", "AvatarSpriteData");
+    "use strict";
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    var DataUtils_1 = require("../../utils/DataUtils");
+    var AvatarSpriteData = function() {
+      function AvatarSpriteData() {}
+      AvatarSpriteData.prototype.valueCopy = function(data) {
+        if (!data) return;
+        DataUtils_1.default.baseCopy(this, data);
+      };
+      AvatarSpriteData.prototype.clone = function() {
+        var e = new AvatarSpriteData();
+        e.valueCopy(this);
+        return e;
+      };
+      AvatarSpriteData.CLOAK = "cloak";
+      AvatarSpriteData.SHOES = "shoes";
+      AvatarSpriteData.HELMET = "helmet";
+      AvatarSpriteData.PANTS = "pants";
+      AvatarSpriteData.CLOTHES = "clothes";
+      AvatarSpriteData.GLOVES = "gloves";
+      AvatarSpriteData.PRIMARY = "primary";
+      AvatarSpriteData.SECONDARY = "secondary";
+      AvatarSpriteData.ITEM1 = "item1";
+      AvatarSpriteData.ITEM2 = "item2";
+      AvatarSpriteData.ITEM3 = "item3";
+      AvatarSpriteData.ITEM4 = "item4";
+      AvatarSpriteData.ITEM5 = "item5";
+      AvatarSpriteData.ITEM6 = "item6";
+      return AvatarSpriteData;
+    }();
+    exports.default = AvatarSpriteData;
+    cc._RF.pop();
+  }, {
+    "../../utils/DataUtils": "DataUtils"
+  } ],
+  AvatarSpriteItem: [ function(require, module, exports) {
+    "use strict";
+    cc._RF.push(module, "069e1Bk+M1CFJlMvrGdGe1T", "AvatarSpriteItem");
+    "use strict";
+    var __extends = this && this.__extends || function() {
+      var extendStatics = function(d, b) {
+        extendStatics = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function(d, b) {
+          d.__proto__ = b;
+        } || function(d, b) {
+          for (var p in b) Object.prototype.hasOwnProperty.call(b, p) && (d[p] = b[p]);
+        };
+        return extendStatics(d, b);
+      };
+      return function(d, b) {
+        extendStatics(d, b);
+        function __() {
+          this.constructor = d;
+        }
+        d.prototype = null === b ? Object.create(b) : (__.prototype = b.prototype, new __());
+      };
+    }();
+    var __decorate = this && this.__decorate || function(decorators, target, key, desc) {
+      var c = arguments.length, r = c < 3 ? target : null === desc ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+      if ("object" === typeof Reflect && "function" === typeof Reflect.decorate) r = Reflect.decorate(decorators, target, key, desc); else for (var i = decorators.length - 1; i >= 0; i--) (d = decorators[i]) && (r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r);
+      return c > 3 && r && Object.defineProperty(target, key, r), r;
+    };
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    var EquipmentData_1 = require("../../data/EquipmentData");
+    var ItemData_1 = require("../../data/ItemData");
+    var Item_1 = require("../../item/Item");
+    var Logic_1 = require("../../logic/Logic");
+    var InventoryManager_1 = require("../../manager/InventoryManager");
+    var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+    var AvatarSpriteItem = function(_super) {
+      __extends(AvatarSpriteItem, _super);
+      function AvatarSpriteItem() {
+        var _this = null !== _super && _super.apply(this, arguments) || this;
+        _this.sprite = null;
+        _this.select = null;
+        _this.label = null;
+        _this.index = 0;
+        _this.resId = "";
+        _this.equipData = new EquipmentData_1.default();
+        _this.itemData = new ItemData_1.default();
+        _this.isItem = false;
+        return _this;
+      }
+      AvatarSpriteItem_1 = AvatarSpriteItem;
+      AvatarSpriteItem.prototype.onLoad = function() {};
+      AvatarSpriteItem.create = function(prefab, parent, resId, index) {
+        var item = cc.instantiate(prefab).getComponent(AvatarSpriteItem_1);
+        item.node.parent = parent;
+        item.node.zIndex = 0;
+        item.init(resId, index);
+        return item;
+      };
+      AvatarSpriteItem.prototype.init = function(resId, index) {
+        this.index = index;
+        this.resId = resId;
+        this.updateSpriteFrame();
+        this.isItem ? this.label.string = this.itemData.nameCn + " \n" + this.itemData.desc : this.label.string = this.equipData.nameCn + "\n" + this.equipData.desc;
+      };
+      AvatarSpriteItem.prototype.updateSpriteFrame = function() {
+        var _this = this;
+        var spriteFrame = this.getSpriteFrameByType();
+        if (spriteFrame) {
+          this.sprite.spriteFrame = spriteFrame;
+          var w = spriteFrame.getOriginalSize().width;
+          var h = spriteFrame.getOriginalSize().height;
+          this.sprite.node.width = 4 * w;
+          this.sprite.node.height = 4 * h;
+          var size = 32;
+          if (this.sprite.node.height > size) {
+            this.sprite.node.height = size;
+            this.sprite.node.width = size / spriteFrame.getOriginalSize().height * spriteFrame.getOriginalSize().width;
+          }
+          this.select.width = this.sprite.node.width / this.select.scale;
+          this.select.height = this.sprite.node.height / this.select.scale;
+        } else this.scheduleOnce(function() {
+          _this.updateSpriteFrame();
+        }, 2);
+      };
+      AvatarSpriteItem.prototype.getSpriteFrameByType = function() {
+        var id = this.resId;
+        var spriteFrame = Logic_1.default.spriteFrameRes(id);
+        var data = new EquipmentData_1.default();
+        this.isItem = false;
+        data.valueCopy(Logic_1.default.equipments[id]);
+        this.equipData.valueCopy(data);
+        if (data.equipmetType == InventoryManager_1.default.CLOTHES) spriteFrame = Logic_1.default.spriteFrameRes(data.img + "anim0"); else if (data.equipmetType == InventoryManager_1.default.HELMET) spriteFrame = Logic_1.default.spriteFrameRes(data.img + "anim0"); else if (data.equipmetType == InventoryManager_1.default.REMOTE) spriteFrame = Logic_1.default.spriteFrameRes(data.img + "anim0"); else if (data.equipmetType != InventoryManager_1.default.EMPTY) spriteFrame = Logic_1.default.spriteFrameRes(data.img); else {
+          var itemData = new ItemData_1.default();
+          itemData.valueCopy(Logic_1.default.items[id]);
+          itemData.resName != Item_1.default.EMPTY && (spriteFrame = Logic_1.default.spriteFrameRes(itemData.resName));
+          this.isItem = true;
+          this.itemData.valueCopy(itemData);
+        }
+        return spriteFrame;
+      };
+      var AvatarSpriteItem_1;
+      __decorate([ property(cc.Sprite) ], AvatarSpriteItem.prototype, "sprite", void 0);
+      __decorate([ property(cc.Node) ], AvatarSpriteItem.prototype, "select", void 0);
+      __decorate([ property(cc.Label) ], AvatarSpriteItem.prototype, "label", void 0);
+      AvatarSpriteItem = AvatarSpriteItem_1 = __decorate([ ccclass ], AvatarSpriteItem);
+      return AvatarSpriteItem;
+    }(cc.Component);
+    exports.default = AvatarSpriteItem;
+    cc._RF.pop();
+  }, {
+    "../../data/EquipmentData": "EquipmentData",
+    "../../data/ItemData": "ItemData",
+    "../../item/Item": "Item",
+    "../../logic/Logic": "Logic",
+    "../../manager/InventoryManager": "InventoryManager"
+  } ],
+  AvatarSpritePickDialog: [ function(require, module, exports) {
+    "use strict";
+    cc._RF.push(module, "917bbXSODxHp7kWzcgAYYgB", "AvatarSpritePickDialog");
+    "use strict";
+    var __extends = this && this.__extends || function() {
+      var extendStatics = function(d, b) {
+        extendStatics = Object.setPrototypeOf || {
+          __proto__: []
+        } instanceof Array && function(d, b) {
+          d.__proto__ = b;
+        } || function(d, b) {
+          for (var p in b) Object.prototype.hasOwnProperty.call(b, p) && (d[p] = b[p]);
+        };
+        return extendStatics(d, b);
+      };
+      return function(d, b) {
+        extendStatics(d, b);
+        function __() {
+          this.constructor = d;
+        }
+        d.prototype = null === b ? Object.create(b) : (__.prototype = b.prototype, new __());
+      };
+    }();
+    var __decorate = this && this.__decorate || function(decorators, target, key, desc) {
+      var c = arguments.length, r = c < 3 ? target : null === desc ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+      if ("object" === typeof Reflect && "function" === typeof Reflect.decorate) r = Reflect.decorate(decorators, target, key, desc); else for (var i = decorators.length - 1; i >= 0; i--) (d = decorators[i]) && (r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r);
+      return c > 3 && r && Object.defineProperty(target, key, r), r;
+    };
+    Object.defineProperty(exports, "__esModule", {
+      value: true
+    });
+    var Logic_1 = require("../../logic/Logic");
+    var AvatarSpriteItem_1 = require("./AvatarSpriteItem");
+    var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+    var AvatarSpritePickDialog = function(_super) {
+      __extends(AvatarSpritePickDialog, _super);
+      function AvatarSpritePickDialog() {
+        var _this = null !== _super && _super.apply(this, arguments) || this;
+        _this.content = null;
+        _this.countEditBox = null;
+        _this.prefab = null;
+        _this.spriteList = [];
+        _this.type = "";
+        _this.resId = "";
+        _this.count = 0;
+        return _this;
+      }
+      AvatarSpritePickDialog.prototype.onLoad = function() {};
+      AvatarSpritePickDialog.prototype.showAnim = function() {
+        this.node.active = true;
+      };
+      AvatarSpritePickDialog.prototype.hideAnim = function() {
+        this.node.active = false;
+      };
+      AvatarSpritePickDialog.prototype.show = function(resId, type, count, callback) {
+        this.type = type;
+        this.count = count;
+        this.callback = callback;
+        this.showAnim();
+        this.resId = resId;
+        this.showList(type);
+      };
+      AvatarSpritePickDialog.prototype.getSprite = function(resId, index) {
+        var _this = this;
+        var icon = AvatarSpriteItem_1.default.create(this.prefab, this.content, resId, index);
+        icon.select.active = false;
+        var type1 = this.resId;
+        var type2 = resId;
+        if (type1 == type2) {
+          this.currentSprite && (this.currentSprite.select.active = false);
+          this.currentSprite = icon;
+          this.countEditBox.string = this.count > 0 ? "" + this.count : "";
+          this.currentSprite = icon;
+          this.currentSprite.select.active = true;
+        }
+        icon.node.on(cc.Node.EventType.TOUCH_END, function(event) {
+          _this.iconClick(icon);
+        });
+        return icon;
+      };
+      AvatarSpritePickDialog.prototype.iconClick = function(value) {
+        if (this.currentSprite == value) ; else {
+          this.currentSprite && (this.currentSprite.select.active = false);
+          this.currentSprite = value;
+          this.currentSprite.select.active = true;
+        }
+        this.clickOk();
+      };
+      AvatarSpritePickDialog.prototype.hide = function() {
+        this.hideAnim();
+      };
+      AvatarSpritePickDialog.prototype.clickOk = function() {
+        if (!this.currentSprite) {
+          this.callback && this.callback(false, "", 0);
+          return;
+        }
+        this.callback && this.callback(true, this.currentSprite.resId, this.count);
+        this.hide();
+      };
+      AvatarSpritePickDialog.prototype.clickCancel = function() {
+        this.callback && this.callback(false, "", 0);
+        this.hide();
+      };
+      AvatarSpritePickDialog.prototype.countUp = function() {
+        var count = parseInt(this.countEditBox.string);
+        isNaN(count) && (count = 1);
+        count++;
+        count < 1 && (count = 1);
+        this.countEditBox.string = "" + count;
+      };
+      AvatarSpritePickDialog.prototype.countDown = function() {
+        var count = parseInt(this.countEditBox.string);
+        isNaN(count) && (count = 1);
+        count--;
+        count < 1 && (count = 1);
+        this.countEditBox.string = "" + count;
+      };
+      AvatarSpritePickDialog.prototype.showList = function(type) {
+        type.startsWith("item") ? this.showItemList() : this.showEquipList(type);
+      };
+      AvatarSpritePickDialog.prototype.removeContent = function() {
+        this.content.removeAllChildren();
+      };
+      AvatarSpritePickDialog.prototype.showItemList = function() {
+        this.removeContent();
+        var index = 0;
+        for (var key in Logic_1.default.items) {
+          index++;
+          index > 5 && this.getSprite(key, index);
+        }
+      };
+      AvatarSpritePickDialog.prototype.showEquipList = function(type) {
+        this.removeContent();
+        var index = 0;
+        for (var key in Logic_1.default.equipments) {
+          index++;
+          index > 1 && key.startsWith(type) && this.getSprite(key, index);
+        }
+      };
+      __decorate([ property(cc.Node) ], AvatarSpritePickDialog.prototype, "content", void 0);
+      __decorate([ property(cc.EditBox) ], AvatarSpritePickDialog.prototype, "countEditBox", void 0);
+      __decorate([ property(cc.Prefab) ], AvatarSpritePickDialog.prototype, "prefab", void 0);
+      AvatarSpritePickDialog = __decorate([ ccclass ], AvatarSpritePickDialog);
+      return AvatarSpritePickDialog;
+    }(cc.Component);
+    exports.default = AvatarSpritePickDialog;
+    cc._RF.pop();
+  }, {
+    "../../logic/Logic": "Logic",
+    "./AvatarSpriteItem": "AvatarSpriteItem"
   } ],
   B3ActionsClsRegister: [ function(require, module, exports) {
     "use strict";
@@ -17159,7 +17710,7 @@ window.__require = function e(t, n, r) {
         if (!isOriginal) {
           var rand4save = Logic_1.default.mapManager.getCurrentRoomRandom4Save(MapManager_1.default.RANDOM_EQUIP);
           data.quality = EquipmentManager_1.getRandomQuality(chestQuality, rand4save);
-          AffixManager_1.default.buildEquipmentAffixs(data, rand4save);
+          AffixManager_1.default.buildEquipmentAffixs(data, Logic_1.default.playerData.OilGoldData.level, rand4save);
         }
         EquipmentManager_1.updateUpgradeEquipment(data);
         return data.clone();
@@ -56039,4 +56590,4 @@ window.__require = function e(t, n, r) {
     cc.RotateBy._reverse = true;
     cc._RF.pop();
   }, {} ]
-}, {}, [ "ActorAttackBox", "ActorBottomDir", "AreaDetector", "AreaOfEffect", "JumpingAbility", "NonPlayerActorState", "PlayerActorState", "ShadowPlayer", "Actor", "BaseAvatar", "BaseColliderComponent", "BaseNodeComponent", "BaseNonPlayerActorState", "BasePlayerActorState", "PlayActor", "StateContext", "TestAI", "Constants", "B3Error", "B3Failer", "B3Runner", "B3Succeeder", "B3Wait", "B3MemPriority", "B3MemSequence", "B3Priority", "B3Sequence", "B3Action", "B3BaseNode", "B3BehaviorTree", "B3BehaviorTreeGroup", "B3Blackboard", "B3Composite", "B3Condition", "B3Decorator", "B3INodeProperties", "B3Tick", "CustomAction", "Log", "DisCondition", "TargetCondition", "B3Inverter", "B3Limiter", "B3MaxTime", "B3RepeatUntilFailure", "B3RepeatUntilSuccess", "B3Repeater", "B3ActionsClsRegister", "B3CompositesClsRegister", "B3CustomClsRegister", "B3DecoratorsClsRegister", "B3Utils", "DefaultStateMachine", "FsmEvent", "StackStateMachine", "State", "StateMachine", "Boss", "BossAttackCollider", "Captain", "CaptainSword", "Dragon", "Dryad", "DryadGrass", "EvilEye", "IceDemon", "IceDemonThron", "Kraken", "KrakenSwingHand", "Rah", "Slime", "SlimeVenom", "Sphinx", "WarMachine", "AirExit", "Box", "Building", "CampFire", "Chest", "DecorationFloor", "DecorationWall", "Door", "Emplacement", "EnergyShield", "ExitDoor", "FallStone", "FootBoard", "Furniture", "InteractBuilding", "Ladder", "LightBuilding", "MagicLightening", "MartCashier", "MartShelves", "MgCrack", "MgWentLine", "MonsterGenerator", "MushRoomChild", "NormalBuilding", "Portal", "RoomBed", "RoomClock", "RoomFishtank", "RoomKitchen", "RoomStool", "RoomTrashCan", "RoomTv", "RoomWaterDispenser", "SavePoint", "Saw", "ShopMart", "ShopTable", "Stairs", "TarotTable", "Trap", "Vehicle", "Wall", "WallPaint", "CCollider", "OnContactListener", "Quadtree", "Vector", "AchievementData", "AffixData", "AffixMapData", "AreaOfEffectData", "AttributeData", "AvatarData", "BaseData", "BuildingData", "BulletData", "CellphoneData", "ChapterData", "ChunkData", "CommonData", "DamageData", "DialogueActorData", "DialogueButtonData", "DialogueData", "DialogueTextData", "DungeonStyleData", "EquipItemMapData", "EquipmentData", "EquipmentDescData", "EquipmentStringData", "ExitData", "FloatingLabelData", "FromData", "GoodsData", "GroundOilGoldData", "InventoryData", "ItemData", "LevelData", "LifeData", "MapData", "MapLightData", "MapManagerData", "MetalTalentData", "NonPlayerData", "OilGoldData", "PlayerData", "ProfessionData", "ProfileData", "ProfileGlobalData", "SavePointData", "SettingsData", "StatusData", "SuitData", "TalentData", "TarotData", "TriggerData", "ECS", "ColliderComponent", "InputComponent", "MoveComponent", "NodeRenderComponent", "TransformComponent", "ActorEntity", "NodeEntity", "ColliderSystem", "GameWorldSystem", "InputSystem", "MoveSystem", "RayCastResult", "AvatarFileEditor", "AvatarItem", "AvatarItemList", "AlertDialog", "OptimizeList", "QuestConditionData", "QuestData", "QuestRewardData", "QuestTargetData", "QuestTreeData", "QuestAlertDialog", "QuestCard", "QuestConditionItem", "QuestDateInputItem", "QuestFileEditManager", "QuestFileEditor", "QuestInputItem", "QuestSpriteInfoDialog", "QuestSpriteItem", "QuestSpritePickDialog", "FileOperator", "JsCallAndroid", "RevokeHelper", "BlockLight", "FloorPaper", "HitBlood", "Light", "ReflectLight", "ShadowOfSight", "WeatherEffect", "WeatherRain", "Equipment", "GameWorld", "Bullet", "Coin", "DashShadow", "Goods", "Item", "Laser", "OilGold", "TarotCard", "Achievement", "AiController", "BaseController", "CameraControl", "Chapter", "CoinCount", "Controller", "Dungeon", "EventHelper", "FrameAvatar", "Game", "GameFinish", "GameOver", "HealthBar", "Inventory", "JoyController", "Joystick", "KeyboardController", "Loading", "Logic", "MeleeCollideHelper", "MeleeShadowWeapon", "MeleeWeapon", "NonPlayer", "OilGoldCount", "Player", "PlayerAvatar", "PlayerController", "PlayerWeapon", "RealCoinCount", "Shield", "Shooter", "Start", "Test", "Tile", "WalkSmoke", "WxHelper", "AffixManager", "AiPlayerManager", "AoeManager", "BaseManager", "BuildingManager", "DungeonStyleManager", "EffectItemManager", "EquipmentManager", "FloatingLabelManager", "InventoryManager", "ItemManager", "LightManager", "LoadingManager", "MapManager", "MonsterManager", "MonsterRandomAttr", "NonPlayerManager", "ProfileManager", "QuestManager", "SpecialManager", "StatusManager", "TalentManager", "TarotManager", "WeatherManager", "WordManager", "Chunk", "ChunkLookCamera", "ChunkWorld", "Seeker", "WorldLoader", "OilLake", "PerlinNoise2D", "RectDoor", "RectDungeon", "RectRoom", "RoomType", "Status", "StatusConditionType", "StatusEventType", "EquipItemTalent", "FireGhost", "IceThron", "MagicCircle", "MagicIce", "MetalDagger", "MetalHand", "MetalShield", "OilGoldMetal", "OilGoldTalent", "OrganizationTalent", "ProfessionTalent", "Talent", "TalentDash", "TalentMagic", "TalentShield", "TalentTree", "AchievementItem", "ActorIcon", "ActorIconList", "ActorIconView", "AttributeSelector", "BrightnessBar", "CellphoneItem", "ColorPicker", "CoolDownView", "CursorArea", "CutScene", "Dialogue", "Doll", "DollJoyStick", "FloatingLabel", "GameHud", "HighPrecisionSlider", "InventoryItem", "LoadingIcon", "MetalTalentItem", "MiniMap", "MiniTile", "PaletteSelector", "ParallaxBackground", "PickAvatar", "PlayerInfoDialog", "QuestItem", "QuestTargetItem", "SatietyView", "SaveSlotItem", "StartBackground", "StartFlies", "StatusIcon", "StatusIconList", "TestFog", "Tips", "Toast", "AchievementItemDialog", "ActionSettingDialog", "BaseDialog", "CellphoneDialog", "DollMachineDialog", "EquipmentAndItemDialog", "GameAlertDialog", "InventoryDialog", "MartShelvesDialog", "MetalTalentDialog", "NoticeDialog", "QuestBoardDialog", "SaveSlotDialog", "SettingsDialog", "StatusIconDialog", "ActorUtils", "AudioPlayer", "DataUtils", "IndexZ", "Ldtk", "LdtkUtils", "LocalStorage", "NextStep", "NodeKey", "Random", "Random4Save", "Utils", "use_reversed_rotateBy" ]);
+}, {}, [ "ActorAttackBox", "ActorBottomDir", "AreaDetector", "AreaOfEffect", "JumpingAbility", "NonPlayerActorState", "PlayerActorState", "ShadowPlayer", "Actor", "BaseAvatar", "BaseColliderComponent", "BaseNodeComponent", "BaseNonPlayerActorState", "BasePlayerActorState", "PlayActor", "StateContext", "TestAI", "Constants", "B3Error", "B3Failer", "B3Runner", "B3Succeeder", "B3Wait", "B3MemPriority", "B3MemSequence", "B3Priority", "B3Sequence", "B3Action", "B3BaseNode", "B3BehaviorTree", "B3BehaviorTreeGroup", "B3Blackboard", "B3Composite", "B3Condition", "B3Decorator", "B3INodeProperties", "B3Tick", "CustomAction", "Log", "DisCondition", "TargetCondition", "B3Inverter", "B3Limiter", "B3MaxTime", "B3RepeatUntilFailure", "B3RepeatUntilSuccess", "B3Repeater", "B3ActionsClsRegister", "B3CompositesClsRegister", "B3CustomClsRegister", "B3DecoratorsClsRegister", "B3Utils", "DefaultStateMachine", "FsmEvent", "StackStateMachine", "State", "StateMachine", "Boss", "BossAttackCollider", "Captain", "CaptainSword", "Dragon", "Dryad", "DryadGrass", "EvilEye", "IceDemon", "IceDemonThron", "Kraken", "KrakenSwingHand", "Rah", "Slime", "SlimeVenom", "Sphinx", "WarMachine", "AirExit", "Box", "Building", "CampFire", "Chest", "DecorationFloor", "DecorationWall", "Door", "Emplacement", "EnergyShield", "ExitDoor", "FallStone", "FootBoard", "Furniture", "InteractBuilding", "Ladder", "LightBuilding", "MagicLightening", "MartCashier", "MartShelves", "MgCrack", "MgWentLine", "MonsterGenerator", "MushRoomChild", "NormalBuilding", "Portal", "RoomBed", "RoomClock", "RoomFishtank", "RoomKitchen", "RoomStool", "RoomTrashCan", "RoomTv", "RoomWaterDispenser", "SavePoint", "Saw", "ShopMart", "ShopTable", "Stairs", "TarotTable", "Trap", "Vehicle", "Wall", "WallPaint", "CCollider", "OnContactListener", "Quadtree", "Vector", "AchievementData", "AffixData", "AffixMapData", "AreaOfEffectData", "AttributeData", "AvatarData", "BaseData", "BuildingData", "BulletData", "CellphoneData", "ChapterData", "ChunkData", "CommonData", "DamageData", "DialogueActorData", "DialogueButtonData", "DialogueData", "DialogueTextData", "DungeonStyleData", "EquipItemMapData", "EquipmentData", "EquipmentDescData", "EquipmentStringData", "ExitData", "FloatingLabelData", "FromData", "GoodsData", "GroundOilGoldData", "InventoryData", "ItemData", "LevelData", "LifeData", "MapData", "MapLightData", "MapManagerData", "MetalTalentData", "NonPlayerData", "OilGoldData", "PlayerData", "ProfessionData", "ProfileData", "ProfileGlobalData", "SavePointData", "SettingsData", "StatusData", "SuitData", "TalentData", "TarotData", "TriggerData", "ECS", "ColliderComponent", "InputComponent", "MoveComponent", "NodeRenderComponent", "TransformComponent", "ActorEntity", "NodeEntity", "ColliderSystem", "GameWorldSystem", "InputSystem", "MoveSystem", "RayCastResult", "AvatarFileEditor", "AvatarItem", "AvatarItemList", "AvatarSimpleSpriteItem", "AvatarSpriteItem", "AvatarSpritePickDialog", "AlertDialog", "OptimizeList", "AvatarSpriteData", "QuestConditionData", "QuestData", "QuestRewardData", "QuestTargetData", "QuestTreeData", "QuestAlertDialog", "QuestCard", "QuestConditionItem", "QuestDateInputItem", "QuestFileEditManager", "QuestFileEditor", "QuestInputItem", "QuestSpriteInfoDialog", "QuestSpriteItem", "QuestSpritePickDialog", "FileOperator", "JsCallAndroid", "RevokeHelper", "BlockLight", "FloorPaper", "HitBlood", "Light", "ReflectLight", "ShadowOfSight", "WeatherEffect", "WeatherRain", "Equipment", "GameWorld", "Bullet", "Coin", "DashShadow", "Goods", "Item", "Laser", "OilGold", "TarotCard", "Achievement", "AiController", "BaseController", "CameraControl", "Chapter", "CoinCount", "Controller", "Dungeon", "EventHelper", "FrameAvatar", "Game", "GameFinish", "GameOver", "HealthBar", "Inventory", "JoyController", "Joystick", "KeyboardController", "Loading", "Logic", "MeleeCollideHelper", "MeleeShadowWeapon", "MeleeWeapon", "NonPlayer", "OilGoldCount", "Player", "PlayerAvatar", "PlayerController", "PlayerWeapon", "RealCoinCount", "Shield", "Shooter", "Start", "Test", "Tile", "WalkSmoke", "WxHelper", "AffixManager", "AiPlayerManager", "AoeManager", "BaseManager", "BuildingManager", "DungeonStyleManager", "EffectItemManager", "EquipmentManager", "FloatingLabelManager", "InventoryManager", "ItemManager", "LightManager", "LoadingManager", "MapManager", "MonsterManager", "MonsterRandomAttr", "NonPlayerManager", "ProfileManager", "QuestManager", "SpecialManager", "StatusManager", "TalentManager", "TarotManager", "WeatherManager", "WordManager", "Chunk", "ChunkLookCamera", "ChunkWorld", "Seeker", "WorldLoader", "OilLake", "PerlinNoise2D", "RectDoor", "RectDungeon", "RectRoom", "RoomType", "Status", "StatusConditionType", "StatusEventType", "EquipItemTalent", "FireGhost", "IceThron", "MagicCircle", "MagicIce", "MetalDagger", "MetalHand", "MetalShield", "OilGoldMetal", "OilGoldTalent", "OrganizationTalent", "ProfessionTalent", "Talent", "TalentDash", "TalentMagic", "TalentShield", "TalentTree", "AchievementItem", "ActorIcon", "ActorIconList", "ActorIconView", "AttributeSelector", "BrightnessBar", "CellphoneItem", "ColorPicker", "CoolDownView", "CursorArea", "CutScene", "Dialogue", "Doll", "DollJoyStick", "FloatingLabel", "GameHud", "HighPrecisionSlider", "InventoryItem", "LoadingIcon", "MetalTalentItem", "MiniMap", "MiniTile", "PaletteSelector", "ParallaxBackground", "PickAvatar", "PlayerInfoDialog", "QuestItem", "QuestTargetItem", "SatietyView", "SaveSlotItem", "StartBackground", "StartFlies", "StatusIcon", "StatusIconList", "TestFog", "Tips", "Toast", "AchievementItemDialog", "ActionSettingDialog", "BaseDialog", "CellphoneDialog", "DollMachineDialog", "EquipmentAndItemDialog", "GameAlertDialog", "InventoryDialog", "MartShelvesDialog", "MetalTalentDialog", "NoticeDialog", "QuestBoardDialog", "SaveSlotDialog", "SettingsDialog", "StatusIconDialog", "ActorUtils", "AudioPlayer", "DataUtils", "IndexZ", "Ldtk", "LdtkUtils", "LocalStorage", "NextStep", "NodeKey", "Random", "Random4Save", "Utils", "use_reversed_rotateBy" ]);

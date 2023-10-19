@@ -16,6 +16,7 @@ import PlayerData from '../../data/PlayerData'
 import ProfessionData from '../../data/ProfessionData'
 import Item from '../../item/Item'
 import Logic from '../../logic/Logic'
+import EquipmentManager from '../../manager/EquipmentManager'
 import InventoryManager from '../../manager/InventoryManager'
 import LoadingManager from '../../manager/LoadingManager'
 import AttributeSelector from '../../ui/AttributeSelector'
@@ -23,7 +24,6 @@ import BrightnessBar from '../../ui/BrightnessBar'
 import ColorPicker from '../../ui/ColorPicker'
 import PaletteSelector from '../../ui/PaletteSelector'
 import Utils from '../../utils/Utils'
-import AvatarSpriteData from '../data/AvatarSpriteData'
 import JsCallAndroid from '../utils/JsCallAndroid'
 import AvatarSimpleSpriteItem from './AvatarSimpleSpriteItem'
 import AvatarSpritePickDialog from './AvatarSpritePickDialog'
@@ -41,7 +41,7 @@ export default class AvatarFileEditor extends cc.Component {
     @property(cc.Prefab)
     selectorPrefab: cc.Prefab = null
     @property(cc.Prefab)
-    simpleSpritePrefab:cc.Prefab=null
+    simpleSpritePrefab: cc.Prefab = null
     @property(cc.Node)
     attributeLayout: cc.Node = null
     @property(cc.EditBox)
@@ -54,7 +54,7 @@ export default class AvatarFileEditor extends cc.Component {
     labelSkillName: cc.Label = null
     @property(cc.Label)
     labelSkillDesc: cc.Label = null
-    @property(cc.Label)
+    @property(cc.Node)
     equipItemLayout: cc.Node = null
     @property(AvatarSpritePickDialog)
     spritePickDialog: AvatarSpritePickDialog = null
@@ -88,11 +88,9 @@ export default class AvatarFileEditor extends cc.Component {
     private eyesSelector: AttributeSelector
     private faceSelector: AttributeSelector
     private petSelector: AttributeSelector
-    private data: PlayerData = new PlayerData()
+    data: PlayerData = new PlayerData()
     private randomTouched = false
     private jsCallAndroid: JsCallAndroid = new JsCallAndroid()
-    private currentResId = ''
-    private currentCount = 0
 
     onLoad() {
         cc.game.setFrameRate(45)
@@ -121,8 +119,6 @@ export default class AvatarFileEditor extends cc.Component {
         this.shoesSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'legright', 'foot', 'shoes'])
 
         this.editTitle.string = this.data.name
-        for (let node of this.equipItemLayout.children) {
-        }
 
         this.randomButton.on(
             cc.Node.EventType.TOUCH_START,
@@ -147,8 +143,7 @@ export default class AvatarFileEditor extends cc.Component {
             },
             this
         )
-        for(let key in AvatarSimpleSpriteItem.TYPE_NAME){
-        }
+
         //组织
         let organList = new Array()
         for (let i = 0; i < AvatarData.ORGANIZATION.length; i++) {
@@ -176,7 +171,7 @@ export default class AvatarFileEditor extends cc.Component {
             this.labelDesc.string = `${data.desc}`
             this.labelSkillName.string = `${data.name1}`
             this.labelSkillDesc.string = `${data.desc1}`
-            this.changeEquipment(Logic.professionList[data.id])
+            this.changeEquipmentByProfession(Logic.professionList[data.id])
         }
 
         //皮肤颜色
@@ -245,6 +240,22 @@ export default class AvatarFileEditor extends cc.Component {
         this.petSprite.node.active = this.organizationSelector.CurrentData.id == AvatarData.HUNTER
         this.spritePickDialog.node.active = false
         this.selectTarget()
+        this.equipItemLayout.removeAllChildren()
+        for (let key of InventoryManager.EQUIP_TAGS) {
+            let equip = this.data.playerEquips[key]
+            if (equip) {
+                this.addSimpleSpriteItem(equip.img, key, 0)
+            } else {
+                this.addSimpleSpriteItem('', key, 0)
+            }
+        }
+        for (let i = 0; i < InventoryManager.MAX_ITEM; i++) {
+            if (i < this.data.playerItemList.length) {
+                this.addSimpleSpriteItem(this.data.playerItemList[0].resName, `item${i + 1}`, 0)
+            } else {
+                this.addSimpleSpriteItem('', `item${i + 1}`, 0)
+            }
+        }
     }
     private changeSkinColor(color: cc.Color) {
         this.bodySprite.node.color = color
@@ -268,12 +279,10 @@ export default class AvatarFileEditor extends cc.Component {
         script.init(title, nameList, defaultIndex, colorPick ? this.colorPicker : null, defaultColors)
         return script
     }
-    addSimpleSpriteItem(resId:string,type:string,count:number){
-        let node = cc.instantiate(this.simpleSpritePrefab)
-        node.getComponent(AvatarSimpleSpriteItem).init(resId,type,count)
-        this.equipItemLayout.addChild(node)
+    addSimpleSpriteItem(resId: string, type: string, count: number) {
+        AvatarSimpleSpriteItem.create(this.simpleSpritePrefab, this.equipItemLayout, resId, type, count, this)
     }
-    private changeEquipment(data: ProfessionData) {
+    private changeEquipmentByProfession(data: ProfessionData) {
         this.changeRes(this.helmetSprite, data.equips[InventoryManager.HELMET], 'anim0')
         this.changeRes(this.pantsSprite, data.equips[InventoryManager.TROUSERS])
         this.changeRes(this.cloakSprite, data.equips[InventoryManager.CLOAK])
@@ -285,6 +294,22 @@ export default class AvatarFileEditor extends cc.Component {
         this.changeRes(this.glovesSprite2, data.equips[InventoryManager.GLOVES])
         this.changeRes(this.shoesSprite1, data.equips[InventoryManager.SHOES])
         this.changeRes(this.shoesSprite2, data.equips[InventoryManager.SHOES])
+        this.resetSpriteSize(this.weaponSprite)
+        this.resetSpriteSize(this.remoteSprite)
+        this.resetSpriteSize(this.shieldSprite)
+    }
+    changeEquipment() {
+        this.changeRes(this.helmetSprite, this.data.playerEquips[InventoryManager.HELMET]?.img, 'anim0')
+        this.changeRes(this.pantsSprite, this.data.playerEquips[InventoryManager.TROUSERS]?.img)
+        this.changeRes(this.cloakSprite, this.data.playerEquips[InventoryManager.CLOAK]?.img)
+        this.changeRes(this.weaponSprite, this.data.playerEquips[InventoryManager.WEAPON]?.img)
+        this.changeRes(this.remoteSprite, this.data.playerEquips[InventoryManager.REMOTE]?.img, 'anim0')
+        this.changeRes(this.shieldSprite, this.data.playerEquips[InventoryManager.SHIELD]?.img)
+        this.changeRes(this.clothesSprite, this.data.playerEquips[InventoryManager.CLOTHES]?.img, 'anim0')
+        this.changeRes(this.glovesSprite1, this.data.playerEquips[InventoryManager.GLOVES]?.img)
+        this.changeRes(this.glovesSprite2, this.data.playerEquips[InventoryManager.GLOVES]?.img)
+        this.changeRes(this.shoesSprite1, this.data.playerEquips[InventoryManager.SHOES]?.img)
+        this.changeRes(this.shoesSprite2, this.data.playerEquips[InventoryManager.SHOES]?.img)
         this.resetSpriteSize(this.weaponSprite)
         this.resetSpriteSize(this.remoteSprite)
         this.resetSpriteSize(this.shieldSprite)
@@ -358,13 +383,7 @@ export default class AvatarFileEditor extends cc.Component {
             cc.tween(this.editTitle.node).to(0.2, { scale: 1.2 }).to(0.2, { scale: 1 }).start()
         }
     }
-    //button
-    showSpritePickDialog() {
-        this.spritePickDialog.show(this.currentResId, this.currentCount, (flag: boolean, resId: string, count: number) => {
-            this.currentResId = resId
-            this.currentCount = count
-        })
-    }
+
     setSpriteFrame(id: string, sprite: cc.Sprite) {
         let spriteFrame = Logic.spriteFrameRes(id)
         let data = new EquipmentData()

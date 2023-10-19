@@ -267,6 +267,7 @@ export default class EquipmentManager extends BaseManager {
      * @param equipType 装备类别
      * @param isOriginal 是否初始无随机词缀
      * @param chestQuality 最低品质 isOriginal为true的时候无效
+     * @param level 等级
      * @returns
      */
     static getNewEquipData(equipType: string, isOriginal?: boolean, chestQuality?: number): EquipmentData {
@@ -288,7 +289,7 @@ export default class EquipmentManager extends BaseManager {
             //获取品质
             data.quality = EquipmentManager.getRandomQuality(chestQuality, rand4save)
             //根据品质生成随机属性
-            AffixManager.buildEquipmentAffixs(data, rand4save)
+            AffixManager.buildEquipmentAffixs(data, Logic.playerData.OilGoldData.level, rand4save)
         }
         //升级装备和价值
         EquipmentManager.updateUpgradeEquipment(data)
