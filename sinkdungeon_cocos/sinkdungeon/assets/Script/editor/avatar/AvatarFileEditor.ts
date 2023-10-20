@@ -68,6 +68,8 @@ export default class AvatarFileEditor extends cc.Component {
     private handSprite2: cc.Sprite = null
     private legSprite1: cc.Sprite = null
     private legSprite2: cc.Sprite = null
+    private footprite1: cc.Sprite = null
+    private footSprite2: cc.Sprite = null
     private cloakSprite: cc.Sprite = null
     private shoesSprite1: cc.Sprite = null
     private shoesSprite2: cc.Sprite = null
@@ -102,6 +104,8 @@ export default class AvatarFileEditor extends cc.Component {
         this.handSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'handright'])
         this.legSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'legleft'])
         this.legSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'legright'])
+        this.footprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'legleft', 'foot'])
+        this.footSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'legright', 'foot'])
         this.headSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'head'])
         this.hairSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'head', 'hair'])
         this.faceSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'head', 'face'])
@@ -264,7 +268,39 @@ export default class AvatarFileEditor extends cc.Component {
         this.handSprite2.node.color = color
         this.legSprite1.node.color = color
         this.legSprite2.node.color = color
+        this.footprite1.node.color = color
+        this.footSprite2.node.color = color
         this.data.AvatarData.skinColor = color.toHEX('#rrggbb')
+        let hasLong = false
+        let equipColor = ''
+
+        if (this.data.AvatarData.professionData.equips[InventoryManager.TROUSERS]) {
+            let data = new EquipmentData()
+            data.valueCopy(Logic.equipments[this.data.AvatarData.professionData.equips[InventoryManager.TROUSERS]])
+            if (Logic.equipments[this.data.AvatarData.professionData.equips[InventoryManager.TROUSERS]]?.trouserslong == 1) {
+                hasLong = true
+                equipColor = data.color
+            }
+        }
+        if (this.data.playerEquips[InventoryManager.TROUSERS]?.trouserslong == 1) {
+            hasLong = true
+            equipColor = this.data.playerEquips[InventoryManager.TROUSERS].color
+        }
+        this.changeLegColor(hasLong, equipColor)
+    }
+
+    changeLegColor(isLong: boolean, colorHex: string) {
+        if (isLong) {
+            this.legSprite1.node.color = cc.Color.WHITE.fromHEX(colorHex)
+            this.legSprite2.node.color = cc.Color.WHITE.fromHEX(colorHex)
+            this.footprite1.node.color = cc.Color.WHITE.fromHEX(colorHex)
+            this.footSprite2.node.color = cc.Color.WHITE.fromHEX(colorHex)
+        } else {
+            this.legSprite1.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor)
+            this.legSprite2.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor)
+            this.footprite1.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor)
+            this.footSprite2.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor)
+        }
     }
     private getSpriteChildSprite(node: cc.Node, childNames: string[]): cc.Sprite {
         for (let name of childNames) {
@@ -294,9 +330,10 @@ export default class AvatarFileEditor extends cc.Component {
         this.changeRes(this.glovesSprite2, data.equips[InventoryManager.GLOVES])
         this.changeRes(this.shoesSprite1, data.equips[InventoryManager.SHOES])
         this.changeRes(this.shoesSprite2, data.equips[InventoryManager.SHOES])
-        this.resetSpriteSize(this.weaponSprite)
-        this.resetSpriteSize(this.remoteSprite)
-        this.resetSpriteSize(this.shieldSprite)
+        this.resetSpriteSize(this.weaponSprite, 1)
+        this.resetSpriteSize(this.remoteSprite, 0.5)
+        this.resetSpriteSize(this.shieldSprite, 1)
+        this.changeEquipment()
     }
     changeEquipment() {
         this.changeRes(this.helmetSprite, this.data.playerEquips[InventoryManager.HELMET]?.img, 'anim0')
@@ -310,10 +347,12 @@ export default class AvatarFileEditor extends cc.Component {
         this.changeRes(this.glovesSprite2, this.data.playerEquips[InventoryManager.GLOVES]?.img)
         this.changeRes(this.shoesSprite1, this.data.playerEquips[InventoryManager.SHOES]?.img)
         this.changeRes(this.shoesSprite2, this.data.playerEquips[InventoryManager.SHOES]?.img)
-        this.resetSpriteSize(this.weaponSprite)
-        this.resetSpriteSize(this.remoteSprite)
-        this.resetSpriteSize(this.shieldSprite)
+        this.resetSpriteSize(this.weaponSprite, 1)
+        this.resetSpriteSize(this.remoteSprite, 0.5)
+        this.resetSpriteSize(this.shieldSprite, 1)
+        this.changeSkinColor(cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor))
     }
+
     private changeRes(sprite: cc.Sprite, resName: string, subfix?: string) {
         if (!sprite) {
             return false
@@ -328,10 +367,10 @@ export default class AvatarFileEditor extends cc.Component {
             sprite.spriteFrame = null
         }
     }
-    private resetSpriteSize(sprite: cc.Sprite) {
+    private resetSpriteSize(sprite: cc.Sprite, ratio: number) {
         if (sprite.spriteFrame) {
-            sprite.node.width = sprite.spriteFrame.getOriginalSize().width
-            sprite.node.height = sprite.spriteFrame.getOriginalSize().height
+            sprite.node.width = sprite.spriteFrame.getOriginalSize().width * ratio
+            sprite.node.height = sprite.spriteFrame.getOriginalSize().height * ratio
         }
     }
     update(dt) {
