@@ -3137,6 +3137,7 @@ window.__require = function e(t, n, r) {
         _this.labelSkillName = null;
         _this.labelSkillDesc = null;
         _this.equipItemLayout = null;
+        _this.editDesc = null;
         _this.spritePickDialog = null;
         _this.bodySprite = null;
         _this.headSprite = null;
@@ -3147,6 +3148,8 @@ window.__require = function e(t, n, r) {
         _this.handSprite2 = null;
         _this.legSprite1 = null;
         _this.legSprite2 = null;
+        _this.footprite1 = null;
+        _this.footSprite2 = null;
         _this.cloakSprite = null;
         _this.shoesSprite1 = null;
         _this.shoesSprite2 = null;
@@ -3176,6 +3179,8 @@ window.__require = function e(t, n, r) {
         this.handSprite2 = this.getSpriteChildSprite(this.avatarTable, [ "avatar", "sprite", "avatar", "handright" ]);
         this.legSprite1 = this.getSpriteChildSprite(this.avatarTable, [ "avatar", "sprite", "avatar", "legleft" ]);
         this.legSprite2 = this.getSpriteChildSprite(this.avatarTable, [ "avatar", "sprite", "avatar", "legright" ]);
+        this.footprite1 = this.getSpriteChildSprite(this.avatarTable, [ "avatar", "sprite", "avatar", "legleft", "foot" ]);
+        this.footSprite2 = this.getSpriteChildSprite(this.avatarTable, [ "avatar", "sprite", "avatar", "legright", "foot" ]);
         this.headSprite = this.getSpriteChildSprite(this.avatarTable, [ "avatar", "sprite", "avatar", "head" ]);
         this.hairSprite = this.getSpriteChildSprite(this.avatarTable, [ "avatar", "sprite", "avatar", "head", "hair" ]);
         this.faceSprite = this.getSpriteChildSprite(this.avatarTable, [ "avatar", "sprite", "avatar", "head", "face" ]);
@@ -3192,6 +3197,7 @@ window.__require = function e(t, n, r) {
         this.shoesSprite1 = this.getSpriteChildSprite(this.avatarTable, [ "avatar", "sprite", "avatar", "legleft", "foot", "shoes" ]);
         this.shoesSprite2 = this.getSpriteChildSprite(this.avatarTable, [ "avatar", "sprite", "avatar", "legright", "foot", "shoes" ]);
         this.editTitle.string = this.data.name;
+        this.editDesc.string = this.data.desc;
         this.randomButton.on(cc.Node.EventType.TOUCH_START, function(event) {
           _this.randomTouched = true;
         }, this);
@@ -3279,13 +3285,44 @@ window.__require = function e(t, n, r) {
         for (var i = 0; i < InventoryManager_1.default.MAX_ITEM; i++) i < this.data.playerItemList.length ? this.addSimpleSpriteItem(this.data.playerItemList[0].resName, "item" + (i + 1), 0) : this.addSimpleSpriteItem("", "item" + (i + 1), 0);
       };
       AvatarFileEditor.prototype.changeSkinColor = function(color) {
+        var _a, _b;
         this.bodySprite.node.color = color;
         this.headSprite.node.color = color;
         this.handSprite1.node.color = color;
         this.handSprite2.node.color = color;
         this.legSprite1.node.color = color;
         this.legSprite2.node.color = color;
+        this.footprite1.node.color = color;
+        this.footSprite2.node.color = color;
         this.data.AvatarData.skinColor = color.toHEX("#rrggbb");
+        var hasLong = false;
+        var equipColor = "";
+        if (this.data.AvatarData.professionData.equips[InventoryManager_1.default.TROUSERS]) {
+          var data = new EquipmentData_1.default();
+          data.valueCopy(Logic_1.default.equipments[this.data.AvatarData.professionData.equips[InventoryManager_1.default.TROUSERS]]);
+          if (1 == (null === (_a = Logic_1.default.equipments[this.data.AvatarData.professionData.equips[InventoryManager_1.default.TROUSERS]]) || void 0 === _a ? void 0 : _a.trouserslong)) {
+            hasLong = true;
+            equipColor = data.color;
+          }
+        }
+        if (1 == (null === (_b = this.data.playerEquips[InventoryManager_1.default.TROUSERS]) || void 0 === _b ? void 0 : _b.trouserslong)) {
+          hasLong = true;
+          equipColor = this.data.playerEquips[InventoryManager_1.default.TROUSERS].color;
+        }
+        this.changeLegColor(hasLong, equipColor);
+      };
+      AvatarFileEditor.prototype.changeLegColor = function(isLong, colorHex) {
+        if (isLong) {
+          this.legSprite1.node.color = cc.Color.WHITE.fromHEX(colorHex);
+          this.legSprite2.node.color = cc.Color.WHITE.fromHEX(colorHex);
+          this.footprite1.node.color = cc.Color.WHITE.fromHEX(colorHex);
+          this.footSprite2.node.color = cc.Color.WHITE.fromHEX(colorHex);
+        } else {
+          this.legSprite1.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor);
+          this.legSprite2.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor);
+          this.footprite1.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor);
+          this.footSprite2.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor);
+        }
       };
       AvatarFileEditor.prototype.getSpriteChildSprite = function(node, childNames) {
         for (var _i = 0, childNames_1 = childNames; _i < childNames_1.length; _i++) {
@@ -3316,9 +3353,10 @@ window.__require = function e(t, n, r) {
         this.changeRes(this.glovesSprite2, data.equips[InventoryManager_1.default.GLOVES]);
         this.changeRes(this.shoesSprite1, data.equips[InventoryManager_1.default.SHOES]);
         this.changeRes(this.shoesSprite2, data.equips[InventoryManager_1.default.SHOES]);
-        this.resetSpriteSize(this.weaponSprite);
-        this.resetSpriteSize(this.remoteSprite);
-        this.resetSpriteSize(this.shieldSprite);
+        this.resetSpriteSize(this.weaponSprite, 1);
+        this.resetSpriteSize(this.remoteSprite, .5);
+        this.resetSpriteSize(this.shieldSprite, 1);
+        this.changeEquipment();
       };
       AvatarFileEditor.prototype.changeEquipment = function() {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
@@ -3333,9 +3371,10 @@ window.__require = function e(t, n, r) {
         this.changeRes(this.glovesSprite2, null === (_j = this.data.playerEquips[InventoryManager_1.default.GLOVES]) || void 0 === _j ? void 0 : _j.img);
         this.changeRes(this.shoesSprite1, null === (_k = this.data.playerEquips[InventoryManager_1.default.SHOES]) || void 0 === _k ? void 0 : _k.img);
         this.changeRes(this.shoesSprite2, null === (_l = this.data.playerEquips[InventoryManager_1.default.SHOES]) || void 0 === _l ? void 0 : _l.img);
-        this.resetSpriteSize(this.weaponSprite);
-        this.resetSpriteSize(this.remoteSprite);
-        this.resetSpriteSize(this.shieldSprite);
+        this.resetSpriteSize(this.weaponSprite, 1);
+        this.resetSpriteSize(this.remoteSprite, .5);
+        this.resetSpriteSize(this.shieldSprite, 1);
+        this.changeSkinColor(cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor));
       };
       AvatarFileEditor.prototype.changeRes = function(sprite, resName, subfix) {
         if (!sprite) return false;
@@ -3343,10 +3382,10 @@ window.__require = function e(t, n, r) {
         subfix && Logic_1.default.spriteFrameRes(resName + subfix) && (spriteFrame = Logic_1.default.spriteFrameRes(resName + subfix));
         sprite.spriteFrame = spriteFrame || null;
       };
-      AvatarFileEditor.prototype.resetSpriteSize = function(sprite) {
+      AvatarFileEditor.prototype.resetSpriteSize = function(sprite, ratio) {
         if (sprite.spriteFrame) {
-          sprite.node.width = sprite.spriteFrame.getOriginalSize().width;
-          sprite.node.height = sprite.spriteFrame.getOriginalSize().height;
+          sprite.node.width = sprite.spriteFrame.getOriginalSize().width * ratio;
+          sprite.node.height = sprite.spriteFrame.getOriginalSize().height * ratio;
         }
       };
       AvatarFileEditor.prototype.update = function(dt) {
@@ -3390,6 +3429,7 @@ window.__require = function e(t, n, r) {
       AvatarFileEditor.prototype.saveData = function() {
         if (this.editTitle.string.length > 0) {
           this.data.name = this.editTitle.string;
+          this.data.desc = this.editDesc.string;
           this.jsCallAndroid.savePlayerDataById(this.data);
           this.backToList();
         } else cc.tween(this.editTitle.node).to(.2, {
@@ -3432,6 +3472,7 @@ window.__require = function e(t, n, r) {
       __decorate([ property(cc.Label) ], AvatarFileEditor.prototype, "labelSkillName", void 0);
       __decorate([ property(cc.Label) ], AvatarFileEditor.prototype, "labelSkillDesc", void 0);
       __decorate([ property(cc.Node) ], AvatarFileEditor.prototype, "equipItemLayout", void 0);
+      __decorate([ property(cc.EditBox) ], AvatarFileEditor.prototype, "editDesc", void 0);
       __decorate([ property(AvatarSpritePickDialog_1.default) ], AvatarFileEditor.prototype, "spritePickDialog", void 0);
       AvatarFileEditor = __decorate([ ccclass ], AvatarFileEditor);
       return AvatarFileEditor;
@@ -3884,14 +3925,15 @@ window.__require = function e(t, n, r) {
       };
       AvatarSimpleSpriteItem.prototype.init = function(resId, count) {
         this.resId = resId;
+        this.count = count;
         this.updateSpriteFrame();
-        this.isItem ? this.countLabel.string = " x" + count : this.countLabel.string = "";
+        this.isItem ? this.countLabel.string = count > 0 ? " x" + count : "" : this.countLabel.string = "";
       };
       AvatarSimpleSpriteItem.prototype.updateSpriteFrame = function() {
         var _this = this;
         var spriteFrame = this.getSpriteFrameByType();
+        this.sprite.spriteFrame = spriteFrame;
         if (spriteFrame) {
-          this.sprite.spriteFrame = spriteFrame;
           var w = spriteFrame.getOriginalSize().width;
           var h = spriteFrame.getOriginalSize().height;
           this.sprite.node.width = 4 * w;
@@ -4130,6 +4172,7 @@ window.__require = function e(t, n, r) {
       value: true
     });
     var Logic_1 = require("../../logic/Logic");
+    var InventoryManager_1 = require("../../manager/InventoryManager");
     var AvatarSpriteItem_1 = require("./AvatarSpriteItem");
     var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
     var AvatarSpritePickDialog = function(_super) {
@@ -4138,11 +4181,12 @@ window.__require = function e(t, n, r) {
         var _this = null !== _super && _super.apply(this, arguments) || this;
         _this.content = null;
         _this.countEditBox = null;
+        _this.countLayout = null;
         _this.prefab = null;
         _this.spriteList = [];
         _this.type = "";
         _this.resId = "";
-        _this.count = 0;
+        _this.count = 1;
         return _this;
       }
       AvatarSpritePickDialog.prototype.onLoad = function() {};
@@ -4166,6 +4210,7 @@ window.__require = function e(t, n, r) {
         icon.select.active = false;
         var type1 = this.resId;
         var type2 = resId;
+        this.countEditBox.string = "" + this.count;
         if (type1 == type2) {
           this.currentSprite && (this.currentSprite.select.active = false);
           this.currentSprite = icon;
@@ -4194,7 +4239,15 @@ window.__require = function e(t, n, r) {
           this.callback && this.callback(false, "", 0);
           return;
         }
-        this.callback && this.callback(true, this.currentSprite.resId, this.count);
+        if (this.callback) {
+          var count = parseInt(this.countEditBox.string);
+          count = isNaN(count) ? 0 : count;
+          this.callback(true, this.currentSprite.resId, count);
+        }
+        this.hide();
+      };
+      AvatarSpritePickDialog.prototype.clickClear = function() {
+        this.callback && this.callback(true, InventoryManager_1.default.EMPTY, 0);
         this.hide();
       };
       AvatarSpritePickDialog.prototype.clickCancel = function() {
@@ -4216,7 +4269,13 @@ window.__require = function e(t, n, r) {
         this.countEditBox.string = "" + count;
       };
       AvatarSpritePickDialog.prototype.showList = function(type) {
-        type.startsWith("item") ? this.showItemList() : this.showEquipList(type);
+        if (type.startsWith("item")) {
+          this.showItemList();
+          this.countLayout.active = true;
+        } else {
+          this.showEquipList(type);
+          this.countLayout.active = false;
+        }
       };
       AvatarSpritePickDialog.prototype.removeContent = function() {
         this.content.removeAllChildren();
@@ -4239,6 +4298,7 @@ window.__require = function e(t, n, r) {
       };
       __decorate([ property(cc.Node) ], AvatarSpritePickDialog.prototype, "content", void 0);
       __decorate([ property(cc.EditBox) ], AvatarSpritePickDialog.prototype, "countEditBox", void 0);
+      __decorate([ property(cc.Node) ], AvatarSpritePickDialog.prototype, "countLayout", void 0);
       __decorate([ property(cc.Prefab) ], AvatarSpritePickDialog.prototype, "prefab", void 0);
       AvatarSpritePickDialog = __decorate([ ccclass ], AvatarSpritePickDialog);
       return AvatarSpritePickDialog;
@@ -4247,6 +4307,7 @@ window.__require = function e(t, n, r) {
     cc._RF.pop();
   }, {
     "../../logic/Logic": "Logic",
+    "../../manager/InventoryManager": "InventoryManager",
     "./AvatarSpriteItem": "AvatarSpriteItem"
   } ],
   B3ActionsClsRegister: [ function(require, module, exports) {
@@ -40665,6 +40726,7 @@ window.__require = function e(t, n, r) {
         var _this = _super.call(this) || this;
         _this.id = "";
         _this.name = "";
+        _this.desc = "";
         _this.pos = cc.v3(5, 5);
         _this.posZ = 0;
         _this.roomPos = cc.v3(0, 0);

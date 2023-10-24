@@ -10,6 +10,7 @@
 
 import Achievement from '../../logic/Achievement'
 import Logic from '../../logic/Logic'
+import InventoryManager from '../../manager/InventoryManager'
 import AvatarSpriteItem from './AvatarSpriteItem'
 
 //任务卡片
@@ -21,6 +22,8 @@ export default class AvatarSpritePickDialog extends cc.Component {
     content: cc.Node = null
     @property(cc.EditBox)
     countEditBox: cc.EditBox = null
+    @property(cc.Node)
+    countLayout: cc.Node = null
     @property(cc.Prefab)
     prefab: cc.Prefab = null
     spriteList: AvatarSpriteItem[] = []
@@ -28,7 +31,7 @@ export default class AvatarSpritePickDialog extends cc.Component {
     currentSprite: AvatarSpriteItem
     type = ''
     resId = ''
-    count = 0
+    count = 1
     onLoad() {}
 
     private showAnim() {
@@ -51,6 +54,7 @@ export default class AvatarSpritePickDialog extends cc.Component {
         icon.select.active = false
         let type1 = this.resId
         let type2 = resId
+        this.countEditBox.string = `${this.count}`
         if (type1 == type2) {
             if (this.currentSprite) {
                 this.currentSprite.select.active = false
@@ -89,7 +93,16 @@ export default class AvatarSpritePickDialog extends cc.Component {
             return
         }
         if (this.callback) {
-            this.callback(true, this.currentSprite.resId, this.count)
+            let count = parseInt(this.countEditBox.string)
+            count = isNaN(count) ? 0 : count
+            this.callback(true, this.currentSprite.resId, count)
+        }
+        this.hide()
+    }
+    //button
+    clickClear() {
+        if (this.callback) {
+            this.callback(true, InventoryManager.EMPTY, 0)
         }
         this.hide()
     }
@@ -128,8 +141,10 @@ export default class AvatarSpritePickDialog extends cc.Component {
     showList(type: string) {
         if (type.startsWith('item')) {
             this.showItemList()
+            this.countLayout.active = true
         } else {
             this.showEquipList(type)
+            this.countLayout.active = false
         }
     }
 

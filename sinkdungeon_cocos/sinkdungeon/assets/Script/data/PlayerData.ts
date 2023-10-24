@@ -38,6 +38,7 @@ export default class PlayerData extends BaseData {
     static DEFAULT_DREAM = 5
     id = ''
     name: string = ''
+    desc: string = ''
     pos: cc.Vec3 = cc.v3(5, 5)
     posZ: number = 0
     roomPos: cc.Vec3 = cc.v3(0, 0)

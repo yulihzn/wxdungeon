@@ -13,7 +13,6 @@ import EquipmentManager from '../../manager/EquipmentManager'
 import InventoryManager from '../../manager/InventoryManager'
 import AvatarSpriteData from '../data/AvatarSpriteData'
 import AvatarFileEditor from './AvatarFileEditor'
-import AvatarSpritePickDialog from './AvatarSpritePickDialog'
 
 const { ccclass, property } = cc._decorator
 
@@ -88,17 +87,18 @@ export default class AvatarSimpleSpriteItem extends cc.Component {
     }
     init(resId: string, count: number) {
         this.resId = resId
+        this.count = count
         this.updateSpriteFrame()
         if (this.isItem) {
-            this.countLabel.string = ` x${count}`
+            this.countLabel.string = count > 0 ? ` x${count}` : ''
         } else {
             this.countLabel.string = ''
         }
     }
     updateSpriteFrame() {
         let spriteFrame = this.getSpriteFrameByType()
+        this.sprite.spriteFrame = spriteFrame
         if (spriteFrame) {
-            this.sprite.spriteFrame = spriteFrame
             let w = spriteFrame.getOriginalSize().width
             let h = spriteFrame.getOriginalSize().height
             this.sprite.node.width = w * 4

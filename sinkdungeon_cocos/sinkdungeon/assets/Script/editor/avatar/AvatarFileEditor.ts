@@ -56,6 +56,8 @@ export default class AvatarFileEditor extends cc.Component {
     labelSkillDesc: cc.Label = null
     @property(cc.Node)
     equipItemLayout: cc.Node = null
+    @property(cc.EditBox)
+    editDesc: cc.EditBox = null
     @property(AvatarSpritePickDialog)
     spritePickDialog: AvatarSpritePickDialog = null
 
@@ -123,6 +125,7 @@ export default class AvatarFileEditor extends cc.Component {
         this.shoesSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'legright', 'foot', 'shoes'])
 
         this.editTitle.string = this.data.name
+        this.editDesc.string = this.data.desc
 
         this.randomButton.on(
             cc.Node.EventType.TOUCH_START,
@@ -416,6 +419,7 @@ export default class AvatarFileEditor extends cc.Component {
     saveData() {
         if (this.editTitle.string.length > 0) {
             this.data.name = this.editTitle.string
+            this.data.desc = this.editDesc.string
             this.jsCallAndroid.savePlayerDataById(this.data)
             this.backToList()
         } else {
