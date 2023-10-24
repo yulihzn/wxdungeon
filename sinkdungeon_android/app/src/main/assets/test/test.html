@@ -12,7 +12,9 @@
 <div id="imageContainer"></div>
 <p id ="json"></p>
 </body>
+<script src="vconsole.min.js"></script>
 <script type="text/javascript">
+  var vConsole = new window.VConsole();
     function toast(){
         window.android.toast("nothing is true,everything is permitted.")
     }
@@ -20,16 +22,21 @@
     // 调用Android接口以获取本地图片列表
         var imageList = window.android.getLocalImageList("equipment");
         // 将获取到的图片列表分割成数组
-        var imageArray = imageList.split(",");
+        var imageArray = imageList.split(";");
         // 获取图像容器
         var imageContainer = document.getElementById("imageContainer");
         // 在页面上显示图片
         imageArray.forEach(function(imagePath) {
+           
+            // imageContainer.appendChild(img); // 将图片添加到图像容器
+            let arr = imagePath.split(',')
+            let path = arr[0]
+            let name = arr[1]
+            console.log(name + ':' + path)
             var img = document.createElement("img");
-            img.src = "file://" + imagePath; // 设置图片路径
-            img.style.width = "64px"; // 设置图片宽度
-            img.style.height = "auto"; // 设置图片高度自适应
-            imageContainer.appendChild(img); // 将图片添加到图像容器
+            img.src = "file://" + path; // 设置图片路径
+            // img.style.width = "64px"; // 设置图片宽度
+            // img.style.height = "auto"; // 设置图片高度自适应
         });
     }
     function getJsonData(){

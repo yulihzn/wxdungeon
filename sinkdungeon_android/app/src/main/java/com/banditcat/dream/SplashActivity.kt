@@ -158,10 +158,11 @@ class SplashActivity : AppCompatActivity(), DownloadProgressListener {
     private fun gotAvatarListPage() {
         checkPermission {
             if (it) {
+                val isDefault = SpUtils[this@SplashActivity, SpUtils.KEY_IS_DEFAULT, true] as Boolean
                 startActivity(
                     Intent(this@SplashActivity, MainActivity::class.java).putExtra(
+//                        MainActivity.KEY_URL, "file:///android_asset/test/test.html"
                         MainActivity.KEY_URL, "file:///android_asset/avatareditor/index.html"
-//                        MainActivity.KEY_URL, "file:///android_asset/test.html"
                     ).putExtra(MainActivity.KEY_SCREEN_ORIENTATION_PORTRAIT, true)
                 )
                 finish()

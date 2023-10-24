@@ -99,6 +99,8 @@ export default class AvatarFileEditor extends cc.Component {
     onLoad() {
         cc.game.setFrameRate(45)
         this.jsCallAndroid.loadPlayers()
+        this.jsCallAndroid.loadEquipments()
+        this.jsCallAndroid.loadItems()
         this.data.valueCopy(Logic.currentEditPlayerData)
         this.petSprite = this.getSpriteChildSprite(this.avatarTable, ['pet'])
         this.bodySprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'sprite', 'avatar', 'body'])

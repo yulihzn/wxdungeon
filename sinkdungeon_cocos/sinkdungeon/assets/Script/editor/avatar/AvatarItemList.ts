@@ -45,7 +45,6 @@ export default class AvatarItemList extends cc.Component {
         this.loadingManager.loadSuits()
         this.loadingManager.loadAffixs()
         this.loadingManager.loadPlayer()
-        this.jsCallAndroid.loadPlayers()
         this.addButton.getComponentInChildren(cc.Label).string = '加载中，请稍候...'
     }
     update(dt) {
@@ -60,11 +59,17 @@ export default class AvatarItemList extends cc.Component {
             this.loadingManager.isPlayerLoaded &&
             this.loadingManager.isAffixsLoaded
         ) {
+            this.jsCallAndroid.loadEquipTexture()
+            this.jsCallAndroid.loadItemTexture()
             this.loadingManager.reset()
             this.show()
         }
     }
+
     show() {
+        this.jsCallAndroid.loadPlayers()
+        this.jsCallAndroid.loadEquipments()
+        this.jsCallAndroid.loadItems()
         this.players = {}
         for (let key in Logic.players) {
             let data = new PlayerData().valueCopy(Logic.players[key])

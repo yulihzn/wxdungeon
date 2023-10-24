@@ -28,8 +28,8 @@ class JsCallHelper(val context: Context) {
             val imageFiles = imageFolder.listFiles { _, name ->
                 name.endsWith(".png")
             }
-            val imageList = imageFiles?.joinToString(",") { file ->
-                file.absolutePath
+            val imageList = imageFiles?.joinToString(";") { file ->
+                file.absolutePath+","+file.name.removeSuffix(".png")
             }
 
             return imageList ?: ""

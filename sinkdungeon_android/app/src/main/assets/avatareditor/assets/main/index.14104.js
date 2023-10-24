@@ -3172,6 +3172,8 @@ window.__require = function e(t, n, r) {
         var _this = this;
         cc.game.setFrameRate(45);
         this.jsCallAndroid.loadPlayers();
+        this.jsCallAndroid.loadEquipments();
+        this.jsCallAndroid.loadItems();
         this.data.valueCopy(Logic_1.default.currentEditPlayerData);
         this.petSprite = this.getSpriteChildSprite(this.avatarTable, [ "pet" ]);
         this.bodySprite = this.getSpriteChildSprite(this.avatarTable, [ "avatar", "sprite", "avatar", "body" ]);
@@ -3563,16 +3565,20 @@ window.__require = function e(t, n, r) {
         this.loadingManager.loadSuits();
         this.loadingManager.loadAffixs();
         this.loadingManager.loadPlayer();
-        this.jsCallAndroid.loadPlayers();
         this.addButton.getComponentInChildren(cc.Label).string = "\u52a0\u8f7d\u4e2d\uff0c\u8bf7\u7a0d\u5019...";
       };
       AvatarItemList.prototype.update = function(dt) {
         if (this.loadingManager.isSpriteFramesLoaded(LoadingManager_1.default.KEY_TEXTURES) && this.loadingManager.isSpriteFramesLoaded(LoadingManager_1.default.KEY_EQUIPMENT) && this.loadingManager.isProfessionLoaded && this.loadingManager.isEquipmentLoaded && this.loadingManager.isSkillsLoaded && this.loadingManager.isItemsLoaded && this.loadingManager.isSuitsLoaded && this.loadingManager.isPlayerLoaded && this.loadingManager.isAffixsLoaded) {
+          this.jsCallAndroid.loadEquipTexture();
+          this.jsCallAndroid.loadItemTexture();
           this.loadingManager.reset();
           this.show();
         }
       };
       AvatarItemList.prototype.show = function() {
+        this.jsCallAndroid.loadPlayers();
+        this.jsCallAndroid.loadEquipments();
+        this.jsCallAndroid.loadItems();
         this.players = {};
         for (var key in Logic_1.default.players) {
           var data = new PlayerData_1.default().valueCopy(Logic_1.default.players[key]);
@@ -25990,19 +25996,31 @@ window.__require = function e(t, n, r) {
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
+    var EquipmentData_1 = require("../../data/EquipmentData");
+    var ItemData_1 = require("../../data/ItemData");
+    var Logic_1 = require("../../logic/Logic");
     var LocalStorage_1 = require("../../utils/LocalStorage");
     var JsCallAndroid = function() {
       function JsCallAndroid() {
         this.players = {};
+        this.equipments = {};
+        this.items = {};
       }
       JsCallAndroid.prototype.loadPlayers = function() {
-        var json = "";
-        window.android && (json = window.android.getLocalJson(JsCallAndroid.FILENAME));
-        (!json || json.length < 1) && (json = LocalStorage_1.default.getValue(JsCallAndroid.FILENAME));
-        if (json && json.length > 0) {
-          this.players = JSON.parse(json);
+        var obj = this.loadJSON("players.json");
+        if (obj) {
+          this.players = obj;
           for (var key in this.players) this.players[key].id = key;
         }
+      };
+      JsCallAndroid.prototype.loadEquipments = function() {};
+      JsCallAndroid.prototype.loadItems = function() {};
+      JsCallAndroid.prototype.loadJSON = function(fileName) {
+        var json = "";
+        window.android && (json = window.android.getLocalJson(fileName));
+        (!json || json.length < 1) && (json = LocalStorage_1.default.getValue(fileName));
+        if (json && json.length > 0) return JSON.parse(json);
+        return null;
       };
       JsCallAndroid.prototype.getPlayerDataById = function(id) {
         return this.players && this.players[id] ? this.players[id] : null;
@@ -26011,12 +26029,65 @@ window.__require = function e(t, n, r) {
         this.players[data.id] = data;
         window.android ? window.android.saveJsonData(JsCallAndroid.FILENAME, JSON.stringify(this.players)) : LocalStorage_1.default.putValue(JsCallAndroid.FILENAME, this.players);
       };
+      JsCallAndroid.prototype.loadEquipTexture = function() {
+        this.loadTexture("equipment", function(name) {
+          var index = name.indexOf("anim0");
+          var key = name;
+          -1 != index && (key = key.substring(0, index));
+          cc.log(key);
+          if (!Logic_1.default.equipments[key]) {
+            var data = new EquipmentData_1.default();
+            data.img = key;
+            data.nameCn = key;
+            data.equipmetType = key.replace(/\d+$/, "");
+            Logic_1.default.equipments[key] = data;
+            Logic_1.default.equipmentNameList.push(key);
+          }
+        });
+      };
+      JsCallAndroid.prototype.loadItemTexture = function() {
+        this.loadTexture("item", function(key) {
+          if (!Logic_1.default.items[key]) {
+            var data = new ItemData_1.default();
+            data.resName = key;
+            data.nameCn = key;
+            Logic_1.default.items[key] = data;
+          }
+        });
+      };
+      JsCallAndroid.prototype.loadTexture = function(dirName, callback) {
+        var imageList = window.android.getLocalImageList(dirName);
+        var imageArray = imageList.split(";");
+        imageArray.forEach(function(imagePath) {
+          var arr = imagePath.split(",");
+          var path = arr[0];
+          var name = arr[1];
+          if (!name || name.length < 1) return;
+          var index = name.indexOf("anim0");
+          var key = name;
+          -1 != index && (key = key.substring(0, index));
+          Logic_1.default.spriteFrames[key] || cc.assetManager.loadRemote("file://" + path, function(err, assert) {
+            if (err) {
+              cc.error(err);
+              return;
+            }
+            assert.setFilters(cc.Texture2D.Filter.LINEAR, cc.Texture2D.Filter.LINEAR);
+            var spriteFrame = new cc.SpriteFrame(assert);
+            Logic_1.default.spriteFrames[key] = spriteFrame;
+            cc.log(key + ":" + path);
+            callback(key);
+          });
+        });
+      };
       JsCallAndroid.FILENAME = "players.json";
       return JsCallAndroid;
     }();
     exports.default = JsCallAndroid;
     cc._RF.pop();
   }, {
+    "../../data/EquipmentData": "EquipmentData",
+    "../../data/ItemData": "ItemData",
+    "../../logic/Logic": "Logic",
     "../../utils/LocalStorage": "LocalStorage"
   } ],
   JumpingAbility: [ function(require, module, exports) {
