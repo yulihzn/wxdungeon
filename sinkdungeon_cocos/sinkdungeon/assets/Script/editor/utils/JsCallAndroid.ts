@@ -111,6 +111,10 @@ export default class JsCallAndroid {
     }
     loadTexture(dirName: string, callback: (name: string) => void) {
         //@ts-ignore
+        if (!window.android) {
+            return
+        }
+        //@ts-ignore
         var imageList = window.android.getLocalImageList(dirName)
         var imageArray = imageList.split(';')
         imageArray.forEach(function (imagePath: string) {

@@ -341,24 +341,24 @@ export default class AvatarFileEditor extends cc.Component {
         this.changeEquipment()
     }
     changeEquipment() {
-        this.changeRes(this.helmetSprite, this.data.playerEquips[InventoryManager.HELMET]?.img, 'anim0')
-        this.changeRes(this.pantsSprite, this.data.playerEquips[InventoryManager.TROUSERS]?.img)
-        this.changeRes(this.cloakSprite, this.data.playerEquips[InventoryManager.CLOAK]?.img)
-        this.changeRes(this.weaponSprite, this.data.playerEquips[InventoryManager.WEAPON]?.img)
-        this.changeRes(this.remoteSprite, this.data.playerEquips[InventoryManager.REMOTE]?.img, 'anim0')
-        this.changeRes(this.shieldSprite, this.data.playerEquips[InventoryManager.SHIELD]?.img)
-        this.changeRes(this.clothesSprite, this.data.playerEquips[InventoryManager.CLOTHES]?.img, 'anim0')
-        this.changeRes(this.glovesSprite1, this.data.playerEquips[InventoryManager.GLOVES]?.img)
-        this.changeRes(this.glovesSprite2, this.data.playerEquips[InventoryManager.GLOVES]?.img)
-        this.changeRes(this.shoesSprite1, this.data.playerEquips[InventoryManager.SHOES]?.img)
-        this.changeRes(this.shoesSprite2, this.data.playerEquips[InventoryManager.SHOES]?.img)
+        this.changeRes(this.helmetSprite, this.data.playerEquips[InventoryManager.HELMET]?.img, 'anim0', this.data.playerEquips[InventoryManager.HELMET]?.color)
+        this.changeRes(this.pantsSprite, this.data.playerEquips[InventoryManager.TROUSERS]?.img, '', this.data.playerEquips[InventoryManager.TROUSERS]?.color)
+        this.changeRes(this.cloakSprite, this.data.playerEquips[InventoryManager.CLOAK]?.img, '', this.data.playerEquips[InventoryManager.CLOAK]?.color)
+        this.changeRes(this.weaponSprite, this.data.playerEquips[InventoryManager.WEAPON]?.img, '', this.data.playerEquips[InventoryManager.WEAPON]?.color)
+        this.changeRes(this.remoteSprite, this.data.playerEquips[InventoryManager.REMOTE]?.img, 'anim0', this.data.playerEquips[InventoryManager.REMOTE]?.color)
+        this.changeRes(this.shieldSprite, this.data.playerEquips[InventoryManager.SHIELD]?.img, '', this.data.playerEquips[InventoryManager.SHIELD]?.color)
+        this.changeRes(this.clothesSprite, this.data.playerEquips[InventoryManager.CLOTHES]?.img, 'anim0', this.data.playerEquips[InventoryManager.CLOTHES]?.color)
+        this.changeRes(this.glovesSprite1, this.data.playerEquips[InventoryManager.GLOVES]?.img, '', this.data.playerEquips[InventoryManager.GLOVES]?.color)
+        this.changeRes(this.glovesSprite2, this.data.playerEquips[InventoryManager.GLOVES]?.img, '', this.data.playerEquips[InventoryManager.GLOVES]?.color)
+        this.changeRes(this.shoesSprite1, this.data.playerEquips[InventoryManager.SHOES]?.img, '', this.data.playerEquips[InventoryManager.SHOES]?.color)
+        this.changeRes(this.shoesSprite2, this.data.playerEquips[InventoryManager.SHOES]?.img, '', this.data.playerEquips[InventoryManager.SHOES]?.color)
         this.resetSpriteSize(this.weaponSprite, 1)
         this.resetSpriteSize(this.remoteSprite, 0.5)
         this.resetSpriteSize(this.shieldSprite, 1)
         this.changeSkinColor(cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor))
     }
 
-    private changeRes(sprite: cc.Sprite, resName: string, subfix?: string) {
+    private changeRes(sprite: cc.Sprite, resName: string, subfix?: string, color?: string) {
         if (!sprite) {
             return false
         }
@@ -370,6 +370,10 @@ export default class AvatarFileEditor extends cc.Component {
             sprite.spriteFrame = spriteFrame
         } else {
             sprite.spriteFrame = null
+        }
+        if (color && color.length > 0) {
+            let c = cc.color(255, 255, 255).fromHEX(color)
+            sprite.node.color = c
         }
     }
     private resetSpriteSize(sprite: cc.Sprite, ratio: number) {

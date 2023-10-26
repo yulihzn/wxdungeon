@@ -17,9 +17,9 @@
   },
   "encryptJs": true,
   "excludeScenes": [
-    "fa4caacf-bcd5-4f66-9861-11cb2eb8f944",
-    "270f6b7f-35d4-485e-9e19-a9be65ef6173",
     "995ba439-6cd4-466c-94de-8368d5729ae7",
+    "270f6b7f-35d4-485e-9e19-a9be65ef6173",
+    "fa4caacf-bcd5-4f66-9861-11cb2eb8f944",
     "d9f0e74d-c6e5-4665-a127-13214862cb96",
     "b38413a9-4a82-4f35-963d-5d5e3c750f45"
   ],

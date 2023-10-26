@@ -9,6 +9,7 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import AvatarData from '../../data/AvatarData'
+import EquipmentData from '../../data/EquipmentData'
 import PlayerData from '../../data/PlayerData'
 import ProfessionData from '../../data/ProfessionData'
 import Logic from '../../logic/Logic'
@@ -117,6 +118,22 @@ export default class AvatarItem extends cc.Component {
             })
         }
         this.changeEquipment()
+        let hasLong = false
+        let equipColor = ''
+
+        if (this.data.AvatarData.professionData.equips[InventoryManager.TROUSERS]) {
+            let data = new EquipmentData()
+            data.valueCopy(Logic.equipments[this.data.AvatarData.professionData.equips[InventoryManager.TROUSERS]])
+            if (Logic.equipments[this.data.AvatarData.professionData.equips[InventoryManager.TROUSERS]]?.trouserslong == 1) {
+                hasLong = true
+                equipColor = data.color
+            }
+        }
+        if (this.data.playerEquips[InventoryManager.TROUSERS]?.trouserslong == 1) {
+            hasLong = true
+            equipColor = this.data.playerEquips[InventoryManager.TROUSERS].color
+        }
+        this.changeLegColor(hasLong, equipColor)
     }
     getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node
@@ -159,22 +176,35 @@ export default class AvatarItem extends cc.Component {
         this.resetSpriteSize(this.shieldSprite)
     }
     private changeEquipment() {
-        this.changeRes(this.helmetSprite, this.data.playerEquips[InventoryManager.HELMET]?.img, 'anim0')
-        this.changeRes(this.pantsSprite, this.data.playerEquips[InventoryManager.TROUSERS]?.img)
-        this.changeRes(this.cloakSprite, this.data.playerEquips[InventoryManager.CLOAK]?.img)
-        this.changeRes(this.weaponSprite, this.data.playerEquips[InventoryManager.WEAPON]?.img)
-        this.changeRes(this.remoteSprite, this.data.playerEquips[InventoryManager.REMOTE]?.img, 'anim0')
-        this.changeRes(this.shieldSprite, this.data.playerEquips[InventoryManager.SHIELD]?.img)
-        this.changeRes(this.clothesSprite, this.data.playerEquips[InventoryManager.CLOTHES]?.img, 'anim0')
-        this.changeRes(this.glovesLeftSprite, this.data.playerEquips[InventoryManager.GLOVES]?.img)
-        this.changeRes(this.glovesRightSprite, this.data.playerEquips[InventoryManager.GLOVES]?.img)
-        this.changeRes(this.shoesLeftSprite, this.data.playerEquips[InventoryManager.SHOES]?.img)
-        this.changeRes(this.shoesRightSprite, this.data.playerEquips[InventoryManager.SHOES]?.img)
+        this.changeRes(this.helmetSprite, this.data.playerEquips[InventoryManager.HELMET]?.img, 'anim0', this.data.playerEquips[InventoryManager.HELMET]?.color)
+        this.changeRes(this.pantsSprite, this.data.playerEquips[InventoryManager.TROUSERS]?.img, '', this.data.playerEquips[InventoryManager.TROUSERS]?.color)
+        this.changeRes(this.cloakSprite, this.data.playerEquips[InventoryManager.CLOAK]?.img, '', this.data.playerEquips[InventoryManager.CLOAK]?.color)
+        this.changeRes(this.weaponSprite, this.data.playerEquips[InventoryManager.WEAPON]?.img, '', this.data.playerEquips[InventoryManager.WEAPON]?.color)
+        this.changeRes(this.remoteSprite, this.data.playerEquips[InventoryManager.REMOTE]?.img, 'anim0', this.data.playerEquips[InventoryManager.REMOTE]?.color)
+        this.changeRes(this.shieldSprite, this.data.playerEquips[InventoryManager.SHIELD]?.img, '', this.data.playerEquips[InventoryManager.SHIELD]?.color)
+        this.changeRes(this.clothesSprite, this.data.playerEquips[InventoryManager.CLOTHES]?.img, 'anim0', this.data.playerEquips[InventoryManager.CLOTHES]?.color)
+        this.changeRes(this.glovesLeftSprite, this.data.playerEquips[InventoryManager.GLOVES]?.img, '', this.data.playerEquips[InventoryManager.GLOVES]?.color)
+        this.changeRes(this.glovesRightSprite, this.data.playerEquips[InventoryManager.GLOVES]?.img, '', this.data.playerEquips[InventoryManager.GLOVES]?.color)
+        this.changeRes(this.shoesLeftSprite, this.data.playerEquips[InventoryManager.SHOES]?.img, '', this.data.playerEquips[InventoryManager.SHOES]?.color)
+        this.changeRes(this.shoesRightSprite, this.data.playerEquips[InventoryManager.SHOES]?.img, '', this.data.playerEquips[InventoryManager.SHOES]?.color)
         this.resetSpriteSize(this.weaponSprite)
         this.resetSpriteSize(this.remoteSprite)
         this.resetSpriteSize(this.shieldSprite)
     }
-    private changeRes(sprite: cc.Sprite, resName: string, subfix?: string) {
+    changeLegColor(isLong: boolean, colorHex: string) {
+        if (isLong) {
+            this.legLeftSprite.node.color = cc.Color.WHITE.fromHEX(colorHex)
+            this.legRightSprite.node.color = cc.Color.WHITE.fromHEX(colorHex)
+            this.footLeftSprite.node.color = cc.Color.WHITE.fromHEX(colorHex)
+            this.footRightSprite.node.color = cc.Color.WHITE.fromHEX(colorHex)
+        } else {
+            this.legLeftSprite.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor)
+            this.legRightSprite.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor)
+            this.footLeftSprite.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor)
+            this.footRightSprite.node.color = cc.Color.WHITE.fromHEX(this.data.AvatarData.skinColor)
+        }
+    }
+    private changeRes(sprite: cc.Sprite, resName: string, subfix?: string, color?: string) {
         if (!sprite) {
             return false
         }
@@ -186,6 +216,10 @@ export default class AvatarItem extends cc.Component {
             sprite.spriteFrame = spriteFrame
         } else {
             sprite.spriteFrame = null
+        }
+        if (color && color.length > 0) {
+            let c = cc.color(255, 255, 255).fromHEX(color)
+            sprite.node.color = c
         }
     }
     private resetSpriteSize(sprite: cc.Sprite) {
