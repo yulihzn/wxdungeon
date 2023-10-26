@@ -152,7 +152,12 @@ export default class EquipmentData extends BaseData {
         return this
     }
     toJSON(): any {
-        const { finalCommon, ...rest } = this
+        const { finalCommon, infocolor1, infocolor2, infocolor3, infobasecolor, suitcolor1, suitcolor2, suitcolor3, ...rest } = this
+        for (const key in rest) {
+            if (rest.hasOwnProperty(key) && (rest[key] === 0 || rest[key] === '')) {
+                delete rest[key]
+            }
+        }
         return rest
     }
 }

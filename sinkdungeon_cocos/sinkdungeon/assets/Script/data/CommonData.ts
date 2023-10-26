@@ -190,4 +190,13 @@ export default class CommonData {
         // this.magicDamagePercent = DataUtils.addPercentFixed(this.magicDamagePercent, data.magicDamagePercent)
         return this
     }
+    toJSON(): any {
+        const { ...rest } = this
+        for (const key in rest) {
+            if (rest.hasOwnProperty(key) && rest[key] === 0) {
+                delete rest[key]
+            }
+        }
+        return rest
+    }
 }
