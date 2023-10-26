@@ -20,15 +20,8 @@
     "fa4caacf-bcd5-4f66-9861-11cb2eb8f944",
     "270f6b7f-35d4-485e-9e19-a9be65ef6173",
     "995ba439-6cd4-466c-94de-8368d5729ae7",
-    "25511252-9deb-45c3-9c84-1cd3a6b2ceb3",
-    "69a24851-cb3a-468b-ab15-db9272165855",
-    "567f3343-8319-4db7-8a25-c38817c420b0",
-    "d28f9936-2213-43b6-a483-51aa406b6202",
-    "433fd2f8-f510-487d-acaf-a86988939fd5",
-    "d5eb21e2-24c8-4ac7-9d48-429df71d686b",
-    "7e963c8f-327d-4b32-ae36-47956943fdba",
-    "7b71cfca-1d4b-45b2-a1fc-889759ca37fa",
-    "2d2f792f-a40c-49bb-a189-ed176a246e49"
+    "d9f0e74d-c6e5-4665-a127-13214862cb96",
+    "b38413a9-4a82-4f35-963d-5d5e3c750f45"
   ],
   "fb-instant-games": {},
   "includeSDKBox": false,
@@ -48,9 +41,9 @@
     "REMOTE_SERVER_ROOT": "",
     "orientation": "portrait"
   },
-  "startScene": "b38413a9-4a82-4f35-963d-5d5e3c750f45",
+  "startScene": "2d2f792f-a40c-49bb-a189-ed176a246e49",
   "title": "SinkDungeon",
-  "webOrientation": "portrait",
+  "webOrientation": "landscape",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",
     "appid": "wx48c583ff7f015fb6",
