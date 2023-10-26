@@ -100,4 +100,13 @@ export default class StatusData {
         e.valueCopy(this)
         return e
     }
+    toJSON(): any {
+        const { ...rest } = this
+        for (const key in rest) {
+            if (rest.hasOwnProperty(key) && (rest[key] === 0 || rest[key] === '')) {
+                delete rest[key]
+            }
+        }
+        return rest
+    }
 }

@@ -86,4 +86,13 @@ export default class BuildingData {
         data.valueCopy(this)
         return data
     }
+    toJSON(): any {
+        const { ...rest } = this
+        for (const key in rest) {
+            if (rest.hasOwnProperty(key) && (rest[key] === 0 || rest[key] === '')) {
+                delete rest[key]
+            }
+        }
+        return rest
+    }
 }
