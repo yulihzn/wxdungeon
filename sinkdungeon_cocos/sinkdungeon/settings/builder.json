@@ -50,7 +50,7 @@
   },
   "startScene": "b38413a9-4a82-4f35-963d-5d5e3c750f45",
   "title": "SinkDungeon",
-  "webOrientation": "portrait",
+  "webOrientation": "landscape",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",
     "appid": "wx48c583ff7f015fb6",
