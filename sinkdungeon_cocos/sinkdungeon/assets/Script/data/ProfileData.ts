@@ -38,7 +38,7 @@ export default class ProfileData {
     //跟随的非人形npc列表
     nonPlayerList: NonPlayerData[] = new Array()
     //跟随的人形npc id列表
-    aiPlayerIdList: string[] = new Array()
+    aiPlayerIdMap: { [key: string]: string[] } = {}
     level = 0 //当前层级
     //游玩时间
     totalTime = 0

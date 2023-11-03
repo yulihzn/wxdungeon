@@ -279,7 +279,7 @@ export default class Dungeon extends cc.Component {
                     //加载跟随npc
                     let nonList = new Array().concat(Logic.nonPlayerList)
                     this.nonPlayerManager.addNonPlayerListFromSave(this, nonList, this.player.node.position, this.player.entity.Transform.z)
-                    this.aiPlayerManager.addAiPlayerListFromSave(this, Logic.aiPlayerIdList)
+                    this.aiPlayerManager.addAiPlayerListFromSave(this, Logic.getRoomPlayerList())
                     //加载随机怪物
                     if (
                         (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoom().isReborn) &&

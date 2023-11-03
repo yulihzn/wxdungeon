@@ -145,10 +145,10 @@ export default class Logic extends cc.Component {
     static sortIndexs: { [key: string]: number } = {} //0时间,1类别,2品质,3价格
     static settings: SettingsData = new SettingsData()
     static nonPlayerList: NonPlayerData[] = []
-    static aiPlayerIdList: string[] = []
+    static aiPlayerIdMap: { [key: string]: string[] } = {}
     static playerMetals: { [key: string]: MetalTalentData } = {} //玩家翠金天赋点
     static metalId = ''
-    static furnitureMap: Map<String, BuildingData> = new Map()
+    static furnitureMap: Map<string, BuildingData> = new Map()
     static currentEditPlayerData = new PlayerData()
 
     onLoad() {
@@ -190,7 +190,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.lastPlayerId = Logic.currentPlayerId
         Logic.profileManager.data.playerDatas = DataUtils.cloneKeyValue(Logic.playerDatas, value => new PlayerData().valueCopy(value))
         Logic.profileManager.data.nonPlayerList = Logic.nonPlayerList
-        Logic.profileManager.data.aiPlayerIdList = Logic.aiPlayerIdList
+        Logic.profileManager.data.aiPlayerIdMap = Logic.aiPlayerIdMap
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon
         Logic.profileManager.data.cycle = Logic.cycle
         Logic.profileManager.data.level = Logic.level
@@ -249,7 +249,7 @@ export default class Logic extends cc.Component {
         Logic.initInventoryManager()
         //加载保存的npc
         Logic.nonPlayerList = DataUtils.copyListValue(Logic.profileManager.data.nonPlayerList, value => new NonPlayerData().valueCopy(value))
-        Logic.aiPlayerIdList = DataUtils.copyListValue(Logic.profileManager.data.aiPlayerIdList, value => value)
+        Logic.aiPlayerIdMap = DataUtils.cloneKeyValue(Logic.profileManager.data.aiPlayerIdMap, value => value)
         //重置地牢宽高
         Dungeon.WIDTH_SIZE = 15
         Dungeon.HEIGHT_SIZE = 9
@@ -590,5 +590,9 @@ export default class Logic extends cc.Component {
             Logic.playerDatas[id] = data
         }
         return data
+    }
+    static getRoomPlayerList():string[]{
+        let room = Logic.mapManager.getCurrentRoom()
+        return Logic.aiPlayerIdMap[`${Logic.chapterIndex},${Logic.level},${room.x},${room.y}`]
     }
 }
