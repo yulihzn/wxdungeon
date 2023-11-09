@@ -46,7 +46,7 @@
         "isHeavy": 1,
         "scale": 1.2,
         "isEnemy": 0,
-        "isFollow": 1,
+        "isFollow": 0,
         "bodyRect": "0,0,48,32,105",
         "attackRect": "-32,0,112,32,80",
         "lifeTime": 0
