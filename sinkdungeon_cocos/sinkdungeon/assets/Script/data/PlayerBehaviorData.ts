@@ -1,16 +1,4 @@
-import EquipmentData from './EquipmentData'
-import DamageData from './DamageData'
-import StatusData from './StatusData'
-import CommonData from './CommonData'
-import Random from '../utils/Random'
-import AvatarData from './AvatarData'
-import OilGoldData from './OilGoldData'
-import TalentData from './TalentData'
-import Shield from '../logic/Shield'
-import LifeData from './LifeData'
 import DataUtils from '../utils/DataUtils'
-import ItemData from './ItemData'
-import InventoryData from './InventoryData'
 import BaseData from './BaseData'
 
 // Learn TypeScript:
@@ -32,23 +20,22 @@ import BaseData from './BaseData'
  * 关于npc不在当前房间的情况，会根据走路速度来判断当前应该在的位置
  */
 export default class PlayerBehaviorData extends BaseData {
-    
-    pos: cc.Vec3 = cc.v3(5, 5)
-    posZ: number = 0
-    roomPos: cc.Vec3 = cc.v3(0, 0)
-    isWakeUp = false
-    chapterIndex = 999
-    chapterLevel = 999
-    isEnemy = false
-
-
+    static readonly EVENT_INTERACT = 0
+    static readonly EVENT_ANIM = 1
+    toChapter = 0
+    toLevel = 0
+    toPosX = 0
+    toPosY = 0
+    toPosZ = 0
+    startEvent = ''
+    endEvent = ''
 
     public valueCopy(data: PlayerBehaviorData): PlayerBehaviorData {
         if (!data) {
             return this
         }
         DataUtils.baseCopy(this, data)
-        
+
         return this
     }
 
@@ -58,7 +45,6 @@ export default class PlayerBehaviorData extends BaseData {
         return e
     }
 
-    
     toJSON(): any {
         const { ...rest } = this
         return rest
