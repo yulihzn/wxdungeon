@@ -586,7 +586,7 @@
       "r": 255,
       "g": 209,
       "b": 0,
-      "a": 118
+      "a": 80
     },
     "showLight": true,
     "showRayCast": false,
@@ -859,7 +859,7 @@
       "r": 255,
       "g": 209,
       "b": 0,
-      "a": 118
+      "a": 82
     },
     "showLight": true,
     "showRayCast": false,
@@ -1132,7 +1132,7 @@
       "r": 255,
       "g": 209,
       "b": 0,
-      "a": 118
+      "a": 255
     },
     "showLight": true,
     "showRayCast": false,
@@ -1419,7 +1419,7 @@
       "r": 255,
       "g": 209,
       "b": 0,
-      "a": 118
+      "a": 255
     },
     "showLight": true,
     "showRayCast": false,
