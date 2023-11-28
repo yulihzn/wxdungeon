@@ -1,10 +1,4 @@
-/*
- * Date: 2021-08-11 14:39:15
- * LastEditors: GT<caogtaa@gmail.com>
- * LastEditTime: 2021-08-11 14:40:09
-*/ 
-// Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.  
-
+ 
 CCEffect %{
   techniques:
   - passes:
@@ -13,64 +7,52 @@ CCEffect %{
       blendState:
         targets:
         - blend: true
-          blendSrc: one
-          blendDst: one_minus_src_alpha
-          blendSrcAlpha: one
-          blendDstAlpha: one_minus_src_alpha
       rasterizerState:
         cullMode: none
       properties:
-        alphaThreshold: { value: 0.5 }
+        texture: { value: white }
 }%
-
-
+ 
 CCProgram vs %{
-  precision highp float;
-
-  #include <cc-global>
-  #include <cc-local>
-
-  in vec3 a_position;
-  
-  in vec4 a_color;
-  out vec4 v_color;
-
-  in float a_dist;
-  out float v_dist;
-
-  void main () {
-    vec4 pos = vec4(a_position, 1);
-    pos = cc_matViewProj * cc_matWorld * pos;
-
-    v_color = a_color;
-    v_dist = a_dist;
-
-    gl_Position = pos;
-  }
+ 
+precision highp float;
+ 
+#include <cc-global>
+ 
+in vec3 a_position;
+ 
+in mediump vec2 a_uv0;
+out mediump vec2 v_uv0;
+ 
+in vec4 a_color;
+out vec4 v_color;
+ 
+void main () {
+  gl_Position = cc_matViewProj * vec4(a_position, 1);
+  v_uv0 = a_uv0;
+  v_color = a_color;
+}
+ 
 }%
-
-
+ 
 CCProgram fs %{
-  #if CC_SUPPORT_standard_derivatives
-    #extension GL_OES_standard_derivatives : enable
-  #endif
-
-  precision highp float;
-  
-  #include <cc-global>
-  #include <alpha-test>
-
-  in vec4 v_color;
-  in float v_dist;
-
-  void main () {
-    vec4 o = v_color;
-    ALPHA_TEST(o);
-    float d = abs(v_dist);
-    float fade = o.a;
-      o.a = smoothstep(1.0, 0.0, abs(v_dist));
-    o.a *= fade;
-    o.rgb *= o.a;
-    gl_FragColor = o;
+ 
+precision highp float;
+ 
+#include <texture>
+ 
+uniform sampler2D texture;
+in mediump vec2 v_uv0;
+in vec4 v_color;
+ 
+void main () {
+  vec4 color = v_color;
+  CCTexture(texture, v_uv0, color);
+  if(color.a < 0.5){
+  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+  }else{
+    gl_FragColor = color;
   }
+}
+ 
 }%

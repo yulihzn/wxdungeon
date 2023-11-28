@@ -265,7 +265,7 @@ export default class Dungeon extends cc.Component {
                             ) {
                                 this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j))
                             }
-                            //加载npc
+                            //加载非人形npc
                             this.nonPlayerManager.addNonPlayerFromMap(this, mapData[i][j], cc.v3(i, j), 0)
                         }
                     }
@@ -276,9 +276,9 @@ export default class Dungeon extends cc.Component {
                     //初始化玩家和控制器
                     this.initPlayer()
                     this.initCameraAndFog(this.player)
-                    //加载跟随npc
-                    let nonList = new Array().concat(Logic.nonPlayerList)
-                    this.nonPlayerManager.addNonPlayerListFromSave(this, nonList, this.player.node.position, this.player.entity.Transform.z)
+                    //加载非人形跟随npc
+                    this.nonPlayerManager.addNonPlayerListFromSave(this, new Array().concat(Logic.nonPlayerList), this.player.node.position, this.player.entity.Transform.z)
+                    //加载人形跟随npc
                     this.aiPlayerManager.addAiPlayerListFromSave(this, Logic.getRoomPlayerList())
                     //加载随机怪物
                     if (
