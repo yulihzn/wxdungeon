@@ -44,6 +44,7 @@ export default class ExitDoor extends Building {
         this.exitData.valueCopy(exitData)
         this.isBackToUpLevel = type == 2 || type == 3
         let collider = this.node.getComponent(CCollider)
+        //单数代表是箭头提示的出口
         if (this.type % 2 == 1) {
             this.node.opacity = 0
             this.roof.node.opacity = 0
@@ -112,7 +113,8 @@ export default class ExitDoor extends Building {
         if (this.dir % 4 > 1 || this.dir > 7) {
             spriteframe = null
         }
-        if (this.type > 1) {
+        //0普通的入口 1普通的箭头 2上锁的入口 3上锁的箭头 4隐藏的入口 5隐藏的箭头
+        if (this.type > 3) {
             this.roof.getComponentInChildren(cc.Label).node.parent.active = false
         }
         this.roof.spriteFrame = spriteframe

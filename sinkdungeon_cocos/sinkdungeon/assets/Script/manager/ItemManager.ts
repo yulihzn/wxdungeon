@@ -150,11 +150,11 @@ export default class ItemManager extends BaseManager {
             this.addItem(Dungeon.getPosInMap(indexPos), Item.DREAM)
         }
         //生成红色药丸
-        if (mapStr == 'A3') {
+        if (mapStr == 'A2') {
             this.addItem(Dungeon.getPosInMap(indexPos), Item.REDCAPSULE)
         }
         //生成蓝色药丸
-        if (mapStr == 'A1') {
+        if (mapStr == 'A3') {
             this.addItem(Dungeon.getPosInMap(indexPos), Item.BLUECAPSULE)
         }
         //生成无敌盾
