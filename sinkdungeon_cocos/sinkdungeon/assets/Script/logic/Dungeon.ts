@@ -486,6 +486,13 @@ export default class Dungeon extends cc.Component {
         let isequal = mapStr[0] == typeStr
         return isequal
     }
+    static hasThe(mapStr: string, typeStr: string): boolean {
+        if (!mapStr) {
+            return false
+        }
+        let isequal = mapStr.indexOf(typeStr) != -1
+        return isequal
+    }
     addItem(pos: cc.Vec3, resName: string, count?: number, shopTable?: ShopTable) {
         if (this.itemManager) {
             if (!pos) {

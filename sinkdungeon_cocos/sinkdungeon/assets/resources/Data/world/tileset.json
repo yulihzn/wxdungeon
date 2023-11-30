@@ -3764,6 +3764,14 @@
         {
          "id":2816,
          "type":"car000"
+        }, 
+        {
+         "id":2944,
+         "type":"player000"
+        }, 
+        {
+         "id":2945,
+         "type":"player001"
         }],
  "tilewidth":8,
  "type":"tileset",

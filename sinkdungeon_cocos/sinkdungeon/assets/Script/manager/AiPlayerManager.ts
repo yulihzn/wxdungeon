@@ -35,8 +35,14 @@ export default class AiPlayerManager extends BaseManager {
     clear(): void {
         Utils.clearComponentArray(this.players)
     }
+    public addAiPlayerFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3, posZ: number) {
+        if (Dungeon.hasThe(mapDataStr, 'player')) {
+            let data = Logic.getPlayerDataById(mapDataStr)
+            this.getPlayer(data.id, dungeon)
+        }
+    }
     public addAiPlayerListFromSave(dungeon: Dungeon, list: string[]) {
-        if(!list){
+        if (!list) {
             return
         }
         let room = Logic.mapManager.getCurrentRoom()
