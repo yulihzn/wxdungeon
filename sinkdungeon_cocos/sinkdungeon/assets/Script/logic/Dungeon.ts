@@ -278,7 +278,7 @@ export default class Dungeon extends cc.Component {
                     this.initCameraAndFog(this.player)
                     //加载非人形跟随npc
                     this.nonPlayerManager.addNonPlayerListFromSave(this, new Array().concat(Logic.nonPlayerList), this.player.node.position, this.player.entity.Transform.z)
-                    //加载人形跟随npc
+                    //加载人形npc
                     this.aiPlayerManager.addAiPlayerListFromSave(this, Logic.getRoomPlayerList())
                     //加载随机怪物
                     if (

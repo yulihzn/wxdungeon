@@ -37,8 +37,7 @@ export default class AiPlayerManager extends BaseManager {
     }
     public addAiPlayerFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3, posZ: number) {
         if (Dungeon.hasThe(mapDataStr, 'player')) {
-            let data = Logic.getPlayerDataById(mapDataStr)
-            this.getPlayer(data.id, dungeon)
+            Logic.getPlayerDataById(mapDataStr)
         }
     }
     public addAiPlayerListFromSave(dungeon: Dungeon, list: string[]) {
@@ -62,6 +61,5 @@ export default class AiPlayerManager extends BaseManager {
         player.dungeon = dungeon
         return player
     }
-    timeDelay = 0
     updateLogic(dt: number) {}
 }

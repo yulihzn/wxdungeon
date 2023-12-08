@@ -589,9 +589,10 @@ export default class Logic extends cc.Component {
             }
             Logic.playerDatas[id] = data
         }
+
         return data
     }
-    static getRoomPlayerList():string[]{
+    static getRoomPlayerList(): string[] {
         let room = Logic.mapManager.getCurrentRoom()
         return Logic.aiPlayerIdMap[`${Logic.chapterIndex},${Logic.level},${room.x},${room.y}`]
     }
