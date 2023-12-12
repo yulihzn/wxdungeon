@@ -42,7 +42,7 @@ export default class Chapter extends cc.Component {
 
     clickChapter(event, chapter: string) {
         if (chapter) {
-            Logic.jumpSlotIndex = LocalStorage.getLastSaveSlotKey()
+            Logic.currentSlotIndex = LocalStorage.getLastSaveSlotKey()
             Logic.jumpChapter = parseInt(chapter)
             AudioPlayer.play(AudioPlayer.SELECT)
             let bg = this.getComponentInChildren(StartBackground)

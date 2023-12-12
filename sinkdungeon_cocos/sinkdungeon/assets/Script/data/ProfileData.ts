@@ -7,6 +7,7 @@ import InventoryData from './InventoryData'
 import GroundOilGoldData from './GroundOilGoldData'
 import NonPlayerData from './NonPlayerData'
 import MetalTalentData from './MetalTalentData'
+import DataUtils from '../utils/DataUtils'
 
 /**存档保存数据
  * 玩家的属性 目前血量 攻防抗性等 位置
@@ -58,4 +59,16 @@ export default class ProfileData {
     metalId = ''
 
     lastPlayerId = '' //最后被控制的Player
+
+    public valueCopy(data: ProfileData): void {
+        if (!data) {
+            return
+        }
+        DataUtils.baseCopy(this, data, true)
+    }
+    public clone(): ProfileData {
+        let e = new ProfileData()
+        e.valueCopy(this)
+        return e
+    }
 }

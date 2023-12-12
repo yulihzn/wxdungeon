@@ -22,6 +22,7 @@ export default class TriggerData extends BaseData {
     static readonly GROUP_USE = 3 //触发事件 使用
     static readonly GROUP_AUTO = 4 //触发事件 自动
     static readonly GROUP_JUMP = 5 //触发事件 跳跃
+    static readonly GROUP_DASH = 6 //触发事件 冲刺
     static readonly TYPE_ATTACK_1 = 1 //触发类别 连招1 √
     static readonly TYPE_ATTACK_2 = 2 //触发类别 连招2 √
     static readonly TYPE_ATTACK_3 = 3 //触发类别 连招3 √
@@ -42,6 +43,8 @@ export default class TriggerData extends BaseData {
     static readonly TYPE_JUMP_START = 0 //触发类别 跳跃开始
     static readonly TYPE_JUMP_HIGHEST = 1 //触发类别 跳跃最高点
     static readonly TYPE_JUMP_END = 2 //触发类别 跳跃结束
+    static readonly TYPE_DASH_START = 0 //触发类别 冲刺开始
+    static readonly TYPE_DASH_END = 1 //触发类别 冲刺结束
     static readonly TARGET_SELF = 0 //触发目标 自己 √
     static readonly TARGET_OTHER = 1 //触发目标 敌对 √
     static readonly TARGET_OTHER_NEAREST = 2 //触发目标 最近敌对 √

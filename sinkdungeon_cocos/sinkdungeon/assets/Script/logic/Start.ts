@@ -51,14 +51,14 @@ export default class Start extends cc.Component {
         this.saveSlotDialog.onItemSelectListener((slotIndex: number) => {
             this._startShow()
             this.scheduleOnce(() => {
-                Logic.jumpSlotIndex = slotIndex
+                Logic.currentSlotIndex = slotIndex
                 Logic.resetData()
                 if (Logic.profileManager.hasSaveData) {
                     this.scheduleOnce(() => {
                         Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level), true)
                     }, 0.5)
                 } else {
-                    Logic.jumpSlotIndex = slotIndex
+                    Logic.currentSlotIndex = slotIndex
                     cc.director.loadScene('pickavatar')
                 }
             }, 0.5)
@@ -82,7 +82,7 @@ export default class Start extends cc.Component {
     }
     private showButtons() {
         if (this.continueButton) {
-            Logic.jumpSlotIndex = LocalStorage.getLastSaveSlotKey()
+            Logic.currentSlotIndex = LocalStorage.getLastSaveSlotKey()
             Logic.resetData()
             this.continueButton.active = Logic.profileManager.hasSaveData
             if (this.continueButton.active) {
@@ -122,7 +122,7 @@ export default class Start extends cc.Component {
         }, 0.5)
     }
     continueGame() {
-        Logic.jumpSlotIndex = LocalStorage.getLastSaveSlotKey()
+        Logic.currentSlotIndex = LocalStorage.getLastSaveSlotKey()
         Logic.resetData()
         Logic.isFirst = 1
         AudioPlayer.play(AudioPlayer.SELECT)

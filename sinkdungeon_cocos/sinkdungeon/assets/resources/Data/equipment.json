@@ -4560,15 +4560,15 @@
         "exTriggers": [
             {
                 "id": 0,
-                "type": 0,
-                "group": 4,
+                "type": 1,
+                "group": 6,
                 "target": 0,
                 "count": 1,
                 "autoInterval": 5,
                 "res": "status019"
             }
         ],
-        "extraInfo": "短暂加速",
+        "extraInfo": "冲刺以后短暂加速",
         "desc": "恶魔靴子..."
     },
     "shoes004": {

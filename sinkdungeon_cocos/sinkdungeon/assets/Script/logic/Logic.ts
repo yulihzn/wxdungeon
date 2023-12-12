@@ -30,6 +30,7 @@ import SettingsData from '../data/SettingsData'
 import AffixMapData from '../data/AffixMapData'
 import MetalTalentData from '../data/MetalTalentData'
 import DataUtils from '../utils/DataUtils'
+import ProfileData from '../data/ProfileData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -127,8 +128,8 @@ export default class Logic extends cc.Component {
     static seed = 5
     static isFirst = 1
     static isFirstLoading = true
-    static jumpChapter = 0
-    static jumpSlotIndex = 0
+    static jumpChapter = 0 //用来跳转指定章节
+    static currentSlotIndex = 0 //当前人物存档下标
     static shipTransportScene = 0
     static elevatorScene = 0
     static isCheatMode = false //作弊
@@ -150,6 +151,7 @@ export default class Logic extends cc.Component {
     static metalId = ''
     static furnitureMap: Map<string, BuildingData> = new Map()
     static currentEditPlayerData = new PlayerData()
+    static data: ProfileData = new ProfileData()
 
     onLoad() {
         Logic.settings.valueCopy(LocalStorage.getSystemSettings())
@@ -210,17 +212,19 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.coinCounts = Logic.coinCounts
         Logic.profileManager.data.lastSaveTime = new Date().getTime()
         Logic.profileManager.data.metalId = Logic.metalId
-        Logic.profileManager.saveData(Logic.jumpSlotIndex)
+        Logic.profileManager.saveData(Logic.currentSlotIndex)
         LocalStorage.saveData(LocalStorage.KEY_REAL_COINS, Logic.realCoins)
-        LocalStorage.setLastSaveSlotKey(Logic.jumpSlotIndex)
+        LocalStorage.setLastSaveSlotKey(Logic.currentSlotIndex)
         Logic.furnitureMap.forEach(value => {
             LocalStorage.saveFurnitureData(value)
         })
     }
+    /**清除当前数据，从存档重置数据 */
     static resetData(chapter?: number) {
         Logic.profileManager = new ProfileManager()
-        Logic.profileManager.loadData(Logic.jumpSlotIndex)
+        Logic.profileManager.loadData(Logic.currentSlotIndex)
         //重置时间
+        Logic.data.valueCopy(Logic.profileManager.data)
         Logic.totalTime = Logic.profileManager.data.totalTime
         Logic.realTime = Logic.profileManager.data.realTime
         Logic.dreamTime = Logic.profileManager.data.dreamTime

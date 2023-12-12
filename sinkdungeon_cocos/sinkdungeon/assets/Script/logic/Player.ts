@@ -895,6 +895,7 @@ export default class Player extends PlayActor {
             this.playerAnim(BaseAvatar.STATE_IDLE, this.currentDir)
             this.sc.isDashing = false
             this.highLight(false)
+            this.exTrigger(TriggerData.GROUP_DASH, TriggerData.TYPE_DASH_END)
             this.scheduleOnce(() => {
                 this.dashCooling = false
             }, 0.5)

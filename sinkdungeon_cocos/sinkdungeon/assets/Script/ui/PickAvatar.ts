@@ -371,7 +371,7 @@ export default class PickAvatar extends cc.Component {
             return
         }
         //清除存档
-        ProfileManager.clearData(Logic.jumpSlotIndex)
+        ProfileManager.clearData(Logic.currentSlotIndex)
         //重置数据
         Logic.resetData(Logic.jumpChapter)
         //加载资源

@@ -77,7 +77,7 @@ export default class Chest extends Building {
                         if (Logic.isCheatMode) {
                             // dungeon.addEquipment(EquipmentManager.CLOTHES_JUNGLE, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment(EquipmentManager.SHOES_JUNGLE, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
-                            // dungeon.addEquipment('shoes011', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
+                            dungeon.addEquipment('shoes003', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment('clothes028', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment('trousers013', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
                             // dungeon.addEquipment('helmet031', Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality)
