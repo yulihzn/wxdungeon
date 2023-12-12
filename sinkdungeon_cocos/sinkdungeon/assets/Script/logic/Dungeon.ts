@@ -192,7 +192,7 @@ export default class Dungeon extends cc.Component {
         this.reset()
     }
     reset() {
-        Logic.lastBgmIndex = Logic.chapterIndex == Logic.CHAPTER099 ? 1 : 0
+        Logic.lastBgmIndex = Logic.data.chapterIndex == Logic.CHAPTER099 ? 1 : 0
         AudioPlayer.stopAllEffect()
         AudioPlayer.play(AudioPlayer.PLAY_BG, true)
         this.monsterManager.clear()
@@ -297,7 +297,7 @@ export default class Dungeon extends cc.Component {
                             .delay(0.1)
                             .to(0.5, { opacity: 0 })
                             .call(() => {
-                                if (Logic.totalTime < 5 && Logic.CHAPTER00 == Logic.chapterIndex) {
+                                if (Logic.data.totalTime < 5 && Logic.CHAPTER00 == Logic.data.chapterIndex) {
                                     Dialogue.play(Controller.isMouseMode() ? Dialogue.COURSE_FIRST_PC : Dialogue.COURSE_FIRST_MOBILE)
                                 }
                             })
@@ -555,8 +555,8 @@ export default class Dungeon extends cc.Component {
         this.scheduleOnce(() => {
             let data = Logic.groundOilGoldData.clone()
             if (
-                data.chapter == Logic.chapterIndex &&
-                data.level == Logic.level &&
+                data.chapter == Logic.data.chapterIndex &&
+                data.level == Logic.data.level &&
                 data.x == Logic.mapManager.rectDungeon.currentPos.x &&
                 data.y == Logic.mapManager.rectDungeon.currentPos.y &&
                 data.value > 0
@@ -577,7 +577,7 @@ export default class Dungeon extends cc.Component {
             if (shopTable) {
                 return
             }
-            let isOnlyTest = data.test > 0 && (Logic.chapterIndex == Logic.CHAPTER099 || (Logic.chapterIndex == Logic.CHAPTER00 && Logic.level == 0))
+            let isOnlyTest = data.test > 0 && (Logic.data.chapterIndex == Logic.CHAPTER099 || (Logic.data.chapterIndex == Logic.CHAPTER00 && Logic.data.level == 0))
             if (!isOnlyTest) {
                 let currequipments = Logic.mapManager.getCurrentMapEquipments()
                 if (currequipments) {

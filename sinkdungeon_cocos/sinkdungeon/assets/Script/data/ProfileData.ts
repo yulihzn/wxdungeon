@@ -22,8 +22,8 @@ import DataUtils from '../utils/DataUtils'
 export default class ProfileData {
     //地图数据管理类
     rectDungeons: { [key: string]: RectDungeon } = {}
-    chapterIndex: number = 0 //当前章节
-    chapterMaxIndex: number = 0 //到达过的最大章节
+    chapterIndex: number = 0 //当前章节 forsave
+    chapterMaxIndex: number = 0 //到达过的最大章节 forsave
     playerDatas: { [key: string]: PlayerData } = {}
     //玩家装备列表
     playerEquips: { [key: string]: EquipmentData } = {}
@@ -40,25 +40,25 @@ export default class ProfileData {
     nonPlayerList: NonPlayerData[] = new Array()
     //跟随的人形npc id列表
     aiPlayerIdMap: { [key: string]: string[] } = {}
-    level = 0 //当前层级
+    level = 0 //当前层级 forsave
     //游玩时间
-    totalTime = 0
-    //游戏里的时间，默认从2018-05-14 12:55:46开始,现实时间和梦境时间隔开
-    realTime = 1526273746000
-    dreamTime = 1526273746000
+    totalTime = 0 //forsave
+    //游戏里的时间，默认从2018-05-14 12:55:46开始,现实时间和梦境时间隔开 也可以考虑从1559145600000开始
+    realTime = 1526273746000 //forsave
+    dreamTime = 1526273746000 //forsave
+    dreamCostTime = 0 //做梦需要消耗的时间 forsave
+    cycle = 0 //周目 forsave
+    lastPlayerId = '' //最后被控制的Player forsave
     savePointData: SavePointData = new SavePointData()
     groundOilGoldData: GroundOilGoldData = new GroundOilGoldData()
-    oilGolds = 0
+    oilGolds = 0 //经验球 forsave
     killPlayerCounts: { [key: number]: number } = {} //玩家怪物击杀表
     dialogueCounts: { [key: string]: number } = {} //对话出现次数
-    coins = 0 //梦境里的金币
-    coinCounts = 0
+    coins = 0 //梦境里的金币 forsave
+    realCoins = 0 //现实货币，真是货币无法从梦境里获得，但是会出现对应的npc会进行这样的交易 forsave
+    coinCounts = 0 //金币累加数 forsave
     lastSaveTime = 0 //最近游玩时间
-    dreamCostTime = 0 //做梦需要消耗的时间
-    cycle = 0 //周目
     metalId = ''
-
-    lastPlayerId = '' //最后被控制的Player
 
     public valueCopy(data: ProfileData): void {
         if (!data) {

@@ -120,7 +120,7 @@ export default class Item extends BaseNodeComponent {
         }
         if (this.data.canSave) {
             if (this.shopTable) {
-                if (Logic.coins >= this.data.price) {
+                if (Logic.data.coins >= this.data.price) {
                     EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: -this.data.price })
                     let arr = [AudioPlayer.COIN, AudioPlayer.COIN1, AudioPlayer.COIN2]
                     AudioPlayer.play(arr[Logic.getRandomNum(0, arr.length - 1)])

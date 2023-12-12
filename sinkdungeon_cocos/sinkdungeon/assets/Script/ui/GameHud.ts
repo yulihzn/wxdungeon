@@ -162,7 +162,7 @@ export default class GameHud extends cc.Component {
             }
         })
         if (this.clock) {
-            this.clock.string = `${Utils.getPlayTime(Logic.totalTime)}`
+            this.clock.string = `${Utils.getPlayTime(Logic.data.totalTime)}`
         }
         if (this.level) {
             this.level.string = `${Logic.worldLoader.getCurrentLevelData().name}`
@@ -389,7 +389,7 @@ export default class GameHud extends cc.Component {
         if (this.isCheckTimeDelay(dt)) {
             if (this.clock && this.startCountTime) {
                 this.changeTime()
-                this.clock.string = `${Utils.getPlayTime(Logic.totalTime)}`
+                this.clock.string = `${Utils.getPlayTime(Logic.data.totalTime)}`
             }
         }
         if (this.HasModalDialogShow) {
@@ -403,11 +403,11 @@ export default class GameHud extends cc.Component {
         if (Logic.isGamePause && !this.IsTimeCountDialogShow) {
             return
         }
-        Logic.totalTime += 1000
+        Logic.data.totalTime += 1000
         if (Logic.isDreaming()) {
-            Logic.dreamTime += 60000
+            Logic.data.dreamTime += 60000
         } else {
-            Logic.realTime += 10000
+            Logic.data.realTime += 10000
         }
         EventHelper.emit(EventHelper.HUD_TIME_TICK)
     }

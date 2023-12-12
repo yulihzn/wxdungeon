@@ -62,7 +62,7 @@ export default class InteractBuilding extends Building {
     init(isInteract: boolean, decorateType: number) {
         this.decorateType = decorateType
         this.data.interact = isInteract ? 1 : 0
-        switch (Logic.chapterIndex) {
+        switch (Logic.data.chapterIndex) {
             case Logic.CHAPTER00:
                 this.resName = `decorate000${this.decorateType}`
                 break

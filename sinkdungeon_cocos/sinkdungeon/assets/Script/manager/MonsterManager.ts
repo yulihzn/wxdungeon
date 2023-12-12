@@ -276,7 +276,7 @@ export default class MonsterManager extends BaseManager {
                 up = 30
             }
 
-            variationRate = variationRate + Logic.chapterIndex * 2 + Logic.level * 2 + up
+            variationRate = variationRate + Logic.data.chapterIndex * 2 + Logic.data.level * 2 + up
             monster.isVariation = rand4save.getRandomNum(0, 100) < variationRate && data.isTest < 1
             if (monster.isVariation) {
                 data.Common.maxHealth = data.Common.maxHealth * 2
@@ -451,7 +451,7 @@ export default class MonsterManager extends BaseManager {
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.INSANE_ROOM)) {
             up = 5
         }
-        switch (Logic.chapterIndex) {
+        switch (Logic.data.chapterIndex) {
             case Logic.CHAPTER00:
                 arr = MonsterManager.MONSTERS_LAB
                 num = rand4save.getRandomNum(3, 6)

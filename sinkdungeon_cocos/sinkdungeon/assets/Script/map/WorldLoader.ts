@@ -193,6 +193,6 @@ export default class WorldLoader {
         return levelList[levelIndex]
     }
     getCurrentLevelData() {
-        return this.getLevelData(Logic.chapterIndex, Logic.level)
+        return this.getLevelData(Logic.data.chapterIndex, Logic.data.level)
     }
 }

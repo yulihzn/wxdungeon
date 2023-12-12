@@ -36,13 +36,13 @@ export default class CoinCount extends cc.Component {
         }
         let c = parseInt(value)
         if (isReal && this.isReal) {
-            Logic.realCoins += c
+            Logic.data.realCoins += c
         } else if (!isReal && !this.isReal) {
-            Logic.coins += c
+            Logic.data.coins += c
             if (c > 0) {
-                Logic.coinCounts += c
-                if (Logic.coinCounts >= 1) {
-                    Logic.coinCounts = 0
+                Logic.data.coinCounts += c
+                if (Logic.data.coinCounts >= 1) {
+                    Logic.data.coinCounts = 0
                     EventHelper.emit(EventHelper.PLAYER_USEDREAM, { value: -1 })
                 }
             }
@@ -51,7 +51,7 @@ export default class CoinCount extends cc.Component {
 
     update(dt) {
         if (this.label) {
-            this.label.string = `${this.isReal ? Logic.realCoins : Logic.coins}`
+            this.label.string = `${this.isReal ? Logic.data.realCoins : Logic.data.coins}`
         }
     }
 }

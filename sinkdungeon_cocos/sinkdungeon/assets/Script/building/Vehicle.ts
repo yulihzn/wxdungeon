@@ -127,7 +127,7 @@ export default class Vehicle extends Building {
             this.playStop()
         }
         this.isMoving = true
-        if (Logic.chapterIndex == Logic.CHAPTER099 && Logic.chapterIndex == 6) {
+        if (Logic.data.chapterIndex == Logic.CHAPTER099 && Logic.data.chapterIndex == 6) {
         }
         if (this.endPos && this.endPos.x < this.node.position.x) {
             if (this.isRepeat) {

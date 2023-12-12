@@ -196,7 +196,7 @@ export default class EquipmentManager extends BaseManager {
     }
 
     static getRandomRange() {
-        return 5 + Logic.chapterMaxIndex + Math.floor(Logic.playerData.OilGoldData.level / 5)
+        return 5 + Logic.data.chapterMaxIndex + Math.floor(Logic.playerData.OilGoldData.level / 5)
     }
     static isTheEquipType(theType: string, types: string[]): boolean {
         let isTheType = false

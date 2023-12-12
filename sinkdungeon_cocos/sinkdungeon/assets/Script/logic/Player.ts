@@ -168,7 +168,7 @@ export default class Player extends PlayActor {
     onLoad() {
         this.init()
         this.shield = this.shieldNode.getComponent(Shield)
-        this.lastConsumeTime = Logic.realTime
+        this.lastConsumeTime = Logic.data.realTime
         this.entity.Move.damping = 3
         this.entity.Move.linearVelocity = cc.v2(0, 0)
         this.statusManager.statusIconList = this.statusIconList
@@ -188,7 +188,7 @@ export default class Player extends PlayActor {
         this.initCollider()
         this.weaponLeft.init(this, true, false)
         this.weaponRight.init(this, false, false)
-        if (this.data.id == Logic.currentPlayerId) {
+        if (this.data.id == Logic.data.lastPlayerId) {
             this.scheduleOnce(() => {
                 EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH_ALL)
             })
@@ -205,7 +205,7 @@ export default class Player extends PlayActor {
             if (this.node && this.data.AvatarData.organizationIndex == AvatarData.HUNTER) this.updateDream(detail.value)
         })
         EventHelper.on(EventHelper.HUD_TIME_TICK, detail => {
-            if (this.node && Logic.chapterIndex == Logic.CHAPTER099) {
+            if (this.node && Logic.data.chapterIndex == Logic.CHAPTER099) {
                 this.timeConsumeLife()
             }
         })
@@ -1367,8 +1367,8 @@ export default class Player extends PlayActor {
         if (Logic.isDreaming()) {
             return
         }
-        let time = Logic.realTime - this.lastConsumeTime
-        this.lastConsumeTime = Logic.realTime
+        let time = Logic.data.realTime - this.lastConsumeTime
+        this.lastConsumeTime = Logic.data.realTime
         let life = this.data.LifeData
         let solidLoss = (LifeData.SOLID_LOSS * life.timeScale * time) / 1000
         let liquidLoss = (LifeData.LIQUID_LOSS * life.timeScale * time) / 1000
@@ -1504,7 +1504,7 @@ export default class Player extends PlayActor {
                         this.scheduleOnce(() => {
                             AudioPlayer.play(AudioPlayer.EXIT)
                             //休息8小时
-                            Logic.dreamCostTime = 60000 * 60 * 8
+                            Logic.data.dreamCostTime = 60000 * 60 * 8
                             Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal())
                         }, 1)
                     }

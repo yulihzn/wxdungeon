@@ -55,7 +55,7 @@ export default class Start extends cc.Component {
                 Logic.resetData()
                 if (Logic.profileManager.hasSaveData) {
                     this.scheduleOnce(() => {
-                        Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level), true)
+                        Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.data.chapterIndex, Logic.data.level), true)
                     }, 0.5)
                 } else {
                     Logic.currentSlotIndex = slotIndex
@@ -128,7 +128,7 @@ export default class Start extends cc.Component {
         AudioPlayer.play(AudioPlayer.SELECT)
         this._startShow()
         this.scheduleOnce(() => {
-            Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level), true)
+            Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.data.chapterIndex, Logic.data.level), true)
         }, 0.5)
     }
     cheatModeChange() {

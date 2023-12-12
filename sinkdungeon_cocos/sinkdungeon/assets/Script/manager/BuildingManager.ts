@@ -373,7 +373,7 @@ export default class BuildingManager extends BaseManager {
             //生成传送门
             Logic.getBuildings(BuildingManager.PORTAL, (prefab: cc.Prefab) => {
                 if (Logic.isCheatMode) {
-                    let d = ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level)
+                    let d = ExitData.getRealWorldExitDataFromDream(Logic.data.chapterIndex, Logic.data.level)
                     for (let e of exits) {
                         if (e.fromPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
                             d.valueCopy(e)
@@ -914,7 +914,7 @@ export default class BuildingManager extends BaseManager {
         Logic.getBuildings(BuildingManager.EXITDOOR, (prefab: cc.Prefab) => {
             let dir = parseInt(mapDataStr[3])
             let type = parseInt(mapDataStr.substring(1, 3))
-            let d = ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level)
+            let d = ExitData.getRealWorldExitDataFromDream(Logic.data.chapterIndex, Logic.data.level)
             for (let e of exits) {
                 if (e.fromPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
                     d.valueCopy(e)

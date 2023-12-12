@@ -47,7 +47,7 @@ export default class AiPlayerManager extends BaseManager {
         let room = Logic.mapManager.getCurrentRoom()
         for (let key of list) {
             let data = Logic.getPlayerDataById(key)
-            if (data.roomPos.x == room.x && data.roomPos.y == room.y && data.chapterIndex == Logic.chapterIndex && data.chapterLevel == Logic.level)
+            if (data.roomPos.x == room.x && data.roomPos.y == room.y && data.chapterIndex == Logic.data.chapterIndex && data.chapterLevel == Logic.data.level)
                 this.getPlayer(data.id, dungeon)
         }
     }

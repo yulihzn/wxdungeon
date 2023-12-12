@@ -10,6 +10,7 @@
 
 import AchievementData from '../data/AchievementData'
 import BuildingData from '../data/BuildingData'
+import ProfileGlobalData from '../data/ProfileGlobalData'
 import SettingsData from '../data/SettingsData'
 
 export default class LocalStorage {
@@ -17,6 +18,7 @@ export default class LocalStorage {
     public static SAVE_DUNGEON = 'SAVE_DUNGEON'
     //成就
     public static KEY_ACHIEVEMENT = 'KEY_ACHIEVEMENT'
+    public static KEY_GLOBAL_DATA = 'KEY_GLOBAL_DATA'
     //系统设置
     public static KEY_SYSTEM_SETTINGS = 'KEY_SYSTEM_SETTINGS'
     //现实货币，所有存档通用
@@ -63,7 +65,14 @@ export default class LocalStorage {
     static saveAchievementData(data: AchievementData): void {
         LocalStorage.saveData(LocalStorage.KEY_ACHIEVEMENT, data)
     }
-
+    static getGlobalData(): ProfileGlobalData {
+        let data = new ProfileGlobalData()
+        data.valueCopy(LocalStorage.getData()[LocalStorage.KEY_GLOBAL_DATA])
+        return data
+    }
+    static saveGlobalData(data: ProfileGlobalData): void {
+        LocalStorage.saveData(LocalStorage.KEY_GLOBAL_DATA, data)
+    }
     static getSystemSettings(): SettingsData {
         let data = new SettingsData()
         data.valueCopy(LocalStorage.getData()[LocalStorage.KEY_SYSTEM_SETTINGS])

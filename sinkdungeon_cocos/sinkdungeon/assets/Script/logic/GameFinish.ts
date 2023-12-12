@@ -33,10 +33,10 @@ export default class NewClass extends cc.Component {
 
     start() {
         if (this.clock) {
-            this.clock.string = `${Utils.getPlayTime(Logic.totalTime)}`
+            this.clock.string = `${Utils.getPlayTime(Logic.data.totalTime)}`
         }
         if (this.level) {
-            this.level.string = `Level ${Logic.chapterIndex + 1}-${Logic.level}`
+            this.level.string = `Level ${Logic.data.chapterIndex + 1}-${Logic.data.level}`
         }
     }
     retry() {

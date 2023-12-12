@@ -216,7 +216,7 @@ export default class CellphoneDialog extends BaseDialog {
         let current = this.list[this.currentSelectIndex]
         if (current.data.type == CellphoneItem.TYPE_FURNITURE) {
             let fd = current.data.furnitureData
-            if (!fd.purchased && Logic.coins >= fd.price) {
+            if (!fd.purchased && Logic.data.coins >= fd.price) {
                 EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: -fd.price })
                 AudioPlayer.play(AudioPlayer.COIN)
                 current.data.furnitureData.purchased = true
@@ -257,9 +257,9 @@ export default class CellphoneDialog extends BaseDialog {
 
     waitOneHour() {
         if (Logic.isDreaming()) {
-            Logic.dreamTime += 60000 * 60
+            Logic.data.dreamTime += 60000 * 60
         } else {
-            Logic.realTime += 60000 * 60
+            Logic.data.realTime += 60000 * 60
         }
         this.dayLabel.string = Utils.getDay(Logic.getTickTime())
         this.hourLabel.string = Utils.getHour(Logic.getTickTime())

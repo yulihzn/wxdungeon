@@ -51,7 +51,7 @@ export default class Door extends Building {
 
     start() {
         if (this.sprite) {
-            this.sprite.spriteFrame = Logic.spriteFrameRes(`door${this.dir > 1 ? 'side' : ''}0${Logic.chapterIndex}anim000`)
+            this.sprite.spriteFrame = Logic.spriteFrameRes(`door${this.dir > 1 ? 'side' : ''}0${Logic.data.chapterIndex}anim000`)
             this.sprite.node.width = 128
             this.sprite.node.height = this.dir > 1 ? 384 : 128
             if (this.isDecorate) {
@@ -137,7 +137,7 @@ export default class Door extends Building {
         let index = 0
         this.schedule(
             () => {
-                this.sprite.spriteFrame = Logic.spriteFrameRes(`door${this.dir > 1 ? 'side' : ''}0${Logic.chapterIndex}anim00${index++}`)
+                this.sprite.spriteFrame = Logic.spriteFrameRes(`door${this.dir > 1 ? 'side' : ''}0${Logic.data.chapterIndex}anim00${index++}`)
                 if (index > 4) {
                     this.boxCollider.sensor = true
                 }
@@ -154,7 +154,7 @@ export default class Door extends Building {
         let index = 4
         this.schedule(
             () => {
-                this.sprite.spriteFrame = Logic.spriteFrameRes(`door${this.dir > 1 ? 'side' : ''}0${Logic.chapterIndex}anim00${index--}`)
+                this.sprite.spriteFrame = Logic.spriteFrameRes(`door${this.dir > 1 ? 'side' : ''}0${Logic.data.chapterIndex}anim00${index--}`)
                 if (index < 0) {
                     this.boxCollider.sensor = false
                 }

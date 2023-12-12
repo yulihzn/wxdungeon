@@ -61,7 +61,7 @@ export default class GameOver extends cc.Component {
     start() {
         let ach = LocalStorage.getAchievementData()
         if (this.clock) {
-            this.clock.string = `存活时间：${Utils.getPlayTime(Logic.totalTime)}`
+            this.clock.string = `存活时间：${Utils.getPlayTime(Logic.data.totalTime)}`
         }
         if (this.level) {
             this.level.string = ``
@@ -99,7 +99,7 @@ export default class GameOver extends cc.Component {
     retry() {
         Logic.resetData()
         AudioPlayer.play(AudioPlayer.SELECT)
-        Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level))
+        Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.data.chapterIndex, Logic.data.level))
     }
     home() {
         AudioPlayer.play(AudioPlayer.SELECT)

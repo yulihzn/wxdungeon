@@ -31,6 +31,7 @@ import AffixMapData from '../data/AffixMapData'
 import MetalTalentData from '../data/MetalTalentData'
 import DataUtils from '../utils/DataUtils'
 import ProfileData from '../data/ProfileData'
+import ProfileGlobalData from '../data/ProfileGlobalData'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -106,25 +107,13 @@ export default class Logic extends cc.Component {
     static dialogues: { [key: string]: DialogueData } = null
     static behaviors: { [key: string]: string } = null
     /******************************************************************************/
-    static cycle = 0 //周目
-    static level = 0 //关卡
-    static chapterIndex = 0 //章节
-    static chapterMaxIndex = 0 //到达的最大章节
-    static currentPlayerId = ''
     static playerDatas: { [key: string]: PlayerData } = {}
     static inventoryMgrs: { [key: string]: InventoryManager } = {}
     static mapManager: MapManager = new MapManager()
     static worldLoader: WorldLoader = new WorldLoader()
     static realCoins = 0 //真实货币，真是货币无法从梦境里获得，但是会出现对应的npc会进行这样的交易
-    static coins = 0 //金币
-    static oilGolds = 0 //油金
     static killCount = 0 //杀敌数
-    static coinCounts = 0 //金币累加数
     static dialogueCounts: { [key: string]: number } = {} //对话出现次数
-    static totalTime = 0
-    static realTime = 1559145600000
-    static dreamTime = 1559145600000
-    static dreamCostTime = 0
     static seed = 5
     static isFirst = 1
     static isFirstLoading = true
@@ -152,6 +141,7 @@ export default class Logic extends cc.Component {
     static furnitureMap: Map<string, BuildingData> = new Map()
     static currentEditPlayerData = new PlayerData()
     static data: ProfileData = new ProfileData()
+    static globalData: ProfileGlobalData = new ProfileGlobalData()
 
     onLoad() {
         Logic.settings.valueCopy(LocalStorage.getSystemSettings())
@@ -189,31 +179,20 @@ export default class Logic extends cc.Component {
 
     start() {}
     static saveData() {
-        Logic.profileManager.data.lastPlayerId = Logic.currentPlayerId
+        Logic.profileManager.data.valueCopy(Logic.data)
         Logic.profileManager.data.playerDatas = DataUtils.cloneKeyValue(Logic.playerDatas, value => new PlayerData().valueCopy(value))
         Logic.profileManager.data.nonPlayerList = Logic.nonPlayerList
         Logic.profileManager.data.aiPlayerIdMap = Logic.aiPlayerIdMap
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon
-        Logic.profileManager.data.cycle = Logic.cycle
-        Logic.profileManager.data.level = Logic.level
-        Logic.profileManager.data.chapterIndex = Logic.chapterIndex
-        Logic.profileManager.data.chapterMaxIndex = Logic.chapterMaxIndex
-        Logic.profileManager.data.totalTime = Logic.totalTime
-        Logic.profileManager.data.realTime = Logic.realTime
-        Logic.profileManager.data.dreamTime = Logic.dreamTime
-        Logic.profileManager.data.dreamCostTime = Logic.dreamCostTime
         Logic.profileManager.data.savePointData = Logic.savePoinitData.clone()
         Logic.profileManager.data.groundOilGoldData = Logic.groundOilGoldData.clone()
         Logic.profileManager.data.killPlayerCounts = DataUtils.cloneNumberKeyValue(Logic.killPlayerCounts, value => value)
         Logic.profileManager.data.dialogueCounts = DataUtils.cloneKeyValue(Logic.dialogueCounts, value => value)
         Logic.profileManager.data.playerMetals = DataUtils.cloneKeyValue(Logic.playerMetals, value => value)
-        Logic.profileManager.data.oilGolds = Logic.oilGolds
-        Logic.profileManager.data.coins = Logic.coins
-        Logic.profileManager.data.coinCounts = Logic.coinCounts
         Logic.profileManager.data.lastSaveTime = new Date().getTime()
         Logic.profileManager.data.metalId = Logic.metalId
         Logic.profileManager.saveData(Logic.currentSlotIndex)
-        LocalStorage.saveData(LocalStorage.KEY_REAL_COINS, Logic.realCoins)
+        LocalStorage.saveGlobalData(Logic.globalData)
         LocalStorage.setLastSaveSlotKey(Logic.currentSlotIndex)
         Logic.furnitureMap.forEach(value => {
             LocalStorage.saveFurnitureData(value)
@@ -223,29 +202,17 @@ export default class Logic extends cc.Component {
     static resetData(chapter?: number) {
         Logic.profileManager = new ProfileManager()
         Logic.profileManager.loadData(Logic.currentSlotIndex)
-        //重置时间
-        Logic.data.valueCopy(Logic.profileManager.data)
-        Logic.totalTime = Logic.profileManager.data.totalTime
-        Logic.realTime = Logic.profileManager.data.realTime
-        Logic.dreamTime = Logic.profileManager.data.dreamTime
-        Logic.dreamCostTime = Logic.profileManager.data.dreamCostTime
-        //加载章节名
+        //设置最大章节
         Logic.profileManager.data.chapterIndex = chapter ? chapter : Logic.profileManager.data.chapterIndex
         if (Logic.profileManager.data.chapterIndex > Logic.profileManager.data.chapterMaxIndex && Logic.profileManager.data.chapterIndex < this.CHAPTER05) {
             Logic.profileManager.data.chapterMaxIndex = Logic.profileManager.data.chapterIndex
         }
-        //加载关卡等级
-        Logic.cycle = Logic.profileManager.data.cycle
-        Logic.chapterIndex = Logic.profileManager.data.chapterIndex
-        Logic.chapterMaxIndex = Logic.profileManager.data.chapterMaxIndex
-        Logic.level = Logic.profileManager.data.level
+        Logic.data.valueCopy(Logic.profileManager.data)
         //加载最近使用的存档点
         Logic.savePoinitData = Logic.profileManager.data.savePointData.clone()
-        //加载翠金点
+        //加载地面翠金点
         Logic.groundOilGoldData = Logic.profileManager.data.groundOilGoldData.clone()
-        Logic.oilGolds = Logic.profileManager.data.oilGolds
         //加载玩家数据
-        Logic.currentPlayerId = Logic.profileManager.data.lastPlayerId
         Logic.playerDatas = DataUtils.cloneKeyValue(Logic.profileManager.data.playerDatas, value => new PlayerData().valueCopy(value))
         if (!Logic.playerData) {
             Logic.playerData = new PlayerData()
@@ -257,11 +224,7 @@ export default class Logic extends cc.Component {
         //重置地牢宽高
         Dungeon.WIDTH_SIZE = 15
         Dungeon.HEIGHT_SIZE = 9
-        //加载金币
-        Logic.coins = Logic.profileManager.data.coins
-        Logic.coinCounts = Logic.profileManager.data.coinCounts
-        let c = LocalStorage.getValueFromData(LocalStorage.KEY_REAL_COINS)
-        Logic.realCoins = c ? parseInt(c) : 0
+        Logic.globalData.valueCopy(LocalStorage.getGlobalData())
         //重置bgm
         Logic.lastBgmIndex = 0
         //加载怪物击杀玩家数据
@@ -269,7 +232,7 @@ export default class Logic extends cc.Component {
         //加载对话出现次数
         Logic.dialogueCounts = DataUtils.cloneKeyValue(Logic.profileManager.data.dialogueCounts, value => value)
         Logic.playerMetals = DataUtils.cloneKeyValue(Logic.profileManager.data.playerMetals, value => value)
-        Logic.playerData.OilGoldData.valueCopy(Logic.getOilGoldData(Logic.oilGolds))
+        Logic.playerData.OilGoldData.valueCopy(Logic.getOilGoldData(Logic.data.oilGolds))
         Logic.metalId = Logic.profileManager.data.metalId
         //清空家具信息,家具信息在添加家具的时候会添加
         Logic.furnitureMap = new Map()
@@ -314,15 +277,15 @@ export default class Logic extends cc.Component {
     }
     static savePonit(pos: cc.Vec3) {
         //99chapter存档点无效
-        if (Logic.chapterIndex == Logic.CHAPTER099) {
+        if (Logic.data.chapterIndex == Logic.CHAPTER099) {
             return
         }
         let savePointData = new SavePointData()
         let mapPos = Logic.posToMapPos(pos)
         savePointData.x = mapPos.x
         savePointData.y = mapPos.y
-        savePointData.level = Logic.level
-        savePointData.chapter = Logic.chapterIndex
+        savePointData.level = Logic.data.level
+        savePointData.chapter = Logic.data.chapterIndex
         Logic.savePoinitData.valueCopy(savePointData)
         //保存数据
         Logic.saveData()
@@ -333,8 +296,8 @@ export default class Logic extends cc.Component {
             let roomPos = Logic.mapManager.rectDungeon.currentPos
             groundOilGoldData.x = roomPos.x
             groundOilGoldData.y = roomPos.y
-            groundOilGoldData.level = Logic.level
-            groundOilGoldData.chapter = Logic.chapterIndex
+            groundOilGoldData.level = Logic.data.level
+            groundOilGoldData.chapter = Logic.data.chapterIndex
             groundOilGoldData.value = value
         }
         //先重置数据，再保存翠金数据
@@ -393,17 +356,17 @@ export default class Logic extends cc.Component {
                 }
                 //如果是从梦境进入现实，需要扣除对应的休息时间，默认八小时
                 if (exitData.toChapter == Logic.CHAPTER099) {
-                    Logic.realTime += Logic.dreamCostTime
-                    Logic.dreamCostTime = 0
+                    Logic.data.realTime += Logic.data.dreamCostTime
+                    Logic.data.dreamCostTime = 0
                 }
             }
             Logic.saveData()
             Logic.initInventoryManager()
             /**************加载exitData关卡数据***************** */
-            Logic.chapterIndex = exitData.toChapter
-            Logic.level = exitData.toLevel
-            if (Logic.chapterMaxIndex < Logic.chapterIndex && Logic.chapterIndex < Logic.CHAPTER05) {
-                Logic.chapterMaxIndex = Logic.chapterIndex
+            Logic.data.chapterIndex = exitData.toChapter
+            Logic.data.level = exitData.toLevel
+            if (Logic.data.chapterMaxIndex < Logic.data.chapterIndex && Logic.data.chapterIndex < Logic.CHAPTER05) {
+                Logic.data.chapterMaxIndex = Logic.data.chapterIndex
             }
             //地图数据的y轴向下的
             let ty = levelData.height * levelData.roomHeight - 1 - exitData.toPos.y
@@ -412,23 +375,23 @@ export default class Logic extends cc.Component {
             Logic.playerData.pos = cc.v3(exitData.toPos.x % levelData.roomWidth, ty % levelData.roomHeight)
             Logic.playerData.posZ = exitData.toPosZ
             Logic.playerData.roomPos = cc.v3(roomX, roomY)
-            Logic.playerData.chapterIndex = Logic.chapterIndex
-            Logic.playerData.chapterLevel = Logic.level
+            Logic.playerData.chapterIndex = Logic.data.chapterIndex
+            Logic.playerData.chapterLevel = Logic.data.level
             Logic.mapManager.reset()
             Logic.mapManager.changePos(cc.v3(roomX, roomY))
             Logic.changeDungeonSize()
-            if (exitData.fromChapter == Logic.CHAPTER00 && Logic.chapterIndex == Logic.CHAPTER01) {
+            if (exitData.fromChapter == Logic.CHAPTER00 && Logic.data.chapterIndex == Logic.CHAPTER01) {
                 Logic.shipTransportScene = 1
-            } else if (exitData.fromChapter == Logic.CHAPTER02 && Logic.chapterIndex == Logic.CHAPTER01) {
+            } else if (exitData.fromChapter == Logic.CHAPTER02 && Logic.data.chapterIndex == Logic.CHAPTER01) {
                 Logic.shipTransportScene = 2
-            } else if (exitData.fromChapter == Logic.CHAPTER01 && Logic.chapterIndex == Logic.CHAPTER00) {
+            } else if (exitData.fromChapter == Logic.CHAPTER01 && Logic.data.chapterIndex == Logic.CHAPTER00) {
                 Logic.shipTransportScene = 2
-            } else if (exitData.fromChapter == Logic.CHAPTER01 && Logic.chapterIndex == Logic.CHAPTER02) {
+            } else if (exitData.fromChapter == Logic.CHAPTER01 && Logic.data.chapterIndex == Logic.CHAPTER02) {
                 Logic.shipTransportScene = 1
             }
-            if (exitData.fromChapter == Logic.CHAPTER00 && Logic.chapterIndex == Logic.CHAPTER00) {
+            if (exitData.fromChapter == Logic.CHAPTER00 && Logic.data.chapterIndex == Logic.CHAPTER00) {
                 if (!(exitData.fromLevel == 0 && exitData.toLevel == 0)) {
-                    Logic.elevatorScene = exitData.fromLevel > Logic.level ? 1 : 2
+                    Logic.elevatorScene = exitData.fromLevel > Logic.data.level ? 1 : 2
                 }
             }
             Logic.playerData.isWakeUp = exitData.fromChapter != Logic.CHAPTER099 && exitData.toChapter == Logic.CHAPTER099
@@ -440,7 +403,7 @@ export default class Logic extends cc.Component {
         for (let key in Logic.playerDatas) {
             let playerData = Logic.playerDatas[key]
             let inventoryManager = new InventoryManager(playerData.id)
-            if (Logic.chapterIndex == Logic.CHAPTER099) {
+            if (Logic.data.chapterIndex == Logic.CHAPTER099) {
                 for (let key in playerData.playerEquipsReality) {
                     inventoryManager.equips[key].valueCopy(playerData.playerEquipsReality[key])
                 }
@@ -564,22 +527,22 @@ export default class Logic extends cc.Component {
         Logic.dialogueCounts[id] = Logic.dialogueCounts[id] + 1
     }
     static isDreaming() {
-        return Logic.chapterIndex != Logic.CHAPTER099
+        return Logic.data.chapterIndex != Logic.CHAPTER099
     }
     static getTickTime() {
-        return Logic.isDreaming() ? Logic.dreamTime : Logic.realTime
+        return Logic.isDreaming() ? Logic.data.dreamTime : Logic.data.realTime
     }
     static getCurrentMetal() {
         return new MetalTalentData().valueCopy(Logic.metals[Logic.metalId]).valueCopy(Logic.playerMetals[Logic.metalId])
     }
     static get inventoryMgr() {
-        return Logic.inventoryMgrs[Logic.currentPlayerId]
+        return Logic.inventoryMgrs[Logic.data.lastPlayerId]
     }
     static get playerData() {
-        return Logic.playerDatas[Logic.currentPlayerId]
+        return Logic.playerDatas[Logic.data.lastPlayerId]
     }
     static set playerData(value: PlayerData) {
-        Logic.currentPlayerId = value.id
+        Logic.data.lastPlayerId = value.id
         Logic.playerDatas[value.id] = value
     }
     static getPlayerDataById(id: string) {
@@ -598,6 +561,6 @@ export default class Logic extends cc.Component {
     }
     static getRoomPlayerList(): string[] {
         let room = Logic.mapManager.getCurrentRoom()
-        return Logic.aiPlayerIdMap[`${Logic.chapterIndex},${Logic.level},${room.x},${room.y}`]
+        return Logic.aiPlayerIdMap[`${Logic.data.chapterIndex},${Logic.data.level},${room.x},${room.y}`]
     }
 }

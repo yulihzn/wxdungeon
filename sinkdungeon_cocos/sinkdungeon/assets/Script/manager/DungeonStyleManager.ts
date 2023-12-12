@@ -59,7 +59,7 @@ export default class DungeonStyleManager extends BaseManager {
             .start()
     }
     addDecorations() {
-        switch (Logic.chapterIndex) {
+        switch (Logic.data.chapterIndex) {
             case Logic.CHAPTER00:
                 this.styleData = new DungeonStyleData('pipeline', 'restwall1', 'restsides', 'restdoor', 'restdoorframe', '#000000', 'tile_lab001')
                 break

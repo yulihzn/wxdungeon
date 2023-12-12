@@ -74,8 +74,8 @@ export default class MiniTile extends cc.Component {
         let state = rectroom.state
         let roomType = rectroom.roomType
         if (
-            groundOilGoldData.chapter == Logic.chapterIndex &&
-            groundOilGoldData.level == Logic.level &&
+            groundOilGoldData.chapter == Logic.data.chapterIndex &&
+            groundOilGoldData.level == Logic.data.level &&
             groundOilGoldData.x == rectroom.x &&
             groundOilGoldData.y == rectroom.y &&
             groundOilGoldData.value > 0 &&

@@ -823,11 +823,11 @@ export default class InventoryDialog extends BaseDialog {
                 switch (operatorType) {
                     case InventoryDialog.OPERATOR_CAST:
                         price = 1000 * (affix.index + 1)
-                        msg = `当前拥有${Logic.coins}金币\n是否花费${price}金币重铸该词缀`
+                        msg = `当前拥有${Logic.data.coins}金币\n是否花费${price}金币重铸该词缀`
                         break
                     case InventoryDialog.OPERATOR_STRENGTHEN:
                         price = 1000 * (affix.index + 1)
-                        msg = `当前拥有${Logic.coins}金币\n是否花费${price}金币强化该词缀`
+                        msg = `当前拥有${Logic.data.coins}金币\n是否花费${price}金币强化该词缀`
                         if (affix.index >= 9) {
                             Utils.toast('强化等级已经最高', true, true)
                             return
@@ -835,7 +835,7 @@ export default class InventoryDialog extends BaseDialog {
                         break
                     case InventoryDialog.OPERATOR_UPGRADE:
                         price = (equipData.requireLevel + 1) * 1000
-                        msg = `当前拥有${Logic.coins}金币\n是否花费${price}金币升级该装备`
+                        msg = `当前拥有${Logic.data.coins}金币\n是否花费${price}金币升级该装备`
                         if (equipData.requireLevel >= Logic.playerData.OilGoldData.level) {
                             Utils.toast('装备等级无法高于人物等级', true, true)
                             return
@@ -844,7 +844,7 @@ export default class InventoryDialog extends BaseDialog {
                 }
                 GameAlertDialog.show(msg, '确定', '取消', (flag: boolean) => {
                     if (flag) {
-                        if (Logic.coins < price) {
+                        if (Logic.data.coins < price) {
                             Utils.toast('金币不足', true, true)
                             return
                         }

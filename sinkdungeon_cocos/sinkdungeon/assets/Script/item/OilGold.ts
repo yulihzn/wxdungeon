@@ -54,7 +54,7 @@ export default class OilGold extends BaseNodeComponent {
     }
     private getFinalValue() {
         let value = this.value
-        switch (Logic.chapterIndex) {
+        switch (Logic.data.chapterIndex) {
             case Logic.CHAPTER00:
                 break
             case Logic.CHAPTER01:

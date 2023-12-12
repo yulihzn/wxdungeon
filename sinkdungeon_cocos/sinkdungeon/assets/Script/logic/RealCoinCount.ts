@@ -33,12 +33,12 @@ export default class RealCoinCount extends cc.Component {
             return
         }
         let c = parseInt(value)
-        Logic.realCoins += c
+        Logic.data.realCoins += c
     }
 
     update(dt) {
         if (this.label) {
-            this.label.string = `${Logic.realCoins}`
+            this.label.string = `${Logic.data.realCoins}`
         }
     }
 }

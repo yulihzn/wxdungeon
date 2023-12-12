@@ -82,7 +82,7 @@ export default class ExitDoor extends Building {
     }
 
     start() {
-        switch (Logic.chapterIndex) {
+        switch (Logic.data.chapterIndex) {
             case Logic.CHAPTER00:
                 this.changeRes('exit000')
                 break

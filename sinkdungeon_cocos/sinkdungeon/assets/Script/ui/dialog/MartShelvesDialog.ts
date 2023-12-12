@@ -70,7 +70,7 @@ export default class MartShelvesDialog extends BaseDialog {
     }
     //button
     Pay() {
-        if (Logic.coins >= this.goodsData.item.price) {
+        if (Logic.data.coins >= this.goodsData.item.price) {
             EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: -this.goodsData.item.price })
             AudioPlayer.play(AudioPlayer.CASHIERING)
             EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemData: this.goodsData.item })

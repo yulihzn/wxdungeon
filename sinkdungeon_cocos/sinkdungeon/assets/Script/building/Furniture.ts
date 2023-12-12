@@ -157,7 +157,7 @@ export default class Furniture extends Building {
                 EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW, { id: this.data.id })
                 break
             case Furniture.LITTLE_TABLE_2:
-                Utils.toast(`现在是${Utils.getYear(Logic.realTime)}${Utils.getDay(Logic.realTime)}${Utils.getHour(Logic.realTime)}`, false, true)
+                Utils.toast(`现在是${Utils.getYear(Logic.data.realTime)}${Utils.getDay(Logic.data.realTime)}${Utils.getHour(Logic.data.realTime)}`, false, true)
                 break
             case Furniture.TRASHCAN:
                 let trashCan = this.getComponent(RoomTrashCan)

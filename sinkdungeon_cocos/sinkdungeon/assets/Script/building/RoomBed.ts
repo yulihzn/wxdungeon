@@ -76,7 +76,7 @@ export default class RoomBed extends Building {
                     }
                     AudioPlayer.play(AudioPlayer.EXIT)
                     //休息8小时
-                    Logic.dreamCostTime = 60000 * 60 * 8
+                    Logic.data.dreamCostTime = 60000 * 60 * 8
                     Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal())
                 }, 1)
             })

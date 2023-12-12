@@ -263,7 +263,7 @@ export default class Emplacement extends Building {
             shooter.data.img = 'emplacement'
             shooter.isBuilding = true
 
-            switch (Logic.chapterIndex) {
+            switch (Logic.data.chapterIndex) {
                 case Logic.CHAPTER00:
                     shooter.data.bulletLineExNum = 0
                     shooter.data.bulletType = 'laser001'

@@ -26,7 +26,7 @@ export default class RoomClock extends cc.Component {
     }
     update(dt: number) {
         if (this.isCheckTimeDelay(dt)) {
-            this.timeLabel.string = `${Utils.getHour(Logic.realTime)}`
+            this.timeLabel.string = `${Utils.getHour(Logic.data.realTime)}`
         }
     }
 }
