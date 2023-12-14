@@ -401,31 +401,31 @@ export default class Logic extends cc.Component {
         for (let key in Logic.playerDatas) {
             let playerData = Logic.playerDatas[key]
             let inventoryManager = new InventoryManager(playerData.id)
-            if (Logic.data.chapterIndex == Logic.CHAPTER099) {
-                for (let key in playerData.playerEquipsReality) {
-                    inventoryManager.equips[key].valueCopy(playerData.playerEquipsReality[key])
-                }
-                for (let i = 0; i < playerData.playerItemListReality.length; i++) {
-                    inventoryManager.itemList[i].valueCopy(playerData.playerItemListReality[i])
-                }
-                for (let i = 0; i < playerData.playerInventoryListReality.length; i++) {
-                    let data = new InventoryData()
-                    data.valueCopy(playerData.playerInventoryListReality[i])
-                    inventoryManager.inventoryList.push(data)
-                }
-            } else {
-                for (let key in playerData.playerEquips) {
-                    inventoryManager.equips[key].valueCopy(playerData.playerEquips[key])
-                }
-                for (let i = 0; i < playerData.playerItemList.length; i++) {
-                    inventoryManager.itemList[i].valueCopy(playerData.playerItemList[i])
-                }
-                for (let i = 0; i < playerData.playerInventoryList.length; i++) {
-                    let data = new InventoryData()
-                    data.valueCopy(playerData.playerInventoryList[i])
-                    inventoryManager.inventoryList.push(data)
-                }
-            }
+            // if (Logic.data.chapterIndex == Logic.CHAPTER099) {
+            //     for (let key in playerData.playerEquipsReality) {
+            //         inventoryManager.equips[key].valueCopy(playerData.playerEquipsReality[key])
+            //     }
+            //     for (let i = 0; i < playerData.playerItemListReality.length; i++) {
+            //         inventoryManager.itemList[i].valueCopy(playerData.playerItemListReality[i])
+            //     }
+            //     for (let i = 0; i < playerData.playerInventoryListReality.length; i++) {
+            //         let data = new InventoryData()
+            //         data.valueCopy(playerData.playerInventoryListReality[i])
+            //         inventoryManager.inventoryList.push(data)
+            //     }
+            // } else {
+            //     for (let key in playerData.playerEquips) {
+            //         inventoryManager.equips[key].valueCopy(playerData.playerEquips[key])
+            //     }
+            //     for (let i = 0; i < playerData.playerItemList.length; i++) {
+            //         inventoryManager.itemList[i].valueCopy(playerData.playerItemList[i])
+            //     }
+            //     for (let i = 0; i < playerData.playerInventoryList.length; i++) {
+            //         let data = new InventoryData()
+            //         data.valueCopy(playerData.playerInventoryList[i])
+            //         inventoryManager.inventoryList.push(data)
+            //     }
+            // }
             this.inventoryMgrs[key] = inventoryManager
         }
     }

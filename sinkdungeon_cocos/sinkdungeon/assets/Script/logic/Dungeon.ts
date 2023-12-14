@@ -314,10 +314,10 @@ export default class Dungeon extends cc.Component {
         let controller = this.player.addComponent(PlayerController)
         controller.player = this.player
         this.player.statusIconList = this.statusIconList
-        this.player.node.parent = this.node
         this.player.controller = controller
         this.player.dungeon = this
         this.player.dataId = Logic.playerData.id
+        this.player.node.parent = this.node
     }
     private initCameraAndFog(target: Actor) {
         this.changeCameraTarget(target)
