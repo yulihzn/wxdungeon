@@ -190,7 +190,6 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.dialogueCounts = DataUtils.cloneKeyValue(Logic.dialogueCounts, value => value)
         Logic.profileManager.data.playerMetals = DataUtils.cloneKeyValue(Logic.playerMetals, value => value)
         Logic.profileManager.data.lastSaveTime = new Date().getTime()
-        Logic.profileManager.data.metalId = Logic.metalId
         Logic.profileManager.saveData(Logic.currentSlotIndex)
         LocalStorage.saveGlobalData(Logic.globalData)
         LocalStorage.setLastSaveSlotKey(Logic.currentSlotIndex)
@@ -233,7 +232,6 @@ export default class Logic extends cc.Component {
         Logic.dialogueCounts = DataUtils.cloneKeyValue(Logic.profileManager.data.dialogueCounts, value => value)
         Logic.playerMetals = DataUtils.cloneKeyValue(Logic.profileManager.data.playerMetals, value => value)
         Logic.playerData.OilGoldData.valueCopy(Logic.getOilGoldData(Logic.data.oilGolds))
-        Logic.metalId = Logic.profileManager.data.metalId
         //清空家具信息,家具信息在添加家具的时候会添加
         Logic.furnitureMap = new Map()
     }
@@ -533,7 +531,7 @@ export default class Logic extends cc.Component {
         return Logic.isDreaming() ? Logic.data.dreamTime : Logic.data.realTime
     }
     static getCurrentMetal() {
-        return new MetalTalentData().valueCopy(Logic.metals[Logic.metalId]).valueCopy(Logic.playerMetals[Logic.metalId])
+        return new MetalTalentData().valueCopy(Logic.metals[Logic.data.metalId]).valueCopy(Logic.playerMetals[Logic.data.metalId])
     }
     static get inventoryMgr() {
         return Logic.inventoryMgrs[Logic.data.lastPlayerId]

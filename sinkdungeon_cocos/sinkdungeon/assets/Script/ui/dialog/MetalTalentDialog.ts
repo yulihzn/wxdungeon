@@ -44,7 +44,7 @@ export default class MetalTalentDialog extends BaseDialog {
     show(): void {
         super.show()
         this.clearUi()
-        let current = new MetalTalentData().valueCopy(Logic.playerMetals[Logic.metalId])
+        let current = new MetalTalentData().valueCopy(Logic.playerMetals[Logic.data.metalId])
         this.list = [[], [], []]
         for (let key in Logic.metals) {
             let data = new MetalTalentData()
@@ -95,13 +95,13 @@ export default class MetalTalentDialog extends BaseDialog {
         }
         this.currentIndex = index
         if (index == 0) {
-            Logic.metalId = this.list[0][0].data.id
+            Logic.data.metalId = this.list[0][0].data.id
             EventHelper.emit(EventHelper.SELECT_METAL_TALENT)
         } else if (index == 1) {
-            Logic.metalId = this.list[1][0].data.id
+            Logic.data.metalId = this.list[1][0].data.id
             EventHelper.emit(EventHelper.SELECT_METAL_TALENT)
         } else if (index == 2) {
-            Logic.metalId = this.list[2][0].data.id
+            Logic.data.metalId = this.list[2][0].data.id
             EventHelper.emit(EventHelper.SELECT_METAL_TALENT)
         }
     }
@@ -131,7 +131,7 @@ export default class MetalTalentDialog extends BaseDialog {
                 d1.selectNode.active = false
                 if (data.id == d1.data.id) {
                     d1.selectNode.active = true
-                    Logic.metalId = data.id
+                    Logic.data.metalId = data.id
                     EventHelper.emit(EventHelper.SELECT_METAL_TALENT)
                 }
             }
