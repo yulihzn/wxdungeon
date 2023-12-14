@@ -189,9 +189,18 @@ export default class Dungeon extends cc.Component {
         this.lightManager = this.getComponent(LightManager)
         this.weatherManager = this.getComponent(WeatherManager)
         this.effectItemManager = this.getComponent(EffectItemManager)
-        this.reset()
     }
-    reset() {
+    start() {
+        this.reset()
+        this.scheduleOnce(() => {
+            EventHelper.emit(EventHelper.CHANGE_MINIMAP, { x: this.currentPos.x, y: this.currentPos.y })
+            if (this.isInitFinish && !Logic.isGamePause && !this.isDisappeared && LoadingManager.allResourceDone()) {
+                this.checkRoomClear()
+            }
+        }, 0.1)
+        cc.log(`dungeon pos:${this.node.position}`)
+    }
+    private reset() {
         Logic.lastBgmIndex = Logic.data.chapterIndex == Logic.CHAPTER099 ? 1 : 0
         AudioPlayer.stopAllEffect()
         AudioPlayer.play(AudioPlayer.PLAY_BG, true)
@@ -681,15 +690,6 @@ export default class Dungeon extends cc.Component {
         }
     }
 
-    start() {
-        this.scheduleOnce(() => {
-            EventHelper.emit(EventHelper.CHANGE_MINIMAP, { x: this.currentPos.x, y: this.currentPos.y })
-            if (this.isInitFinish && !Logic.isGamePause && !this.isDisappeared && LoadingManager.allResourceDone()) {
-                this.checkRoomClear()
-            }
-        }, 0.1)
-        cc.log(`dungeon pos:${this.node.position}`)
-    }
     breakTile(pos: cc.Vec3) {
         let tile = this.tilesmap[pos.x][pos.y]
         if (tile && !tile.isBroken) {
@@ -835,12 +835,14 @@ export default class Dungeon extends cc.Component {
         if (this.isInitFinish && !Logic.isGamePause && !this.isDisappeared && LoadingManager.allResourceDone()) {
             if (this.isTimeDelay(dt)) {
                 this.checkPlayerPos(dt)
-                this.monsterManager.updateLogic(dt)
-                this.nonPlayerManager.updateLogic(dt)
                 this.buildingManager.updateLogic(dt, this.player)
+                this.weatherManager.updateLogic(dt, this.player)
                 this.equipmentManager.updateLogic(dt, this.player)
                 this.itemManager.updateLogic(dt, this.player)
-                this.weatherManager.updateLogic(dt, this.player)
+                this.aiPlayerManager.updateLogic(dt)
+                this.monsterManager.updateLogic(dt)
+                this.nonPlayerManager.updateLogic(dt)
+                this.player.updateLogic(dt)
             }
             if (this.isCheckTimeDelay(dt)) {
                 this.checkRoomClear()

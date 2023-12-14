@@ -214,6 +214,7 @@ export default class Player extends PlayActor {
         }
         this.pos = Logic.playerData.pos.clone()
         this.defaultPos = Logic.playerData.pos.clone()
+        cc.log(`${this.pos.x},${this.pos.y}`)
         this.updatePlayerPos()
         this.entity.NodeRender.node = this.node
         this.entity.NodeRender.root = this.root
@@ -1146,7 +1147,7 @@ export default class Player extends PlayActor {
         }
         return false
     }
-    update(dt) {
+    updateLogic(dt: number) {
         if (Logic.isGamePause) {
             return
         }
