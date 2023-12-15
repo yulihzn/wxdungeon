@@ -303,6 +303,7 @@ export default class Logic extends cc.Component {
         Logic.saveData()
     }
     static loadingNextRoom(dir: number) {
+        cc.log('loadingNextRoom')
         Logic.mapManager.randMap.clear()
         //保存数据
         Logic.saveData()
@@ -325,10 +326,13 @@ export default class Logic extends cc.Component {
                     Logic.playerData.pos = cc.v3(1, Logic.playerData.pos.y)
                     break
             }
+            cc.log(`player pos = ${Logic.playerData.pos.x},${Logic.playerData.pos.y}`)
             cc.director.loadScene('loading')
         }
     }
     static loadingNextLevel(exitData: ExitData, clearMapCache?: boolean) {
+        cc.log('loadingNextLevel')
+        cc.log(exitData)
         Logic.worldLoader.loadWorld(() => {
             if (!exitData) {
                 return
@@ -488,11 +492,11 @@ export default class Logic extends cc.Component {
     static spriteFrameRes(spriteFrameName: string) {
         return Logic.spriteFrames[spriteFrameName] ? Logic.spriteFrames[spriteFrameName] : null
     }
-    static getBuildings(name: string, callback: Function): void {
-        LoadingManager.loadBuilding(name, () => {
-            if (callback) {
-                callback(Logic.buildings[name])
-            }
+    static getBuildings(name: string): Promise<cc.Prefab> {
+        return new Promise(resolve => {
+            LoadingManager.loadBuilding(name, () => {
+                resolve(Logic.buildings[name])
+            })
         })
     }
     static getKillPlayerCount(seed: number) {

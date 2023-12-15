@@ -200,7 +200,7 @@ export default class Dungeon extends cc.Component {
         }, 0.1)
         cc.log(`dungeon pos:${this.node.position}`)
     }
-    private reset() {
+    private async reset() {
         Logic.lastBgmIndex = Logic.data.chapterIndex == Logic.CHAPTER099 ? 1 : 0
         AudioPlayer.stopAllEffect()
         AudioPlayer.play(AudioPlayer.PLAY_BG, true)
@@ -246,77 +246,74 @@ export default class Dungeon extends cc.Component {
         //放置之前留在地上的物品和装备
         this.addItemListOnGround()
         this.addEquipmentListOnGround()
-        Logic.getBuildings(BuildingManager.AIREXIT, (prefab: cc.Prefab) => {
-            Logic.getBuildings(BuildingManager.WALL, (prefab: cc.Prefab) => {
-                Logic.getBuildings(BuildingManager.DOOR, (prefab: cc.Prefab) => {
-                    //加载天气
-                    if ((leveldata.isOutside && !Logic.mapManager.getCurrentRoom().isOutside) || (!leveldata.isOutside && Logic.mapManager.getCurrentRoom().isOutside)) {
-                        this.weatherManager.addRain(cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.WIDTH_SIZE / 2)), 0)
+        await Logic.getBuildings(BuildingManager.AIREXIT)
+        await Logic.getBuildings(BuildingManager.WALL)
+        await Logic.getBuildings(BuildingManager.DOOR)
+        //加载天气
+        if ((leveldata.isOutside && !Logic.mapManager.getCurrentRoom().isOutside) || (!leveldata.isOutside && Logic.mapManager.getCurrentRoom().isOutside)) {
+            this.weatherManager.addRain(cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.WIDTH_SIZE / 2)), 0)
+        }
+        //添加空气墙
+        this.buildingManager.addAirExit(mapData)
+        for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
+            this.tilesmap[i] = new Array(i)
+            for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
+                //越往下层级越高，j是行，i是列
+                this.addTiles(floorData, cc.v3(i, j), cc.v3(i, j), leveldata, false)
+                //加载建筑
+                this.buildingManager.addBuildingsFromMap(this, mapData, mapData[i][j], cc.v3(i, j), leveldata, exits, equipitems)
+                //房间未清理时加载物品
+                if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
+                    this.itemManager.addItemFromMap(mapData[i][j], cc.v3(i, j))
+                }
+                //房间未清理时加载怪物
+                if (
+                    !Logic.mapManager.isCurrentRoomStateClear() ||
+                    Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM) ||
+                    Logic.mapManager.getCurrentRoomType().isEqual(RoomType.START_ROOM)
+                ) {
+                    this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j))
+                }
+                //加载非人形npc
+                this.nonPlayerManager.addNonPlayerFromMap(this, mapData[i][j], cc.v3(i, j), 0)
+            }
+        }
+        let offsets = [cc.v3(-1, -1, 4), cc.v3(-1, 0, 2), cc.v3(-1, 1, 6), cc.v3(0, -1, 0), cc.v3(0, 1, 1), cc.v3(1, -1, 5), cc.v3(1, 0, 3), cc.v3(1, 1, 7)]
+        for (let offset of offsets) {
+            this.addBuildingsFromSideMap(offset)
+        }
+        //初始化玩家和控制器
+        this.initPlayer()
+        this.initCameraAndFog(this.player)
+        //加载非人形跟随npc
+        this.nonPlayerManager.addNonPlayerListFromSave(this, new Array().concat(Logic.nonPlayerList), this.player.node.position, this.player.entity.Transform.z)
+        //加载人形npc
+        this.aiPlayerManager.addAiPlayerListFromSave(this, Logic.getRoomPlayerList())
+        //加载随机怪物
+        if (
+            (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoom().isReborn) &&
+            RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType()) &&
+            !Logic.isTour
+        ) {
+            this.monsterManager.addRandomMonsters(this, Logic.mapManager.getCurrentRoom().reborn)
+        }
+        cc.log('load finished')
+        this.scheduleOnce(() => {
+            this.isInitFinish = true
+            this.fogScaleNormal()
+            let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter')
+            cc.tween(blackcenter)
+                .delay(0.1)
+                .to(0.5, { opacity: 0 })
+                .call(() => {
+                    if (Logic.data.totalTime < 5 && Logic.CHAPTER00 == Logic.data.chapterIndex) {
+                        Dialogue.play(Controller.isMouseMode() ? Dialogue.COURSE_FIRST_PC : Dialogue.COURSE_FIRST_MOBILE)
                     }
-                    //添加空气墙
-                    this.buildingManager.addAirExit(mapData)
-                    for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
-                        this.tilesmap[i] = new Array(i)
-                        for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
-                            //越往下层级越高，j是行，i是列
-                            this.addTiles(floorData, cc.v3(i, j), cc.v3(i, j), leveldata, false)
-                            //加载建筑
-                            this.buildingManager.addBuildingsFromMap(this, mapData, mapData[i][j], cc.v3(i, j), leveldata, exits, equipitems)
-                            //房间未清理时加载物品
-                            if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
-                                this.itemManager.addItemFromMap(mapData[i][j], cc.v3(i, j))
-                            }
-                            //房间未清理时加载怪物
-                            if (
-                                !Logic.mapManager.isCurrentRoomStateClear() ||
-                                Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM) ||
-                                Logic.mapManager.getCurrentRoomType().isEqual(RoomType.START_ROOM)
-                            ) {
-                                this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j))
-                            }
-                            //加载非人形npc
-                            this.nonPlayerManager.addNonPlayerFromMap(this, mapData[i][j], cc.v3(i, j), 0)
-                        }
-                    }
-                    let offsets = [cc.v3(-1, -1, 4), cc.v3(-1, 0, 2), cc.v3(-1, 1, 6), cc.v3(0, -1, 0), cc.v3(0, 1, 1), cc.v3(1, -1, 5), cc.v3(1, 0, 3), cc.v3(1, 1, 7)]
-                    for (let offset of offsets) {
-                        this.addBuildingsFromSideMap(offset)
-                    }
-                    //初始化玩家和控制器
-                    this.initPlayer()
-                    this.initCameraAndFog(this.player)
-                    //加载非人形跟随npc
-                    this.nonPlayerManager.addNonPlayerListFromSave(this, new Array().concat(Logic.nonPlayerList), this.player.node.position, this.player.entity.Transform.z)
-                    //加载人形npc
-                    this.aiPlayerManager.addAiPlayerListFromSave(this, Logic.getRoomPlayerList())
-                    //加载随机怪物
-                    if (
-                        (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoom().isReborn) &&
-                        RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType()) &&
-                        !Logic.isTour
-                    ) {
-                        this.monsterManager.addRandomMonsters(this, Logic.mapManager.getCurrentRoom().reborn)
-                    }
-                    cc.log('load finished')
-                    this.scheduleOnce(() => {
-                        this.isInitFinish = true
-                        this.fogScaleNormal()
-                        let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter')
-                        cc.tween(blackcenter)
-                            .delay(0.1)
-                            .to(0.5, { opacity: 0 })
-                            .call(() => {
-                                if (Logic.data.totalTime < 5 && Logic.CHAPTER00 == Logic.data.chapterIndex) {
-                                    Dialogue.play(Controller.isMouseMode() ? Dialogue.COURSE_FIRST_PC : Dialogue.COURSE_FIRST_MOBILE)
-                                }
-                            })
-                            .start()
-                        this.logNodeCount()
-                        this.addOilGoldOnGround()
-                    }, 0.3)
                 })
-            })
-        })
+                .start()
+            this.logNodeCount()
+            this.addOilGoldOnGround()
+        }, 0.3)
     }
     private initPlayer() {
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player)
