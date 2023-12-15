@@ -39,7 +39,7 @@ export default class Portal extends Building {
     setPos(pos: cc.Vec3) {
         this.entity.Transform.position = Dungeon.getPosInMap(pos)
         this.node.position = this.entity.Transform.position.clone()
-        this.node.zIndex = IndexZ.BASE + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 1
+        this.node.zIndex = IndexZ.BASE + (Logic.ROOM_HEIGHT - pos.y) * 10 + 1
     }
     AnimGateClose() {
         this.anim.play('PortalCloseIdle')

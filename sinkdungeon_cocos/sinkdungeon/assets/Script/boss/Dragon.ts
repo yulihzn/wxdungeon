@@ -117,21 +117,9 @@ export default class Dragon extends Boss {
             this.schedule(
                 () => {
                     this.dungeon.addFallStone(this.dungeon.player.node.position, true, true)
-                    this.dungeon.addFallStone(
-                        Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))),
-                        true,
-                        true
-                    )
-                    this.dungeon.addFallStone(
-                        Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))),
-                        true,
-                        true
-                    )
-                    this.dungeon.addFallStone(
-                        Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))),
-                        true,
-                        true
-                    )
+                    this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Logic.ROOM_WIDTH - 1), Random.getRandomNum(0, Logic.ROOM_HEIGHT - 1))), true, true)
+                    this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Logic.ROOM_WIDTH - 1), Random.getRandomNum(0, Logic.ROOM_HEIGHT - 1))), true, true)
+                    this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Logic.ROOM_WIDTH - 1), Random.getRandomNum(0, Logic.ROOM_HEIGHT - 1))), true, true)
                 },
                 0.5,
                 20,

@@ -95,12 +95,12 @@ export default class DungeonStyleManager extends BaseManager {
     private addDecorateBg() {
         let bg = cc.instantiate(this.parallaxBackground)
         bg.parent = this.node
-        let pos = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE / 2, Dungeon.HEIGHT_SIZE / 2))
+        let pos = Dungeon.getPosInMap(cc.v3(Logic.ROOM_WIDTH / 2, Logic.ROOM_HEIGHT / 2))
         bg.setPosition(pos)
         bg.zIndex = IndexZ.BACKGROUND
         let pbg = bg.getComponent(ParallexBackground)
-        pbg.background.width = (Dungeon.TILE_SIZE / 2) * Dungeon.WIDTH_SIZE
-        pbg.background.height = (Dungeon.TILE_SIZE / 2) * (Dungeon.HEIGHT_SIZE + 4)
+        pbg.background.width = (Dungeon.TILE_SIZE / 2) * Logic.ROOM_WIDTH
+        pbg.background.height = (Dungeon.TILE_SIZE / 2) * (Logic.ROOM_HEIGHT + 4)
         pbg.background.color = cc.Color.WHITE.fromHEX(this.styleData.bg02color)
         pbg.init()
     }
@@ -156,8 +156,8 @@ export default class DungeonStyleManager extends BaseManager {
                 pos = Dungeon.getPosInMap(cc.v3(-offset * 2, 0))
             }
         }
-        this.floor.width = (Dungeon.TILE_SIZE / 4) * (Dungeon.WIDTH_SIZE + offset * 3)
-        this.floor.height = (Dungeon.TILE_SIZE / 4) * (Dungeon.HEIGHT_SIZE + offset * 3)
+        this.floor.width = (Dungeon.TILE_SIZE / 4) * (Logic.ROOM_WIDTH + offset * 3)
+        this.floor.height = (Dungeon.TILE_SIZE / 4) * (Logic.ROOM_HEIGHT + offset * 3)
         this.floor.position = cc.v3(pos.x - Dungeon.TILE_SIZE / 2, pos.y - Dungeon.TILE_SIZE / 2)
         this.floor.zIndex = IndexZ.BACKGROUNDFLOOR
         let sprite = this.floor.getComponent(cc.Sprite)

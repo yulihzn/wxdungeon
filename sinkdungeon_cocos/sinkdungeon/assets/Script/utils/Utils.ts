@@ -255,4 +255,14 @@ export default class Utils {
         c3.setB(b > 255 ? 255 : b)
         return '#' + c3.toHEX('#rrggbb')
     }
+    static scheduleOnce(c: cc.Component, delay?: number) {
+        return new Promise(resolve => {
+            c.scheduleOnce(
+                () => {
+                    resolve(true)
+                },
+                delay ? delay : 0
+            )
+        })
+    }
 }

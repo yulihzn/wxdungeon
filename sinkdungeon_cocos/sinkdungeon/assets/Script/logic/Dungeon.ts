@@ -59,8 +59,6 @@ export default class Dungeon extends cc.Component {
     floorCombineMap: Map<string, Tile> = new Map()
     floorIndexMap: cc.Vec3[] = new Array() //地板下标列表
     waterIndexMap: cc.Vec3[] = new Array() //地板下标列表
-    static WIDTH_SIZE: number = 7
-    static HEIGHT_SIZE: number = 7
     static readonly MAPX: number = 64
     static readonly MAPY: number = 64
     static readonly TILE_SIZE: number = 128
@@ -227,8 +225,7 @@ export default class Dungeon extends cc.Component {
         let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData()
         let exits = leveldata.getExitList()
         let equipitems = leveldata.getEquipItemList()
-        Logic.changeDungeonSize()
-        this.node.position = cc.v3(Dungeon.WIDTH_SIZE * Dungeon.TILE_SIZE * this.currentPos.x, Dungeon.HEIGHT_SIZE * Dungeon.TILE_SIZE * this.currentPos.y)
+        this.node.position = cc.v3(Logic.ROOM_WIDTH * Dungeon.TILE_SIZE * this.currentPos.x, Logic.ROOM_HEIGHT * Dungeon.TILE_SIZE * this.currentPos.y)
         this.dungeonStyleManager.addDecorations()
         for (let arr of this.tilesmap) {
             Utils.clearComponentArray(arr)
@@ -236,7 +233,7 @@ export default class Dungeon extends cc.Component {
         let colliderdebug = this.node.getChildByName('colliderdebug')
         colliderdebug.zIndex = IndexZ.UI
         let p0 = this.node.convertToWorldSpaceAR(cc.v3(-5 * Dungeon.TILE_SIZE, -5 * Dungeon.TILE_SIZE))
-        let p1 = this.node.convertToWorldSpaceAR(cc.v3((Dungeon.WIDTH_SIZE + 10) * Dungeon.TILE_SIZE, (Dungeon.WIDTH_SIZE + 10) * Dungeon.TILE_SIZE))
+        let p1 = this.node.convertToWorldSpaceAR(cc.v3((Logic.ROOM_WIDTH + 10) * Dungeon.TILE_SIZE, (Logic.ROOM_WIDTH + 10) * Dungeon.TILE_SIZE))
         let rect = cc.rect(p0.x, p0.y, p1.x - p0.x, p1.y - p0.y)
         this.rootSystem = new GameWorldSystem(rect, colliderdebug.getComponent(cc.Graphics))
         this.rootSystem.init()
@@ -251,17 +248,17 @@ export default class Dungeon extends cc.Component {
         await Logic.getBuildings(BuildingManager.DOOR)
         //加载天气
         if ((leveldata.isOutside && !Logic.mapManager.getCurrentRoom().isOutside) || (!leveldata.isOutside && Logic.mapManager.getCurrentRoom().isOutside)) {
-            this.weatherManager.addRain(cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.WIDTH_SIZE / 2)), 0)
+            this.weatherManager.addRain(cc.v3(Math.floor(Logic.ROOM_WIDTH / 2), Math.floor(Logic.ROOM_WIDTH / 2)), 0)
         }
         //添加空气墙
         this.buildingManager.addAirExit(mapData)
-        for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
+        for (let i = 0; i < Logic.ROOM_WIDTH; i++) {
             this.tilesmap[i] = new Array(i)
-            for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
+            for (let j = 0; j < Logic.ROOM_HEIGHT; j++) {
                 //越往下层级越高，j是行，i是列
                 this.addTiles(floorData, cc.v3(i, j), cc.v3(i, j), leveldata, false)
                 //加载建筑
-                this.buildingManager.addBuildingsFromMap(this, mapData, mapData[i][j], cc.v3(i, j), leveldata, exits, equipitems)
+                await this.buildingManager.addBuildingsFromMap(this, mapData, mapData[i][j], cc.v3(i, j), leveldata, exits, equipitems)
                 //房间未清理时加载物品
                 if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
                     this.itemManager.addItemFromMap(mapData[i][j], cc.v3(i, j))
@@ -363,7 +360,7 @@ export default class Dungeon extends cc.Component {
                 t.parent = this.node
                 let pos = Dungeon.getPosInMap(indexPos.clone())
                 t.position = cc.v3(pos.x - Dungeon.TILE_SIZE / 2, pos.y - Dungeon.TILE_SIZE / 2)
-                t.zIndex = (resIndex > 0 ? IndexZ.FLOOR : IndexZ.BASE) + (Dungeon.HEIGHT_SIZE - indexPos.y) * 10
+                t.zIndex = (resIndex > 0 ? IndexZ.FLOOR : IndexZ.BASE) + (Logic.ROOM_HEIGHT - indexPos.y) * 10
                 let tile = t.getComponent(Tile)
                 tile.isAutoShow = false
                 tile.tileType = mapDataStr
@@ -428,7 +425,7 @@ export default class Dungeon extends cc.Component {
             }
         }
         for (let key in names) {
-            log += `${key}(${names[key]})\n`
+            log += `${key}(${names[key]});`
         }
         console.log(log)
     }
@@ -440,38 +437,38 @@ export default class Dungeon extends cc.Component {
             return
         }
         this.floorCombineMap.clear()
-        for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
-            for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
+        for (let i = 0; i < Logic.ROOM_WIDTH; i++) {
+            for (let j = 0; j < Logic.ROOM_HEIGHT; j++) {
                 let needAdd = false
                 let length = 4
                 switch (offset.z) {
                     case 0:
-                        needAdd = j > Dungeon.HEIGHT_SIZE - length
+                        needAdd = j > Logic.ROOM_HEIGHT - length
                         break
                     case 1:
                         needAdd = j < length
                         break
                     case 2:
-                        needAdd = i > Dungeon.WIDTH_SIZE - length
+                        needAdd = i > Logic.ROOM_WIDTH - length
                         break
                     case 3:
                         needAdd = i < length
                         break
                     case 4:
-                        needAdd = i > Dungeon.WIDTH_SIZE - length && j > Dungeon.HEIGHT_SIZE - length
+                        needAdd = i > Logic.ROOM_WIDTH - length && j > Logic.ROOM_HEIGHT - length
                         break
                     case 5:
-                        needAdd = i < length && j > Dungeon.HEIGHT_SIZE - length
+                        needAdd = i < length && j > Logic.ROOM_HEIGHT - length
                         break
                     case 6:
-                        needAdd = i > Dungeon.WIDTH_SIZE - length && j < length
+                        needAdd = i > Logic.ROOM_WIDTH - length && j < length
                         break
                     case 7:
                         needAdd = i < length && j < length
                         break
                 }
                 if (needAdd) {
-                    let indexPos = cc.v3(i + Dungeon.WIDTH_SIZE * offset.x, j + Dungeon.HEIGHT_SIZE * offset.y)
+                    let indexPos = cc.v3(i + Logic.ROOM_WIDTH * offset.x, j + Logic.ROOM_HEIGHT * offset.y)
                     this.addTiles(floorData, cc.v3(i, j), indexPos.clone(), leveldata, true)
                     this.buildingManager.addBuildingsFromSideMap(mapData[i][j], mapData, indexPos.clone(), leveldata)
                 }
@@ -645,14 +642,14 @@ export default class Dungeon extends cc.Component {
             if (x < 0) {
                 x = 0
             }
-            if (x >= Dungeon.WIDTH_SIZE) {
-                x = Dungeon.WIDTH_SIZE - 1
+            if (x >= Logic.ROOM_WIDTH) {
+                x = Logic.ROOM_WIDTH - 1
             }
             if (y < 0) {
                 y = 0
             }
-            if (y >= Dungeon.HEIGHT_SIZE) {
-                y = Dungeon.HEIGHT_SIZE - 1
+            if (y >= Logic.ROOM_HEIGHT) {
+                y = Logic.ROOM_HEIGHT - 1
             }
         }
         return cc.v3(x, y)
@@ -668,16 +665,16 @@ export default class Dungeon extends cc.Component {
             x = 0
             isOuter = true
         }
-        if (x >= Dungeon.WIDTH_SIZE) {
-            x = Dungeon.WIDTH_SIZE - 1
+        if (x >= Logic.ROOM_WIDTH) {
+            x = Logic.ROOM_WIDTH - 1
             isOuter = true
         }
         if (y < 0) {
             y = 0
             isOuter = true
         }
-        if (y >= Dungeon.HEIGHT_SIZE) {
-            y = Dungeon.HEIGHT_SIZE - 1
+        if (y >= Logic.ROOM_HEIGHT) {
+            y = Logic.ROOM_HEIGHT - 1
             isOuter = true
         }
         if (isOuter) {

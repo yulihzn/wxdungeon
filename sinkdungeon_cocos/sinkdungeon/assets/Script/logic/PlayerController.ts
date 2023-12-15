@@ -15,7 +15,7 @@ import { EventHelper } from './EventHelper'
 export default class PlayerController extends BaseController {
     onLoad() {
         EventHelper.on(EventHelper.PLAYER_MOVE, detail => {
-            if (this.CanControl) this.player.ctrlMove(detail.dir, detail.pos, detail.dt, this.player.dungeon)
+            if (this.CanControl) this.player.ctrlMove(detail.dir, detail.pos, detail.dt)
         })
         EventHelper.on(EventHelper.PLAYER_TRIGGER, detail => {
             if (this.CanControl) this.player.ctrlTriggerThings(detail && detail.isLongPress)

@@ -134,7 +134,7 @@ export default class Rah extends Boss {
                 .to(1, { opacity: 0 })
                 .call(() => {
                     let p = this.dungeon.player.pos.clone()
-                    if (p.y > Dungeon.HEIGHT_SIZE - 1) {
+                    if (p.y > Logic.ROOM_HEIGHT - 1) {
                         p.y -= 1
                     } else {
                         p.y += 1

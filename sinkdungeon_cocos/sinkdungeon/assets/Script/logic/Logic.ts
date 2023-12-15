@@ -142,6 +142,8 @@ export default class Logic extends cc.Component {
     static currentEditPlayerData = new PlayerData()
     static data: ProfileData = new ProfileData()
     static globalData: ProfileGlobalData = new ProfileGlobalData()
+    static ROOM_WIDTH = 0
+    static ROOM_HEIGHT = 0
 
     onLoad() {
         Logic.settings.valueCopy(LocalStorage.getSystemSettings())
@@ -220,9 +222,7 @@ export default class Logic extends cc.Component {
         //加载保存的npc
         Logic.nonPlayerList = DataUtils.copyListValue(Logic.profileManager.data.nonPlayerList, value => new NonPlayerData().valueCopy(value))
         Logic.aiPlayerIdMap = DataUtils.cloneKeyValue(Logic.profileManager.data.aiPlayerIdMap, value => value)
-        //重置地牢宽高
-        Dungeon.WIDTH_SIZE = 15
-        Dungeon.HEIGHT_SIZE = 9
+        //重置全局数据
         Logic.globalData.valueCopy(LocalStorage.getGlobalData())
         //重置bgm
         Logic.lastBgmIndex = 0
@@ -257,13 +257,6 @@ export default class Logic extends cc.Component {
         return data
     }
 
-    static changeDungeonSize() {
-        let size = Logic.mapManager.getCurrentMapSize()
-        if (size) {
-            Dungeon.WIDTH_SIZE = size.x
-            Dungeon.HEIGHT_SIZE = size.y
-        }
-    }
     static posToMapPos(pos: cc.Vec3): cc.Vec3 {
         //转换当前坐标为地图坐标
         let levelData = Logic.worldLoader.getCurrentLevelData()
@@ -311,16 +304,18 @@ export default class Logic extends cc.Component {
         AudioPlayer.play(AudioPlayer.EXIT)
         let room = Logic.mapManager.loadingNextRoom(dir)
         if (room) {
-            Logic.changeDungeonSize()
+            let data = Logic.worldLoader.getCurrentLevelData()
+            Logic.ROOM_WIDTH = data.roomWidth
+            Logic.ROOM_HEIGHT = data.roomHeight
             switch (dir) {
                 case 0:
                     Logic.playerData.pos = cc.v3(Logic.playerData.pos.x, 1)
                     break
                 case 1:
-                    Logic.playerData.pos = cc.v3(Logic.playerData.pos.x, Dungeon.HEIGHT_SIZE - 2)
+                    Logic.playerData.pos = cc.v3(Logic.playerData.pos.x, Logic.ROOM_HEIGHT - 2)
                     break
                 case 2:
-                    Logic.playerData.pos = cc.v3(Dungeon.WIDTH_SIZE - 2, Logic.playerData.pos.y)
+                    Logic.playerData.pos = cc.v3(Logic.ROOM_WIDTH - 2, Logic.playerData.pos.y)
                     break
                 case 3:
                     Logic.playerData.pos = cc.v3(1, Logic.playerData.pos.y)
@@ -332,7 +327,6 @@ export default class Logic extends cc.Component {
     }
     static loadingNextLevel(exitData: ExitData, clearMapCache?: boolean) {
         cc.log('loadingNextLevel')
-        cc.log(exitData)
         Logic.worldLoader.loadWorld(() => {
             if (!exitData) {
                 return
@@ -376,12 +370,16 @@ export default class Logic extends cc.Component {
             let roomY = Math.floor(ty / levelData.roomHeight)
             Logic.playerData.pos = cc.v3(exitData.toPos.x % levelData.roomWidth, ty % levelData.roomHeight)
             Logic.playerData.posZ = exitData.toPosZ
+            cc.log(exitData)
+            cc.log(Logic.playerData.pos)
+            cc.log(levelData)
             Logic.playerData.roomPos = cc.v3(roomX, roomY)
             Logic.playerData.chapterIndex = Logic.data.chapterIndex
             Logic.playerData.chapterLevel = Logic.data.level
             Logic.mapManager.reset()
             Logic.mapManager.changePos(cc.v3(roomX, roomY))
-            Logic.changeDungeonSize()
+            Logic.ROOM_HEIGHT = levelData.roomHeight
+            Logic.ROOM_WIDTH = levelData.roomWidth
             if (exitData.fromChapter == Logic.CHAPTER00 && Logic.data.chapterIndex == Logic.CHAPTER01) {
                 Logic.shipTransportScene = 1
             } else if (exitData.fromChapter == Logic.CHAPTER02 && Logic.data.chapterIndex == Logic.CHAPTER01) {
@@ -397,39 +395,14 @@ export default class Logic extends cc.Component {
                 }
             }
             Logic.playerData.isWakeUp = exitData.fromChapter != Logic.CHAPTER099 && exitData.toChapter == Logic.CHAPTER099
+            cc.director.loadScene('loading')
         })
-        cc.director.loadScene('loading')
     }
     static initInventoryManager() {
         this.inventoryMgrs = {}
         for (let key in Logic.playerDatas) {
             let playerData = Logic.playerDatas[key]
             let inventoryManager = new InventoryManager(playerData.id)
-            // if (Logic.data.chapterIndex == Logic.CHAPTER099) {
-            //     for (let key in playerData.playerEquipsReality) {
-            //         inventoryManager.equips[key].valueCopy(playerData.playerEquipsReality[key])
-            //     }
-            //     for (let i = 0; i < playerData.playerItemListReality.length; i++) {
-            //         inventoryManager.itemList[i].valueCopy(playerData.playerItemListReality[i])
-            //     }
-            //     for (let i = 0; i < playerData.playerInventoryListReality.length; i++) {
-            //         let data = new InventoryData()
-            //         data.valueCopy(playerData.playerInventoryListReality[i])
-            //         inventoryManager.inventoryList.push(data)
-            //     }
-            // } else {
-            //     for (let key in playerData.playerEquips) {
-            //         inventoryManager.equips[key].valueCopy(playerData.playerEquips[key])
-            //     }
-            //     for (let i = 0; i < playerData.playerItemList.length; i++) {
-            //         inventoryManager.itemList[i].valueCopy(playerData.playerItemList[i])
-            //     }
-            //     for (let i = 0; i < playerData.playerInventoryList.length; i++) {
-            //         let data = new InventoryData()
-            //         data.valueCopy(playerData.playerInventoryList[i])
-            //         inventoryManager.inventoryList.push(data)
-            //     }
-            // }
             this.inventoryMgrs[key] = inventoryManager
         }
     }

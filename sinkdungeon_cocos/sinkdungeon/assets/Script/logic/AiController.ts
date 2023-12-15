@@ -13,8 +13,8 @@ import Dungeon from './Dungeon'
 const { ccclass, property } = cc._decorator
 @ccclass
 export default class AiController extends BaseController {
-    ctrlPlayerMove(dir: number, pos: cc.Vec3, dt: number, dungeon: Dungeon) {
-        if (this.CanControl) this.player.ctrlMove(dir, pos, dt, dungeon)
+    ctrlPlayerMove(dir: number, pos: cc.Vec3, dt: number) {
+        if (this.CanControl) this.player.ctrlMove(dir, pos, dt)
     }
 
     ctrlPlayerTrigger(isLongPress: boolean) {

@@ -209,12 +209,11 @@ export default class Player extends PlayActor {
                 this.timeConsumeLife()
             }
         })
-        if (Logic.playerData.pos.y == Dungeon.HEIGHT_SIZE - 1) {
-            Logic.playerData.pos.y = Dungeon.HEIGHT_SIZE - 2
+        if (Logic.playerData.pos.y == Logic.ROOM_HEIGHT - 1) {
+            Logic.playerData.pos.y = Logic.ROOM_HEIGHT - 2
         }
         this.pos = Logic.playerData.pos.clone()
         this.defaultPos = Logic.playerData.pos.clone()
-        cc.log(`${this.pos.x},${this.pos.y}`)
         this.updatePlayerPos()
         this.entity.NodeRender.node = this.node
         this.entity.NodeRender.root = this.root
@@ -694,6 +693,7 @@ export default class Player extends PlayActor {
             }
             this.pos = Dungeon.getIndexInMap(this.entity.Transform.position)
             this.data.pos = this.pos.clone()
+            cc.log('移动y=' + this.data.pos.y + ' 高度=' + Logic.ROOM_HEIGHT)
             this.data.posZ = this.entity.Transform.z
             this.updateHv(cc.v2(pos).normalize())
             this.shooterEx.setHv(this.Hv.clone())
@@ -1079,27 +1079,26 @@ export default class Player extends PlayActor {
         this.dungeon.darkAfterKill()
     }
     //玩家行动
-    ctrlMove(dir: number, pos: cc.Vec3, dt: number, dungeon: Dungeon) {
-        this.dungeon = dungeon
+    ctrlMove(dir: number, pos: cc.Vec3, dt: number) {
         if (this.weaponLeft.meleeWeapon && !this.weaponLeft.meleeWeapon.dungeon) {
-            this.weaponLeft.meleeWeapon.dungeon = dungeon
-            this.weaponLeft.shooter.dungeon = dungeon
+            this.weaponLeft.meleeWeapon.dungeon = this.dungeon
+            this.weaponLeft.shooter.dungeon = this.dungeon
             this.weaponLeft.shooter.actor = this
-            this.weaponRight.meleeWeapon.dungeon = dungeon
-            this.weaponRight.shooter.dungeon = dungeon
+            this.weaponRight.meleeWeapon.dungeon = this.dungeon
+            this.weaponRight.shooter.dungeon = this.dungeon
             this.weaponRight.shooter.actor = this
-            this.shooterEx.dungeon = dungeon
+            this.shooterEx.dungeon = this.dungeon
             this.shooterEx.actor = this
         }
         for (let s of this.shadowList) {
             if (s.node && !s.weaponLeft.shadowWeapon.dungeon) {
-                s.weaponLeft.shadowWeapon.dungeon = dungeon
-                s.weaponLeft.shooter.dungeon = dungeon
+                s.weaponLeft.shadowWeapon.dungeon = this.dungeon
+                s.weaponLeft.shooter.dungeon = this.dungeon
                 s.weaponLeft.shooter.actor = this
-                s.weaponRight.shadowWeapon.dungeon = dungeon
-                s.weaponRight.shooter.dungeon = dungeon
+                s.weaponRight.shadowWeapon.dungeon = this.dungeon
+                s.weaponRight.shooter.dungeon = this.dungeon
                 s.weaponRight.shooter.actor = this
-                s.shooterEx.dungeon = dungeon
+                s.shooterEx.dungeon = this.dungeon
                 s.shooterEx.actor = this
             }
         }

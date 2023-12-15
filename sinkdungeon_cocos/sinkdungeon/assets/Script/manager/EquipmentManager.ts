@@ -231,7 +231,6 @@ export default class EquipmentManager extends BaseManager {
         if (chestQuality && chestQuality > 0 && quality < chestQuality) {
             quality = chestQuality
         }
-        cc.log(rand)
         return quality
     }
     getEquipment(equipType: string, pos: cc.Vec3, parent: cc.Node, equipData?: EquipmentData, chestQuality?: number, shopTable?: ShopTable): Equipment {

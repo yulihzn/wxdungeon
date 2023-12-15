@@ -59,10 +59,10 @@ export default class Kraken extends Boss {
     ShowFinish() {
         this.anim.play('KrakenHeadIdle')
         this.sc.isShow = true
-        let pos1 = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE, -4))
+        let pos1 = Dungeon.getPosInMap(cc.v3(Logic.ROOM_WIDTH, -4))
         let pos2 = Dungeon.getPosInMap(cc.v3(-2, -4))
-        let pos3 = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE, Dungeon.HEIGHT_SIZE))
-        let pos4 = Dungeon.getPosInMap(cc.v3(-2, Dungeon.HEIGHT_SIZE))
+        let pos3 = Dungeon.getPosInMap(cc.v3(Logic.ROOM_WIDTH, Logic.ROOM_HEIGHT))
+        let pos4 = Dungeon.getPosInMap(cc.v3(-2, Logic.ROOM_HEIGHT))
         this.hand01 = this.addHand(pos1, true, true)
         this.hand02 = this.addHand(pos2, false, true)
         this.hand03 = this.addHand(pos3, true, false)
@@ -83,7 +83,7 @@ export default class Kraken extends Boss {
         return h
     }
     updatePlayerPos() {
-        let pos = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE / 2, Dungeon.HEIGHT_SIZE + 2))
+        let pos = Dungeon.getPosInMap(cc.v3(Logic.ROOM_WIDTH / 2, Logic.ROOM_HEIGHT + 2))
         this.entity.Transform.position = pos
         this.node.setPosition(pos)
     }
@@ -109,7 +109,7 @@ export default class Kraken extends Boss {
         let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2]
         AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)])
         this.nearHandSkill.next(() => {
-            if (this.dungeon.player.pos.x > Dungeon.WIDTH_SIZE / 2) {
+            if (this.dungeon.player.pos.x > Logic.ROOM_WIDTH / 2) {
                 if (this.hand03) {
                     this.hand03.swing()
                 }
@@ -143,7 +143,7 @@ export default class Kraken extends Boss {
     getLoot(isSteal?: boolean) {
         if (this.dungeon) {
             let rand4save = Logic.mapManager.getRandom4Save(this.seed, MapManager.RANDOM_BOSS)
-            let p = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2))
+            let p = cc.v3(Math.floor(Logic.ROOM_WIDTH / 2), Math.floor(Logic.ROOM_HEIGHT / 2))
             let pos = Dungeon.getPosInMap(p)
             EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: pos, count: 19 })
             if (!isSteal) {
@@ -227,7 +227,7 @@ export default class Kraken extends Boss {
             }, 3)
         }
         this.handSkill.next(() => {
-            if (this.dungeon.player.pos.x > Dungeon.WIDTH_SIZE / 2) {
+            if (this.dungeon.player.pos.x > Logic.ROOM_WIDTH / 2) {
                 if (this.hand01) {
                     this.hand01.swing()
                 }

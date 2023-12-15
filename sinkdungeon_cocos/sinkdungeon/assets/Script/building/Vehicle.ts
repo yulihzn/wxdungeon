@@ -49,7 +49,7 @@ export default class Vehicle extends Building {
         this.isMoving = true
 
         this.startPos = Dungeon.getPosInMap(this.data.defaultPos)
-        this.endPos = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE, this.data.defaultPos.y))
+        this.endPos = Dungeon.getPosInMap(cc.v3(Logic.ROOM_WIDTH, this.data.defaultPos.y))
         this.entity.Transform.position = this.startPos.clone()
         this.entity.NodeRender.root = this.root
         this.scheduleOnce(() => {
