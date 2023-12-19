@@ -71,6 +71,7 @@ export class EventHelper extends cc.Component {
     public static readonly DUNGEON_ADD_FLOORPAPER = 'DUNGEON_ADD_FLOORPAPER'
     public static readonly DUNGEON_WALL_COLLIDER = 'DUNGEON_WALL_COLLIDER'
     public static readonly DUNGEON_DISAPPEAR = 'DUNGEON_DISAPPEAR'
+    public static readonly DUNGEON_DESTROY = 'DUNGEON_DESTROY'
     public static readonly MONSTER_STATUSUPDATE = 'MONSTER_STATUSUPDATE'
     public static readonly BOSS_ADDSLIME = 'BOSS_ADDSLIME'
     public static readonly HUD_UPDATE_PLAYER_INFODIALOG = 'HUD_UPDATE_PLAYER_INFO_DIALOG'

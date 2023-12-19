@@ -32,11 +32,11 @@ export default class RoomFishtank extends cc.Component {
     showAudio = false
     dungeon: Dungeon
 
-    onLoad() {
+    async onLoad() {
         this.fishSprite = this.fish.getChildByName('sprite').getComponent(cc.Sprite)
         this.fishIdle()
         this.fishMove()
-        LoadingManager.loadNpcSpriteAtlas(NonPlayerManager.FISH)
+        await Logic.loadNpcSpriteAtlasSync(NonPlayerManager.FISH)
     }
     init(dungeon: Dungeon) {
         this.dungeon = dungeon

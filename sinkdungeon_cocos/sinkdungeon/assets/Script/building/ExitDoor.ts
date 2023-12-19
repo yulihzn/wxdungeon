@@ -161,6 +161,7 @@ export default class ExitDoor extends Building {
     onColliderEnter(other: CCollider, self: CCollider) {
         if (self.sensor && other.tag == CCollider.TAG.PLAYER) {
             let player = other.node.getComponent(Player)
+            cc.log(`onColliderEnter open=${this.isOpen}`)
             this.loadingNextLevel(player)
         } else if (self.sensor && other.tag == CCollider.TAG.VEHICLE) {
             let v = other.node.getComponent(Vehicle)
@@ -173,6 +174,7 @@ export default class ExitDoor extends Building {
         if (player && this.isOpen) {
             this.isOpen = false
             AudioPlayer.play(AudioPlayer.EXIT)
+            player.dungeon.isInitFinish = false
             Logic.loadingNextLevel(this.exitData)
         }
     }

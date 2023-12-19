@@ -73,6 +73,7 @@ export default class Portal extends Building {
             if (this.isOpen) {
                 this.closeGate()
                 AudioPlayer.play(AudioPlayer.EXIT)
+                player.dungeon.isInitFinish = false
                 Logic.loadingNextLevel(this.exitData)
             }
         }

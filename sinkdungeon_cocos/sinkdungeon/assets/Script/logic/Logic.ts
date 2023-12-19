@@ -296,6 +296,7 @@ export default class Logic extends cc.Component {
         Logic.saveData()
     }
     static loadingNextRoom(dir: number) {
+        Logic.isGamePause = true
         cc.log('loadingNextRoom')
         Logic.mapManager.randMap.clear()
         //保存数据
@@ -336,6 +337,7 @@ export default class Logic extends cc.Component {
             if (!levelData) {
                 return
             }
+            Logic.isGamePause = true
             if (clearMapCache) {
                 Logic.mapManager.clear()
             }
@@ -469,6 +471,13 @@ export default class Logic extends cc.Component {
         return new Promise(resolve => {
             LoadingManager.loadBuilding(name, () => {
                 resolve(Logic.buildings[name])
+            })
+        })
+    }
+    static loadNpcSpriteAtlasSync(name: string): Promise<number> {
+        return new Promise(resolve => {
+            LoadingManager.loadNpcSpriteAtlas(name, status => {
+                resolve(status)
             })
         })
     }

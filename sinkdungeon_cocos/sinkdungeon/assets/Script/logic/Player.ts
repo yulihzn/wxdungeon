@@ -693,7 +693,6 @@ export default class Player extends PlayActor {
             }
             this.pos = Dungeon.getIndexInMap(this.entity.Transform.position)
             this.data.pos = this.pos.clone()
-            cc.log('移动y=' + this.data.pos.y + ' 高度=' + Logic.ROOM_HEIGHT)
             this.data.posZ = this.entity.Transform.z
             this.updateHv(cc.v2(pos).normalize())
             this.shooterEx.setHv(this.Hv.clone())
@@ -1505,6 +1504,7 @@ export default class Player extends PlayActor {
                             AudioPlayer.play(AudioPlayer.EXIT)
                             //休息8小时
                             Logic.data.dreamCostTime = 60000 * 60 * 8
+                            this.dungeon.isInitFinish = false
                             Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal())
                         }, 1)
                     }

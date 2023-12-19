@@ -186,12 +186,12 @@ export default class MonsterManager extends BaseManager {
         this.bosses = new Array()
     }
     /**添加怪物 */
-    public addMonsterFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon, isSummon: boolean) {
-        this.getMonster(resName, dungeon, isSummon, (nonplayer: NonPlayer) => {
+    public async addMonsterFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon, isSummon: boolean) {
+        await this.getMonster(resName, dungeon, isSummon, async (nonplayer: NonPlayer) => {
             nonplayer = this.addMonster(nonplayer, indexPos, null)
             if (nonplayer.data.childCount > 0 && nonplayer.data.childResName.length > 0) {
                 for (let i = 0; i < nonplayer.data.childCount; i++) {
-                    this.getMonster(nonplayer.data.childResName, dungeon, isSummon, (childPlayer: NonPlayer) => {
+                    await this.getMonster(nonplayer.data.childResName, dungeon, isSummon, (childPlayer: NonPlayer) => {
                         nonplayer.childNonPlayerList.push(this.addMonster(childPlayer, indexPos, nonplayer))
                     })
                 }
@@ -199,9 +199,9 @@ export default class MonsterManager extends BaseManager {
         })
     }
 
-    public addMonstersAndBossFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
+    public async addMonstersAndBossFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
         if (Dungeon.isFirstEqual(mapDataStr, 'm')) {
-            this.addMonsterFromData(`monster${mapDataStr.substring(1)}`, indexPos, dungeon, false)
+            await this.addMonsterFromData(`monster${mapDataStr.substring(1)}`, indexPos, dungeon, false)
             return
         }
         if (Utils.isFirstEqual(mapDataStr, 'z')) {
@@ -241,120 +241,119 @@ export default class MonsterManager extends BaseManager {
      * @param monsterNode Monster prefab的结点
      * @param parent 父节点
      */
-    private getMonster(resName: string, dungeon: Dungeon, isSummon: boolean, callBack: Function) {
-        LoadingManager.loadNpcSpriteAtlas(resName, status => {
-            if (status == LoadingManager.LOAD_FAIL) {
-                return
-            }
-            let monsterPrefab: cc.Node = null
-            monsterPrefab = cc.instantiate(this.monster)
-            monsterPrefab.active = false
-            monsterPrefab.parent = dungeon.node
-            let monster = monsterPrefab.getComponent(NonPlayer)
-            let data = new NonPlayerData()
-            monster.seed = this.getRandomMonsterSeed()
-            monster.killPlayerCount = Logic.getKillPlayerCount(monster.seed)
-            let rand4save = Logic.mapManager.getRandom4Save(monster.seed, MapManager.RANDOM_NONPLAYER)
-            monster.dungeon = dungeon
-            data.valueCopy(Logic.monsters[resName])
-            let reborn = Logic.mapManager.getCurrentRoom().reborn
-            data.reborn = reborn ? reborn : 0
-            monster.isSummon = isSummon
-            //10%几率随机属性
-            if (rand4save.rand() < 0.1 + monster.killPlayerCount / 10) {
-                this.monsterRandomAttr.addRandomAttrs(2, rand4save)
-                data = this.monsterRandomAttr.updateMonsterData(data)
-                monster.attrmap = this.monsterRandomAttr.attrmap
-            }
-            //5%加击杀次数的几率变异
-            let variationRate = 5 + monster.killPlayerCount * 2
-            let up = 0
-            if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.DANGER_ROOM)) {
-                up = 10
-            }
-            if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.INSANE_ROOM)) {
-                up = 30
-            }
+    private async getMonster(resName: string, dungeon: Dungeon, isSummon: boolean, callBack: (nonplayer: NonPlayer) => void) {
+        let status = await Logic.loadNpcSpriteAtlasSync(resName)
+        if (status == LoadingManager.LOAD_FAIL) {
+            return
+        }
+        let monsterPrefab: cc.Node = null
+        monsterPrefab = cc.instantiate(this.monster)
+        monsterPrefab.active = false
+        monsterPrefab.parent = dungeon.node
+        let monster = monsterPrefab.getComponent(NonPlayer)
+        let data = new NonPlayerData()
+        monster.seed = this.getRandomMonsterSeed()
+        monster.killPlayerCount = Logic.getKillPlayerCount(monster.seed)
+        let rand4save = Logic.mapManager.getRandom4Save(monster.seed, MapManager.RANDOM_NONPLAYER)
+        monster.dungeon = dungeon
+        data.valueCopy(Logic.monsters[resName])
+        let reborn = Logic.mapManager.getCurrentRoom().reborn
+        data.reborn = reborn ? reborn : 0
+        monster.isSummon = isSummon
+        //10%几率随机属性
+        if (rand4save.rand() < 0.1 + monster.killPlayerCount / 10) {
+            this.monsterRandomAttr.addRandomAttrs(2, rand4save)
+            data = this.monsterRandomAttr.updateMonsterData(data)
+            monster.attrmap = this.monsterRandomAttr.attrmap
+        }
+        //5%加击杀次数的几率变异
+        let variationRate = 5 + monster.killPlayerCount * 2
+        let up = 0
+        if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.DANGER_ROOM)) {
+            up = 10
+        }
+        if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.INSANE_ROOM)) {
+            up = 30
+        }
 
-            variationRate = variationRate + Logic.data.chapterIndex * 2 + Logic.data.level * 2 + up
-            monster.isVariation = rand4save.getRandomNum(0, 100) < variationRate && data.isTest < 1
-            if (monster.isVariation) {
-                data.Common.maxHealth = data.Common.maxHealth * 2
-                data.Common.maxDream = data.Common.maxDream * 2
-                data.Common.damageMin = data.Common.damageMin * 2
-                data.currentHealth = data.Common.maxHealth
-
-                if (data.melee > 0) {
-                    data.melee = data.melee > 1 ? data.melee - 1 : 1
-                }
-                if (data.remote > 0) {
-                    data.remote = data.remote > 1 ? data.remote - 1 : 1
-                }
-                if (data.dash > 0) {
-                    data.dash = data.dash > 1 ? data.dash - 1 : 1
-                }
-
-                data.Common.moveSpeed = data.Common.moveSpeed > 0 ? data.Common.moveSpeed + 0.5 + 0.1 * monster.killPlayerCount : 0
-            }
-            data.Common.maxDream += data.Common.maxDream * 0.25 * monster.killPlayerCount
-            data.Common.damageMin += data.Common.damageMin * 0.25 * monster.killPlayerCount
-            data.Common.maxHealth += data.Common.maxHealth * 0.25 * monster.killPlayerCount
-            data.Common.attackSpeed += monster.killPlayerCount * 10
-            data.Common.defence += monster.killPlayerCount
+        variationRate = variationRate + Logic.data.chapterIndex * 2 + Logic.data.level * 2 + up
+        monster.isVariation = rand4save.getRandomNum(0, 100) < variationRate && data.isTest < 1
+        if (monster.isVariation) {
+            data.Common.maxHealth = data.Common.maxHealth * 2
+            data.Common.maxDream = data.Common.maxDream * 2
+            data.Common.damageMin = data.Common.damageMin * 2
             data.currentHealth = data.Common.maxHealth
-            if (data.melee - monster.killPlayerCount > 1) {
-                data.melee -= monster.killPlayerCount
+
+            if (data.melee > 0) {
+                data.melee = data.melee > 1 ? data.melee - 1 : 1
             }
-            if (data.remote - monster.killPlayerCount > 1) {
-                data.remote -= monster.killPlayerCount
+            if (data.remote > 0) {
+                data.remote = data.remote > 1 ? data.remote - 1 : 1
             }
-            if (data.dash - monster.killPlayerCount > 1) {
-                data.dash -= monster.killPlayerCount
+            if (data.dash > 0) {
+                data.dash = data.dash > 1 ? data.dash - 1 : 1
             }
-            //5%几率添加元素
-            let rand = rand4save.getRandomNum(0, 100)
-            let df = rand4save.getRandomNum(80, 100)
-            let er = rand4save.getRandomNum(80, 100)
-            let isAddElement = rand <= 5 + monster.killPlayerCount * 3
-            rand = rand4save.getRandomNum(0, 4)
-            if (isAddElement) {
-                data.Common.magicDamage += 1
-                data.Common.magicDefenceRate = data.Common.magicDefenceRate + df > 100 ? 100 : data.Common.magicDefenceRate + df
-                switch (rand) {
-                    case 0:
-                        data.Common.iceRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er
-                        data.bodyColor = '#CCFFFF'
-                        break
-                    case 1:
-                        data.Common.fireRate = data.Common.fireRate + er > 100 ? 100 : data.Common.fireRate + er
-                        data.bodyColor = '#FF6633'
-                        break
-                    case 2:
-                        data.Common.lighteningRate = data.Common.lighteningRate + er > 100 ? 100 : data.Common.lighteningRate + er
-                        data.bodyColor = '#0099FF'
-                        break
-                    case 3:
-                        data.Common.toxicRate = data.Common.toxicRate + er > 100 ? 100 : data.Common.toxicRate + er
-                        data.bodyColor = '#66CC00'
-                        break
-                    case 4:
-                        data.Common.curseRate = data.Common.curseRate + er > 100 ? 100 : data.Common.curseRate + er
-                        data.bodyColor = '#660099'
-                        break
-                }
+
+            data.Common.moveSpeed = data.Common.moveSpeed > 0 ? data.Common.moveSpeed + 0.5 + 0.1 * monster.killPlayerCount : 0
+        }
+        data.Common.maxDream += data.Common.maxDream * 0.25 * monster.killPlayerCount
+        data.Common.damageMin += data.Common.damageMin * 0.25 * monster.killPlayerCount
+        data.Common.maxHealth += data.Common.maxHealth * 0.25 * monster.killPlayerCount
+        data.Common.attackSpeed += monster.killPlayerCount * 10
+        data.Common.defence += monster.killPlayerCount
+        data.currentHealth = data.Common.maxHealth
+        if (data.melee - monster.killPlayerCount > 1) {
+            data.melee -= monster.killPlayerCount
+        }
+        if (data.remote - monster.killPlayerCount > 1) {
+            data.remote -= monster.killPlayerCount
+        }
+        if (data.dash - monster.killPlayerCount > 1) {
+            data.dash -= monster.killPlayerCount
+        }
+        //5%几率添加元素
+        let rand = rand4save.getRandomNum(0, 100)
+        let df = rand4save.getRandomNum(80, 100)
+        let er = rand4save.getRandomNum(80, 100)
+        let isAddElement = rand <= 5 + monster.killPlayerCount * 3
+        rand = rand4save.getRandomNum(0, 4)
+        if (isAddElement) {
+            data.Common.magicDamage += 1
+            data.Common.magicDefenceRate = data.Common.magicDefenceRate + df > 100 ? 100 : data.Common.magicDefenceRate + df
+            switch (rand) {
+                case 0:
+                    data.Common.iceRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er
+                    data.bodyColor = '#CCFFFF'
+                    break
+                case 1:
+                    data.Common.fireRate = data.Common.fireRate + er > 100 ? 100 : data.Common.fireRate + er
+                    data.bodyColor = '#FF6633'
+                    break
+                case 2:
+                    data.Common.lighteningRate = data.Common.lighteningRate + er > 100 ? 100 : data.Common.lighteningRate + er
+                    data.bodyColor = '#0099FF'
+                    break
+                case 3:
+                    data.Common.toxicRate = data.Common.toxicRate + er > 100 ? 100 : data.Common.toxicRate + er
+                    data.bodyColor = '#66CC00'
+                    break
+                case 4:
+                    data.Common.curseRate = data.Common.curseRate + er > 100 ? 100 : data.Common.curseRate + er
+                    data.bodyColor = '#660099'
+                    break
             }
-            data.isEnemy = 1
-            monster.data = data
-            monster.sc.isDisguising = data.disguise > 0
-            if (monster.sc.isDisguising) {
-                monster.changeBodyRes(data.resName, NonPlayer.RES_DISGUISE)
-            } else {
-                monster.changeBodyRes(resName, NonPlayer.RES_IDLE000)
-            }
-            monster.addAttrIcon()
-            monster.icon = this.actorIconView.getIcon(data.resName)
-            callBack(monster)
-        })
+        }
+        data.isEnemy = 1
+        monster.data = data
+        monster.sc.isDisguising = data.disguise > 0
+        if (monster.sc.isDisguising) {
+            monster.changeBodyRes(data.resName, NonPlayer.RES_DISGUISE)
+        } else {
+            monster.changeBodyRes(resName, NonPlayer.RES_IDLE000)
+        }
+        monster.addAttrIcon()
+        monster.icon = this.actorIconView.getIcon(data.resName)
+        callBack(monster)
     }
     private addMonster(monster: NonPlayer, pos: cc.Vec3, parent: NonPlayer): NonPlayer {
         //激活
@@ -440,7 +439,7 @@ export default class MonsterManager extends BaseManager {
         this.bosses.push(slime)
         return slime
     }
-    addRandomMonsters(dungeon: Dungeon, reborn: number) {
+    async addRandomMonsters(dungeon: Dungeon, reborn: number) {
         let arr = new Array()
         let rand4save = new Random4Save(Logic.mapManager.getCurrentRoom().seed)
         let num = rand4save.getRandomNum(1, 3)
@@ -508,7 +507,7 @@ export default class MonsterManager extends BaseManager {
             let pos = indexmap[randindex]
             indexmap.splice(randindex, 1)
             groundmonstercount++
-            this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y), dungeon, false)
+            await this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y), dungeon, false)
         }
         //水里的
         for (let i = 0; i <= num + up - groundmonstercount; i++) {
@@ -518,7 +517,7 @@ export default class MonsterManager extends BaseManager {
             let randindex = rand4save.getRandomNum(0, waterindexmap.length - 1)
             let pos = waterindexmap[randindex]
             waterindexmap.splice(randindex, 1)
-            this.addMonsterFromData(MonsterManager.MONSTER_FISH, cc.v3(pos.x, pos.y), dungeon, false)
+            await this.addMonsterFromData(MonsterManager.MONSTER_FISH, cc.v3(pos.x, pos.y), dungeon, false)
         }
     }
     updateLogic(dt: number) {

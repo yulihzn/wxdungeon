@@ -562,7 +562,8 @@ export default class LoadingManager {
             })
         }
     }
-    static loadNpcSpriteAtlas(name: string, callback?: Function) {
+
+    static loadNpcSpriteAtlas(name: string, callback?: (status: number) => void) {
         if (Logic.spriteFrames && Logic.spriteFrames[name + 'anim000']) {
             if (callback) {
                 callback(0)

@@ -44,19 +44,19 @@ export default class NonPlayerManager extends BaseManager {
     clear(): void {
         Utils.clearComponentArray(this.nonplayers)
     }
-    public addNonPlayerListFromSave(dungeon: Dungeon, list: NonPlayerData[], position: cc.Vec3, posZ: number) {
+    public async addNonPlayerListFromSave(dungeon: Dungeon, list: NonPlayerData[], position: cc.Vec3, posZ: number) {
         for (let data of list) {
             if (data.isPet || data.lifeTime > 0) {
-                this.getNonPlayer(data, dungeon, (npc: NonPlayer) => {
+                await this.getNonPlayer(data, dungeon, (npc: NonPlayer) => {
                     this.addNonPlayer(npc, position, posZ)
                 })
             }
         }
     }
     /**添加npc */
-    public addNonPlayerFromData(data: NonPlayerData, pos: cc.Vec3, posZ: number, dungeon: Dungeon) {
+    public async addNonPlayerFromData(data: NonPlayerData, pos: cc.Vec3, posZ: number, dungeon: Dungeon) {
         Achievement.addNpcsAchievement(data.resName)
-        this.getNonPlayer(data, dungeon, (npc: NonPlayer) => {
+        await this.getNonPlayer(data, dungeon, (npc: NonPlayer) => {
             this.addNonPlayer(npc, pos, posZ)
         })
     }
@@ -90,27 +90,26 @@ export default class NonPlayerManager extends BaseManager {
             this.addNonPlayerFromData(data, Dungeon.getPosInMap(indexPos), posZ, dungeon)
         }
     }
-    private getNonPlayer(nonPlayerData: NonPlayerData, dungeon: Dungeon, callback: Function): void {
-        LoadingManager.loadNpcSpriteAtlas(nonPlayerData.resName, () => {
-            let nonPlayerPrefab: cc.Node = null
-            nonPlayerPrefab = cc.instantiate(this.nonplayer)
-            nonPlayerPrefab.active = false
-            nonPlayerPrefab.parent = dungeon.node
-            let nonPlayer = nonPlayerPrefab.getComponent(NonPlayer)
-            let data = new NonPlayerData()
-            nonPlayer.dungeon = dungeon
-            data.valueCopy(Logic.nonplayers[nonPlayerData.resName])
-            data.valueCopy(nonPlayerData)
-            data.isEnemy = 0
-            nonPlayer.data = data
-            nonPlayer.sc.isDisguising = data.disguise > 0
-            if (nonPlayer.sc.isDisguising) {
-                nonPlayer.changeBodyRes(data.resName, NonPlayer.RES_DISGUISE)
-            } else {
-                nonPlayer.changeBodyRes(data.resName, NonPlayer.RES_IDLE000)
-            }
-            callback(nonPlayer)
-        })
+    private async getNonPlayer(nonPlayerData: NonPlayerData, dungeon: Dungeon, callback: Function): Promise<void> {
+        await Logic.loadNpcSpriteAtlasSync(nonPlayerData.resName)
+        let nonPlayerPrefab: cc.Node = null
+        nonPlayerPrefab = cc.instantiate(this.nonplayer)
+        nonPlayerPrefab.active = false
+        nonPlayerPrefab.parent = dungeon.node
+        let nonPlayer = nonPlayerPrefab.getComponent(NonPlayer)
+        let data = new NonPlayerData()
+        nonPlayer.dungeon = dungeon
+        data.valueCopy(Logic.nonplayers[nonPlayerData.resName])
+        data.valueCopy(nonPlayerData)
+        data.isEnemy = 0
+        nonPlayer.data = data
+        nonPlayer.sc.isDisguising = data.disguise > 0
+        if (nonPlayer.sc.isDisguising) {
+            nonPlayer.changeBodyRes(data.resName, NonPlayer.RES_DISGUISE)
+        } else {
+            nonPlayer.changeBodyRes(data.resName, NonPlayer.RES_IDLE000)
+        }
+        callback(nonPlayer)
     }
     private addNonPlayer(nonPlayer: NonPlayer, pos: cc.Vec3, posZ: number) {
         //激活

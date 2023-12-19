@@ -87,9 +87,8 @@ export default class AirExit extends Building {
         if (other.tag == CCollider.TAG.PLAYER) {
             let player = other.node.getComponent(Player)
             if (player && this.status == AirExit.STATUS_OPEN) {
-                this.scheduleOnce(() => {
-                    Logic.loadingNextRoom(this.dir)
-                })
+                player.dungeon.isInitFinish = false
+                Logic.loadingNextRoom(this.dir)
             }
         }
     }

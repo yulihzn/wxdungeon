@@ -188,14 +188,10 @@ export default class Dungeon extends cc.Component {
         this.weatherManager = this.getComponent(WeatherManager)
         this.effectItemManager = this.getComponent(EffectItemManager)
     }
-    start() {
-        this.reset()
-        this.scheduleOnce(() => {
-            EventHelper.emit(EventHelper.CHANGE_MINIMAP, { x: this.currentPos.x, y: this.currentPos.y })
-            if (this.isInitFinish && !Logic.isGamePause && !this.isDisappeared && LoadingManager.allResourceDone()) {
-                this.checkRoomClear()
-            }
-        }, 0.1)
+    async start() {
+        await this.reset()
+        EventHelper.emit(EventHelper.CHANGE_MINIMAP, { x: this.currentPos.x, y: this.currentPos.y })
+        this.checkRoomClear()
         cc.log(`dungeon pos:${this.node.position}`)
     }
     private async reset() {
@@ -269,7 +265,7 @@ export default class Dungeon extends cc.Component {
                     Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM) ||
                     Logic.mapManager.getCurrentRoomType().isEqual(RoomType.START_ROOM)
                 ) {
-                    this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j))
+                    await this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j))
                 }
                 //加载非人形npc
                 this.nonPlayerManager.addNonPlayerFromMap(this, mapData[i][j], cc.v3(i, j), 0)
@@ -283,7 +279,7 @@ export default class Dungeon extends cc.Component {
         this.initPlayer()
         this.initCameraAndFog(this.player)
         //加载非人形跟随npc
-        this.nonPlayerManager.addNonPlayerListFromSave(this, new Array().concat(Logic.nonPlayerList), this.player.node.position, this.player.entity.Transform.z)
+        await this.nonPlayerManager.addNonPlayerListFromSave(this, new Array().concat(Logic.nonPlayerList), this.player.node.position, this.player.entity.Transform.z)
         //加载人形npc
         this.aiPlayerManager.addAiPlayerListFromSave(this, Logic.getRoomPlayerList())
         //加载随机怪物
@@ -292,25 +288,23 @@ export default class Dungeon extends cc.Component {
             RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType()) &&
             !Logic.isTour
         ) {
-            this.monsterManager.addRandomMonsters(this, Logic.mapManager.getCurrentRoom().reborn)
+            await this.monsterManager.addRandomMonsters(this, Logic.mapManager.getCurrentRoom().reborn)
         }
-        cc.log('load finished')
-        this.scheduleOnce(() => {
-            this.isInitFinish = true
-            this.fogScaleNormal()
-            let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter')
-            cc.tween(blackcenter)
-                .delay(0.1)
-                .to(0.5, { opacity: 0 })
-                .call(() => {
-                    if (Logic.data.totalTime < 5 && Logic.CHAPTER00 == Logic.data.chapterIndex) {
-                        Dialogue.play(Controller.isMouseMode() ? Dialogue.COURSE_FIRST_PC : Dialogue.COURSE_FIRST_MOBILE)
-                    }
-                })
-                .start()
-            this.logNodeCount()
-            this.addOilGoldOnGround()
-        }, 0.3)
+        this.fogScaleNormal()
+        let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter')
+        cc.tween(blackcenter)
+            .delay(0.1)
+            .to(0.5, { opacity: 0 })
+            .call(() => {
+                if (Logic.data.totalTime < 5 && Logic.CHAPTER00 == Logic.data.chapterIndex) {
+                    Dialogue.play(Controller.isMouseMode() ? Dialogue.COURSE_FIRST_PC : Dialogue.COURSE_FIRST_MOBILE)
+                }
+            })
+            .start()
+        this.logNodeCount()
+        this.addOilGoldOnGround()
+        this.isInitFinish = true
+        cc.log('dungeon load finish')
     }
     private initPlayer() {
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player)
@@ -325,9 +319,7 @@ export default class Dungeon extends cc.Component {
     private initCameraAndFog(target: Actor) {
         this.changeCameraTarget(target)
         this.fog.setPosition(this.cameraControl.Target.node.position.clone())
-        this.scheduleOnce(() => {
-            EventHelper.emit(EventHelper.CAMERA_LOOK, { pos: target.getCenterPosition(), isDirect: true })
-        })
+        EventHelper.emit(EventHelper.CAMERA_LOOK, { pos: target.getCenterPosition(), isDirect: true })
     }
 
     public changeCameraTarget(actor: Actor, offset?: cc.Vec3) {

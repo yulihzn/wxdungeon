@@ -37,6 +37,7 @@ export default class SavePoint extends Building {
                         AudioPlayer.play(AudioPlayer.EXIT)
                         this.scheduleOnce(() => {
                             EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN, {})
+                            player.dungeon.isInitFinish = false
                             Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.data.chapterIndex, Logic.data.level))
                         }, 1)
                     } else if (index == 2) {
