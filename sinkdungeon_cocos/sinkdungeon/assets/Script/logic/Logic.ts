@@ -135,7 +135,6 @@ export default class Logic extends cc.Component {
     static sortIndexs: { [key: string]: number } = {} //0时间,1类别,2品质,3价格
     static settings: SettingsData = new SettingsData()
     static nonPlayerList: NonPlayerData[] = []
-    static aiPlayerIdMap: { [key: string]: string[] } = {}
     static playerMetals: { [key: string]: MetalTalentData } = {} //玩家翠金天赋点
     static metalId = ''
     static furnitureMap: Map<string, BuildingData> = new Map()
@@ -184,7 +183,6 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.valueCopy(Logic.data)
         Logic.profileManager.data.playerDatas = DataUtils.cloneKeyValue(Logic.playerDatas, value => new PlayerData().valueCopy(value))
         Logic.profileManager.data.nonPlayerList = Logic.nonPlayerList
-        Logic.profileManager.data.aiPlayerIdMap = Logic.aiPlayerIdMap
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon
         Logic.profileManager.data.savePointData = Logic.savePoinitData.clone()
         Logic.profileManager.data.groundOilGoldData = Logic.groundOilGoldData.clone()
@@ -221,7 +219,6 @@ export default class Logic extends cc.Component {
         Logic.initInventoryManager()
         //加载保存的npc
         Logic.nonPlayerList = DataUtils.copyListValue(Logic.profileManager.data.nonPlayerList, value => new NonPlayerData().valueCopy(value))
-        Logic.aiPlayerIdMap = DataUtils.cloneKeyValue(Logic.profileManager.data.aiPlayerIdMap, value => value)
         //重置全局数据
         Logic.globalData.valueCopy(LocalStorage.getGlobalData())
         //重置bgm
@@ -542,9 +539,5 @@ export default class Logic extends cc.Component {
         }
 
         return data
-    }
-    static getRoomPlayerList(): string[] {
-        let room = Logic.mapManager.getCurrentRoom()
-        return Logic.aiPlayerIdMap[`${Logic.data.chapterIndex},${Logic.data.level},${room.x},${room.y}`]
     }
 }

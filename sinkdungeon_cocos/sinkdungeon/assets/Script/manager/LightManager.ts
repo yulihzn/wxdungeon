@@ -45,6 +45,7 @@ export default class LightManager extends BaseManager {
     private shadowAlpha = LightManager.ALPHA_START
     private hasOutSideLight = false
     private isFirstRender = true
+    private isOutsideChange = 0
 
     clear(): void {
         LightManager.lightList = []
@@ -52,7 +53,6 @@ export default class LightManager extends BaseManager {
     onLoad() {
         this.mat = this.shadow.getMaterial(0)
         this.mat1 = this.shadow1.getMaterial(0)
-        this.timeChange()
     }
     private render() {
         this.hasOutSideLight = false
@@ -61,6 +61,9 @@ export default class LightManager extends BaseManager {
             if (light) {
                 if (light.fromOutside) {
                     this.hasOutSideLight = true
+                    if (this.isOutsideChange < 1) {
+                        this.isOutsideChange = 1
+                    }
                 }
                 light.renderSightArea(this.camera)
                 this.renderRay(light, i == 0, this.shadowRay)
@@ -269,6 +272,13 @@ export default class LightManager extends BaseManager {
         }
     }
     update(dt: number) {
+        if (this.isOutsideChange == 1) {
+            this.isOutsideChange = 2
+            this.timeChange()
+        }
+        if (this.isFirstRender) {
+            this.render()
+        }
         if (this.isCheckTimeDelay(dt)) {
             this.render()
         }

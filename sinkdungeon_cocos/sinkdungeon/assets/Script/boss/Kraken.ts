@@ -180,6 +180,7 @@ export default class Kraken extends Boss {
         return false
     }
     updateLogic(dt) {
+        this.statusManager.updateLogic(dt)
         if (this.isActionTimeDelay(dt)) {
             this.bossAction()
         }

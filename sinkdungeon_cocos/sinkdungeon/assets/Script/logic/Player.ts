@@ -281,9 +281,7 @@ export default class Player extends PlayActor {
         }
     }
     private addSaveStatusList() {
-        if (this.statusManager) {
-            this.statusManager.addStatusListFromSave(this.data.StatusList)
-        }
+        this.statusManager.addStatusListFromSave(this.data.StatusList)
     }
     private initTalent() {
         let o = new TalentData()
@@ -1146,9 +1144,7 @@ export default class Player extends PlayActor {
         return false
     }
     updateLogic(dt: number) {
-        if (Logic.isGamePause) {
-            return
-        }
+        this.statusManager.updateLogic(dt)
         if (this.shadowCamera) {
             this.shadowCamera.render(this.node)
         }

@@ -231,10 +231,7 @@ export default class StatusManager extends cc.Component {
         status.showStatus(data, this.actor, isFromSave)
     }
 
-    update(dt) {
-        if (Logic.isGamePause) {
-            return
-        }
+    updateLogic(dt: number) {
         if (this.node.parent) {
             this.node.scaleX = this.node.parent.scaleX > 0 ? 1 : -1
         }

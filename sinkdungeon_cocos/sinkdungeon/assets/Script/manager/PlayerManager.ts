@@ -3,9 +3,7 @@ import Logic from '../logic/Logic'
 import BaseManager from './BaseManager'
 import Utils from '../utils/Utils'
 import Player from '../logic/Player'
-import PlayerController from '../logic/PlayerController'
 import BaseController from '../logic/BaseController'
-import PlayerData from '../data/PlayerData'
 import AiController from '../logic/AiController'
 
 // Learn TypeScript:
@@ -21,7 +19,7 @@ import AiController from '../logic/AiController'
 const { ccclass, property } = cc._decorator
 
 @ccclass
-export default class AiPlayerManager extends BaseManager {
+export default class PlayerManager extends BaseManager {
     @property(cc.Prefab)
     playerPrefab: cc.Prefab = null
     private player1: Player
@@ -35,20 +33,24 @@ export default class AiPlayerManager extends BaseManager {
     clear(): void {
         Utils.clearComponentArray(this.players)
     }
-    public addAiPlayerFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3, posZ: number) {
+    public addAiPlayerFromMap(mapDataStr: string) {
         if (Dungeon.hasThe(mapDataStr, 'player')) {
             Logic.getPlayerDataById(mapDataStr)
         }
     }
-    public addAiPlayerListFromSave(dungeon: Dungeon, list: string[]) {
-        if (!list) {
-            return
-        }
+    public addPlayerListFromSave(dungeon: Dungeon) {
         let room = Logic.mapManager.getCurrentRoom()
-        for (let key of list) {
+        for (let key in Logic.playerDatas) {
             let data = Logic.getPlayerDataById(key)
-            if (data.roomPos.x == room.x && data.roomPos.y == room.y && data.chapterIndex == Logic.data.chapterIndex && data.chapterLevel == Logic.data.level)
+            if (
+                data.id != Logic.data.lastPlayerId &&
+                data.roomPos.x == room.x &&
+                data.roomPos.y == room.y &&
+                data.chapterIndex == Logic.data.chapterIndex &&
+                data.chapterLevel == Logic.data.level
+            ) {
                 this.getPlayer(data.id, dungeon)
+            }
         }
     }
     private getPlayer(dataId: string, dungeon: Dungeon): Player {
@@ -57,8 +59,8 @@ export default class AiPlayerManager extends BaseManager {
         let controller = player.addComponent(AiController)
         controller.player = player
         player.controller = controller
-        player.node.parent = dungeon.node
         player.dungeon = dungeon
+        player.node.parent = dungeon.node
         return player
     }
     updateLogic(dt: number) {}

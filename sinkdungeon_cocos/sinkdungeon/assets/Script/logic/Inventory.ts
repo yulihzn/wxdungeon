@@ -21,7 +21,6 @@ import EquipmentAndItemDialog from '../ui/dialog/EquipmentAndItemDialog'
 import LocalStorage from '../utils/LocalStorage'
 import Utils from '../utils/Utils'
 import InventoryDialog from '../ui/dialog/InventoryDialog'
-import TriggerData from '../data/TriggerData'
 import InventoryData from '../data/InventoryData'
 @ccclass
 export default class Inventory extends cc.Component {
@@ -154,7 +153,9 @@ export default class Inventory extends cc.Component {
             }
         })
         EventHelper.on(EventHelper.USEITEM_KEYBOARD, detail => {
-            this.userItem(detail.index)
+            if (this.node) {
+                this.userItem(detail.index)
+            }
         })
         EventHelper.on(EventHelper.HUD_FADE_IN, detail => {
             this.fadeIn()

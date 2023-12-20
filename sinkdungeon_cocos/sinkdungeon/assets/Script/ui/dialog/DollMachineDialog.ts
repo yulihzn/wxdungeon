@@ -62,6 +62,7 @@ export default class DollMachineDialog extends BaseDialog {
     isCoinInserted = false
     isCoinAniming = false
     anim: cc.Animation
+    lastDis = 0
     onLoad() {
         EventHelper.on(EventHelper.KEYBOARD_MOVE, detail => {
             if (this.node && this.node.active) {
@@ -264,7 +265,7 @@ export default class DollMachineDialog extends BaseDialog {
                                     })
                                     .start()
                             })
-                            .to(Random.rand() + (Random.getHalfChance() ? 0 : Random.rand()), { y: -downRange + leaveOffset })
+                            .to(Random.rand() + (grabedDoll && this.lastDis < 1 ? 3 : 0), { y: -downRange + leaveOffset })
                             .call(() => {
                                 cc.tween(this.clawLeft).to(0.2, { angle: 0 }).to(0.1, { angle: 60 }).start()
                                 cc.tween(this.clawRight).to(0.2, { angle: 0 }).to(0.1, { angle: -60 }).start()
@@ -295,6 +296,8 @@ export default class DollMachineDialog extends BaseDialog {
             let dis = Logic.getDistance(doll.node.position, hookPos)
             if (dis < 30) {
                 doll.grabed(this.claw)
+                this.lastDis = dis
+                cc.log('lastDis' + this.lastDis)
                 return doll
             }
         }

@@ -29,7 +29,7 @@ import EffectItemManager from '../manager/EffectItemManager'
 import CameraControl from './CameraControl'
 import PlayerController from './PlayerController'
 import FromData from '../data/FromData'
-import AiPlayerManager from '../manager/AiPlayerManager'
+import PlayerManager from '../manager/PlayerManager'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -70,7 +70,7 @@ export default class Dungeon extends cc.Component {
 
     monsterManager: MonsterManager = null //怪物管理
     nonPlayerManager: NonPlayerManager = null //npc管理
-    aiPlayerManager: AiPlayerManager = null //player管理
+    playerManager: PlayerManager = null //player管理
     equipmentManager: EquipmentManager = null //装备管理
     dungeonStyleManager: DungeonStyleManager = null //装饰管理
     itemManager: ItemManager = null //金币和物品管理
@@ -179,7 +179,7 @@ export default class Dungeon extends cc.Component {
         })
         this.monsterManager = this.getComponent(MonsterManager)
         this.nonPlayerManager = this.getComponent(NonPlayerManager)
-        this.aiPlayerManager = this.getComponent(AiPlayerManager)
+        this.playerManager = this.getComponent(PlayerManager)
         this.equipmentManager = this.getComponent(EquipmentManager)
         this.itemManager = this.getComponent(ItemManager)
         this.dungeonStyleManager = this.getComponent(DungeonStyleManager)
@@ -200,7 +200,7 @@ export default class Dungeon extends cc.Component {
         AudioPlayer.play(AudioPlayer.PLAY_BG, true)
         this.monsterManager.clear()
         this.nonPlayerManager.clear()
-        this.aiPlayerManager.clear()
+        this.playerManager.clear()
         this.equipmentManager.clear()
         this.itemManager.clear()
         this.dungeonStyleManager.clear()
@@ -269,6 +269,8 @@ export default class Dungeon extends cc.Component {
                 }
                 //加载非人形npc
                 this.nonPlayerManager.addNonPlayerFromMap(this, mapData[i][j], cc.v3(i, j), 0)
+                //加载地图player
+                this.playerManager.addAiPlayerFromMap(mapData[i][j])
             }
         }
         let offsets = [cc.v3(-1, -1, 4), cc.v3(-1, 0, 2), cc.v3(-1, 1, 6), cc.v3(0, -1, 0), cc.v3(0, 1, 1), cc.v3(1, -1, 5), cc.v3(1, 0, 3), cc.v3(1, 1, 7)]
@@ -280,8 +282,8 @@ export default class Dungeon extends cc.Component {
         this.initCameraAndFog(this.player)
         //加载非人形跟随npc
         await this.nonPlayerManager.addNonPlayerListFromSave(this, new Array().concat(Logic.nonPlayerList), this.player.node.position, this.player.entity.Transform.z)
-        //加载人形npc
-        this.aiPlayerManager.addAiPlayerListFromSave(this, Logic.getRoomPlayerList())
+        //加载player
+        this.playerManager.addPlayerListFromSave(this)
         //加载随机怪物
         if (
             (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoom().isReborn) &&
@@ -825,7 +827,7 @@ export default class Dungeon extends cc.Component {
                 this.weatherManager.updateLogic(dt, this.player)
                 this.equipmentManager.updateLogic(dt, this.player)
                 this.itemManager.updateLogic(dt, this.player)
-                this.aiPlayerManager.updateLogic(dt)
+                this.playerManager.updateLogic(dt)
                 this.monsterManager.updateLogic(dt)
                 this.nonPlayerManager.updateLogic(dt)
                 this.player.updateLogic(dt)

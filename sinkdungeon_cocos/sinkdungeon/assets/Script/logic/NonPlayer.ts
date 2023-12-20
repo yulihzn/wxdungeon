@@ -316,9 +316,7 @@ export default class NonPlayer extends PlayActor {
     }
     /**加载保存的状态 */
     private addSaveStatusList() {
-        if (this.statusManager) {
-            this.statusManager.addStatusListFromSave(this.data.StatusList)
-        }
+        this.statusManager.addStatusListFromSave(this.data.StatusList)
     }
     /**高亮 */
     private hitLight(isHit: boolean) {
@@ -1162,6 +1160,7 @@ export default class NonPlayer extends PlayActor {
             return
         }
         this.stateMachine.update()
+        this.statusManager.updateLogic(dt)
         //修正位置
         this.entity.Move.isStatic = false
         this.entity.Transform.position = Dungeon.fixOuterMap(this.entity.Transform.position)

@@ -158,9 +158,7 @@ export default class Captain extends Boss {
     }
 
     updateLogic(dt: number) {
-        if (Logic.isGamePause) {
-            return
-        }
+        this.statusManager.updateLogic(dt)
         this.healthBar.node.active = !this.sc.isDied
         this.timeDelay += dt
         if (this.timeDelay > 0.016) {

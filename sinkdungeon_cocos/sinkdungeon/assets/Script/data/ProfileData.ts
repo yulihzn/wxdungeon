@@ -38,8 +38,6 @@ export default class ProfileData {
     playerInventoryListReality: InventoryData[] = new Array()
     //跟随的非人形npc列表
     nonPlayerList: NonPlayerData[] = new Array()
-    //跟随的人形npc id列表
-    aiPlayerIdMap: { [key: string]: string[] } = {}
     level = 0 //当前层级 forsave
     //游玩时间
     totalTime = 0 //forsave

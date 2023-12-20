@@ -276,7 +276,7 @@ export default class KeyboardController extends cc.Component {
             this.stopCount++
         }
         if (Logic.isGamePause) {
-            if (this.isA) {
+            if (this.isJ || this.isB || this.isE) {
                 EventHelper.emit(EventHelper.KEYBOARD_INTERACT)
             }
             if (this.stopCount < 2) {
