@@ -163,7 +163,7 @@ export default class Player extends PlayActor {
 
             this.exTrigger(group, type, null, null)
         })
-        this.avatar = PlayerAvatar.create(this.avatarPrefab, this.root, Logic.playerData.AvatarData.clone(), this.node.group)
+        this.avatar = PlayerAvatar.create(this.avatarPrefab, this.root, this.data.AvatarData.clone(), this.node.group)
     }
     onLoad() {
         this.init()
@@ -196,8 +196,7 @@ export default class Player extends PlayActor {
         this.remoteCooldown.width = 0
         this.remoteCooldown.opacity = 200
         EventHelper.on(EventHelper.PLAYER_UPDATE_OILGOLD_DATA, detail => {
-            if (this.node) {
-                this.data.OilGoldData.valueCopy(Logic.playerData.OilGoldData)
+            if (this.node && this.data.id == Logic.data.lastPlayerId) {
                 this.updateData()
             }
         })
@@ -209,11 +208,11 @@ export default class Player extends PlayActor {
                 this.timeConsumeLife()
             }
         })
-        if (Logic.playerData.pos.y == Logic.ROOM_HEIGHT - 1) {
-            Logic.playerData.pos.y = Logic.ROOM_HEIGHT - 2
+        if (this.data.pos.y == Logic.ROOM_HEIGHT - 1) {
+            this.data.pos.y = Logic.ROOM_HEIGHT - 2
         }
-        this.pos = Logic.playerData.pos.clone()
-        this.defaultPos = Logic.playerData.pos.clone()
+        this.pos = this.data.pos.clone()
+        this.defaultPos = this.data.pos.clone()
         this.updatePlayerPos()
         this.entity.NodeRender.node = this.node
         this.entity.NodeRender.root = this.root
@@ -404,7 +403,9 @@ export default class Player extends PlayActor {
                 let finalData = this.data.FinalCommon
                 if (this.data.currentAmmo > finalData.MaxAmmo || this.data.currentAmmo <= 0) {
                     this.data.currentAmmo = finalData.MaxAmmo
-                    EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.data.currentAmmo, y: finalData.MaxAmmo })
+                    if (this.data.id == Logic.data.lastPlayerId) {
+                        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.data.currentAmmo, y: finalData.MaxAmmo })
+                    }
                 }
                 this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img)
                 let c = cc.color(255, 255, 255).fromHEX(this.weaponLeft.shooter.data.color)

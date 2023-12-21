@@ -171,10 +171,14 @@ export default class PlayerData extends BaseData {
         this.avatarData.valueCopy(data.avatarData)
         this.oilGoldData.valueCopy(data.oilGoldData)
         this.lifeData.valueCopy(data.lifeData)
-        this.StatusList = data.statusList
+        this.statusList = DataUtils.copyListValue(data.statusList, arg0 => {
+            return arg0
+        })
         this.organizationTalentData.valueCopy(data.organizationTalentData)
         this.professionTalentData.valueCopy(data.professionTalentData)
-        this.shadowList = data.shadowList
+        this.shadowList = DataUtils.copyListValue(data.shadowList, arg0 => {
+            return arg0
+        })
         this.needUpdateFinalCommon = true
         this.roomPos = data.roomPos ? cc.v3(data.roomPos.x, data.roomPos.y) : cc.v3(0, 0)
         this.chapterIndex = data.chapterIndex ? data.chapterIndex : 999

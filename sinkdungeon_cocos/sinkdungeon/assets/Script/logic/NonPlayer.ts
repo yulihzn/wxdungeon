@@ -98,8 +98,6 @@ export default class NonPlayer extends PlayActor {
     @property(cc.Prefab)
     waterSpark: cc.Prefab = null
     @property(cc.Prefab)
-    avatarPrefab: cc.Prefab = null
-    @property(cc.Prefab)
     frameAvatarPrefab: cc.Prefab = null
     @property(Tips)
     tips: Tips = null
@@ -168,11 +166,7 @@ export default class NonPlayer extends PlayActor {
             }
             this.exTrigger(group, type, null, null)
         })
-        if (this.data.AvatarData.isAnimFrame) {
-            this.frameAvatar = FrameAvatar.create(this.frameAvatarPrefab, this.root, Logic.playerData.AvatarData.clone(), this.data.resName)
-        } else {
-            this.avatar = PlayerAvatar.create(this.avatarPrefab, this.root, Logic.playerData.AvatarData.clone(), this.node.group)
-        }
+        this.frameAvatar = FrameAvatar.create(this.frameAvatarPrefab, this.root, Logic.playerData.AvatarData.clone(), this.data.resName)
     }
     get Root(): cc.Node {
         return this.root

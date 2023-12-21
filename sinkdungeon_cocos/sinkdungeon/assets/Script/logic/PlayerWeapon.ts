@@ -197,11 +197,15 @@ export default class PlayerWeapon extends cc.Component {
                 .call(() => {
                     data.currentAmmo = finalData.MaxAmmo
                     this.isCooling = false
-                    EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.player.data.currentAmmo, y: this.maxAmmo })
+                    if (this.player.data.id == Logic.data.lastPlayerId) {
+                        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.player.data.currentAmmo, y: this.maxAmmo })
+                    }
                 })
                 .start()
         }
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: data.currentAmmo, y: finalData.MaxAmmo })
+        if (this.player.data.id == Logic.data.lastPlayerId) {
+            EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: data.currentAmmo, y: finalData.MaxAmmo })
+        }
         return true
     }
 
@@ -237,7 +241,9 @@ export default class PlayerWeapon extends cc.Component {
             if (this.player.data.currentAmmo > this.maxAmmo) {
                 this.player.data.currentAmmo = this.maxAmmo
             }
-            EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.player.data.currentAmmo, y: this.maxAmmo })
+            if (this.player.data.id == Logic.data.lastPlayerId) {
+                EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.player.data.currentAmmo, y: this.maxAmmo })
+            }
         }
     }
 

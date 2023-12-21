@@ -19,7 +19,6 @@ export default class AvatarData extends BaseData {
     faceColor: string = '#FBA1DE'
     petName: string = 'nonplayer100'
 
-    isAnimFrame: boolean = false
     idleFrames = [0, 1]
     walkFrames = [2, 5]
     hitFrames = [6, 7]

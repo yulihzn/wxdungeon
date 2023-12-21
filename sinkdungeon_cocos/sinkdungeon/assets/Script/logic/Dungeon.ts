@@ -27,7 +27,6 @@ import Controller from './Controller'
 import WeatherManager from '../manager/WeatherManager'
 import EffectItemManager from '../manager/EffectItemManager'
 import CameraControl from './CameraControl'
-import PlayerController from './PlayerController'
 import FromData from '../data/FromData'
 import PlayerManager from '../manager/PlayerManager'
 
@@ -84,9 +83,11 @@ export default class Dungeon extends cc.Component {
     isComplete = false
     currentPos = cc.v3(0, 0)
     isDisappeared = false
-    player: Player
 
     rootSystem: GameWorldSystem = null
+    get player() {
+        return this.playerManager.player1
+    }
 
     /**
      * 初始化
@@ -270,7 +271,7 @@ export default class Dungeon extends cc.Component {
                 //加载非人形npc
                 this.nonPlayerManager.addNonPlayerFromMap(this, mapData[i][j], cc.v3(i, j), 0)
                 //加载地图player
-                this.playerManager.addAiPlayerFromMap(mapData[i][j])
+                this.playerManager.addAiPlayerFromMap(mapData[i][j], cc.v3(i, j), 0)
             }
         }
         let offsets = [cc.v3(-1, -1, 4), cc.v3(-1, 0, 2), cc.v3(-1, 1, 6), cc.v3(0, -1, 0), cc.v3(0, 1, 1), cc.v3(1, -1, 5), cc.v3(1, 0, 3), cc.v3(1, 1, 7)]
@@ -278,12 +279,11 @@ export default class Dungeon extends cc.Component {
             this.addBuildingsFromSideMap(offset)
         }
         //初始化玩家和控制器
-        this.initPlayer()
+        //加载player
+        this.playerManager.addPlayerListFromSave(this)
         this.initCameraAndFog(this.player)
         //加载非人形跟随npc
         await this.nonPlayerManager.addNonPlayerListFromSave(this, new Array().concat(Logic.nonPlayerList), this.player.node.position, this.player.entity.Transform.z)
-        //加载player
-        this.playerManager.addPlayerListFromSave(this)
         //加载随机怪物
         if (
             (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoom().isReborn) &&
@@ -307,16 +307,6 @@ export default class Dungeon extends cc.Component {
         this.addOilGoldOnGround()
         this.isInitFinish = true
         cc.log('dungeon load finish')
-    }
-    private initPlayer() {
-        this.player = cc.instantiate(this.playerPrefab).getComponent(Player)
-        let controller = this.player.addComponent(PlayerController)
-        controller.player = this.player
-        this.player.statusIconList = this.statusIconList
-        this.player.controller = controller
-        this.player.dungeon = this
-        this.player.dataId = Logic.playerData.id
-        this.player.node.parent = this.node
     }
     private initCameraAndFog(target: Actor) {
         this.changeCameraTarget(target)
@@ -827,10 +817,9 @@ export default class Dungeon extends cc.Component {
                 this.weatherManager.updateLogic(dt, this.player)
                 this.equipmentManager.updateLogic(dt, this.player)
                 this.itemManager.updateLogic(dt, this.player)
-                this.playerManager.updateLogic(dt)
                 this.monsterManager.updateLogic(dt)
                 this.nonPlayerManager.updateLogic(dt)
-                this.player.updateLogic(dt)
+                this.playerManager.updateLogic(dt)
             }
             if (this.isCheckTimeDelay(dt)) {
                 this.checkRoomClear()

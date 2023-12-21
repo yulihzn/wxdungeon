@@ -79,7 +79,7 @@ export default class OrganizationTalent extends Talent {
         if (this.player.data.AvatarData.organizationIndex == AvatarData.GURAD) {
             storePointMax = 1 + Math.floor(Logic.playerData.OilGoldData.level / 5)
         } else if (this.player.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
-            this.player.initShadowList(true, Math.floor(Logic.playerData.OilGoldData.level / 5 + 1), 30 + Logic.playerData.OilGoldData.level * 2)
+            this.player.initShadowList(true, Math.floor(Logic.playerData.OilGoldData.level / 5 + 1), 30 + this.player.data.OilGoldData.level * 2)
         }
         this.initCoolDown(data, storePointMax)
     }
