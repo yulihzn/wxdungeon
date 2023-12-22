@@ -20,8 +20,8 @@ export default class EquipmentData extends BaseData {
     nameCn: string = ''
     nameEn: string = ''
     quality = 0 //品质 0：白 1：绿 2：蓝 3：紫 4：金 5：橙 6：红
-    equipmetType: string = 'empty'
-    equipmetTypeCn: string = ''
+    equipmentType: string = 'empty'
+    equipmentTypeCn: string = ''
     desc: string = ''
     color: string = '#ffffff'
     lightcolor: string = '#ffffff' //刀光的颜色

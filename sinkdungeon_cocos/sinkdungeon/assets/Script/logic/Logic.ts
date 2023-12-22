@@ -450,6 +450,20 @@ export default class Logic extends cc.Component {
     static spriteFrameRes(spriteFrameName: string) {
         return Logic.spriteFrames[spriteFrameName] ? Logic.spriteFrames[spriteFrameName] : null
     }
+    static equipmentSpriteFrameRes(equip: EquipmentData) {
+        if (!equip || !equip.img) {
+            return null
+        }
+        let spriteFrame = Logic.spriteFrameRes(equip.img)
+        if (equip.equipmentType == InventoryManager.CLOTHES) {
+            spriteFrame = Logic.spriteFrameRes(equip.img + 'anim0')
+        } else if (equip.equipmentType == InventoryManager.HELMET) {
+            spriteFrame = Logic.spriteFrameRes(equip.img + 'anim0')
+        } else if (equip.equipmentType == InventoryManager.REMOTE) {
+            spriteFrame = Logic.spriteFrameRes(equip.img + 'anim0')
+        }
+        return spriteFrame
+    }
     static getBuildings(name: string): Promise<cc.Prefab> {
         return new Promise(resolve => {
             LoadingManager.loadBuilding(name, () => {

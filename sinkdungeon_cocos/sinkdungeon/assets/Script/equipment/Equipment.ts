@@ -8,6 +8,7 @@ import AudioPlayer from '../utils/AudioPlayer'
 import Achievement from '../logic/Achievement'
 import InventoryManager from '../manager/InventoryManager'
 import BaseNodeComponent from '../base/BaseNodeComponent'
+import Player from '../logic/Player'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -47,18 +48,18 @@ export default class Equipment extends BaseNodeComponent {
     refresh(data: EquipmentData) {
         this.data.valueCopy(data)
         let spriteFrame = Logic.spriteFrameRes(this.data.img)
-        if (data.equipmetType == InventoryManager.TROUSERS) {
+        if (data.equipmentType == InventoryManager.TROUSERS) {
             spriteFrame = data.trouserslong == 1 ? Logic.spriteFrameRes('trousers000') : spriteFrame
         }
         this.sprite.node.scale = 4
         this.shadow.node.scale = 4
-        if (data.equipmetType == InventoryManager.CLOTHES) {
+        if (data.equipmentType == InventoryManager.CLOTHES) {
             spriteFrame = Logic.spriteFrameRes(this.data.img + 'anim0')
-        } else if (data.equipmetType == InventoryManager.HELMET) {
+        } else if (data.equipmentType == InventoryManager.HELMET) {
             spriteFrame = Logic.spriteFrameRes(this.data.img + 'anim0')
-        } else if (data.equipmetType == InventoryManager.REMOTE) {
+        } else if (data.equipmentType == InventoryManager.REMOTE) {
             spriteFrame = Logic.spriteFrameRes(this.data.img + 'anim0')
-        } else if (data.equipmetType == InventoryManager.WEAPON) {
+        } else if (data.equipmentType == InventoryManager.WEAPON) {
             this.sprite.node.scale = 3
             this.shadow.node.scale = 3
         }
@@ -73,7 +74,7 @@ export default class Equipment extends BaseNodeComponent {
         this.mat.setProperty('textureSizeHeight', spriteFrame.getTexture().height * this.sprite.node.scaleY)
         this.mat.setProperty('outlineColor', cc.color(200, 200, 200))
         this.highLight(false)
-        if (data.equipmetType == 'remote') {
+        if (data.equipmentType == 'remote') {
             this.sprite.node.width = this.sprite.node.width / 2
             this.sprite.node.height = this.sprite.node.height / 2
         }
@@ -133,7 +134,7 @@ export default class Equipment extends BaseNodeComponent {
         this.isTaken = true
         this.anim.play('EquipmentTaken')
         Achievement.addEquipsAchievement(this.data.img)
-        EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: this.data.equipmetType, equipData: this.data, isReplace: isReplace })
+        EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmentType: this.data.equipmentType, equipData: this.data, isReplace: isReplace })
         this.node.getChildByName('shadow').active = false
         EventHelper.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE)
         this.scheduleOnce(() => {

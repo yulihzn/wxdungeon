@@ -52,6 +52,7 @@ import DecorationWall from '../building/DecorationWall'
 import Ladder from '../building/Ladder'
 import MapManager from './MapManager'
 import Vehicle from '../building/Vehicle'
+import TimeDelay from '../utils/TimeDelay'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -1147,17 +1148,10 @@ export default class BuildingManager extends BaseManager {
             dungeon.addEquipment(EquipmentManager.WEAPON_WOOD_LONG_STICK, Dungeon.getPosInMap(indexPos.add(cc.v3(-3, 0))))
         }
     }
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.2) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
+    private checkTimeDelay = new TimeDelay(0.2)
+
     updateLogic(dt: number, player: Player) {
-        if (this.isCheckTimeDelay(dt)) {
+        if (this.checkTimeDelay.check(dt)) {
             let distance = 200
             let building: InteractBuilding = null
             for (let i = this.interactBuildings.length - 1; i >= 0; i--) {

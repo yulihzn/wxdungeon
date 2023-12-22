@@ -65,11 +65,11 @@ export default class InventoryItem extends cc.Component {
             this.sprite.spriteFrame = Logic.spriteFrameRes(this.data.itemData.resName)
         } else if (this.data.equipmentData) {
             let spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img)
-            if (this.data.equipmentData.equipmetType == InventoryManager.CLOTHES) {
+            if (this.data.equipmentData.equipmentType == InventoryManager.CLOTHES) {
                 spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img + 'anim0')
-            } else if (this.data.equipmentData.equipmetType == InventoryManager.HELMET) {
+            } else if (this.data.equipmentData.equipmentType == InventoryManager.HELMET) {
                 spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img + 'anim0')
-            } else if (this.data.equipmentData.equipmetType == InventoryManager.REMOTE) {
+            } else if (this.data.equipmentData.equipmentType == InventoryManager.REMOTE) {
                 spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img + 'anim0')
             }
             this.sprite.spriteFrame = spriteFrame

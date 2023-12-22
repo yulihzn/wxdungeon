@@ -4,6 +4,7 @@ import { EventHelper } from '../logic/EventHelper'
 import Random from '../utils/Random'
 import AudioPlayer from '../utils/AudioPlayer'
 import BaseNodeComponent from '../base/BaseNodeComponent'
+import TimeDelay from '../utils/TimeDelay'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -79,22 +80,15 @@ export default class OilGold extends BaseNodeComponent {
     }
     start() {}
 
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.2) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
+    private checkTimeDelay = new TimeDelay(0.2)
+
     /**获取玩家距离 */
     getNearPlayerDistance(playerNode: cc.Node): number {
         let dis = Logic.getDistanceNoSqrt(this.node.position, playerNode.position.clone().addSelf(cc.v3(0, 32)))
         return dis
     }
     update(dt) {
-        if (this.isCheckTimeDelay(dt)) {
+        if (this.checkTimeDelay.check(dt)) {
             if (this.player && this.getNearPlayerDistance(this.player.node) < 1600 && this.node.active && this.isReady) {
                 let p = this.player.node.position.clone()
                 p.y += 10

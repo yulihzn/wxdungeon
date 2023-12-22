@@ -12,6 +12,7 @@ import Logic from '../logic/Logic'
 import Random from '../utils/Random'
 import IndexZ from '../utils/IndexZ'
 import { EventHelper } from '../logic/EventHelper'
+import TimeDelay from '../utils/TimeDelay'
 
 const { ccclass, property } = cc._decorator
 
@@ -84,7 +85,7 @@ export default class FloorPaper extends BaseColliderComponent {
         if (y > 0) {
             this.rotateSprite()
         }
-        if (this.isCheckTimeDelay(dt)) {
+        if (this.checkTimeDelay.check(dt)) {
             this.changeZIndex()
             if (y > 0) {
                 this.updateSprite()
@@ -138,13 +139,5 @@ export default class FloorPaper extends BaseColliderComponent {
             this.entity.Move.linearVelocity = cc.Vec2.ZERO
         }
     }
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.2) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
+    checkTimeDelay = new TimeDelay(0.2)
 }

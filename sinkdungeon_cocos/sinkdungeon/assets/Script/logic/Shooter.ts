@@ -149,7 +149,7 @@ export default class Shooter extends cc.Component {
         return this.hv
     }
     setHv(hv: cc.Vec2) {
-        if (!this.isAI && Controller.isMouseMode()) {
+        if (!this.isAI && this.player.dataId == Logic.data.lastPlayerId && Controller.isMouseMode()) {
             return
         }
         this.hv = hv
@@ -361,7 +361,7 @@ export default class Shooter extends cc.Component {
         if (!this.dungeon) {
             return
         }
-        if (splitBulletType.length < 1 && !this.isAI && !this.isEx && this.player.inventoryMgr.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.REMOTE) {
+        if (splitBulletType.length < 1 && !this.isAI && !this.isEx && this.player.inventoryMgr.equips[InventoryManager.REMOTE].equipmentType != InventoryManager.REMOTE) {
             return
         }
         if (splitBulletType.length < 1) {
@@ -665,7 +665,7 @@ export default class Shooter extends cc.Component {
     }
 
     updateLogic(dt: number) {
-        if (!this.isAI && Controller.isMouseMode() && Controller.mousePos && this.dungeon) {
+        if (!this.isAI && Controller.isMouseMode() && this.player.dataId == Logic.data.lastPlayerId && Controller.mousePos && this.dungeon) {
             let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.player.node.position))
             let pos = Controller.mousePos.add(cc.v2(this.dungeon.cameraControl.node.position)).sub(p).normalize()
             if (!pos.equals(cc.Vec2.ZERO)) {

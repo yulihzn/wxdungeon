@@ -119,7 +119,9 @@ export default class LoadingManager {
     }
 
     loadWorld() {
-        Logic.worldLoader.loadWorld()
+        Logic.worldLoader.loadWorld(() => {
+            EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_MAP })
+        })
     }
     loadSound() {
         if (Logic.audioClips && Logic.audioClips['silence']) {

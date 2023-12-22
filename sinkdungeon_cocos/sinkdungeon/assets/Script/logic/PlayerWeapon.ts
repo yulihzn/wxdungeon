@@ -17,6 +17,7 @@ import Random from '../utils/Random'
 import MeleeCollideHelper from './MeleeCollideHelper'
 import BaseAvatar from '../base/BaseAvatar'
 import Player from './Player'
+import TimeDelay from '../utils/TimeDelay'
 
 const { ccclass, property } = cc._decorator
 /**
@@ -123,7 +124,7 @@ export default class PlayerWeapon extends cc.Component {
         }
     }
     changeWeapon(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
-        switch (equipData.equipmetType) {
+        switch (equipData.equipmentType) {
             case InventoryManager.WEAPON:
                 this.meleeWeapon.changeEquipment(equipData, spriteFrame)
                 break
@@ -143,7 +144,7 @@ export default class PlayerWeapon extends cc.Component {
         this.meleeWeapon.attack(data, fistCombo)
     }
     remoteAttack(data: PlayerData, cooldownNode: cc.Node, bulletArcExNum: number, bulletLineExNum: number): boolean {
-        if (this.player.inventoryMgr.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.REMOTE) {
+        if (this.player.inventoryMgr.equips[InventoryManager.REMOTE].equipmentType != InventoryManager.REMOTE) {
             return false
         }
         if (this.isCooling) {
@@ -208,7 +209,7 @@ export default class PlayerWeapon extends cc.Component {
         }
         return true
     }
-
+    private checkTimeDelay = new TimeDelay(0.5)
     updateLogic(dt: number) {
         let x = this.player.isFaceRight ? this.handsUpPos.x : -this.handsUpPos.x
         if (this.interactBuildingAttacking) {
@@ -232,10 +233,10 @@ export default class PlayerWeapon extends cc.Component {
         }
         if (
             !this.isCooling &&
-            this.shooter.data.equipmetType == InventoryManager.REMOTE &&
+            this.shooter.data.equipmentType == InventoryManager.REMOTE &&
             this.ammoRecovery > 0 &&
             this.player.data.currentAmmo < this.maxAmmo &&
-            this.isCheckTimeDelay(dt)
+            this.checkTimeDelay.check(dt)
         ) {
             this.player.data.currentAmmo += this.ammoRecovery
             if (this.player.data.currentAmmo > this.maxAmmo) {
@@ -245,15 +246,5 @@ export default class PlayerWeapon extends cc.Component {
                 EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_AMMO, { x: this.player.data.currentAmmo, y: this.maxAmmo })
             }
         }
-    }
-
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.5) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
     }
 }

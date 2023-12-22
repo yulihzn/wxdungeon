@@ -23,6 +23,7 @@ import MeleeCollideHelper from '../logic/MeleeCollideHelper'
 import ShadowOfSight from '../effect/ShadowOfSight'
 import LightManager from '../manager/LightManager'
 import NormalBuilding from '../building/NormalBuilding'
+import TimeDelay from '../utils/TimeDelay'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -112,18 +113,15 @@ export default class Laser extends BaseColliderComponent {
         LightManager.unRegisterLight(this.lights)
         LightManager.registerLight(this.lights, this.node)
     }
-    timeDelay = 0
-    checkTimeDelay = 0
+    private checkTimeDelay = new TimeDelay(0.15)
     update(dt) {
         if (Logic.isGamePause) {
             this.entity.Move.linearVelocity = cc.v2(0, 0)
             return
         }
         this.updatePos()
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.15) {
+        if (this.checkTimeDelay.check(dt)) {
             this.updateLaser()
-            this.checkTimeDelay = 0
         }
         let y = this.root.y - this.entity.Transform.base
         if (y < 0) {

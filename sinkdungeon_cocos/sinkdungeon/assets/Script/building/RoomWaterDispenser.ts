@@ -46,14 +46,4 @@ export default class RoomWaterDispenser extends cc.Component {
         this.hasWater = true
         this.isAniming = false
     }
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 5) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
-    update(dt: number) {}
 }

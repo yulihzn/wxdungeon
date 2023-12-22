@@ -45,14 +45,4 @@ export default class RoomTrashCan extends cc.Component {
             }, 1)
         }, 2)
     }
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 1) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
-    update(dt: number) {}
 }

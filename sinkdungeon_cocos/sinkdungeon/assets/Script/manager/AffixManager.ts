@@ -14,7 +14,7 @@ export default class AffixManager {
     //白色（普通0）→绿色（精良1）→蓝色（优秀2）→紫色（史诗3）→金色（传说4）→橙色（神话5）
     static readonly QUALITY_NAMES = ['普通的', '精良的', '优秀的', '史诗的', '传说的', '神话的', '诅咒的']
     static readonly BASE_UPGRADE = [0, 1, 4, 5, 6, 7, 12, 13, 14, 15] //可以跟随等级提升的类型
-    static getAffixMapCollection(equipmetType: string): [number[], number[], number[]] {
+    static getAffixMapCollection(equipmentType: string): [number[], number[], number[]] {
         const EQUIP: Map<string, number[]> = new Map() // //装备对应属性
         EQUIP.set(InventoryManager.WEAPON, [1, 4, 5, 6, 9, 13, 14, 17, 20])
         EQUIP.set(InventoryManager.REMOTE, [1, 2, 3, 12, 16, 22, 23, 24])
@@ -27,11 +27,11 @@ export default class AffixManager {
         EQUIP.set(InventoryManager.CLOAK, [0, 1, 7, 8, 21])
         const ELEMENT = [25, 26, 27, 28, 29, 30, 31] //元素几率
         const TOTAL = [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 44, 45, 46] //总额提升
-        const GROUP = EQUIP.get(equipmetType)
+        const GROUP = EQUIP.get(equipmentType)
         return [GROUP, ELEMENT, TOTAL]
     }
     static buildEquipmentAffixs(data: EquipmentData, level: number, rand4save: Random4Save) {
-        const [GROUP, ELEMENT, TOTAL] = AffixManager.getAffixMapCollection(data.equipmetType)
+        const [GROUP, ELEMENT, TOTAL] = AffixManager.getAffixMapCollection(data.equipmentType)
         data.requireLevel = level
         data.affixs = []
         data.titlecolor = this.QUALITY_COLORS[data.quality]
@@ -56,7 +56,7 @@ export default class AffixManager {
      * @param rand4save
      */
     static recastEquipmentAffixs(data: EquipmentData, oldAffixIndex: number, rand4save: Random4Save) {
-        const [GROUP, ELEMENT, TOTAL] = AffixManager.getAffixMapCollection(data.equipmetType)
+        const [GROUP, ELEMENT, TOTAL] = AffixManager.getAffixMapCollection(data.equipmentType)
         //移除已有词缀
         for (let affix of data.affixs) {
             AffixManager.removeHaveAffix(GROUP, ELEMENT, TOTAL, affix)

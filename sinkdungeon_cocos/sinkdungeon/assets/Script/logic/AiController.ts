@@ -1,3 +1,4 @@
+import TimeDelay from '../utils/TimeDelay'
 import BaseController from './BaseController'
 import Dungeon from './Dungeon'
 // Learn TypeScript:
@@ -56,4 +57,7 @@ export default class AiController extends BaseController {
     ctrlPlayerJumpCancel() {
         if (this.CanControl) this.player.ctrlJumpCancel()
     }
+
+    private timeCheck = new TimeDelay(1)
+    updateLogic(dt: number): void {}
 }

@@ -25,13 +25,15 @@ export default class PlayerManager extends BaseManager {
     playerPrefab: cc.Prefab = null
     player1: Player
     private players: Player[] = new Array() //房间player列表
-    private controllers: BaseController[] = new Array()
+    private controllers: AiController[] = new Array()
+    private controllerCount = 0
 
     get PlayerList() {
         return this.players
     }
 
     clear(): void {
+        this.controllers = []
         Utils.clearComponentArray(this.players)
     }
     public addAiPlayerFromMap(mapDataStr: string, indexPos: cc.Vec3, posZ: number) {
@@ -65,6 +67,7 @@ export default class PlayerManager extends BaseManager {
             this.player1 = player
         } else {
             controller = player.addComponent(AiController)
+            this.controllers.push(controller)
         }
         controller.player = player
         player.controller = controller
@@ -75,6 +78,12 @@ export default class PlayerManager extends BaseManager {
     updateLogic(dt: number) {
         for (let player of this.players) {
             player.updateLogic(dt)
+        }
+        if (this.controllers.length > 0 && this.controllerCount < this.controllers.length) {
+            this.controllerCount++
+            this.controllers[this.controllerCount].updateLogic(dt)
+        } else {
+            this.controllerCount = 0
         }
     }
 }

@@ -11,6 +11,7 @@ import StatusData from '../data/StatusData'
 import BaseColliderComponent from '../base/BaseColliderComponent'
 import { EventHelper } from '../logic/EventHelper'
 import Talent from './Talent'
+import TimeDelay from '../utils/TimeDelay'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -87,20 +88,12 @@ export default class FireGhost extends BaseColliderComponent {
         this.isDied = true
         this.talent.destroyGhost(this.node)
     }
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.2) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
+    checkTimeDelay = new TimeDelay(0.2)
     update(dt) {
         if (Logic.isGamePause) {
             return
         }
-        if (this.isCheckTimeDelay(dt)) {
+        if (this.checkTimeDelay.check(dt)) {
             let pos = this.hasNearEnemy()
             if (!pos.equals(cc.Vec3.ZERO)) {
                 this.isAttacking = true

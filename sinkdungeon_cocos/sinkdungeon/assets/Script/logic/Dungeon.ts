@@ -29,6 +29,7 @@ import EffectItemManager from '../manager/EffectItemManager'
 import CameraControl from './CameraControl'
 import FromData from '../data/FromData'
 import PlayerManager from '../manager/PlayerManager'
+import TimeDelay from '../utils/TimeDelay'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -64,8 +65,8 @@ export default class Dungeon extends cc.Component {
     static readonly DEFAULT_ZOOM_MAX = 2
     static readonly DEFAULT_ZOOM_MIN = 0.6
     static readonly DEFAULT_ZOOM = 1
-    private timeDelay = 0
-    private checkTimeDelay = 0
+    private timeDelay = new TimeDelay(0.016)
+    private checkTimeDelay = new TimeDelay(1)
 
     monsterManager: MonsterManager = null //怪物管理
     nonPlayerManager: NonPlayerManager = null //npc管理
@@ -793,25 +794,10 @@ export default class Dungeon extends cc.Component {
             }
         }
     }
-    isTimeDelay(dt: number): boolean {
-        this.timeDelay += dt
-        if (this.timeDelay > 0.016) {
-            this.timeDelay = 0
-            return true
-        }
-        return false
-    }
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 1) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
-    update(dt) {
+
+    update(dt: number) {
         if (this.isInitFinish && !Logic.isGamePause && !this.isDisappeared && LoadingManager.allResourceDone()) {
-            if (this.isTimeDelay(dt)) {
+            if (this.timeDelay.check(dt)) {
                 this.checkPlayerPos(dt)
                 this.buildingManager.updateLogic(dt, this.player)
                 this.weatherManager.updateLogic(dt, this.player)
@@ -821,7 +807,7 @@ export default class Dungeon extends cc.Component {
                 this.nonPlayerManager.updateLogic(dt)
                 this.playerManager.updateLogic(dt)
             }
-            if (this.isCheckTimeDelay(dt)) {
+            if (this.checkTimeDelay.check(dt)) {
                 this.checkRoomClear()
             }
         }

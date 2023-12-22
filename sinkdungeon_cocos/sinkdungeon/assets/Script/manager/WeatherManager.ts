@@ -47,15 +47,6 @@ export default class WeatherManager extends BaseManager {
         return effectNode
     }
 
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.2) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
     updateLogic(dt: number, player: Player) {
         if (this.weatherRain) {
             let p = player.node.position.clone()

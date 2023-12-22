@@ -5,6 +5,7 @@ import Utils from '../utils/Utils'
 import CCollider from '../collider/CCollider'
 import NonPlayerData from '../data/NonPlayerData'
 import StatusManager from '../manager/StatusManager'
+import TimeDelay from '../utils/TimeDelay'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -142,15 +143,7 @@ export default class ActorAttackBox extends cc.Component {
         this.hv = hv
         this.rotateCollider(this.hv)
     }
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.02) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
+
     rotateCollider(direction: cc.Vec2) {
         if (direction.equals(cc.Vec2.ZERO)) {
             return

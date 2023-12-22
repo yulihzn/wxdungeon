@@ -8,6 +8,7 @@ import CCollider from '../collider/CCollider'
 import Actor from '../base/Actor'
 import StatusData from '../data/StatusData'
 import BaseColliderComponent from '../base/BaseColliderComponent'
+import TimeDelay from '../utils/TimeDelay'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -91,17 +92,9 @@ export default class IceThron extends BaseColliderComponent {
             target.addStatus(status, fromData)
         }
     }
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.5) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
+    checkTimeDelay = new TimeDelay(0.5)
     update(dt) {
-        if (this.isCheckTimeDelay(dt)) {
+        if (this.checkTimeDelay.check(dt)) {
             this.hasTargetMap.clear()
         }
     }

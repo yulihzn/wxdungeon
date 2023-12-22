@@ -215,11 +215,11 @@ export default class Achievement extends cc.Component {
             data.valueCopy(Logic.equipments[key])
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem)
             let spriteFrame = Logic.spriteFrameRes(data.img)
-            if (data.equipmetType == InventoryManager.CLOTHES) {
+            if (data.equipmentType == InventoryManager.CLOTHES) {
                 spriteFrame = Logic.spriteFrameRes(data.img + 'anim0')
-            } else if (data.equipmetType == InventoryManager.HELMET) {
+            } else if (data.equipmentType == InventoryManager.HELMET) {
                 spriteFrame = Logic.spriteFrameRes(data.img + 'anim0')
-            } else if (data.equipmetType == InventoryManager.REMOTE) {
+            } else if (data.equipmentType == InventoryManager.REMOTE) {
                 spriteFrame = Logic.spriteFrameRes(data.img + 'anim0')
             }
             icon.init(this, this.currentListIndex, index++, this.data.equips[data.img], spriteFrame, null, null, data, null)

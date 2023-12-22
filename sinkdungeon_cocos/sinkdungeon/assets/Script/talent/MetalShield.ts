@@ -9,6 +9,7 @@ import Logic from '../logic/Logic'
 import OilGoldMetal from './OilGoldMetal'
 import Utils from '../utils/Utils'
 import DamageData from '../data/DamageData'
+import TimeDelay from '../utils/TimeDelay'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -64,15 +65,6 @@ export default class MetalShield {
         }
     }
 
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.1) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
     private currentTarget: Actor
     private getNearestEnemyActor(needRefresh?: boolean) {
         if (!ActorUtils.isTargetCanTrack(this.currentTarget) || needRefresh) {

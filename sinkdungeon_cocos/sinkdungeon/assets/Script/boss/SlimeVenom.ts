@@ -4,6 +4,7 @@ import Actor from '../base/Actor'
 import FromData from '../data/FromData'
 import StatusData from '../data/StatusData'
 import { EventHelper } from '../logic/EventHelper'
+import TimeDelay from '../utils/TimeDelay'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -68,20 +69,13 @@ export default class SlimeVenom extends Actor {
         let dis = Logic.getDistanceNoSqrt(this.node.position, playerNode.position)
         return dis
     }
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 1) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
+    checkTimeDelay = new TimeDelay(1)
+
     update(dt) {
         if (Logic.isGamePause) {
             return
         }
-        if (this.isCheckTimeDelay(dt)) {
+        if (this.checkTimeDelay.check(dt)) {
             this.damagePlayer(this.from)
         }
     }

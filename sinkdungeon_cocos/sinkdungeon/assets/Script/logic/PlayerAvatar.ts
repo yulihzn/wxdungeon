@@ -11,6 +11,7 @@ import AvatarData from '../data/AvatarData'
 import AudioPlayer from '../utils/AudioPlayer'
 import Utils from '../utils/Utils'
 import BaseAvatar from '../base/BaseAvatar'
+import TimeDelay from '../utils/TimeDelay'
 
 const { ccclass, property } = cc._decorator
 
@@ -370,19 +371,4 @@ export default class PlayerAvatar extends BaseAvatar {
     public playDriveOff() {
         this.isAniming = false
     }
-    start() {}
-    checkTimeDelay = 0
-    isAnimTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.2) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
-    // update(dt: number) {
-    //     if (this.isAnimTimeDelay(dt)) {
-    //         this.updateEquipFrameAnim(this.clothesSprite)
-    //     }
-    // }
 }

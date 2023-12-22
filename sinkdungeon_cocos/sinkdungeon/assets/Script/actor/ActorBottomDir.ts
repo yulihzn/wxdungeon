@@ -50,15 +50,7 @@ export default class ActorBottomDir extends cc.Component {
             this.base.angle = Logic.lerp(this.base.angle, this.currentAngle, dt * 5)
         }
     }
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.02) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
+
     rotateCollider(direction: cc.Vec2) {
         if (direction.equals(cc.Vec2.ZERO)) {
             return

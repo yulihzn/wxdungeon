@@ -70,6 +70,7 @@ export default class OrganizationTalent extends Talent {
     energyShieldList: EnergyShield[] = []
 
     onLoad() {}
+    destroyGhost(ghostNode: cc.Node) {}
 
     changePerformance(): void {}
     init(data: TalentData) {
@@ -178,16 +179,6 @@ export default class OrganizationTalent extends Talent {
             } else {
                 this.energyShieldList.splice(i, 1)
             }
-        }
-        return false
-    }
-
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 1) {
-            this.checkTimeDelay = 0
-            return true
         }
         return false
     }

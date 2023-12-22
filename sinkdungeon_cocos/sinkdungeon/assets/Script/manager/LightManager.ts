@@ -2,6 +2,7 @@ import BaseManager from './BaseManager'
 import ShadowOfSight from '../effect/ShadowOfSight'
 import Logic from '../logic/Logic'
 import IndexZ from '../utils/IndexZ'
+import TimeDelay from '../utils/TimeDelay'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -206,24 +207,9 @@ export default class LightManager extends BaseManager {
             }
         }
     }
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.03) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
-    checkTimeChangeDelay = 0
-    isCheckTimeChangeDelay(dt: number): boolean {
-        this.checkTimeChangeDelay += dt
-        if (this.checkTimeChangeDelay > 1) {
-            this.checkTimeChangeDelay = 0
-            return true
-        }
-        return false
-    }
+    checkTimeDelay = new TimeDelay(0.03)
+    checkTimeChangeDelay = new TimeDelay(1)
+
     /**
      * 每个室内的房间都有一个固定的环境光
      */
@@ -279,10 +265,10 @@ export default class LightManager extends BaseManager {
         if (this.isFirstRender) {
             this.render()
         }
-        if (this.isCheckTimeDelay(dt)) {
+        if (this.checkTimeDelay.check(dt)) {
             this.render()
         }
-        if (this.isCheckTimeChangeDelay(dt)) {
+        if (this.checkTimeChangeDelay.check(dt)) {
             this.timeChange()
         }
         this.fixShadowPos()

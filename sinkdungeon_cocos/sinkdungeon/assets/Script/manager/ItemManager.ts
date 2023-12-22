@@ -8,6 +8,7 @@ import Logic from '../logic/Logic'
 import Item from '../item/Item'
 import Player from '../logic/Player'
 import { EventHelper } from '../logic/EventHelper'
+import TimeDelay from '../utils/TimeDelay'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -191,19 +192,9 @@ export default class ItemManager extends BaseManager {
             this.addItem(Dungeon.getPosInMap(indexPos), Item.BOTTLE_JUMP)
         }
     }
-
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.2) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
-
+    private checkTimeDelay = new TimeDelay(0.2)
     updateLogic(dt: number, player: Player) {
-        if (this.isCheckTimeDelay(dt)) {
+        if (this.checkTimeDelay.check(dt)) {
             let distance = 200
             let item: Item = null
             for (let i = this.groundList.length - 1; i >= 0; i--) {

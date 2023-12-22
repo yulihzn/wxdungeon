@@ -187,7 +187,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         this.isStab = equipData.stab == 1
         this.isFar = equipData.far == 1
         this.isReflect = equipData.isReflect == 1
-        this.isFist = InventoryManager.WEAPON != equipData.equipmetType
+        this.isFist = InventoryManager.WEAPON != equipData.equipmentType
         this.isBlunt = equipData.blunt == 1
         this.exBeatBack = this.player.inventoryMgr.getEquipBySuit(equipData).exBeatBack
         this.changeSprite(equipData, spriteFrame)

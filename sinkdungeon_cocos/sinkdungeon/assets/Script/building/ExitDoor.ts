@@ -161,7 +161,6 @@ export default class ExitDoor extends Building {
     onColliderEnter(other: CCollider, self: CCollider) {
         if (self.sensor && other.tag == CCollider.TAG.PLAYER) {
             let player = other.node.getComponent(Player)
-            cc.log(`onColliderEnter open=${this.isOpen}`)
             this.loadingNextLevel(player)
         } else if (self.sensor && other.tag == CCollider.TAG.VEHICLE) {
             let v = other.node.getComponent(Vehicle)

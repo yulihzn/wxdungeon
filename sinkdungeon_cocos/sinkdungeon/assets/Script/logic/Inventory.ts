@@ -100,14 +100,14 @@ export default class Inventory extends cc.Component {
         this.graphics = this.getComponent(cc.Graphics)
         EventHelper.on(EventHelper.PLAYER_CHANGEEQUIPMENT, detail => {
             if (this.node) {
-                this.refreshEquipment(detail.equipmetType, detail.equipData, false, detail.isReplace)
+                this.refreshEquipment(detail.equipmentType, detail.equipData, false, detail.isReplace)
                 Logic.inventoryMgr.refreshSuits()
                 Logic.inventoryMgr.updateTotalEquipData()
             }
         })
         EventHelper.on(EventHelper.PLAYER_EQUIPMENT_REFRESH, detail => {
             if (this.node) {
-                this.refreshEquipmentRes(detail.equipmetType)
+                this.refreshEquipmentRes(detail.equipmentType)
                 Logic.inventoryMgr.refreshSuits()
                 Logic.inventoryMgr.updateTotalEquipData()
             }
@@ -236,9 +236,9 @@ export default class Inventory extends cc.Component {
         Logic.inventoryMgr.updateTotalEquipData()
     }
 
-    private addEquipSpriteTouchEvent(sprite: cc.Sprite, equipmetType: string) {
+    private addEquipSpriteTouchEvent(sprite: cc.Sprite, equipmentType: string) {
         sprite.node.parent.on(cc.Node.EventType.TOUCH_START, () => {
-            this.showEquipDialog(equipmetType, sprite)
+            this.showEquipDialog(equipmentType, sprite)
         })
         sprite.node.parent.on(cc.Node.EventType.TOUCH_END, () => {
             this.equipmentAndItemDialog.hideDialog()
@@ -247,21 +247,21 @@ export default class Inventory extends cc.Component {
             this.equipmentAndItemDialog.hideDialog()
         })
         sprite.node.parent.on(cc.Node.EventType.MOUSE_ENTER, () => {
-            this.showEquipDialog(equipmetType, sprite)
+            this.showEquipDialog(equipmentType, sprite)
         })
         sprite.node.parent.on(cc.Node.EventType.MOUSE_LEAVE, () => {
             this.equipmentAndItemDialog.hideDialog()
         })
     }
-    private showEquipDialog(equipmetType: string, sprite: cc.Sprite) {
+    private showEquipDialog(equipmentType: string, sprite: cc.Sprite) {
         if (sprite.spriteFrame == null) {
             return
         }
         let equipData = new EquipmentData()
-        if (Logic.inventoryMgr.equips[equipmetType]) {
-            equipData = Logic.inventoryMgr.equips[equipmetType].clone()
+        if (Logic.inventoryMgr.equips[equipmentType]) {
+            equipData = Logic.inventoryMgr.equips[equipmentType].clone()
         }
-        if (equipData.equipmetType == InventoryManager.EMPTY) {
+        if (equipData.equipmentType == InventoryManager.EMPTY) {
             return
         }
         let pos = this.node.convertToNodeSpaceAR(sprite.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO))
@@ -314,35 +314,27 @@ export default class Inventory extends cc.Component {
         })
     }
 
-    private refreshEquipmentRes(equipmetType: string) {
-        if (!equipmetType) {
+    private refreshEquipmentRes(equipmentType: string) {
+        if (!equipmentType) {
             return
         }
-        let equip = Logic.inventoryMgr.equips[equipmetType]
-        let color = cc.color(255, 255, 255).fromHEX(equip.color)
-        let spriteFrame = Logic.spriteFrameRes(equip.img)
-        if (equip.equipmetType == InventoryManager.CLOTHES) {
-            spriteFrame = Logic.spriteFrameRes(equip.img + 'anim0')
-        } else if (equip.equipmetType == InventoryManager.HELMET) {
-            spriteFrame = Logic.spriteFrameRes(equip.img + 'anim0')
-        } else if (equip.equipmetType == InventoryManager.REMOTE) {
-            spriteFrame = Logic.spriteFrameRes(equip.img + 'anim0')
-        }
+        let equip = Logic.inventoryMgr.equips[equipmentType]
+        let spriteFrame = Logic.equipmentSpriteFrameRes(Logic.inventoryMgr.equips[equipmentType])
         //更新贴图和颜色
-        let sprite = this.equipSprites.get(equipmetType)
+        let sprite = this.equipSprites.get(equipmentType)
         if (sprite) {
-            sprite.node.color = color
+            sprite.node.color = cc.color(255, 255, 255).fromHEX(equip.color)
             sprite.spriteFrame = equip.trouserslong == 1 ? Logic.spriteFrameRes('trousers000') : spriteFrame
-            if (equipmetType == InventoryManager.TROUSERS && equip.trouserslong == 1) {
+            if (equipmentType == InventoryManager.TROUSERS && equip.trouserslong == 1) {
                 sprite.spriteFrame = Logic.spriteFrameRes('trousers000')
             }
         }
-        switch (equipmetType) {
+        switch (equipmentType) {
             case InventoryManager.REMOTE:
                 this.remote.node.parent.active = true
                 this.shield.node.parent.active = true
                 //远程不为空隐藏盾牌栏
-                if (equip.equipmetType != InventoryManager.EMPTY) {
+                if (equip.equipmentType != InventoryManager.EMPTY) {
                     this.shield.node.parent.active = false
                 }
                 break
@@ -350,7 +342,7 @@ export default class Inventory extends cc.Component {
                 this.remote.node.parent.active = true
                 this.shield.node.parent.active = true
                 //如果当前盾牌不为空隐藏远程栏并展示盾牌栏，否则显示远程隐藏盾牌栏
-                if (equip.equipmetType != InventoryManager.EMPTY) {
+                if (equip.equipmentType != InventoryManager.EMPTY) {
                     this.remote.node.parent.active = false
                     this.shield.node.parent.active = true
                 } else {
@@ -361,65 +353,17 @@ export default class Inventory extends cc.Component {
         }
         //更新玩家装备贴图和状态
         if (this.dungeon && this.dungeon.player) {
-            this.dungeon.player.changeEquipment(equipmetType, equip, spriteFrame)
-            // if (equip.statusInterval > 0 && equip.statusName.length > 0) {
-            //     this.dungeon.player.addStatus(equip.statusName, FromData.getClone(equip.nameCn, equip.img));
-            // }
+            this.dungeon.player.changeEquipment(equipmentType)
         }
     }
 
-    private refreshEquipment(equipmetType: string, equipDataNew: EquipmentData, isInit: boolean, isReplace: boolean) {
-        if (!equipDataNew || !this.weapon || !equipmetType) {
+    private refreshEquipment(equipmentType: string, equipDataNew: EquipmentData, isInit: boolean, isReplace: boolean) {
+        if (!equipDataNew || !this.weapon || !equipmentType) {
             return
         }
-        let equip = Logic.inventoryMgr.equips[equipmetType]
-        let hasEquip = equip && equip.equipmetType != InventoryManager.EMPTY
-        if (!hasEquip) {
-            if (equipmetType == InventoryManager.REMOTE && Logic.inventoryMgr.equips[InventoryManager.SHIELD].equipmetType != InventoryManager.EMPTY) {
-                hasEquip = true
-            }
-            if (equipmetType == InventoryManager.SHIELD && Logic.inventoryMgr.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.EMPTY) {
-                hasEquip = true
-            }
-        }
-
-        //1.如果是捡起到背包或者购买（非替换非初始化），且对应位置有装备，则直接放置到背包
-        //2.如果当前装备等级高于玩家，则直接放置到背包
-        if ((!isReplace && !isInit && equip && hasEquip) || equipDataNew.requireLevel > Logic.playerData.OilGoldData.level) {
-            this.setEquipmentToBag(equipDataNew, isInit, Logic.inventoryMgr.inventoryList)
-            return
-        }
-        //2.如果是长按的替换操作，替换新的，移出旧的到背包
-        //更新当前装备数据
-        if (equip) {
-            this.setEquipmentToBag(equip, isInit, Logic.inventoryMgr.inventoryList)
-            equip.valueCopy(equipDataNew)
-            if (!isInit) {
-                EventHelper.emit(EventHelper.HUD_INVENTORY_EQUIP_UPDATE)
-            }
-        }
-
-        switch (equipmetType) {
-            case InventoryManager.REMOTE:
-                if (Logic.inventoryMgr.equips[equipmetType].equipmetType != InventoryManager.EMPTY) {
-                    //替换盾牌到背包
-                    this.setEquipmentToBag(Logic.inventoryMgr.equips[InventoryManager.SHIELD], isInit, Logic.inventoryMgr.inventoryList)
-                    //清空盾牌数据
-                    Logic.inventoryMgr.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData())
-                    this.refreshEquipmentRes(InventoryManager.SHIELD)
-                }
-                break
-            case InventoryManager.SHIELD:
-                //如果当前盾牌不为空清空远程并展示盾牌栏，否则显示远程隐藏盾牌栏
-                if (Logic.inventoryMgr.equips[equipmetType].equipmetType != InventoryManager.EMPTY) {
-                    //替换远程到背包
-                    this.setEquipmentToBag(Logic.inventoryMgr.equips[InventoryManager.REMOTE], isInit, Logic.inventoryMgr.inventoryList)
-                    Logic.inventoryMgr.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData())
-                    this.refreshEquipmentRes(InventoryManager.REMOTE)
-                }
-                break
-        }
-        this.refreshEquipmentRes(equipmetType)
+        Logic.inventoryMgr.refreshEquipment(equipmentType, equipDataNew, isInit, isReplace, type => {
+            this.refreshEquipmentRes(type)
+        })
     }
 
     // addPlayerStatus(equipmentData: EquipmentData) {
@@ -564,7 +508,7 @@ export default class Inventory extends cc.Component {
     }
     private setEquipmentToBag(equipData: EquipmentData, isInit: boolean, inventoryList: InventoryData[]) {
         //来自初始化或者空装备直接返回
-        if (isInit || equipData.equipmetType == InventoryManager.EMPTY) {
+        if (isInit || equipData.equipmentType == InventoryManager.EMPTY) {
             return
         }
         let data = InventoryManager.buildEquipInventoryData(equipData)

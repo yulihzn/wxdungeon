@@ -12,6 +12,7 @@ import IndexZ from '../utils/IndexZ'
 import { EventHelper } from '../logic/EventHelper'
 import BaseNodeComponent from '../base/BaseNodeComponent'
 import EffectItemManager from '../manager/EffectItemManager'
+import TimeDelay from '../utils/TimeDelay'
 
 const { ccclass, property } = cc._decorator
 
@@ -79,6 +80,7 @@ export default class HitBlood extends BaseNodeComponent {
         }
         this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.node.position.x, this.node.position.y - offsetY))
     }
+    private checkTimeDelay = new TimeDelay(0.2)
     protected update(dt: number): void {
         let y = this.root.y - this.entity.Transform.base
         if (y < 0) {
@@ -89,7 +91,7 @@ export default class HitBlood extends BaseNodeComponent {
         if (y > 0) {
             this.rotateSprite()
         }
-        if (this.isCheckTimeDelay(dt)) {
+        if (this.checkTimeDelay.check(dt)) {
             if (y > 0) {
                 this.updateSprite()
             }
@@ -114,15 +116,5 @@ export default class HitBlood extends BaseNodeComponent {
         }
         this.entity.Move.linearVelocity = cc.v2(x, y)
         this.entity.Move.damping = 3
-    }
-
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.2) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
     }
 }

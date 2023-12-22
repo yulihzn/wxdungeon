@@ -16,6 +16,7 @@ import Utils from '../utils/Utils'
 import QuestBoardDialog from './dialog/QuestBoardDialog'
 import GameAlertDialog from './dialog/GameAlertDialog'
 import MetalTalentDialog from './dialog/MetalTalentDialog'
+import TimeDelay from '../utils/TimeDelay'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -82,7 +83,7 @@ export default class GameHud extends cc.Component {
 
     private arrowList: cc.Node[] = []
     private isCompleteShowed = false
-    private checkTimeDelay = 0
+    private checkTimeDelay = new TimeDelay(1)
     private startCountTime = true
 
     onLoad() {
@@ -326,14 +327,6 @@ export default class GameHud extends cc.Component {
     }
     start() {}
 
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 1) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
     get HasModalDialogShow() {
         return (
             this.settingsDialog.node.active ||
@@ -386,7 +379,7 @@ export default class GameHud extends cc.Component {
     }
 
     update(dt: number) {
-        if (this.isCheckTimeDelay(dt)) {
+        if (this.checkTimeDelay.check(dt)) {
             if (this.clock && this.startCountTime) {
                 this.changeTime()
                 this.clock.string = `${Utils.getPlayTime(Logic.data.totalTime)}`

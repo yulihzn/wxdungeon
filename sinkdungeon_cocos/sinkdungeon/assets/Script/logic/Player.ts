@@ -193,6 +193,14 @@ export default class Player extends PlayActor {
             this.scheduleOnce(() => {
                 EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH_ALL)
             })
+        } else {
+            this.scheduleOnce(() => {
+                for (let key in this.inventoryMgr.equips) {
+                    this.refreshEquipment(key, this.inventoryMgr.equips[key].clone(), true, false)
+                }
+                this.inventoryMgr.refreshSuits()
+                this.inventoryMgr.updateTotalEquipData()
+            })
         }
         this.remoteCooldown.width = 0
         this.remoteCooldown.opacity = 200
@@ -225,7 +233,7 @@ export default class Player extends PlayActor {
         this.lights = this.getComponentsInChildren(ShadowOfSight)
         LightManager.registerLight(this.lights, this.node)
         if (this.bottomDir) {
-            this.bottomDir.init(this)
+            this.bottomDir.init(this, this.data.id == Logic.data.lastPlayerId ? cc.Color.GREEN : cc.Color.YELLOW)
         }
 
         if (!this.playerSpriteTexture) {
@@ -239,11 +247,21 @@ export default class Player extends PlayActor {
             this.playerSpriteframe = new cc.SpriteFrame(this.playerSpriteTexture)
             this.sprite.spriteFrame = this.playerSpriteframe
         }
-        this.metal = cc.instantiate(this.metalPrefab).getComponent(OilGoldMetal)
-        this.metal.init(this)
+        if (this.data.id == Logic.data.lastPlayerId) {
+            this.metal = cc.instantiate(this.metalPrefab).getComponent(OilGoldMetal)
+            this.metal.init(this)
+        }
+    }
+    private refreshEquipment(equipmentType: string, equipDataNew: EquipmentData, isInit: boolean, isReplace: boolean) {
+        if (!equipDataNew || !equipmentType) {
+            return
+        }
+        this.inventoryMgr.refreshEquipment(equipmentType, equipDataNew, isInit, isReplace, type => {
+            this.changeEquipment(type)
+        })
     }
     ctrlRemoteCancel() {
-        if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
+        if (this.shield && this.shield.data.equipmentType == InventoryManager.SHIELD) {
             this.shield.cancel()
         } else if (this.sc) {
             this.sc.isShooting = false
@@ -392,8 +410,13 @@ export default class Player extends PlayActor {
         }
     }
 
-    public changeEquipment(equipmetType: string, equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
-        switch (equipmetType) {
+    public changeEquipment(equipmentType: string) {
+        if (!equipmentType) {
+            return
+        }
+        let equipData = Logic.getInventoryMgr(this.data.id).equips[equipmentType]
+        let spriteFrame = Logic.equipmentSpriteFrameRes(equipData)
+        switch (equipmentType) {
             case InventoryManager.WEAPON:
                 this.weaponRight.meleeWeapon.changeEquipment(equipData, spriteFrame)
                 break
@@ -409,7 +432,7 @@ export default class Player extends PlayActor {
                 this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img)
                 let c = cc.color(255, 255, 255).fromHEX(this.weaponLeft.shooter.data.color)
                 this.weaponLeft.shooter.changeResColor(c)
-                if (equipData.equipmetType != InventoryManager.EMPTY) {
+                if (equipData.equipmentType != InventoryManager.EMPTY) {
                     this.shield.data = new EquipmentData()
                     this.updateEquipment(
                         this.shield.sprite,
@@ -426,7 +449,7 @@ export default class Player extends PlayActor {
                 this.shield.data = equipData.clone()
                 this.shield.node.color = cc.Color.WHITE.fromHEX(equipData.color)
                 this.updateEquipment(this.shield.sprite, equipData.color, spriteFrame, this.shield.data.isHeavy == 1 ? 80 : 64)
-                if (equipData.equipmetType != InventoryManager.EMPTY) {
+                if (equipData.equipmentType != InventoryManager.EMPTY) {
                     this.weaponLeft.shooter.data = new EquipmentData()
                     this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img)
                     if (this.data.id == Logic.data.lastPlayerId) {
@@ -641,7 +664,7 @@ export default class Player extends PlayActor {
         if (this.useInteractBuilding(false) || this.avatar?.isAniming) {
             return
         }
-        if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
+        if (this.shield && this.shield.data.equipmentType == InventoryManager.SHIELD) {
             this.shield.use(this)
             return
         }
@@ -759,7 +782,7 @@ export default class Player extends PlayActor {
     }
 
     updateHv(hv?: cc.Vec2) {
-        if (Controller.isMouseMode() && Controller.mousePos && this.dungeon) {
+        if (Controller.isMouseMode() && Controller.mousePos && this.dungeon && this.data.id == Logic.data.lastPlayerId) {
             let p = cc.v2(this.dungeon.node.convertToWorldSpaceAR(this.node.position))
             this.hv = Controller.mousePos.add(cc.v2(this.dungeon.cameraControl.node.position)).sub(p).normalize()
             let dir = Utils.getDirByHv(this.hv)
@@ -1286,7 +1309,7 @@ export default class Player extends PlayActor {
     }
 
     ctrlTriggerThings(isLongPress: boolean) {
-        if (this.sc.isJumping || !this.dungeon || this.avatar.isAniming) {
+        if (this.sc.isJumping || !this.dungeon || this.avatar.isAniming || Logic.data.lastPlayerId != this.data.id) {
             return
         }
         if (this.dungeon.equipmentManager.lastGroundEquip && this.dungeon.equipmentManager.lastGroundEquip.taken(isLongPress)) {
@@ -1321,9 +1344,9 @@ export default class Player extends PlayActor {
             EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW, { isShow: false })
         }
         if (
-            (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) ||
+            (this.shield && this.shield.data.equipmentType == InventoryManager.SHIELD) ||
             (this.interactBuilding && this.interactBuilding.isTaken) ||
-            this.weaponLeft.shooter.data.equipmetType == InventoryManager.REMOTE
+            this.weaponLeft.shooter.data.equipmentType == InventoryManager.REMOTE
         ) {
             EventHelper.emit(EventHelper.HUD_CONTROLLER_REMOTE_SHOW, { isShow: true })
         } else {

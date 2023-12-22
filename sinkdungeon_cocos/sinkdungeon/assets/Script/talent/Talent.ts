@@ -202,14 +202,4 @@ export default abstract class Talent extends cc.Component {
         shooter.data.bulletLineExNum = bulletLineExNum
         shooter.fireBullet(0, null, 0, 0, prefab, data)
     }
-
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 1) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
 }

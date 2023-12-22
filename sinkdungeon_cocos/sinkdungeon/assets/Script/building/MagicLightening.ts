@@ -90,14 +90,6 @@ export default class MagicLightening extends Building {
             this.isAttacked = true
         }
     }
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.5) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
+
     update(dt) {}
 }

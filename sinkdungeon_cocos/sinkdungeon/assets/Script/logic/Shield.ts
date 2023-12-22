@@ -208,7 +208,7 @@ export default class Shield extends cc.Component {
     }
     public use(player: Player) {
         this.isButtonPressing = true
-        if (this.data.equipmetType != InventoryManager.SHIELD) {
+        if (this.data.equipmentType != InventoryManager.SHIELD) {
             return
         }
         if (this.status == Shield.STATUS_PUTDOWN) {
@@ -233,7 +233,7 @@ export default class Shield extends cc.Component {
         this.sprite.spriteFrame = Logic.spriteFrameRes(resName)
         this.sprite.node.width = this.data.isHeavy == 1 ? 80 : 64
         this.sprite.node.height = this.data.isHeavy == 1 ? 80 : 64
-        if (this.data.equipmetType == InventoryManager.SHIELD) {
+        if (this.data.equipmentType == InventoryManager.SHIELD) {
             this.playIdle()
         }
     }

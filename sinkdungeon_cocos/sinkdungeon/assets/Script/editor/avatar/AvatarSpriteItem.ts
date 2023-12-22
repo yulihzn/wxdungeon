@@ -73,13 +73,13 @@ export default class AvatarSpriteItem extends cc.Component {
         this.isItem = false
         data.valueCopy(Logic.equipments[id])
         this.equipData.valueCopy(data)
-        if (data.equipmetType == InventoryManager.CLOTHES) {
+        if (data.equipmentType == InventoryManager.CLOTHES) {
             spriteFrame = Logic.spriteFrameRes(data.img + 'anim0')
-        } else if (data.equipmetType == InventoryManager.HELMET) {
+        } else if (data.equipmentType == InventoryManager.HELMET) {
             spriteFrame = Logic.spriteFrameRes(data.img + 'anim0')
-        } else if (data.equipmetType == InventoryManager.REMOTE) {
+        } else if (data.equipmentType == InventoryManager.REMOTE) {
             spriteFrame = Logic.spriteFrameRes(data.img + 'anim0')
-        } else if (data.equipmetType != InventoryManager.EMPTY) {
+        } else if (data.equipmentType != InventoryManager.EMPTY) {
             spriteFrame = Logic.spriteFrameRes(data.img)
         } else {
             let itemData = new ItemData()

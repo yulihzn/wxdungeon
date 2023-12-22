@@ -256,11 +256,11 @@ export default class InventoryDialog extends BaseDialog {
                 needAdd = true
             } else {
                 if (key == InventoryManager.REMOTE) {
-                    if (equipdata.equipmetType == InventoryManager.REMOTE || Logic.inventoryMgr.equips[InventoryManager.SHIELD].equipmetType == InventoryManager.EMPTY) {
+                    if (equipdata.equipmentType == InventoryManager.REMOTE || Logic.inventoryMgr.equips[InventoryManager.SHIELD].equipmentType == InventoryManager.EMPTY) {
                         needAdd = true
                     }
                 } else if (key == InventoryManager.SHIELD) {
-                    if (equipdata.equipmetType == InventoryManager.SHIELD) {
+                    if (equipdata.equipmentType == InventoryManager.SHIELD) {
                         needAdd = true
                     }
                 }
@@ -470,8 +470,8 @@ export default class InventoryDialog extends BaseDialog {
             }
         }
         //清空该装备栏并更新ui
-        Logic.inventoryMgr.equips[equipData.equipmetType] = new EquipmentData()
-        EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmetType: equipData.equipmetType })
+        Logic.inventoryMgr.equips[equipData.equipmentType] = new EquipmentData()
+        EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmentType: equipData.equipmentType })
         current.setEmpty()
         this.clearSelect()
         return true
@@ -534,7 +534,7 @@ export default class InventoryDialog extends BaseDialog {
             //佩戴装备
             let equipData = new EquipmentData()
             equipData.valueCopy(current.data.equipmentData)
-            if (equipData.equipmetType != InventoryManager.EMPTY) {
+            if (equipData.equipmentType != InventoryManager.EMPTY) {
                 if (equipData.requireLevel > Logic.playerData.OilGoldData.level) {
                     Utils.toast(`当前人物等级太低，无法装备`)
                     return
@@ -545,7 +545,7 @@ export default class InventoryDialog extends BaseDialog {
 
                 //交换当前装备
 
-                if (equipData.equipmetType == InventoryManager.REMOTE) {
+                if (equipData.equipmentType == InventoryManager.REMOTE) {
                     //替换当前远程或盾牌到背包
                     InventoryDialog.addEquipOrItemToBag(
                         InventoryManager.buildEquipInventoryData(Logic.inventoryMgr.equips[InventoryManager.REMOTE]),
@@ -563,8 +563,8 @@ export default class InventoryDialog extends BaseDialog {
                     )
                     //清空盾牌数据
                     Logic.inventoryMgr.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData())
-                    EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmetType: InventoryManager.SHIELD })
-                } else if (equipData.equipmetType == InventoryManager.SHIELD) {
+                    EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmentType: InventoryManager.SHIELD })
+                } else if (equipData.equipmentType == InventoryManager.SHIELD) {
                     //替换当前远程或盾牌到背包
                     InventoryDialog.addEquipOrItemToBag(
                         InventoryManager.buildEquipInventoryData(Logic.inventoryMgr.equips[InventoryManager.REMOTE]),
@@ -582,10 +582,10 @@ export default class InventoryDialog extends BaseDialog {
                     )
                     //清空远程数据
                     Logic.inventoryMgr.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData())
-                    EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmetType: InventoryManager.REMOTE })
+                    EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmentType: InventoryManager.REMOTE })
                 } else {
                     InventoryDialog.addEquipOrItemToBag(
-                        InventoryManager.buildEquipInventoryData(Logic.inventoryMgr.equips[equipData.equipmetType]),
+                        InventoryManager.buildEquipInventoryData(Logic.inventoryMgr.equips[equipData.equipmentType]),
                         dataList,
                         inventoryItemList.length,
                         false,
@@ -593,9 +593,9 @@ export default class InventoryDialog extends BaseDialog {
                     )
                 }
                 //设置装备栏数据并更新ui
-                Logic.inventoryMgr.equips[equipData.equipmetType] = equipData
+                Logic.inventoryMgr.equips[equipData.equipmentType] = equipData
                 this.updateEquipList()
-                EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmetType: equipData.equipmetType })
+                EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmentType: equipData.equipmentType })
             }
         } else {
             let itemData = new ItemData()
@@ -662,7 +662,7 @@ export default class InventoryDialog extends BaseDialog {
             //佩戴装备
             let equipData = new EquipmentData()
             equipData.valueCopy(current.data.equipmentData)
-            if (equipData.equipmetType != InventoryManager.EMPTY) {
+            if (equipData.equipmentType != InventoryManager.EMPTY) {
                 if (isSale) {
                     EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(equipData.price * this.discount) })
                     AudioPlayer.play(AudioPlayer.COIN)
@@ -814,7 +814,7 @@ export default class InventoryDialog extends BaseDialog {
             //佩戴装备
             let equipData = new EquipmentData()
             equipData.valueCopy(current.data.equipmentData)
-            if (equipData.equipmetType != InventoryManager.EMPTY) {
+            if (equipData.equipmentType != InventoryManager.EMPTY) {
                 let rand4save = Logic.mapManager.getCurrentRoomRandom4Save(MapManager.RANDOM_EQUIP)
                 let msg = ''
                 let price = 0
@@ -882,8 +882,8 @@ export default class InventoryDialog extends BaseDialog {
         if (isSelectEquip) {
             //装备栏更新ui
             inventoryItem.data.equipmentData.valueCopy(equipmentData)
-            Logic.inventoryMgr.equips[equipmentData.equipmetType].valueCopy(equipmentData)
-            EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmetType: equipmentData.equipmetType })
+            Logic.inventoryMgr.equips[equipmentData.equipmentType].valueCopy(equipmentData)
+            EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmentType: equipmentData.equipmentType })
         } else {
             inventoryItem.data.equipmentData = equipmentData.clone()
             inventoryData.equipmentData = equipmentData.clone()

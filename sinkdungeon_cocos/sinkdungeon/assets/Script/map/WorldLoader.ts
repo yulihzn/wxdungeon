@@ -53,7 +53,6 @@ export default class WorldLoader {
             this.emitCallbacks()
             this.isloaded = true
             this.isLoading = false
-            EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_MAP })
             return
         }
         this.worldMap = new Array()
@@ -167,7 +166,6 @@ export default class WorldLoader {
             this.isloaded = true
             this.isLoading = false
             cc.log('加载世界完成')
-            EventHelper.emit(EventHelper.LOADING_ICON, { type: LoadingIcon.TYPE_MAP })
         })
     }
 

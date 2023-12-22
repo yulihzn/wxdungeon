@@ -1,4 +1,5 @@
 import { EventHelper } from '../logic/EventHelper'
+import TimeDelay from '../utils/TimeDelay'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,18 +42,10 @@ export default class Seeker extends cc.Component {
         this.rigidbody.linearVelocity = movement
         this.isMoving = h != 0 || v != 0
     }
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.2) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
+    checkTimeDelay = new TimeDelay(0.2)
 
     update(dt) {
-        if (this.isCheckTimeDelay(dt) && this.isMoving) {
+        if (this.checkTimeDelay.check(dt) && this.isMoving) {
             EventHelper.emit(EventHelper.CHUNK_LOAD, { pos: this.node.position.clone() })
         }
     }

@@ -12,6 +12,7 @@ import Player from '../logic/Player'
 import LoadingManager from '../manager/LoadingManager'
 import NonPlayerManager from '../manager/NonPlayerManager'
 import AudioPlayer from '../utils/AudioPlayer'
+import TimeDelay from '../utils/TimeDelay'
 import Utils from '../utils/Utils'
 import Furniture from './Furniture'
 
@@ -201,17 +202,9 @@ export default class RoomFishtank extends cc.Component {
             }
         }
     }
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 5) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
+    checkTimeDelay = new TimeDelay(5)
     update(dt: number) {
-        if (this.showAudio && this.isCheckTimeDelay(dt)) {
+        if (this.showAudio && this.checkTimeDelay.check(dt)) {
             AudioPlayer.play(AudioPlayer.FISHTANK)
         }
     }

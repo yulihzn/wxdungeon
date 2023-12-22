@@ -17,6 +17,7 @@ import CellphoneItem from '../CellphoneItem'
 import BaseDialog from './BaseDialog'
 import EquipmentAndItemDialog from './EquipmentAndItemDialog'
 import BuildingData from '../../data/BuildingData'
+import TimeDelay from '../../utils/TimeDelay'
 
 const { ccclass, property } = cc._decorator
 
@@ -234,20 +235,13 @@ export default class CellphoneDialog extends BaseDialog {
         }
     }
     update(dt) {
-        if (this.isCheckTimeChangeDelay(dt)) {
+        if (this.checkTimeChangeDelay.check(dt)) {
             this.dayLabel.string = Utils.getDay(Logic.getTickTime())
             this.hourLabel.string = Utils.getHour(Logic.getTickTime())
         }
     }
-    checkTimeChangeDelay = 0
-    isCheckTimeChangeDelay(dt: number): boolean {
-        this.checkTimeChangeDelay += dt
-        if (this.checkTimeChangeDelay > 1) {
-            this.checkTimeChangeDelay = 0
-            return true
-        }
-        return false
-    }
+    checkTimeChangeDelay = new TimeDelay(1)
+
     //button
     close() {
         AudioPlayer.play(AudioPlayer.SELECT)

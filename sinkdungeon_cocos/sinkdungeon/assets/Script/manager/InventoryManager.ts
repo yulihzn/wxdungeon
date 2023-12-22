@@ -8,6 +8,9 @@ import Logic from '../logic/Logic'
 import Player from '../logic/Player'
 import TriggerData from '../data/TriggerData'
 import FromData from '../data/FromData'
+import InventoryDialog from '../ui/dialog/InventoryDialog'
+import { EventHelper } from '../logic/EventHelper'
+import Utils from '../utils/Utils'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -173,6 +176,80 @@ export default class InventoryManager {
         }
     }
 
+    refreshEquipment(equipmentType: string, equipDataNew: EquipmentData, isInit: boolean, isReplace: boolean, callback: (type: string) => void) {
+        if (!equipDataNew || !equipmentType) {
+            return
+        }
+        let equip = Logic.inventoryMgr.equips[equipmentType]
+        let hasEquip = equip && equip.equipmentType != InventoryManager.EMPTY
+        if (!hasEquip) {
+            if (equipmentType == InventoryManager.REMOTE && Logic.inventoryMgr.equips[InventoryManager.SHIELD].equipmentType != InventoryManager.EMPTY) {
+                hasEquip = true
+            }
+            if (equipmentType == InventoryManager.SHIELD && Logic.inventoryMgr.equips[InventoryManager.REMOTE].equipmentType != InventoryManager.EMPTY) {
+                hasEquip = true
+            }
+        }
+
+        //1.如果是捡起到背包或者购买（非替换非初始化），且对应位置有装备，则直接放置到背包
+        //2.如果当前装备等级高于玩家，则直接放置到背包
+        if ((!isReplace && !isInit && equip && hasEquip) || equipDataNew.requireLevel > Logic.playerData.OilGoldData.level) {
+            this.setEquipmentToBag(equipDataNew, isInit, Logic.inventoryMgr.inventoryList)
+            return
+        }
+        //2.如果是长按的替换操作，替换新的，移出旧的到背包
+        //更新当前装备数据
+        if (equip) {
+            this.setEquipmentToBag(equip, isInit, Logic.inventoryMgr.inventoryList)
+            equip.valueCopy(equipDataNew)
+            if (!isInit && this.id == Logic.data.lastPlayerId) {
+                EventHelper.emit(EventHelper.HUD_INVENTORY_EQUIP_UPDATE)
+            }
+        }
+
+        switch (equipmentType) {
+            case InventoryManager.REMOTE:
+                if (Logic.inventoryMgr.equips[equipmentType].equipmentType != InventoryManager.EMPTY) {
+                    //替换盾牌到背包
+                    this.setEquipmentToBag(Logic.inventoryMgr.equips[InventoryManager.SHIELD], isInit, Logic.inventoryMgr.inventoryList)
+                    //清空盾牌数据
+                    Logic.inventoryMgr.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData())
+                    if (callback) {
+                        callback(InventoryManager.SHIELD)
+                    }
+                }
+                break
+            case InventoryManager.SHIELD:
+                //如果当前盾牌不为空清空远程并展示盾牌栏，否则显示远程隐藏盾牌栏
+                if (Logic.inventoryMgr.equips[equipmentType].equipmentType != InventoryManager.EMPTY) {
+                    //替换远程到背包
+                    this.setEquipmentToBag(Logic.inventoryMgr.equips[InventoryManager.REMOTE], isInit, Logic.inventoryMgr.inventoryList)
+                    Logic.inventoryMgr.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData())
+                    if (callback) {
+                        callback(InventoryManager.REMOTE)
+                    }
+                }
+                break
+        }
+        if (callback) {
+            callback(equipmentType)
+        }
+    }
+
+    private setEquipmentToBag(equipData: EquipmentData, isInit: boolean, inventoryList: InventoryData[]) {
+        //来自初始化或者空装备直接返回
+        if (isInit || equipData.equipmentType == InventoryManager.EMPTY) {
+            return
+        }
+        let data = InventoryManager.buildEquipInventoryData(equipData)
+        //添加到背包
+        let isAdded = InventoryDialog.addEquipOrItemToBag(data, inventoryList, InventoryManager.MAX_BAG, false, null)
+        if (!isAdded) {
+            Utils.toast('物品栏已满！')
+            EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: equipData.img, equipmentData: equipData })
+        }
+    }
+
     static isEquipTag(str: string) {
         if (!str || str.length < 1) {
             return false
@@ -197,7 +274,7 @@ export default class InventoryManager {
         let newdata = new InventoryData()
         newdata.equipmentData = new EquipmentData()
         newdata.equipmentData.valueCopy(equipmentData)
-        newdata.type = equipmentData.equipmetType == InventoryManager.EMPTY ? InventoryItem.TYPE_EMPTY : InventoryItem.TYPE_EQUIP
+        newdata.type = equipmentData.equipmentType == InventoryManager.EMPTY ? InventoryItem.TYPE_EMPTY : InventoryItem.TYPE_EQUIP
         newdata.price = newdata.equipmentData.price
         newdata.createTime = new Date().getTime()
         newdata.id = newdata.equipmentData.id

@@ -30,20 +30,7 @@ export default class QuestManager extends BaseManager {
     onLoad() {}
     clear(): void {}
 
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.2) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
-
-    updateLogic(dt: number, player: Player) {
-        if (this.isCheckTimeDelay(dt)) {
-        }
-    }
+    updateLogic(dt: number, player: Player) {}
     /**
      * 进入房间加载已触发、已完成、已失败任务里的建筑道具和npc
      */

@@ -76,6 +76,7 @@ export default class Loading extends cc.Component {
             this.loadingManager.loadDialogue()
             this.loadingManager.loadBehaviors()
             this.loadingManager.loadPlayer()
+            this.loadingManager.loadWorld()
             this.showLoadingLabel()
         })
         //显示过场

@@ -31,6 +31,7 @@ import AirExit from '../building/AirExit'
 import ShadowOfSight from '../effect/ShadowOfSight'
 import LightManager from '../manager/LightManager'
 import NormalBuilding from '../building/NormalBuilding'
+import TimeDelay from '../utils/TimeDelay'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -115,29 +116,26 @@ export default class Bullet extends BaseColliderComponent {
         LightManager.unRegisterLight(this.lights)
         LightManager.registerLight(this.lights, this.node)
     }
-    timeDelay = 0
-    checkTimeDelay = 0
+
     private changeAngle(angle: number) {
         this.base.angle = angle
         this.shadow.angle = angle
     }
+    private timeDelay = new TimeDelay(0.016)
+    private checkTimeDelay = new TimeDelay(5)
     update(dt) {
         if (Logic.isGamePause) {
             this.entity.Move.linearVelocity = cc.v2(0, 0)
             return
         }
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.5) {
+        if (this.checkTimeDelay.check(dt)) {
             this.checkTraking()
-            this.checkTimeDelay = 0
         }
         if (this.data.fixedRotation == 1) {
             this.changeAngle(0)
         }
         if (this.data.isDecelerate == 1 && this.isDecelerateDelay) {
-            this.timeDelay += dt
-            if (this.timeDelay > 0.016) {
-                this.timeDelay = 0
+            if (this.timeDelay.check(dt)) {
                 let d = this.data.decelerateDelta > 0 ? this.data.decelerateDelta : 1
                 this.currentLinearVelocity = this.currentLinearVelocity.lerp(cc.v2(0, 0), d * dt)
             }

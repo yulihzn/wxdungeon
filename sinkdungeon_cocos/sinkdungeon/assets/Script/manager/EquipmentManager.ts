@@ -15,6 +15,7 @@ import AffixManager from './AffixManager'
 import AffixData from '../data/AffixData'
 import MapManager from './MapManager'
 import AffixMapData from '../data/AffixMapData'
+import TimeDelay from '../utils/TimeDelay'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -275,7 +276,7 @@ export default class EquipmentManager extends BaseManager {
         }
         let data = new EquipmentData()
         data.valueCopy(Logic.equipments[equipType])
-        let tempid = data.img.substring(data.equipmetType.length)
+        let tempid = data.img.substring(data.equipmentType.length)
         if (tempid.length > 0) {
             data.id = data.id + parseInt(tempid)
         }
@@ -455,15 +456,6 @@ export default class EquipmentManager extends BaseManager {
         c3.setB(b > 255 ? 255 : b)
         return '#' + c3.toHEX('#rrggbb')
     }
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.2) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
 
     static getPrice(data: EquipmentData): number {
         let price = 0
@@ -471,7 +463,7 @@ export default class EquipmentManager extends BaseManager {
             return 0
         }
         let original = new EquipmentData()
-        original.valueCopy(Logic.equipments[data.equipmetType])
+        original.valueCopy(Logic.equipments[data.equipmentType])
         price += original.price
         price += data.FinalCommon.maxHealth * 5 //最大生命25
         price += data.FinalCommon.maxDream * 10 //最大梦境值25
@@ -546,8 +538,10 @@ export default class EquipmentManager extends BaseManager {
 
         return price > 0 ? Math.floor(price) : 0
     }
+    private checkTimeDelay = new TimeDelay(0.2)
+
     updateLogic(dt: number, player: Player) {
-        if (this.isCheckTimeDelay(dt)) {
+        if (this.checkTimeDelay.check(dt)) {
             let distance = 200
             let equip: Equipment = null
             for (let i = this.groundList.length - 1; i >= 0; i--) {

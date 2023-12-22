@@ -33,15 +33,6 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity> {
     filter(): ecs.IMatcher {
         return ecs.allOf(ColliderComponent)
     }
-    checkTimeDelay = 0
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt
-        if (this.checkTimeDelay > 0.04) {
-            this.checkTimeDelay = 0
-            return true
-        }
-        return false
-    }
     update(entities: ActorEntity[]): void {
         this.initCollider(entities)
         this.collisionCheck()

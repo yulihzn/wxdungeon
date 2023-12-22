@@ -14,7 +14,7 @@ import EquipmentData from './EquipmentData'
 export default class EquipmentStringData {
     nameCn: string = ''
     nameEn: string = ''
-    equipmetType: string = 'empty'
+    equipmentType: string = 'empty'
     desc: string = ''
     img: string = 'emptyequipment'
 

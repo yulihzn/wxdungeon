@@ -93,7 +93,7 @@ export default class JsCallAndroid {
                 let data = new EquipmentData()
                 data.img = key
                 data.nameCn = key
-                data.equipmetType = key.replace(/\d+$/, '')
+                data.equipmentType = key.replace(/\d+$/, '')
                 Logic.equipments[key] = data
                 Logic.equipmentNameList.push(key)
             }
