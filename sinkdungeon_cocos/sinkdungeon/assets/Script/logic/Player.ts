@@ -66,6 +66,7 @@ import EquipItemTalent from '../talent/EquipItemTalent'
 import OilGoldMetal from '../talent/OilGoldMetal'
 import ExitData from '../data/ExitData'
 import BaseController from './BaseController'
+import WalkSmoke from './WalkSmoke'
 @ccclass
 export default class Player extends PlayActor {
     @property(cc.Sprite)
@@ -146,7 +147,7 @@ export default class Player extends PlayActor {
         return this.root
     }
     init(): void {
-        this.inventoryMgr = Logic.inventoryMgrs[this.data.id]
+        this.inventoryMgr = Logic.getInventoryMgr(this.data.id)
         this.triggerShooter = this.shooterEx
         this.handLeft = this.weaponLeft
         this.handRight = this.weaponRight
@@ -219,9 +220,6 @@ export default class Player extends PlayActor {
         this.shooterEx.player = this
         this.shooterEx.isEx = true
         this.smokePool = new cc.NodePool()
-        EventHelper.on(EventHelper.POOL_DESTORY_WALKSMOKE, detail => {
-            this.destroySmoke(detail.coinNode)
-        })
         this.playerAnim(BaseAvatar.STATE_IDLE, this.currentDir)
 
         this.lights = this.getComponentsInChildren(ShadowOfSight)
@@ -364,23 +362,24 @@ export default class Player extends PlayActor {
         this.updateInfoUi()
     }
     getWalkSmoke(parentNode: cc.Node, pos: cc.Vec3) {
-        let smokePrefab: cc.Node = null
+        let smoke: cc.Node = null
         if (this.smokePool.size() > 0) {
             // 通过 size 接口判断对象池中是否有空闲的对象
-            smokePrefab = this.smokePool.get()
+            smoke = this.smokePool.get()
         }
         // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
-        if (!smokePrefab || smokePrefab.active) {
-            smokePrefab = cc.instantiate(this.walksmoke)
+        if (!smoke || smoke.active) {
+            smoke = cc.instantiate(this.walksmoke)
         }
         if (this.isInWater()) {
             pos = pos.add(cc.v3(0, 32))
         }
-        smokePrefab.parent = parentNode
-        smokePrefab.position = pos
-        smokePrefab.zIndex = IndexZ.ACTOR
-        smokePrefab.opacity = 255
-        smokePrefab.active = true
+        smoke.getComponent(WalkSmoke).player = this
+        smoke.parent = parentNode
+        smoke.position = pos
+        smoke.zIndex = IndexZ.ACTOR
+        smoke.opacity = 255
+        smoke.active = true
     }
 
     destroySmoke(smokeNode: cc.Node) {
@@ -430,9 +429,13 @@ export default class Player extends PlayActor {
                 if (equipData.equipmetType != InventoryManager.EMPTY) {
                     this.weaponLeft.shooter.data = new EquipmentData()
                     this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img)
-                    EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: true })
+                    if (this.data.id == Logic.data.lastPlayerId) {
+                        EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: true })
+                    }
                 } else {
-                    EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: false })
+                    if (this.data.id == Logic.data.lastPlayerId) {
+                        EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: false })
+                    }
                 }
                 break
             case InventoryManager.HELMET:
@@ -479,13 +482,17 @@ export default class Player extends PlayActor {
         let health = this.data.getHealth(finalData)
         let dream = this.data.getDream(finalData)
         let life = this.data.LifeData
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y })
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y })
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_LIFE_BAR, { sanity: life.sanity, solid: life.solidSatiety, poo: life.poo, liquid: life.liquidSatiety, pee: life.pee })
+        if (this.data.id == Logic.data.lastPlayerId) {
+            EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y })
+            EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y })
+            EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_LIFE_BAR, { sanity: life.sanity, solid: life.solidSatiety, poo: life.poo, liquid: life.liquidSatiety, pee: life.pee })
+        }
         this.inventoryMgr.updateTotalEquipData()
         this.data.EquipmentTotalData.valueCopy(this.inventoryMgr.TotalEquipData)
         this.updateData()
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { dataId: this.dataId })
+        if (this.data.id == Logic.data.lastPlayerId) {
+            EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { dataId: this.dataId })
+        }
     }
     /**获取中心位置 */
     getCenterPosition(): cc.Vec3 {
@@ -1007,7 +1014,9 @@ export default class Player extends PlayActor {
                 this.killed(from)
             }
         }
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y })
+        if (this.data.id == Logic.data.lastPlayerId) {
+            EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y })
+        }
         this.showFloatFont(dd.getTotalDamage(), isDodge, false, false, isBlock, damageData.isBackAttack, isAvoidDeath)
         if (isDodge) {
             this.exTrigger(TriggerData.GROUP_HURT, TriggerData.TYPE_HURT_DODGE, from, actor)
@@ -1036,19 +1045,27 @@ export default class Player extends PlayActor {
             dream.x = 0
         }
         this.data.currentDream = dream.x
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y })
+        if (this.data.id == Logic.data.lastPlayerId) {
+            EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y })
+        }
         return overflow < 0 ? 0 : overflow
     }
     private showDamageEffect(blockLevel: number, from: FromData, actor: Actor) {
-        EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: false })
+        if (this.data.id == Logic.data.lastPlayerId) {
+            EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: false })
+        }
         if (blockLevel == Shield.BLOCK_NORMAL) {
             AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_HIT)
-            EventHelper.emit(EventHelper.HUD_DAMAGE_CORNER_SHOW)
+            if (this.data.id == Logic.data.lastPlayerId) {
+                EventHelper.emit(EventHelper.HUD_DAMAGE_CORNER_SHOW)
+            }
         } else if (blockLevel == Shield.BLOCK_PARRY) {
             AudioPlayer.play(AudioPlayer.MELEE_PARRY)
         } else {
             AudioPlayer.play(AudioPlayer.PLAYER_HIT)
-            EventHelper.emit(EventHelper.HUD_DAMAGE_CORNER_SHOW)
+            if (this.data.id == Logic.data.lastPlayerId) {
+                EventHelper.emit(EventHelper.HUD_DAMAGE_CORNER_SHOW)
+            }
         }
     }
 
@@ -1058,23 +1075,29 @@ export default class Player extends PlayActor {
         }
         this.sc.isDied = true
         this.avatar.playAnim(BaseAvatar.STATE_DIE, this.currentDir)
-        EventHelper.emit(EventHelper.HUD_STOP_COUNTTIME)
+        if (this.data.id == Logic.data.lastPlayerId) {
+            EventHelper.emit(EventHelper.HUD_STOP_COUNTTIME)
+        }
         this.scheduleOnce(() => {
-            EventHelper.emit(EventHelper.HUD_FADE_OUT)
+            if (this.data.id == Logic.data.lastPlayerId) {
+                EventHelper.emit(EventHelper.HUD_FADE_OUT)
+            }
         }, 1.5)
         AudioPlayer.play(AudioPlayer.DIE)
-        EventHelper.emit(EventHelper.HUD_LOSE_OILGOLD)
-        EventHelper.emit(EventHelper.DUNGEON_DISAPPEAR)
-        EventHelper.emit(EventHelper.HUD_OILGOLD_LOSE_SHOW)
-        Achievement.addPlayerDiedLifesAchievement()
-        this.weaponLeft.node.opacity = 0
+        if (this.data.id == Logic.data.lastPlayerId) {
+            EventHelper.emit(EventHelper.HUD_LOSE_OILGOLD)
+            EventHelper.emit(EventHelper.DUNGEON_DISAPPEAR)
+            EventHelper.emit(EventHelper.HUD_OILGOLD_LOSE_SHOW)
+            Achievement.addPlayerDiedLifesAchievement()
+            Logic.dieFrom.valueCopy(from)
+            this.scheduleOnce(() => {
+                cc.audioEngine.stopMusic()
+                cc.director.loadScene('gameover')
+            }, 3)
+            this.dungeon.darkAfterKill()
+        }
         this.weaponRight.node.opacity = 0
-        Logic.dieFrom.valueCopy(from)
-        this.scheduleOnce(() => {
-            cc.audioEngine.stopMusic()
-            cc.director.loadScene('gameover')
-        }, 3)
-        this.dungeon.darkAfterKill()
+        this.weaponLeft.node.opacity = 0
     }
     //玩家行动
     ctrlMove(dir: number, pos: cc.Vec3, dt: number) {
@@ -1283,7 +1306,7 @@ export default class Player extends PlayActor {
         }
     }
     private showUiButton() {
-        if (!this.dungeon) {
+        if (!this.dungeon || this.data.id != Logic.data.lastPlayerId) {
             return
         }
         if (
@@ -1491,22 +1514,24 @@ export default class Player extends PlayActor {
         if (this.data.isWakeUp) {
             this.data.isWakeUp = false
             this.avatar.playSleep()
-            this.scheduleOnce(() => {
-                Dialogue.play(Dialogue.DAILY_WAKE_UP, (index: number) => {
-                    if (index == 0) {
-                        this.avatar.playWakeUp()
-                    } else if (index == 1) {
-                        EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN)
-                        this.scheduleOnce(() => {
-                            AudioPlayer.play(AudioPlayer.EXIT)
-                            //休息8小时
-                            Logic.data.dreamCostTime = 60000 * 60 * 8
-                            this.dungeon.isInitFinish = false
-                            Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal())
-                        }, 1)
-                    }
+            if (this.data.id == Logic.data.lastPlayerId) {
+                this.scheduleOnce(() => {
+                    Dialogue.play(Dialogue.DAILY_WAKE_UP, (index: number) => {
+                        if (index == 0) {
+                            this.avatar.playWakeUp()
+                        } else if (index == 1) {
+                            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN)
+                            this.scheduleOnce(() => {
+                                AudioPlayer.play(AudioPlayer.EXIT)
+                                //休息8小时
+                                Logic.data.dreamCostTime = 60000 * 60 * 8
+                                this.dungeon.isInitFinish = false
+                                Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal())
+                            }, 1)
+                        }
+                    })
                 })
-            })
+            }
         }
     }
     drink() {

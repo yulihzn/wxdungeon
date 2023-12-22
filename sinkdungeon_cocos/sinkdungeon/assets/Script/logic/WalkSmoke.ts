@@ -8,19 +8,20 @@
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import { EventHelper } from './EventHelper'
+import Player from './Player'
 
 const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class WalkSmoke extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
+    player: Player
 
     // onLoad () {}
 
     start() {
         this.scheduleOnce(() => {
-            EventHelper.emit(EventHelper.POOL_DESTORY_WALKSMOKE, { coinNode: this.node })
+            this.player.destroySmoke(this.node)
         }, 0.3)
     }
 

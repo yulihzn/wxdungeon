@@ -181,6 +181,7 @@ export default abstract class Talent extends cc.Component {
     protected abstract skillCanUse(): boolean
 
     abstract changePerformance(): void
+    abstract destroyGhost(ghostNode: cc.Node)
 
     getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node

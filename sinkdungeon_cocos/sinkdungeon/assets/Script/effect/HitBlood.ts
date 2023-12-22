@@ -11,6 +11,7 @@ import Random from '../utils/Random'
 import IndexZ from '../utils/IndexZ'
 import { EventHelper } from '../logic/EventHelper'
 import BaseNodeComponent from '../base/BaseNodeComponent'
+import EffectItemManager from '../manager/EffectItemManager'
 
 const { ccclass, property } = cc._decorator
 
@@ -25,6 +26,7 @@ export default class HitBlood extends BaseNodeComponent {
     static readonly SPRITES = ['paper0', 'paper1', 'paper2', 'paper3']
     spriteIndex = 0
     rotateAngle = 0
+    manager: EffectItemManager
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -49,7 +51,7 @@ export default class HitBlood extends BaseNodeComponent {
             .delay(5)
             .to(0.5, { opacity: 0 })
             .call(() => {
-                EventHelper.emit(EventHelper.POOL_DESTORY_HIT_BLOOD, { paperNode: this.node })
+                this.manager.destroyHitBlood(this.node)
             })
             .start()
     }

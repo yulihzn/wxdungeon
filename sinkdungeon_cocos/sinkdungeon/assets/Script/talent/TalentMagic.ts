@@ -31,9 +31,6 @@ export default class TalentMagic extends Talent {
     ghostPool: cc.NodePool
     onLoad() {
         this.ghostPool = new cc.NodePool(FireGhost)
-        EventHelper.on(EventHelper.POOL_DESTORY_FIREGHLOST, detail => {
-            this.destroyGhost(detail.targetNode)
-        })
     }
     destroyGhost(ghostNode: cc.Node) {
         if (!ghostNode) {
@@ -247,7 +244,7 @@ export default class TalentMagic extends Talent {
             let fg = ghostNode.getComponent(FireGhost)
             fg.initCollider()
             this.player.node.parent.addChild(fg.node)
-            fg.init(this.player, i * 72)
+            fg.init(this.player, this, i * 72)
         }
     }
 

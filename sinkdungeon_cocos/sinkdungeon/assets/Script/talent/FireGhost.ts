@@ -10,6 +10,7 @@ import Actor from '../base/Actor'
 import StatusData from '../data/StatusData'
 import BaseColliderComponent from '../base/BaseColliderComponent'
 import { EventHelper } from '../logic/EventHelper'
+import Talent from './Talent'
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -28,6 +29,7 @@ export default class FireGhost extends BaseColliderComponent {
     isRotating = false
     isAttacking = false
     player: Player
+    talent: Talent
     angleOffset = 0
     angle = 0
     isDied = false
@@ -38,8 +40,9 @@ export default class FireGhost extends BaseColliderComponent {
     }
 
     start() {}
-    init(player: Player, angleOffset: number) {
+    init(player: Player, talent: Talent, angleOffset: number) {
         this.player = player
+        this.talent = talent
         this.node.setPosition(player.node.position.clone())
         this.node.zIndex = IndexZ.OVERHEAD
         this.angleOffset = angleOffset
@@ -82,7 +85,7 @@ export default class FireGhost extends BaseColliderComponent {
             target.addStatus(status, new FromData())
         }
         this.isDied = true
-        EventHelper.emit(EventHelper.POOL_DESTORY_FIREGHLOST, { targetNode: this.node })
+        this.talent.destroyGhost(this.node)
     }
     checkTimeDelay = 0
     isCheckTimeDelay(dt: number): boolean {

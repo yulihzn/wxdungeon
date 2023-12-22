@@ -216,7 +216,6 @@ export default class Logic extends cc.Component {
         if (!Logic.playerData) {
             Logic.playerData = new PlayerData()
         }
-        Logic.initInventoryManager()
         //加载保存的npc
         Logic.nonPlayerList = DataUtils.copyListValue(Logic.profileManager.data.nonPlayerList, value => new NonPlayerData().valueCopy(value))
         //重置全局数据
@@ -298,7 +297,6 @@ export default class Logic extends cc.Component {
         Logic.mapManager.randMap.clear()
         //保存数据
         Logic.saveData()
-        Logic.initInventoryManager()
         AudioPlayer.play(AudioPlayer.EXIT)
         let room = Logic.mapManager.loadingNextRoom(dir)
         if (room) {
@@ -356,7 +354,6 @@ export default class Logic extends cc.Component {
                 }
             }
             Logic.saveData()
-            Logic.initInventoryManager()
             /**************加载exitData关卡数据***************** */
             Logic.data.chapterIndex = exitData.toChapter
             Logic.data.level = exitData.toLevel
@@ -369,9 +366,6 @@ export default class Logic extends cc.Component {
             let roomY = Math.floor(ty / levelData.roomHeight)
             Logic.playerData.pos = cc.v3(exitData.toPos.x % levelData.roomWidth, ty % levelData.roomHeight)
             Logic.playerData.posZ = exitData.toPosZ
-            cc.log(exitData)
-            cc.log(Logic.playerData.pos)
-            cc.log(levelData)
             Logic.playerData.roomPos = cc.v3(roomX, roomY)
             Logic.playerData.chapterIndex = Logic.data.chapterIndex
             Logic.playerData.chapterLevel = Logic.data.level
@@ -396,14 +390,6 @@ export default class Logic extends cc.Component {
             Logic.playerData.isWakeUp = exitData.fromChapter != Logic.CHAPTER099 && exitData.toChapter == Logic.CHAPTER099
             cc.director.loadScene('loading')
         })
-    }
-    static initInventoryManager() {
-        this.inventoryMgrs = {}
-        for (let key in Logic.playerDatas) {
-            let playerData = Logic.playerDatas[key]
-            let inventoryManager = new InventoryManager(playerData.id)
-            this.inventoryMgrs[key] = inventoryManager
-        }
     }
 
     static getRandomNum(min, max): number {
@@ -517,7 +503,13 @@ export default class Logic extends cc.Component {
         return new MetalTalentData().valueCopy(Logic.metals[Logic.data.metalId]).valueCopy(Logic.playerMetals[Logic.data.metalId])
     }
     static get inventoryMgr() {
-        return Logic.inventoryMgrs[Logic.data.lastPlayerId]
+        return Logic.getInventoryMgr(Logic.data.lastPlayerId)
+    }
+    static getInventoryMgr(id: string) {
+        if (!Logic.inventoryMgrs[id]) {
+            Logic.inventoryMgrs[id] = new InventoryManager(id)
+        }
+        return Logic.inventoryMgrs[id]
     }
     static get playerData() {
         return Logic.playerDatas[Logic.data.lastPlayerId]

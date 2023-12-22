@@ -50,9 +50,6 @@ export default class Shield extends cc.Component {
         return this.status
     }
     onLoad() {
-        EventHelper.on(EventHelper.POOL_DESTORY_BLOCKLIGHT, detail => {
-            this.destroySmoke(detail.targetNode)
-        })
         this.blocklightPool = new cc.NodePool()
     }
     public getBlockLight(parentNode: cc.Node, pos: cc.Vec3) {
@@ -69,7 +66,7 @@ export default class Shield extends cc.Component {
         prefab.scale = this.status == Shield.STATUS_PARRY ? 2 : 1
         prefab.opacity = 255
         prefab.active = true
-        prefab.getComponent(BlockLight).show()
+        prefab.getComponent(BlockLight).show(this)
     }
     public blockDamage(player: Player, damage: DamageData, from: FromData, actor: Actor): number {
         if (this.status < 0 || this.status == Shield.STATUS_IDLE || this.status == Shield.STATUS_PUTDOWN) {
@@ -93,7 +90,7 @@ export default class Shield extends cc.Component {
 
         return this.status == Shield.STATUS_PARRY ? Shield.BLOCK_PARRY : Shield.BLOCK_NORMAL
     }
-    private destroySmoke(targetNode: cc.Node) {
+    destroyBlockLight(targetNode: cc.Node) {
         if (!targetNode) {
             return
         }

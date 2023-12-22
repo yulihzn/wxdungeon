@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { EventHelper } from '../logic/EventHelper'
+import Shield from '../logic/Shield'
 
 const { ccclass, property } = cc._decorator
 
@@ -15,13 +16,13 @@ export default class BlockLight extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
-    show() {
+    show(shield: Shield) {
         if (!this.anim) {
             this.anim = this.getComponent(cc.Animation)
         }
         this.anim.play()
         this.scheduleOnce(() => {
-            EventHelper.emit(EventHelper.POOL_DESTORY_BLOCKLIGHT, { targetNode: this.node })
+            shield.destroyBlockLight(this.node)
         }, 0.5)
     }
 

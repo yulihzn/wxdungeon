@@ -27,11 +27,6 @@ export default class EffectItemManager extends BaseManager {
     clear(): void {}
     onLoad() {
         this.hitBloodPool = new cc.NodePool()
-        EventHelper.on(EventHelper.POOL_DESTORY_HIT_BLOOD, detail => {
-            if (this.node) {
-                this.destroyHitBlood(detail.paperNode)
-            }
-        })
     }
     destroyHitBlood(paperNode: cc.Node) {
         paperNode.active = false
@@ -48,6 +43,7 @@ export default class EffectItemManager extends BaseManager {
             paperPrefab = cc.instantiate(this.hitBlood)
         }
         let blood = paperPrefab.getComponent(HitBlood)
+        blood.manager = this
         blood.node.parent = this.node
         blood.node.active = true
         blood.node.position = targetPos.clone()
