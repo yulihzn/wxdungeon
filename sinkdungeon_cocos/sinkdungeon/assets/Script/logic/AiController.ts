@@ -59,5 +59,8 @@ export default class AiController extends BaseController {
     }
 
     private timeCheck = new TimeDelay(1)
-    updateLogic(dt: number): void {}
+    updateLogic(dt: number): void {
+        if (this.timeCheck.check(dt)) {
+        }
+    }
 }

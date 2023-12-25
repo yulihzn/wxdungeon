@@ -80,8 +80,7 @@ export default class PlayerManager extends BaseManager {
             player.updateLogic(dt)
         }
         if (this.controllers.length > 0 && this.controllerCount < this.controllers.length) {
-            this.controllerCount++
-            this.controllers[this.controllerCount].updateLogic(dt)
+            this.controllers[this.controllerCount++].updateLogic(dt)
         } else {
             this.controllerCount = 0
         }
