@@ -228,11 +228,11 @@ export default class OilGoldTalent extends Talent {
             let fc = this.player.data.FinalCommon
             data.Common.damageMin = this.player.data.getFinalAttackPoint().getTotalDamage()
             data.Common.maxHealth = fc.MaxHealth
-            this.player.weaponRight.meleeWeapon.dungeon.nonPlayerManager.addNonPlayerFromData(
+            this.player.dungeon.nonPlayerManager.addNonPlayerFromData(
                 data,
                 shadowPlayer ? shadowPlayer.node.position : this.player.node.position,
                 this.player.entity?.Transform.z,
-                this.player.weaponRight.meleeWeapon.dungeon
+                this.player.dungeon
             )
         }
     }
@@ -336,7 +336,7 @@ export default class OilGoldTalent extends Talent {
         })
     }
     private canSteal() {
-        let actor = ActorUtils.getNearestEnemyActor(this.player.node.position, false, this.player.weaponRight.meleeWeapon.dungeon)
+        let actor = ActorUtils.getNearestEnemyActor(this.player.node.position, false, this.player.dungeon)
         if (!actor) {
             return false
         }
@@ -353,7 +353,7 @@ export default class OilGoldTalent extends Talent {
     private steal(shadowPlayer: ShadowPlayer) {
         AudioPlayer.play(AudioPlayer.FIREBALL)
 
-        let node = ActorUtils.getNearestEnemyActor(this.player.node.position, false, this.player.weaponRight.meleeWeapon.dungeon)
+        let node = ActorUtils.getNearestEnemyActor(this.player.node.position, false, this.player.dungeon)
         if (!node) {
             return
         }
@@ -482,7 +482,7 @@ export default class OilGoldTalent extends Talent {
     }
     private addLighteningFall(isArea: boolean, damagePoint: number) {
         EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, {
-            pos: ActorUtils.getNearestEnemyPosition(this.player.node.position, false, this.player.weaponRight.meleeWeapon.dungeon, true),
+            pos: ActorUtils.getNearestEnemyPosition(this.player.node.position, false, this.player.dungeon, true),
             showArea: isArea,
             damage: damagePoint
         })

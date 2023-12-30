@@ -107,7 +107,6 @@ export default class Logic extends cc.Component {
     static dialogues: { [key: string]: DialogueData } = null
     static behaviors: { [key: string]: string } = null
     /******************************************************************************/
-    static playerDatas: { [key: string]: PlayerData } = {}
     static inventoryMgrs: { [key: string]: InventoryManager } = {}
     static mapManager: MapManager = new MapManager()
     static worldLoader: WorldLoader = new WorldLoader()
@@ -181,8 +180,6 @@ export default class Logic extends cc.Component {
     start() {}
     static saveData() {
         Logic.profileManager.data.valueCopy(Logic.data)
-        Logic.profileManager.data.playerDatas = DataUtils.cloneKeyValue(Logic.playerDatas, value => new PlayerData().valueCopy(value))
-        Logic.profileManager.data.nonPlayerList = Logic.nonPlayerList
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon
         Logic.profileManager.data.savePointData = Logic.savePoinitData.clone()
         Logic.profileManager.data.groundOilGoldData = Logic.groundOilGoldData.clone()
@@ -211,13 +208,11 @@ export default class Logic extends cc.Component {
         Logic.savePoinitData = Logic.profileManager.data.savePointData.clone()
         //加载地面翠金点
         Logic.groundOilGoldData = Logic.profileManager.data.groundOilGoldData.clone()
-        //加载玩家数据
-        Logic.playerDatas = DataUtils.cloneKeyValue(Logic.profileManager.data.playerDatas, value => new PlayerData().valueCopy(value))
+        //玩家数据初始化
         if (!Logic.playerData) {
             Logic.playerData = new PlayerData()
         }
-        //加载保存的npc
-        Logic.nonPlayerList = DataUtils.copyListValue(Logic.profileManager.data.nonPlayerList, value => new NonPlayerData().valueCopy(value))
+
         //重置全局数据
         Logic.globalData.valueCopy(LocalStorage.getGlobalData())
         //重置bgm
@@ -526,14 +521,14 @@ export default class Logic extends cc.Component {
         return Logic.inventoryMgrs[id]
     }
     static get playerData() {
-        return Logic.playerDatas[Logic.data.lastPlayerId]
+        return Logic.data.playerDatas[Logic.data.lastPlayerId]
     }
     static set playerData(value: PlayerData) {
         Logic.data.lastPlayerId = value.id
-        Logic.playerDatas[value.id] = value
+        Logic.data.playerDatas[value.id] = value
     }
     static getPlayerDataById(id: string) {
-        let data = Logic.playerDatas[id]
+        let data = Logic.data.playerDatas[id]
         if (!data) {
             data = new PlayerData()
             if (Logic.players[id]) {
@@ -541,7 +536,7 @@ export default class Logic extends cc.Component {
             } else {
                 data.id = id
             }
-            Logic.playerDatas[id] = data
+            Logic.data.playerDatas[id] = data
         }
 
         return data

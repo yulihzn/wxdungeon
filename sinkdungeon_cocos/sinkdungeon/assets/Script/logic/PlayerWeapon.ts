@@ -78,6 +78,7 @@ export default class PlayerWeapon extends cc.Component {
         this.shooter = this.getComponentInChildren(Shooter)
         this.shooter.player = this.player
         this.shooter.actor = this.player
+        this.shooter.dungeon = this.player.dungeon
         let finalData = this.player.data.FinalCommon
         this.ammoRecovery = finalData.AmmoRecovery
         this.maxAmmo = finalData.MaxAmmo

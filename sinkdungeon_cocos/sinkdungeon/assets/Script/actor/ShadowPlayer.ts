@@ -52,6 +52,7 @@ export default class ShadowPlayer extends cc.Component {
         this.shooterEx.player = this.player
         this.shooterEx.isEx = true
         this.shooterEx.actor = this.player
+        this.shooterEx.dungeon = this.player.dungeon
         this.weaponLeft.shooter.actor = this.player
         this.weaponRight.shooter.actor = this.player
         this.mat = this.sprite.getMaterial(0)

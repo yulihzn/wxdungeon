@@ -58,23 +58,23 @@ export default class InventoryManager {
     buffer: EquipmentData = new EquipmentData()
     get itemList(): ItemData[] {
         if (Logic.data.chapterIndex == Logic.CHAPTER099) {
-            return Logic.playerDatas[this.id].playerItemListReality
+            return Logic.data.playerDatas[this.id].playerItemListReality
         } else {
-            return Logic.playerDatas[this.id].playerItemList
+            return Logic.data.playerDatas[this.id].playerItemList
         }
     }
     get inventoryList(): InventoryData[] {
         if (Logic.data.chapterIndex == Logic.CHAPTER099) {
-            return Logic.playerDatas[this.id].playerInventoryListReality
+            return Logic.data.playerDatas[this.id].playerInventoryListReality
         } else {
-            return Logic.playerDatas[this.id].playerInventoryList
+            return Logic.data.playerDatas[this.id].playerInventoryList
         }
     }
     get equips(): { [key: string]: EquipmentData } {
         if (Logic.data.chapterIndex == Logic.CHAPTER099) {
-            return Logic.playerDatas[this.id].playerEquipsReality
+            return Logic.data.playerDatas[this.id].playerEquipsReality
         } else {
-            return Logic.playerDatas[this.id].playerEquips
+            return Logic.data.playerDatas[this.id].playerEquips
         }
     }
     id = ''

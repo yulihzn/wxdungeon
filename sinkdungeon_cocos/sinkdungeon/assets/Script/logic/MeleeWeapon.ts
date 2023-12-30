@@ -79,7 +79,6 @@ export default class MeleeWeapon extends BaseColliderComponent {
     protected isFar = false //近程
     protected isFist = true //空手
     protected isBlunt = false //钝器
-    dungeon: Dungeon
     protected weaponReflectPoint: cc.Node //反弹
     protected weaponFirePoint: cc.Node //剑尖
     protected weaponFirePoints: cc.Node[] = []
@@ -357,7 +356,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         let p2 = this.node.convertToWorldSpaceAR(cc.Vec3.ZERO)
         let y = p2.y - p1.y
         wp.y += y
-        let pos = this.dungeon.node.convertToNodeSpaceAR(wp)
+        let pos = this.player.dungeon.node.convertToNodeSpaceAR(wp)
         if (isWall) {
             let pos = this.player.hv.clone()
             this.player.sc.isMoving = false
@@ -392,7 +391,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     protected getWaveLight(dungeonNode: cc.Node, p: cc.Vec3, elementType: number, isStab: boolean, isFar: boolean) {
         let lights = [this.iceLight, this.fireLight, this.lighteningLight, this.toxicLight, this.curseLight]
         let audios = [AudioPlayer.ATTACK_ICE, AudioPlayer.ATTACK_FIRE, AudioPlayer.ATTACK_ELECTRIC, AudioPlayer.ATTACK_TOXIC, AudioPlayer.ATTACK_CURSE]
-        if (elementType < 1 || elementType > lights.length || !this.dungeon) {
+        if (elementType < 1 || elementType > lights.length || !this.player || !this.player.dungeon) {
             return
         }
         let firePrefab: cc.Node = cc.instantiate(lights[elementType - 1])
@@ -554,8 +553,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
         ]
         this.scheduleOnce(() => {
             for (let w of waves) {
-                if (this.dungeon) {
-                    this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar)
+                if (this.player && this.player.dungeon) {
+                    this.getWaveLight(this.player.dungeon.node, p, w, this.isStab, this.isFar)
                 }
             }
         }, 0)
@@ -664,7 +663,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
                 }
                 damageSuccess = monster.takeDamage(damage, fromData, this.player)
                 if (damageSuccess) {
-                    this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
+                    this.getReflectLight(this.player.dungeon, attackTarget, self, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
                     this.beatBack(monster)
                     this.addTargetAllStatus(common, monster)
                     this.addHitExTrigger(damage, monster)
@@ -675,11 +674,11 @@ export default class MeleeWeapon extends BaseColliderComponent {
             if (boss && !boss.sc.isDied && !this.isMiss) {
                 damageSuccess = boss.takeDamage(damage, fromData, this.player)
                 if (damageSuccess) {
-                    this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
+                    this.getReflectLight(this.player.dungeon, attackTarget, self, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
                     this.addTargetAllStatus(common, boss)
                     this.addHitExTrigger(damage, boss)
                     let count = damage.isCriticalStrike ? Logic.getRandomNum(12, 24) : Logic.getRandomNum(3, 6)
-                    this.dungeon.addHitBlood(this.player.node.position, boss.node.position, Logic.getRandomNum(3, 6))
+                    this.player.dungeon.addHitBlood(this.player.node.position, boss.node.position, Logic.getRandomNum(3, 6))
                 }
             }
         } else if (attackTarget.tag == CCollider.TAG.BUILDING || attackTarget.tag == CCollider.TAG.WALL) {
@@ -709,10 +708,10 @@ export default class MeleeWeapon extends BaseColliderComponent {
                     hitBuilding.takeDamage(damage, fromData, this.player)
                 }
             }
-            this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)
+            this.getReflectLight(this.player.dungeon, attackTarget, self, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)
         } else if (attackTarget.tag == CCollider.TAG.BOSS_HIT || attackTarget.tag == CCollider.TAG.NONPLAYER_HIT) {
             attackSuccess = true
-            this.getReflectLight(this.dungeon, attackTarget, self, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)
+            this.getReflectLight(this.player.dungeon, attackTarget, self, this.isFar, this.isStab, true, this.hv, this.weaponLightSprite.node.color)
         }
         //生命汲取,内置1s cd
         if (damageSuccess) {

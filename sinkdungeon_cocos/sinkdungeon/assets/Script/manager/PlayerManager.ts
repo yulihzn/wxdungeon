@@ -23,9 +23,10 @@ const { ccclass, property } = cc._decorator
 export default class PlayerManager extends BaseManager {
     @property(cc.Prefab)
     playerPrefab: cc.Prefab = null
-    player1: Player
     private players: Player[] = new Array() //房间player列表
-    private controllers: AiController[] = new Array()
+    private aiControllers: AiController[] = new Array()
+    private playerController: PlayerController
+    player1: Player
     private controllerCount = 0
 
     get PlayerList() {
@@ -33,7 +34,7 @@ export default class PlayerManager extends BaseManager {
     }
 
     clear(): void {
-        this.controllers = []
+        this.aiControllers = []
         Utils.clearComponentArray(this.players)
     }
     public addAiPlayerFromMap(mapDataStr: string, indexPos: cc.Vec3, posZ: number) {
@@ -50,7 +51,7 @@ export default class PlayerManager extends BaseManager {
     public addPlayerListFromSave(dungeon: Dungeon) {
         this.players = []
         let room = Logic.mapManager.getCurrentRoom()
-        for (let key in Logic.playerDatas) {
+        for (let key in Logic.data.playerDatas) {
             let data = Logic.getPlayerDataById(key)
             if (data.roomPos.x == room.x && data.roomPos.y == room.y && data.chapterIndex == Logic.data.chapterIndex && data.chapterLevel == Logic.data.level) {
                 this.players.push(this.getPlayer(data.id, dungeon))
@@ -64,10 +65,11 @@ export default class PlayerManager extends BaseManager {
         if (Logic.playerData.id == dataId) {
             controller = player.addComponent(PlayerController)
             player.statusIconList = dungeon.statusIconList
+            this.playerController = controller
             this.player1 = player
         } else {
             controller = player.addComponent(AiController)
-            this.controllers.push(controller)
+            this.aiControllers.push(controller)
         }
         controller.player = player
         player.controller = controller
@@ -76,11 +78,9 @@ export default class PlayerManager extends BaseManager {
         return player
     }
     updateLogic(dt: number) {
-        for (let player of this.players) {
-            player.updateLogic(dt)
-        }
-        if (this.controllers.length > 0 && this.controllerCount < this.controllers.length) {
-            this.controllers[this.controllerCount++].updateLogic(dt)
+        this.playerController.updateLogic(dt)
+        if (this.aiControllers.length > 0 && this.controllerCount < this.aiControllers.length) {
+            this.aiControllers[this.controllerCount++].updateLogic(dt)
         } else {
             this.controllerCount = 0
         }

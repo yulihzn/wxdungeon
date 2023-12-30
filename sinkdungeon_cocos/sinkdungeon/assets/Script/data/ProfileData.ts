@@ -25,17 +25,8 @@ export default class ProfileData {
     chapterIndex: number = 0 //当前章节 forsave
     chapterMaxIndex: number = 0 //到达过的最大章节 forsave
     playerDatas: { [key: string]: PlayerData } = {}
-    //玩家装备列表
-    playerEquips: { [key: string]: EquipmentData } = {}
-    playerEquipsReality: { [key: string]: EquipmentData } = {}
     //玩家翠金天赋点
     playerMetals: { [key: string]: MetalTalentData } = {}
-    //玩家物品列表
-    playerItemList: ItemData[] = new Array()
-    playerItemListReality: ItemData[] = new Array()
-    //玩家背包列表
-    playerInventoryList: InventoryData[] = new Array()
-    playerInventoryListReality: InventoryData[] = new Array()
     //跟随的非人形npc列表
     nonPlayerList: NonPlayerData[] = new Array()
     level = 0 //当前层级 forsave
@@ -63,6 +54,10 @@ export default class ProfileData {
             return
         }
         DataUtils.baseCopy(this, data, true)
+        //加载玩家数据
+        this.playerDatas = DataUtils.cloneKeyValue(data.playerDatas, value => new PlayerData().valueCopy(value))
+        //加载保存的npc
+        this.nonPlayerList = DataUtils.copyListValue(data.nonPlayerList, value => new NonPlayerData().valueCopy(value))
     }
     public clone(): ProfileData {
         let e = new ProfileData()

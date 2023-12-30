@@ -15,37 +15,50 @@ import { EventHelper } from './EventHelper'
 export default class PlayerController extends BaseController {
     onLoad() {
         EventHelper.on(EventHelper.PLAYER_MOVE, detail => {
-            if (this.CanControl) this.player.ctrlMove(detail.dir, detail.pos, detail.dt)
+            if (this.CanControl) {
+                this.flagMove = true
+                this.pos = detail.pos
+                this.dir = detail.dir
+            }
         })
         EventHelper.on(EventHelper.PLAYER_TRIGGER, detail => {
-            if (this.CanControl) this.player.ctrlTriggerThings(detail && detail.isLongPress)
+            if (this.CanControl) {
+                this.flagTriggerThings = true
+                this.isLongPress = detail && detail.isLongPress
+            }
         })
         EventHelper.on(EventHelper.PLAYER_USEITEM, detail => {
-            if (this.CanControl) this.player.ctrlUseItem(detail.itemData)
+            if (this.CanControl) {
+                this.flagUseItem = true
+                this.itemData = detail.itemData
+            }
         })
         EventHelper.on(EventHelper.PLAYER_SKILL, detail => {
-            if (this.CanControl) this.player.ctrlUseSkill()
+            if (this.CanControl) this.flagUseSkill = true
         })
         EventHelper.on(EventHelper.PLAYER_SKILL1, detail => {
-            if (this.CanControl) this.player.ctrlUseSkill1()
+            if (this.CanControl) this.flagUseSkill1 = true
         })
         EventHelper.on(EventHelper.PLAYER_ATTACK, detail => {
-            if (this.CanControl) this.player.ctrlMeleeAttack()
+            if (this.CanControl) this.flagMeleeAttack = true
         })
         EventHelper.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL, detail => {
-            if (this.CanControl) this.player.ctrlRemoteCancel()
+            if (this.CanControl) this.flagRemoteCancel = true
         })
         EventHelper.on(EventHelper.PLAYER_REMOTEATTACK, detail => {
-            if (this.CanControl) this.player.ctrlRemoteAttack()
+            if (this.CanControl) this.flagRemoteAttack = true
         })
         EventHelper.on(EventHelper.PLAYER_JUMP, detail => {
-            if (this.CanControl) this.player.ctrlJump()
+            if (this.CanControl) this.flagJump = true
         })
         EventHelper.on(EventHelper.PLAYER_DASH, detail => {
-            if (this.CanControl) this.player.ctrlDash()
+            if (this.CanControl) this.flagDash = true
         })
         EventHelper.on(EventHelper.PLAYER_JUMP_CANCEL, detail => {
-            if (this.CanControl) this.player.ctrlJumpCancel()
+            if (this.CanControl) this.flagJumpCancel = true
         })
+    }
+    updateLogic(dt: number) {
+        super.updateLogic(dt)
     }
 }

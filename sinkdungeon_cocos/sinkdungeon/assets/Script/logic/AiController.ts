@@ -15,52 +15,61 @@ const { ccclass, property } = cc._decorator
 @ccclass
 export default class AiController extends BaseController {
     ctrlPlayerMove(dir: number, pos: cc.Vec3, dt: number) {
-        if (this.CanControl) this.player.ctrlMove(dir, pos, dt)
+        if (this.CanControl) {
+            this.flagMove = true
+            this.pos = pos
+            this.dir = dir
+        }
     }
 
     ctrlPlayerTrigger(isLongPress: boolean) {
-        if (this.CanControl) this.player.ctrlTriggerThings(isLongPress)
+        if (this.CanControl) {
+            this.flagTriggerThings = true
+            this.isLongPress = isLongPress
+        }
     }
 
     ctrlPlayerUseItem(detail) {
-        if (this.CanControl) this.player.ctrlUseItem(detail.itemData)
+        if (this.CanControl) {
+            this.flagUseItem = true
+            this.itemData = detail.itemData
+        }
     }
 
     ctrlPlayerUseSkill() {
-        if (this.CanControl) this.player.ctrlUseSkill()
+        if (this.CanControl) this.flagUseSkill = true
     }
 
     ctrlPlayerUseSkill1() {
-        if (this.CanControl) this.player.ctrlUseSkill1()
+        if (this.CanControl) this.flagUseSkill1 = true
     }
 
     ctrlPlayerMeleeAttack() {
-        if (this.CanControl) this.player.ctrlMeleeAttack()
+        if (this.CanControl) this.flagMeleeAttack = true
     }
 
     ctrlPlayerRemoteAttackCancel() {
-        if (this.CanControl) this.player.ctrlRemoteCancel()
+        if (this.CanControl) this.flagRemoteCancel = true
     }
 
     ctrlPlayerRemoteAttack() {
-        if (this.CanControl) this.player.ctrlRemoteAttack()
+        if (this.CanControl) this.flagRemoteAttack = true
     }
 
     ctrlPlayerJump() {
-        if (this.CanControl) this.player.ctrlJump()
+        if (this.CanControl) this.flagJump = true
     }
 
     ctrlPlayerDash() {
-        if (this.CanControl) this.player.ctrlDash()
+        if (this.CanControl) this.flagDash = true
     }
 
     ctrlPlayerJumpCancel() {
-        if (this.CanControl) this.player.ctrlJumpCancel()
+        if (this.CanControl) this.flagJumpCancel = true
     }
 
     private timeCheck = new TimeDelay(1)
     updateLogic(dt: number): void {
-        if (this.timeCheck.check(dt)) {
-        }
+        super.updateLogic(dt)
     }
 }

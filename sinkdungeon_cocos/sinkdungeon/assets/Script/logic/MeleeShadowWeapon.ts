@@ -27,7 +27,6 @@ export default class MeleeShadowWeapon extends BaseColliderComponent {
     private anim: cc.Animation
     private isAttacking: boolean = false
     private hv: cc.Vec2 = cc.v2(1, 0)
-    dungeon: Dungeon
     private comboType = 0
     private hasTargetMap: Map<number, number> = new Map()
 

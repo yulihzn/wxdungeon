@@ -193,7 +193,7 @@ export default class TalentMagic extends Talent {
     getNearestEnemyPosition(): cc.Vec3 {
         let shortdis = 99999
         let targetNode: cc.Node
-        for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
+        for (let monster of this.player.dungeon.monsterManager.monsterList) {
             if (monster && monster.node && monster.node.active && !monster.sc.isDied) {
                 let dis = Logic.getDistanceNoSqrt(this.node.position, monster.node.position)
                 if (dis < shortdis) {
@@ -202,7 +202,7 @@ export default class TalentMagic extends Talent {
                 }
             }
         }
-        for (let boss of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.bossList) {
+        for (let boss of this.player.dungeon.monsterManager.bossList) {
             if (!boss.sc.isDied) {
                 let dis = Logic.getDistanceNoSqrt(this.node.position, boss.node.position)
                 if (dis < shortdis) {

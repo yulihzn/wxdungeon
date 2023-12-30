@@ -49,7 +49,7 @@ export default class ProfileManager {
             this.hasSaveData = false
             return false
         }
-        if (!data.savePointData || !data.playerDatas || !data.playerEquips || !data.playerItemList || !data.rectDungeons) {
+        if (!data.savePointData || !data.playerDatas) {
             this.hasSaveData = false
             return false
         }
@@ -68,35 +68,6 @@ export default class ProfileManager {
         //掉落翠金
         // this.data.oilGolds = data.oilGolds ? data.oilGolds : 0
         this.data.groundOilGoldData.valueCopy(data.groundOilGoldData)
-        //玩家装备列表
-        for (let key in data.playerEquips) {
-            this.data.playerEquips[key] = data.playerEquips[key]
-        }
-        for (let key in data.playerEquipsReality) {
-            this.data.playerEquipsReality[key] = data.playerEquipsReality[key]
-        }
-        //玩家物品列表
-        if (data.playerItemList) {
-            for (let i = 0; i < data.playerItemList.length; i++) {
-                this.data.playerItemList[i] = data.playerItemList[i]
-            }
-        }
-        if (data.playerItemListReality) {
-            for (let i = 0; i < data.playerItemListReality.length; i++) {
-                this.data.playerItemListReality[i] = data.playerItemListReality[i]
-            }
-        }
-        //玩家背包列表
-        if (data.playerInventoryList) {
-            for (let i = 0; i < data.playerInventoryList.length; i++) {
-                this.data.playerInventoryList[i] = data.playerInventoryList[i]
-            }
-        }
-        if (data.playerInventoryListReality) {
-            for (let i = 0; i < data.playerInventoryListReality.length; i++) {
-                this.data.playerInventoryListReality[i] = data.playerInventoryListReality[i]
-            }
-        }
         //npc列表
         if (data.nonPlayerList) {
             for (let i = 0; i < data.nonPlayerList.length; i++) {

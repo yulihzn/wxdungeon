@@ -227,6 +227,8 @@ export default class Player extends PlayActor {
         this.entity.NodeRender.root = this.root
         this.shooterEx.player = this
         this.shooterEx.isEx = true
+        this.shooterEx.dungeon = this.dungeon
+        this.shooterEx.actor = this
         this.smokePool = new cc.NodePool()
         this.playerAnim(BaseAvatar.STATE_IDLE, this.currentDir)
 
@@ -313,10 +315,8 @@ export default class Player extends PlayActor {
         this.data.ProfessionTalentData.valueCopy(p)
         this.professionTalent = this.getComponent(ProfessionTalent)
         this.organizationTalent = this.getComponent(OrganizationTalent)
-        this.scheduleOnce(() => {
-            this.professionTalent.init(this.data.ProfessionTalentData)
-            this.organizationTalent.init(this.data.OrganizationTalentData)
-        }, 0.1)
+        this.professionTalent.init(this.data.ProfessionTalentData)
+        this.organizationTalent.init(this.data.OrganizationTalentData)
         this.equipmentTalent = this.getComponent(EquipItemTalent)
         this.equipmentTalent.init(new TalentData())
     }
@@ -1124,28 +1124,6 @@ export default class Player extends PlayActor {
     }
     //玩家行动
     ctrlMove(dir: number, pos: cc.Vec3, dt: number) {
-        if (this.weaponLeft.meleeWeapon && !this.weaponLeft.meleeWeapon.dungeon) {
-            this.weaponLeft.meleeWeapon.dungeon = this.dungeon
-            this.weaponLeft.shooter.dungeon = this.dungeon
-            this.weaponLeft.shooter.actor = this
-            this.weaponRight.meleeWeapon.dungeon = this.dungeon
-            this.weaponRight.shooter.dungeon = this.dungeon
-            this.weaponRight.shooter.actor = this
-            this.shooterEx.dungeon = this.dungeon
-            this.shooterEx.actor = this
-        }
-        for (let s of this.shadowList) {
-            if (s.node && !s.weaponLeft.shadowWeapon.dungeon) {
-                s.weaponLeft.shadowWeapon.dungeon = this.dungeon
-                s.weaponLeft.shooter.dungeon = this.dungeon
-                s.weaponLeft.shooter.actor = this
-                s.weaponRight.shadowWeapon.dungeon = this.dungeon
-                s.weaponRight.shooter.dungeon = this.dungeon
-                s.weaponRight.shooter.actor = this
-                s.shooterEx.dungeon = this.dungeon
-                s.shooterEx.actor = this
-            }
-        }
         if (!this.sc.isShow) {
             return
         }
