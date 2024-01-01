@@ -21,8 +21,8 @@ export default class MeleeCollideHelper extends BaseColliderComponent {
     meleeWeapon: MeleeWeapon = null
     protected hv: cc.Vec2 = cc.v2(1, 0)
     protected collider: CCollider
-    onLoad() {
-        super.onLoad()
+    init() {
+        this.baseInit()
         this.collider = this.entity.Collider.colliders[0]
         if (this.entity && this.entity.Move) {
             this.entity.Move.isStatic = true

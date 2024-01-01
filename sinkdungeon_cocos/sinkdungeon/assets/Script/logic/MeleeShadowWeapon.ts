@@ -40,17 +40,14 @@ export default class MeleeShadowWeapon extends BaseColliderComponent {
         }
         return false
     }
-    onLoad() {
-        super.onLoad()
-        if (this.entity && this.entity.Move) {
-            this.entity.Move.isStatic = true
-        }
-    }
 
     init(player: PlayActor, meleeWeapon: MeleeWeapon) {
         this.anim = this.getComponent(cc.Animation)
         this.player = player
         this.meleeWeapon = meleeWeapon
+        if (this.entity && this.entity.Move) {
+            this.entity.Move.isStatic = true
+        }
     }
 
     set Hv(hv: cc.Vec2) {

@@ -132,8 +132,10 @@ export default class MeleeWeapon extends BaseColliderComponent {
         return this.comboType
     }
 
-    onLoad() {
-        super.onLoad()
+    init(player: Player, isSecond: boolean) {
+        this.baseInit()
+        this.player = player
+        this.isSecond = isSecond
         this.anim = this.getComponent(cc.Animation)
         this.player = this.playerNode.getComponent(Player)
         this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos))

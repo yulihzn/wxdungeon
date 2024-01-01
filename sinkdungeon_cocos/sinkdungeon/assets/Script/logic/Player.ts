@@ -147,6 +147,8 @@ export default class Player extends PlayActor {
         return this.root
     }
     init(): void {
+        this.sc.isDied = false
+        this.sc.isShow = false
         this.inventoryMgr = Logic.getInventoryMgr(this.data.id)
         this.triggerShooter = this.shooterEx
         this.handLeft = this.weaponLeft
@@ -161,13 +163,9 @@ export default class Player extends PlayActor {
                     this.playerAnim(BaseAvatar.STATE_IDLE, this.currentDir)
                 }
             }
-
             this.exTrigger(group, type, null, null)
         })
         this.avatar = PlayerAvatar.create(this.avatarPrefab, this.root, this.data.AvatarData.clone(), this.node.group)
-    }
-    onLoad() {
-        this.init()
         this.shield = this.shieldNode.getComponent(Shield)
         this.lastConsumeTime = Logic.data.realTime
         this.entity.Move.damping = 3
@@ -175,48 +173,21 @@ export default class Player extends PlayActor {
         this.statusManager.statusIconList = this.statusIconList
         this.statusPos = this.statusManager.node.position.clone()
         this.pos = cc.v3(0, 0)
-        this.sc.isDied = false
-        this.sc.isShow = false
-        this.scheduleOnce(() => {
-            this.sc.isShow = true
-            if (Logic.isCheatMode) {
-                this.scheduleOnce(() => {
-                    this.addStatus(StatusManager.PERFECTDEFENCE, new FromData())
-                }, 0.2)
-            }
-        }, 0.5)
         this.initTalent()
         this.initCollider()
         this.weaponLeft.init(this, true, false)
         this.weaponRight.init(this, false, false)
         if (this.data.id == Logic.data.lastPlayerId) {
-            this.scheduleOnce(() => {
-                EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH_ALL)
-            })
+            EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH_ALL)
         } else {
-            this.scheduleOnce(() => {
-                for (let key in this.inventoryMgr.equips) {
-                    this.refreshEquipment(key, this.inventoryMgr.equips[key].clone(), true, false)
-                }
-                this.inventoryMgr.refreshSuits()
-                this.inventoryMgr.updateTotalEquipData()
-            })
+            for (let key in this.inventoryMgr.equips) {
+                this.refreshEquipment(key, this.inventoryMgr.equips[key].clone(), true, false)
+            }
+            this.inventoryMgr.refreshSuits()
+            this.inventoryMgr.updateTotalEquipData()
         }
         this.remoteCooldown.width = 0
         this.remoteCooldown.opacity = 200
-        EventHelper.on(EventHelper.PLAYER_UPDATE_OILGOLD_DATA, detail => {
-            if (this.node && this.data.id == Logic.data.lastPlayerId) {
-                this.updateData()
-            }
-        })
-        EventHelper.on(EventHelper.PLAYER_USEDREAM, detail => {
-            if (this.node && this.data.AvatarData.organizationIndex == AvatarData.HUNTER) this.updateDream(detail.value)
-        })
-        EventHelper.on(EventHelper.HUD_TIME_TICK, detail => {
-            if (this.node && Logic.data.chapterIndex == Logic.CHAPTER099) {
-                this.timeConsumeLife()
-            }
-        })
         if (this.data.pos.y == Logic.ROOM_HEIGHT - 1) {
             this.data.pos.y = Logic.ROOM_HEIGHT - 2
         }
@@ -253,6 +224,27 @@ export default class Player extends PlayActor {
             this.metal = cc.instantiate(this.metalPrefab).getComponent(OilGoldMetal)
             this.metal.init(this)
         }
+    }
+    onLoad() {
+        this.init()
+
+        EventHelper.on(EventHelper.PLAYER_UPDATE_OILGOLD_DATA, detail => {
+            if (this.node && this.data.id == Logic.data.lastPlayerId) {
+                this.updateData()
+            }
+        })
+        EventHelper.on(EventHelper.PLAYER_USEDREAM, detail => {
+            if (this.node && this.data.id == Logic.data.lastPlayerId && this.data.AvatarData.organizationIndex == AvatarData.HUNTER) this.updateDream(detail.value)
+        })
+        EventHelper.on(EventHelper.HUD_TIME_TICK, detail => {
+            if (this.node && Logic.data.chapterIndex == Logic.CHAPTER099) {
+                this.timeConsumeLife()
+            }
+        })
+        if (Logic.isCheatMode) {
+            this.addStatus(StatusManager.PERFECTDEFENCE, new FromData())
+        }
+        this.sc.isShow = true
     }
     private refreshEquipment(equipmentType: string, equipDataNew: EquipmentData, isInit: boolean, isReplace: boolean) {
         if (!equipDataNew || !equipmentType) {

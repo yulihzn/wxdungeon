@@ -28,6 +28,10 @@ export default abstract class BaseColliderComponent extends cc.Component impleme
         this.initCollider()
         this.entity.NodeRender.node = this.node
     }
+    baseInit() {
+        this.initCollider()
+        this.entity.NodeRender.node = this.node
+    }
     onLoad() {
         this.initCollider()
         this.entity.NodeRender.node = this.node

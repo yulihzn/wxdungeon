@@ -64,6 +64,7 @@ export default class PlayerWeapon extends cc.Component {
             this.selfDefaultPos = cc.v3(-15, 40)
             this.otherDefaultPos = cc.v3(20, 40)
         }
+        this.meleeCollideHelper.init()
     }
     private initMelee() {
         if (this.isShadow) {
@@ -72,6 +73,7 @@ export default class PlayerWeapon extends cc.Component {
         } else {
             this.meleeWeapon = this.getComponentInChildren(MeleeWeapon)
             this.meleeWeapon.IsSecond = this.isLeftHand
+            this.meleeWeapon.init(this.player, this.isLeftHand)
         }
     }
     private initShooter() {
