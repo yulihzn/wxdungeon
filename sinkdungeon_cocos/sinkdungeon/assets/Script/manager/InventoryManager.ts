@@ -180,13 +180,13 @@ export default class InventoryManager {
         if (!equipDataNew || !equipmentType) {
             return
         }
-        let equip = Logic.inventoryMgr.equips[equipmentType]
+        let equip = this.equips[equipmentType]
         let hasEquip = equip && equip.equipmentType != InventoryManager.EMPTY
         if (!hasEquip) {
-            if (equipmentType == InventoryManager.REMOTE && Logic.inventoryMgr.equips[InventoryManager.SHIELD].equipmentType != InventoryManager.EMPTY) {
+            if (equipmentType == InventoryManager.REMOTE && this.equips[InventoryManager.SHIELD].equipmentType != InventoryManager.EMPTY) {
                 hasEquip = true
             }
-            if (equipmentType == InventoryManager.SHIELD && Logic.inventoryMgr.equips[InventoryManager.REMOTE].equipmentType != InventoryManager.EMPTY) {
+            if (equipmentType == InventoryManager.SHIELD && this.equips[InventoryManager.REMOTE].equipmentType != InventoryManager.EMPTY) {
                 hasEquip = true
             }
         }
@@ -194,13 +194,13 @@ export default class InventoryManager {
         //1.如果是捡起到背包或者购买（非替换非初始化），且对应位置有装备，则直接放置到背包
         //2.如果当前装备等级高于玩家，则直接放置到背包
         if ((!isReplace && !isInit && equip && hasEquip) || equipDataNew.requireLevel > Logic.playerData.OilGoldData.level) {
-            this.setEquipmentToBag(equipDataNew, isInit, Logic.inventoryMgr.inventoryList)
+            this.setEquipmentToBag(equipDataNew, isInit, this.inventoryList)
             return
         }
         //2.如果是长按的替换操作，替换新的，移出旧的到背包
         //更新当前装备数据
         if (equip) {
-            this.setEquipmentToBag(equip, isInit, Logic.inventoryMgr.inventoryList)
+            this.setEquipmentToBag(equip, isInit, this.inventoryList)
             equip.valueCopy(equipDataNew)
             if (!isInit && this.id == Logic.data.lastPlayerId) {
                 EventHelper.emit(EventHelper.HUD_INVENTORY_EQUIP_UPDATE)
@@ -209,11 +209,11 @@ export default class InventoryManager {
 
         switch (equipmentType) {
             case InventoryManager.REMOTE:
-                if (Logic.inventoryMgr.equips[equipmentType].equipmentType != InventoryManager.EMPTY) {
+                if (this.equips[equipmentType].equipmentType != InventoryManager.EMPTY) {
                     //替换盾牌到背包
-                    this.setEquipmentToBag(Logic.inventoryMgr.equips[InventoryManager.SHIELD], isInit, Logic.inventoryMgr.inventoryList)
+                    this.setEquipmentToBag(this.equips[InventoryManager.SHIELD], isInit, this.inventoryList)
                     //清空盾牌数据
-                    Logic.inventoryMgr.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData())
+                    this.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData())
                     if (callback) {
                         callback(InventoryManager.SHIELD)
                     }
@@ -221,10 +221,10 @@ export default class InventoryManager {
                 break
             case InventoryManager.SHIELD:
                 //如果当前盾牌不为空清空远程并展示盾牌栏，否则显示远程隐藏盾牌栏
-                if (Logic.inventoryMgr.equips[equipmentType].equipmentType != InventoryManager.EMPTY) {
+                if (this.equips[equipmentType].equipmentType != InventoryManager.EMPTY) {
                     //替换远程到背包
-                    this.setEquipmentToBag(Logic.inventoryMgr.equips[InventoryManager.REMOTE], isInit, Logic.inventoryMgr.inventoryList)
-                    Logic.inventoryMgr.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData())
+                    this.setEquipmentToBag(this.equips[InventoryManager.REMOTE], isInit, this.inventoryList)
+                    this.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData())
                     if (callback) {
                         callback(InventoryManager.REMOTE)
                     }

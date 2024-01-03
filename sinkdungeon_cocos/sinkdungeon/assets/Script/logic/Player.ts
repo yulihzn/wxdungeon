@@ -177,15 +177,17 @@ export default class Player extends PlayActor {
         this.initCollider()
         this.weaponLeft.init(this, true, false)
         this.weaponRight.init(this, false, false)
-        if (this.data.id == Logic.data.lastPlayerId) {
-            EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH_ALL)
-        } else {
-            for (let key in this.inventoryMgr.equips) {
-                this.refreshEquipment(key, this.inventoryMgr.equips[key].clone(), true, false)
+        this.scheduleOnce(() => {
+            if (this.data.id == Logic.data.lastPlayerId) {
+                EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH_ALL)
+            } else {
+                for (let key in this.inventoryMgr.equips) {
+                    this.refreshEquipment(key, this.inventoryMgr.equips[key].clone(), true, false)
+                }
+                this.inventoryMgr.refreshSuits()
+                this.inventoryMgr.updateTotalEquipData()
             }
-            this.inventoryMgr.refreshSuits()
-            this.inventoryMgr.updateTotalEquipData()
-        }
+        })
         this.remoteCooldown.width = 0
         this.remoteCooldown.opacity = 200
         if (this.data.pos.y == Logic.ROOM_HEIGHT - 1) {
@@ -224,6 +226,16 @@ export default class Player extends PlayActor {
             this.metal = cc.instantiate(this.metalPrefab).getComponent(OilGoldMetal)
             this.metal.init(this)
         }
+    }
+    start() {
+        if (!this.node) {
+            return
+        }
+        this.updateStatus(this.data.StatusList, this.data.StatusTotalData)
+        this.addSaveStatusList()
+        ActorUtils.changeZIndex(this)
+        this.updateInfoUi()
+        this.playWakeUpInit()
     }
     onLoad() {
         this.init()
@@ -822,16 +834,6 @@ export default class Player extends PlayActor {
         this.avatar.playAnim(status, dir)
     }
 
-    start() {
-        if (!this.node) {
-            return
-        }
-        this.updateStatus(this.data.StatusList, this.data.StatusTotalData)
-        this.addSaveStatusList()
-        ActorUtils.changeZIndex(this)
-        this.updateInfoUi()
-        this.playWakeUpInit()
-    }
     fall() {
         if (this.sc.isFalling || this.sc.isJumping || this.sc.isVanishing) {
             return

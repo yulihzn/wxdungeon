@@ -131,17 +131,26 @@ export default class MeleeWeapon extends BaseColliderComponent {
     get ComboType() {
         return this.comboType
     }
-
-    init(player: Player, isSecond: boolean) {
-        this.baseInit()
-        this.player = player
-        this.isSecond = isSecond
+    onLoad(): void {
+        super.onLoad()
         this.anim = this.getComponent(cc.Animation)
         this.player = this.playerNode.getComponent(Player)
         this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos))
         this.meleeLightRightPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightRightPos))
         this.initSprite()
         this.entity.destroy()
+    }
+
+    init(player: Player, isSecond: boolean) {
+        // this.baseInit()
+        this.player = player
+        this.isSecond = isSecond
+        // this.anim = this.getComponent(cc.Animation)
+        // this.player = this.playerNode.getComponent(Player)
+        // this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos))
+        // this.meleeLightRightPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightRightPos))
+        // this.initSprite()
+        // this.entity.destroy()
     }
     protected initSprite() {
         this.weaponFirePoint = this.node.getChildByName('firepoint')
@@ -184,6 +193,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         this.weaponSprite.node.width = this.weaponSprite.spriteFrame.getOriginalSize().width
         this.weaponSprite.node.height = this.weaponSprite.spriteFrame.getOriginalSize().height
     }
+
     public changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
         this.isStab = equipData.stab == 1
         this.isFar = equipData.far == 1
