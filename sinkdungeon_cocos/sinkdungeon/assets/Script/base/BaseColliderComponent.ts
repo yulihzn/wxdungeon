@@ -26,18 +26,24 @@ export default abstract class BaseColliderComponent extends cc.Component impleme
     resetEntity() {
         this.entity = ecs.createEntityWithComps<ActorEntity>(NodeRenderComponent, MoveComponent, TransformComponent, ColliderComponent)
         this.initCollider()
-        this.entity.NodeRender.node = this.node
+        if (this.entity.Collider) {
+            this.entity.NodeRender.node = this.node
+        }
     }
     baseInit() {
         this.initCollider()
-        this.entity.NodeRender.node = this.node
+        if (this.entity.Collider) {
+            this.entity.NodeRender.node = this.node
+        }
     }
     onLoad() {
         this.initCollider()
-        this.entity.NodeRender.node = this.node
+        if (this.entity.Collider) {
+            this.entity.NodeRender.node = this.node
+        }
     }
     /**初始化碰撞 */
-    public initCollider() {
+    public initCollider(tag?: string) {
         this.ccolliders = []
         let childColliders = this.getComponentsInChildren(CCollider)
         for (let c of childColliders) {
@@ -46,14 +52,18 @@ export default abstract class BaseColliderComponent extends cc.Component impleme
             }
         }
         if (this.ccolliders && this.ccolliders.length > 0) {
-            this.entity.Collider.colliders = this.ccolliders
+            if (this.entity.Collider) {
+                this.entity.Collider.colliders = this.ccolliders
+            }
             let groupId = CCollider.genNonDuplicateID()
             for (let ccolider of this.ccolliders) {
                 ccolider.groupId = groupId
                 ccolider.setOnContactListener(this)
             }
         } else {
-            this.entity.remove(ColliderComponent)
+            if (this.entity.Collider) {
+                this.entity.remove(ColliderComponent)
+            }
         }
     }
     /**设置碰撞目标tag */
