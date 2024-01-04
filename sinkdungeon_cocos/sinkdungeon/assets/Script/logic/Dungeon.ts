@@ -191,12 +191,12 @@ export default class Dungeon extends cc.Component {
         this.effectItemManager = this.getComponent(EffectItemManager)
     }
     async start() {
-        await this.reset()
+        await this.init()
         EventHelper.emit(EventHelper.CHANGE_MINIMAP, { x: this.currentPos.x, y: this.currentPos.y })
         this.checkRoomClear()
         cc.log(`dungeon pos:${this.node.position}`)
     }
-    private async reset() {
+    private async init() {
         Logic.lastBgmIndex = Logic.data.chapterIndex == Logic.CHAPTER099 ? 1 : 0
         AudioPlayer.stopAllEffect()
         AudioPlayer.play(AudioPlayer.PLAY_BG, true)
