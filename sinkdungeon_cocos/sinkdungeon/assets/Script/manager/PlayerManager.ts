@@ -53,7 +53,10 @@ export default class PlayerManager extends BaseManager {
         let room = Logic.mapManager.getCurrentRoom()
         for (let key in Logic.data.playerDatas) {
             let data = Logic.getPlayerDataById(key)
-            if (data.roomPos.x == room.x && data.roomPos.y == room.y && data.chapterIndex == Logic.data.chapterIndex && data.chapterLevel == Logic.data.level) {
+            if (
+                Logic.playerData.id == data.id ||
+                (data.roomPos.x == room.x && data.roomPos.y == room.y && data.chapterIndex == Logic.data.chapterIndex && data.chapterLevel == Logic.data.level)
+            ) {
                 this.players.push(this.getPlayer(data.id, dungeon))
             }
         }

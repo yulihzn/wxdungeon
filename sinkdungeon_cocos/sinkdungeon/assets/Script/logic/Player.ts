@@ -882,12 +882,12 @@ export default class Player extends PlayActor {
         }
         this.sc.isDashing = true
         this.dashCooling = true
-        let speed = 20
+        let speed = 30
         if (this.IsVariation) {
-            speed = 40
+            speed = 60
         }
         if (this.professionTalent && this.professionTalent.hashTalent(Talent.TALENT_015)) {
-            speed += 10
+            speed += 15
         }
         this.schedule(
             () => {
@@ -909,7 +909,7 @@ export default class Player extends PlayActor {
         this.hv = pos.clone()
         pos = pos.mul(speed)
         this.entity.Move.linearVelocity = pos
-        this.entity.Move.damping = 50
+        this.entity.Move.damping = 80
         this.playerAnim(isBack ? BaseAvatar.STATE_DASH1 : BaseAvatar.STATE_DASH, this.currentDir)
         this.highLight(true)
         this.scheduleOnce(() => {
