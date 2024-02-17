@@ -142,15 +142,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
 
     init(player: Player, isSecond: boolean) {
-        // this.baseInit()
         this.player = player
         this.isSecond = isSecond
-        // this.anim = this.getComponent(cc.Animation)
-        // this.player = this.playerNode.getComponent(Player)
-        // this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos))
-        // this.meleeLightRightPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightRightPos))
-        // this.initSprite()
-        // this.entity.destroy()
     }
     protected initSprite() {
         this.weaponFirePoint = this.node.getChildByName('firepoint')
@@ -356,18 +349,18 @@ export default class MeleeWeapon extends BaseColliderComponent {
             }
             this.isWallReflected = true
         }
-        // let w1 = this.player.node.convertToWorldSpaceAR(this.hv.mul(this.weaponReflectPoint.position.mag()))
         let hv1 = other.w_center.sub(self.w_center).normalize()
-        let wp2 = this.player.node.convertToWorldSpaceAR(hv1.mul(this.weaponReflectPoint.position.mag()))
-        let wp = GameWorldSystem.colliderSystem.getNearestColliderPoint(self.w_center, wp2, other).point
+        // let wp2 = this.player.node.convertToWorldSpaceAR(hv1.mul(this.weaponReflectPoint.position.mag()))
+        // let wp = GameWorldSystem.colliderSystem.getNearestColliderPoint(self.w_center, wp2, other).point
+        let wp = this.weaponReflectPoint.convertToWorldSpaceAR(cc.Vec3.ZERO)
         let d = this.hv.dot(hv1)
         if (d < -0.8) {
             return
         }
-        let p1 = this.player.node.convertToWorldSpaceAR(cc.Vec3.ZERO)
-        let p2 = this.node.convertToWorldSpaceAR(cc.Vec3.ZERO)
-        let y = p2.y - p1.y
-        wp.y += y
+        // let p1 = this.player.node.convertToWorldSpaceAR(cc.Vec3.ZERO)
+        // let p2 = this.weaponReflectPoint.convertToWorldSpaceAR(cc.Vec3.ZERO)
+        // let y = p2.y - p1.y
+        // wp.y += y
         let pos = this.player.dungeon.node.convertToNodeSpaceAR(wp)
         if (isWall) {
             let pos = this.player.hv.clone()
@@ -666,6 +659,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         let fromData = FromData.getClone(this.player.actorName(), '', this.player.node.position)
         let damageSuccess = false
         let attackSuccess = false
+        this.isWallReflected = false
         if (attackTarget.tag == CCollider.TAG.NONPLAYER) {
             let monster = attackTarget.node.getComponent(NonPlayer)
             if (monster && !monster.sc.isDied && !this.isMiss && monster.data.isEnemy > 0) {
@@ -689,8 +683,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
                     this.getReflectLight(this.player.dungeon, attackTarget, self, this.isFar, this.isStab, false, this.hv, this.weaponLightSprite.node.color)
                     this.addTargetAllStatus(common, boss)
                     this.addHitExTrigger(damage, boss)
-                    let count = damage.isCriticalStrike ? Logic.getRandomNum(12, 24) : Logic.getRandomNum(3, 6)
-                    this.player.dungeon.addHitBlood(this.player.node.position, boss.node.position, Logic.getRandomNum(3, 6))
+                    let count = damage.isCriticalStrike ? Logic.getRandomNum(6, 12) : Logic.getRandomNum(3, 6)
+                    this.player.dungeon.addHitBlood(this.player.node.position, boss.node.position, count)
                 }
             }
         } else if (attackTarget.tag == CCollider.TAG.BUILDING || attackTarget.tag == CCollider.TAG.WALL) {
