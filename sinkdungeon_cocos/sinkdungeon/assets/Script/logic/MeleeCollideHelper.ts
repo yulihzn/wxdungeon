@@ -17,7 +17,6 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class MeleeCollideHelper extends BaseColliderComponent {
-    @property(MeleeWeapon)
     meleeWeapon: MeleeWeapon = null
     protected hv: cc.Vec2 = cc.v2(1, 0)
     protected collider: CCollider
@@ -36,10 +35,11 @@ export default class MeleeCollideHelper extends BaseColliderComponent {
         return this.hv
     }
 
-    public updateLogic(weaponPos: cc.Vec3) {
+    public updateLogic(weaponPos: cc.Vec3, meleeWeapon: MeleeWeapon) {
         if (!this.collider) {
             return
         }
+        this.meleeWeapon = meleeWeapon
         let hv = this.meleeWeapon.Hv
         let collider = this.meleeWeapon.ccolliders[0]
         this.hv = hv.clone()

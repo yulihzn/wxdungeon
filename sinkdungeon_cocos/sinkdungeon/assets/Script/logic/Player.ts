@@ -1023,10 +1023,10 @@ export default class Player extends PlayActor {
         this.data.currentHealth = health.x
         let isAvoidDeath = false
         if (this.data.currentHealth <= 0) {
+            this.data.currentHealth = 0
             if (!this.isAvoidDeathed && this.data.StatusTotalData.avoidDeath > 0) {
                 this.isAvoidDeathed = true
                 isAvoidDeath = true
-                this.data.currentHealth = 0
             } else {
                 this.killed(from)
             }

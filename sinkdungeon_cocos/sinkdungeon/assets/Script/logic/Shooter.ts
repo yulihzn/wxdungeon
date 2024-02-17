@@ -20,7 +20,6 @@ import Utils from '../utils/Utils'
 import Controller from './Controller'
 import Dungeon from './Dungeon'
 import Logic from './Logic'
-import Player from './Player'
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -36,7 +35,6 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class Shooter extends cc.Component {
-    static DefAULT_SPEED = 300
     static readonly ARC_EX_NUM_8 = 80
     static readonly ARC_EX_NUM_16 = 99
     @property(cc.Prefab)

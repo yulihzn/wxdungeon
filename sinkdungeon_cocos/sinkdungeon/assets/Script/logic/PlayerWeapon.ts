@@ -190,7 +190,7 @@ export default class PlayerWeapon extends cc.Component {
         }, 0.2)
         if (this.shooter) {
             this.shooter.remoteDamagePlayer = data.getFinalRemoteDamage()
-            this.shooter.fireBullet(Random.getRandomNum(-this.remoteAngleOffset, this.remoteAngleOffset), cc.v3(0, 0), bulletArcExNum, bulletLineExNum)
+            this.shooter.fireBullet(Random.getRandomNum(-this.remoteAngleOffset, this.remoteAngleOffset), cc.v3(64, 0), bulletArcExNum, bulletLineExNum)
         }
         if (data.currentAmmo <= 0 && cooldownNode) {
             this.isCooling = true
@@ -229,7 +229,7 @@ export default class PlayerWeapon extends cc.Component {
             this.meleeWeapon.updateLogic(dt)
         }
         if (this.meleeCollideHelper) {
-            this.meleeCollideHelper.updateLogic(cc.v3(this.node.position.x, 0))
+            this.meleeCollideHelper.updateLogic(cc.v3(this.node.position.x, 0), this.meleeWeapon ? this.meleeWeapon : this.shadowWeapon.meleeWeapon)
         }
         if (this.shooter) {
             this.shooter.updateLogic(dt)

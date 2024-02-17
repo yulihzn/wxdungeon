@@ -166,7 +166,6 @@ export default class Bullet extends BaseColliderComponent {
         this.entity.NodeRender.node = this.node
         this.entity.NodeRender.root = this.root
         this.data = data
-        this.changeRes(data.resName, data.lightName, data.lightColor)
         this.collider.type = CCollider.TYPE.RECT
         this.light.node.position = data.isRect == 1 ? cc.v3(8, 0) : cc.v3(0, 0)
         this.node.scale = data.size > 0 ? data.size : 1
@@ -183,6 +182,7 @@ export default class Bullet extends BaseColliderComponent {
             this.entity.Transform.z = zHeight / this.node.scale
         }
         this.entity.Move.gravity = 0
+        this.changeRes(data.resName, data.lightName, data.lightColor)
     }
     private changeRes(resName: string, lightName: string, lightColor: string, suffix?: string) {
         if (!this.sprite) {
@@ -194,8 +194,8 @@ export default class Bullet extends BaseColliderComponent {
         if (!this.sprite || resName.length < 1) {
             return
         }
-        let s1 = this.getSpriteFrameByName(resName, suffix)
-        let s2 = this.getSpriteFrameByName(lightName, suffix)
+        let s1 = this.getSpriteFrameByName(resName, suffix, true)
+        let s2 = this.getSpriteFrameByName(lightName, suffix, true)
 
         if (s1) {
             this.sprite.spriteFrame = s1
@@ -204,8 +204,6 @@ export default class Bullet extends BaseColliderComponent {
             this.light.spriteFrame = s2
             let color = cc.color(255, 255, 255).fromHEX(lightColor)
             this.light.node.color = color
-            this.shadow.color = cc.color(255, 0, 0)
-            this.shadow.opacity = 60
         }
         this.shadowSprite.spriteFrame = this.sprite.spriteFrame
         this.shadow.color = cc.Color.BLACK
@@ -242,6 +240,7 @@ export default class Bullet extends BaseColliderComponent {
         this.entity.Move.linearVelocity = this.currentLinearVelocity
         //记录发射点
         this.startPos = this.node.convertToWorldSpaceAR(cc.v3(0, 0))
+        this.sprite.node.opacity = 255
         this.sprite.node.stopAllActions()
         this.node.stopAllActions()
         let ss = this.sprite
