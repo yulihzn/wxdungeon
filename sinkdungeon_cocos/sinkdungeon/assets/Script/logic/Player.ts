@@ -147,6 +147,17 @@ export default class Player extends PlayActor {
         return this.root
     }
     init(): void {
+        if (!this.playerSpriteTexture) {
+            let width = 800
+            this.playerSpriteTexture = new cc.RenderTexture()
+            this.playerSpriteTexture.initWithSize(width, width)
+            this.playerSpriteTexture.setFilters(cc.Texture2D.Filter.NEAREST, cc.Texture2D.Filter.NEAREST)
+            this.shadowCamera.targetTexture = this.playerSpriteTexture
+            this.shadowCamera.zoomRatio = cc.winSize.height / width
+            this.shadowCamera.enabled = false
+            this.playerSpriteframe = new cc.SpriteFrame(this.playerSpriteTexture)
+            this.sprite.spriteFrame = this.playerSpriteframe
+        }
         this.sc.isDied = false
         this.sc.isShow = false
         this.inventoryMgr = Logic.getInventoryMgr(this.data.id)
@@ -173,7 +184,6 @@ export default class Player extends PlayActor {
         this.statusManager.statusIconList = this.statusIconList
         this.statusPos = this.statusManager.node.position.clone()
         this.pos = cc.v3(0, 0)
-        this.initTalent()
         this.initCollider()
         this.weaponLeft.init(this, true, false)
         this.weaponRight.init(this, false, false)
@@ -211,21 +221,11 @@ export default class Player extends PlayActor {
             this.bottomDir.init(this, this.data.id == Logic.data.lastPlayerId ? cc.Color.GREEN : cc.Color.YELLOW)
         }
 
-        if (!this.playerSpriteTexture) {
-            let width = 800
-            this.playerSpriteTexture = new cc.RenderTexture()
-            this.playerSpriteTexture.initWithSize(width, width)
-            this.playerSpriteTexture.setFilters(cc.Texture2D.Filter.NEAREST, cc.Texture2D.Filter.NEAREST)
-            this.shadowCamera.targetTexture = this.playerSpriteTexture
-            this.shadowCamera.zoomRatio = cc.winSize.height / width
-            this.shadowCamera.enabled = false
-            this.playerSpriteframe = new cc.SpriteFrame(this.playerSpriteTexture)
-            this.sprite.spriteFrame = this.playerSpriteframe
-        }
         if (this.data.id == Logic.data.lastPlayerId) {
             this.metal = cc.instantiate(this.metalPrefab).getComponent(OilGoldMetal)
             this.metal.init(this)
         }
+        this.initTalent()
     }
     start() {
         if (!this.node) {

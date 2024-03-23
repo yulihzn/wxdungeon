@@ -1189,6 +1189,7 @@
         "remote": 0,
         "melee": 3,
         "boxType": 1,
+        "scale": 0.5,
         "specialAudio": "mouse",
         "bodyRect": "0,0,80,40,90",
         "attackRect": "-32,0,112,40,80",
