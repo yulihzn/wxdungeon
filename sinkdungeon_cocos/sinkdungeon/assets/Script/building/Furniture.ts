@@ -275,6 +275,9 @@ export default class Furniture extends Building {
                 let arr = this.data.spritePos.split(',')
                 this.sprite.node.x = parseInt(arr[0])
                 this.sprite.node.y = parseInt(arr[1])
+            } else {
+                this.sprite.node.x = 0
+                this.sprite.node.y = 0
             }
         }
         LocalStorage.saveFurnitureData(this.data)
