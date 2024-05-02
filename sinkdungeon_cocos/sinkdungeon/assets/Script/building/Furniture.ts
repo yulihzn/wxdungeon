@@ -260,8 +260,10 @@ export default class Furniture extends Building {
             this.lock.node.active = false
         } else {
             this.sprite.node.color = cc.color(128, 128, 128, 255)
-            this.sprite.node.opacity = 128
+            this.sprite.node.opacity = 255
             this.lock.node.active = true
+            this.lock.node.scale = 2
+            this.lock.node.color = cc.Color.RED
         }
         this.changeRes(this.data.resName, isNormal)
         let pcollider = this.getComponent(CCollider)
