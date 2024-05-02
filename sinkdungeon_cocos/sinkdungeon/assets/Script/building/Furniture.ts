@@ -259,7 +259,7 @@ export default class Furniture extends Building {
             this.sprite.node.opacity = 255
             this.lock.node.active = false
         } else {
-            this.sprite.node.color = cc.color(128, 128, 128, 255)
+            this.sprite.node.color = cc.color(255, 255, 255, 255)
             this.sprite.node.opacity = 255
             this.lock.node.active = true
             this.lock.node.scale = 2
