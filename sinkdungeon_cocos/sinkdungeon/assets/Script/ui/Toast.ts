@@ -51,12 +51,12 @@ export default class Toast extends cc.Component {
             return
         }
         this.isShowing = true
-        this.label.node.width = isCenter ? 600 : 600
+        this.label.node.width = isCenter ? 400 : 400
         let node = this.node
         node.stopAllActions()
         let delay = 3
         if (isTap) {
-            delay = 0.07 * msg.length
+            delay = 0.06 * msg.length
             if (delay < 3) {
                 delay = 3
             }
@@ -68,7 +68,7 @@ export default class Toast extends cc.Component {
                     node.height = this.label.node.height + 10
                     node.opacity = 255
                 },
-                0.05,
+                0.03,
                 msg.length,
                 0.3
             )

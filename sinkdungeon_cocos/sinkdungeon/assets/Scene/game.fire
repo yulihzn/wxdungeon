@@ -85797,15 +85797,15 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 217,
-      "g": 181,
-      "b": 4,
+      "r": 190,
+      "g": 190,
+      "b": 190,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 300,
-      "height": 50.4
+      "height": 40.32
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -85858,8 +85858,8 @@
     "_dstBlendFactor": 771,
     "_string": "1",
     "_N$string": "1",
-    "_fontSize": 32,
-    "_lineHeight": 40,
+    "_fontSize": 20,
+    "_lineHeight": 24,
     "_enableWrapText": false,
     "_N$file": null,
     "_isSystemFontUsed": true,
