@@ -1394,7 +1394,7 @@ export default class Player extends PlayActor {
                 life.poo = 100
                 this.pooStep.next(() => {
                     this.sanityChange(-1)
-                    Utils.toast('你的肚子一阵翻腾。', false, true)
+                    this.showLifeToast('你的肚子一阵翻腾。')
                 }, 120)
             }
         }
@@ -1404,20 +1404,20 @@ export default class Player extends PlayActor {
                 life.pee = 100
                 this.peeStep.next(() => {
                     this.sanityChange(-1)
-                    Utils.toast('你的膀胱快要炸了。', false, true)
+                    this.showLifeToast('你的膀胱快要炸了。')
                 }, 120)
             }
         }
         if (this.data.LifeData.solidSatiety <= 0) {
             this.solidStep.next(() => {
                 this.sanityChange(-1)
-                Utils.toast('你快要饿死了。', false, true)
+                this.showLifeToast('你快要饿死了。')
             }, 120)
         }
         if (this.data.LifeData.liquidSatiety <= 0) {
             this.liquidStep.next(() => {
                 this.sanityChange(-1)
-                Utils.toast('你快要渴死了。', false, true)
+                this.showLifeToast('你快要渴死了。')
             }, 120)
         }
         this.updateLife(0, -solidLoss, -liquidLoss)
@@ -1431,7 +1431,7 @@ export default class Player extends PlayActor {
         } else if (this.data.LifeData.sanity <= 0) {
             this.data.LifeData.sanity = 0
             if (sanity != 0) {
-                Utils.toast('精神崩溃了。。。', false, true)
+                this.showLifeToast('精神崩溃了。。。')
                 let sd = new StatusData()
                 sd.valueCopy(Logic.status[StatusManager.INSANE])
                 sd.Common.damageMin += this.data.getFinalAttackPoint().physicalDamage
@@ -1451,6 +1451,11 @@ export default class Player extends PlayActor {
             this.data.LifeData.liquidSatiety = 0
         }
         this.updateInfoUi()
+    }
+    private showLifeToast(msg: string) {
+        if (this.data.id == Logic.data.lastPlayerId) {
+            Utils.toast(msg, false, true)
+        }
     }
     sanityChange(sanity: number) {
         if (sanity == 0) {
@@ -1481,7 +1486,7 @@ export default class Player extends PlayActor {
         cc.tween(this.data.LifeData)
             .to(3, { poo: 0, pee: 0 })
             .call(() => {
-                Utils.toast('你感觉一身轻松。', false, true)
+                this.showLifeToast('你感觉一身轻松。')
             })
             .start()
         let total = this.data.LifeData.pee + this.data.LifeData.poo
@@ -1494,16 +1499,16 @@ export default class Player extends PlayActor {
     read() {
         this.avatar.playRead()
         if (Random.getRandomNum(0, 100) > 90) {
-            Utils.toast('你用量子波动速读看完了一本书,书里的内容让你不寒而栗。', false, true)
+            this.showLifeToast('你用量子波动速读看完了一本书,书里的内容让你不寒而栗。')
             this.sanityChange(-10)
         } else {
-            Utils.toast('你用量子波动速读看完了一本书,奇怪的知识又增加了。', false, true)
+            this.showLifeToast('你用量子波动速读看完了一本书,奇怪的知识又增加了。')
             this.sanityChange(5)
         }
     }
     cooking() {
         this.avatar.playCooking()
-        Utils.toast(`你炒了两个鸡蛋又用昨晚剩下的米饭拌了拌。`, false, true)
+        this.showLifeToast(`你炒了两个鸡蛋又用昨晚剩下的米饭拌了拌。`)
     }
     playWakeUpInit() {
         if (this.data.isWakeUp) {
@@ -1565,7 +1570,7 @@ export default class Player extends PlayActor {
             }
         }
         if (!can) {
-            Utils.toast(str, false, true)
+            this.showLifeToast(str)
             AudioPlayer.play(AudioPlayer.SELECT_FAIL)
         }
         return can

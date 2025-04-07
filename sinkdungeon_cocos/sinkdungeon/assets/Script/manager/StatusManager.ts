@@ -70,7 +70,7 @@ export default class StatusManager extends cc.Component {
 
     @property(cc.Prefab)
     statusPrefab: cc.Prefab = null
-    private statusMap: Map<number, Status[]>
+    private statusMap: Map<number, Status[]> = new Map<number, Status[]>()
     public statusIconList: StatusIconList
     private totalStatusData: StatusData = new StatusData()
     private actor: Actor

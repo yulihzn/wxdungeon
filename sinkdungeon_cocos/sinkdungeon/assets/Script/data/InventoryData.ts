@@ -34,7 +34,6 @@ export default class InventoryData extends BaseData {
             this.id = this.equipmentData.id
             this.quality = this.equipmentData.quality
         }
-        this.equipmentData = data.equipmentData
         if (data.itemData) {
             this.itemData = new ItemData()
             this.itemData.valueCopy(data.itemData)
@@ -42,7 +41,6 @@ export default class InventoryData extends BaseData {
             this.id = this.itemData.id
             this.quality = 0
         }
-        this.itemData = data.itemData
         return this
     }
     public clone(): InventoryData {
